@@ -148,6 +148,7 @@ clean :
 PREEN_LIST := *~
 preen : clean
 	rm -rf $(PREEN_LIST)
+	rm -rf $(MAKEFILES)
 
 # Recursively include "top down" makefiles from the entire hierarchy.
 include app/td.mk \

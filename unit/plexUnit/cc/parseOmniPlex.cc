@@ -184,13 +184,6 @@ namespace plx
 		      rPlexUnit,
 		      rParsedPlex);
 
-    std::cerr << "Searching family "
-	      << pFamily
-	      << " for omniPlex for node "
-	      << pParentNode
-	      << "."
-	      << std::endl;
-
     // Run through the plexFamily's omniPlexes, searching for
     // the one associated to pParentNode.
     return pFamily->mustFindOmniForNode(pParentNode);
@@ -244,13 +237,6 @@ namespace plx
 		 rMolUnit,
 		 rPlexUnit,
 		 parsedPlex);
-
-    std::cerr << "parseOmniSpeciesStream: created omniplex with family "
-	      << pOmni->getFamily()
-	      << " whose feature is "
-	      << pOmni->getSubPlexFeature()
-	      << "."
-	      << std::endl;
 
     // Construct species dumpable to attach to omniplex.
     // Add it to mzrUnit for memory management and lookup.

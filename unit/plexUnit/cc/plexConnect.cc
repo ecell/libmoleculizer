@@ -122,35 +122,15 @@ namespace plx
     void
     operator()(omniPlex* pOmniPlex) const
     {
-      // Does the structure of the plexFamily satisfy the omni's structural
-      // query?
-      std::cerr << "connectFamily...: Testing plexFamily "
-		<< & rFamily
-		<< " against structural query of omniPlex "
-		<< pOmniPlex
-		<< "(family ="
-		<< pOmniPlex->getFamily()
-		<< ", feature="
-		<< pOmniPlex->getSubPlexFeature()
-		<< ")...";
-
       const andOmniStructureQueries& rQuery = pOmniPlex->getStructureQuery();
       if(rQuery(rFamily.getParadigm(),
 		rInjection))
 	{
-	  std::cerr << "passed.";
-	  
 	  // Add the omniPlex's feature to the featureMap of rFamily.
 	  rFamily.omniFeatures.addFeature(subPlexSpec(pOmniPlex,
 						      rInjection),
 					  pOmniPlex->getSubPlexFeature());
 	}
-      else
-	{
-	  std::cerr << "failed.";
-	}
-
-      std::cerr << std::endl;
     }
   };
 
@@ -168,24 +148,12 @@ namespace plx
     void
     operator()(plexFamily* pOmniFamily) const
     {
-      std::cerr << "doBehaviorizeOmni: testing plexFamily "
-		<< & rFamily
-		<< " for omniplex family "
-		<< pOmniFamily
-		<< "...";
-
       // Is there an injection of the omni structure into this structure?
       plexIsoPair injection;
       if(reportIsoSearch(pOmniFamily->getParadigm(),
 			 rFamily.getParadigm(),
 			 injection).findInjection())
 	{
-	  std::cerr << "found!"
-		    << " Checking against "
-		    << pOmniFamily->omniPlexes.size()
-		    << " omniplexes in that family."
-		    << std::endl;
-	  
 	  // Attach this plex family to the features of those omniPlexes
 	  // (associated to the omni family) whose structural queries
 	  // are satisfied by the structure of rFamily.
@@ -194,12 +162,6 @@ namespace plx
 			connectFamilyToSatisfiedOmni(rFamily,
 						     injection));
 	}
-      else
-	{
-	  std::cerr << "not found."
-		    << std::endl;
-	}
-
     }
   };
 

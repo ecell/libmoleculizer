@@ -39,22 +39,12 @@ namespace plx
     // directly to the omniplex we get here by rSpec.getOmni().
     const andPlexQueries* pQuery = rSpec.getOmni()->getStateQuery();
 
-    std::cerr << "omniPlexFeature::notifyNew: feature "
-	      << this
-	      << " notified of species "
-	      << pNewSpecies
-	      << " (in family "
-	      << &(pNewSpecies->getFamily())
-	      << ") which species ";
-    
     // Create new reactions and add species to dumpable if species state
     // satisfies the state query.  We apply the state query through the
     // imbedding of the omniplex into the new species.
     if(pQuery->applyTracked(pNewSpecies->getParam(),
 			    rSpec))
       {
-	std::cerr << "did ";
-
 	// Create the new reactions.
 	mzr::feature<plx::plexSpecies, plx::subPlexSpec>::
 	  notifyNew(pNewSpecies,
@@ -63,12 +53,5 @@ namespace plx
 	// If there is a dumpable, notify it of the new species.
 	if(pDumpable) pDumpable->addSpecies(pNewSpecies);
       }
-    else
-      {
-	std::cerr << "did not ";
-      }
-
-    std::cerr << "pass test."
-	      << std::endl;
   }
 }

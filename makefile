@@ -33,7 +33,7 @@ include build-config.mk
 
 PROJECT := moleculizer
 MAJOR_VERSION := 1
-MINOR_VERSION := 0.7
+MINOR_VERSION := 0.8
 
 # These are needed both to know what the units are and what the include
 # directories are (in include/td.mk).  Hence, this list is here instead of in

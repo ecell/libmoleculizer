@@ -36,9 +36,6 @@ namespace bndKinase
     // See if reaction generation is turned off.
     if(rMzrUnit.generateOk)
       {
-	std::cerr << "Making bndKinase reaction."
-		  << std::endl;
-	
 	// Wrap the enabling complex in accessors.
 	plx::cxOmni cxEnabling(rContext);
 

@@ -64,12 +64,6 @@ namespace plx
     plexSpecies* pNewSpecies = new plexSpecies(*this,
 					       allostery(rMolParams));
 
-    std::cerr << "plexFamily::makeMember: plexFamily "
-	      << this
-	      << " finished making plexSpecies "
-	      << pNewSpecies
-	      << std::endl;
-    
     return pNewSpecies;
   }
 

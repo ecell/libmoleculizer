@@ -30,6 +30,7 @@ $(DOT)/target : $(DOT)/simple-stoch.out
 $(DOT)/sbml : $(DOT)/simple-stoch.out
 	cd $? \
 	&& state2sbml state-dump.xml state-dump.sbml
+	&& xmlpretty state-dump.sbml state-dump-lines.sbml
 
 $(DOT)/simple-stoch.out : $(DOT)/simple-stoch.xml
 	mkdir $@

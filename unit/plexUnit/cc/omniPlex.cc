@@ -38,14 +38,5 @@ namespace plx
     pStateQueries(pOmniStateQueries)
   {
     pPlexFamily->addOmniPlex(this);
-
-    std::cerr << "Omniplex "
-	      << this
-	      << " added to plexFamily "
-	      << pPlexFamily
-	      << " for node "
-	      << pParentNode
-	      << "."
-	      << std::endl;
   }
 }

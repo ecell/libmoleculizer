@@ -27,6 +27,11 @@ DOT := $(DOT)/small-mol
 
 $(DOT)/target : $(DOT)/small-mol.out
 
+$(DOT)/sbml : $(DOT)/small-mol.out
+	cd $? \
+	&& state2sbml state-dump.xml state-dump.sbml \
+	&& xmlpretty state-dump.sbml state-dump-lines.sbml
+
 $(DOT)/small-mol.out : $(DOT)/small-mol.xml
 	mkdir $@
 	cp $? $@

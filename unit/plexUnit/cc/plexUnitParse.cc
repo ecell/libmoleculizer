@@ -312,15 +312,6 @@ namespace plx
 					 *this,
 					 updatedSpecies));
 
-    std::cerr << "Parsed "
-	      << taggedPlexSpeciesNodes.size()
-	      << " taggedPlexSpeciesNodes."
-	      << std::endl
-	      << "Of these, "
-	      << updatedSpecies.size()
-	      << " species had been updated."
-	      << std::endl;
-
     // Run through all the plexSpecies, and update each by 0.
     // This should cause all the reactions for the species to come
     // into existence.  This may be a few more reactions than
@@ -340,11 +331,6 @@ namespace plx
     std::for_each(recognize.plexHasher.begin(),
 		  recognize.plexHasher.end(),
 		  accumulateSpecies(afterPlexSpecies));
-
-    std::cerr << "After zeroUpdate, there are "
-	      << afterPlexSpecies.size()
-	      << " plex species."
-	      << std::endl;
 
     // For consistency's sake, rescheduling the affected reactions.
     // Since the update was by 0, this isn't really necessary.

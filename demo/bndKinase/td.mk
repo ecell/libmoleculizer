@@ -29,7 +29,8 @@ $(DOT)/target : $(DOT)/bndKinase.out
 
 $(DOT)/sbml : $(DOT)/bndKinase.out
 	cd $? \
-	&& state2sbml state-dump.xml state-dump.sbml
+	&& state2sbml state-dump.xml state-dump.sbml \
+	&& xmlpretty state-dump.sbml state-dump-lines.sbml
 
 $(DOT)/bndKinase.out : $(DOT)/bndKinase.xml
 	mkdir $@

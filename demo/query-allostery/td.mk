@@ -27,6 +27,11 @@ DOT := $(DOT)/query-allostery
 
 $(DOT)/target : $(DOT)/query-allostery.out
 
+$(DOT)/sbml : $(DOT)/query-allostery.out
+	cd $? \
+	&& state2sbml state-dump.xml state-dump.sbml \
+	&& xmlpretty state-dump.sbml state-dump-lines.sbml
+
 $(DOT)/query-allostery.out : $(DOT)/query-allostery.xml
 	mkdir $@
 	cp $? $@

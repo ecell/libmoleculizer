@@ -215,13 +215,6 @@ namespace plx
     void
     notify(plexSpecies* pSpecies)
     {
-      std::cerr << "plexFamily "
-		<< this
-		<< " notifying for species "
-		<< pSpecies
-		<< "."
-		<< std::endl;
-      
       freeSiteFeatures.notifyNew(pSpecies);
       bindingFeatures.notifyNew(pSpecies);
       molFeatures.notifyNew(pSpecies);

@@ -51,13 +51,6 @@ namespace bndKinase
 		      rPlexUnit,
 		      parsedPlex);
 
-    std::cerr << "parseBndKinaseGen: created omniplex with family "
-	      << pOmni->getFamily()
-	      << " with feature "
-	      << pOmni->getSubPlexFeature()
-	      << "."
-	      << std::endl;
-
     // Parse the reference to the substrate mod-mol instance.
     xmlpp::Element* pSubstrateModMolInstanceRefElt
       = domUtils::mustGetUniqueChild(pBndKinaseGenElt,

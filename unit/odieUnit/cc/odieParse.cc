@@ -340,11 +340,6 @@ namespace odie
 		  parseSpeciesEntry(speciesCatalog,
 				    pConcentrations));
 
-    std::cerr << "Parsed "
-	      << speciesEntryNodes.size()
-	      << " species."
-	      << std::endl;
-
     // Parse the reactions, using the species catalog
     // to look up substrate and product species.
     xmlpp::Element* pReactionsElt
@@ -359,11 +354,6 @@ namespace odie
 		   reactionNodes.end(),
 		   std::back_inserter(reactions),
 		   parseReaction(speciesCatalog));
-
-    std::cerr << "Parsed "
-	      << reactions.size()
-	      << " reactions."
-	      << std::endl;
 
     // Parse the dumpables.  These are used to cook up dumpStreams, which
     // are all that the program knows.

@@ -1,0 +1,9 @@
+XMLOPERATOR_USER_HOME=~/.xmloperator
+
+. $XMLOPERATOR_USER_HOME/moleculizer/user.molrc
+
+export XMLOPERATOR_HOME
+export XALAN_LIB
+export XMLOPERATOR_USER_HOME
+
+alias xmlo=$XMLOPERATOR_HOME/xmloperator.sh

@@ -1,0 +1,2893 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<grammar xmlns="http://relaxng.org/ns/structure/1.0"
+><start
+><ref name="project"
+/></start><define name="arg"
+><element
+><name ns=""
+>arg</name><choice
+><attribute
+><name ns=""
+>value</name><text
+/></attribute><attribute
+><name ns=""
+>file</name><text
+/></attribute><attribute
+><name ns=""
+>path</name><text
+/></attribute><attribute
+><name ns=""
+>line</name><text
+/></attribute></choice></element></define><define name="env"
+><element
+><name ns=""
+>env</name><group
+><attribute
+><name ns=""
+>key</name><text
+/></attribute><choice
+><attribute
+><name ns=""
+>value</name><text
+/></attribute><attribute
+><name ns=""
+>path</name><text
+/></attribute><attribute
+><name ns=""
+>file</name><text
+/></attribute></choice></group></element></define><define name="jvmarg"
+><element
+><name ns=""
+>jvmarg</name><choice
+><attribute
+><name ns=""
+>value</name><text
+/></attribute><attribute
+><name ns=""
+>file</name><text
+/></attribute><attribute
+><name ns=""
+>path</name><text
+/></attribute><attribute
+><name ns=""
+>line</name><text
+/></attribute></choice></element></define><define name="copy"
+><element
+><name ns=""
+>copy</name><group
+><group
+><choice
+><empty
+/><attribute
+><name ns=""
+>id</name><data datatypeLibrary="http://relaxng.org/ns/compatibility/datatypes/1.0" type="ID"
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>taskname</name><text
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>description</name><text
+/></attribute></choice></group><choice
+><empty
+/><attribute
+><name ns=""
+>preservelastmodified</name><choice
+><choice
+><value datatypeLibrary="" ns="" type="token"
+>yes</value><value datatypeLibrary="" ns="" type="token"
+>no</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>true</value><value datatypeLibrary="" ns="" type="token"
+>false</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>on</value><value datatypeLibrary="" ns="" type="token"
+>off</value></choice></choice></attribute></choice><choice
+><attribute
+><name ns=""
+>tofile</name><text
+/></attribute><attribute
+><name ns=""
+>todir</name><text
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>overwrite</name><choice
+><choice
+><value datatypeLibrary="" ns="" type="token"
+>yes</value><value datatypeLibrary="" ns="" type="token"
+>no</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>true</value><value datatypeLibrary="" ns="" type="token"
+>false</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>on</value><value datatypeLibrary="" ns="" type="token"
+>off</value></choice></choice></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>filtering</name><choice
+><choice
+><value datatypeLibrary="" ns="" type="token"
+>yes</value><value datatypeLibrary="" ns="" type="token"
+>no</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>true</value><value datatypeLibrary="" ns="" type="token"
+>false</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>on</value><value datatypeLibrary="" ns="" type="token"
+>off</value></choice></choice></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>flatten</name><choice
+><choice
+><value datatypeLibrary="" ns="" type="token"
+>yes</value><value datatypeLibrary="" ns="" type="token"
+>no</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>true</value><value datatypeLibrary="" ns="" type="token"
+>false</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>on</value><value datatypeLibrary="" ns="" type="token"
+>off</value></choice></choice></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>includeEmptyDirs</name><choice
+><choice
+><value datatypeLibrary="" ns="" type="token"
+>yes</value><value datatypeLibrary="" ns="" type="token"
+>no</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>true</value><value datatypeLibrary="" ns="" type="token"
+>false</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>on</value><value datatypeLibrary="" ns="" type="token"
+>off</value></choice></choice></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>failonerror</name><choice
+><choice
+><value datatypeLibrary="" ns="" type="token"
+>yes</value><value datatypeLibrary="" ns="" type="token"
+>no</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>true</value><value datatypeLibrary="" ns="" type="token"
+>false</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>on</value><value datatypeLibrary="" ns="" type="token"
+>off</value></choice></choice></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>verbose</name><choice
+><choice
+><value datatypeLibrary="" ns="" type="token"
+>yes</value><value datatypeLibrary="" ns="" type="token"
+>no</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>true</value><value datatypeLibrary="" ns="" type="token"
+>false</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>on</value><value datatypeLibrary="" ns="" type="token"
+>off</value></choice></choice></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>encoding</name><text
+/></attribute></choice><interleave
+><choice
+><attribute
+><name ns=""
+>file</name><text
+/></attribute><ref name="fileSet"
+/></choice><choice
+><empty
+/><ref name="mapper"
+/></choice><choice
+><empty
+/><ref name="filterSet"
+/></choice><choice
+><empty
+/><ref name="filterChain"
+/></choice></interleave></group></element></define><define name="mkdir"
+><element
+><name ns=""
+>mkdir</name><group
+><group
+><choice
+><empty
+/><attribute
+><name ns=""
+>id</name><data datatypeLibrary="http://relaxng.org/ns/compatibility/datatypes/1.0" type="ID"
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>taskname</name><text
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>description</name><text
+/></attribute></choice></group><attribute
+><name ns=""
+>dir</name><text
+/></attribute></group></element></define><define name="mapper"
+><element
+><name ns=""
+>mapper</name><group
+><choice
+><attribute
+><name ns=""
+>type</name><choice
+><value datatypeLibrary="" ns="" type="token"
+>identity</value><value datatypeLibrary="" ns="" type="token"
+>flatten</value><value datatypeLibrary="" ns="" type="token"
+>merge</value><value datatypeLibrary="" ns="" type="token"
+>glob</value><value datatypeLibrary="" ns="" type="token"
+>regexp</value><value datatypeLibrary="" ns="" type="token"
+>package</value></choice></attribute><attribute
+><name ns=""
+>classname</name><text
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>classpath</name><text
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>classpathref</name><text
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>from</name><text
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>to</name><text
+/></attribute></choice></group></element></define><define name="zip"
+><element
+><name ns=""
+>zip</name><group
+><group
+><group
+><choice
+><empty
+/><attribute
+><name ns=""
+>id</name><data datatypeLibrary="http://relaxng.org/ns/compatibility/datatypes/1.0" type="ID"
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>taskname</name><text
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>description</name><text
+/></attribute></choice></group><attribute
+><name ns=""
+>destfile</name><text
+/></attribute><choice
+><empty
+/><attribute
+><name ns=""
+>basedir</name><text
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>compress</name><choice
+><choice
+><value datatypeLibrary="" ns="" type="token"
+>yes</value><value datatypeLibrary="" ns="" type="token"
+>no</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>true</value><value datatypeLibrary="" ns="" type="token"
+>false</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>on</value><value datatypeLibrary="" ns="" type="token"
+>off</value></choice></choice></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>encoding</name><text
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>filesonly</name><choice
+><choice
+><value datatypeLibrary="" ns="" type="token"
+>yes</value><value datatypeLibrary="" ns="" type="token"
+>no</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>true</value><value datatypeLibrary="" ns="" type="token"
+>false</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>on</value><value datatypeLibrary="" ns="" type="token"
+>off</value></choice></choice></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>defaultexcludes</name><choice
+><choice
+><value datatypeLibrary="" ns="" type="token"
+>yes</value><value datatypeLibrary="" ns="" type="token"
+>no</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>true</value><value datatypeLibrary="" ns="" type="token"
+>false</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>on</value><value datatypeLibrary="" ns="" type="token"
+>off</value></choice></choice></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>update</name><choice
+><choice
+><value datatypeLibrary="" ns="" type="token"
+>yes</value><value datatypeLibrary="" ns="" type="token"
+>no</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>true</value><value datatypeLibrary="" ns="" type="token"
+>false</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>on</value><value datatypeLibrary="" ns="" type="token"
+>off</value></choice></choice></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>whenempty</name><choice
+><value datatypeLibrary="" ns="" type="token"
+>fail</value><value datatypeLibrary="" ns="" type="token"
+>skip</value><value datatypeLibrary="" ns="" type="token"
+>create</value></choice></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>duplicate</name><choice
+><value datatypeLibrary="" ns="" type="token"
+>add</value><value datatypeLibrary="" ns="" type="token"
+>preserve</value><value datatypeLibrary="" ns="" type="token"
+>fail</value></choice></attribute></choice></group><interleave
+><group
+><choice
+><empty
+/><attribute
+><name ns=""
+>includes</name><text
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>includesfile</name><text
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>excludes</name><text
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>excludesfile</name><text
+/></attribute></choice><choice
+><empty
+/><oneOrMore
+><ref name="_"
+/></oneOrMore></choice></group><choice
+><empty
+/><oneOrMore
+><ref name="fileSet"
+/></oneOrMore></choice><choice
+><empty
+/><oneOrMore
+><ref name="_s"
+/></oneOrMore></choice></interleave></group></element></define><define name="move"
+><element
+><name ns=""
+>move</name><group
+><group
+><choice
+><empty
+/><attribute
+><name ns=""
+>id</name><data datatypeLibrary="http://relaxng.org/ns/compatibility/datatypes/1.0" type="ID"
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>taskname</name><text
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>description</name><text
+/></attribute></choice></group><choice
+><empty
+/><attribute
+><name ns=""
+>preservelastmodified</name><choice
+><choice
+><value datatypeLibrary="" ns="" type="token"
+>yes</value><value datatypeLibrary="" ns="" type="token"
+>no</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>true</value><value datatypeLibrary="" ns="" type="token"
+>false</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>on</value><value datatypeLibrary="" ns="" type="token"
+>off</value></choice></choice></attribute></choice><choice
+><empty
+/><group
+><attribute
+><name ns=""
+>tofile</name><text
+/></attribute><attribute
+><name ns=""
+>todir</name><text
+/></attribute></group></choice><choice
+><empty
+/><attribute
+><name ns=""
+>overwrite</name><choice
+><choice
+><value datatypeLibrary="" ns="" type="token"
+>yes</value><value datatypeLibrary="" ns="" type="token"
+>no</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>true</value><value datatypeLibrary="" ns="" type="token"
+>false</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>on</value><value datatypeLibrary="" ns="" type="token"
+>off</value></choice></choice></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>filtering</name><choice
+><choice
+><value datatypeLibrary="" ns="" type="token"
+>yes</value><value datatypeLibrary="" ns="" type="token"
+>no</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>true</value><value datatypeLibrary="" ns="" type="token"
+>false</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>on</value><value datatypeLibrary="" ns="" type="token"
+>off</value></choice></choice></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>flatten</name><choice
+><choice
+><value datatypeLibrary="" ns="" type="token"
+>yes</value><value datatypeLibrary="" ns="" type="token"
+>no</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>true</value><value datatypeLibrary="" ns="" type="token"
+>false</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>on</value><value datatypeLibrary="" ns="" type="token"
+>off</value></choice></choice></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>includeEmptyDirs</name><choice
+><choice
+><value datatypeLibrary="" ns="" type="token"
+>yes</value><value datatypeLibrary="" ns="" type="token"
+>no</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>true</value><value datatypeLibrary="" ns="" type="token"
+>false</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>on</value><value datatypeLibrary="" ns="" type="token"
+>off</value></choice></choice></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>failonerror</name><choice
+><choice
+><value datatypeLibrary="" ns="" type="token"
+>yes</value><value datatypeLibrary="" ns="" type="token"
+>no</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>true</value><value datatypeLibrary="" ns="" type="token"
+>false</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>on</value><value datatypeLibrary="" ns="" type="token"
+>off</value></choice></choice></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>verbose</name><choice
+><choice
+><value datatypeLibrary="" ns="" type="token"
+>yes</value><value datatypeLibrary="" ns="" type="token"
+>no</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>true</value><value datatypeLibrary="" ns="" type="token"
+>false</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>on</value><value datatypeLibrary="" ns="" type="token"
+>off</value></choice></choice></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>encoding</name><text
+/></attribute></choice><interleave
+><choice
+><attribute
+><name ns=""
+>file</name><text
+/></attribute><oneOrMore
+><ref name="fileSet"
+/></oneOrMore></choice><choice
+><empty
+/><ref name="mapper"
+/></choice><choice
+><empty
+/><oneOrMore
+><ref name="filterChain"
+/></oneOrMore></choice><choice
+><empty
+/><oneOrMore
+><ref name="filterSet"
+/></oneOrMore></choice></interleave></group></element></define><define name="dirSet"
+><element
+><name ns=""
+>dirset</name><group
+><group
+><choice
+><empty
+/><attribute
+><name ns=""
+>id</name><data datatypeLibrary="http://relaxng.org/ns/compatibility/datatypes/1.0" type="ID"
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>taskname</name><text
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>description</name><text
+/></attribute></choice></group><choice
+><group
+><attribute
+><name ns=""
+>dir</name><text
+/></attribute><choice
+><empty
+/><attribute
+><name ns=""
+>casesensitive</name><choice
+><choice
+><value datatypeLibrary="" ns="" type="token"
+>yes</value><value datatypeLibrary="" ns="" type="token"
+>no</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>true</value><value datatypeLibrary="" ns="" type="token"
+>false</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>on</value><value datatypeLibrary="" ns="" type="token"
+>off</value></choice></choice></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>followsymlinks</name><choice
+><choice
+><value datatypeLibrary="" ns="" type="token"
+>yes</value><value datatypeLibrary="" ns="" type="token"
+>no</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>true</value><value datatypeLibrary="" ns="" type="token"
+>false</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>on</value><value datatypeLibrary="" ns="" type="token"
+>off</value></choice></choice></attribute></choice><interleave
+><group
+><choice
+><empty
+/><attribute
+><name ns=""
+>includes</name><text
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>includesfile</name><text
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>excludes</name><text
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>excludesfile</name><text
+/></attribute></choice><choice
+><empty
+/><oneOrMore
+><ref name="_"
+/></oneOrMore></choice></group><choice
+><empty
+/><oneOrMore
+><ref name="patternSet"
+/></oneOrMore></choice></interleave></group><attribute
+><name ns=""
+>refid</name><data datatypeLibrary="http://relaxng.org/ns/compatibility/datatypes/1.0" type="IDREF"
+/></attribute></choice></group></element></define><define name="property"
+><element
+><name ns=""
+>property</name><group
+><choice
+><attribute
+><name ns=""
+>name</name><text
+/></attribute><attribute
+><name ns=""
+>resource</name><text
+/></attribute><attribute
+><name ns=""
+>file</name><text
+/></attribute><attribute
+><name ns=""
+>environment</name><text
+/></attribute></choice><choice
+><attribute
+><name ns=""
+>value</name><text
+/></attribute><attribute
+><name ns=""
+>location</name><text
+/></attribute><attribute
+><name ns=""
+>refid</name><data datatypeLibrary="http://relaxng.org/ns/compatibility/datatypes/1.0" type="IDREF"
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>classpath</name><text
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>classpathref</name><text
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>prefix</name><text
+/></attribute></choice><choice
+><empty
+/><ref name="classPath"
+/></choice></group></element></define><define name="customSelector"
+><element
+><name ns=""
+>custom</name><group
+><attribute
+><name ns=""
+>classname</name><text
+/></attribute><choice
+><empty
+/><attribute
+><name ns=""
+>classpath</name><text
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>classpathref</name><text
+/></attribute></choice><choice
+><empty
+/><oneOrMore
+><ref name="param"
+/></oneOrMore></choice></group></element></define><define name="xslt"
+><element
+><choice
+><name ns=""
+>xslt</name><name ns=""
+>style</name></choice><group
+><group
+><choice
+><empty
+/><attribute
+><name ns=""
+>id</name><data datatypeLibrary="http://relaxng.org/ns/compatibility/datatypes/1.0" type="ID"
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>taskname</name><text
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>description</name><text
+/></attribute></choice></group><choice
+><empty
+/><attribute
+><name ns=""
+>basedir</name><text
+/></attribute></choice><choice
+><attribute
+><name ns=""
+>destdir</name><text
+/></attribute><group
+><attribute
+><name ns=""
+>in</name><text
+/></attribute><attribute
+><name ns=""
+>out</name><text
+/></attribute></group></choice><choice
+><empty
+/><attribute
+><name ns=""
+>extension</name><text
+/></attribute></choice><attribute
+><name ns=""
+>style</name><text
+/></attribute><choice
+><empty
+/><attribute
+><name ns=""
+>classpath</name><text
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>classpathref</name><text
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>force</name><choice
+><choice
+><value datatypeLibrary="" ns="" type="token"
+>yes</value><value datatypeLibrary="" ns="" type="token"
+>no</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>true</value><value datatypeLibrary="" ns="" type="token"
+>false</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>on</value><value datatypeLibrary="" ns="" type="token"
+>off</value></choice></choice></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>defaultexcludes</name><choice
+><choice
+><value datatypeLibrary="" ns="" type="token"
+>yes</value><value datatypeLibrary="" ns="" type="token"
+>no</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>true</value><value datatypeLibrary="" ns="" type="token"
+>false</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>on</value><value datatypeLibrary="" ns="" type="token"
+>off</value></choice></choice></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>scanincludeddirectories</name><choice
+><choice
+><value datatypeLibrary="" ns="" type="token"
+>yes</value><value datatypeLibrary="" ns="" type="token"
+>no</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>true</value><value datatypeLibrary="" ns="" type="token"
+>false</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>on</value><value datatypeLibrary="" ns="" type="token"
+>off</value></choice></choice></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>reloadstylesheet</name><choice
+><choice
+><value datatypeLibrary="" ns="" type="token"
+>yes</value><value datatypeLibrary="" ns="" type="token"
+>no</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>true</value><value datatypeLibrary="" ns="" type="token"
+>false</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>on</value><value datatypeLibrary="" ns="" type="token"
+>off</value></choice></choice></attribute></choice><interleave
+><group
+><choice
+><empty
+/><attribute
+><name ns=""
+>includes</name><text
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>includesfile</name><text
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>excludes</name><text
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>excludesfile</name><text
+/></attribute></choice><choice
+><empty
+/><oneOrMore
+><ref name="_"
+/></oneOrMore></choice></group><choice
+><empty
+/><ref name="classPath"
+/></choice><choice
+><empty
+/><ref name="xmlCatalog"
+/></choice><choice
+><empty
+/><oneOrMore
+><ref name="param_"
+/></oneOrMore></choice><choice
+><empty
+/><oneOrMore
+><ref name="outputproperty_"
+/></oneOrMore></choice></interleave></group></element></define><define name="ant"
+><element
+><name ns=""
+>ant</name><group
+><group
+><choice
+><empty
+/><attribute
+><name ns=""
+>id</name><data datatypeLibrary="http://relaxng.org/ns/compatibility/datatypes/1.0" type="ID"
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>taskname</name><text
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>description</name><text
+/></attribute></choice></group><choice
+><empty
+/><attribute
+><name ns=""
+>antfile</name><text
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>dir</name><text
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>target</name><text
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>output</name><text
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>inheritAll</name><choice
+><choice
+><value datatypeLibrary="" ns="" type="token"
+>yes</value><value datatypeLibrary="" ns="" type="token"
+>no</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>true</value><value datatypeLibrary="" ns="" type="token"
+>false</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>on</value><value datatypeLibrary="" ns="" type="token"
+>off</value></choice></choice></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>inheritRefs</name><choice
+><choice
+><value datatypeLibrary="" ns="" type="token"
+>yes</value><value datatypeLibrary="" ns="" type="token"
+>no</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>true</value><value datatypeLibrary="" ns="" type="token"
+>false</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>on</value><value datatypeLibrary="" ns="" type="token"
+>off</value></choice></choice></attribute></choice><choice
+><empty
+/><oneOrMore
+><ref name="property"
+/></oneOrMore></choice><choice
+><empty
+/><oneOrMore
+><ref name="reference_"
+/></oneOrMore></choice></group></element></define><define name="filtersFile"
+><element
+><name ns=""
+>filtersFile</name><attribute
+><name ns=""
+>file</name><text
+/></attribute></element></define><define name="any"
+><element
+><nsName ns=""
+/><group
+><choice
+><empty
+/><oneOrMore
+><attribute
+><nsName ns=""
+/><text
+/></attribute></oneOrMore></choice><choice
+><text
+/><choice
+><empty
+/><oneOrMore
+><ref name="any"
+/></oneOrMore></choice></choice></group></element></define><define name="javac"
+><element
+><name ns=""
+>javac</name><group
+><group
+><choice
+><empty
+/><attribute
+><name ns=""
+>id</name><data datatypeLibrary="http://relaxng.org/ns/compatibility/datatypes/1.0" type="ID"
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>taskname</name><text
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>description</name><text
+/></attribute></choice></group><choice
+><empty
+/><attribute
+><name ns=""
+>destdir</name><text
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>classpath</name><text
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>sourcepath</name><text
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>bootclasspath</name><text
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>classpathref</name><text
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>sourcepathref</name><text
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>bootclasspathref</name><text
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>extdirs</name><text
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>encoding</name><text
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>nowarn</name><choice
+><choice
+><value datatypeLibrary="" ns="" type="token"
+>yes</value><value datatypeLibrary="" ns="" type="token"
+>no</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>true</value><value datatypeLibrary="" ns="" type="token"
+>false</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>on</value><value datatypeLibrary="" ns="" type="token"
+>off</value></choice></choice></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>debug</name><choice
+><choice
+><value datatypeLibrary="" ns="" type="token"
+>yes</value><value datatypeLibrary="" ns="" type="token"
+>no</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>true</value><value datatypeLibrary="" ns="" type="token"
+>false</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>on</value><value datatypeLibrary="" ns="" type="token"
+>off</value></choice></choice></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>debuglevel</name><text
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>optimize</name><choice
+><choice
+><value datatypeLibrary="" ns="" type="token"
+>yes</value><value datatypeLibrary="" ns="" type="token"
+>no</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>true</value><value datatypeLibrary="" ns="" type="token"
+>false</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>on</value><value datatypeLibrary="" ns="" type="token"
+>off</value></choice></choice></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>deprecation</name><choice
+><choice
+><value datatypeLibrary="" ns="" type="token"
+>yes</value><value datatypeLibrary="" ns="" type="token"
+>no</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>true</value><value datatypeLibrary="" ns="" type="token"
+>false</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>on</value><value datatypeLibrary="" ns="" type="token"
+>off</value></choice></choice></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>target</name><text
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>verbose</name><choice
+><choice
+><value datatypeLibrary="" ns="" type="token"
+>yes</value><value datatypeLibrary="" ns="" type="token"
+>no</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>true</value><value datatypeLibrary="" ns="" type="token"
+>false</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>on</value><value datatypeLibrary="" ns="" type="token"
+>off</value></choice></choice></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>depend</name><choice
+><choice
+><value datatypeLibrary="" ns="" type="token"
+>yes</value><value datatypeLibrary="" ns="" type="token"
+>no</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>true</value><value datatypeLibrary="" ns="" type="token"
+>false</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>on</value><value datatypeLibrary="" ns="" type="token"
+>off</value></choice></choice></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>includeAntRuntime</name><choice
+><choice
+><value datatypeLibrary="" ns="" type="token"
+>yes</value><value datatypeLibrary="" ns="" type="token"
+>no</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>true</value><value datatypeLibrary="" ns="" type="token"
+>false</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>on</value><value datatypeLibrary="" ns="" type="token"
+>off</value></choice></choice></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>includeJavaRuntime</name><choice
+><choice
+><value datatypeLibrary="" ns="" type="token"
+>yes</value><value datatypeLibrary="" ns="" type="token"
+>no</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>true</value><value datatypeLibrary="" ns="" type="token"
+>false</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>on</value><value datatypeLibrary="" ns="" type="token"
+>off</value></choice></choice></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>fork</name><choice
+><choice
+><value datatypeLibrary="" ns="" type="token"
+>yes</value><value datatypeLibrary="" ns="" type="token"
+>no</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>true</value><value datatypeLibrary="" ns="" type="token"
+>false</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>on</value><value datatypeLibrary="" ns="" type="token"
+>off</value></choice></choice></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>executable</name><text
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>memoryInitialSize</name><text
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>memoryMaximumSize</name><text
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>failonerror</name><choice
+><choice
+><value datatypeLibrary="" ns="" type="token"
+>yes</value><value datatypeLibrary="" ns="" type="token"
+>no</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>true</value><value datatypeLibrary="" ns="" type="token"
+>false</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>on</value><value datatypeLibrary="" ns="" type="token"
+>off</value></choice></choice></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>source</name><text
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>compiler</name><choice
+><value datatypeLibrary="" ns="" type="token"
+>classic</value><value datatypeLibrary="" ns="" type="token"
+>modern</value><value datatypeLibrary="" ns="" type="token"
+>jikes</value><value datatypeLibrary="" ns="" type="token"
+>jvc</value><value datatypeLibrary="" ns="" type="token"
+>kjs</value><value datatypeLibrary="" ns="" type="token"
+>gcj</value><value datatypeLibrary="" ns="" type="token"
+>sj</value><value datatypeLibrary="" ns="" type="token"
+>extJavac</value></choice></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>listfiles</name><choice
+><choice
+><value datatypeLibrary="" ns="" type="token"
+>yes</value><value datatypeLibrary="" ns="" type="token"
+>no</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>true</value><value datatypeLibrary="" ns="" type="token"
+>false</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>on</value><value datatypeLibrary="" ns="" type="token"
+>off</value></choice></choice></attribute></choice><interleave
+><choice
+><attribute
+><name ns=""
+>srcdir</name><text
+/></attribute><oneOrMore
+><ref name="src_"
+/></oneOrMore></choice><choice
+><empty
+/><group
+><choice
+><empty
+/><attribute
+><name ns=""
+>includes</name><text
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>includesfile</name><text
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>excludes</name><text
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>excludesfile</name><text
+/></attribute></choice><choice
+><empty
+/><oneOrMore
+><ref name="_"
+/></oneOrMore></choice></group></choice><choice
+><empty
+/><oneOrMore
+><ref name="patternSet"
+/></oneOrMore></choice><choice
+><empty
+/><ref name="classPath"
+/></choice><choice
+><empty
+/><ref name="sourcepath_"
+/></choice><choice
+><empty
+/><ref name="bootclasspath_"
+/></choice><choice
+><empty
+/><ref name="extdirs_"
+/></choice><choice
+><empty
+/><oneOrMore
+><ref name="compilerarg_"
+/></oneOrMore></choice></interleave></group></element></define><define name="manifest"
+><element
+><name ns=""
+>manifest</name><group
+><group
+><choice
+><empty
+/><attribute
+><name ns=""
+>id</name><data datatypeLibrary="http://relaxng.org/ns/compatibility/datatypes/1.0" type="ID"
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>taskname</name><text
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>description</name><text
+/></attribute></choice></group><attribute
+><name ns=""
+>file</name><text
+/></attribute><choice
+><empty
+/><attribute
+><name ns=""
+>mode</name><choice
+><value datatypeLibrary="" ns="" type="token"
+>update</value><value datatypeLibrary="" ns="" type="token"
+>replace</value></choice></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>encoding</name><text
+/></attribute></choice><interleave
+><choice
+><empty
+/><oneOrMore
+><ref name="attribute_"
+/></oneOrMore></choice><choice
+><empty
+/><oneOrMore
+><ref name="section_"
+/></oneOrMore></choice></interleave></group></element></define><define name="target"
+><element
+><name ns=""
+>target</name><group
+><attribute
+><name ns=""
+>name</name><text
+/></attribute><choice
+><empty
+/><attribute
+><name ns=""
+>depends</name><text
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>if</name><text
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>unless</name><text
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>description</name><text
+/></attribute></choice><choice
+><empty
+/><oneOrMore
+><choice
+><ref name="ant"
+/><ref name="copy"
+/><ref name="delete"
+/><ref name="jar"
+/><ref name="manifest"
+/><ref name="java"
+/><ref name="javac"
+/><ref name="manifest"
+/><ref name="mkdir"
+/><ref name="move"
+/><ref name="xslt"
+/><ref name="zip"
+/><ref name="any"
+/></choice></oneOrMore></choice></group></element></define><define name="xmlCatalog"
+><element
+><name ns=""
+>xmlcatalog</name><group
+><choice
+><empty
+/><attribute
+><name ns=""
+>id</name><data datatypeLibrary="http://relaxng.org/ns/compatibility/datatypes/1.0" type="ID"
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>refid</name><data datatypeLibrary="http://relaxng.org/ns/compatibility/datatypes/1.0" type="IDREF"
+/></attribute></choice><interleave
+><choice
+><empty
+/><oneOrMore
+><ref name="_sx"
+/></oneOrMore></choice><choice
+><empty
+/><ref name="classPath"
+/></choice></interleave></group></element></define><define name="filter"
+><element
+><name ns=""
+>filter</name><group
+><attribute
+><name ns=""
+>token</name><text
+/></attribute><attribute
+><name ns=""
+>value</name><text
+/></attribute></group></element></define><define name="filterChain"
+><element
+><name ns=""
+>filterchain</name><oneOrMore
+><choice
+><ref name="filterreader_"
+/><ref name="classconstants_"
+/><ref name="expandproperties_"
+/><ref name="headfilter_"
+/><ref name="linecontains_"
+/><ref name="linecontainsregexp_"
+/><ref name="prefixlines_"
+/><ref name="replacetokens_"
+/><ref name="stripjavacomments_"
+/><ref name="striplinebreaks_"
+/><ref name="striplinecomments_"
+/><ref name="tabstospaces_"
+/><ref name="tailfilter_"
+/></choice></oneOrMore></element></define><define name="patternSet"
+><element
+><name ns=""
+>patternset</name><group
+><group
+><choice
+><empty
+/><attribute
+><name ns=""
+>id</name><data datatypeLibrary="http://relaxng.org/ns/compatibility/datatypes/1.0" type="ID"
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>taskname</name><text
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>description</name><text
+/></attribute></choice></group><choice
+><group
+><choice
+><empty
+/><attribute
+><name ns=""
+>includes</name><text
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>includesfile</name><text
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>excludes</name><text
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>excludesfile</name><text
+/></attribute></choice><choice
+><empty
+/><oneOrMore
+><ref name="_"
+/></oneOrMore></choice></group><attribute
+><name ns=""
+>refid</name><data datatypeLibrary="http://relaxng.org/ns/compatibility/datatypes/1.0" type="IDREF"
+/></attribute></choice></group></element></define><define name="jar"
+><element
+><name ns=""
+>jar</name><group
+><group
+><group
+><choice
+><empty
+/><attribute
+><name ns=""
+>id</name><data datatypeLibrary="http://relaxng.org/ns/compatibility/datatypes/1.0" type="ID"
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>taskname</name><text
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>description</name><text
+/></attribute></choice></group><attribute
+><name ns=""
+>destfile</name><text
+/></attribute><choice
+><empty
+/><attribute
+><name ns=""
+>basedir</name><text
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>compress</name><choice
+><choice
+><value datatypeLibrary="" ns="" type="token"
+>yes</value><value datatypeLibrary="" ns="" type="token"
+>no</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>true</value><value datatypeLibrary="" ns="" type="token"
+>false</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>on</value><value datatypeLibrary="" ns="" type="token"
+>off</value></choice></choice></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>encoding</name><text
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>filesonly</name><choice
+><choice
+><value datatypeLibrary="" ns="" type="token"
+>yes</value><value datatypeLibrary="" ns="" type="token"
+>no</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>true</value><value datatypeLibrary="" ns="" type="token"
+>false</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>on</value><value datatypeLibrary="" ns="" type="token"
+>off</value></choice></choice></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>defaultexcludes</name><choice
+><choice
+><value datatypeLibrary="" ns="" type="token"
+>yes</value><value datatypeLibrary="" ns="" type="token"
+>no</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>true</value><value datatypeLibrary="" ns="" type="token"
+>false</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>on</value><value datatypeLibrary="" ns="" type="token"
+>off</value></choice></choice></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>update</name><choice
+><choice
+><value datatypeLibrary="" ns="" type="token"
+>yes</value><value datatypeLibrary="" ns="" type="token"
+>no</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>true</value><value datatypeLibrary="" ns="" type="token"
+>false</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>on</value><value datatypeLibrary="" ns="" type="token"
+>off</value></choice></choice></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>whenempty</name><choice
+><value datatypeLibrary="" ns="" type="token"
+>fail</value><value datatypeLibrary="" ns="" type="token"
+>skip</value><value datatypeLibrary="" ns="" type="token"
+>create</value></choice></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>duplicate</name><choice
+><value datatypeLibrary="" ns="" type="token"
+>add</value><value datatypeLibrary="" ns="" type="token"
+>preserve</value><value datatypeLibrary="" ns="" type="token"
+>fail</value></choice></attribute></choice></group><choice
+><empty
+/><attribute
+><name ns=""
+>manifest</name><text
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>index</name><choice
+><choice
+><value datatypeLibrary="" ns="" type="token"
+>yes</value><value datatypeLibrary="" ns="" type="token"
+>no</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>true</value><value datatypeLibrary="" ns="" type="token"
+>false</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>on</value><value datatypeLibrary="" ns="" type="token"
+>off</value></choice></choice></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>manifestencoding</name><text
+/></attribute></choice><interleave
+><group
+><choice
+><empty
+/><attribute
+><name ns=""
+>includes</name><text
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>includesfile</name><text
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>excludes</name><text
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>excludesfile</name><text
+/></attribute></choice><choice
+><empty
+/><oneOrMore
+><ref name="_"
+/></oneOrMore></choice></group><choice
+><empty
+/><oneOrMore
+><ref name="fileSet"
+/></oneOrMore></choice><choice
+><empty
+/><ref name="manifest"
+/></choice></interleave></group></element></define><define name="fileSet"
+><element
+><name ns=""
+>fileset</name><group
+><group
+><choice
+><empty
+/><attribute
+><name ns=""
+>id</name><data datatypeLibrary="http://relaxng.org/ns/compatibility/datatypes/1.0" type="ID"
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>taskname</name><text
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>description</name><text
+/></attribute></choice></group><choice
+><group
+><attribute
+><name ns=""
+>dir</name><text
+/></attribute><choice
+><empty
+/><attribute
+><name ns=""
+>defaultexcludes</name><choice
+><choice
+><value datatypeLibrary="" ns="" type="token"
+>yes</value><value datatypeLibrary="" ns="" type="token"
+>no</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>true</value><value datatypeLibrary="" ns="" type="token"
+>false</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>on</value><value datatypeLibrary="" ns="" type="token"
+>off</value></choice></choice></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>casesensitive</name><choice
+><choice
+><value datatypeLibrary="" ns="" type="token"
+>yes</value><value datatypeLibrary="" ns="" type="token"
+>no</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>true</value><value datatypeLibrary="" ns="" type="token"
+>false</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>on</value><value datatypeLibrary="" ns="" type="token"
+>off</value></choice></choice></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>followsymlinks</name><choice
+><choice
+><value datatypeLibrary="" ns="" type="token"
+>yes</value><value datatypeLibrary="" ns="" type="token"
+>no</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>true</value><value datatypeLibrary="" ns="" type="token"
+>false</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>on</value><value datatypeLibrary="" ns="" type="token"
+>off</value></choice></choice></attribute></choice><interleave
+><group
+><choice
+><empty
+/><attribute
+><name ns=""
+>includes</name><text
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>includesfile</name><text
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>excludes</name><text
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>excludesfile</name><text
+/></attribute></choice><choice
+><empty
+/><oneOrMore
+><ref name="_"
+/></oneOrMore></choice></group><choice
+><empty
+/><oneOrMore
+><ref name="patternSet"
+/></oneOrMore></choice><choice
+><empty
+/><oneOrMore
+><choice
+><choice
+><ref name="contains_"
+/><ref name="date_"
+/><ref name="depend_"
+/><ref name="depth_"
+/><ref name="filename_"
+/><ref name="present_"
+/><ref name="size_"
+/></choice><choice
+><ref name="and_"
+/><ref name="majority_"
+/><ref name="none_"
+/><ref name="not_"
+/><ref name="or_"
+/><ref name="selector_"
+/></choice><ref name="customSelector"
+/></choice></oneOrMore></choice></interleave></group><attribute
+><name ns=""
+>refid</name><data datatypeLibrary="http://relaxng.org/ns/compatibility/datatypes/1.0" type="IDREF"
+/></attribute></choice></group></element></define><define name="filterSet"
+><element
+><name ns=""
+>filterset</name><group
+><group
+><choice
+><empty
+/><attribute
+><name ns=""
+>id</name><data datatypeLibrary="http://relaxng.org/ns/compatibility/datatypes/1.0" type="ID"
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>taskname</name><text
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>description</name><text
+/></attribute></choice></group><choice
+><group
+><choice
+><empty
+/><attribute
+><name ns=""
+>begintoken</name><text
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>endtoken</name><text
+/></attribute></choice><oneOrMore
+><choice
+><ref name="filter"
+/><ref name="filtersFile"
+/></choice></oneOrMore></group><attribute
+><name ns=""
+>refid</name><data datatypeLibrary="http://relaxng.org/ns/compatibility/datatypes/1.0" type="IDREF"
+/></attribute></choice></group></element></define><define name="delete"
+><element
+><name ns=""
+>delete</name><group
+><group
+><choice
+><empty
+/><attribute
+><name ns=""
+>id</name><data datatypeLibrary="http://relaxng.org/ns/compatibility/datatypes/1.0" type="ID"
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>taskname</name><text
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>description</name><text
+/></attribute></choice></group><choice
+><empty
+/><attribute
+><name ns=""
+>verbose</name><choice
+><choice
+><value datatypeLibrary="" ns="" type="token"
+>yes</value><value datatypeLibrary="" ns="" type="token"
+>no</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>true</value><value datatypeLibrary="" ns="" type="token"
+>false</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>on</value><value datatypeLibrary="" ns="" type="token"
+>off</value></choice></choice></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>quiet</name><choice
+><choice
+><value datatypeLibrary="" ns="" type="token"
+>yes</value><value datatypeLibrary="" ns="" type="token"
+>no</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>true</value><value datatypeLibrary="" ns="" type="token"
+>false</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>on</value><value datatypeLibrary="" ns="" type="token"
+>off</value></choice></choice></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>failonerror</name><choice
+><choice
+><value datatypeLibrary="" ns="" type="token"
+>yes</value><value datatypeLibrary="" ns="" type="token"
+>no</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>true</value><value datatypeLibrary="" ns="" type="token"
+>false</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>on</value><value datatypeLibrary="" ns="" type="token"
+>off</value></choice></choice></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>includeEmptyDirs</name><choice
+><choice
+><value datatypeLibrary="" ns="" type="token"
+>yes</value><value datatypeLibrary="" ns="" type="token"
+>no</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>true</value><value datatypeLibrary="" ns="" type="token"
+>false</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>on</value><value datatypeLibrary="" ns="" type="token"
+>off</value></choice></choice></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>defaultexcludes</name><choice
+><choice
+><value datatypeLibrary="" ns="" type="token"
+>yes</value><value datatypeLibrary="" ns="" type="token"
+>no</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>true</value><value datatypeLibrary="" ns="" type="token"
+>false</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>on</value><value datatypeLibrary="" ns="" type="token"
+>off</value></choice></choice></attribute></choice><choice
+><attribute
+><name ns=""
+>file</name><text
+/></attribute><attribute
+><name ns=""
+>dir</name><text
+/></attribute><ref name="fileSet"
+/></choice></group></element></define><define name="fileList"
+><element
+><name ns=""
+>filelist</name><group
+><group
+><choice
+><empty
+/><attribute
+><name ns=""
+>id</name><data datatypeLibrary="http://relaxng.org/ns/compatibility/datatypes/1.0" type="ID"
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>taskname</name><text
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>description</name><text
+/></attribute></choice></group><choice
+><group
+><attribute
+><name ns=""
+>dir</name><text
+/></attribute><attribute
+><name ns=""
+>files</name><text
+/></attribute></group><attribute
+><name ns=""
+>refid</name><data datatypeLibrary="http://relaxng.org/ns/compatibility/datatypes/1.0" type="IDREF"
+/></attribute></choice></group></element></define><define name="java"
+><element
+><name ns=""
+>java</name><group
+><group
+><choice
+><empty
+/><attribute
+><name ns=""
+>id</name><data datatypeLibrary="http://relaxng.org/ns/compatibility/datatypes/1.0" type="ID"
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>taskname</name><text
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>description</name><text
+/></attribute></choice></group><choice
+><attribute
+><name ns=""
+>classname</name><text
+/></attribute><attribute
+><name ns=""
+>jar</name><text
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>classpath</name><text
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>classpathref</name><text
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>fork</name><choice
+><choice
+><value datatypeLibrary="" ns="" type="token"
+>yes</value><value datatypeLibrary="" ns="" type="token"
+>no</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>true</value><value datatypeLibrary="" ns="" type="token"
+>false</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>on</value><value datatypeLibrary="" ns="" type="token"
+>off</value></choice></choice></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>jvm</name><text
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>maxmemory</name><text
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>failonerror</name><choice
+><choice
+><value datatypeLibrary="" ns="" type="token"
+>yes</value><value datatypeLibrary="" ns="" type="token"
+>no</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>true</value><value datatypeLibrary="" ns="" type="token"
+>false</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>on</value><value datatypeLibrary="" ns="" type="token"
+>off</value></choice></choice></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>dir</name><text
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>output</name><text
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>append</name><choice
+><choice
+><value datatypeLibrary="" ns="" type="token"
+>yes</value><value datatypeLibrary="" ns="" type="token"
+>no</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>true</value><value datatypeLibrary="" ns="" type="token"
+>false</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>on</value><value datatypeLibrary="" ns="" type="token"
+>off</value></choice></choice></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>newenvironment</name><choice
+><choice
+><value datatypeLibrary="" ns="" type="token"
+>yes</value><value datatypeLibrary="" ns="" type="token"
+>no</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>true</value><value datatypeLibrary="" ns="" type="token"
+>false</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>on</value><value datatypeLibrary="" ns="" type="token"
+>off</value></choice></choice></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>timeout</name><text
+/></attribute></choice><interleave
+><choice
+><empty
+/><oneOrMore
+><ref name="arg"
+/></oneOrMore></choice><choice
+><empty
+/><oneOrMore
+><ref name="jvmarg"
+/></oneOrMore></choice><choice
+><empty
+/><oneOrMore
+><ref name="sysproperty_"
+/></oneOrMore></choice><choice
+><empty
+/><ref name="classPath"
+/></choice><choice
+><empty
+/><oneOrMore
+><ref name="env"
+/></oneOrMore></choice></interleave></group></element></define><define name="project"
+><element
+><name ns=""
+>project</name><group
+><choice
+><empty
+/><attribute
+><name ns=""
+>name</name><text
+/></attribute></choice><attribute
+><name ns=""
+>default</name><text
+/></attribute><choice
+><empty
+/><attribute
+><name ns=""
+>basedir</name><text
+/></attribute></choice><interleave
+><choice
+><empty
+/><ref name="description_"
+/></choice><choice
+><empty
+/><oneOrMore
+><ref name="property"
+/></oneOrMore></choice><choice
+><empty
+/><oneOrMore
+><ref name="patternSet"
+/></oneOrMore></choice><choice
+><empty
+/><oneOrMore
+><ref name="selector_v"
+/></oneOrMore></choice><choice
+><empty
+/><oneOrMore
+><ref name="fileSet"
+/></oneOrMore></choice><choice
+><empty
+/><oneOrMore
+><ref name="dirSet"
+/></oneOrMore></choice><choice
+><empty
+/><oneOrMore
+><ref name="fileList"
+/></oneOrMore></choice><choice
+><empty
+/><oneOrMore
+><ref name="filterSet"
+/></oneOrMore></choice><oneOrMore
+><ref name="target"
+/></oneOrMore></interleave></group></element></define><define name="param"
+><element
+><name ns=""
+>param</name><group
+><choice
+><empty
+/><attribute
+><name ns=""
+>type</name><text
+/></attribute></choice><attribute
+><name ns=""
+>name</name><text
+/></attribute><attribute
+><name ns=""
+>value</name><text
+/></attribute></group></element></define><define name="pathElement"
+><element
+><name ns=""
+>pathelement</name><choice
+><attribute
+><name ns=""
+>path</name><text
+/></attribute><attribute
+><name ns=""
+>location</name><text
+/></attribute></choice></element></define><define name="classPath"
+><element
+><name ns=""
+>classpath</name><choice
+><choice
+><attribute
+><name ns=""
+>path</name><text
+/></attribute><oneOrMore
+><choice
+><ref name="pathElement"
+/><ref name="fileSet"
+/><ref name="dirSet"
+/><ref name="fileList"
+/></choice></oneOrMore></choice><attribute
+><name ns=""
+>refid</name><data datatypeLibrary="http://relaxng.org/ns/compatibility/datatypes/1.0" type="IDREF"
+/></attribute></choice></element></define><define name="_"
+><element
+><choice
+><name ns=""
+>include</name><name ns=""
+>exclude</name><name ns=""
+>includesfile</name><name ns=""
+>excludesfile</name></choice><group
+><attribute
+><name ns=""
+>name</name><text
+/></attribute><choice
+><empty
+/><attribute
+><name ns=""
+>if</name><text
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>unless</name><text
+/></attribute></choice></group></element></define><define name="_s"
+><element
+><choice
+><name ns=""
+>zipfileset</name><name ns=""
+>zipgroupfileset</name></choice><group
+><attribute
+><choice
+><name ns=""
+>dir</name><name ns=""
+>src</name></choice><text
+/></attribute><choice
+><empty
+/><attribute
+><name ns=""
+>defaultexcludes</name><choice
+><choice
+><value datatypeLibrary="" ns="" type="token"
+>yes</value><value datatypeLibrary="" ns="" type="token"
+>no</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>true</value><value datatypeLibrary="" ns="" type="token"
+>false</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>on</value><value datatypeLibrary="" ns="" type="token"
+>off</value></choice></choice></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>casesensitive</name><choice
+><choice
+><value datatypeLibrary="" ns="" type="token"
+>yes</value><value datatypeLibrary="" ns="" type="token"
+>no</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>true</value><value datatypeLibrary="" ns="" type="token"
+>false</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>on</value><value datatypeLibrary="" ns="" type="token"
+>off</value></choice></choice></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>followsymlinks</name><choice
+><choice
+><value datatypeLibrary="" ns="" type="token"
+>yes</value><value datatypeLibrary="" ns="" type="token"
+>no</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>true</value><value datatypeLibrary="" ns="" type="token"
+>false</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>on</value><value datatypeLibrary="" ns="" type="token"
+>off</value></choice></choice></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>prefix</name><text
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>fullpath</name><text
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>filemode</name><text
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>dirmode</name><text
+/></attribute></choice><interleave
+><group
+><choice
+><empty
+/><attribute
+><name ns=""
+>includes</name><text
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>includesfile</name><text
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>excludes</name><text
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>excludesfile</name><text
+/></attribute></choice><choice
+><empty
+/><oneOrMore
+><ref name="_"
+/></oneOrMore></choice></group><choice
+><empty
+/><oneOrMore
+><ref name="patternSet"
+/></oneOrMore></choice><choice
+><empty
+/><oneOrMore
+><choice
+><choice
+><ref name="contains_"
+/><ref name="date_"
+/><ref name="depend_"
+/><ref name="depth_"
+/><ref name="filename_"
+/><ref name="present_"
+/><ref name="size_"
+/></choice><choice
+><ref name="and_"
+/><ref name="majority_"
+/><ref name="none_"
+/><ref name="not_"
+/><ref name="or_"
+/><ref name="selector_"
+/></choice><ref name="customSelector"
+/></choice></oneOrMore></choice></interleave></group></element></define><define name="param_"
+><element
+><name ns=""
+>param</name><group
+><attribute
+><name ns=""
+>name</name><text
+/></attribute><attribute
+><name ns=""
+>expression</name><text
+/></attribute></group></element></define><define name="outputproperty_"
+><element
+><name ns=""
+>outputproperty</name><group
+><attribute
+><name ns=""
+>name</name><text
+/></attribute><attribute
+><name ns=""
+>value</name><text
+/></attribute></group></element></define><define name="reference_"
+><element
+><name ns=""
+>reference</name><group
+><attribute
+><name ns=""
+>refid</name><text
+/></attribute><choice
+><empty
+/><attribute
+><name ns=""
+>torefid</name><data datatypeLibrary="http://relaxng.org/ns/compatibility/datatypes/1.0" type="IDREF"
+/></attribute></choice></group></element></define><define name="src_"
+><element
+><name ns=""
+>src</name><attribute
+><name ns=""
+>path</name><text
+/></attribute></element></define><define name="sourcepath_"
+><element
+><name ns=""
+>sourcepath</name><choice
+><choice
+><attribute
+><name ns=""
+>path</name><text
+/></attribute><oneOrMore
+><choice
+><ref name="pathElement"
+/><ref name="fileSet"
+/><ref name="dirSet"
+/><ref name="fileList"
+/></choice></oneOrMore></choice><attribute
+><name ns=""
+>refid</name><data datatypeLibrary="http://relaxng.org/ns/compatibility/datatypes/1.0" type="IDREF"
+/></attribute></choice></element></define><define name="bootclasspath_"
+><element
+><name ns=""
+>bootclasspath</name><choice
+><choice
+><attribute
+><name ns=""
+>path</name><text
+/></attribute><oneOrMore
+><choice
+><ref name="pathElement"
+/><ref name="fileSet"
+/><ref name="dirSet"
+/><ref name="fileList"
+/></choice></oneOrMore></choice><attribute
+><name ns=""
+>refid</name><data datatypeLibrary="http://relaxng.org/ns/compatibility/datatypes/1.0" type="IDREF"
+/></attribute></choice></element></define><define name="extdirs_"
+><element
+><name ns=""
+>extdirs</name><choice
+><choice
+><attribute
+><name ns=""
+>path</name><text
+/></attribute><oneOrMore
+><choice
+><ref name="pathElement"
+/><ref name="fileSet"
+/><ref name="dirSet"
+/><ref name="fileList"
+/></choice></oneOrMore></choice><attribute
+><name ns=""
+>refid</name><data datatypeLibrary="http://relaxng.org/ns/compatibility/datatypes/1.0" type="IDREF"
+/></attribute></choice></element></define><define name="compilerarg_"
+><element
+><name ns=""
+>compilerarg</name><group
+><choice
+><attribute
+><name ns=""
+>value</name><text
+/></attribute><attribute
+><name ns=""
+>file</name><text
+/></attribute><attribute
+><name ns=""
+>path</name><text
+/></attribute><attribute
+><name ns=""
+>line</name><text
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>compiler</name><choice
+><value datatypeLibrary="" ns="" type="token"
+>classic</value><value datatypeLibrary="" ns="" type="token"
+>modern</value><value datatypeLibrary="" ns="" type="token"
+>jikes</value><value datatypeLibrary="" ns="" type="token"
+>jvc</value><value datatypeLibrary="" ns="" type="token"
+>kjs</value><value datatypeLibrary="" ns="" type="token"
+>gcj</value><value datatypeLibrary="" ns="" type="token"
+>sj</value><value datatypeLibrary="" ns="" type="token"
+>extJavac</value></choice></attribute></choice></group></element></define><define name="section_"
+><element
+><name ns=""
+>section</name><group
+><choice
+><empty
+/><attribute
+><name ns=""
+>name</name><text
+/></attribute></choice><choice
+><empty
+/><oneOrMore
+><ref name="attribute_"
+/></oneOrMore></choice></group></element></define><define name="_sx"
+><element
+><choice
+><name ns=""
+>dtd</name><name ns=""
+>entity</name></choice><group
+><attribute
+><name ns=""
+>publicId</name><text
+/></attribute><attribute
+><name ns=""
+>location</name><text
+/></attribute></group></element></define><define name="attribute_"
+><element
+><name ns=""
+>attribute</name><group
+><attribute
+><name ns=""
+>name</name><text
+/></attribute><attribute
+><name ns=""
+>value</name><text
+/></attribute></group></element></define><define name="contains_"
+><element
+><name ns=""
+>contains</name><group
+><attribute
+><name ns=""
+>text</name><text
+/></attribute><choice
+><empty
+/><attribute
+><name ns=""
+>casesensitive</name><choice
+><choice
+><value datatypeLibrary="" ns="" type="token"
+>yes</value><value datatypeLibrary="" ns="" type="token"
+>no</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>true</value><value datatypeLibrary="" ns="" type="token"
+>false</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>on</value><value datatypeLibrary="" ns="" type="token"
+>off</value></choice></choice></attribute></choice></group></element></define><define name="date_"
+><element
+><name ns=""
+>date</name><group
+><choice
+><attribute
+><name ns=""
+>datetime</name><text
+/></attribute><attribute
+><name ns=""
+>millis</name><text
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>granularity</name><text
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>when</name><choice
+><value datatypeLibrary="" ns="" type="token"
+>before</value><value datatypeLibrary="" ns="" type="token"
+>after</value><value datatypeLibrary="" ns="" type="token"
+>equal</value></choice></attribute></choice></group></element></define><define name="depend_"
+><element
+><name ns=""
+>depend</name><group
+><attribute
+><name ns=""
+>targetdir</name><text
+/></attribute><oneOrMore
+><attribute
+><name ns=""
+>granularity</name><text
+/></attribute></oneOrMore></group></element></define><define name="depth_"
+><element
+><name ns=""
+>depth</name><choice
+><attribute
+><name ns=""
+>min</name><text
+/></attribute><attribute
+><name ns=""
+>max</name><text
+/></attribute></choice></element></define><define name="filename_"
+><element
+><name ns=""
+>filename</name><group
+><attribute
+><name ns=""
+>name</name><text
+/></attribute><choice
+><empty
+/><attribute
+><name ns=""
+>casesensitive</name><choice
+><choice
+><value datatypeLibrary="" ns="" type="token"
+>yes</value><value datatypeLibrary="" ns="" type="token"
+>no</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>true</value><value datatypeLibrary="" ns="" type="token"
+>false</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>on</value><value datatypeLibrary="" ns="" type="token"
+>off</value></choice></choice></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>negate</name><choice
+><choice
+><value datatypeLibrary="" ns="" type="token"
+>yes</value><value datatypeLibrary="" ns="" type="token"
+>no</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>true</value><value datatypeLibrary="" ns="" type="token"
+>false</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>on</value><value datatypeLibrary="" ns="" type="token"
+>off</value></choice></choice></attribute></choice></group></element></define><define name="present_"
+><element
+><name ns=""
+>present</name><group
+><attribute
+><name ns=""
+>targetdir</name><text
+/></attribute><choice
+><empty
+/><attribute
+><name ns=""
+>present</name><choice
+><value datatypeLibrary="" ns="" type="token"
+>srconly</value><value datatypeLibrary="" ns="" type="token"
+>both</value></choice></attribute></choice></group></element></define><define name="size_"
+><element
+><name ns=""
+>size</name><group
+><attribute
+><name ns=""
+>value</name><text
+/></attribute><choice
+><empty
+/><attribute
+><name ns=""
+>units</name><text
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>when</name><choice
+><value datatypeLibrary="" ns="" type="token"
+>less</value><value datatypeLibrary="" ns="" type="token"
+>more</value><value datatypeLibrary="" ns="" type="token"
+>equal</value></choice></attribute></choice></group></element></define><define name="and_"
+><element
+><name ns=""
+>and</name><oneOrMore
+><choice
+><choice
+><ref name="contains_"
+/><ref name="date_"
+/><ref name="depend_"
+/><ref name="depth_"
+/><ref name="filename_"
+/><ref name="present_"
+/><ref name="size_"
+/></choice><choice
+><ref name="and_"
+/><ref name="majority_"
+/><ref name="none_"
+/><ref name="not_"
+/><ref name="or_"
+/><ref name="selector_"
+/></choice><ref name="customSelector"
+/></choice></oneOrMore></element></define><define name="majority_"
+><element
+><name ns=""
+>majority</name><group
+><attribute
+><name ns=""
+>allowtie</name><choice
+><choice
+><value datatypeLibrary="" ns="" type="token"
+>yes</value><value datatypeLibrary="" ns="" type="token"
+>no</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>true</value><value datatypeLibrary="" ns="" type="token"
+>false</value></choice><choice
+><value datatypeLibrary="" ns="" type="token"
+>on</value><value datatypeLibrary="" ns="" type="token"
+>off</value></choice></choice></attribute><oneOrMore
+><choice
+><choice
+><ref name="contains_"
+/><ref name="date_"
+/><ref name="depend_"
+/><ref name="depth_"
+/><ref name="filename_"
+/><ref name="present_"
+/><ref name="size_"
+/></choice><choice
+><ref name="and_"
+/><ref name="majority_"
+/><ref name="none_"
+/><ref name="not_"
+/><ref name="or_"
+/><ref name="selector_"
+/></choice><ref name="customSelector"
+/></choice></oneOrMore></group></element></define><define name="none_"
+><element
+><name ns=""
+>none</name><oneOrMore
+><choice
+><choice
+><ref name="contains_"
+/><ref name="date_"
+/><ref name="depend_"
+/><ref name="depth_"
+/><ref name="filename_"
+/><ref name="present_"
+/><ref name="size_"
+/></choice><choice
+><ref name="and_"
+/><ref name="majority_"
+/><ref name="none_"
+/><ref name="not_"
+/><ref name="or_"
+/><ref name="selector_"
+/></choice><ref name="customSelector"
+/></choice></oneOrMore></element></define><define name="not_"
+><element
+><name ns=""
+>not</name><choice
+><choice
+><ref name="contains_"
+/><ref name="date_"
+/><ref name="depend_"
+/><ref name="depth_"
+/><ref name="filename_"
+/><ref name="present_"
+/><ref name="size_"
+/></choice><choice
+><ref name="and_"
+/><ref name="majority_"
+/><ref name="none_"
+/><ref name="not_"
+/><ref name="or_"
+/><ref name="selector_"
+/></choice><ref name="customSelector"
+/></choice></element></define><define name="or_"
+><element
+><name ns=""
+>or</name><oneOrMore
+><choice
+><choice
+><ref name="contains_"
+/><ref name="date_"
+/><ref name="depend_"
+/><ref name="depth_"
+/><ref name="filename_"
+/><ref name="present_"
+/><ref name="size_"
+/></choice><choice
+><ref name="and_"
+/><ref name="majority_"
+/><ref name="none_"
+/><ref name="not_"
+/><ref name="or_"
+/><ref name="selector_"
+/></choice><ref name="customSelector"
+/></choice></oneOrMore></element></define><define name="selector_"
+><element
+><name ns=""
+>selector</name><choice
+><choice
+><choice
+><ref name="contains_"
+/><ref name="date_"
+/><ref name="depend_"
+/><ref name="depth_"
+/><ref name="filename_"
+/><ref name="present_"
+/><ref name="size_"
+/></choice><choice
+><ref name="and_"
+/><ref name="majority_"
+/><ref name="none_"
+/><ref name="not_"
+/><ref name="or_"
+/><ref name="selector_"
+/></choice><ref name="customSelector"
+/></choice><attribute
+><name ns=""
+>refid</name><data datatypeLibrary="http://relaxng.org/ns/compatibility/datatypes/1.0" type="IDREF"
+/></attribute></choice></element></define><define name="sysproperty_"
+><element
+><name ns=""
+>sysproperty</name><group
+><attribute
+><name ns=""
+>key</name><text
+/></attribute><choice
+><attribute
+><name ns=""
+>value</name><text
+/></attribute><attribute
+><name ns=""
+>path</name><text
+/></attribute><attribute
+><name ns=""
+>file</name><text
+/></attribute></choice></group></element></define><define name="filterreader_"
+><element
+><name ns=""
+>filterreader</name><group
+><attribute
+><name ns=""
+>classname</name><text
+/></attribute><interleave
+><choice
+><empty
+/><ref name="classPath"
+/></choice><choice
+><empty
+/><oneOrMore
+><ref name="param"
+/></oneOrMore></choice></interleave></group></element></define><define name="classconstants_"
+><element
+><name ns=""
+>classconstants</name><empty
+/></element></define><define name="expandproperties_"
+><element
+><name ns=""
+>expandproperties</name><empty
+/></element></define><define name="headfilter_"
+><element
+><name ns=""
+>headfilter</name><choice
+><empty
+/><attribute
+><name ns=""
+>lines</name><text
+/></attribute></choice></element></define><define name="linecontains_"
+><element
+><name ns=""
+>linecontains</name><oneOrMore
+><ref name="contains_n"
+/></oneOrMore></element></define><define name="linecontainsregexp_"
+><element
+><name ns=""
+>linecontainsregexp</name><ref name="regexp_"
+/></element></define><define name="prefixlines_"
+><element
+><name ns=""
+>prefixlines</name><attribute
+><name ns=""
+>prefix</name><text
+/></attribute></element></define><define name="replacetokens_"
+><element
+><name ns=""
+>replacetokens</name><group
+><choice
+><empty
+/><ref name="tokenchar_"
+/></choice><choice
+><empty
+/><ref name="tokenchar_j"
+/></choice><ref name="token_"
+/></group></element></define><define name="stripjavacomments_"
+><element
+><name ns=""
+>stripjavacomments</name><empty
+/></element></define><define name="striplinebreaks_"
+><element
+><name ns=""
+>striplinebreaks</name><choice
+><empty
+/><attribute
+><name ns=""
+>linebreaks</name><text
+/></attribute></choice></element></define><define name="striplinecomments_"
+><element
+><name ns=""
+>striplinecomments</name><oneOrMore
+><ref name="comment_"
+/></oneOrMore></element></define><define name="tabstospaces_"
+><element
+><name ns=""
+>tabstospaces</name><choice
+><empty
+/><attribute
+><name ns=""
+>lines</name><text
+/></attribute></choice></element></define><define name="tailfilter_"
+><element
+><name ns=""
+>tailfilter</name><choice
+><empty
+/><attribute
+><name ns=""
+>lines</name><text
+/></attribute></choice></element></define><define name="description_"
+><element
+><name ns=""
+>description</name><text
+/></element></define><define name="selector_v"
+><element
+><name ns=""
+>selector</name><group
+><attribute
+><name ns=""
+>id</name><data datatypeLibrary="http://relaxng.org/ns/compatibility/datatypes/1.0" type="ID"
+/></attribute><choice
+><choice
+><ref name="contains_"
+/><ref name="date_"
+/><ref name="depend_"
+/><ref name="depth_"
+/><ref name="filename_"
+/><ref name="present_"
+/><ref name="size_"
+/></choice><choice
+><ref name="and_"
+/><ref name="majority_"
+/><ref name="none_"
+/><ref name="not_"
+/><ref name="or_"
+/><ref name="selector_"
+/></choice><ref name="customSelector"
+/></choice></group></element></define><define name="contains_n"
+><element
+><name ns=""
+>contains</name><attribute
+><name ns=""
+>value</name><text
+/></attribute></element></define><define name="regexp_"
+><element
+><name ns=""
+>regexp</name><attribute
+><name ns=""
+>pattern</name><text
+/></attribute></element></define><define name="tokenchar_"
+><element
+><name ns=""
+>tokenchar</name><group
+><attribute
+><name ns=""
+>name</name><value datatypeLibrary="" ns="" type="token"
+>begintoken</value></attribute><attribute
+><name ns=""
+>value</name><text
+/></attribute></group></element></define><define name="tokenchar_j"
+><element
+><name ns=""
+>tokenchar</name><group
+><attribute
+><name ns=""
+>name</name><value datatypeLibrary="" ns="" type="token"
+>endtoken</value></attribute><attribute
+><name ns=""
+>value</name><text
+/></attribute></group></element></define><define name="token_"
+><element
+><name ns=""
+>token</name><group
+><attribute
+><name ns=""
+>name</name><text
+/></attribute><attribute
+><name ns=""
+>value</name><text
+/></attribute></group></element></define><define name="comment_"
+><element
+><name ns=""
+>comment</name><attribute
+><name ns=""
+>value</name><text
+/></attribute></element></define></grammar>

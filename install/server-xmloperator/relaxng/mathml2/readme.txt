@@ -1,0 +1,1 @@
+The original documents are on http://www3.sppd.ne.jp/lena/relax-ng/mml2.htm

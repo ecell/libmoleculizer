@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!-- XLink Module -->
+<grammar 
+	ns="http://www.w3.org/1999/xlink"
+	xmlns="http://relaxng.org/ns/structure/1.0">
+
+<define name="XLINK.type.attrib">
+  <attribute>
+    <name>type</name>
+    <choice>
+      <value>simple</value>
+      <value>extended</value>
+      <value>arc</value>
+      <value>locator</value>
+      <value>resource</value>
+     </choice>
+  </attribute>
+</define>
+<define name="XLINK.href.attrib">
+  <optional>
+    <attribute>
+      <name>href</name>
+      <ref name="URI.datatype" />
+    </attribute>
+  </optional>
+</define>
+<define name="XLINK.arcrole.attrib">
+  <optional>
+    <attribute>
+      <name>arcrole</name>
+      <ref name="URI.datatype" />
+    </attribute>
+  </optional>
+</define>
+<define name="XLINK.role.attrib">
+  <optional>
+    <attribute>
+      <name>role</name>
+      <ref name="URI.datatype" />
+    </attribute>
+  </optional>
+</define>
+<define name="XLINK.title.attrib">
+  <optional>
+    <attribute>
+      <name>title</name>
+      <ref name="Text.datatype" />
+    </attribute>
+  </optional>
+</define>
+<define name="XLINK.simple.attlist" combine="interleave">
+  <ref name="XLINK.type.attrib"/>
+  <ref name="XLINK.href.attrib"/>
+  <ref name="XLINK.role.attrib"/>
+  <ref name="XLINK.arcrole.attrib"/>
+  <ref name="XLINK.title.attrib"/>
+</define>
+
+</grammar>

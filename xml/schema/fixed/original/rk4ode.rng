@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grammar xmlns="http://relaxng.org/ns/structure/1.0"
+><start
+><element name="rk4ode-input"
+><oneOrMore
+><element name="variable"
+><attribute name="variable-name"
+/><attribute name="initial-value"
+/><element name="derivative"
+><element name="polynomial"
+><oneOrMore
+><element name="term"
+><attribute name="coefficient"
+/><oneOrMore
+><element name="variable-power"
+><attribute name="variable-name"
+/><attribute name="exponent"
+/></element></oneOrMore></element></oneOrMore></element></element></element></oneOrMore><oneOrMore
+><element name="dump-stream"
+><attribute name="file-name"
+/><oneOrMore
+><element name="dumpable"
+><attribute name="column-header"
+/><oneOrMore
+><element name="variable-ref"
+><attribute name="variable-name"
+/></element></oneOrMore></element></oneOrMore></element></oneOrMore><element name="stop-time"
+><attribute name="seconds"
+/></element><choice
+><element name="classic-delta"
+><attribute name="delta"
+/></element><element name="step-adapt"
+><attribute name="epsilon"
+/></element><element name="rel-adapt"
+><attribute name="epsilon"
+/></element><element name="stiff-adapt"
+><attribute name="epsilon"
+/><attribute name="threshold"
+/></element></choice></element></start></grammar>

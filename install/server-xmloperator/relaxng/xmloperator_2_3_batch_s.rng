@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<grammar xmlns="http://relaxng.org/ns/structure/1.0"
+><start
+><ref name="batch"
+/></start><define name="transform"
+><element
+><name ns=""
+>transform</name><group
+><choice
+><attribute
+><name ns=""
+>name</name><data datatypeLibrary="" type="token"
+/></attribute><attribute
+><name ns=""
+>name_paramName</name><data datatypeLibrary="" type="token"
+/></attribute></choice><ref name="sourceDocumentURI_"
+/><ref name="destinationDocumentPathname_"
+/><choice
+><empty
+/><oneOrMore
+><ref name="param_"
+/></oneOrMore></choice><choice
+><empty
+/><ref name="documentation_"
+/></choice></group></element></define><define name="batch"
+><element
+><name ns=""
+>batch</name><group
+><choice
+><empty
+/><ref name="documentation_h"
+/></choice><choice
+><empty
+/><oneOrMore
+><ref name="param_p"
+/></oneOrMore></choice><choice
+><empty
+/><oneOrMore
+><ref name="transform"
+/></oneOrMore></choice></group></element></define><define name="sourceDocumentURI_"
+><element
+><name ns=""
+>sourceDocumentURI</name><oneOrMore
+><choice
+><ref name="value_"
+/><ref name="paramValue_"
+/></choice></oneOrMore></element></define><define name="destinationDocumentPathname_"
+><element
+><name ns=""
+>destinationDocumentPathname</name><oneOrMore
+><choice
+><ref name="value_"
+/><ref name="paramValue_"
+/></choice></oneOrMore></element></define><define name="param_"
+><element
+><name ns=""
+>param</name><group
+><attribute
+><name ns=""
+>name</name><data datatypeLibrary="" type="token"
+/></attribute><choice
+><attribute
+><name ns=""
+>value</name><data datatypeLibrary="" type="string"
+/></attribute><attribute
+><name ns=""
+>value_paramName</name><data datatypeLibrary="" type="token"
+/></attribute></choice></group></element></define><define name="documentation_"
+><element
+><name ns=""
+>documentation</name><text
+/></element></define><define name="value_"
+><element
+><name ns=""
+>value</name><attribute
+><name ns=""
+>value</name><data datatypeLibrary="" type="string"
+/></attribute></element></define><define name="paramValue_"
+><element
+><name ns=""
+>paramValue</name><attribute
+><name ns=""
+>paramName</name><data datatypeLibrary="" type="token"
+/></attribute></element></define><define name="documentation_h"
+><element
+><name ns=""
+>documentation</name><text
+/></element></define><define name="param_p"
+><element
+><name ns=""
+>param</name><group
+><attribute
+><name ns=""
+>name</name><data datatypeLibrary="" type="token"
+/></attribute><attribute
+><name ns=""
+>value</name><data datatypeLibrary="" type="string"
+/></attribute><choice
+><empty
+/><text
+/></choice></group></element></define></grammar>

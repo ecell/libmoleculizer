@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<grammar xmlns="http://relaxng.org/ns/structure/1.0" xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"><a:documentation>
+    Schema for any document
+  </a:documentation><start><ref name="any"/></start><define name="any"><element><anyName/><zeroOrMore><attribute><anyName/></attribute></zeroOrMore><zeroOrMore><choice><text/><ref name="any"/></choice></zeroOrMore></element></define></grammar>

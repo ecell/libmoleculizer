@@ -1,0 +1,994 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<grammar xmlns="http://relaxng.org/ns/structure/1.0"
+><start
+><ref name="xmloperator_"
+/></start><define name="xmloperator_"
+><element
+><name ns=""
+>xmloperator</name><interleave
+><choice
+><empty
+/><ref name="General_"
+/></choice><choice
+><empty
+/><ref name="Load_"
+/></choice><choice
+><empty
+/><ref name="Parse_"
+/></choice><choice
+><empty
+/><ref name="Save_"
+/></choice><choice
+><empty
+/><ref name="XSLT_"
+/></choice><choice
+><empty
+/><ref name="Display_"
+/></choice><choice
+><empty
+/><ref name="ProcessingInstructions_"
+/></choice><choice
+><empty
+/><ref name="DocumentTypes_"
+/></choice><choice
+><empty
+/><ref name="Transformers_"
+/></choice><choice
+><empty
+/><ref name="Operators_"
+/></choice><choice
+><empty
+/><ref name="Parameters_"
+/></choice><choice
+><empty
+/><ref name="MenuItems_"
+/></choice><choice
+><empty
+/><ref name="Namespaces_"
+/></choice><choice
+><empty
+/><ref name="Operation_"
+/></choice><choice
+><empty
+/><ref name="Identification_"
+/></choice><choice
+><empty
+/><ref name="NodeTypes_"
+/></choice><choice
+><empty
+/><ref name="Search_"
+/></choice></interleave></element></define><define name="General_"
+><element
+><name ns=""
+>General</name><choice
+><empty
+/><ref name="AdvancedUse_"
+/></choice></element></define><define name="Load_"
+><element
+><name ns=""
+>Load</name><interleave
+><choice
+><empty
+/><ref name="XMLPath_"
+/></choice><choice
+><empty
+/><ref name="XSLPath_"
+/></choice><choice
+><empty
+/><ref name="DTDPath_"
+/></choice><choice
+><empty
+/><ref name="RNGPath_"
+/></choice><choice
+><empty
+/><ref name="OptionsPath_"
+/></choice><choice
+><empty
+/><ref name="OperationsPath_"
+/></choice><choice
+><empty
+/><ref name="FileExtensions_"
+/></choice><choice
+><empty
+/><ref name="Proxy_"
+/></choice><choice
+><empty
+/><ref name="OpenErrors_"
+/></choice><choice
+><empty
+/><oneOrMore
+><ref name="Resource_"
+/></oneOrMore></choice><choice
+><empty
+/><ref name="MaxResources_"
+/></choice><choice
+><empty
+/><ref name="AutomaticLoading_"
+/></choice><choice
+><empty
+/><ref name="DTDAutomaticLoading_"
+/></choice><choice
+><empty
+/><ref name="RNGAutomaticLoading_"
+/></choice></interleave></element></define><define name="Parse_"
+><element
+><name ns=""
+>Parse</name><interleave
+><choice
+><empty
+/><ref name="ParsingValidation_"
+/></choice><choice
+><empty
+/><ref name="ParsingValidationDynamic_"
+/></choice><choice
+><empty
+/><ref name="ParsingNonValidatingLoadDTDGrammar_"
+/></choice><choice
+><empty
+/><ref name="ParsingNonValidatingLoadExternalDTD_"
+/></choice><choice
+><empty
+/><ref name="ParsingDOMIncludeIgnorableWhitespace_"
+/></choice></interleave></element></define><define name="Save_"
+><element
+><name ns=""
+>Save</name><interleave
+><choice
+><empty
+/><ref name="DefaultEncoding_"
+/></choice><choice
+><empty
+/><ref name="FileNameAutomaticIncrementing_"
+/></choice><choice
+><empty
+/><ref name="DOCTYPEIfDTD_"
+/></choice><choice
+><empty
+/><ref name="AddLineFeedAtStartTagEnd_"
+/></choice></interleave></element></define><define name="XSLT_"
+><element
+><name ns=""
+>XSLT</name><interleave
+><choice
+><empty
+/><ref name="XSLTTracePathName_"
+/></choice><choice
+><empty
+/><ref name="TraceElements_"
+/></choice><choice
+><empty
+/><ref name="TraceGeneration_"
+/></choice><choice
+><empty
+/><ref name="TraceSelection_"
+/></choice><choice
+><empty
+/><ref name="TraceTemplates_"
+/></choice><choice
+><empty
+/><ref name="QuietConflictWarnings_"
+/></choice></interleave></element></define><define name="Display_"
+><element
+><name ns=""
+>Display</name><interleave
+><choice
+><empty
+/><ref name="Split_"
+/></choice><choice
+><empty
+/><ref name="MainWidth_"
+/></choice><choice
+><empty
+/><ref name="MainHeight_"
+/></choice><choice
+><empty
+/><ref name="DetailPart_"
+/></choice><choice
+><empty
+/><ref name="Tree_"
+/></choice><choice
+><empty
+/><ref name="Status_"
+/></choice><choice
+><empty
+/><ref name="LookAndFeelIndex_"
+/></choice><choice
+><empty
+/><ref name="LocaleIndex_"
+/></choice><choice
+><empty
+/><group
+><ref name="Font_"
+/><ref name="Monospaced_"
+/></group></choice><choice
+><empty
+/><ref name="MessagePersistence_"
+/></choice><choice
+><empty
+/><ref name="ContentModelShown_"
+/></choice><choice
+><empty
+/><ref name="NodeListWidth_"
+/></choice><choice
+><empty
+/><ref name="NodeListHeight_"
+/></choice></interleave></element></define><define name="ProcessingInstructions_"
+><element
+><name ns=""
+>ProcessingInstructions</name><choice
+><empty
+/><oneOrMore
+><ref name="Target_"
+/></oneOrMore></choice></element></define><define name="DocumentTypes_"
+><element
+><name ns=""
+>DocumentTypes</name><choice
+><empty
+/><oneOrMore
+><ref name="DocumentType_"
+/></oneOrMore></choice></element></define><define name="Transformers_"
+><element
+><name ns=""
+>Transformers</name><choice
+><empty
+/><oneOrMore
+><ref name="Transformer_"
+/></oneOrMore></choice></element></define><define name="Operators_"
+><element
+><name ns=""
+>Operators</name><choice
+><empty
+/><oneOrMore
+><ref name="Operator_"
+/></oneOrMore></choice></element></define><define name="Parameters_"
+><element
+><name ns=""
+>Parameters</name><choice
+><empty
+/><oneOrMore
+><ref name="Parameter_"
+/></oneOrMore></choice></element></define><define name="MenuItems_"
+><element
+><name ns=""
+>MenuItems</name><choice
+><empty
+/><oneOrMore
+><ref name="MenuItem_"
+/></oneOrMore></choice></element></define><define name="Namespaces_"
+><element
+><name ns=""
+>Namespaces</name><choice
+><empty
+/><oneOrMore
+><ref name="Namespace_"
+/></oneOrMore></choice></element></define><define name="Operation_"
+><element
+><name ns=""
+>Operation</name><interleave
+><choice
+><empty
+/><ref name="OperationsStored_"
+/></choice><choice
+><empty
+/><ref name="ClearUndoAfterSave_"
+/></choice></interleave></element></define><define name="Identification_"
+><element
+><name ns=""
+>Identification</name><interleave
+><choice
+><empty
+/><ref name="IdLength_"
+/></choice><choice
+><empty
+/><ref name="IdPrefix_"
+/></choice></interleave></element></define><define name="NodeTypes_"
+><element
+><name ns=""
+>NodeTypes</name><interleave
+><choice
+><empty
+/><ref name="AllowsComment_"
+/></choice><choice
+><empty
+/><ref name="AllowsProcessingInstruction_"
+/></choice><choice
+><empty
+/><ref name="AllowsCdataSection_"
+/></choice><choice
+><empty
+/><ref name="AllowsEntityReference_"
+/></choice></interleave></element></define><define name="Search_"
+><element
+><name ns=""
+>Search</name><interleave
+><choice
+><empty
+/><oneOrMore
+><ref name="LastSearch_"
+/></oneOrMore></choice><choice
+><empty
+/><ref name="CaseIgnoredForSearch_"
+/></choice><choice
+><empty
+/><ref name="EntireConformanceForSearch_"
+/></choice><choice
+><empty
+/><oneOrMore
+><ref name="LastXPathExpression_"
+/></oneOrMore></choice><choice
+><empty
+/><ref name="HistorySize_"
+/></choice><choice
+><empty
+/><ref name="LocatorLineNumber_"
+/></choice><choice
+><empty
+/><ref name="LocatorColumnNumber_"
+/></choice></interleave></element></define><define name="AdvancedUse_"
+><element
+><name ns=""
+>AdvancedUse</name><attribute
+><name ns=""
+>isAdvanced</name><choice
+><value datatypeLibrary="" ns="" type="token"
+>TRUE</value><value datatypeLibrary="" ns="" type="token"
+>FALSE</value></choice></attribute></element></define><define name="XMLPath_"
+><element
+><name ns=""
+>XMLPath</name><attribute
+><name ns=""
+>path</name><data datatypeLibrary="" type="string"
+/></attribute></element></define><define name="XSLPath_"
+><element
+><name ns=""
+>XSLPath</name><attribute
+><name ns=""
+>path</name><data datatypeLibrary="" type="string"
+/></attribute></element></define><define name="DTDPath_"
+><element
+><name ns=""
+>DTDPath</name><attribute
+><name ns=""
+>path</name><data datatypeLibrary="" type="string"
+/></attribute></element></define><define name="RNGPath_"
+><element
+><name ns=""
+>RNGPath</name><attribute
+><name ns=""
+>path</name><data datatypeLibrary="" type="string"
+/></attribute></element></define><define name="OptionsPath_"
+><element
+><name ns=""
+>OptionsPath</name><attribute
+><name ns=""
+>path</name><data datatypeLibrary="" type="string"
+/></attribute></element></define><define name="OperationsPath_"
+><element
+><name ns=""
+>OperationsPath</name><attribute
+><name ns=""
+>path</name><data datatypeLibrary="" type="string"
+/></attribute></element></define><define name="FileExtensions_"
+><element
+><name ns=""
+>FileExtensions</name><attribute
+><name ns=""
+>extensions</name><data datatypeLibrary="" type="string"
+/></attribute></element></define><define name="Proxy_"
+><element
+><name ns=""
+>Proxy</name><group
+><attribute
+><name ns=""
+>a1</name><data datatypeLibrary="" type="string"
+/></attribute><attribute
+><name ns=""
+>a2</name><data datatypeLibrary="" type="string"
+/></attribute><attribute
+><name ns=""
+>a3</name><data datatypeLibrary="" type="string"
+/></attribute><attribute
+><name ns=""
+>a4</name><data datatypeLibrary="" type="string"
+/></attribute><attribute
+><name ns=""
+>port</name><data datatypeLibrary="" type="string"
+/></attribute></group></element></define><define name="OpenErrors_"
+><element
+><name ns=""
+>OpenErrors</name><attribute
+><name ns=""
+>toDo</name><choice
+><value datatypeLibrary="" ns="" type="token"
+>TRUE</value><value datatypeLibrary="" ns="" type="token"
+>FALSE</value></choice></attribute></element></define><define name="Resource_"
+><element
+><name ns=""
+>Resource</name><group
+><attribute
+><name ns=""
+>systemId</name><data datatypeLibrary="" type="string"
+/></attribute><choice
+><empty
+/><attribute
+><name ns=""
+>key</name><data datatypeLibrary="" type="token"
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>elementPath</name><data datatypeLibrary="" type="string"
+/></attribute></choice><attribute
+><name ns=""
+>nodeIndex</name><data datatypeLibrary="" type="string"
+/></attribute></group></element></define><define name="MaxResources_"
+><element
+><name ns=""
+>MaxResources</name><attribute
+><name ns=""
+>count</name><choice
+><value datatypeLibrary="" ns="" type="token"
+>TRUE</value><value datatypeLibrary="" ns="" type="token"
+>FALSE</value></choice></attribute></element></define><define name="AutomaticLoading_"
+><element
+><name ns=""
+>AutomaticLoading</name><attribute
+><name ns=""
+>isAutomatic</name><choice
+><value datatypeLibrary="" ns="" type="token"
+>TRUE</value><value datatypeLibrary="" ns="" type="token"
+>FALSE</value></choice></attribute></element></define><define name="DTDAutomaticLoading_"
+><element
+><name ns=""
+>DTDAutomaticLoading</name><attribute
+><name ns=""
+>isAutomatic</name><choice
+><value datatypeLibrary="" ns="" type="token"
+>TRUE</value><value datatypeLibrary="" ns="" type="token"
+>FALSE</value></choice></attribute></element></define><define name="RNGAutomaticLoading_"
+><element
+><name ns=""
+>RNGAutomaticLoading</name><attribute
+><name ns=""
+>isAutomatic</name><choice
+><value datatypeLibrary="" ns="" type="token"
+>TRUE</value><value datatypeLibrary="" ns="" type="token"
+>FALSE</value></choice></attribute></element></define><define name="ParsingValidation_"
+><element
+><name ns=""
+>ParsingValidation</name><attribute
+><name ns=""
+>toDo</name><choice
+><value datatypeLibrary="" ns="" type="token"
+>TRUE</value><value datatypeLibrary="" ns="" type="token"
+>FALSE</value></choice></attribute></element></define><define name="ParsingValidationDynamic_"
+><element
+><name ns=""
+>ParsingValidationDynamic</name><attribute
+><name ns=""
+>toDo</name><choice
+><value datatypeLibrary="" ns="" type="token"
+>TRUE</value><value datatypeLibrary="" ns="" type="token"
+>FALSE</value></choice></attribute></element></define><define name="ParsingNonValidatingLoadDTDGrammar_"
+><element
+><name ns=""
+>ParsingNonValidatingLoadDTDGrammar</name><attribute
+><name ns=""
+>toDo</name><choice
+><value datatypeLibrary="" ns="" type="token"
+>TRUE</value><value datatypeLibrary="" ns="" type="token"
+>FALSE</value></choice></attribute></element></define><define name="ParsingNonValidatingLoadExternalDTD_"
+><element
+><name ns=""
+>ParsingNonValidatingLoadExternalDTD</name><attribute
+><name ns=""
+>toDo</name><choice
+><value datatypeLibrary="" ns="" type="token"
+>TRUE</value><value datatypeLibrary="" ns="" type="token"
+>FALSE</value></choice></attribute></element></define><define name="ParsingDOMIncludeIgnorableWhitespace_"
+><element
+><name ns=""
+>ParsingDOMIncludeIgnorableWhitespace</name><attribute
+><name ns=""
+>toDo</name><choice
+><value datatypeLibrary="" ns="" type="token"
+>TRUE</value><value datatypeLibrary="" ns="" type="token"
+>FALSE</value></choice></attribute></element></define><define name="DefaultEncoding_"
+><element
+><name ns=""
+>DefaultEncoding</name><attribute
+><name ns=""
+>name</name><choice
+><value datatypeLibrary="" ns="" type="token"
+>UTF-8</value><value datatypeLibrary="" ns="" type="token"
+>ISO-8859-1</value><value datatypeLibrary="" ns="" type="token"
+>ISO-8859-2</value><value datatypeLibrary="" ns="" type="token"
+>ISO-8859-3</value><value datatypeLibrary="" ns="" type="token"
+>ISO-8859-4</value><value datatypeLibrary="" ns="" type="token"
+>ISO-8859-5</value><value datatypeLibrary="" ns="" type="token"
+>ISO-8859-6</value><value datatypeLibrary="" ns="" type="token"
+>ISO-8859-7</value><value datatypeLibrary="" ns="" type="token"
+>ISO-8859-8</value><value datatypeLibrary="" ns="" type="token"
+>ISO-8859-9</value><value datatypeLibrary="" ns="" type="token"
+>BIG5</value><value datatypeLibrary="" ns="" type="token"
+>ISO-2022-JP</value><value datatypeLibrary="" ns="" type="token"
+>Shift_JIS</value><value datatypeLibrary="" ns="" type="token"
+>EUC-JP</value><value datatypeLibrary="" ns="" type="token"
+>GB2312</value><value datatypeLibrary="" ns="" type="token"
+>Big5</value><value datatypeLibrary="" ns="" type="token"
+>EUC-KR</value><value datatypeLibrary="" ns="" type="token"
+>ISO-2022-KR</value><value datatypeLibrary="" ns="" type="token"
+>K018-R</value><value datatypeLibrary="" ns="" type="token"
+>SHIFT_JIS</value><value datatypeLibrary="" ns="" type="token"
+>UTF-16</value></choice></attribute></element></define><define name="FileNameAutomaticIncrementing_"
+><element
+><name ns=""
+>FileNameAutomaticIncrementing</name><attribute
+><name ns=""
+>toDo</name><choice
+><value datatypeLibrary="" ns="" type="token"
+>TRUE</value><value datatypeLibrary="" ns="" type="token"
+>FALSE</value></choice></attribute></element></define><define name="DOCTYPEIfDTD_"
+><element
+><name ns=""
+>DOCTYPEIfDTD</name><attribute
+><name ns=""
+>toSave</name><choice
+><value datatypeLibrary="" ns="" type="token"
+>TRUE</value><value datatypeLibrary="" ns="" type="token"
+>FALSE</value></choice></attribute></element></define><define name="AddLineFeedAtStartTagEnd_"
+><element
+><name ns=""
+>AddLineFeedAtStartTagEnd</name><attribute
+><name ns=""
+>toSave</name><choice
+><value datatypeLibrary="" ns="" type="token"
+>TRUE</value><value datatypeLibrary="" ns="" type="token"
+>FALSE</value></choice></attribute></element></define><define name="XSLTTracePathName_"
+><element
+><name ns=""
+>XSLTTracePathName</name><attribute
+><name ns=""
+>path</name><data datatypeLibrary="" type="string"
+/></attribute></element></define><define name="TraceElements_"
+><element
+><name ns=""
+>TraceElements</name><attribute
+><name ns=""
+>areTraced</name><choice
+><value datatypeLibrary="" ns="" type="token"
+>TRUE</value><value datatypeLibrary="" ns="" type="token"
+>FALSE</value></choice></attribute></element></define><define name="TraceGeneration_"
+><element
+><name ns=""
+>TraceGeneration</name><attribute
+><name ns=""
+>areTraced</name><choice
+><value datatypeLibrary="" ns="" type="token"
+>TRUE</value><value datatypeLibrary="" ns="" type="token"
+>FALSE</value></choice></attribute></element></define><define name="TraceSelection_"
+><element
+><name ns=""
+>TraceSelection</name><attribute
+><name ns=""
+>areTraced</name><choice
+><value datatypeLibrary="" ns="" type="token"
+>TRUE</value><value datatypeLibrary="" ns="" type="token"
+>FALSE</value></choice></attribute></element></define><define name="TraceTemplates_"
+><element
+><name ns=""
+>TraceTemplates</name><attribute
+><name ns=""
+>areTraced</name><choice
+><value datatypeLibrary="" ns="" type="token"
+>TRUE</value><value datatypeLibrary="" ns="" type="token"
+>FALSE</value></choice></attribute></element></define><define name="QuietConflictWarnings_"
+><element
+><name ns=""
+>QuietConflictWarnings</name><attribute
+><name ns=""
+>areQuiet</name><choice
+><value datatypeLibrary="" ns="" type="token"
+>TRUE</value><value datatypeLibrary="" ns="" type="token"
+>FALSE</value></choice></attribute></element></define><define name="Split_"
+><element
+><name ns=""
+>Split</name><attribute
+><name ns=""
+>isHorizontal</name><choice
+><value datatypeLibrary="" ns="" type="token"
+>TRUE</value><value datatypeLibrary="" ns="" type="token"
+>FALSE</value></choice></attribute></element></define><define name="MainWidth_"
+><element
+><name ns=""
+>MainWidth</name><attribute
+><name ns=""
+>width</name><data datatypeLibrary="" type="token"
+/></attribute></element></define><define name="MainHeight_"
+><element
+><name ns=""
+>MainHeight</name><attribute
+><name ns=""
+>height</name><data datatypeLibrary="" type="token"
+/></attribute></element></define><define name="DetailPart_"
+><element
+><name ns=""
+>DetailPart</name><attribute
+><name ns=""
+>perCent</name><data datatypeLibrary="" type="token"
+/></attribute></element></define><define name="Tree_"
+><element
+><name ns=""
+>Tree</name><choice
+><empty
+/><ref name="AutomaticLabelling_"
+/></choice></element></define><define name="Status_"
+><element
+><name ns=""
+>Status</name><interleave
+><choice
+><empty
+/><ref name="StatusShown_"
+/></choice><choice
+><empty
+/><ref name="LazyShown_"
+/></choice></interleave></element></define><define name="LookAndFeelIndex_"
+><element
+><name ns=""
+>LookAndFeelIndex</name><attribute
+><name ns=""
+>index</name><data datatypeLibrary="" type="string"
+/></attribute></element></define><define name="LocaleIndex_"
+><element
+><name ns=""
+>LocaleIndex</name><attribute
+><name ns=""
+>index</name><data datatypeLibrary="" type="string"
+/></attribute></element></define><define name="Font_"
+><element
+><name ns=""
+>Font</name><attribute
+><name ns=""
+>isLarge</name><choice
+><value datatypeLibrary="" ns="" type="token"
+>TRUE</value><value datatypeLibrary="" ns="" type="token"
+>FALSE</value></choice></attribute></element></define><define name="Monospaced_"
+><element
+><name ns=""
+>Monospaced</name><attribute
+><name ns=""
+>isMonospaced</name><choice
+><value datatypeLibrary="" ns="" type="token"
+>TRUE</value><value datatypeLibrary="" ns="" type="token"
+>FALSE</value></choice></attribute></element></define><define name="MessagePersistence_"
+><element
+><name ns=""
+>MessagePersistence</name><attribute
+><name ns=""
+>timeSecond</name><data datatypeLibrary="" type="string"
+/></attribute></element></define><define name="ContentModelShown_"
+><element
+><name ns=""
+>ContentModelShown</name><attribute
+><name ns=""
+>isShown</name><choice
+><value datatypeLibrary="" ns="" type="token"
+>TRUE</value><value datatypeLibrary="" ns="" type="token"
+>FALSE</value></choice></attribute></element></define><define name="NodeListWidth_"
+><element
+><name ns=""
+>NodeListWidth</name><attribute
+><name ns=""
+>width</name><data datatypeLibrary="" type="string"
+/></attribute></element></define><define name="NodeListHeight_"
+><element
+><name ns=""
+>NodeListHeight</name><attribute
+><name ns=""
+>height</name><data datatypeLibrary="" type="string"
+/></attribute></element></define><define name="Target_"
+><element
+><name ns=""
+>Target</name><attribute
+><name ns=""
+>name</name><data datatypeLibrary="" type="token"
+/></attribute></element></define><define name="DocumentType_"
+><element
+><name ns=""
+>DocumentType</name><group
+><attribute
+><name ns=""
+>name</name><data datatypeLibrary="" type="token"
+/></attribute><choice
+><empty
+/><attribute
+><name ns=""
+>key</name><data datatypeLibrary="" type="token"
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>dTDPublicId</name><data datatypeLibrary="" type="string"
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>hTTPDTDSystemId</name><data datatypeLibrary="" type="string"
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>documentRelativeDTDSystemId</name><data datatypeLibrary="" type="string"
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>userRelativeDTDSystemId</name><data datatypeLibrary="" type="string"
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>dTDXMLSystemId</name><data datatypeLibrary="" type="string"
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>fullRNGSystemId</name><data datatypeLibrary="" type="string"
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>simpleRNGSystemId</name><data datatypeLibrary="" type="string"
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>namespaceId</name><data datatypeLibrary="" type="string"
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>isEmptyElementShortcutUsed</name><choice
+><value datatypeLibrary="" ns="" type="token"
+>TRUE</value><value datatypeLibrary="" ns="" type="token"
+>FALSE</value></choice></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>transformerName</name><data datatypeLibrary="" type="token"
+/></attribute></choice></group></element></define><define name="Transformer_"
+><element
+><name ns=""
+>Transformer</name><group
+><attribute
+><name ns=""
+>name</name><data datatypeLibrary="" type="token"
+/></attribute><attribute
+><name ns=""
+>typeName</name><data datatypeLibrary="" type="token"
+/></attribute><attribute
+><name ns=""
+>className</name><data datatypeLibrary="" type="string"
+/></attribute><choice
+><empty
+/><attribute
+><name ns=""
+>styleSheetSystemId</name><data datatypeLibrary="" type="string"
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>paramNames</name><data datatypeLibrary="" type="string"
+/></attribute></choice><attribute
+><name ns=""
+>isResultXML</name><choice
+><value datatypeLibrary="" ns="" type="token"
+>TRUE</value><value datatypeLibrary="" ns="" type="token"
+>FALSE</value></choice></attribute><choice
+><empty
+/><attribute
+><name ns=""
+>dTDPublicId</name><data datatypeLibrary="" type="string"
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>dTDSystemId</name><data datatypeLibrary="" type="string"
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>encodingName</name><data datatypeLibrary="" type="string"
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>isStandaloneDocument</name><choice
+><value datatypeLibrary="" ns="" type="token"
+>TRUE</value><value datatypeLibrary="" ns="" type="token"
+>FALSE</value></choice></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>isEmptyElementShortcutUsed</name><choice
+><value datatypeLibrary="" ns="" type="token"
+>TRUE</value><value datatypeLibrary="" ns="" type="token"
+>FALSE</value></choice></attribute></choice></group></element></define><define name="Operator_"
+><element
+><name ns=""
+>Operator</name><group
+><attribute
+><name ns=""
+>name</name><data datatypeLibrary="" type="token"
+/></attribute><attribute
+><name ns=""
+>typeName</name><data datatypeLibrary="" type="token"
+/></attribute><attribute
+><name ns=""
+>className</name><data datatypeLibrary="" type="string"
+/></attribute></group></element></define><define name="Parameter_"
+><element
+><name ns=""
+>Parameter</name><group
+><attribute
+><name ns=""
+>name</name><data datatypeLibrary="" type="token"
+/></attribute><attribute
+><name ns=""
+>value</name><data datatypeLibrary="" type="string"
+/></attribute></group></element></define><define name="MenuItem_"
+><element
+><name ns=""
+>MenuItem</name><group
+><attribute
+><name ns=""
+>label</name><data datatypeLibrary="" type="string"
+/></attribute><attribute
+><name ns=""
+>command</name><data datatypeLibrary="" type="string"
+/></attribute><attribute
+><name ns=""
+>toClose</name><choice
+><value datatypeLibrary="" ns="" type="token"
+>TRUE</value><value datatypeLibrary="" ns="" type="token"
+>FALSE</value></choice></attribute></group></element></define><define name="Namespace_"
+><element
+><name ns=""
+>Namespace</name><group
+><attribute
+><name ns=""
+>namespace</name><data datatypeLibrary="" type="string"
+/></attribute><attribute
+><name ns=""
+>prefix</name><data datatypeLibrary="" type="string"
+/></attribute></group></element></define><define name="OperationsStored_"
+><element
+><name ns=""
+>OperationsStored</name><attribute
+><name ns=""
+>areStored</name><choice
+><value datatypeLibrary="" ns="" type="token"
+>TRUE</value><value datatypeLibrary="" ns="" type="token"
+>FALSE</value></choice></attribute></element></define><define name="ClearUndoAfterSave_"
+><element
+><name ns=""
+>ClearUndoAfterSave</name><attribute
+><name ns=""
+>toDo</name><choice
+><value datatypeLibrary="" ns="" type="token"
+>TRUE</value><value datatypeLibrary="" ns="" type="token"
+>FALSE</value></choice></attribute></element></define><define name="IdLength_"
+><element
+><name ns=""
+>IdLength</name><attribute
+><name ns=""
+>length</name><data datatypeLibrary="" type="string"
+/></attribute></element></define><define name="IdPrefix_"
+><element
+><name ns=""
+>IdPrefix</name><attribute
+><name ns=""
+>prefix</name><data datatypeLibrary="" type="token"
+/></attribute></element></define><define name="AllowsComment_"
+><element
+><name ns=""
+>AllowsComment</name><attribute
+><name ns=""
+>toAllow</name><choice
+><value datatypeLibrary="" ns="" type="token"
+>TRUE</value><value datatypeLibrary="" ns="" type="token"
+>FALSE</value></choice></attribute></element></define><define name="AllowsProcessingInstruction_"
+><element
+><name ns=""
+>AllowsProcessingInstruction</name><attribute
+><name ns=""
+>toAllow</name><choice
+><value datatypeLibrary="" ns="" type="token"
+>TRUE</value><value datatypeLibrary="" ns="" type="token"
+>FALSE</value></choice></attribute></element></define><define name="AllowsCdataSection_"
+><element
+><name ns=""
+>AllowsCdataSection</name><attribute
+><name ns=""
+>toAllow</name><choice
+><value datatypeLibrary="" ns="" type="token"
+>TRUE</value><value datatypeLibrary="" ns="" type="token"
+>FALSE</value></choice></attribute></element></define><define name="AllowsEntityReference_"
+><element
+><name ns=""
+>AllowsEntityReference</name><attribute
+><name ns=""
+>toAllow</name><choice
+><value datatypeLibrary="" ns="" type="token"
+>TRUE</value><value datatypeLibrary="" ns="" type="token"
+>FALSE</value></choice></attribute></element></define><define name="LastSearch_"
+><element
+><name ns=""
+>LastSearch</name><attribute
+><name ns=""
+>value</name><data datatypeLibrary="" type="string"
+/></attribute></element></define><define name="CaseIgnoredForSearch_"
+><element
+><name ns=""
+>CaseIgnoredForSearch</name><attribute
+><name ns=""
+>isCaseIgnored</name><choice
+><value datatypeLibrary="" ns="" type="token"
+>TRUE</value><value datatypeLibrary="" ns="" type="token"
+>FALSE</value></choice></attribute></element></define><define name="EntireConformanceForSearch_"
+><element
+><name ns=""
+>EntireConformanceForSearch</name><attribute
+><name ns=""
+>isRequired</name><choice
+><value datatypeLibrary="" ns="" type="token"
+>TRUE</value><value datatypeLibrary="" ns="" type="token"
+>FALSE</value></choice></attribute></element></define><define name="LastXPathExpression_"
+><element
+><name ns=""
+>LastXPathExpression</name><attribute
+><name ns=""
+>value</name><data datatypeLibrary="" type="string"
+/></attribute></element></define><define name="HistorySize_"
+><element
+><name ns=""
+>HistorySize</name><attribute
+><name ns=""
+>count</name><data datatypeLibrary="" type="string"
+/></attribute></element></define><define name="LocatorLineNumber_"
+><element
+><name ns=""
+>LocatorLineNumber</name><attribute
+><name ns=""
+>lineNumber</name><text
+/></attribute></element></define><define name="LocatorColumnNumber_"
+><element
+><name ns=""
+>LocatorColumnNumber</name><attribute
+><name ns=""
+>columnNumber</name><text
+/></attribute></element></define><define name="AutomaticLabelling_"
+><element
+><name ns=""
+>AutomaticLabelling</name><attribute
+><name ns=""
+>isAutomatic</name><choice
+><value datatypeLibrary="" ns="" type="token"
+>TRUE</value><value datatypeLibrary="" ns="" type="token"
+>FALSE</value></choice></attribute></element></define><define name="StatusShown_"
+><element
+><name ns=""
+>StatusShown</name><attribute
+><name ns=""
+>isShown</name><choice
+><value datatypeLibrary="" ns="" type="token"
+>TRUE</value><value datatypeLibrary="" ns="" type="token"
+>FALSE</value></choice></attribute></element></define><define name="LazyShown_"
+><element
+><name ns=""
+>LazyShown</name><attribute
+><name ns=""
+>isShown</name><choice
+><value datatypeLibrary="" ns="" type="token"
+>TRUE</value><value datatypeLibrary="" ns="" type="token"
+>FALSE</value></choice></attribute></element></define></grammar>

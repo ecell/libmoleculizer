@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grammar xmlns="http://relaxng.org/ns/structure/1.0"
+><start
+><element name="rk4tau"
+><element name="species"
+><zeroOrMore
+><element name="species-entry"
+><attribute name="name"
+/><attribute name="pop"
+/></element></zeroOrMore></element><element name="reactions"
+><zeroOrMore
+><element name="reaction"
+><zeroOrMore
+><element name="reaction-substrate"
+><attribute name="name"
+/><attribute name="multiplicity"
+/></element></zeroOrMore><zeroOrMore
+><element name="reaction-delta"
+><attribute name="name"
+/><attribute name="multiplicity"
+/></element></zeroOrMore><element name="rate"
+><attribute name="value"
+/></element></element></zeroOrMore></element><element name="dumpables"
+><zeroOrMore
+><element name="dumpable"
+><attribute name="name"
+/><oneOrMore
+><element name="species-ref"
+><attribute name="name"
+/></element></oneOrMore></element></zeroOrMore></element><element name="dump-streams"
+><zeroOrMore
+><element name="dump-stream"
+><attribute name="name"
+/><oneOrMore
+><element name="dumpable-ref"
+><attribute name="name"
+/></element></oneOrMore></element></zeroOrMore></element><element name="volume"
+><attribute name="liters"
+/></element><element name="stop-time"
+><attribute name="seconds"
+/></element><element name="dump-interval"
+><attribute name="seconds"
+/></element><element name="epsilon"
+><attribute name="value"
+/></element><element name="seed"
+><attribute name="value"
+/></element></element></start></grammar>

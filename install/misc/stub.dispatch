@@ -1,0 +1,13 @@
+
+# Export the variables installed from the makefile.
+export SERVER_HTDOCS_DIR
+export SERVER_CGI_DIR
+
+# It appears that the web browser can't find java here?
+# Variation in browser installation?
+PATH=/usr/lib/java/jre/bin:$PATH
+
+# Now run a Perl script that dispatches to the actual demo.
+mzr-dispatch-task $*
+
+

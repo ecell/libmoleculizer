@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<grammar xmlns="http://relaxng.org/ns/structure/1.0"
+><start
+><ref name="operations_"
+/></start><define name="node"
+><element
+><name ns=""
+>node</name><choice
+><ref name="element_"
+/><ref name="text_"
+/><ref name="cdataSection_"
+/><ref name="entityReference_"
+/><ref name="processingInstruction_"
+/><ref name="comment_"
+/></choice></element></define><define name="operations_"
+><element
+><name ns=""
+>operations</name><choice
+><empty
+/><oneOrMore
+><ref name="operation_"
+/></oneOrMore></choice></element></define><define name="element_"
+><element
+><name ns=""
+>element</name><group
+><attribute
+><name ns=""
+>name</name><data datatypeLibrary="" type="token"
+/></attribute><choice
+><empty
+/><oneOrMore
+><ref name="attribute_"
+/></oneOrMore></choice><choice
+><empty
+/><oneOrMore
+><ref name="node"
+/></oneOrMore></choice></group></element></define><define name="text_"
+><element
+><name ns=""
+>text</name><text
+/></element></define><define name="cdataSection_"
+><element
+><name ns=""
+>cdataSection</name><text
+/></element></define><define name="entityReference_"
+><element
+><name ns=""
+>entityReference</name><attribute
+><name ns=""
+>name</name><data datatypeLibrary="" type="token"
+/></attribute></element></define><define name="processingInstruction_"
+><element
+><name ns=""
+>processingInstruction</name><group
+><attribute
+><name ns=""
+>target</name><text
+/></attribute><text
+/></group></element></define><define name="comment_"
+><element
+><name ns=""
+>comment</name><text
+/></element></define><define name="operation_"
+><element
+><name ns=""
+>operation</name><choice
+><ref name="nullOperation_"
+/><ref name="transitionOperation_"
+/><ref name="nodesInsertOperation_"
+/><ref name="nodeIntervalRemoveOperation_"
+/><ref name="nodeIntervalReplaceOperation_"
+/><ref name="nodeIntervalMoveOperation_"
+/><ref name="nodeIntervalReorderOperation_"
+/><ref name="nodeReplaceOperation_"
+/><ref name="nodeIntervalPackOperation_"
+/><ref name="elementUnpackOperation_"
+/><ref name="elementNameReplaceOperation_"
+/><ref name="textSplitOperation_"
+/><ref name="nextTextJoinOperation_"
+/><ref name="nodeSetValueOperation_"
+/><ref name="attrSetValueOperation_"
+/></choice></element></define><define name="attribute_"
+><element
+><name ns=""
+>attribute</name><group
+><attribute
+><name ns=""
+>name</name><data datatypeLibrary="" type="token"
+/></attribute><choice
+><empty
+/><attribute
+><name ns=""
+>value</name><text
+/></attribute></choice></group></element></define><define name="nullOperation_"
+><element
+><name ns=""
+>nullOperation</name><empty
+/></element></define><define name="transitionOperation_"
+><element
+><name ns=""
+>transitionOperation</name><empty
+/></element></define><define name="nodesInsertOperation_"
+><element
+><name ns=""
+>nodesInsertOperation</name><group
+><choice
+><empty
+/><attribute
+><name ns=""
+>parentElementPath</name><text
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>nodeIndex</name><data datatypeLibrary="" type="token"
+/></attribute></choice><choice
+><empty
+/><oneOrMore
+><ref name="node"
+/></oneOrMore></choice></group></element></define><define name="nodeIntervalRemoveOperation_"
+><element
+><name ns=""
+>nodeIntervalRemoveOperation</name><group
+><choice
+><empty
+/><attribute
+><name ns=""
+>elementPath</name><text
+/></attribute></choice><attribute
+><name ns=""
+>firstNodeIndex</name><data datatypeLibrary="" type="token"
+/></attribute><attribute
+><name ns=""
+>lastNodeIndex</name><data datatypeLibrary="" type="token"
+/></attribute></group></element></define><define name="nodeIntervalReplaceOperation_"
+><element
+><name ns=""
+>nodeIntervalReplaceOperation</name><group
+><choice
+><empty
+/><attribute
+><name ns=""
+>elementPath</name><text
+/></attribute></choice><attribute
+><name ns=""
+>firstNodeIndex</name><data datatypeLibrary="" type="token"
+/></attribute><attribute
+><name ns=""
+>lastNodeIndex</name><data datatypeLibrary="" type="token"
+/></attribute><choice
+><empty
+/><oneOrMore
+><ref name="node"
+/></oneOrMore></choice></group></element></define><define name="nodeIntervalMoveOperation_"
+><element
+><name ns=""
+>nodeIntervalMoveOperation</name><group
+><choice
+><empty
+/><attribute
+><name ns=""
+>sourceParentElementPath</name><text
+/></attribute></choice><attribute
+><name ns=""
+>firstSourceNodeIndex</name><data datatypeLibrary="" type="token"
+/></attribute><attribute
+><name ns=""
+>lastSourceNodeIndex</name><data datatypeLibrary="" type="token"
+/></attribute><choice
+><empty
+/><attribute
+><name ns=""
+>destinationElementPath</name><text
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>destinationNodeIndex</name><data datatypeLibrary="" type="token"
+/></attribute></choice></group></element></define><define name="nodeIntervalReorderOperation_"
+><element
+><name ns=""
+>nodeIntervalReorderOperation</name><group
+><choice
+><empty
+/><attribute
+><name ns=""
+>parentElementPath</name><text
+/></attribute></choice><attribute
+><name ns=""
+>nodeIndexes</name><text
+/></attribute></group></element></define><define name="nodeReplaceOperation_"
+><element
+><name ns=""
+>nodeReplaceOperation</name><group
+><choice
+><empty
+/><attribute
+><name ns=""
+>elementPath</name><text
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>nodeIndex</name><data datatypeLibrary="" type="token"
+/></attribute></choice><ref name="node"
+/></group></element></define><define name="nodeIntervalPackOperation_"
+><element
+><name ns=""
+>nodeIntervalPackOperation</name><group
+><choice
+><empty
+/><attribute
+><name ns=""
+>sourceParentElementPath</name><text
+/></attribute></choice><attribute
+><name ns=""
+>firstSourceNodeIndex</name><data datatypeLibrary="" type="token"
+/></attribute><attribute
+><name ns=""
+>lastSourceNodeIndex</name><data datatypeLibrary="" type="token"
+/></attribute><ref name="node"
+/></group></element></define><define name="elementUnpackOperation_"
+><element
+><name ns=""
+>elementUnpackOperation</name><attribute
+><name ns=""
+>elementPath</name><text
+/></attribute></element></define><define name="elementNameReplaceOperation_"
+><element
+><name ns=""
+>elementNameReplaceOperation</name><attribute
+><name ns=""
+>elementPath</name><text
+/></attribute></element></define><define name="textSplitOperation_"
+><element
+><name ns=""
+>textSplitOperation</name><group
+><attribute
+><name ns=""
+>elementPath</name><text
+/></attribute><attribute
+><name ns=""
+>nodeIndex</name><data datatypeLibrary="" type="token"
+/></attribute><attribute
+><name ns=""
+>offset</name><data datatypeLibrary="" type="token"
+/></attribute></group></element></define><define name="nextTextJoinOperation_"
+><element
+><name ns=""
+>nextTextJoinOperation</name><group
+><attribute
+><name ns=""
+>elementPath</name><text
+/></attribute><attribute
+><name ns=""
+>nodeIndex</name><data datatypeLibrary="" type="token"
+/></attribute></group></element></define><define name="nodeSetValueOperation_"
+><element
+><name ns=""
+>nodeSetValueOperation</name><group
+><choice
+><empty
+/><attribute
+><name ns=""
+>elementPath</name><text
+/></attribute></choice><attribute
+><name ns=""
+>nodeIndex</name><data datatypeLibrary="" type="token"
+/></attribute><text
+/></group></element></define><define name="attrSetValueOperation_"
+><element
+><name ns=""
+>attrSetValueOperation</name><group
+><attribute
+><name ns=""
+>elementPath</name><text
+/></attribute><attribute
+><name ns=""
+>attrName</name><data datatypeLibrary="" type="token"
+/></attribute><choice
+><empty
+/><attribute
+><name ns=""
+>isNull</name><choice
+><value datatypeLibrary="" ns="" type="token"
+>false</value><value datatypeLibrary="" ns="" type="token"
+>true</value></choice></attribute></choice><text
+/></group></element></define></grammar>

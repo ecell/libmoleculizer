@@ -1,0 +1,5 @@
+if test -z "$MOLRC_LOADED"
+then
+	MOLRC_LOADED=yes
+	export MOLRC_LOADED
+

@@ -1,0 +1,1045 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<html xml:lang="en" xmlns="http://www.w3.org/1999/xhtml"
+><head
+><title
+>xmloperator user guide</title><link href="xmloperator.css" rel="stylesheet" type="text/css"
+></link></head><body
+><p
+><a href="index.html" shape="rect"
+>Home</a></p><h1
+><a id="top" name="top" shape="rect"
+>xmloperator - User Guide</a></h1><p
+>This is the xmloperator user guide. It aims to help you in using the tool or in deciding if it could be useful to you. First section "<a href="#start" shape="rect"
+>Getting started</a>" gives an introduction to the tool and some entry points to this guide. Second one "<a href="#how" shape="rect"
+>How to do that</a>" is a list of question / answer for using the tool, in an arbitrary order. Third one "<a href="#tool" shape="rect"
+>Tool description</a>" is a description of the tool, in a hierarchical order.</p><ul
+><li
+><a href="#start" shape="rect"
+>Getting started</a></li><li
+><a href="#how" shape="rect"
+>How to do that ?</a></li><li
+><a href="#tool" shape="rect"
+>Tool description</a></li></ul><h2
+><a id="start" name="start" shape="rect"
+>Getting started</a></h2><p
+>xmloperator is an XML editor, a tool that allows you to create, read, and modify documents in XML format. Main features of the tool are the following :</p><ul
+><li
+>It displays exclusively a tree view of your document,</li><li
+>Editing is guided by any DTD (Document Type Definition) or RELAX NG schema.</li></ul><p
+>According to these features, it is suited for editing small to large, data oriented, documents, using a large variety of schemas.</p><p
+>At this point, you can start learning the tool use from one of the following links</p><p
+>about documents :</p><ul
+><li
+><a href="#load" shape="rect"
+>To load a document</a></li><li
+><a href="#navigate" shape="rect"
+>To navigate a document</a></li><li
+><a href="#create_document" shape="rect"
+>To create a new document</a></li><li
+><a href="#transform_document" shape="rect"
+>To transform a document</a></li><li
+><a href="#compare_documents" shape="rect"
+>To compare two documents</a></li></ul><p
+>about schemas :</p><ul
+><li
+><a href="#use_dtd" shape="rect"
+>To use DTDs</a></li><li
+><a href="#use_relaxng" shape="rect"
+>To use RELAX NG</a></li></ul><p
+>about (reversible) operations :</p><ul
+><li
+><a href="#modify_text_or_attribute_value" shape="rect"
+>To modify text or attribute values</a></li><li
+><a href="#add_and_remove_nodes" shape="rect"
+>To add and remove nodes</a></li><li
+><a href="#add_and_remove_attributes" shape="rect"
+>To add and remove attributes</a></li><li
+><a href="#move_nodes" shape="rect"
+>To move nodes</a></li><li
+><a href="#copy_nodes" shape="rect"
+>To copy nodes</a></li></ul><h2
+><a id="how" name="how" shape="rect"
+>How to do that ?</a></h2><p
+>This section is a list of question and answer about using the tool.</p><ul
+><li
+><a href="#load" shape="rect"
+>To load a document</a></li><li
+><a href="#navigate" shape="rect"
+>To navigate a document</a></li><li
+><a href="#modify_text_or_attribute_value" shape="rect"
+>To modify text or attribute values</a></li><li
+><a href="#add_and_remove_nodes" shape="rect"
+>To add and remove nodes</a></li><li
+><a href="#add_and_remove_attributes" shape="rect"
+>To add and remove attributes</a></li><li
+><a href="#move_nodes" shape="rect"
+>To move nodes</a></li><li
+><a href="#copy_nodes" shape="rect"
+>To copy nodes</a></li><li
+><a href="#create_document" shape="rect"
+>To create a new document</a></li><li
+><a href="#use_dtd" shape="rect"
+>To use DTDs</a></li><li
+><a href="#use_relaxng" shape="rect"
+>To use RELAX NG</a></li><li
+><a href="#use_dtdxml" shape="rect"
+>To use DTDXML</a></li><li
+><a href="#transform_document" shape="rect"
+>To transform a document</a></li><li
+><a href="#compare_documents" shape="rect"
+>To compare two documents</a></li></ul><h3
+><a id="load" name="load" shape="rect"
+>To load a document</a></h3><p
+>A document is loaded by an <a href="#instances" shape="rect"
+>instance of the tool</a>. You can open several documents in the same time by opening several instances of the tool.</p><p
+>You can load a document from your local disk or from a standard URL. In the first case, use the <i
+>File / Open document / Browse...</i> menu item (shortkey is Alt-O). In the second case, use the <i
+>File / Open document / Enter</i> menu item.</p><p
+>After validating loading the document will start. You will be able to follow the following steps of the loading process in the message bar :</p><ol
+><li
+>Each entity required by the document is loaded.</li><li
+>The tree view of the document is displayed. Nodes at the lowest level are expanded.</li><li
+>The schema associated to the document type is loaded.</li><li
+>IDs and IDREF(S)s are scanned and memorized for later quick reference.</li></ol><h3
+><a id="navigate" name="navigate" shape="rect"
+>To navigate a document</a></h3><p
+>You have a <a href="#tree_view" shape="rect"
+>tree view</a> of the opened document. This view corresponds to the Document Object Model of the W3C. At one time, you can select one or more nodes. When only one node is selected (this is the most common case), information relative to the selected node is displayed in the <a href="#detail_view" shape="rect"
+>detail view</a>.</p><p
+>There may be a lot of nodes in your document, then you need some mechanisms for finding them. The most common method to find a node is by content : you know some fragment of a text node or an attribute value. You can then use the "<a href="#search" shape="rect"
+>View / Search...</a>" menu item (shortkey is Ctrl+F) to find the node(s) from its (or their) content. For a more sophisticated criterion, you can use the "<a href="#evaluate" shape="rect"
+>View / Evaluate...</a>" menu item (shortkey is Ctrl+Shift+E) which uses a XPath expression.</p><p
+><a id="id_navigation" name="id_navigation" shape="rect"
+></a>This tool supports also <b
+>ID navigation</b>, based on any DTD or any RELAG NG schema that conforms to the DTD compatibility specification. Suppose you have selected an element that has a non-empty IDREF attribute. You can double-click on the attribute or use the <i
+>goto</i> menu item from the contextual menu (obtained by right mouse click on the element in the tree view) to select the target element, which has an ID attribute with the same value.</p><p
+>Another thing is to remember some nodes you have selected before. You can do that by double clicking on nodes that you want remember. Their are added on the navigation list, accessible through the "<a href="#navigation" shape="rect"
+>View / Browsing</a>" menu item.</p><h3
+><a id="modify_text_or_attribute_value" name="modify_text_or_attribute_value" shape="rect"
+>To modify text or attribute values</a></h3><p
+>Once your document <a href="#load" shape="rect"
+>loaded</a>, you can modify text and attribute values after selecting them.</p><p
+>For a text node, the text value is display both as a line in the tree view and as an editing area in the detail view. The tree view line is truncated and doesn't support editing. Editing occurs in the editing area where the text is fully accessible. You place your cursor at the location you desire and write your text. Your change is stored without you need to do an action for that. The text on the tree view is continually updated.</p><p
+>For an attribute, you have to select it in the attribute table of the element detail view. Then, if it is CDATA, you edit it, like for a text node, by placing your cursor somewhere in the value field and writing your value. No validation is required in this case. This is different for an ID, IDREF or IDREFS attribute. A button then occupies the value field. The button action opens a dialog window. For an ID, you enter the value and validate. For an IDREF or IDREFS attributes, you select the referenced element(s). For an enumeration, the value selection occurs directly in the attribute value field. Using ID, IDREF, IDREFS and enumeration works as well with a RELAX NG schema than with a DTD.</p><p
+><a id="save_or_not_save" name="save_or_not_save" shape="rect"
+></a>Once you have realized some changes on your document, you should <b
+>save</b> it. You can use the <i
+>File / Save document</i> menu item. Shortkey is Ctrl+S. If you forget to do that and close the document or the tool without saving the document, there will be no message to prevent you to do so. When you will reload the document, may be by re-launching the tool, you will have the surprise, after the loading of your document, to be proposed the execution of some operations. They correspond to the changes you forgot to save before closing the document. By accepting the operations, you apply your changes. By rejecting them you cancel your changes and will not be able any more to recover them. So, if you don't know what to do, the best is to accept the changes since you will be able to undo them later.</p><h3
+><a id="add_and_remove_nodes" name="add_and_remove_nodes" shape="rect"
+>To add and remove nodes</a></h3><p
+>For adding or removing a node in your document you can use the contextual menu (right click on the context node in the tree view), the <a href="#edit_menu" shape="rect"
+>Edit menu</a>, or a shortkey.</p><p
+>You can select a node (the context node) for inserting a node <b
+>before</b> it (shortkey is Ctrl+P) or <b
+>after</b> it (shortkey is Ctrl+N). The choice of the context node is not indifferent since it is generally used as pattern for the new node. If the context node is a text node then a text node will be inserted. It would be the same for cdata section node, comment node or processing instruction node. If the context node is an element and if the schema of the document allows the element to be repeated then an element with the same name than the context element is inserted elsewhere a list of possible names for the new element is proposed. If the list contains an only name then an element with that name is immediately inserted.</p><p
+>You can also add a <b
+>descendant</b> to an element. The shortkey is Ctrl+D. If the element has already descendants then it will be the last. If the element accept text node as descendant then a text node will be added else an element will be added. You will select the element name from a list of possible names or an element will be immediately added if there is only one possible element name.</p><p
+>Adding an element (from sibling or parent) may require adding more elements in order to maintain the document validity. The tool manages this aspect by proposing recursively to insert an element at each place where it is missing. At each time, you have to select an element name if there are several possible element names. When only one element name is possible then the element is inserted immediately. If you cancel some element name selection then the document will be kept in an invalid state. It's not a problem since you can <a href="#save_or_not_save" shape="rect"
+>save</a> an invalid document and make corrections later.</p><p
+><b
+>Removing</b> a node requires selecting it and asks for remove. The shortkey is Ctrl+Delete. The operation is not allowed if the element removing would make the element sequence invalid. In that case, you could have to select several nodes or to use the "<a href="#edit_mode_indicator" shape="rect"
+>Lazy</a>" mode. By using the lazy mode you make the choice to make temporally the document invalid.</p><p
+><b
+>Replacing</b> a node is equivalent to removing the node and inserting another node at the same place. If you want to change the node type of your node to another node type than element type then select this node type in the node type field of the detail view. Elsewhere, for changing to element type then use the <i
+>Edit / Replace</i> menu item. The shortkey is Ctrl+R. If an element is replaced by another element then the descendants, if any, are kept.</p><h3
+><a id="add_and_remove_attributes" name="add_and_remove_attributes" shape="rect"
+>To add and remove attributes</a></h3><p
+>For adding an attribute to a selected document of your document you can use the <i
+>New attribute</i> menu item of the context  menu (right click on the table attribute header) or the one of the <a href="#edit_menu" shape="rect"
+>Edit menu</a> or the shortkey Ctrl+U. This action opens a dialog window for selecting an attribute name. Names of attribute already in the element are excluded.</p><p
+>For removing an attribute from an element that you have selected in your document you have to select the attribute and ask for removing. You can either use the <i
+>Remove attribute</i> menu item of the contextual menu (right click on the attribute name or value in the attribute table) or the one of the Edit menu or the shortkey Alt+Delete. The operation will be not allowed if the attribute is required.</p><h3
+><a id="move_nodes" name="move_nodes" shape="rect"
+>To move nodes</a></h3><p
+>You can move one or more nodes at a time. Moving several nodes require they have the same parent node. Once you have selected your node(s) you can execute moves using one or two step(s).</p><p
+>A one step move is a local move. The following operations are proposed by the <a href="#move_menu" shape="rect"
+>Move menu</a> and the contextual menu (right click on one selected node).</p><table border="1" frame="border"
+><thead
+><tr
+><th colspan="1" rowspan="1"
+>Menu item</th><th colspan="1" rowspan="1"
+>Shortkey</th><th colspan="1" rowspan="1"
+>Action</th></tr></thead><tbody
+><tr
+><td colspan="1" rowspan="1"
+>Move previous</td><td colspan="1" rowspan="1"
+>Ctrl+Shift+Up</td><td colspan="1" rowspan="1"
+>The selected nodes are moved before the previous sibling node.</td></tr><tr
+><td colspan="1" rowspan="1"
+>Move next</td><td colspan="1" rowspan="1"
+>Ctrl+Shift+Down</td><td colspan="1" rowspan="1"
+>The selected nodes are moved after the next sibling node.</td></tr><tr
+><td colspan="1" rowspan="1"
+>Move child</td><td colspan="1" rowspan="1"
+>Ctrl+Shift+D</td><td colspan="1" rowspan="1"
+>The selected nodes are moved to the place of last descendant of the previous element.</td></tr><tr
+><td colspan="1" rowspan="1"
+>Move parent</td><td colspan="1" rowspan="1"
+>Ctrl+Shift+T</td><td colspan="1" rowspan="1"
+>The selected nodes are moved after their parent element.</td></tr></tbody></table><p
+>The two steps move works as follows :</p><ol
+><li
+><p
+>You select the node(s) to move and action the <i
+>To be moved</i> menu item of the Move menu or the contextual menu. Sortkey is Ctrl+Shift+M. Then the first node and the last node (if several nodes are selected) of the selected nodes interval are displayed in the detail view. There is also a "Cancel" button for canceling the operation.</p></li><li
+><p
+>You select a node in your document for using as a mark for the move. Then you execute one of the commands already examined for a local move.</p></li></ol><h3
+><a id="copy_nodes" name="copy_nodes" shape="rect"
+>To copy nodes</a></h3><p
+>For copying a node (or a sequence of nodes from the same parent node) from one document to the same document or to another document, the tool uses "<b
+>fragment</b>s". There is one fragment by opened document, i.e. tool instance. A fragment is a container for a node or a sequence of nodes. The nodes are not in the document but are always attached to the document. Fragment relatives operations are the following :</p><table border="1" frame="border"
+><thead
+><tr
+><th colspan="1" rowspan="1"
+>Menu item</th><th colspan="1" rowspan="1"
+>Shortkey</th><th colspan="1" rowspan="1"
+>Action</th></tr></thead><tbody
+><tr
+><td colspan="1" rowspan="1"
+>Cut</td><td colspan="1" rowspan="1"
+>Ctrl+X</td><td colspan="1" rowspan="1"
+>The selected nodes are removed from the document and put into the fragment attached to the document.</td></tr><tr
+><td colspan="1" rowspan="1"
+>Copy</td><td colspan="1" rowspan="1"
+>Ctrl+G</td><td colspan="1" rowspan="1"
+>The selected nodes are copied into the fragment attached to the document.</td></tr><tr
+><td colspan="1" rowspan="1"
+>Import</td><td colspan="1" rowspan="1"
+>Ctrl+Shift+F</td><td colspan="1" rowspan="1"
+>The nodes selected in another <a href="#load" shape="rect"
+>opened document</a> are copied into the fragment attached to the current document.</td></tr><tr
+><td colspan="1" rowspan="1"
+>Paste before</td><td colspan="1" rowspan="1"
+>Ctrl+V</td><td colspan="1" rowspan="1"
+>The node(s) contained in the fragment attached to the document are copied before the first selected node of the document.</td></tr><tr
+><td colspan="1" rowspan="1"
+>Paste after</td><td colspan="1" rowspan="1"
+>Ctrl+W</td><td colspan="1" rowspan="1"
+>The node(s) contained in the fragment attached to the document are copied after the last selected node of the document.</td></tr><tr
+><td colspan="1" rowspan="1"
+>Paste under</td><td colspan="1" rowspan="1"
+>Ctrl+Y</td><td colspan="1" rowspan="1"
+>The node(s) contained in the fragment attached to the document are copied as last descendant of the selected element of the document.</td></tr><tr
+><td colspan="1" rowspan="1"
+>Replace</td><td colspan="1" rowspan="1"
+>Ctrl+Shift+R</td><td colspan="1" rowspan="1"
+>The selected node(s) are replaced by the ones of the fragment.</td></tr><tr
+><td colspan="1" rowspan="1"
+>Copy to clipboard</td><td colspan="1" rowspan="1"
+>Alt+G</td><td colspan="1" rowspan="1"
+>The selected node(s) are copied into the fragment attached to the document and into the system clipboard. Entities (if any) are expanded for the system clipboard.</td></tr><tr
+><td colspan="1" rowspan="1"
+>Copy fragment to clipboard</td><td colspan="1" rowspan="1"
+>Ctrl+T</td><td colspan="1" rowspan="1"
+>The node(s) contained in the fragment attached to the document are copied into the system clipboard. Entities (if any) are expanded for the system clipboard.</td></tr><tr
+><td colspan="1" rowspan="1"
+>Copy clipboard to fragment</td><td colspan="1" rowspan="1"
+>Alt+T</td><td colspan="1" rowspan="1"
+>The system clipboard is parsed as a fragment, which is copied to the fragment attached to the document.</td></tr><tr
+><td colspan="1" rowspan="1"
+>Paste clipboard before</td><td colspan="1" rowspan="1"
+>Alt+V</td><td colspan="1" rowspan="1"
+>The system clipboard is parsed as a fragment, which is copied to the fragment attached to the document and copied before the first selected node of the document.</td></tr><tr
+><td colspan="1" rowspan="1"
+>Paste clipboard after</td><td colspan="1" rowspan="1"
+>Alt+W</td><td colspan="1" rowspan="1"
+>The system clipboard is parsed as a fragment, which is copied to the fragment attached to the document and copied after the last selected node of the document.</td></tr><tr
+><td colspan="1" rowspan="1"
+>Paste clipboard under</td><td colspan="1" rowspan="1"
+>Alt+Y</td><td colspan="1" rowspan="1"
+>The system clipboard is parsed as a fragment, which is copied to the fragment attached to the document and copied as last descendant of the selected element of the document.</td></tr></tbody></table><p
+>Copying elements is not equivalent to moving elements since they contain IDs, because IDs cannot be duplicated in the document. The tool takes care of changing the IDs of duplicated elements and keeping consistence of their references, if any.</p><h3
+><a id="create_document" name="create_document" shape="rect"
+>To create a new document</a></h3><p
+>For creating a new document, use the <i
+>Document / new document</i> menu item. This action opens a dialog window, titled "New document", asking you for a <a href="#document_types" shape="rect"
+>document type</a> and a file name.</p><p
+>If the document type of your future document is already defined then select it in the list. If it is not then click the <i
+>New</i> button at the right of the document type field. This action opens a dialog window for defining a new document type. You have to set the following information :</p><ul
+><li
+><p
+>The <b
+>name</b> is the name of the document element. It is not required but you should type it if there is only one possible document element name.</p></li><li
+><p
+>The <b
+>additional key</b> is useful for distinguishing two document types using the same document element name. It is optional but greatly recommended.</p></li><li
+><p
+>You may have to set DTD information or/and RELAX NG information. RELAX NG is more flexible and should be preferred  for editing. But you may need to reference a DTD from your document because, as an example, the document references external entities. When DTD and RELAX NG schema are set in the document type it is assumed that this is the RELAX NG schema which drives editing. See details on <a href="#use_dtd" shape="rect"
+>using DTDs</a> and <a href="#use_relaxng" shape="rect"
+>using RELAX NG</a>.</p></li><li
+><p
+>The <b
+>namespace identifier</b> is optional. If it is set then an "xmlns" attribute with that value will be added to the document element.</p></li><li
+><p
+>The "<b
+>shortcut used for empty elements</b>" flag has only an effect on writing out the document. The only justification of this flag is the bad interpretation of xhtml documents by old browsers.</p></li><li
+><p
+>The "<b
+>default transformer</b>" field allows setting a default <a href="#transformers" shape="rect"
+>transformer</a> for the document.</p></li></ul><p
+>You enter the file name end validates. A minimal document conforming to the document type is created, saved using the file name and re<a href="#load" shape="rect"
+>loaded</a>.</p><h3
+><a id="use_dtd" name="use_dtd" shape="rect"
+>To use DTDs</a></h3><p
+>The following DTD relative information is (optionally) attached to a document type :</p><ul
+><li
+><p
+>The <b
+>DTD Public Id</b> is destined to the DOCTYPE node of a new document.</p></li><li
+><p
+>The <b
+>Document relative System Id</b> is destined to the DOCTYPE node of a new document.</p></li><li
+><p
+>The <b
+>HTTP DTD System Id</b> is an absolute URI for referencing the document.</p></li><li
+><p
+>The <b
+>User relative DTD System Id</b> is an URI where the DTD will be accessed for editing.</p></li></ul><p
+>In your documents with DTD, you have to choose between a DTD internal subset and a DTD external subset. The reason is this one. Suppose you load a document which has a document type declaration with an internal subset and a reference to an external subset. The tool read a monolithic DTD, making no difference between the DTD internal subset and the external subset. It's cool for editing but when you will save your document the DTD internal subset will be lost.</p><p
+>So you have to choose between the two following cases :</p><ul
+><li
+><p
+>Your document refers to an external DTD and contains no internal subset. You have defined the document relative System Id information consistently. You may have defined the DTD Public Id. You may have defined the user relative DTD System Id in order to access it.</p></li><li
+><p
+>The document type declaration of your document contains a DTD internal subset and doesn't refer to an external subset. The DTD relative document type information is not set. In this case the DTD will be saved with the document, as DTD internal subset.</p></li></ul><p
+>If your document has or refers to a DTD and you want to remove completely the document type declaration from it, you can do that by clearing the saving option "DOCTYPE if DTD".</p><p
+>You can use a DTD to edit a document without document type declaration. You have simply to set the <i
+>User relative DTD System Id</i> and not set the <i
+>Document relative DTD System Id</i>. The DTD will be loaded after the document. At some time you might be asked for associating the document to a document type.</p><p
+>If your document type information includes the user relative DTD System Id then you have two methods for modifying the DTD : you can edit it as text by using the <i
+>Selected type / Edit DTD / as DTD</i> menu item of the <a href="#document_types_window" shape="rect"
+>Document types window</a>, ) or you can <a href="#use_dtdxml" shape="rect"
+>use DTDXML</a>.</p><h3
+><a id="use_relaxng" name="use_relaxng" shape="rect"
+>To use RELAX NG</a></h3><p
+>The tool offers some RELAX NG support. RELAX NG is used for guiding editing. The tool helps you to make your document valid but it doesn't verify all the constraints that a document must conform to be valid. Also you need an external RELAX NG validation tool for validating your document after editing with this tool.</p><p
+>The following RELAX NG relative information is (optionally) attached to a document type :</p><ul
+><li
+><p
+>The <b
+>RNG full syntax System Id</b> is an URI where the RELAX NG schema will be accessed for editing.</p></li><li
+><p
+>The <b
+>RNG simple syntax System Id</b> is an URI where should be available the RELAX NG schema in its simplified form.</p></li></ul><p
+>The tool contains a full syntax to simple syntax translator. You can launch the translator by using the <i
+>Build</i> button in the RELAG NG panel of the document type dialog (see the <a href="#document_types_window" shape="rect"
+>Document types window</a>). The input is the schema referenced by the <i
+>RNG full syntax System Id</i>. The output will be referenced by the <i
+>RNG simple syntax System Id</i>.</p><p
+>Another way to simplify a RELAX NG schema is to load it in a tool window and using the <i
+>File / Simplify RELAX NG schema</i> menu. There are three menu items that map to three possible modes of simplification :</p><ul
+><li
+><p
+><b
+>Simple syntax</b>. This mode produces the simple syntax as defined by the RELAX NG specification.</p></li><li
+><p
+><b
+>Group with more than two children</b>. Using this mode, all the simplification steps are executed except the §4.12 one that reduces the number of child elements. This is the mode used by the document type dialog.</p></li><li
+><p
+><b
+>Ref resolution only</b>. This mode executes minimal simplification. Its purpose is only to resolve the <i
+>externalRef</i> and <i
+>include</i> elements before transforming the schema to HTML for being browsed by the user.</p></li></ul><p
+>If you load a document associated to a document type whose the <i
+>RNG simple syntax System Id</i> is set then the RELAX NG schema will be loaded immediately after and you will be allowed to edit your document using this schema.</p><h3
+><a id="use_dtdxml" name="use_dtdxml" shape="rect"
+>To use DTDXML</a></h3><p
+>DTDXML is an XML dialect for representing DTDs. By editing a DTDXML document then compiling it to a DTD, you have a best control of the production of DTD. However there is no DTDXML specification, only a DTD. It's not a standard.</p><p
+>You want yet use it ? OK, we continue.</p><p
+>The pathname of the DTD that you have to produce is given as document type information. You can attach a DTDXML document to the document type by setting the <i
+>DTDXML System Id</i>. Then you can use the <a href="#document_types_window" shape="rect"
+>Document types window</a> in two steps :</p><ol
+><li
+><p
+>For editing the DTDXML document, use the <i
+>Selected type / Edit DTD / As DTDXML</i> menu item. The document will be loaded in a free tool instance. You will be guided by its DTD for editing.</p></li><li
+><p
+>For producing the DTD, use the <i
+>Selected type / Build DTD / DTDXML -&gt; DTD</i> menu item. The DTD is written out to the <i
+>User relative DTD System Id</i> (which must refer to a file).</p></li></ol><h3
+><a id="transform_document" name="transform_document" shape="rect"
+>To transform a document</a></h3><p
+>For transforming a document, you can use the <i
+>File / Transform document as</i> menu item. You enter a pathname for the destination file. If several transformers are available for this type of document then you will be asked for selecting one. The transformation is launched. Once this task finishes, you can open the resulting document. It is proposed at first position in the Reopen list.</p><p
+>But what is a transformer ?</p><p
+>A transformer is used for translating documents from an XML format to another XML format or to text format. This section considers particularly XSLT transformers. For defining a transformer you have to proceed as follows. First you opens the <a href="#transformers_window" shape="rect"
+>Transformers window</a> by using the <i
+>Document / Transformers</i> menu item. Then you use the "New" menu item on this window. This action will open a dialog window titled "Transformer" whose you will set the fields in that way :</p><ul
+><li
+><p
+>You have to give a <b
+>Name</b> to the transformer.</p></li><li
+><p
+>You set the <b
+>Document type name</b>, which is the name of the source document element. This is used for transformer selecting.</p></li><li
+><p
+>By clicking the <i
+>XSLT</i> button you will set the transformer <i
+>Class name</i> to "org.xmloperator.transform.XSLTTransformer", which is the adapter Java class to the Xalan XSLT processor, included to the tool.</p></li><li
+><p
+>You enter the <b
+>Style sheet System Id</b> or action the <i
+>Choose</i> button for selecting it by browsing.</p></li><li
+><p
+>You may have to give the list of <b
+>Param names</b> if any. They must be separated by spaces.</p></li><li
+><p
+>Check the <b
+>XML Result</b> box if the transformer must produce an XML document. Don't check for a text output format.</p></li><li
+><p
+>You enter the destination <i
+>DTD Public Id</i> and <i
+>DTD System Id</i> of your destination document only if you want to include a document type declaration to it.</p></li><li
+><p
+>You select the destination document <i
+>Encoding name</i>.</p></li><li
+><p
+>You can specify "<i
+>Standalone document</i>" and/or "<i
+>Shortcut use for empty element</i>" for the destination document.</p></li></ul><p
+>Your transformer is based on a style sheet. For writing such a style sheet by using the tool, you can use the <i
+>xsl:stylesheet</i> or the <i
+>xsl:transform</i> document type. They use a RELAX NG schema.</p><p
+>For debugging your style sheet, there is some XSLT options available. After modifying your style sheet document, you can re-transform your source document by using the <i
+>File / Transform document</i> (shortkey is Ctrlr+Shift+V), which uses the same destination document System Id than previously.</p><h3
+><a id="compare_documents" name="compare_documents" shape="rect"
+>To compare two documents</a></h3><p
+>The tool proposes the comparison of documents. The used method consists of associating comparable elements of the two documents. The comparison result doesn't depend on the order of elements. More precisely, elements with the same content but in another order are considered equal. This kind of comparison is usefull and suitable to the tool but you may need an ordered kind of comparison. If so then you should search for an "XML diff" tool on the web.</p><p
+>For comparing two documents, you must first loading each document in a separate <a href="#instances" shape="rect"
+>tool instance</a>, then using the <i
+>Compare / Associate</i> menu item on one of the two instances. The look of each document is changed in that way :</p><ul
+><li
+><p
+>An element identical to an element of the other document keeps its normal font.</p></li><li
+><p
+>An element that has no mapping element in the other document takes a bold font.</p></li><li
+><p
+>An element associated to an element of the other document because one or more of its children are associated to children of the other element takes an italic font.</p></li></ul><p
+>For selecting in the other document the element associated to an element (rendered by normal or italic font), you can use the <i
+>Compare / Associated element</i> menu item or its shortkey Ctrl+Shift+A.</p><p
+>You can edit one or the two documents but the comparison will be updated only if you re-launch it (shortkey is Ctrl+Shift+C).</p><p
+>By the <i
+>Disassociate</i> menu item, you disassociates the two documents. They take again their usual look. Disassociation is automatic if you close one of the two documents.</p><h2
+><a id="tool" name="tool" shape="rect"
+>Tool description</a></h2><p
+>This section is a description of the tool by using a hierarchical decomposition.</p><ul
+><li
+><a href="#instances" shape="rect"
+>Tool instances</a></li><li
+><a href="#main" shape="rect"
+>Instance main window</a></li><li
+><a href="#secondary" shape="rect"
+>Instance secondary windows</a></li><li
+><a href="#global" shape="rect"
+>Global windows</a></li><li
+><a href="#document_types" shape="rect"
+>Document types</a></li><li
+><a href="#tasks" shape="rect"
+>Tasks</a></li><li
+><a href="#operations" shape="rect"
+>Operations</a></li><li
+><a href="#transformers" shape="rect"
+>Transformers</a></li><li
+><a href="#options" shape="rect"
+>Options</a></li><li
+><a href="#particularities" shape="rect"
+>Particularities</a></li><li
+><a href="#bugs" shape="rect"
+>Bugs</a></li></ul><h3
+><a id="instances" name="instances" shape="rect"
+>Tool instances</a></h3><p
+>An instance of the tool has capability for managing one document. The document is displayed on the <a href="#main" shape="rect"
+>main instance window</a>.</p><p
+>Several tool instances can be opened simultaneously. This allows transfers and <a href="#compare_menu" shape="rect"
+>comparison between documents</a>.</p><p
+>A new instance is opened by using the <a href="#new_instance" shape="rect"
+>Document / New instance</a> menu item on the main instance window. Do not re-launch the tool from the operating system, the tool instances would be isolated and could not communicate.</p><p
+>There may be <a href="#secondary" shape="rect"
+>secondary windows</a> attached to the main instance window. They are closed when the main instance window is closed.</p><p
+>There may be <a href="#global" shape="rect"
+>global windows</a> attached to no particular instance. They are closed when the last main instance window is closed.</p><h3
+><a id="main" name="main" shape="rect"
+>Instance main window</a></h3><p
+>When you start the tool, the first opening window is a main instance window.</p><p
+>The tool instance main window is composed of a menu bar, a central area and a <a href="#status_bar" shape="rect"
+>status bar</a>.</p><p
+>The menu bar is composed of the <a href="#file_menu" shape="rect"
+>File menu</a>, the <a href="#document_menu" shape="rect"
+>Document menu</a>, the <a href="#edit_menu" shape="rect"
+>Edit menu</a>, the <a href="#move_menu" shape="rect"
+>Move menu</a>, the <a href="#fragment_menu" shape="rect"
+>Fragment menu</a>, the <a href="#view_menu" shape="rect"
+>View menu</a>, the <a href="#compare_menu" shape="rect"
+>Compare menu</a> and the <a href="#options_menu" shape="rect"
+>Options menu</a>. All of these menus are invariant. All of them are enabled except during the execution of a <a href="#tasks" shape="rect"
+>task</a>, such as loading a document.</p><p
+>The central area is splited to a <a href="#tree_view" shape="rect"
+>tree view</a> of the document and a <a href="#detail_view" shape="rect"
+>detail view</a> of the selected node, if any. The separation between the two can be moved with the mouse.</p><ul
+><li
+><a href="#file_menu" shape="rect"
+>File menu</a></li><li
+><a href="#document_menu" shape="rect"
+>Document menu</a></li><li
+><a href="#edit_menu" shape="rect"
+>Edit menu</a></li><li
+><a href="#move_menu" shape="rect"
+>Move menu</a></li><li
+><a href="#fragment_menu" shape="rect"
+>Fragment menu</a></li><li
+><a href="#view_menu" shape="rect"
+>View menu</a></li><li
+><a href="#compare_menu" shape="rect"
+>Compare menu</a></li><li
+><a href="#options_menu" shape="rect"
+>Options menu</a></li><li
+><a href="#tree_view" shape="rect"
+>Tree view</a></li><li
+><a href="#detail_view" shape="rect"
+>Detail view</a></li><li
+><a href="#status_bar" shape="rect"
+>Status bar</a></li></ul><h4
+><a id="file_menu" name="file_menu" shape="rect"
+>File menu</a></h4><p
+>The File menu is composed of the following, file or resource related, menu items.</p><p
+><a id="open_navigation" name="open_navigation" shape="rect"
+></a>The <b
+>Open document / Browse</b> menu item leads to opening of a document by browsing a file system. It opens a dialog window for selecting a file. You select an XML document and validate. The document file is <a href="#load" shape="rect"
+>loaded</a>.</p><p
+><a id="open_enter" name="open_enter" shape="rect"
+></a>The <b
+>Open document / Enter</b> menu item opens a document directly on the Web for consultation (or editing after it is saved in a file). A dialog window is opened for entering a URL. You enter the URL and validate. The document is loaded. It is read only.</p><p
+><a id="reopen" name="reopen" shape="rect"
+></a>The <b
+>Re-open document</b> menu item opens a previously opened document. A dialog window proposes to select a document given by its URI. A reduced path is used if the document is in a file located in local disk the current directory.</p><p
+><a id="close" name="close" shape="rect"
+></a>The <b
+>Close document</b> menu item closes the open document. It empties the main window space and closes the windows linked to the document, such as the <a href="#fragment_window" shape="rect"
+>fragment window</a> or the <a href="#operations_window" shape="rect"
+>operations window</a>.</p><p
+><a id="save" name="save" shape="rect"
+></a>The <b
+>Save document</b> menu item saves a document. When a save is requested, the change indicator assumes the value <i
+>Ready</i>.</p><p
+><a id="save_reload" name="save_reload" shape="rect"
+></a>The <b
+>Save and reload</b> document menu item saves a document and then reloads it.</p><p
+><a id="save_as" name="save_as" shape="rect"
+></a>The <b
+>Save document as</b> menu item saves the document under a new name. It opens a dialog window for entering the file name. Enter a file name and validate. If you don't enter a suffix, ".xml" will be automatically added. When the save is requested, the change indicator becomes "Ready".
+</p><p
+><a id="transform_as" name="transform_as" shape="rect"
+></a>The <b
+>Transform document as</b> menu item transforms the current document into another document. It opens a first dialog window for entering the name of the file receiving the destination document, and a second dialog window for specifying the parameter values. After the transformation, the destination file is at the top of the &lt;re-open&gt; list.</p><p
+><a id="transform" name="transform" shape="rect"
+></a>The <b
+>Retransform document</b> menu item transforms the current document into the last destination document. It opens a dialog window for specifying the parameter values. After the transformation, the destination file is at the top of the &lt;re-open&gt; list.</p><p
+><a id="process_batch" name="process_batch" shape="rect"
+></a>The <b
+>Process batch</b> menu item opens a dialog for selecting a <i
+>batch</i> file and processing it. A <i
+>batch</i> file is built using the <i
+>xmloperator/batch</i> document type. The <i
+>batch</i> document is a list of transformations to do.</p><p
+><a id="open_dtd_browse" name="open_dtd_browse" shape="rect"
+></a>The <b
+>Open DTD / Browse</b> menu item is used to open a DTD by browsing a file system. It opens a selection window. You select a DTD file and validate. This option has no effect if no document is opened. If a document is opened then the new DTD replaces the one attached to the document.</p><p
+><a id="open_dtd_enter" name="open_dtd_enter" shape="rect"
+></a>The <b
+>Open DTD / Enter</b> menu item enables the opening of a DTD directly on the Web. A dialog window is opened for entering a URL. You enter the URL and validate. The behavior of this command is the same as the previous one.</p><p
+><a id="close_dtd" name="close_dtd" shape="rect"
+></a>The <b
+>Close DTD</b> menu item closes the currently used DTD and reuse the original one (which was attached to the document). The option has no effect if no DTD has been loaded. If the document-node is selected then the detail view indicates that the used DTD is not the original one.</p><p
+><a id="open_rng_browse" name="open_rng_browse" shape="rect"
+></a>The <b
+>Open RELAX NG schema / Browse</b> menu item is used to open a RELAX NG schema by browsing a file system. It opens a selection window. You select an RNG file and validate. This option has no effect if no document is opened. If a document is opened then the new schema replaces the one attached to the document.</p><p
+><a id="open_rng_enter" name="open_rng_enter" shape="rect"
+></a>The <b
+>Open RELAX NG schema / Enter</b> menu item enables the opening of a RELAX NG schema directly on the Web. A dialog window is opened for entering a URL. You enter the URL and validate. The behavior of this command is the same as the previous one.</p><p
+><a id="simplify_rng" name="simplify_rng" shape="rect"
+></a>The <b
+>Simplify RELAX NG schema</b> menu has three menu item. Any of them opens a dialog for entering the pathname of a file, which will receive the result of simplifying. The input schema is the currently loaded document. Each menu item maps to a particular simplification mode. The first one produces the simple syntax as specified in the RELAX NG specification. The second one keeps more than 2 children in <i
+>group</i>, <i
+>interleave</i> and <i
+>choice</i> elements. The third one applies a ligth simplification for browsing by user (after transformation to HTML).</p><p
+><a id="exit" name="exit" shape="rect"
+></a>The <b
+>Exit</b> menu item closes the instance of the tool. It is the equivalent of using the close button located in the frame. The application is closed when the last window is closed.</p><h4
+><a id="document_menu" name="document_menu" shape="rect"
+>Document menu</a></h4><p
+>The Document menu is composed of the following, document or tool instance related, menu items.</p><p
+><a id="new_document" name="new_document" shape="rect"
+></a>The <b
+>New document</b> menu item creates a new document. A dialog window is opened for entering the type and name of the document. You enter the desired information, and validate. A confirmation window appears if a file with the same name already exists. Confirm if necessary. The document is created and displayed. The document element may be completed if the schema attached to the document type requires it.</p><p
+><a id="new_instance" name="new_instance" shape="rect"
+></a>The <b
+>New instance</b> menu item activates the opening of a new <a href="#main" shape="rect"
+>tool instance main window</a>.</p><p
+><a id="open_document_types" name="open_document_types" shape="rect"
+></a>The <b
+>Document types</b> menu item gives the user access to the document types by opening the <a href="#document_types_window"
+>document types window</a>.</p><p
+><a id="open_document_type" name="open_document_type" shape="rect"
+></a>The <b
+>Document type</b> menu item opens a dialog box for reading or modifying the information relative to the type of the current document (if a document is opened).</p><p
+><a id="open_transformer_list" name="open_transformer_list" shape="rect"
+></a>The <b
+>Transformers</b> menu item gives the user access to the transformers by opening the <a href="#transformers_window"
+>transformers window</a>.</p><p
+><a id="add_namespace" name="add_namespace" shape="rect"
+></a>The <b
+>Add namespace</b> menu item adds a namespace declaration to the document root element. The user has been first asked for selecting the namespace URI in a dialog box. The prefix used is the usual prefix for that namespace.</p><p
+><a id="delete_empty_texts" name="delete_empty_texts" shape="rect"
+></a>The <b
+>Remove empty texts</b> menu item deletes the text nodes that only contain blanks and empty lines. This action is only authorized if the document is not modified. It is not reversible.</p><p
+><a id="indent_elements" name="indent_elements" shape="rect"
+></a>The <b
+>Indent the elements</b> menu item indents all the elements. Texts and mixed contents are left unchanged. This action is only authorized if the document is not modified. It is not reversible.</p><p
+><a id="edit_source" name="edit_source" shape="rect"
+></a>The <b
+>Edit source</b> menu item enables editing of the XML document as ordinary text. It opens the document as text in a new editing window. Direct editing of an XML document is not recommended because of the risk of incorrect formatting, which would prevent a user from opening it as an XML document.</p><h4
+><a id="edit_menu" name="edit_menu" shape="rect"
+>Edit menu</a></h4><p
+>The Edit menu executes operations on nodes of the opened document. All these operations are reversible.</p><p
+><a id="undo" name="undo" shape="rect"
+></a>The <b
+>Undo</b> menu item allows you to reverse an operation. The last "positive" operation to be completed is "reversed". The resulting "negative" operation is run and kept in memory, in case it is called to be "redone". No action is undertaken if there is no Undo operation. If several successive operations are linked (for the validity of the document), then the operations in question are all undone.</p><p
+><a id="redo" name="redo" shape="rect"
+></a>The <b
+>Redo</b> menu item enables you to redo an operation previously undone. The last "negative" operation to be run is "reversed". The resulting "positive" operation is run and saved in memory, in case it is called to be "undone". No action is undertaken if there is no operation to redo. If several successive operations are linked (for the validity of the document), then the operations in question are all redone.</p><p
+><a id="new_previous" name="new_previous" shape="rect"
+></a>The <b
+>New previous</b> menu item creates a new node and inserts it immediately before the selected node. If several nodes are selected, the first one is considered. The node type created is the same as that of the selected node. If an element has to be created then its name might have to be selected in a list of possible names. If the insertion makes the document invalid because not complete then new inserts will be generated automatically.</p><p
+><a id="new_next" name="new_next" shape="rect"
+></a>The <b
+>New next</b> menu item works like last one with this difference that insert occurs after the selected node.</p><p
+><a id="new_child" name="new_child" shape="rect"
+></a>The<b
+> New child</b> menu item works like the two last ones with the difference that the new node will be the last descendant of the selected node. If the new node will be the first child node and if a text node can go there then the new node will be a text node.</p><p
+><a id="replace_node" name="replace_node" shape="rect"
+></a>The <b
+>Replace</b> menu item operates if one node is selected. Operation consists of replacing the node by an element. You might have to select the element name from a list of possible names. If an element is replaced by another element then the descendants, if any, are kept. If the new element requires descendants then they will be created except those for which you would cancel the element name selection.</p><p
+><a id="remove_nodes" name="remove_nodes" shape="rect"
+></a>The <b
+>Remove</b> menu item deletes the selected node(s). If several nodes are selected, they must follow each other and belong to the same hierarchical level. If not, no action is undertaken. Similarly, if the deletion would make the document invalid, then the operation is not allowed.</p><p
+><a id="pack_nodes" name="pack_nodes" shape="rect"
+></a>The <b
+>Pack</b> menu item creates a new element, inserts it in the place of the selected node(s) and makes the selected node(s) descendants of this new element. If several nodes are selected, they must follow each other and belong to the same hierarchical level. If not, no action is undertaken. If the action would make the document invalid then the operation is not allowed.</p><p
+><a id="new_attribute" name="new_attribute" shape="rect"
+></a>The <b
+>New Attribute</b> menu item creates a new attribute for the selected element. You select an attribute name in a list of possible attribute name, excluding the attribute the element has already.</p><p
+><a id="remove_attribute" name="remove_attribute" shape="rect"
+></a>The <b
+>Remove attribute</b> menu item removes the selected attribute of the selected element. The operation is not allowed if the attribute is required.</p><p
+><a id="unpack_element" name="unpack_element" shape="rect"
+></a>The <b
+>Unpack</b> menu item replaces the selected element with the group of its descendants. No action is undertaken if a node other than an element is selected, or if several nodes are selected. If the action would make the document invalid  then the operation is not allowed.</p><p
+><a id="join_next" name="join_next" shape="rect"
+></a>The <b
+>Join next</b> menu item joins the selected node and the one immediately following it into one text node. Only one node must be selected, and both it and the one that follows it must be of the type "TEXT". If not, no action will be undertaken. The pieces of text are put end to end.</p><p
+><a id="split_text" name="split_text" shape="rect"
+></a>The <b
+>Split</b> menu item divides the text of the selected node into two text nodes, each one receiving part of the original text. The place where the text is split is defined by the current position of the cursor in the field of the detail view. No action is undertaken if several nodes are selected or if the node type selected is not "TEXT".</p><p
+><a id="special_operation" name="special_operation" shape="rect"
+></a>The <b
+>Special</b> menu item opens a window for selecting an operator [Operators] defined for the current document type. Nothing happens if no operator is defined for the current document type of if no document is opened.</p><h4
+><a id="move_menu" name="move_menu" shape="rect"
+>Move menu</a></h4><p
+>The Move menu executes nodes move operations into the opened document. All these operations are reversible.</p><p
+><a id="move_previous" name="move_previous" shape="rect"
+></a>The <b
+>Move previous</b> menu item moves the selected node(s) (or to be moved) before the preceding node. If several nodes are selected, they must follow each other and belong to the same hierarchical level. If not, no action is undertaken. If the move would make the document invalid then the operation is not allowed. No action is undertaken if the first node selected has no preceding node.</p><p
+><a id="move_next" name="move_next" shape="rect"
+></a>The <b
+>Move next</b> menu item moves the selected node(s) (or to be moved) after the node following the last one. If several nodes are selected, they must follow each other and belong to the same hierarchical level. If not, no action is undertaken. If the move would make the document invalid then the operation is not allowed. No action is undertaken if the last node selected has no following node.</p><p
+><a id="move_child" name="move_child" shape="rect"
+></a>The <b
+>Move child</b> menu item moves the selected node(s) (or to be moved) to the last descendants from the node which precedes the first one. If several nodes are selected, they must follow each other and belong to the same hierarchical level. If not, no action is undertaken. If the move would make the document invalid then the operation is not allowed. No action is undertaken if the first node selected has no preceding node or if this node preceding is not an element.</p><p
+><a id="move_parent" name="move_parent" shape="rect"
+></a>The <b
+>Move parent</b> menu item moves the node(s) selected (or to be moved) immediately after their parent node and at the same hierarchical level. If several nodes are selected, they must follow each other and belong to the same hierarchical level. If not, no action is undertaken. If the move would make the document invalid then the operation is not allowed. No action is undertaken if the grandparent of the node(s) selected does not accept such descendants.</p><p
+><a id="to_be_moved" name="to_be_moved" shape="rect"
+></a>The <b
+>To be moved</b> menu item notes the selected node(s) as those to be moved. The first and last node of the interval (in the case of several nodes) are represented in the detail area, with an abandon button above (or to the left). If several nodes are selected, they must follow each other and belong to the same hierarchical level. If not, no action is undertaken.</p><p
+><a id="reorder_ascending" name="reorder_ascending" shape="rect"
+></a>The <b
+>Reorder ascending</b> menu item puts the selected elements in increasing order according to their attribute values. No action occurs if the selected nodes are not all elements with the same name.</p><p
+><a id="reorder_descending" name="reorder_descending" shape="rect"
+></a>The <b
+>Reorder descending</b> menu item puts the selected elements in decreasing order according to their attribute values. No action occurs if the selected nodes are not all elements with the same name.</p><h4
+><a id="fragment_menu" name="fragment_menu" shape="rect"
+>Fragment menu</a></h4><p
+>The Fragment menu executes fragment operations into the opened document. All these operations are reversible (but some nuance explained in the text).</p><p
+><a id="cut" name="cut" shape="rect"
+></a>The <b
+>Cut</b> menu item has two actions: First a copy of the selected node(s) is realized to make up a fragment. Secondly the selected node(s) is/are deleted (the same as using the "Remove" option). If several nodes are selected, they must follow each other and belong to the same hierarchical level. If not, no action is undertaken. Similarly if the deletion would make the document invalid then the operation is not allowed. Note that only the second action is an operation. In particular, this deletion is reversible, while the one producing a fragment (possibly replacing an existing fragment) is not.</p><p
+><a id="copy" name="copy" shape="rect"
+></a>The <b
+>Copy</b> menu item realizes a copy of the selected node(s) to make up a fragment. If several nodes are selected, they must follow each other and belong to the same hierarchical level. If not, no action is undertaken. This action has no effect on the document and is therefore not considered as an operation.</p><p
+><a id="import" name="import" shape="rect"
+></a>The <b
+>Import</b> menu item imports the selected nodes of an opened document in another instance into this one. When several other instances are open, a dialog window opens to allow the selection of an instance. Each instance is represented by its number. This number appears in the title bar of the main window, after the tool name .</p><p
+><a id="paste_before" name="paste_before" shape="rect"
+></a>The <b
+>Paste before</b> menu item inserts the node(s) contained in the fragment immediately before the selected node. If the insertion would make the document invalid (because it is incomplete) then the operation is not allowed. If several nodes are selected, the first one is considered.</p><p
+><a id="paste_after" name="paste_after" shape="rect"
+></a>The <b
+>Paste after</b> menu item inserts the node(s) contained in the fragment immediately after the selected node. If the insertion makes the document invalid (because it is incomplete) then the operation is not allowed. If several nodes are selected, the last one is considered.</p><p
+><a id="paste_under" name="paste_under" shape="rect"
+></a>The <b
+>Paste under</b> menu item inserts the node(s) contained in the fragment as last descendants of the selected node. If the insertion makes the document invalid (because it is incomplete) then the operation is not allowed. No action is undertaken if several nodes are selected.</p><p
+><a id="replace_by_fragment" name="replace_by_fragment" shape="rect"
+></a>The <b
+>Replace</b> menu item replaces the selected node(s) by the content of the fragment.</p><p
+><a id="copy_to_clipboard" name="copy_to_clipboard" shape="rect"
+></a>The <b
+>Copy to clipboard</b> menu item realizes a copy of the selected node(s) to make up a fragment and copies it into the system clipboard. For the system clipboard, the entities, if any, are expanded. If several nodes are selected, they must follow each other and belong to the same hierarchical level. If not, no action is undertaken. This action has no effect on the document and is therefore not considered as an operation.</p><p
+><a id="copy_fragment_to_clipboard" name="copy_fragment_to_clipboard" shape="rect"
+></a>The <b
+>Copy fragment to clipboard</b> menu item copies the fragment into the system clipboard. For the system clipboard, the entities, if any, are expanded. This action has no effect on the document and is therefore not considered as an operation.</p><p
+><a id="copy_clipboard_to_fragment" name="copy_clipboard_to_fragment" shape="rect"
+></a>The <b
+>Copy fragment to clipboard</b> menu item parses the system clipboard for getting a fragment. This action has no effect on the document and is therefore not considered as an operation.</p><p
+><a id="paste_clipboard_before" name="paste_clipboard_before" shape="rect"
+></a>The <b
+>Paste clipboard before</b> menu item parses the clipboard for getting a fragment and inserts the node(s) contained in the fragment immediately before the selected node. If the insertion would make the document invalid (because it is incomplete) then the operation is not allowed. If several nodes are selected, the first one is considered.</p><p
+><a id="paste_clipboard_after" name="paste_clipboard_after" shape="rect"
+></a>The <b
+>Paste clipboard after</b> menu item parses the clipboard for getting a fragment and inserts the node(s) contained in the fragment immediately after the selected node. If the insertion makes the document invalid (because it is incomplete) then the operation is not allowed. If several nodes are selected, the last one is considered.</p><p
+><a id="paste_clipboard_under" name="paste_clipboard_under" shape="rect"
+></a>The <b
+>Paste clipboard under</b> menu item parses the clipboard for getting a fragment and inserts the node(s) contained in the fragment as last descendants of the selected node. If the insertion makes the document invalid (because it is incomplete) then the operation is not allowed. No action is undertaken if several nodes are selected.</p><h4
+><a id="view_menu" name="view_menu" shape="rect"
+>View menu</a></h4><p
+>The View menu is dedicated to opening views.</p><p
+><a id="navigation" name="navigation" shape="rect"
+></a>The <b
+>Browsing</b> menu item opens the <a href="#navigation_window" shape="rect"
+>navigation window</a>.</p><p
+><a id="open_operations" name="open_operations" shape="rect"
+></a>The <b
+>Operations</b> menu item opens the <a href="#operations_window" shape="rect"
+>operations window</a>.</p><p
+><a id="open_fragment" name="open_fragment" shape="rect"
+></a>The <b
+>Fragment</b> menu item opens the <a href="#fragment_window" shape="rect"
+>fragment window</a>.</p><p
+><a id="open_content_model" name="open_content_model" shape="rect"
+></a>The <b
+>Content model</b> menu item opens the <a href="#content_model_window" shape="rect"
+>content model window</a>.</p><p
+><a id="open_element_labelling" name="open_element_labelling" shape="rect"
+></a>The <b
+>Element labelling</b> menu item opens a dialog window for selecting a different labelling for the elements with the same name than the currently selected element (if any). Labelling may use child text for a leaf element, all attributes (default), all single child elements, an attribute with a given name, or a single child element with a given name. Automatic element labelling at document loading is optional (display option), true by default.</p><p
+><a id="open_referencing_elements" name="open_referencing_elements" shape="rect"
+></a>The <b
+>Referencing elements</b> menu item opens a <a href="#referencing_elements_window" shape="rect"
+>referencing elements window</a>. No action is undertaken in the following cases: the selected element does not have an ID type attribute, the selected node is not an element, several nodes are selected. Several windows of this type can be opened at the same time. They focus on different referenced elements. The attribute ID value of the reference element appears in the title of the window.</p><p
+><a id="search_invalid_element" name="search_invalid_element" shape="rect"
+></a>The <b
+>Invalid element</b> menu item searchs an invalid element content from the currently selected element. If such an element is found then it is selected otherwise the content of the initial element is given as deeply valid.</p><p
+><a id="open_errors" name="open_errors" shape="rect"
+></a>The <b
+>Errors</b> menu item opens the <a href="#errors_on_loading_window" shape="rect"
+>errors on loading window</a> that could have appeared during the loading of the document. The window is empty if no warnings or errors appeared during the loading. The information provided does not take into account the changes made to the document since the loading of the document.</p><p
+><a id="element_at_location" name="element_at_location" shape="rect"
+></a>The <b
+>Element at location</b> menu item opens a dialog for entering a line number and a column number. On validating this dialog, the most deeply element that contains this location will be selected.</p><p
+><a id="open_exception_trace" name="open_exception_trace" shape="rect"
+></a>The <b
+>Exception trace</b> menu item displays the trace of an anomaly that would have occurred. The window is empty if no anomaly has occurred.</p><p
+><a id="search" name="search" shape="rect"
+></a>The <b
+>Search</b> menu item opens a dialog window allowing the entry of text (the object of the search). You can specify if the search should be or not case-sensitive. The text field is initially filled with the text used for the last search. You can enter a new text or select a previous searched text. You validate. A window entitled "Search results" opens. It contains the list of nodes that contain the search text. If a search results window is already open, then it is requisitioned to present the results of the new search. The search focuses on the whole document. It is independent of the selected node(s).</p><p
+><a id="evaluate" name="evaluate" shape="rect"
+></a>The <b
+>Evaluate</b> menu item opens a dialog window allowing the entry of XPath Expression for evaluation. The dialog window contains two parts : an entry field for the XPath expression and a wizard frame for building a location path. The context node is the document element. Enter an expression or use the wizard and validate. If the expression is a location path then the result will be given in the same window than used for searching text. The wizard proposes to build a location path by a sequence of steps beginning from the document element. Each step specifies either an element name or the text node type or the any node type, as child or a descendant, with zero or more predicates. An element name is selected using a combo-box. A predicate is entered using a text field. Select a radio-button and press the <i
+>Next</i> button until the wizard terminates.</p><p
+><a id="open_statistics" name="open_statistics" shape="rect"
+></a>The <b
+>Statistics</b> menu item opens a dialog window that provides a statistic of the document elements. Opposite each element name is the corresponding element count. Click on name header or on count header for sorting by element name or by element count.</p><p
+><a id="expand" name="expand" shape="rect"
+></a>The <b
+>Expand deeply</b> menu item expands deeply the selected node(s). When the action takes a long time because a lot of elements are expanded, you can stop the process by pressing the cancel button.</p><p
+><a id="change_layout" name="change_layout" shape="rect"
+></a>The <b
+>Change layout</b> menu item changes the internal layout of the tool instance. The tree and detail views are placed left and right or top and below. The internal layout of the detail view is also adapted.</p><p
+><a id="rebuild" name="rebuild" shape="rect"
+></a>The <b
+>Rebuild</b> menu item rebuilds "as is" the graphic interface of the tool instance. It can be useful if some peculiarities appear on the display. The secondary windows are not rebuilt. The information (document, fragment, operations, options, ...) is not affected.</p><h4
+><a id="compare_menu" name="compare_menu" shape="rect"
+>Compare menu</a></h4><p
+>The Compare menu is dedicated to document comparison.</p><p
+><a id="associate_documents" name="associate_documents" shape="rect"
+></a>The <b
+>Associate</b> menu item compares two open documents and associates them, element by element. If several other instances are open, a dialog window opens for the selection of the instance containing the document to be compared. For a comparison, the font attributes used to represent each element are modified in the following way. A normal font signifies full accord between the corresponding elements (without considering the order of the child elements). An italic font signifies partial accord between the corresponding elements (some child elements have no associated element). A bold font signifies that the element has no associated element.</p><p
+><a id="search_associated_element" name="search_associated_element" shape="rect"
+></a>The <b
+>Associated element</b> menu item selects, in the second document, the element corresponding to that selected in the first. The action has no effect if the selected element in the first document does not have a corresponding one in the second, or if several nodes are selected.</p><p
+><a id="dissociate_documents" name="dissociate_documents" shape="rect"
+></a>The <b
+>Disassociate</b> menu item destroys the established association between two documents. They take on their normal traits.</p><p
+><a id="merge_as" name="merge_as" shape="rect"
+></a>The <b
+>Merge as</b> menu item merges two documents currently associated, and saves the resulting document under a new name.</p><h4
+><a id="options_menu" name="options_menu" shape="rect"
+>Options menu</a></h4><p
+>The Options menu is dedicated to managing the settings.</p><p
+><a id="modify_settings" name="modify_settings" shape="rect"
+></a>The <b
+>Settings / Modify</b> menu item opens the settings dialog window. This window allows easy modification of the most current settings. The window is organized in sections, selectable by tab. Not all the settings are represented in this window. The absent settings must be edited in the options document.</p><p
+><a id="save_settings" name="save_settings" shape="rect"
+></a>The <b
+>Settings / Save</b> menu item saves the current settings in the options file. This action is not required since it is automatically executed at tool closing.</p><p
+><a id="reload_settings" name="reload_settings" shape="rect"
+></a>The <b
+>Settings / Reload</b> menu item reloads the saved settings. This action is useful after a modification is made to the options file. This modification would actually be lost after the automatic saving of the settings when the tool is closed.</p><p
+><a id="edit_settings" name="edit_settings" shape="rect"
+></a>The <b
+>Settings / Edit</b> menu item opens a new instance of the tool if the current one is not free and loads the settings document in that new instance for editing purposes.</p><p
+><a id="about" name="about" shape="rect"
+></a>The <b
+>About</b> menu item opens a dialog window displaying the tool version, the copyright and acknowledgement of outside contributions.</p><h4
+><a id="tree_view" name="tree_view" shape="rect"
+>Tree view</a></h4><p
+>The tree view takes up the left part (or upper, depending on the orientation selected) of the central area in a tool instance window. This view displays the document while editing. The document is decomposed using the Document Object Model (DOM) of the W3C.
+The nodes that have descendants are represented by a folder. The nodes without descendant are represented by a bullet. The nodes with descendant(s) can be expanded by clicking on the "+" icon in front of the folder icon.</p><h4
+><a id="detail_view" name="detail_view" shape="rect"
+>Detail view</a></h4><p
+>The detail view takes up the right part or the lower part of the central area in a tool instance window. This is the detail view of the selected node in the tree view. You can modify the selected node through it.</p><p
+>The detail view content depends on the type of the selected node but the node type always appears on top of it. The node type can or cannot be modifiable, depending of context, as explained in the following paragraphs. If the document is read-only then nothing in the document is modifiable.</p><p
+><a id="document_node_view" name="document_node_view" shape="rect"
+></a>The <b
+>DOCUMENT node</b> view contains the document system identifier, the encoding name, the standalone indicator, the document type and its additional key. The node type, document system identifier and document type cannot be changed. The encoding name and standalone indicator can be changed. The additional key can be changed. Each proposed additional key comes with the same document type name or with no specified document type name.</p><p
+><a id="doctype_node_view" name="doctype_node_view" shape="rect"
+></a>The <b
+>DOCTYPE node</b> view contains the DTD public identifier, and the DTD System Identifier. The node type, DTD public identifier and DTD system identifier cannot be changed.</p><p
+><a id="element_view" name="element_view" shape="rect"
+></a>The <b
+>ELEMENT node</b> view contains the element name, a field about (superficial) content validity and either a table of its attributes either a text area for the value of one of its attributes. The node type cannot be changed if the element has descendants. Neither the node type nor the element name can be changed if the element is the document element or if the element is required for the content validity of its parent element. Otherwise node type or element name can be changed.</p><p
+><a id="attribute_table" name="attribute_table" shape="rect"
+></a>The <b
+>attribute table</b> contains the attribute names and values. The selection of an attribute (by clicking on its name or value, or using the up and down arrow keys), displays the line in reverse video and shows the location of the attribute value an editing field adapted to the type of this attribute.</p><p
+>A popup list is displayed for an enumeration.</p><p
+>A button is displayed for ID, IDREF or IDREFS type of attribute. Action of this button opens a dialog window whose purpose is to entry the ID value in the case of ID type, to select an existing ID in the case of IDREF type, to select zero or more existing IDs in the case of IDREFS type.</p><p
+>An entry field is displayed for all other types of attribute.</p><p
+>By a rigth clic on the attribute table heading, a contextual menu popups with the following item :</p><ul
+><li
+><b
+>New attribute</b> for adding a new attribute to the selected element.</li></ul><p
+>By a rigth clic on an attribute name, a contextual menu popups with the following items :</p><ul
+><li
+><b
+>Select attribute</b> for opening the full text area for the selected attribute. You will be allowed to return to the attribute table mode by using the button that is labelled with the attribute name.</li><li
+><b
+>Remove attribute</b> for removing this attribute.</li></ul><p
+><a id="text_node_view" name="text_node_view" shape="rect"
+></a>The <b
+>TEXT node</b> view contains an editing area. The node type is modifiable except if the document is read-only. The editing area keeps the text between its vertical limits by going to the line if necessary, and preferably to spaces so as not to cut words. These line jumps do not make up part of the text (only those that are entered are part of the text).</p><p
+><a id="cdata_section_node_view" name="cdata_section_node_view" shape="rect"
+></a><a id="comment_node_view" name="comment_node_view" shape="rect"
+></a>The <b
+>CDATA SECTION node</b> and the <b
+>COMMENT node</b> view content are the same as the text node view content.</p><p
+><a id="entity_reference_node_view" name="entity_reference_node_view" shape="rect"
+></a>The <b
+>ENTITY REFERENCE node</b> view contains the name of the entity. You can select the entity from a list of declared or predefined entities.</p><p
+><a id="processing_instruction_node_view" name="processing_instruction_node_view" shape="rect"
+></a>The <b
+>PROCESSING INSTRUCTION node</b> view is similar to that of the text node view, except it includes a supplementary "Target" field.</p><p
+>A special case is when one or several nodes have been selected to be moved. In this case, the detail view displays the first and the last node (or only the first if there is only one). It also displays a button that can be used to cancel the move.</p><h4
+><a id="status_bar" name="status_bar" shape="rect"
+>Status bar</a></h4><p
+>The status bar, located on the bottom of the window, is made up of the following fields (from left to right): a document status indicator, an edit mode indicator and a message line. All indicators can be removed, see the options dialog, Status bar tab.</p><p
+><a id="document_status_indicator" name="document_status_indicator" shape="rect"
+></a>The <b
+>document status indicator</b> is a combo-box that can show the following: empty (grayed out), "Ready" (accessible), "Read-only" (accessible or grayed out), and "Modified" (grayed out). The indicator is empty when no document is open. The indicator is in "Ready" state if the open document can be edited and was not yet modified. The indicator shows "Read-only" if the open document is read-only. The status is "Modified" if the document was modified and has not been saved since.</p><p
+><a id="edit_mode_indicator" name="edit_mode_indicator" shape="rect"
+></a>The <b
+>edit mode indicator</b> is a check-box called "Lazy". In the regular mode (not "lazy"), all of the realized operations (without breaking down the linked operations) should respect the schema or DTD. In "lazy" mode, they can make the document not valid. Clearing the check-box while the content including the selected node is not valid has the effect of adding as many elements as necessary in order to make the content (superficially) valid.</p><p
+><a id="message_bar" name="message_bar" shape="rect"
+></a>Certain actions conclude with a message displayed in the <b
+>message bar</b>. Such a message is a simple reminder. An important and unexpected message such as an error always appears in a modal dialog window, because it must be accepted. The message is erased with each new action or at the end of a fixed amount of time.</p><h3
+><a id="secondary" name="secondary" shape="rect"
+>Instance secondary windows</a></h3><p
+>An instance secondary window depends on the instance main window. In particular it is automatically closed when the instance main window is closed. They are listed in the following lines. Some of them are unique for the instance, some others are multiple.</p><ul
+><li
+><a href="#navigation_window" shape="rect"
+>Navigation window</a></li><li
+><a href="#operations_window" shape="rect"
+>Operations window</a></li><li
+><a href="#fragment_window" shape="rect"
+>Fragment window</a></li><li
+><a href="#content_model_window" shape="rect"
+>Content model window</a></li><li
+><a href="#referencing_elements_window" shape="rect"
+>Referencing elements window</a></li><li
+><a href="#errors_on_loading_window" shape="rect"
+>Errors on loading window</a></li><li
+><a href="#search_results_window" shape="rect"
+>Search results window</a></li></ul><h4
+><a id="navigation_window" name="navigation_window" shape="rect"
+>Navigation window</a></h4><p
+>This window displays the list of nodes that were selected by double clicking.</p><h4
+><a id="operations_window" name="operations_window" shape="rect"
+>Operations window</a></h4><p
+>This window displays the list of operations realized with the tool since the document was loaded. It also allows the undoing or redoing of a group of operations.</p><p
+>The operations list is built from top to the bottom. When there are no operations to undo, the last operation in the list is the last operation to be realized. When there are operations to redo, but also to undo, they appear in the following order: the operations to undo, a separation line, and the operations to redo. When all of the operations are to be redone, the first operation is preceded by a separation line.</p><p
+>Each operation is always expressed as having been realized or to be realized. The reverse operation is never expressed this way. The operation wording generally consists of: a verb (Insert, Set value, ...), an object (element, TEXT, ...), and a context (within &lt;...&gt;, ...). A special operation, named "and", has no effect on the document. It links operations of which the indissociable execution ensures that the validity of the document is maintained.</p><p
+><a id="undo_all" name="undo_all" shape="rect"
+></a>The <b
+>Undo all</b> menu item undoes all the operations that can be undone.</p><p
+><a id="redo_all" name="redo_all" shape="rect"
+></a>The <b
+>Redo all</b> menu item redoes all the operations that can be redone.</p><p
+><a id="clear_undo" name="clear_undo" shape="rect"
+></a>The <b
+>Clear undo</b> menu item clears all the operations that can be undone. All that is left are possible operations to redo.</p><p
+><a id="clear_redo" name="clear_redo" shape="rect"
+></a>The <b
+>Clear redo</b> menu item clears all the operations that can be redone. All that is left are possible operations to undo.</p><p
+><a id="load_operations" name="load_operations" shape="rect"
+></a>The <b
+>Load</b> menu item opens an operations file selection window. If an operations file is actually open, its operations are run and added to the operations to be undone, with the possible operations to be redone being cleared.</p><p
+><a id="save_operations" name="save_operations" shape="rect"
+></a>The <b
+>Save</b> menu item opens a window for the entry of the name of the operations file. If the entry is validated, the operations that can be undone are saved in this operation file.</p><h4
+><a id="fragment_window" name="fragment_window" shape="rect"
+>Fragment window</a></h4><p
+>This window displays the fragment resulting from a cut or copy. It also enables the importing of a fragment from another document. A checkbox allows you to choice between erasure of the fragment or not, after paste.</p><p
+><a id="clear_fragment" name="clear_fragment" shape="rect"
+></a>The <b
+>Clear</b> menu item clears the fragment.</p><p
+><a id="import_fragment" name="import_fragment" shape="rect"
+></a>The <b
+>Import</b> menu item allows you to import selected nodes from another opened document in the current one. If several other instances are open, a dialog window opens so that you can select the instance from which to import. The action is abandoned if no other instances are open. The imported fragment replaces the current fragment, if there is one.</p><h4
+><a id="content_model_window" name="content_model_window" shape="rect"
+>Content model window</a></h4><p
+>This window displays the content model of the selected element when an element is selected. The notation is a mixed of DTD syntax and RELAX NG compact syntax. Attributes are present, prefixed by the '@' character. A default namespace of an nsName is represented by the 'D' character if no prefix is available for this namespace. This notation is destined to be interpreted by human, not by machine.</p><p
+>An help is provided for localizing parenthesis : When you clic at some position within the content model string, the text area between the corresponding left parenthesis and the corresponding rigth parenthesis is selected.</p><h4
+><a id="referencing_elements_window" name="referencing_elements_window" shape="rect"
+>Referencing elements window</a></h4><p
+>This window displays the list of elements for which an IDREF or IDREFS points to this element, considered as the target. Clicking on one of the referencing elements selects it in the tree view of the instance main window. Using the <i
+>Target</i> menu item, the target element is again selected in the tree view of the instance main window.</p><p
+>One can open as many referencing element windows as there are elements with ID in the document. The windows are updated according to the changes made to the document. A window from which the target element is deleted disappears by its own.</p><h4
+><a id="errors_on_loading_window" name="errors_on_loading_window" shape="rect"
+>Errors on loading window</a></h4><p
+>The loading error window opens during document loading if errors or warnings are triggered. Subsequently, this window can be re-opened using the <i
+>Errors</i> menu item of the instance main window. The window displays the list of errors and warnings. By selecting a line, the element in which the error appears is selected in the tree view of the main window. Double clicking on a line opens a source text editing window for the document (if it is not already open) and the line in the source text is selected.</p><h4
+><a id="search_results_window" name="search_results_window" shape="rect"
+>Search results window</a></h4><p
+>The search results window opens at the conclusion of a search for a text extract in the document that is being edited. This search is launched by the <i
+>Search</i> menu item of the instance main window. This window displays the list of nodes containing the text extract being searched for. The extract can be in the text of a node, or in an attribute value. The selection of a node in this list selects this node in the tree view of the main window. If this node includes an edit field (TEXT, PROCESSING INSTRUCTION and CDATA SECTION) then the first occurrence of the required text is selected. If this node is an element then the attribute containing the required text is selected.</p><p
+>A new search reopens the same results window, and erases the preceding search. The position and dimensions of the window are maintained.</p><h3
+><a id="global" name="global" shape="rect"
+>Global windows</a></h3><p
+>There are two global windows : the <a href="#document_types_window" shape="rect"
+>document types window</a> and the <a href="#transformers_window" shape="rect"
+>transformers window</a>. They are unique, can be opened from any instance main window and are closed when the last instance main window is closed.</p><ul
+><li
+><a href="#document_types_window" shape="rect"
+>Document types window</a></li><li
+><a href="#transformers_window" shape="rect"
+>Transformers window</a></li></ul><h4
+><a id="document_types_window" name="document_types_window" shape="rect"
+>Document types window</a></h4><p
+>This window defines the document types as well as their associated files. The window displays a table with a menu bar on top.</p><p
+>The document types table contains the following columns: Document type, additional key, and schema type (nothing, DTD, RNG or DTD + RNG). Select a line by clicking on it or by pressing the up or down arrow button. Double clicking on a line has the same effect as the <i
+>Modify</i> menu item.</p><p
+><a id="new_document_type" name="new_document_type" shape="rect"
+></a>The <b
+>New</b> menu item opens a dialog window for entering the new document type characteristics. That includes the document type name, the additional key, the DTD public identifier, the DTD reference HTTP URL, the DTD URL as it should appear in the "DOCTYPE" node of the document, the DTD user path, the DTDXML user path, the RELAX NG full syntax schema URL, the RELAX NG simplified schema URL, the namespace identifier, the flag for using shortcut for empty elements, and the reference transformer name. All the fields are optional, including the document type name.</p><p
+><a id="modify_document_type" name="modify_document_type" shape="rect"
+></a>The <b
+>Modify</b> menu item opens a dialog window allowing the modification of the document type selected. The dialog window is the same as that which defines a new document type.</p><p
+><a id="duplicate_document_type" name="duplicate_document_type" shape="rect"
+></a>The <b
+>Duplicate</b> menu item has the same effect than the <i
+>New</i> menu item with this difference that the entry fields get the values corresponding to the currently selected document type.</p><p
+><a id="xb710" name="build_dtd_from_dtdxml" shape="rect"
+></a>The <b
+>Remove</b> menu item removes the selected document type.</p><p
+><a id="build_dtd_from_dtdxml" name="build_dtd_from_dtdxml" shape="rect"
+></a>The <b
+>DTDXML -&gt; DTD</b> menu is about building a DTD from DTDXML. The first menu item translates each pattern element of the DTDXML document by a parameter entity declaration in the DTD. The second one applies these patterns without using parameter entities. Nothing is done if there is no DTDXML system Id in the document type information.</p><p
+><a id="edit_dtd_as_dtd" name="edit_dtd_as_dtd" shape="rect"
+></a>The <b
+>Edit DTD / As DTD</b> menu item opens an editing window for the DTD content. The window title is the user DTD System id. The text is read-only if the DTD is not in a file.</p><p
+><a id="edit_dtd_as_dtdxml" name="edit_dtd_as_dtdxml" shape="rect"
+></a>The <b
+>Edit DTD / As DTDXML</b> menu item opens a new tool instance or uses the current instance if it is free, for loading the DTDXML document. Nothing is done if the document type information contains no DTDXML system Id.</p><p
+><a id="edit_rng_full_syntax" name="edit_rng_full_syntax" shape="rect"
+></a>The <b
+>Edit RNG / Full syntax</b> menu item opens a new tool instance or uses the current instance if it is free, for loading the RELAX NG full syntax document. Nothing is done if the document type information contains no RELAX NG full syntax System Id.</p><p
+><a id="edit_rng_simple_syntax" name="edit_rng_simple_syntax" shape="rect"
+></a>The <b
+>Edit RNG / Simple syntax</b> menu item opens a new tool instance or uses the current instance if it is free, for loading the RELAX NG simple syntax document. Nothing is done if the document type information contains no RELAX NG simple syntax System Id.</p><h4
+><a id="transformers_window" name="transformers_window" shape="rect"
+>Transformers window</a></h4><p
+>This window defines the document transformers. The window displays a table with a menu bar on top.</p><p
+>The transformers table contains the following columns: transformer name, full name of implementation Java class, and System Id of its style sheet if it is an XSL Transformation. Select a line by clicking on it or by pressing the up or down arrow button. Double clicking on the line has the same effect than the <i
+>Modify</i> menu item.</p><p
+><a id="new_transformer" name="new_transformer" shape="rect"
+></a>The <b
+>New</b> menu item opens a dialog window for entering a new transformer. That includes the transformer name, the full Java class name, the System Id of the style sheet for an XSL Transformation, the destination DTD public identifier, the destination DTD System Id, the encoding name, a check box for standalone document and a check box for using or not the empty element shortcut. It is only possible to validate if the transformer name is entered.</p><p
+><a id="duplicate_transformer" name="duplicate_transformer" shape="rect"
+></a>The <b
+>Duplicate</b> menu item has the same effect than the New menu item with this difference that the entry fields get the values corresponding to the currently selected transformer.</p><p
+><a id="modify_transformer" name="modify_transformer" shape="rect"
+></a>The <b
+>Modify</b> menu item opens a dialog window allowing the modification of the transformer selected. The dialog window is the same as that which defines a new transformer.</p><p
+><a id="remove_transformer" name="remove_transformer" shape="rect"
+></a>The <b
+>Remove</b> menu item removes the selected transformer.</p><h3
+><a id="document_types" name="document_types" shape="rect"
+>Document types</a></h3><p
+>The tool keeps, for each document type, some relative information.</p><p
+>A document type is identified by the document element name and an additional key. If you want use different document element names with the same document type then keep the document element name empty. You can have several document types with the same document element name but with different additional keys. An additional key represents nothing by itself when creating a document.</p><p
+>The information attached to a document type includes: the DTD public identifier, the reference HTTP URL of the DTD, the URL of the DTD as it appears in the "DOCTYPE" node of the document, the path to the user DTD, the path to the XML version of the DTD, the RELAX NG full syntax System Id, the RELAX NG simple syntax System Id, the namespace identifier, the flag about using shortcut for empty elements, and the reference transformer name.</p><p
+>This information is that which is used during a document save. When the <i
+>Document relative DTD System Id</i> is absent then, the document DTD, if any, is inserted directly into the document.</p><h3
+><a id="tasks" name="tasks" shape="rect"
+>Tasks</a></h3><p
+>An action that could use some time is managed as a task. Examples of tasks are : loading a document, saving a document or transforms a document. During a task, all the menus are disabled and the indicators in the status bar are replaced by a <i
+>Cancel</i> button.</p><h3
+><a id="operations" name="operations" shape="rect"
+>Operations</a></h3><p
+>An &lt;operation&gt; is any atomic alteration made to a document, realized with the help of the tool. With each action of the tool that results in a change to the document in memory, an operation is created, run and added to a stack of operations. The operations already run can be cancelled. You can undo or redo any operation. The stack of operations can be consulted in the <a href="#operations_window" shape="rect"
+>operations window</a>. The operations can be kept for being rerun later in operations files. A special operation, labeled "and", has no effect on the document. This operation joins two operations. It signifies that the operations linked in this way must be considered indissociable, in order to maintain the validity of the document.</p><p
+><a id="operations_file" name="operations_file" shape="rect"
+></a>A sequence of operation can be saved in an <b
+>operations file</b> to be rerun later, in an equivalent context. An operations file has the suffix ".ope". The operations file relative to a document file carry the name of the document file in which the suffix is replaced by ".ope". For this reason, an operations file cannot be attached to an operations file.
+Editing an operations file uses a schema called xmloperator_x_y_operations.rng where x and y map to the release x.y.z of the tool.</p><p
+>At the conclusion of loading a document, if it exists an operations file attached to it then you will be prompted to rerun the operations it contains. An operation that cannot be run in a given document context will be rejected. You should to choose whether or not to run the subsequent operations.</p><p
+><a id="operators" name="operators" shape="rect"
+></a>An <b
+>operator</b> is an additional code, linked at run-time, implementing a given Java interface and realizing a special (and generally complex) sequence of operations.</p><h3
+><a id="transformers" name="transformers" shape="rect"
+>Transformers</a></h3><p
+>A transformer is used for producing a document from another document. The documents generally have not the same schema or DTD. The tool uses a standard transformer interface. You can create a Java class that implements this interface and dynamically link this class to the tool. You can also write an XSLT stylesheet. The XSLT engine is provided by the Xalan-J software of the Apache Software Foundation.</p><p
+>The information attached to a transformer includes : the transformer name, the full Java class name, the style sheet path name for an XSL Transformation and the output format depending information. The output format is either XML document or text. For an XML output, the public identifier and the system identifier of a destination DTD can be defined with the encoding names, the standalone flag and the shortcut enabling flag.</p><h3
+><a id="options" name="options" shape="rect"
+>Options</a></h3><p
+>All the settings of the tool are designated by &lt;options&gt;. Certain options may be modified by using the options dialog, the others can be modified by editing the options document. Options are loaded at tool launching and saved at tool closing.</p><p
+><a id="options_file" name="options_file" shape="rect"
+></a>The tool <b
+>options file</b> is named "xmloperator.xin". The path can be specified as parameter in the command line. If the path is not specified then the file is created in the tool's launch directory. Editing this document uses a schema called "xmloperator_x_y_options.rng" where x and y map to the release x.y.z of the tool.</p><h3
+><a id="particularities" name="particularities" shape="rect"
+>Particularities</a></h3><p
+>The tool defines a <b
+>processing instruction target</b>, named <i
+>xmloperator</i>, but without case distinction. An <i
+>xmloperator</i> processing instruction is supposed to be only interpreted by the xmloperator tool. All other document-processing tools are supposed to ignore this instruction. The tool uses these instructions to attach certain processing options to document instances. An instruction is made up of one or more space separated commands. Only the processing instructions whose parent node is the document element are interpreted. There is only one instruction currently defined : the "ReadOnly" instruction. The "ReadOnly" instruction opens a document in read only mode. This doesn't prevent you from switching immediately to the "Ready" mode and editing the document.</p><h3
+><a id="bugs" name="bugs" shape="rect"
+>Bugs</a></h3><p
+>There will be always bugs. We have simply to reduce their effects and manage their fixing.</p><p
+>A bug appears on an unexpected case and generally raises an exception. The exception is intercepted by the tool (but some ones are not) and is reported to you by a persistent message "SEE EXCEPTION TRACE" in the message bar. Then you have to use the <i
+>View / Exception trace</i> menu item for reading and accepting the exception. Accepting the exception means only that the "SEE EXCEPTION TRACE" message will be cleared.</p><p
+>The exception trace contains the date, the tool version, and the exception(s) that have arisen. Each exception appears as a call stack. For bug fixing, you should send a copy of this trace to the tool developer (info@xmloperator.net). Additional comments would be welcome.</p><hr
+></hr><table border="0" width="100%"
+><tr
+><td colspan="1" rowspan="1"
+>Last update : 2003-08-25
+</td><td colspan="1" rowspan="1"
+><small
+>Copyright (c) 2000 - 2003 The_xmloperator_project</small></td></tr></table></body></html>

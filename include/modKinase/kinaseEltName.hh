@@ -33,6 +33,8 @@ namespace kinase
   namespace eltName
   {
     extern const std::string kinaseGen;
+    extern const std::string modMolRef;
+    extern const std::string modMolRef_nameAttr;
     extern const std::string kinaseGen_rateExtrapAttr;
     extern const std::string kinaseGen_rateExtrap_none;
     extern const std::string kinaseGen_rateExtrap_mass;
@@ -57,8 +59,16 @@ namespace kinase
     extern const std::string ptaseGen_rateExtrap_mass;
     extern const std::string ptaseStochSpeciesRef;
     extern const std::string ptaseStochSpeciesRef_nameAttr;
+    extern const std::string phosphateSpeciesRef;
+    extern const std::string phosphateSpeciesRef_nameAttr;
 
     extern const std::string nucleotideBindGen;
+    extern const std::string nucleotideBoundModRef;
+    extern const std::string nucleotideBoundModRef_nameAttr;
+    extern const std::string noneModRef;
+    extern const std::string noneModRef_nameAttr;
+    extern const std::string nucleotideSpeciesRef;
+    extern const std::string nucleotideSpeciesRef_nameAttr;
     extern const std::string nucleotideBindGen_rateExtrapAttr;
     extern const std::string nucleotideBindGen_rateExtrap_none;
     extern const std::string nucleotideBindGen_rateExtrap_mass;

@@ -76,7 +76,7 @@ namespace mzr
     stoch::stochUnit theStochUnit;
 //     gpa::gpaUnit theGpaUnit;
 //     nucEx::nucExUnit theNucExUnit;
-//     kinase::modKinaseUnit theModKinaseUnit;
+    kinase::modKinaseUnit theModKinaseUnit;
 //     scaf::scaffoldUnit theScaffoldUnit;
     bndKinase::bndKinaseUnit theBndKinaseUnit;
 
@@ -103,11 +103,11 @@ namespace mzr
 // 		   theMolUnit,
 // 		   thePlexUnit,
 // 		   theStochUnit),
-//       theModKinaseUnit(rMoleculizer,
-// 		       theMzrUnit,
-// 		       theMolUnit,
-// 		       thePlexUnit,
-// 		       theStochUnit),
+      theModKinaseUnit(rMoleculizer,
+		       theMzrUnit,
+		       theMolUnit,
+		       thePlexUnit,
+		       theStochUnit),
 //       theScaffoldUnit(rMoleculizer,
 // 		      theMzrUnit,
 // 		      theMolUnit,
@@ -126,7 +126,7 @@ namespace mzr
       push_back(&theStochUnit);
 //       push_back(&theGpaUnit);
 //       push_back(&theNucExUnit);
-//       push_back(&theModKinaseUnit);
+      push_back(&theModKinaseUnit);
 //       push_back(&theScaffoldUnit);
       push_back(&theMzrUnit);
       push_back(&theBndKinaseUnit);

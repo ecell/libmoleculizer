@@ -34,6 +34,7 @@ REQUIRED_UNITS := domUtils \
 	plex \
 	dimer \
 	stoch \
+	modKinase \
 	bndKinase
 
 # REQUIRED_UNITS := domUtils \

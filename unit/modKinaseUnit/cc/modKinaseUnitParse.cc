@@ -30,8 +30,6 @@
 #include "stoch/stochSpecies.hh"
 #include "stoch/stochUnit.hh"
 #include "dimer/dimerEltName.hh"
-#include "gpa/gpaEltName.hh"
-#include "nucEx/nucExEltName.hh"
 #include "modKinase/nucBindFam.hh"
 #include "modKinase/modKinaseFam.hh"
 #include "modKinase/stochPtaseFam.hh"
@@ -50,10 +48,10 @@ namespace kinase
     // Get the name of the nucleotide-binding mol.
     xmlpp::Element* pModMolRefElt
       = domUtils::mustGetUniqueChild(pNucBindRxnGenElt,
-				     gpa::eltName::modMolRef);
+				     eltName::modMolRef);
     std::string modMolName
       = domUtils::mustGetAttrString(pModMolRefElt,
-				    gpa::eltName::modMolRef_nameAttr);
+				    eltName::modMolRef_nameAttr);
 
     // Look up the nucleotide-binding mol, and make sure that it's
     // a modMol.
@@ -77,11 +75,11 @@ namespace kinase
     // modification site.
     xmlpp::Element* pNucBoundModRefElt
       = domUtils::mustGetUniqueChild(pNucBindRxnGenElt,
-				     nucEx::eltName::nucleotideBoundModRef);
+				     eltName::nucleotideBoundModRef);
     std::string nucBoundModName
       = domUtils::mustGetAttrString
       (pNucBoundModRefElt,
-       nucEx::eltName::nucleotideBoundModRef_nameAttr);
+       eltName::nucleotideBoundModRef_nameAttr);
 
     // This routine should be made parallel with mustBetModMol, etc.
     const bnd::modification* pNucBoundMod
@@ -90,20 +88,20 @@ namespace kinase
     // Get the "none" modification.
     xmlpp::Element* pNoneModRefElt
       = domUtils::mustGetUniqueChild(pNucBindRxnGenElt,
-				     nucEx::eltName::noneModRef);
+				     eltName::noneModRef);
     std::string noneModName
       = domUtils::mustGetAttrString(pNoneModRefElt,
-				    nucEx::eltName::noneModRef_nameAttr);
+				    eltName::noneModRef_nameAttr);
     const bnd::modification* pNoneMod
       = rMolUnit.mustGetMod(noneModName);
 
     // Get the nucleotide, a stochastirator species.
     xmlpp::Element* pNucSpeciesRefElt
       = domUtils::mustGetUniqueChild(pNucBindRxnGenElt,
-				     nucEx::eltName::nucleotideSpeciesRef);
+				     eltName::nucleotideSpeciesRef);
     std::string nucleotideSpeciesName
       = domUtils::mustGetAttrString(pNucSpeciesRefElt,
-				    nucEx::eltName::nucleotideSpeciesRef_nameAttr);
+				    eltName::nucleotideSpeciesRef_nameAttr);
     stoch::stochSpecies* pNucleotide
       = rStochUnit.mustGetStochSpecies(pNucSpeciesRefElt,
 				       nucleotideSpeciesName);
@@ -274,10 +272,10 @@ namespace kinase
     // Get the unmodification.
     xmlpp::Element* pNoneModRefElt
       = domUtils::mustGetUniqueChild(pKinaseGenElt,
-				     nucEx::eltName::noneModRef);
+				     eltName::noneModRef);
     std::string noneModName
       = domUtils::mustGetAttrString(pNoneModRefElt,
-				    nucEx::eltName::noneModRef_nameAttr);
+				    eltName::noneModRef_nameAttr);
     const bnd::modification* pNoneMod
       = rMolUnit.mustGetMod(noneModName);
 
@@ -373,10 +371,10 @@ namespace kinase
     // Get phosphate, a stochastirator species.
     xmlpp::Element* pPhosphateSpeciesRefElt
       = domUtils::mustGetUniqueChild(pPtaseGenElt,
-				     gpa::eltName::phosphateSpeciesRef);
+				     eltName::phosphateSpeciesRef);
     std::string phosphateSpeciesName
       = domUtils::mustGetAttrString(pPhosphateSpeciesRefElt,
-				    gpa::eltName::phosphateSpeciesRef_nameAttr);
+				    eltName::phosphateSpeciesRef_nameAttr);
     stoch::stochSpecies* pPhosphate
       = rStochUnit.mustGetStochSpecies(pPhosphateSpeciesRefElt,
 				       phosphateSpeciesName);
@@ -394,10 +392,10 @@ namespace kinase
     // Get the unmodification.
     xmlpp::Element* pNoneModRefElt
       = domUtils::mustGetUniqueChild(pPtaseGenElt,
-				     nucEx::eltName::noneModRef);
+				     eltName::noneModRef);
     std::string noneModName
       = domUtils::mustGetAttrString(pNoneModRefElt,
-				    nucEx::eltName::noneModRef_nameAttr);
+				    eltName::noneModRef_nameAttr);
     const bnd::modification* pNoneMod
       = rMolUnit.mustGetMod(noneModName);
 

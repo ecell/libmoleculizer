@@ -44,11 +44,11 @@ UNITS := domUtils \
 	plex \
 	dimer \
 	stoch \
+	modKinase \
 	bndKinase \
 	sampleDist \
 	odie \
 	rk4tau
-
 
 # UNITS := domUtils \
 # 	mzr \

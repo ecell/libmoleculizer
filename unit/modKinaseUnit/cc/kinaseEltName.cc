@@ -30,6 +30,8 @@ namespace kinase
   namespace eltName
   {
     const std::string kinaseGen("kinase-gen");
+    const std::string modMolRef("mod-mol-ref");
+    const std::string modMolRef_nameAttr("name");
     const std::string kinaseGen_rateExtrapAttr("rate-extrapolator");
     const std::string kinaseGen_rateExtrap_none("none");
     const std::string kinaseGen_rateExtrap_mass("mass");
@@ -54,8 +56,16 @@ namespace kinase
     const std::string ptaseGen_rateExtrap_mass("mass");
     const std::string ptaseStochSpeciesRef("ptase-stoch-species-ref");
     const std::string ptaseStochSpeciesRef_nameAttr("name");
+    const std::string phosphateSpeciesRef("phosphate-species-ref");
+    const std::string phosphateSpeciesRef_nameAttr("name");
 
     const std::string nucleotideBindGen("nucleotide-bind-gen");
+    const std::string nucleotideBoundModRef("nucleotide-bound-mod-ref");
+    const std::string nucleotideBoundModRef_nameAttr("name");
+    const std::string noneModRef("none-mod-ref");
+    const std::string noneModRef_nameAttr("name");
+    const std::string nucleotideSpeciesRef("nucleotide-species-ref");
+    const std::string nucleotideSpeciesRef_nameAttr("name");
     const std::string nucleotideBindGen_rateExtrapAttr("rate-extrapolator");
     const std::string nucleotideBindGen_rateExtrap_none("none");
     const std::string nucleotideBindGen_rateExtrap_mass("mass");

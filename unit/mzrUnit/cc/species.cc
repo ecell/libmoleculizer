@@ -43,4 +43,16 @@ namespace mzr
 
     stateVar::getSensitiveReactions(rAffectedReactions);
   }
+
+  massive*
+  mustBeMassiveSpecies(xmlpp::Node* pRequestingNode,
+		       species* pSpecies)
+    throw(speciesNotMassiveXcpt)
+  {
+    massive* pMassive = dynamic_cast<massive*>(pSpecies);
+
+    if(0 == pMassive) throw speciesNotMassiveXcpt(pRequestingNode);
+
+    return pMassive;
+  }
 }

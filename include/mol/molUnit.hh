@@ -31,12 +31,14 @@
 #include "mzr/mzrUnit.hh"
 #include "mol/modification.hh"
 #include "mol/mol.hh"
-// For unknownModXcpt.
 #include "mol/molDomParse.hh"
 #include "mol/molEltName.hh"
+#include "mol/smallMol.hh"
 
 namespace bnd
 {
+  class smallMol;
+  
   class molUnit : public mzr::unit
   {
     class getValueMod :
@@ -90,6 +92,11 @@ namespace bnd
     mustFindModMol(xmlpp::Node* pRequestingNode,
 		   const std::string& rModMolName)
       throw(unknownMolXcpt, badModMolCastXcpt);
+
+    smallMol*
+    mustFindSmallMol(xmlpp::Node* pRequestingNode,
+		     const std::string& rSmallMolName)
+      throw(unknownMolXcpt, badSmallMolCastXcpt);
 
     bool
     addMod(const modification* pModification)

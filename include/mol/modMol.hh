@@ -119,6 +119,13 @@ namespace bnd
 						      rDflt)));
     }
 
+    // Returns the index of the modification site with the given name,
+    // or throws a parsing exception.
+    int
+    mustGetModSiteNdx(xmlpp::Node* pRequestingNode,
+		      const std::string& rModSiteName) const
+      throw(unknownModSiteXcpt);
+
     // Output to state dump.
     xmlpp::Element*
     insertInstanceState(xmlpp::Element* pInstanceStatesElt,

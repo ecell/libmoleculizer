@@ -23,24 +23,37 @@
 //   Berkeley, CA 94704
 /////////////////////////////////////////////////////////////////////////////
 
-#ifndef MOLDOMPARSE_H
-#define MOLDOMPARSE_H
+#ifndef PARSEBNDOMNIGEN_H
+#define PARSEBNDOMNIGEN_H
 
 #include "domUtils/domUtils.hh"
-#include "mol/molXcpt.hh"
-#include "mol/smallMol.hh"
+#include "mzr/mzrXcpt.hh"
+#include "mzr/mzrUnit.hh"
+#include "mol/molUnit.hh"
+#include "plex/plexUnit.hh"
 
-namespace bnd
+namespace bndKinase
 {
-  modMol*
-  mustBeModMolPtr(xmlpp::Node* pRequestingNode,
-		  mol* pMol)
-    throw(badModMolCastXcpt);
+  class parseBndOmniGen :
+    public std::unary_function<xmlpp::Node*, void>
+  {
+    mzr::mzrUnit& rMzrUnit;
+    bnd::molUnit& rMolUnit;
+    plx::plexUnit& rPlexUnit;
 
-  smallMol*
-  mustBeSmallMolPtr(xmlpp::Node* pRequestingNode,
-		    mol* pMol)
-    throw(badSmallMolCastXcpt);
+  public:
+    parseBndOmniGen(mzr::mzrUnit& refMzrUnit,
+		    bnd::molUnit& refMolUnit,
+		    plx::plexUnit& refPlexUnit) :
+      rMzrUnit(refMzrUnit),
+      rMolUnit(refMolUnit),
+      rPlexUnit(refPlexUnit)
+    {}
+
+    void
+    operator()(xmlpp::Node* pBndOmniGenNode) const
+      throw(mzr::mzrXcpt);
+  };
 }
 
-#endif // MOLDOMPARSE_H
+#endif // PARSEBNDOMNIGEN_H

@@ -242,19 +242,4 @@ namespace bnd
       ? -1
       : iEntry->second;
   }
-
-  // This should be an method of modMol, obviating the stupid pModMol
-  // argument.
-  int
-  modMolMixin::mustGetModSiteNdx(xmlpp::Node* pRequestingNode,
-				 const std::string& rModSiteName,
-				 modMol* pModMol) const
-    throw(unknownModSiteXcpt)
-  {
-    int ndx = getModSiteNdx(rModSiteName);
-    if(ndx < 0) throw unknownModSiteXcpt(pRequestingNode,
-					 rModSiteName,
-					 pModMol);
-    return ndx;
-  }
 }

@@ -23,24 +23,41 @@
 //   Berkeley, CA 94704
 /////////////////////////////////////////////////////////////////////////////
 
-#ifndef MOLDOMPARSE_H
-#define MOLDOMPARSE_H
+#ifndef BNDOMNIFAM_H
+#define BNDOMNIFAM_H
 
-#include "domUtils/domUtils.hh"
-#include "mol/molXcpt.hh"
-#include "mol/smallMol.hh"
+#include "bndKinase/bndOmniGen.hh"
 
-namespace bnd
+namespace bndKinase
 {
-  modMol*
-  mustBeModMolPtr(xmlpp::Node* pRequestingNode,
-		  mol* pMol)
-    throw(badModMolCastXcpt);
+  class bndOmniFam : public mzr::reactionFamily
+  {
+    bndOmniRxnGen rxnGen;
 
-  smallMol*
-  mustBeSmallMolPtr(xmlpp::Node* pRequestingNode,
-		    mol* pMol)
-    throw(badSmallMolCastXcpt);
+  public:
+    bndOmniFam(mzr::mzrUnit& refMzrUnit,
+	       plx::plexUnit& refPlexUnit,
+	       const std::vector<smallMolExchange>& rSMExchanges,
+	       const std::vector<modificationExchange>& rModExchanges,
+	       mzr::species* pAuxReactant,
+	       mzr::species* pAuxProduct,
+	       const bndOmniExtrapolator* pBndOmniExtrapolator) :
+      rxnGen(refMzrUnit,
+	     refPlexUnit,
+	     rSMExchanges,
+	     rModExchanges,
+	     pAuxReactant,
+	     pAuxProduct,
+	     this,
+	     pBndOmniExtrapolator)
+    {}
+
+    plx::omniFeature::rxnGen*
+    getRxnGen(void)
+    {
+      return &rxnGen;
+    }
+  };
 }
 
-#endif // MOLDOMPARSE_H
+#endif // BNDOMNIFAM_H

@@ -147,14 +147,14 @@ namespace bnd
     static std::string
     mkDomMsg(xmlpp::Node* pOffendingNode,
 	     const std::string& rModSiteName,
-	     modMol* pModMol);
+	     const modMol* pModMol);
 
     static std::string
     mkPlainMsg(const std::string& rModSiteName);
   public:
     unknownModSiteXcpt(xmlpp::Node* pOffendingNode,
 		       const std::string& rModSiteName,
-		       modMol* pModMol) :
+		       const modMol* pModMol) :
       mzr::mzrXcpt(mkDomMsg(pOffendingNode,
 			    rModSiteName,
 			    pModMol))
@@ -173,6 +173,19 @@ namespace bnd
   public:
     badModMolCastXcpt(xmlpp::Node* pOffendingNode,
 		      const mol* pMol) :
+      mzr::mzrXcpt(mkMsg(pOffendingNode,
+			 pMol))
+    {}
+  };
+
+  class badSmallMolCastXcpt : public mzr::mzrXcpt
+  {
+    static std::string
+    mkMsg(xmlpp::Node* pOffendingNode,
+	  const mol* pMol);
+  public:
+    badSmallMolCastXcpt(xmlpp::Node* pOffendingNode,
+			const mol* pMol) :
       mzr::mzrXcpt(mkMsg(pOffendingNode,
 			 pMol))
     {}

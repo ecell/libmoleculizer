@@ -131,7 +131,7 @@ namespace bnd
   std::string
   unknownModSiteXcpt::mkDomMsg(xmlpp::Node* pOffendingNode,
 			       const std::string& rModSiteName,
-			       modMol* pModMol)
+			       const modMol* pModMol)
   {
     std::ostringstream msgStream;
     msgStream << domUtils::domXcptMsg(pOffendingNode)
@@ -163,6 +163,18 @@ namespace bnd
 	      << "Mol "
 	      << pMol->getName()
 	      << " is not a mod-mol.";
+    return msgStream.str();
+  }
+
+  std::string
+  badSmallMolCastXcpt::mkMsg(xmlpp::Node* pOffendingNode,
+			     const mol* pMol)
+  {
+    std::ostringstream msgStream;
+    msgStream << domUtils::domXcptMsg(pOffendingNode)
+	      << "Mol "
+	      << pMol->getName()
+	      << " is not a small-mol.";
     return msgStream.str();
   }
 

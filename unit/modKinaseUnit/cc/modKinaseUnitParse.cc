@@ -68,8 +68,7 @@ namespace kinase
 				    bnd::eltName::modSiteRef_nameAttr);
     int modSiteNdx
       = pMol->mustGetModSiteNdx(pModSiteRefElt,
-				modSiteName,
-				pMol);
+				modSiteName);
 
     // Get the modification representing bound nucleotide at the above
     // modification site.
@@ -178,8 +177,7 @@ namespace kinase
 				    eltName::phosModSiteRef_nameAttr);
 
     int modSiteNdx = pModMol->mustGetModSiteNdx(pPhosModSiteRefElt,
-						phosModSiteName,
-						pModMol);
+						phosModSiteName);
     rMask[modSiteNdx] = true;
   }
 
@@ -211,8 +209,7 @@ namespace kinase
 				    eltName::atpModSiteRef_nameAttr);
     int atpModSiteNdx
       = pKinaseModMol->mustGetModSiteNdx(pAtpModSiteRefElt,
-					 atpModSiteName,
-					 pKinaseModMol);
+					 atpModSiteName);
 
     // Get the substrate modMol.
     xmlpp::Element* pSubstrateModMolRefElt

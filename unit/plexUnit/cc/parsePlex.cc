@@ -327,8 +327,7 @@ namespace plx
 	// Look up the modification site on the mol, getting the
 	// index of the modification site.
 	int modSiteNdx = pMol->mustGetModSiteNdx(pModSiteRefElt,
-						 modSiteName,
-						 pMol);
+						 modSiteName);
 
 	// Get the modification name.
 	xmlpp::Element* pModRefElt

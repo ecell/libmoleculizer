@@ -85,8 +85,8 @@ namespace bndKinase
     // argument.
     int phosSiteNdx 
       = pSubstrateModMol->mustGetModSiteNdx(pPhosSiteRefElt,
-					    phosSiteName,
-					    pSubstrateModMol);
+					    phosSiteName);
+
 
     // Parse the name of the phosphorylation modification.
     xmlpp::Element* pPhosModRefElt

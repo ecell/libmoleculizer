@@ -113,4 +113,14 @@ namespace bnd
 			   mustFindMol(pRequestingNode,
 				       rModMolName));
   }
+
+  smallMol*
+  molUnit::mustFindSmallMol(xmlpp::Node* pRequestingNode,
+			    const std::string& rSmallMolName)
+    throw(unknownMolXcpt, badSmallMolCastXcpt)
+  {
+    return mustBeSmallMolPtr(pRequestingNode,
+			     mustFindMol(pRequestingNode,
+					 rSmallMolName));
+  }
 }

@@ -48,6 +48,17 @@ namespace bnd
     return pModMol;
   }
 
+  smallMol*
+  mustBeSmallMolPtr(xmlpp::Node* pRequestingNode,
+		    mol* pMol)
+    throw(badSmallMolCastXcpt)
+  {
+    smallMol* pSmallMol = dynamic_cast<smallMol*>(pMol);
+    if(0 == pSmallMol) throw badSmallMolCastXcpt(pRequestingNode,
+						 pMol);
+    return pSmallMol;
+  }
+
   class installModification :
     public std::unary_function<xmlpp::Node*, void>
   {

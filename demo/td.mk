@@ -37,6 +37,7 @@ SHORT_DEMOS := 	bndKinase \
 	kinase-odie \
 	kinase-sbml \
 	modify \
+	omniKinase \
 	query-allostery \
 	receptor \
 	receptor-nx-extrap \

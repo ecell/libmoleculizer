@@ -85,8 +85,7 @@ namespace bndKinase
     // due to wierd, fixable, inheritance thing.
     int modSiteNdx
       = pSubstrateModMol->mustGetModSiteNdx(pModSiteRefElt,
-					    modSiteName,
-					    pSubstrateModMol);
+					    modSiteName);
 
     // Parse the name of the modification that is to be installed
     // at the specified modification site on the substrate mol.

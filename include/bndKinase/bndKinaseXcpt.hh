@@ -93,6 +93,24 @@ namespace bndKinase
 			 rMolInstanceName))
     {}
   };
+
+  class exchangedModXcpt : public mzr::mzrXcpt
+  {
+    std::string
+    mkMsg(bnd::mol* pOffendingMol)
+    {
+      std::ostringstream msgStream;
+      msgStream << mzr::internalXcptMsg()
+		<< "Expected mod mol, but got mol "
+		<< pOffendingMol->getName()
+		<< ".";
+      return msgStream.str();
+    }
+  public:
+    exchangedModXcpt(bnd::mol* pOffendingMol) :
+      mzr::mzrXcpt(mkMsg(pOffendingMol))
+    {}
+  };
 }
 
 #endif // BNDKINASEXCPT_H

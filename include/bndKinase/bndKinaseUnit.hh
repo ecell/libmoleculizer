@@ -57,6 +57,7 @@ namespace bndKinase
       // seems more rational to me.
       inputCap.addReactionGenName(eltName::bndKinaseGen);
       inputCap.addReactionGenName(eltName::modGen);
+      inputCap.addReactionGenName(eltName::bndOmniGen);
 
       // Register the enabling complexes for bndKinase reaction gens as
       // omniplexes, for processing by the plexUnit.
@@ -78,6 +79,18 @@ namespace bndKinase
 		   << slash
 		   << eltName::modGen;
       rPlexUnit.addOmniXpath(modGensXpath.str());
+
+      // Register the enabling complexes for bndOmniRxnGen generators
+      // as omniplexes, for processing by the plexUnit.
+      std::ostringstream bndOmniGensXpath;
+      bndOmniGensXpath << mzr::eltName::model
+		       << slash
+		       << mzr::eltName::reactionGens
+		       << slash
+		       << eltName::bndOmniGen
+		       << slash
+		       << eltName::enablingOmniplex;
+      rPlexUnit.addOmniXpath(bndOmniGensXpath.str());
     }
 
     // The input parsing routine for this unit.

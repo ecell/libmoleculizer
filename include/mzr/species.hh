@@ -105,6 +105,28 @@ namespace mzr
     virtual double
     getWeight(void) const = 0;
   };
+
+  // Can't go into mzrXcpt.hh, and no other reasonable home for this now.
+  class speciesNotMassiveXcpt : public mzrXcpt
+  {
+    std::string
+    mkMsg(xmlpp::Node* pOffendingNode)
+    {
+      std::ostringstream msgStream;
+      msgStream << domUtils::domXcptMsg(pOffendingNode)
+		<< "Expected massive species.";
+      return msgStream.str();
+    }
+  public:
+    speciesNotMassiveXcpt(xmlpp::Node* pOffendingNode) :
+      mzrXcpt(mkMsg(pOffendingNode))
+    {}
+  };
+
+  massive*
+  mustBeMassiveSpecies(xmlpp::Node* pRequestingNode,
+		       species* pSpecies)
+    throw(speciesNotMassiveXcpt);
 }
 
 #endif

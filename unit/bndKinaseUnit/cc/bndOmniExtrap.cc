@@ -23,24 +23,37 @@
 //   Berkeley, CA 94704
 /////////////////////////////////////////////////////////////////////////////
 
-#ifndef MOLDOMPARSE_H
-#define MOLDOMPARSE_H
+#include "bndKinase/bndOmniExtrap.hh"
+#include "mzr/pchem.hh"
 
-#include "domUtils/domUtils.hh"
-#include "mol/molXcpt.hh"
-#include "mol/smallMol.hh"
-
-namespace bnd
+namespace bndKinase
 {
-  modMol*
-  mustBeModMolPtr(xmlpp::Node* pRequestingNode,
-		  mol* pMol)
-    throw(badModMolCastXcpt);
+  bndOmniMassExtrap::
+  bndOmniMassExtrap(double theRate,
+		    const mzr::massive* pDefaultTriggeringSpecies,
+		    const mzr::massive* pMassiveAuxiliarySpecies) :
+    pMassive(pMassiveAuxiliarySpecies)
+  {
+    rateOrInvariant
+      = mzr::bindingInvariant(theRate,
+			      pDefaultTriggeringSpecies->getWeight(),
+			      pMassive->getWeight());
+  }
 
-  smallMol*
-  mustBeSmallMolPtr(xmlpp::Node* pRequestingNode,
-		    mol* pMol)
-    throw(badSmallMolCastXcpt);
+  double
+  bndOmniMassExtrap::
+  getRate(const plx::cxOmni& rWrappedContext) const
+  {
+    // Are we generating unary or binary reactions?
+    if(pMassive)
+      {
+	return mzr::bindingRate(rateOrInvariant,
+				rWrappedContext.getPlexWeight(),
+				pMassive->getWeight());
+      }
+    else
+      {
+	return rateOrInvariant;
+      }
+  }
 }
-
-#endif // MOLDOMPARSE_H

@@ -53,6 +53,30 @@ namespace bndKinase
     extern const std::string modSiteRef_nameAttr;
     extern const std::string installedModRef;
     extern const std::string installedModRef_nameAttr;
+
+    // Generic omni-based reaction generator.
+    extern const std::string bndOmniGen;
+    extern const std::string enablingOmniplex;
+
+    extern const std::string smallMolExchanges;
+    extern const std::string smallMolExchange;
+    extern const std::string smallMolInstanceRef;
+    extern const std::string smallMolInstanceRef_nameAttr;
+    extern const std::string smallMolRef;
+    extern const std::string smallMolRef_nameAttr;
+
+    extern const std::string modificationExchanges;
+    extern const std::string modificationExchange;
+    extern const std::string modMolInstanceRef;
+    extern const std::string modMolInstanceRef_nameAttr;
+
+    extern const std::string installedModRef;
+    extern const std::string installedModRef_nameAttr;
+
+    extern const std::string additionalReactantSpecies;
+    extern const std::string additionalReactantSpecies_nameAttr;
+    extern const std::string additionalProductSpecies;
+    extern const std::string additionalProductSpecies_nameAttr;
   }
 }
 

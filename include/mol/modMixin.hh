@@ -114,16 +114,10 @@ namespace bnd
     std::map<std::string, int> modSiteNameToNdx;
     std::vector<std::string> modSiteNames;
 
+    // Returns the index of the modification site with the given name,
+    // or -1 if there is no such modification site.
     int
     getModSiteNdx(const std::string& rModSiteName) const;
-
-    // This should be an method of modMol, obviating the stupid pModMol
-    // argument.
-    int
-    mustGetModSiteNdx(xmlpp::Node* pRequestingNode,
-		      const std::string& rModSiteName,
-		      modMol* pModMol) const
-      throw(unknownModSiteXcpt);
 
     int
     modSiteCount(void) const

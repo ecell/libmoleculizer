@@ -30,6 +30,20 @@
 
 namespace bnd
 {
+  // This should be an method of modMol, obviating the stupid pModMol
+  // argument.
+  int
+  modMol::mustGetModSiteNdx(xmlpp::Node* pRequestingNode,
+			    const std::string& rModSiteName) const
+    throw(unknownModSiteXcpt)
+  {
+    int ndx = getModSiteNdx(rModSiteName);
+    if(ndx < 0) throw unknownModSiteXcpt(pRequestingNode,
+					 rModSiteName,
+					 this);
+    return ndx;
+  }
+
   std::string
   modMol::genInstanceName(int molInstanceNdx) const
   {

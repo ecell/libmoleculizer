@@ -23,20 +23,29 @@
 #   Berkeley, CA 94704
 ###############################################################################
 
-DOT := $(DOT)/cc
+DOT := $(DOT)/omniKinase
 
-SOURCES := bndKinaseRxnGen.cc \
-	bndKinaseParse.cc \
-	bndKinaseEltName.cc \
-	bndOmniExtrap.cc \
-	bndOmniGen.cc \
-	modRxnGen.cc \
-	parseBndKinaseGen.cc \
-	parseBndOmniGen.cc \
-	parseModGen.cc
+$(DOT)/target : $(DOT)/omniKinase.out
 
-PREEN_LIST := $(PREEN_LIST) $(DOT)/*~
+$(DOT)/sbml : $(DOT)/omniKinase.out
+	cd $? \
+	&& state2sbml state-dump.xml state-dump.sbml \
+	&& xmlpretty state-dump.sbml state-dump-lines.sbml
 
-TAGS_LIST := $(TAGS_LIST) $(addprefix $(DOT)/,$(SOURCES))
+$(DOT)/omniKinase.out : $(DOT)/omniKinase.xml
+	mkdir $@
+	cp $? $@
+	cd $@ \
+	&& moleculizer < omniKinase.xml \
+	&& plot-dmp-files
+
+# For redoing individual demos several times.
+$(DOT)/clean : DT := $(DOT)
+$(DOT)/clean :
+	rm -rf $(DT)/*.out
+
+CLEAN_LIST := $(CLEAN_LIST) $(DOT)/*.out
+
+PREEN_LIST := $(PREEN_LIST) $(DOT)/*~ $(DOT)/*.bak
 
 DOT := $(call dotdot,$(DOT))

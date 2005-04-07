@@ -39,6 +39,7 @@ SHORT_DEMOS := 	bndKinase \
 	modify \
 	omniKinase \
 	omniPtase \
+	omniReceptor \
 	query-allostery \
 	receptor \
 	receptor-nx-extrap \

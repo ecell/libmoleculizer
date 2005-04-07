@@ -179,10 +179,14 @@ namespace bnd
   }
 
   std::string
-  badMolParamClassXcpt::mkMsg(const std::string& rMolName)
+  badMolParamClassXcpt::mkMsg(const std::string& rParamClassName,
+			      const std::string& rMolName)
   {
     std::ostringstream msgStream;
-    msgStream << "Parameter was of the wrong class for mol "
+    msgStream << mzr::internalXcptMsg()
+	      << "Parameter was of the wrong class, "
+	      << rParamClassName
+	      << ", for mol "
 	      << rMolName
 	      << ".";
     return msgStream.str();

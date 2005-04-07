@@ -249,7 +249,7 @@ namespace bndKinase
     // could be either unary or binary, depending on whether an additional
     // reactant is given, and there is a constructor for each of these cases.
     bndOmniMassExtrap* pExtrapolator = 0;
-    if(pAdditionalProductSpeciesElt)
+    if(pAdditionalReactantSpeciesElt)
       {
 	// Construct the default species of the triggering omniplex.
 	//

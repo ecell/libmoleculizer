@@ -59,11 +59,14 @@ namespace bndKinase
   class exchangeSmallMolParams :
     public std::unary_function<smallMolExchange, void>
   {
+    const plx::cxOmni& rEnabling;
     const plx::plexIsoPair& rResultToResultParadigm;
     std::vector<bnd::molParam>& rProductMolParams;
   public:
-    exchangeSmallMolParams(const plx::plexIsoPair& refResultToResultParadigm,
+    exchangeSmallMolParams(const plx::cxOmni& rEnablingOmni,
+			   const plx::plexIsoPair& refResultToResultParadigm,
 			   std::vector<bnd::molParam>& refProductMolParams) :
+      rEnabling(rEnablingOmni),
       rResultToResultParadigm(refResultToResultParadigm),
       rProductMolParams(refProductMolParams)
     {}
@@ -71,10 +74,14 @@ namespace bndKinase
     void
     operator()(const smallMolExchange& rExchange) const
     {
+      // Translate the molSpec of the exchanged mol into "result" indexing.
+      plx::plexMolSpec exchangedMolSpecTr
+	= rEnabling.translateMolSpec(rExchange.exchangedMolSpec);
+
       // Determine where the default state of the swapped-in
-      // small-mol should go.
+      // small-mol should go in "paradigm" indexing.
       plx::plexMolSpec paradigmSmallMolSpec
-	= rResultToResultParadigm.forward.molMap[rExchange.exchangedMolSpec];
+	= rResultToResultParadigm.forward.molMap[exchangedMolSpecTr];
 
       // Install the default state of the swapped in small-mol.
       rProductMolParams[paradigmSmallMolSpec]
@@ -210,7 +217,8 @@ namespace bndKinase
 	// substituted in.
 	std::for_each(smallMolExchanges.begin(),
 		      smallMolExchanges.end(),
-		      exchangeSmallMolParams(resultToResultParadigm,
+		      exchangeSmallMolParams(cxEnabling,
+					     resultToResultParadigm,
 					     resultMolParams));
 
 	// Perform the modification exchanges.

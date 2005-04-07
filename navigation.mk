@@ -33,6 +33,7 @@ BIN := ./bin
 DOC := ./doc
 INSTALL := ./install
 SERVER := ./server
+UNIT := ./unit
 XML := ./xml
 XSL := $(XML)/xsl
 SCHEMA := $(XML)/schema

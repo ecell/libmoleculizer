@@ -26,6 +26,11 @@
 #ifndef MOL_H
 #define MOL_H
 
+extern "C"
+{
+#include <demangle.h>
+}
+
 #include <vector>
 #include <string>
 #include <sstream>
@@ -402,7 +407,14 @@ namespace bnd
     {
       const stateClass* pOurState = dynamic_cast<const stateClass*>(prm);
 
-      if(! pOurState) throw badMolParamClassXcpt(getName());
+      if(! pOurState)
+	{
+	  std::string paramClassName
+	    = cplus_demangle(typeid(*prm).name(), DMGL_TYPES);
+	  
+	  throw badMolParamClassXcpt(paramClassName,
+				     getName());
+	}
 
       return *pOurState;
     }

@@ -23,13 +23,24 @@
 #   Berkeley, CA 94704
 ###############################################################################
 
-DOT_DOT := $(DOT)
+DOT := $(DOT)/omniReceptor
 
-# These are for adapting this makefile to opt, prf.
-DOT := $(DOT)/opt-o
-EXT := Opt
-COMPILE_FLAGS := -O2
+$(DOT)/target : $(DOT)/omniReceptor.out
+	cd $< \
+	&& moleculizer < omniReceptor.xml \
+	&& plot-dmp-files
 
-include $(UNIT)/o.mk
+$(DOT)/omniReceptor.out : $(DOT)/omniReceptor.xml
+	mkdir $@
+	cp $? $@
+
+# For redoing individual demos several times.
+$(DOT)/clean : DT := $(DOT)
+$(DOT)/clean :
+	rm -rf $(DT)/*.out
+
+CLEAN_LIST := $(CLEAN_LIST) $(DOT)/*.out
+
+PREEN_LIST := $(PREEN_LIST) $(DOT)/*~ $(DOT)/*.bak
 
 DOT := $(call dotdot,$(DOT))

@@ -235,25 +235,25 @@ namespace dimer
     public std::unary_function<xmlpp::Node*, void>
   {
     const bnd::bindingSite& rLeftSite;
-    double leftWeight;
+    const bnd::mol* pLeftMol;
   
     const bnd::bindingSite& rRightSite;
-    double rightWeight;
+    const bnd::mol* pRightMol;
 
     dimerizeExtrapolator* pDimerizeExtrap;
     decomposeExtrapolator* pDecomposeExtrap;
   
   public:
     insertAlloRates(const bnd::bindingSite& rLeftBindingSite,
-		    double leftMolWeight,
+		    const bnd::mol* pLeftBindingMol,
 		    const bnd::bindingSite& rRightBindingSite,
-		    double rightMolWeight,
+		    const bnd::mol* pRightBindingMol,
 		    dimerizeExtrapolator* pDimerizeExtrapolator,
 		    decomposeExtrapolator* pDecomposeExtrapolator) :
       rLeftSite(rLeftBindingSite),
-      leftWeight(leftMolWeight),
+      pLeftMol(pLeftBindingMol),
       rRightSite(rRightBindingSite),
-      rightWeight(rightMolWeight),
+      pRightMol(pRightBindingMol),
       pDimerizeExtrap(pDimerizeExtrapolator),
       pDecomposeExtrap(pDecomposeExtrapolator)
     {}
@@ -275,17 +275,33 @@ namespace dimer
 					  bnd::eltName::siteShapeRef,
 					  2,
 					  (int) siteShapeRefNodes.size());
-      std::vector<std::string> siteShapeNames(2);
-      std::transform(siteShapeRefNodes.begin(),
-		     siteShapeRefNodes.end(),
-		     siteShapeNames.begin(),
-		     getNameAttr());
 
-      // Get the corresponding site shape pointers.
+      // Get the site shape pointer corresponding to the first (left) site-ref
+      // node.
+      xmlpp::Node::NodeList::iterator iSiteShapeRefNode
+	= siteShapeRefNodes.begin();
+      xmlpp::Element* pLeftSiteShapeRefElt
+	= domUtils::mustBeElementPtr(*iSiteShapeRefNode);
+      std::string leftSiteShapeName
+	= domUtils::mustGetAttrString(pLeftSiteShapeRefElt,
+				      bnd::eltName::siteShapeRef_nameAttr);
       bnd::siteParam leftSiteParam
-	= rLeftSite.getParam(siteShapeNames[0]);
+	= rLeftSite.mustGetParam(pLeftSiteShapeRefElt,
+				 pLeftMol,
+				 leftSiteShapeName);
+
+      // Get the site shape pointer corresponding to the second (right)
+      // site-ref node.
+      ++iSiteShapeRefNode;
+      xmlpp::Element* pRightSiteShapeRefElt
+	= domUtils::mustBeElementPtr(*iSiteShapeRefNode);
+      std::string rightSiteShapeName
+	= domUtils::mustGetAttrString(pRightSiteShapeRefElt,
+				      bnd::eltName::siteShapeRef_nameAttr);
       bnd::siteParam rightSiteParam
-	= rRightSite.getParam(siteShapeNames[1]);
+	= rRightSite.mustGetParam(pRightSiteShapeRefElt,
+				 pRightMol,
+				 rightSiteShapeName);
 
       // Get the on-rate.
       xmlpp::Element* pOnRateElt
@@ -443,16 +459,14 @@ namespace dimer
 
       // Parse the allosteric shape pairs; i.e. the pairs of binding
       // site shapes whose kinetic differ from the default.
-      //
-      // NOTE: Now I shouldn't need the weights?
       xmlpp::Node::NodeList alloRatesNodes
 	= pDimerizationGenElt->get_children(eltName::alloRates);
       std::for_each(alloRatesNodes.begin(),
 		    alloRatesNodes.end(),
 		    insertAlloRates(rLeftSite,
-				    leftMolWeight,
+				    pLeftMol,
 				    rRightSite,
-				    rightMolWeight,
+				    pRightMol,
 				    pDimerizeExtrap,
 				    pDecompExtrap));
 

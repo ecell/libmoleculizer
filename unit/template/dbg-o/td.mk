@@ -25,85 +25,10 @@
 
 DOT_DOT := $(DOT)
 
-# These are for adapting this makefile to opt, prf.
 DOT := $(DOT)/dbg-o
 EXT := Dbg
 COMPILE_FLAGS := -g
 
-OBJECTS := $(addprefix $(DOT)/,$(SOURCES:.cc=.o))
-
-LINKER_NAME := lib$(UNIT_NAME)$(EXT).so
-SONAME := $(LINKER_NAME).$(MAJOR_VERSION)
-LIB_NAME := $(SONAME).$(MINOR_VERSION)
-ARCHIVE_NAME := lib$(UNIT_NAME)$(EXT).a
-
-# Paths to required unit libraries (libraries made by this build
-# that this unit must link with) for checking that they are up-to-date.
-REQUIRED_UNITS_LIBS := $(addprefix $(LIB)/lib,$(addsuffix $(EXT).so,$(REQUIRED_UNITS)))
-
-# Name of units for required unit libraries (libraries made by this build
-# that this unit must link with) for use by ld.
-REQUIRED_UNITS_LD := $(addprefix -l,$(addsuffix $(EXT),$(REQUIRED_UNITS)))
-
-# Names of "external" libraries (not made by this build) for use by ld.
-EXTRA_LIBS_LD := $(addprefix -l,$(EXTRA_LIBS))
-
-# The linker's soname flag for this unit
-SONAME_LD := -Wl,-soname,$(SONAME)
-
-# Most link flags, all put together.
-LNK_LD := $(SONAME_LD) $(EXTRA_LIBS_LD) $(REQUIRED_UNITS_LD) $(OBJECTS)
-
-# This is intended for dynamic linking units, which need not be
-# prerequisites of any executable.
-$(DOT)/dynamic : $(LIB)/$(LINKER_NAME)
-
-# Generates link to unit shared object for use by ld.
-$(LIB)/$(LINKER_NAME) : $(LIB)/$(SONAME)
-	ln -sf $(<F) $@
-
-# Generates link to unit shared object for use by ld.so.
-$(LIB)/$(SONAME) : $(LIB)/$(LIB_NAME)
-	ln -sf $(<F) $@
-
-# Links unit shared object.
-$(LIB)/$(LIB_NAME) : LNKS := $(LNK_LD)
-$(LIB)/$(LIB_NAME) : $(OBJECTS) $(REQUIRED_UNITS_LIBS)
-	g++ $(SHOB_LINK_FLAGS) -o $@ $(LNKS)
-
-# Generates archive of unit objects.
-$(LIB)/$(ARCHIVE_NAME) : $(OBJECTS)
-	ar rc $@ $^
-	ranlib $@
-
-# Special preprocessor definitions for this unit.
-COMPILE_DEFS :=
-
-# Local C++ compiler flags, all put together.
-COMPILE_LOCAL_FLAGS := $(COMPILE_FLAGS) $(COMPILE_DEFS)
-
-# Compiles the objects for this unit.
-$(OBJECTS) : CLF := $(COMPILE_LOCAL_FLAGS)
-$(OBJECTS) : $(DOT)/%.o : $(DOT_DOT)/cc/%.cc
-	$(CXX) -c $(CXXFLAGS) $(CLF) -o $@ $<
-
-# Generates dependencies for objects in this unit.
-UNIT_MAKEFILES := $(addprefix $(DOT)/,$(SOURCES:.cc=.d))
-$(UNIT_MAKEFILES) : CLF := $(COMPILE_LOCAL_FLAGS)
-$(UNIT_MAKEFILES) : $(DOT)/%.d : $(DOT_DOT)/cc/%.cc
-	g++ -MM -MT $(@:.d=.o) $(CXXFLAGS)  $(CLF) $< > $@.$$$$; \
-	sed 's/^\(.*\)\.o\s*:\s*/\1.d \1.o : /' < $@.$$$$ > $@; \
-	rm -f $@.$$$$
-
-MAKEFILES := $(MAKEFILES) $(UNIT_MAKEFILES)
-
-CLEAN_LIST := $(CLEAN_LIST) \
-	$(OBJECTS) \
-	$(LIB)/$(SONAME) \
-	$(LIB)/$(LINKER_NAME) \
-	$(LIB)/$(LIB_NAME) \
-	$(LIB)/$(ARCHIVE_NAME)
-
-PREEN_LIST := $(PREEN_LIST) $(DOT)/*~
+include $(UNIT)/o.mk
 
 DOT := $(call dotdot,$(DOT))

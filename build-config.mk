@@ -32,9 +32,10 @@ XMLPP_INCLUDE_DIR := /usr/local/include/libxml++-1.0
 XMLPP_LIB_DIR := /usr/local/lib
 XMLPP_LIB := xml++-1.0
 
-# Compile and link flags.
+# Archive library that includes name demangling.
+LIBIBERTY_A := /usr/lib/libiberty.a
 
-# CXXFLAGS := -I include -I $(XML2_INCLUDE_DIR) -I $(XMLPP_INCLUDE_DIR) -fPIC -Wall -Wno-unused -D_REENTRANT -DPLATFORM_LINUX
+# Compile and link flags.
 
 CXXFLAGS := -I include -I $(XML2_INCLUDE_DIR) -I $(XMLPP_INCLUDE_DIR) -fPIC -Wall -D_REENTRANT -DPLATFORM_LINUX
 

@@ -194,10 +194,13 @@ namespace bnd
   class badMolParamClassXcpt : public mzr::mzrXcpt
   {
     static std::string
-    mkMsg(const std::string& rMolName);
+    mkMsg(const std::string& rParamClassName,
+	  const std::string& rMolName);
   public:
-    badMolParamClassXcpt(const std::string& rMolName) :
-      mzr::mzrXcpt(mkMsg(rMolName))
+    badMolParamClassXcpt(const std::string& rParamClassName,
+			 const std::string& rMolName) :
+      mzr::mzrXcpt(mkMsg(rParamClassName,
+			 rMolName))
     {}
   };
 

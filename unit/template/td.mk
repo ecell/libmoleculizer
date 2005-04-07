@@ -34,6 +34,14 @@ REQUIRED_UNITS :=
 # but are not made by this build.
 EXTRA_LIBS :=
 
+# Archive libraries, not made by this build, used in the linking of this
+# module.  These locations are typically configured in build-config.mk.
+EXTRA_ARCHIVES :=
+
+# Compiler flags and definitions to be used in compiling c++ files for this
+# module.
+COMPILE_DEFS :=
+
 DOT := $(DOT)/$(UNIT_NAME)Unit
 
 include $(DOT)/cc/td.mk

@@ -39,6 +39,7 @@
 #include "modKinase/modKinaseUnit.hh"
 #include "scaffold/scaffoldUnit.hh"
 #include "bndKinase/bndKinaseUnit.hh"
+#include "ftr/ftrUnit.hh"
 
 namespace mzr
 {
@@ -79,6 +80,7 @@ namespace mzr
     kinase::modKinaseUnit theModKinaseUnit;
 //     scaf::scaffoldUnit theScaffoldUnit;
     bndKinase::bndKinaseUnit theBndKinaseUnit;
+    ftr::ftrUnit theFtrUnit;
 
     unitsMgr(moleculizer& rMoleculizer) :
       theMzrUnit(rMoleculizer),
@@ -115,7 +117,11 @@ namespace mzr
       theBndKinaseUnit(rMoleculizer,
 		       theMzrUnit,
 		       theMolUnit,
-		       thePlexUnit)
+		       thePlexUnit),
+      theFtrUnit(rMoleculizer,
+		 theMzrUnit,
+		 theMolUnit,
+		 thePlexUnit)
     {
       // Note that these need to be in output order, which is slightly
       // different from linkage order: mzrUnit "plays cleanup" by parsing
@@ -130,6 +136,7 @@ namespace mzr
 //       push_back(&theScaffoldUnit);
       push_back(&theMzrUnit);
       push_back(&theBndKinaseUnit);
+      push_back(&theFtrUnit);
     }
 
     // Prepares the overall input capabilities of moleculizer from

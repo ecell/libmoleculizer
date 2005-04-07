@@ -35,7 +35,8 @@ REQUIRED_UNITS := domUtils \
 	dimer \
 	stoch \
 	modKinase \
-	bndKinase
+	bndKinase \
+	ftr
 
 # REQUIRED_UNITS := domUtils \
 # 	sampleDist \
@@ -60,6 +61,7 @@ EXTRA_LIBS :=
 # profiling version of the program.
 STATIC_ARCHIVE_LINK_LIST := mzr \
 	bndKinase \
+	ftr \
 	scaffold \
 	nucEx \
 	modKinase \

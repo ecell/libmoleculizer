@@ -23,25 +23,25 @@
 //   Berkeley, CA 94704
 /////////////////////////////////////////////////////////////////////////////
 
-#ifndef BNDOMNIFAM_H
-#define BNDOMNIFAM_H
+#ifndef OMNIFAM_H
+#define OMNIFAM_H
 
-#include "bndKinase/bndOmniGen.hh"
+#include "ftr/omniGen.hh"
 
-namespace bndKinase
+namespace ftr
 {
-  class bndOmniFam : public mzr::reactionFamily
+  class omniFam : public mzr::reactionFamily
   {
-    bndOmniRxnGen rxnGen;
+    omniRxnGen rxnGen;
 
   public:
-    bndOmniFam(mzr::mzrUnit& refMzrUnit,
-	       plx::plexUnit& refPlexUnit,
-	       const std::vector<smallMolExchange>& rSMExchanges,
-	       const std::vector<modificationExchange>& rModExchanges,
-	       mzr::species* pAuxReactant,
-	       mzr::species* pAuxProduct,
-	       const bndOmniExtrapolator* pBndOmniExtrapolator) :
+    omniFam(mzr::mzrUnit& refMzrUnit,
+	    plx::plexUnit& refPlexUnit,
+	    const std::vector<smallMolExchange>& rSMExchanges,
+	    const std::vector<modificationExchange>& rModExchanges,
+	    mzr::species* pAuxReactant,
+	    mzr::species* pAuxProduct,
+	    const omniExtrapolator* pOmniExtrapolator) :
       rxnGen(refMzrUnit,
 	     refPlexUnit,
 	     rSMExchanges,
@@ -49,7 +49,7 @@ namespace bndKinase
 	     pAuxReactant,
 	     pAuxProduct,
 	     this,
-	     pBndOmniExtrapolator)
+	     pOmniExtrapolator)
     {}
 
     plx::omniFeature::rxnGen*
@@ -60,4 +60,4 @@ namespace bndKinase
   };
 }
 
-#endif // BNDOMNIFAM_H
+#endif // OMNIFAM_H

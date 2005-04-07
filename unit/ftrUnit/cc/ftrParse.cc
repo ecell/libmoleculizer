@@ -23,37 +23,36 @@
 //   Berkeley, CA 94704
 /////////////////////////////////////////////////////////////////////////////
 
-#ifndef PARSEBNDOMNIGEN_H
-#define PARSEBNDOMNIGEN_H
+#include "mol/modMol.hh"
+#include "ftr/ftrUnit.hh"
+#include "ftr/ftrEltName.hh"
+#include "ftr/ftrXcpt.hh"
+#include "ftr/parseOmniGen.hh"
+#include "plex/plexDomParse.hh"
 
-#include "domUtils/domUtils.hh"
-#include "mzr/mzrXcpt.hh"
-#include "mzr/mzrUnit.hh"
-#include "mol/molUnit.hh"
-#include "plex/plexUnit.hh"
-
-namespace bndKinase
+namespace ftr
 {
-  class parseBndOmniGen :
-    public std::unary_function<xmlpp::Node*, void>
+  void
+  ftrUnit::parseDomInput(xmlpp::Element* pRootElement,
+			 xmlpp::Element* pModelElement,
+			 xmlpp::Element* pStreamsElement,
+			 xmlpp::Element* pEventsElement)
+    throw(std::exception)
   {
-    mzr::mzrUnit& rMzrUnit;
-    bnd::molUnit& rMolUnit;
-    plx::plexUnit& rPlexUnit;
+    // This unit only adds a reaction generator for now.
+    xmlpp::Element* pReactionGensElt
+      = domUtils::mustGetUniqueChild(pModelElement,
+				     mzr::eltName::reactionGens);
 
-  public:
-    parseBndOmniGen(mzr::mzrUnit& refMzrUnit,
-		    bnd::molUnit& refMolUnit,
-		    plx::plexUnit& refPlexUnit) :
-      rMzrUnit(refMzrUnit),
-      rMolUnit(refMolUnit),
-      rPlexUnit(refPlexUnit)
-    {}
+    // Get the omniGen nodes.
+    xmlpp::Node::NodeList omniGenNodes
+      = pReactionGensElt->get_children(eltName::omniGen);
 
-    void
-    operator()(xmlpp::Node* pBndOmniGenNode) const
-      throw(mzr::mzrXcpt);
-  };
+    // Add omniFam reaction family for each of the generator nodes.
+    std::for_each(omniGenNodes.begin(),
+		  omniGenNodes.end(),
+		  parseOmniGen(rMzrUnit,
+			       rMolUnit,
+			       rPlexUnit));
+  }
 }
-
-#endif // PARSEBNDOMNIGEN_H

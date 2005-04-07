@@ -23,37 +23,46 @@
 //   Berkeley, CA 94704
 /////////////////////////////////////////////////////////////////////////////
 
-#ifndef BNDKINASEELTNAME_H
-#define BNDKINASEELTNAME_H
+#ifndef FTRELTNAME_H
+#define FTRELTNAME_H
 
 #include <string>
 
-namespace bndKinase
+namespace ftr
 {
   namespace eltName
   {
-    // Kinase reactions with nucleotide binding treated as ordinary binding.
-    extern const std::string bndKinaseGen;
-    extern const std::string substrateModMolInstanceRef;
-    extern const std::string substrateModMolInstanceRef_nameAttr;
-    extern const std::string phosSiteRef;
-    extern const std::string phosSiteRef_nameAttr;
-    extern const std::string phosphorylatedModRef;
-    extern const std::string phosphorylatedModRef_nameAttr;
-    extern const std::string atpSmallMolInstanceRef;
-    extern const std::string atpSmallMolInstanceRef_nameAttr;
-    extern const std::string adpSmallMolRef;
-    extern const std::string adpSmallMolRef_nameAttr;
-    extern const std::string rate;
-    extern const std::string rate_valueAttr;
+    // Generic omni-based reaction generator.
+    extern const std::string omniGen;
+    extern const std::string enablingOmniplex;
 
-    // Generic modification reaction generator.
-    extern const std::string modGen;
+    extern const std::string smallMolExchanges;
+    extern const std::string smallMolExchange;
+    extern const std::string smallMolInstanceRef;
+    extern const std::string smallMolInstanceRef_nameAttr;
+    extern const std::string smallMolRef;
+    extern const std::string smallMolRef_nameAttr;
+
+    extern const std::string modificationExchanges;
+    extern const std::string modificationExchange;
+    extern const std::string modMolInstanceRef;
+    extern const std::string modMolInstanceRef_nameAttr;
     extern const std::string modSiteRef;
     extern const std::string modSiteRef_nameAttr;
     extern const std::string installedModRef;
     extern const std::string installedModRef_nameAttr;
+
+    extern const std::string installedModRef;
+    extern const std::string installedModRef_nameAttr;
+
+    extern const std::string additionalReactantSpecies;
+    extern const std::string additionalReactantSpecies_nameAttr;
+    extern const std::string additionalProductSpecies;
+    extern const std::string additionalProductSpecies_nameAttr;
+
+    extern const std::string rate;
+    extern const std::string rate_valueAttr;
   }
 }
 
-#endif // BNDKINASEELTNAME_H
+#endif // FTRELTNAME_H

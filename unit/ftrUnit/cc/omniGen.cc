@@ -26,10 +26,10 @@
 #include "mzr/mzrUnit.hh"
 #include "mol/modMol.hh"
 #include "plex/plexUnit.hh"
-#include "bndKinase/bndOmniGen.hh"
-#include "bndKinase/bndKinaseXcpt.hh"
+#include "ftr/omniGen.hh"
+#include "ftr/ftrXcpt.hh"
 
-namespace bndKinase
+namespace ftr
 {
   class exchangeSmallMols :
     public std::unary_function<smallMolExchange, void>
@@ -136,7 +136,7 @@ namespace bndKinase
   };
   
   void
-  bndOmniRxnGen::
+  omniRxnGen::
   makeReactions(const plx::omniInContext& rContext) const
   {
     // See if reaction generation is enabled.

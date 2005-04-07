@@ -38,6 +38,8 @@ DOT := $(DOT)/schema
 DOC_SCHEMA := $(DOT)/dimer.rng \
 	$(DOT)/gpa.rng \
 	$(DOT)/modKinase.rng \
+	$(DOT)/bndKinase.rng \
+	$(DOT)/ftr.rng \
 	$(DOT)/mol.rng \
 	$(DOT)/moleculizer.rng \
 	$(DOT)/mzrState.rng \

@@ -26,12 +26,12 @@
 #include "plex/parserPlex.hh"
 #include "plex/parseOmniPlex.hh"
 #include "mol/modMol.hh"
-#include "bndKinase/bndKinaseEltName.hh"
-#include "bndKinase/bndOmniGen.hh"
-#include "bndKinase/bndOmniFam.hh"
-#include "bndKinase/parseBndOmniGen.hh"
+#include "ftr/ftrEltName.hh"
+#include "ftr/omniGen.hh"
+#include "ftr/omniFam.hh"
+#include "ftr/parseOmniGen.hh"
 
-namespace bndKinase
+namespace ftr
 {
   class parseSmallMolExchange :
     public std::unary_function<xmlpp::Node*, smallMolExchange>
@@ -156,16 +156,16 @@ namespace bndKinase
   };
 
   void
-  parseBndOmniGen::
-  operator()(xmlpp::Node* pBndOmniGenNode) const
+  parseOmniGen::
+  operator()(xmlpp::Node* pOmniGenNode) const
     throw(mzr::mzrXcpt)
   {
-    xmlpp::Element* pBndOmniGenElt
-      = domUtils::mustBeElementPtr(pBndOmniGenNode);
+    xmlpp::Element* pOmniGenElt
+      = domUtils::mustBeElementPtr(pOmniGenNode);
 
     // Parse the enabling omniplex.
     xmlpp::Element* pEnablingOmniElt
-      = domUtils::mustGetUniqueChild(pBndOmniGenElt,
+      = domUtils::mustGetUniqueChild(pOmniGenElt,
 				     eltName::enablingOmniplex);
     plx::parserPlex parsedPlex;
     plx::omniPlex* pOmni
@@ -176,7 +176,7 @@ namespace bndKinase
 
     // Parse the small-mol exchanges.
     xmlpp::Element* pSmallMolExchangesElt
-      = domUtils::mustGetUniqueChild(pBndOmniGenElt,
+      = domUtils::mustGetUniqueChild(pOmniGenElt,
 				     eltName::smallMolExchanges);
     xmlpp::Node::NodeList smallMolExchangeNodes
       = pSmallMolExchangesElt->get_children(eltName::smallMolExchange);
@@ -190,7 +190,7 @@ namespace bndKinase
 
     // Parse the modification exchanges.
     xmlpp::Element* pModificationExchangesElt
-      = domUtils::mustGetUniqueChild(pBndOmniGenElt,
+      = domUtils::mustGetUniqueChild(pOmniGenElt,
 				     eltName::modificationExchanges);
     xmlpp::Node::NodeList modificationExchangeNodes
       = pModificationExchangesElt->get_children(eltName::modificationExchange);
@@ -204,7 +204,7 @@ namespace bndKinase
 
     // Parse additional reactant.
     xmlpp::Element* pAdditionalReactantSpeciesElt
-      = domUtils::getOptionalChild(pBndOmniGenElt,
+      = domUtils::getOptionalChild(pOmniGenElt,
 				   eltName::additionalReactantSpecies);
     mzr::species* pAdditionalReactantSpecies = 0;
     if(pAdditionalReactantSpeciesElt)
@@ -221,7 +221,7 @@ namespace bndKinase
 
     // Parse additional product.
     xmlpp::Element* pAdditionalProductSpeciesElt
-      = domUtils::getOptionalChild(pBndOmniGenElt,
+      = domUtils::getOptionalChild(pOmniGenElt,
 				   eltName::additionalProductSpecies);
     mzr::species* pAdditionalProductSpecies = 0;
     if(pAdditionalProductSpeciesElt)
@@ -239,7 +239,7 @@ namespace bndKinase
     // Parse the reaction rate, whose units depend on whether an additional
     // reactant species is given or not.
     xmlpp::Element* pRateElt
-      = domUtils::mustGetUniqueChild(pBndOmniGenElt,
+      = domUtils::mustGetUniqueChild(pOmniGenElt,
 				     eltName::rate);
     double rate
       = domUtils::mustGetAttrPosDouble(pRateElt,
@@ -248,7 +248,7 @@ namespace bndKinase
     // Construct the reaction rate exptrapolator.  The generated reactions
     // could be either unary or binary, depending on whether an additional
     // reactant is given, and there is a constructor for each of these cases.
-    bndOmniMassExtrap* pExtrapolator = 0;
+    omniMassExtrap* pExtrapolator = 0;
     if(pAdditionalReactantSpeciesElt)
       {
 	// Construct the default species of the triggering omniplex.
@@ -267,24 +267,24 @@ namespace bndKinase
 	  = mzr::mustBeMassiveSpecies(pAdditionalReactantSpeciesElt,
 				      pAdditionalReactantSpecies);
 
-	pExtrapolator = new bndOmniMassExtrap(rate,
-					      pDefaultTriggeringSpecies,
-					      pAdditionalMassiveSpecies);
+	pExtrapolator = new omniMassExtrap(rate,
+					   pDefaultTriggeringSpecies,
+					   pAdditionalMassiveSpecies);
       }
     else
       {
-	pExtrapolator = new bndOmniMassExtrap(rate);
+	pExtrapolator = new omniMassExtrap(rate);
       }
 
     // Construct the reaction family and register it for memory management.
-    bndOmniFam* pFamily
-      = new bndOmniFam(rMzrUnit,
-		       rPlexUnit,
-		       smallMolExchanges,
-		       modificationExchanges,
-		       pAdditionalReactantSpecies,
-		       pAdditionalProductSpecies,
-		       pExtrapolator);
+    omniFam* pFamily
+      = new omniFam(rMzrUnit,
+		    rPlexUnit,
+		    smallMolExchanges,
+		    modificationExchanges,
+		    pAdditionalReactantSpecies,
+		    pAdditionalProductSpecies,
+		    pExtrapolator);
     rMzrUnit.addReactionFamily(pFamily);
 
     // Connect the family's reaction generator to the triggering omniplex's

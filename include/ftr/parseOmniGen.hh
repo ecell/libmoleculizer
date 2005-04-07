@@ -23,37 +23,37 @@
 //   Berkeley, CA 94704
 /////////////////////////////////////////////////////////////////////////////
 
-#include "bndKinase/bndOmniExtrap.hh"
-#include "mzr/pchem.hh"
+#ifndef PARSEOMNIGEN_H
+#define PARSEOMNIGEN_H
 
-namespace bndKinase
+#include "domUtils/domUtils.hh"
+#include "mzr/mzrXcpt.hh"
+#include "mzr/mzrUnit.hh"
+#include "mol/molUnit.hh"
+#include "plex/plexUnit.hh"
+
+namespace ftr
 {
-  bndOmniMassExtrap::
-  bndOmniMassExtrap(double theRate,
-		    const mzr::massive* pDefaultTriggeringSpecies,
-		    const mzr::massive* pMassiveAuxiliarySpecies) :
-    pMassive(pMassiveAuxiliarySpecies)
+  class parseOmniGen :
+    public std::unary_function<xmlpp::Node*, void>
   {
-    rateOrInvariant
-      = mzr::bindingInvariant(theRate,
-			      pDefaultTriggeringSpecies->getWeight(),
-			      pMassive->getWeight());
-  }
+    mzr::mzrUnit& rMzrUnit;
+    bnd::molUnit& rMolUnit;
+    plx::plexUnit& rPlexUnit;
 
-  double
-  bndOmniMassExtrap::
-  getRate(const plx::cxOmni& rWrappedContext) const
-  {
-    // Are we generating unary or binary reactions?
-    if(pMassive)
-      {
-	return mzr::bindingRate(rateOrInvariant,
-				rWrappedContext.getPlexWeight(),
-				pMassive->getWeight());
-      }
-    else
-      {
-	return rateOrInvariant;
-      }
-  }
+  public:
+    parseOmniGen(mzr::mzrUnit& refMzrUnit,
+		 bnd::molUnit& refMolUnit,
+		 plx::plexUnit& refPlexUnit) :
+      rMzrUnit(refMzrUnit),
+      rMolUnit(refMolUnit),
+      rPlexUnit(refPlexUnit)
+    {}
+
+    void
+    operator()(xmlpp::Node* pOmniGenNode) const
+      throw(mzr::mzrXcpt);
+  };
 }
+
+#endif // PARSEOMNIGEN_H

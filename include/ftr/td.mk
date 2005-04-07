@@ -23,17 +23,18 @@
 #   Berkeley, CA 94704
 ###############################################################################
 
-DOT := $(DOT)/cc
+DOT := $(DOT)/ftr
 
-SOURCES := bndKinaseRxnGen.cc \
-	bndKinaseParse.cc \
-	bndKinaseEltName.cc \
-	modRxnGen.cc \
-	parseBndKinaseGen.cc \
-	parseModGen.cc
+HEADERS := ftrEltName.hh \
+	ftrUnit.hh \
+	ftrXcpt.hh \
+	omniExtrap.hh \
+	omniFam.hh \
+	omniGen.hh \
+	parseOmniGen.hh
+
+TAGS_LIST := $(TAGS_LIST) $(addprefix $(DOT)/,$(HEADERS))
 
 PREEN_LIST := $(PREEN_LIST) $(DOT)/*~
-
-TAGS_LIST := $(TAGS_LIST) $(addprefix $(DOT)/,$(SOURCES))
 
 DOT := $(call dotdot,$(DOT))

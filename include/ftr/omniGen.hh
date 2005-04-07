@@ -23,17 +23,17 @@
 //   Berkeley, CA 94704
 /////////////////////////////////////////////////////////////////////////////
 
-#ifndef BNDOMNIGEN_H
-#define BNDOMNIGEN_H
+#ifndef OMNIGEN_H
+#define OMNIGEN_H
 
 #include "mzr/reactionFamily.hh"
 #include "mol/smallMol.hh"
 #include "plex/plexSpec.hh"
 #include "plex/plexFeature.hh"
 #include "plex/cxOmniParam.hh"
-#include "bndKinase/bndOmniExtrap.hh"
+#include "ftr/omniExtrap.hh"
 
-namespace bndKinase
+namespace ftr
 {
   class smallMolExchange
   {
@@ -75,7 +75,7 @@ namespace bndKinase
     {}
   };
 
-  class bndOmniRxnGen :
+  class omniRxnGen :
     public plx::omniInContext::rxnGen
   {
     // To intern reactions for memory management.
@@ -100,19 +100,19 @@ namespace bndKinase
     mzr::reactionFamily* pFamily;
 
     // Rate extrapolator, which sometimes is unary and sometimes is binary.
-    // This bndOmniRxnGen is responsible for memory management of its
+    // This omniRxnGen is responsible for memory management of its
     // extrapolator.
-    const bndOmniExtrapolator* pExtrapolator;
+    const omniExtrapolator* pExtrapolator;
 
   public:
-    bndOmniRxnGen(mzr::mzrUnit& refMzrUnit,
-		  plx::plexUnit& refPlexUnit,
-		  const std::vector<smallMolExchange>& rSMExchanges,
-		  const std::vector<modificationExchange>& rModExchanges,
-		  mzr::species* pAuxReactant,
-		  mzr::species* pAuxProduct,
-		  mzr::reactionFamily* pReactionFamily,
-		  const bndOmniExtrapolator* pBndOmniExtrapolator) :
+    omniRxnGen(mzr::mzrUnit& refMzrUnit,
+	       plx::plexUnit& refPlexUnit,
+	       const std::vector<smallMolExchange>& rSMExchanges,
+	       const std::vector<modificationExchange>& rModExchanges,
+	       mzr::species* pAuxReactant,
+	       mzr::species* pAuxProduct,
+	       mzr::reactionFamily* pReactionFamily,
+	       const omniExtrapolator* pOmniExtrapolator) :
       rMzrUnit(refMzrUnit),
       rPlexUnit(refPlexUnit),
       smallMolExchanges(rSMExchanges),
@@ -120,10 +120,10 @@ namespace bndKinase
       pAdditionalReactant(pAuxReactant),
       pAdditionalProduct(pAuxProduct),
       pFamily(pReactionFamily),
-      pExtrapolator(pBndOmniExtrapolator)
+      pExtrapolator(pOmniExtrapolator)
     {}
 
-    ~bndOmniRxnGen(void)
+    ~omniRxnGen(void)
     {
       delete pExtrapolator;
     }
@@ -133,4 +133,4 @@ namespace bndKinase
   };
 }
 
-#endif //  BNDOMNIGEN_H
+#endif //  OMNIGEN_H

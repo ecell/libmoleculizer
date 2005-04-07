@@ -25,12 +25,11 @@
 
 DOT := $(DOT)/cc
 
-SOURCES := bndKinaseRxnGen.cc \
-	bndKinaseParse.cc \
-	bndKinaseEltName.cc \
-	modRxnGen.cc \
-	parseBndKinaseGen.cc \
-	parseModGen.cc
+SOURCES := ftrEltName.cc \
+	ftrParse.cc \
+	omniExtrap.cc \
+	omniGen.cc \
+	parseOmniGen.cc
 
 PREEN_LIST := $(PREEN_LIST) $(DOT)/*~
 

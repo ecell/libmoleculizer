@@ -23,28 +23,28 @@
 //   Berkeley, CA 94704
 /////////////////////////////////////////////////////////////////////////////
 
-#ifndef BNDKINASEUNIT_H
-#define BNDKINASEUNIT_H
+#ifndef FTRUNIT_H
+#define FTRUNIT_H
 
 #include "mzr/mzrUnit.hh"
 #include "mol/molUnit.hh"
 #include "plex/plexUnit.hh"
-#include "bndKinase/bndKinaseEltName.hh"
+#include "ftr/ftrEltName.hh"
 
-namespace bndKinase
+namespace ftr
 {
-  class bndKinaseUnit : public mzr::unit
+  class ftrUnit : public mzr::unit
   {
   public:
     mzr::mzrUnit& rMzrUnit;
     bnd::molUnit& rMolUnit;
     plx::plexUnit& rPlexUnit;
 
-    bndKinaseUnit(mzr::moleculizer& rMoleculizer,
-		  mzr::mzrUnit& refMzrUnit,
-		  bnd::molUnit& refMolUnit,
-		  plx::plexUnit& refPlexUnit) :
-      mzr::unit("bndKinase",
+    ftrUnit(mzr::moleculizer& rMoleculizer,
+	    mzr::mzrUnit& refMzrUnit,
+	    bnd::molUnit& refMolUnit,
+	    plx::plexUnit& refPlexUnit) :
+      mzr::unit("ftr",
 		rMoleculizer),
       rMzrUnit(refMzrUnit),
       rMolUnit(refMolUnit),
@@ -55,29 +55,20 @@ namespace bndKinase
       // by some module.  Why did I think that was a good idea?  Now, "open
       // schema" i.e. pay no attention to extraneous matter while parsing.
       // seems more rational to me.
-      inputCap.addReactionGenName(eltName::bndKinaseGen);
-      inputCap.addReactionGenName(eltName::modGen);
+      inputCap.addReactionGenName(eltName::omniGen);
 
-      // Register the enabling complexes for bndKinase reaction gens as
-      // omniplexes, for processing by the plexUnit.
+      // Register the enabling complexes for omniRxnGen generators
+      // as omniplexes, for processing by the plexUnit.
       const std::string slash("/");
-      std::ostringstream bndKinaseGensXpath;
-      bndKinaseGensXpath << mzr::eltName::model
-			 << slash
-			 << mzr::eltName::reactionGens
-			 << slash
-			 << eltName::bndKinaseGen;
-      rPlexUnit.addOmniXpath(bndKinaseGensXpath.str());
-
-      // Register the enabling complexs for modification reaction gens as
-      // omniplexes, for processing by the plexUnit.
-      std::ostringstream modGensXpath;
-      modGensXpath << mzr::eltName::model
-		   << slash
-		   << mzr::eltName::reactionGens
-		   << slash
-		   << eltName::modGen;
-      rPlexUnit.addOmniXpath(modGensXpath.str());
+      std::ostringstream omniGensXpath;
+      omniGensXpath << mzr::eltName::model
+		    << slash
+		    << mzr::eltName::reactionGens
+		    << slash
+		    << eltName::omniGen
+		    << slash
+		    << eltName::enablingOmniplex;
+      rPlexUnit.addOmniXpath(omniGensXpath.str());
     }
 
     // The input parsing routine for this unit.
@@ -98,4 +89,4 @@ namespace bndKinase
   };
 }
 
-#endif // BNDKINASEUNIT_H
+#endif // FTRUNIT_H

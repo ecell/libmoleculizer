@@ -31,7 +31,6 @@
 #include "bndKinase/bndKinaseXcpt.hh"
 #include "bndKinase/parseModGen.hh"
 #include "bndKinase/parseBndKinaseGen.hh"
-#include "bndKinase/parseBndOmniGen.hh"
 #include "plex/plexDomParse.hh"
 
 namespace bndKinase
@@ -69,16 +68,5 @@ namespace bndKinase
 		  parseModGen(rMzrUnit,
 			      rMolUnit,
 			      rPlexUnit));
-
-    // Get the bndOmniGen nodes.
-    xmlpp::Node::NodeList bndOmniGenNodes
-      = pReactionGensElt->get_children(eltName::bndOmniGen);
-
-    // Add bndOmniFam reaction family for each of the generator nodes.
-    std::for_each(bndOmniGenNodes.begin(),
-		  bndOmniGenNodes.end(),
-		  parseBndOmniGen(rMzrUnit,
-				  rMolUnit,
-				  rPlexUnit));
   }
 }

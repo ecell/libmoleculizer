@@ -46,6 +46,7 @@ UNITS := domUtils \
 	stoch \
 	modKinase \
 	bndKinase \
+	ftr \
 	gpa \
 	sampleDist \
 	odie \

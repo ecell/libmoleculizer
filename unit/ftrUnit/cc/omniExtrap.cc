@@ -23,32 +23,37 @@
 //   Berkeley, CA 94704
 /////////////////////////////////////////////////////////////////////////////
 
-#include "bndKinase/bndKinaseEltName.hh"
+#include "ftr/omniExtrap.hh"
+#include "mzr/pchem.hh"
 
-namespace bndKinase
+namespace ftr
 {
-  namespace eltName
+  omniMassExtrap::
+  omniMassExtrap(double theRate,
+		 const mzr::massive* pDefaultTriggeringSpecies,
+		 const mzr::massive* pMassiveAuxiliarySpecies) :
+    pMassive(pMassiveAuxiliarySpecies)
   {
-    // Kinase reactions with nucleotide binding treated as ordinary binding.
-    const std::string bndKinaseGen("bnd-kinase-gen");
-    const std::string substrateModMolInstanceRef("substrate-mod-mol-instance-ref");
-    const std::string substrateModMolInstanceRef_nameAttr("name");
-    const std::string phosSiteRef("phos-site-ref");
-    const std::string phosSiteRef_nameAttr("name");
-    const std::string phosphorylatedModRef("phosphorylated-mod-ref");
-    const std::string phosphorylatedModRef_nameAttr("name");
-    const std::string atpSmallMolInstanceRef("atp-small-mol-instance-ref");
-    const std::string atpSmallMolInstanceRef_nameAttr("name");
-    const std::string adpSmallMolRef("adp-small-mol-ref");
-    const std::string adpSmallMolRef_nameAttr("name");
-    const std::string rate("rate");
-    const std::string rate_valueAttr("value");
+    rateOrInvariant
+      = mzr::bindingInvariant(theRate,
+			      pDefaultTriggeringSpecies->getWeight(),
+			      pMassive->getWeight());
+  }
 
-    // Generic modification reaction generator.
-    const std::string modGen("mod-gen");
-    const std::string modSiteRef("mod-site-ref");
-    const std::string modSiteRef_nameAttr("name");
-    const std::string installedModRef("installed-mod-ref");
-    const std::string installedModRef_nameAttr("name");
+  double
+  omniMassExtrap::
+  getRate(const plx::cxOmni& rWrappedContext) const
+  {
+    // Are we generating unary or binary reactions?
+    if(pMassive)
+      {
+	return mzr::bindingRate(rateOrInvariant,
+				rWrappedContext.getPlexWeight(),
+				pMassive->getWeight());
+      }
+    else
+      {
+	return rateOrInvariant;
+      }
   }
 }

@@ -23,17 +23,24 @@
 #   Berkeley, CA 94704
 ###############################################################################
 
-DOT := $(DOT)/cc
+# The name of this module.
+UNIT_NAME := ftr
 
-SOURCES := bndKinaseRxnGen.cc \
-	bndKinaseParse.cc \
-	bndKinaseEltName.cc \
-	modRxnGen.cc \
-	parseBndKinaseGen.cc \
-	parseModGen.cc
+# Other units (really libs made by this build) that this
+# module requires for linking.
+REQUIRED_UNITS := domUtils mzr mol plex
+
+# Libraries that are required for linking this module,
+# but are not made by this build.
+EXTRA_LIBS :=
+
+DOT := $(DOT)/$(UNIT_NAME)Unit
+
+include $(DOT)/cc/td.mk
+include $(DOT)/dbg-o/td.mk
+include $(DOT)/opt-o/td.mk
+include $(DOT)/prf-o/td.mk
 
 PREEN_LIST := $(PREEN_LIST) $(DOT)/*~
-
-TAGS_LIST := $(TAGS_LIST) $(addprefix $(DOT)/,$(SOURCES))
 
 DOT := $(call dotdot,$(DOT))

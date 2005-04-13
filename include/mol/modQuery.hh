@@ -27,65 +27,63 @@
 #define MODQUERY_H
 
 #include "plex/plexQuery.hh"
-#include "mol/molState.hh"
-#include "mol/modMixin.hh"
+#include "mol/molQuery.hh"
 
 namespace bnd
 {
-  class modMixinStateQuery : public plx::plexQuery
+  // Query for testing a mol state.  plexQueries that ask about mol states
+  // can delegete to one of these.
+  class modMixinMolQuery : 
+    public molQuery
   {
-    plx::plexMolSpec molSpec;
-
     // The index of the modification site to look at.
-    // This is generated from the name when the query is created.
     int modNdx;
-    // Pointer to the modification to see at the modification site.
-    // This is generated (by getMod) when the query is created.
+
+    // Pointer to the modificatio to see at the modification site.
     const modification* pMod;
-
   public:
-
-    modMixinStateQuery(const plx::plexMolSpec& rPlexMolSpec,
-		       int modificationIndex,
-		       const modification* pModToSee) :
-      molSpec(rPlexMolSpec),
+    modMixinMolQuery(molUnit& rMolUnit,
+		     int modificationIndex,
+		     const modification* pModToSee) :
+      molQuery(rMolUnit),
       modNdx(modificationIndex),
       pMod(pModToSee)
     {}
 
     bool
-    operator()(const plx::plexParam& rParam) const
-    {
-      // Get the modMixin part of the state of the mol.
-      const modStateMixin* pModMixin
-	= dynamic_cast<const modStateMixin*>(rParam.molParams[molSpec]);
+    operator()(const molParam& rParam) const;
+  };
+  
+  class modMixinStateQuery :
+    public plx::plexQuery
+  {
+    // The index in the complex of the mol whose state is to be queried.
+    plx::plexMolSpec molSpec;
 
-      // Complain if the mol state does not have a modMixin part.
-      if(! pModMixin) throw modMolQueryTargetXcpt(pMod,
-						  modNdx);
-      return (*pModMixin)[modNdx] == pMod;
+    // Query for state of mol.
+    const modMixinMolQuery* pMolQuery;
+
+  public:
+    modMixinStateQuery(plx::plexUnit& rPlexUnit,
+		       molUnit& rMolUnit,
+		       const plx::plexMolSpec& rPlexMolSpec,
+		       int modificationIndex,
+		       const modification* pModToSee) :
+      plx::plexQuery(rPlexUnit),
+      molSpec(rPlexMolSpec)
+    {
+      pMolQuery = new modMixinMolQuery(rMolUnit,
+				       modificationIndex,
+				       pModToSee);
     }
+
+    bool
+    operator()(const plx::plexParam& rParam) const;
 
     // Why did I not overload operator() ?
     bool
     applyTracked(const plx::plexParam& rPlexParam,
-		 const plx::subPlexSpec& rSubPlexSpec) const
-    {
-      // Map the mol index through the injection of the omniplex into
-      // the complex.
-      int molNdx = rSubPlexSpec.getInjection().forward.molMap[molSpec];
-
-      // Get the state of the mol at the mapped mol index.
-      const molState* pMolState = rPlexParam.molParams[molNdx];
-
-      // Get the modMixin part of the state of the mol.
-      const modStateMixin* pModMixin
-	= dynamic_cast<const modStateMixin*>(pMolState);
-
-      if(! pModMixin) throw modMolQueryTargetXcpt(pMod,
-						  modNdx);
-      return (*pModMixin)[modNdx] == pMod;
-    }
+		 const plx::subPlexSpec& rSubPlexSpec) const;
   };
 }
 

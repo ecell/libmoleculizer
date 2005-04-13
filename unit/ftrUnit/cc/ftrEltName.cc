@@ -57,5 +57,12 @@ namespace ftr
 
     const std::string rate("rate");
     const std::string rate_valueAttr("value");
+
+    const std::string uniMolGen("uni-mol-gen");
+    const std::string enablingMol("enabling-mol");
+    const std::string enablingMol_nameAttr("name");
+    const std::string enablingModifications("enabling-modifications");
+    const std::string modRef("mod-ref");
+    const std::string modRef_nameAttr("name");
   }
 }

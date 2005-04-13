@@ -35,6 +35,8 @@
 
 namespace plx
 {
+  class plexUnit;
+
   /*! \file plexQuery.hh
     \ingroup plexSpeciesGroup
     \brief Defines logical combinators for plex dump queries. */
@@ -49,6 +51,7 @@ namespace plx
   class plexQuery : public mzr::paramQuery<plexParam>
   {
   public:
+    plexQuery(plexUnit& rPlexUnit);
 
     // Seem to be having some trouble overloading operator() to handle
     // this case.
@@ -62,110 +65,27 @@ namespace plx
     The command only supports AND of a list of canned atomic queries. */
   class andPlexQueries : public plexQuery
   {
-  public:
-
     // Pointers to the queries that this query AND's together.
     // This query is NOT responsible for memory-managing these
     // "subordinate" queries; since plexQueries can refer
     // to one another, they are all registered in the plexUnit.
     std::vector<plexQuery*> queries;
 
-    /*! \brief Auxiliary function class to help do AND of a number of
-      plexQueries. */
-    class applyNotQuery : public std::unary_function<const plexQuery*, bool>
-    {
-      const plexParam& rParam;
-    public:
-      applyNotQuery(const plexParam& rPlexParam) :
-	rParam(rPlexParam)
-      {}
-
-      bool
-      operator()(const plexQuery* pQuery) const
-      {
-	const plexQuery& rQuery = *pQuery;
-	return ! rQuery(rParam);
-      }
-    };
-    bool operator()(const plexParam& rParam) const
-    {
-      // The AND of the queries is true if we can get all the way to
-      // the end of the vector of queries without finding one that is not
-      // satisfied by the parameter.
-      return (queries.end() ==  find_if(queries.begin(),
-					queries.end(),
-					applyNotQuery(rParam)));
-    }
-
-    /*! \brief Auxiliary function class to help do AND of a number of
-      plexQueries in the case that an isomorphism must be applied to
-      the plexParam argument. */
-    class applyNotTrackedQuery : public std::unary_function<const plexQuery*, bool>
-    {
-      const plexParam& rParam;
-      const subPlexSpec& rSpec;
-    public:
-      applyNotTrackedQuery(const plexParam& rPlexParam,
-			   const subPlexSpec& rSubPlexSpec) :
-	rParam(rPlexParam),
-	rSpec(rSubPlexSpec)
-      {}
-
-      bool
-      operator()(const plexQuery* pQuery) const
-      {
-	const plexQuery& rQuery = *pQuery;
-	return ! rQuery.applyTracked(rParam,
-				     rSpec);
-      }
-    };
-    bool applyTracked(const plexParam& rParam,
-		      const subPlexSpec& rSpec) const
-    {
-      return (queries.end() == find_if(queries.begin(),
-				       queries.end(),
-				       applyNotTrackedQuery(rParam,
-							    rSpec)));
-    }
+  public:
+    andPlexQueries(plexUnit& rPlexUnit) :
+      plexQuery(rPlexUnit)
+    {}
 
     void addQuery(plexQuery* pQuery)
     {
       queries.push_back(pQuery);
     }
+
+    bool operator()(const plexParam& rParam) const;
+
+    bool applyTracked(const plexParam& rParam,
+		      const subPlexSpec& rSpec) const;
   };
-
-  /*! \ingroup plexSpeciesGroup
-    \brief NOT logical combinator for plex dump queries. */
-//   class notPlexQuery : public plexQuery
-//   {
-//     // Looks like I was intending to manage this query here.  Hmmm.
-//     const plexQuery* pNotQuery;
-//   public:
-//     notPlexQuery(const plexQuery* pQueryToNot) :
-//       pNotQuery(pQueryToNot)
-//     {}
-
-//     // Again, this compound query is responsible for deleting its
-//     // single clause.
-//     ~notPlexQuery(void)
-//     {
-//       delete pNotQuery;
-//     }
-
-//     bool operator()(const plexParam& rParam) const
-//     {
-//       const plexQuery& rNotQuery = *pNotQuery;
-//       return ! rNotQuery(rParam);
-//     }
-
-//     bool applyTracked(const plexParam& rParam,
-// 		      const subPlexSpec& rSpec) const
-//     {
-//       const plexQuery& rNotQuery = *pNotQuery;
-//       return ! rNotQuery.applyTracked(rParam,
-// 				      rSpec);
-//     }
-//   };
 }
 
 #endif

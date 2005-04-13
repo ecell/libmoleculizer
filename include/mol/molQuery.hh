@@ -23,44 +23,45 @@
 //   Berkeley, CA 94704
 /////////////////////////////////////////////////////////////////////////////
 
-#include "ftr/omniExtrap.hh"
-#include "mzr/pchem.hh"
+#ifndef MOLQUERY_H
+#define MOLQUERY_H
 
-namespace ftr
+#include "mol/molState.hh"
+#include "mzr/paramDumpable.hh"
+
+namespace bnd
 {
-  omniMassExtrap::
-  omniMassExtrap(double theRate,
-		 const mzr::massive* pDefaultTriggeringSpecies,
-		 const mzr::massive* pMassiveAuxiliarySpecies) :
-    pMassive(pMassiveAuxiliarySpecies)
-  {
-    if(pMassive)
-      {
-	rateOrInvariant
-	  = mzr::bindingInvariant(theRate,
-				  pDefaultTriggeringSpecies->getWeight(),
-				  pMassive->getWeight());
-      }
-    else
-      {
-	rateOrInvariant = theRate;
-      }
-  }
+  class molUnit;
 
-  double
-  omniMassExtrap::
-  getRate(const plx::cxOmni& rWrappedContext) const
+  class molQuery :
+    public mzr::paramQuery<molParam>
   {
-    // Are we generating unary or binary reactions?
-    if(pMassive)
-      {
-	return mzr::bindingRate(rateOrInvariant,
-				rWrappedContext.getPlexWeight(),
-				pMassive->getWeight());
-      }
-    else
-      {
-	return rateOrInvariant;
-      }
-  }
+  public:
+    molQuery(molUnit& rMolUnit);
+  };
+
+  class andMolQueries : public molQuery
+  {
+    // These have to be stored by reference, since molQuery is just a base
+    // class.  I intend for molQueries to be managed by the mol unit.
+    std::vector<const molQuery*> queries;
+    
+  public:
+    andMolQueries(molUnit& rMolUnit) :
+      molQuery(rMolUnit)
+    {}
+    
+    // Note that this andMolQueries does not memory-manage queries added to
+    // it.
+    void
+    addQuery(const molQuery* pQuery)
+    {
+      queries.push_back(pQuery);
+    }
+
+    bool
+    operator()(const molParam& rParam) const;
+  };
 }
+
+#endif // MOLQUERY_H

@@ -23,44 +23,44 @@
 //   Berkeley, CA 94704
 /////////////////////////////////////////////////////////////////////////////
 
-#include "ftr/omniExtrap.hh"
-#include "mzr/pchem.hh"
+#include "mol/modQuery.hh"
+#include "mol/modMixin.hh"
 
-namespace ftr
+namespace bnd
 {
-  omniMassExtrap::
-  omniMassExtrap(double theRate,
-		 const mzr::massive* pDefaultTriggeringSpecies,
-		 const mzr::massive* pMassiveAuxiliarySpecies) :
-    pMassive(pMassiveAuxiliarySpecies)
+  bool
+  modMixinMolQuery::
+  operator()(const molParam& rParam) const
   {
-    if(pMassive)
-      {
-	rateOrInvariant
-	  = mzr::bindingInvariant(theRate,
-				  pDefaultTriggeringSpecies->getWeight(),
-				  pMassive->getWeight());
-      }
-    else
-      {
-	rateOrInvariant = theRate;
-      }
+    // Get the modMixin part of the state of the mol.
+    const modStateMixin* pModMixin
+      = dynamic_cast<const modStateMixin*>(rParam);
+
+    // Complain if the mol state does not have a modMixin part.
+    if(! pModMixin) throw modMolQueryTargetXcpt(pMod,
+						modNdx);
+    return (*pModMixin)[modNdx] == pMod;
+  }
+  
+  bool
+  modMixinStateQuery::
+  operator()(const plx::plexParam& rParam) const
+  {
+    const modMixinMolQuery& rMolQuery = *pMolQuery;
+    return rMolQuery(rParam.molParams[molSpec]);
   }
 
-  double
-  omniMassExtrap::
-  getRate(const plx::cxOmni& rWrappedContext) const
+  bool
+  modMixinStateQuery::
+  applyTracked(const plx::plexParam& rPlexParam,
+	       const plx::subPlexSpec& rSubPlexSpec) const
   {
-    // Are we generating unary or binary reactions?
-    if(pMassive)
-      {
-	return mzr::bindingRate(rateOrInvariant,
-				rWrappedContext.getPlexWeight(),
-				pMassive->getWeight());
-      }
-    else
-      {
-	return rateOrInvariant;
-      }
+    // Map the mol index through the injection of the omniplex into
+    // the complex.
+    int molNdx = rSubPlexSpec.getInjection().forward.molMap[molSpec];
+
+    // Test the state of the mol at the mapped mol index.
+    const modMixinMolQuery& rMolQuery = *pMolQuery;
+    return rMolQuery(rPlexParam.molParams[molNdx]);
   }
 }

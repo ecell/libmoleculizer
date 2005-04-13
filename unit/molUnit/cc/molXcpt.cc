@@ -197,7 +197,8 @@ namespace bnd
 			       int modNdx)
   {
     std::ostringstream msgStream;
-    msgStream << "Could not test for modification "
+    msgStream << mzr::internalXcptMsg()
+	      << "Could not test for modification "
 	      << pMod->name
 	      << " at index "
 	      << modNdx

@@ -23,48 +23,43 @@
 //   Berkeley, CA 94704
 /////////////////////////////////////////////////////////////////////////////
 
-#include "mol/modMol.hh"
-#include "ftr/ftrUnit.hh"
-#include "ftr/ftrEltName.hh"
-#include "ftr/ftrXcpt.hh"
-#include "ftr/parseOmniGen.hh"
-#include "ftr/parseUniMolGen.hh"
-#include "plex/plexDomParse.hh"
+#ifndef UNIMOLFAM_H
+#define UNIMOLFAM_H
+
+#include "ftr/uniMolGen.hh"
 
 namespace ftr
 {
-  void
-  ftrUnit::parseDomInput(xmlpp::Element* pRootElement,
-			 xmlpp::Element* pModelElement,
-			 xmlpp::Element* pStreamsElement,
-			 xmlpp::Element* pEventsElement)
-    throw(std::exception)
+  class uniMolFam : public mzr::reactionFamily
   {
-    // This unit only adds a reaction generator for now.
-    xmlpp::Element* pReactionGensElt
-      = domUtils::mustGetUniqueChild(pModelElement,
-				     mzr::eltName::reactionGens);
+    uniMolRxnGen rxnGen;
 
-    // Get the omniGen nodes.
-    xmlpp::Node::NodeList omniGenNodes
-      = pReactionGensElt->get_children(eltName::omniGen);
+  public:
+    uniMolFam(mzr::mzrUnit& refMzrUnit,
+	      plx::plexUnit& refPlexUnit,
+	      bnd::modMol* pEnablingModMol,
+	      bnd::andMolQueries* pAndMolQueries,
+	      const std::vector<molModExchange>& rModExchanges,
+	      mzr::species* pAuxReactant,
+	      mzr::species* pAuxProduct,
+	      const uniMolExtrapolator* pUniMolExtrapolator) :
+      rxnGen(refMzrUnit,
+	     refPlexUnit,
+	     pEnablingModMol,
+	     pAndMolQueries,
+	     rModExchanges,
+	     pAuxReactant,
+	     pAuxProduct,
+	     this,
+	     pUniMolExtrapolator)
+    {}
 
-    // Add omniFam reaction family for each of the generator nodes.
-    std::for_each(omniGenNodes.begin(),
-		  omniGenNodes.end(),
-		  parseOmniGen(rMzrUnit,
-			       rMolUnit,
-			       rPlexUnit));
-
-    // Get the uniMolGen nodes.
-    xmlpp::Node::NodeList uniMolGenNodes
-      = pReactionGensElt->get_children(eltName::uniMolGen);
-
-    // Add uniMolFam reaction family for each of the generator nodes.
-    std::for_each(uniMolGenNodes.begin(),
-		  uniMolGenNodes.end(),
-		  parseUniMolGen(rMzrUnit,
-				 rMolUnit,
-				 rPlexUnit));
-  }
+    plx::molFeature::rxnGen*
+    getRxnGen(void)
+    {
+      return &rxnGen;
+    }
+  };
 }
+
+#endif // UNIMOLFAM_H

@@ -135,14 +135,14 @@ namespace mzr
     }
 
     species*
-    findSpecies(const std::string& rSpeciesName)
+    findSpecies(const std::string& rSpeciesName) const
     {
       return speciesByName.findEntry(rSpeciesName);
     }
 
     species*
     mustFindSpecies(xmlpp::Node* pRequestingNode,
-		    const std::string& rSpeciesName)
+		    const std::string& rSpeciesName) const
       throw(unknownSpeciesXcpt);
 
     // This is for adding a species that will be deleted by userData,

@@ -38,6 +38,7 @@ SOURCES := alloSiteQuery.cc \
 	plexEltName.cc \
 	plexFamily.cc \
 	plexMap.cc \
+	plexQuery.cc \
 	plexSpec.cc \
 	plexSpecies.cc \
 	plexUnit.cc \

@@ -62,6 +62,17 @@ namespace ftr
 
     extern const std::string rate;
     extern const std::string rate_valueAttr;
+
+    extern const std::string uniMolGen;
+    extern const std::string enablingMol;
+    extern const std::string enablingMol_nameAttr;
+    extern const std::string enablingModifications;
+    extern const std::string modRef;
+    extern const std::string modRef_nameAttr;
+    extern const std::string modificationExchanges;
+    extern const std::string modificationExchange;
+    extern const std::string additionalReactantSpecies;
+    extern const std::string additionalProductSpecies;
   }
 }
 

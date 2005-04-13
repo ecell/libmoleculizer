@@ -23,48 +23,49 @@
 //   Berkeley, CA 94704
 /////////////////////////////////////////////////////////////////////////////
 
+#include "mol/molState.hh"
 #include "mol/modMol.hh"
-#include "ftr/ftrUnit.hh"
-#include "ftr/ftrEltName.hh"
-#include "ftr/ftrXcpt.hh"
-#include "ftr/parseOmniGen.hh"
-#include "ftr/parseUniMolGen.hh"
-#include "plex/plexDomParse.hh"
+#include "ftr/uniMolExtrap.hh"
+#include "mzr/pchem.hh"
 
 namespace ftr
 {
-  void
-  ftrUnit::parseDomInput(xmlpp::Element* pRootElement,
-			 xmlpp::Element* pModelElement,
-			 xmlpp::Element* pStreamsElement,
-			 xmlpp::Element* pEventsElement)
-    throw(std::exception)
+  uniMolMassExtrap::
+  uniMolMassExtrap(double theRate,
+		   const bnd::modMol* pEnablingMol,
+		   const mzr::massive* pMassiveAuxiliarySpecies) :
+    pMassive(pMassiveAuxiliarySpecies)
   {
-    // This unit only adds a reaction generator for now.
-    xmlpp::Element* pReactionGensElt
-      = domUtils::mustGetUniqueChild(pModelElement,
-				     mzr::eltName::reactionGens);
+    if(pMassive)
+      {
+	bnd::molParam pEnablingMolDefaultState
+	  = pEnablingMol->getDefaultState();
+	  
+	rateOrInvariant
+	  = mzr::bindingInvariant(theRate,
+				  pEnablingMolDefaultState->getMolWeight(),
+				  pMassive->getWeight());
+      }
+    else
+      {
+	rateOrInvariant = theRate;
+      }
+  }
 
-    // Get the omniGen nodes.
-    xmlpp::Node::NodeList omniGenNodes
-      = pReactionGensElt->get_children(eltName::omniGen);
-
-    // Add omniFam reaction family for each of the generator nodes.
-    std::for_each(omniGenNodes.begin(),
-		  omniGenNodes.end(),
-		  parseOmniGen(rMzrUnit,
-			       rMolUnit,
-			       rPlexUnit));
-
-    // Get the uniMolGen nodes.
-    xmlpp::Node::NodeList uniMolGenNodes
-      = pReactionGensElt->get_children(eltName::uniMolGen);
-
-    // Add uniMolFam reaction family for each of the generator nodes.
-    std::for_each(uniMolGenNodes.begin(),
-		  uniMolGenNodes.end(),
-		  parseUniMolGen(rMzrUnit,
-				 rMolUnit,
-				 rPlexUnit));
+  double
+  uniMolMassExtrap::
+  getRate(const plx::cxMol& rWrappedContext) const
+  {
+    // Are we generating unary or binary reactions?
+    if(pMassive)
+      {
+	return mzr::bindingRate(rateOrInvariant,
+				rWrappedContext.getPlexWeight(),
+				pMassive->getWeight());
+      }
+    else
+      {
+	return rateOrInvariant;
+      }
   }
 }

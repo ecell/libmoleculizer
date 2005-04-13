@@ -345,10 +345,11 @@ namespace plx
 	// Construct the query and register for memory management
 	// by the plexUnit.
 	bnd::modMixinStateQuery* pModQuery
-	  = new bnd::modMixinStateQuery(instanceNdx,
+	  = new bnd::modMixinStateQuery(rPlexUnit,
+					rMolUnit,
+					instanceNdx,
 					modSiteNdx,
 					pMod);
-	rPlexUnit.addPlexQuery(pModQuery);
 
 	// Add the query to the conjunction of queries to be applied to
 	// species of complexes appearing in this stream.
@@ -870,8 +871,7 @@ namespace plx
   {
     // Parse the plex class.
     parserPlex parsedPlex;
-    andPlexQueries* pAndPlexQueries = new andPlexQueries();
-    rPlexUnit.addPlexQuery(pAndPlexQueries);
+    andPlexQueries* pAndPlexQueries = new andPlexQueries(rPlexUnit);
     parsePlexClass classParser(rMolUnit,
 			       rPlexUnit,
 			       parsedPlex,
@@ -908,8 +908,7 @@ namespace plx
 
     // Parse the plex class, to get a plex, plexFamily, and a state query.
     parserPlex parsedPlex;
-    andPlexQueries* pAndPlexQueries = new andPlexQueries();
-    rPlexUnit.addPlexQuery(pAndPlexQueries);
+    andPlexQueries* pAndPlexQueries = new andPlexQueries(rPlexUnit);
     // Is this ever used in an STL algorithm? Maybe just a function?  Why
     // do I bother?
     parsePlexClass classParser(rMolUnit,

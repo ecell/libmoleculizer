@@ -43,7 +43,8 @@ MOLECULIZER_SCHEMATA := dimer.rng \
 	plex.rng \
 	scaffold.rng \
 	stoch.rng \
-	bndKinase.rng
+	bndKinase.rng \
+	ftr.rng
 
 # The locations of the MOLECULIZER_SCHEMATA.
 MZR_SCMTA := $(addprefix $(SCHEMA)/schema-doc/,$(MOLECULIZER_SCHEMATA))

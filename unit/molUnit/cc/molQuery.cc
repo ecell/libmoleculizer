@@ -23,44 +23,40 @@
 //   Berkeley, CA 94704
 /////////////////////////////////////////////////////////////////////////////
 
-#include "ftr/omniExtrap.hh"
-#include "mzr/pchem.hh"
+#include "mol/molQuery.hh"
+#include "mol/molUnit.hh"
 
-namespace ftr
+namespace bnd
 {
-  omniMassExtrap::
-  omniMassExtrap(double theRate,
-		 const mzr::massive* pDefaultTriggeringSpecies,
-		 const mzr::massive* pMassiveAuxiliarySpecies) :
-    pMassive(pMassiveAuxiliarySpecies)
+  molQuery::molQuery(molUnit& rMolUnit)
   {
-    if(pMassive)
-      {
-	rateOrInvariant
-	  = mzr::bindingInvariant(theRate,
-				  pDefaultTriggeringSpecies->getWeight(),
-				  pMassive->getWeight());
-      }
-    else
-      {
-	rateOrInvariant = theRate;
-      }
+    rMolUnit.addMolQuery(this);
   }
-
-  double
-  omniMassExtrap::
-  getRate(const plx::cxOmni& rWrappedContext) const
+  
+  // This is accessible via adaptors, I think.
+  class applyNotMolQuery :
+    public std::unary_function<const molQuery*, bool>
   {
-    // Are we generating unary or binary reactions?
-    if(pMassive)
-      {
-	return mzr::bindingRate(rateOrInvariant,
-				rWrappedContext.getPlexWeight(),
-				pMassive->getWeight());
-      }
-    else
-      {
-	return rateOrInvariant;
-      }
+    const molParam& rParam;
+  public:
+    applyNotMolQuery(const molParam& rMolParam) :
+      rParam(rMolParam)
+    {}
+
+    bool
+    operator()(const molQuery* pQuery) const
+    {
+      const molQuery& rQuery = *pQuery;
+      return ! rQuery(rParam);
+    }
+  };
+
+  bool
+  andMolQueries::
+  operator()(const molParam& rParam) const
+  {
+    return (queries.end() == find_if(queries.begin(),
+				     queries.end(),
+				     applyNotMolQuery(rParam)));
   }
 }

@@ -33,10 +33,11 @@ namespace mzr
   species*
   mzrUnit::
   mustFindSpecies(xmlpp::Node* pRequestingNode,
-		  const std::string& rSpeciesName)
+		  const std::string& rSpeciesName) const
     throw(unknownSpeciesXcpt)
   {
     species* pSpecies = findSpecies(rSpeciesName);
+
     if(! pSpecies)
       throw unknownSpeciesXcpt(pRequestingNode,
 			       rSpeciesName);

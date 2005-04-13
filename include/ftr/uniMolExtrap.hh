@@ -23,44 +23,67 @@
 //   Berkeley, CA 94704
 /////////////////////////////////////////////////////////////////////////////
 
-#include "ftr/omniExtrap.hh"
-#include "mzr/pchem.hh"
+#ifndef UNIMOLEXTRAP_H
+#define UNIMOLEXTRAP_H
+
+#include "plex/cxMolParam.hh"
 
 namespace ftr
 {
-  omniMassExtrap::
-  omniMassExtrap(double theRate,
-		 const mzr::massive* pDefaultTriggeringSpecies,
-		 const mzr::massive* pMassiveAuxiliarySpecies) :
-    pMassive(pMassiveAuxiliarySpecies)
+  class uniMolExtrapolator
   {
-    if(pMassive)
-      {
-	rateOrInvariant
-	  = mzr::bindingInvariant(theRate,
-				  pDefaultTriggeringSpecies->getWeight(),
-				  pMassive->getWeight());
-      }
-    else
-      {
-	rateOrInvariant = theRate;
-      }
-  }
+  public:
+    virtual
+    ~uniMolExtrapolator(void)
+    {}
 
-  double
-  omniMassExtrap::
-  getRate(const plx::cxOmni& rWrappedContext) const
+    virtual
+    double
+      getRate(const plx::cxMol& rContext) const = 0;
+  };
+
+  class uniMolNoExtrap :
+    public uniMolExtrapolator
   {
-    // Are we generating unary or binary reactions?
-    if(pMassive)
-      {
-	return mzr::bindingRate(rateOrInvariant,
-				rWrappedContext.getPlexWeight(),
-				pMassive->getWeight());
-      }
-    else
-      {
-	return rateOrInvariant;
-      }
-  }
+    double rate;
+  public:
+    uniMolNoExtrap(double theRate) :
+      rate(theRate)
+    {}
+
+    double
+    getRate(const plx::cxMol& rContext) const
+    {
+      return rate;
+    }
+  };
+
+  class uniMolMassExtrap :
+    public uniMolExtrapolator
+  {
+    // Pointer to "massive" part of auxiliary reactant species; null if there
+    // is no auxiliary reactant species.
+    const mzr::massive* pMassive;
+
+    // The rate if the reaction is unary (0 == pMassive) but the binding
+    // invariant if the reaction is binary.
+    double rateOrInvariant;
+
+  public:
+    // For creating unary reactions.
+    uniMolMassExtrap(double theRate) :
+      pMassive(0),
+      rateOrInvariant(theRate)
+    {}
+
+    // For creating binary reactions.
+    uniMolMassExtrap(double theRate,
+		     const bnd::modMol* pEnablingMol,
+		     const mzr::massive* pMassiveAuxiliarySpecies);
+
+    double
+    getRate(const plx::cxMol& rContext) const;
+  };
 }
+
+#endif //  UNIMOLEXTRAP_H

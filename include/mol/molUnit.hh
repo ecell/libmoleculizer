@@ -34,6 +34,7 @@
 #include "mol/molDomParse.hh"
 #include "mol/molEltName.hh"
 #include "mol/smallMol.hh"
+#include "mol/molQuery.hh"
 
 namespace bnd
 {
@@ -46,10 +47,10 @@ namespace bnd
     <std::pair<std::string, std::string>,
       std::pair<std::string, const modification*> >
     {
-      molUnit& rMolUnit;
+      const molUnit& rMolUnit;
       
     public:
-      getValueMod(molUnit& refMolUnit) :
+      getValueMod(const molUnit& refMolUnit) :
 	rMolUnit(refMolUnit)
       {}
       
@@ -60,6 +61,8 @@ namespace bnd
 			      rMolUnit.mustGetMod(rEntry.second));
       }
     };
+
+    mzr::autoVector<const molQuery> molQueries;
     
     mzr::autoCatalog<const modification> knownMods;
 
@@ -115,43 +118,9 @@ namespace bnd
 				   pMod->name));
     }
 
-    // Unification of modifications by name.  This "intern" style
-    // of operation avoids the possibility of overwriting an existing
-    // modification in the catalog.
-//     bool
-//     internMod(const std::string& rModName,
-// 	      double molWeightDelta,
-// 	      const modification*& rModificationPointer)
-//     {
-//       rModificationPointer = knownMods.findEntry(rModName);
-
-//       bool modWasKnown = (0 != rModificationPointer);
-//       if(! modWasKnown)
-// 	{
-// 	  rModificationPointer = new modification(rModName,
-// 						  molWeightDelta);
-// 	  knownMods.addEntry(rModificationPointer->name,
-// 			     rModificationPointer);
-// 	}
-//       return modWasKnown;
-//     }
-
-    // Same as above; discards pointer to found or created modifier.
-//     bool
-//     internMod(const std::string& rModName,
-// 	      double molWeightDelta)
-//     {
-//       // Pointer to discard.
-//       const modification* pMod = 0;
-
-//       return internMod(rModName,
-// 		       molWeightDelta,
-// 		       pMod);
-//     }
-
     // Gets modification with the given name, or returns null.
     const modification*
-    getMod(const std::string& rModName)
+    getMod(const std::string& rModName) const
     {
       return knownMods.findEntry(rModName);
     }
@@ -160,7 +129,8 @@ namespace bnd
     // This is used in getModMap below, where there is no DOM parsing
     // context.
     const modification*
-    mustGetMod(const std::string& rModificationName) throw(unknownModXcpt)
+    mustGetMod(const std::string& rModificationName) const
+      throw(unknownModXcpt)
     {
       const modification* pMod = getMod(rModificationName);
       if(! pMod) throw unknownModXcpt(rModificationName);
@@ -171,7 +141,7 @@ namespace bnd
     // kind to assist with parsing?
     const modification*
     mustGetMod(xmlpp::Node* pNodeWithName,
-	       const std::string& rModificationName)
+	       const std::string& rModificationName) const
       throw(unknownModXcpt)
     {
       const modification* pMod = getMod(rModificationName);
@@ -184,13 +154,19 @@ namespace bnd
     // into a map from modification site names to modification pointers.
     void
     getModMap(const std::map<std::string, std::string>& rMapToModNames,
-	      std::map<std::string, const modification*>& rMapToMods)
+	      std::map<std::string, const modification*>& rMapToMods) const
     {
       transform(rMapToModNames.begin(),
 		rMapToModNames.end(),
 		inserter(rMapToMods,
 			 rMapToMods.begin()),
 		getValueMod(*this));
+    }
+
+    void
+    addMolQuery(const molQuery* pMolQuery)
+    {
+      molQueries.push_back(pMolQuery);
     }
 
     mzr::mzrUnit& rMzrUnit;

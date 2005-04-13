@@ -56,6 +56,7 @@ namespace ftr
       // schema" i.e. pay no attention to extraneous matter while parsing.
       // seems more rational to me.
       inputCap.addReactionGenName(eltName::omniGen);
+      inputCap.addReactionGenName(eltName::uniMolGen);
 
       // Register the enabling complexes for omniRxnGen generators
       // as omniplexes, for processing by the plexUnit.

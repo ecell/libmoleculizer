@@ -23,60 +23,29 @@
 #   Berkeley, CA 94704
 ###############################################################################
 
-DOT := $(DOT)/demo
+DOT := $(DOT)/uniMolPtase
 
-SHORT_DEMOS := 	bndKinase \
-	continuator \
-	heinrich \
-	heinrich-odie \
-	heinrich-rk4tau \
-	heinrich-sbml \
-	heinrich-state \
-	kinase \
-	kinase-extrap \
-	kinase-odie \
-	kinase-sbml \
-	modify \
-	omniKinase \
-	omniPtase \
-	omniReceptor \
-	query-allostery \
-	receptor \
-	receptor-nx-extrap \
-	receptor-nx-sst2 \
-	receptor-odie \
-	receptor-sbml \
-	receptor-state \
-	receptor-structure \
-	scaffold-odie \
-	scaffold-sbml \
-	scaffold-state \
-	simple \
-	simple-extrap \
-	simple-odie \
-	simple-rk4tau \
-	simple-sbml \
-	simple-stoch \
-	small-mol \
-	uniMolPtase
+$(DOT)/target : $(DOT)/uniMolPtase.out
 
-LONG_DEMOS := scaffold \
-	scaffold-basal \
-	scaffold-extrap
+$(DOT)/sbml : $(DOT)/uniMolPtase.out
+	cd $? \
+	&& state2sbml state-dump.xml state-dump.sbml \
+	&& xmlpretty state-dump.sbml state-dump-lines.sbml
 
-DEMOS := $(SHORT_DEMOS) $(LONG_DEMOS)
+$(DOT)/uniMolPtase.out : $(DOT)/uniMolPtase.xml
+	mkdir $@
+	cp $? $@
+	cd $@ \
+	&& moleculizer < uniMolPtase.xml \
+	&& plot-dmp-files
 
-$(DOT)/short : $(addprefix $(DOT)/,$(addsuffix /target,$(SHORT_DEMOS)))
+# For redoing individual demos several times.
+$(DOT)/clean : DT := $(DOT)
+$(DOT)/clean :
+	rm -rf $(DT)/*.out
 
-$(DOT)/long : $(addprefix $(DOT)/,$(addsuffix /target,$(LONG_DEMOS)))
+CLEAN_LIST := $(CLEAN_LIST) $(DOT)/*.out
 
-$(DOT)/all : $(addprefix $(DOT)/,$(addsuffix /target,$(DEMOS)))
-
-$(DOT)/clean : $(addprefix $(DOT)/,$(addsuffix /clean,$(DEMOS)))
-
-PREEN_LIST := $(PREEN_LIST) $(DOT)/*~
-
-include $(addprefix $(DOT)/,$(addsuffix /td.mk,$(DEMOS)))
+PREEN_LIST := $(PREEN_LIST) $(DOT)/*~ $(DOT)/*.bak
 
 DOT := $(call dotdot,$(DOT))
-

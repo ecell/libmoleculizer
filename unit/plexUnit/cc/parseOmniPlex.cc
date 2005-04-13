@@ -109,8 +109,7 @@ namespace plx
 
     // Parse the instance states, getting a query.
     andPlexQueries* pAndPlexQueries
-      = new andPlexQueries();
-    rPlexUnit.addPlexQuery(pAndPlexQueries);
+      = new andPlexQueries(rPlexUnit);
     
     xmlpp::Element* pInstanceStatesElt
       = domUtils::getOptionalChild(pParentNode,

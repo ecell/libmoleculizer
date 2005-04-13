@@ -29,7 +29,10 @@ SOURCES := ftrEltName.cc \
 	ftrParse.cc \
 	omniExtrap.cc \
 	omniGen.cc \
-	parseOmniGen.cc
+	parseOmniGen.cc \
+	parseUniMolGen.cc \
+	uniMolExtrap.cc \
+	uniMolGen.cc
 
 PREEN_LIST := $(PREEN_LIST) $(DOT)/*~
 

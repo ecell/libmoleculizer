@@ -29,8 +29,10 @@ SOURCES := bindingSite.cc \
 	modification.cc \
 	modMixin.cc \
 	modMol.cc \
+	modQuery.cc \
 	molDomParse.cc \
 	molEltName.cc \
+	molQuery.cc \
 	molUnit.cc \
 	molXcpt.cc \
 	siteShape.cc \

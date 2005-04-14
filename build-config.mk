@@ -23,9 +23,7 @@
 #   Berkeley, CA 94704
 ###############################################################################
 
-# Configuration stuff for use at build time.
-
-# xml parsing libraries, libxml2 and libxml++.
+# XML parsing libraries, libxml2 and libxml++.
 XML2_INCLUDE_DIR := /usr/include/libxml2
 XML2_LIB := xml2
 XMLPP_INCLUDE_DIR := /usr/local/include/libxml++-1.0
@@ -36,7 +34,6 @@ XMLPP_LIB := xml++-1.0
 LIBIBERTY_A := /usr/lib/libiberty.a
 
 # Compile and link flags.
-
 CXXFLAGS := -I include -I $(XML2_INCLUDE_DIR) -I $(XMLPP_INCLUDE_DIR) -fPIC -Wall -D_REENTRANT -DPLATFORM_LINUX
 
 SHOB_LINK_FLAGS := -shared -L$(LIB) -L/usr/local/lib -L$(XMLPP_LIB_DIR)

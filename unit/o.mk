@@ -81,9 +81,11 @@ $(OBJECTS) : $(DOT)/%.o : $(DOT_DOT)/cc/%.cc
 UNIT_MAKEFILES := $(addprefix $(DOT)/,$(SOURCES:.cc=.d))
 $(UNIT_MAKEFILES) : CLF := $(COMPILE_LOCAL_FLAGS)
 $(UNIT_MAKEFILES) : $(DOT)/%.d : $(DOT_DOT)/cc/%.cc
-	g++ -MM -MT $(@:.d=.o) $(CXXFLAGS)  $(CLF) $< > $@.$$$$; \
-	sed 's/^\(.*\)\.o\s*:\s*/\1.d \1.o : /' < $@.$$$$ > $@; \
-	rm -f $@.$$$$
+	g++ -MM -MT '$@ $(@:.d=.o)' $(CXXFLAGS)  $(CLF) $< > $@
+
+# 	g++ -MM -MT $(@:.d=.o) $(CXXFLAGS)  $(CLF) $< > $@.$$$$; \
+# 	sed 's/^\(.*\)\.o\s*:\s*/\1.d \1.o : /' < $@.$$$$ > $@; \
+# 	rm -f $@.$$$$
 
 MAKEFILES := $(MAKEFILES) $(UNIT_MAKEFILES)
 

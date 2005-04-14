@@ -38,34 +38,16 @@ MINOR_VERSION := 0.8
 # These are needed both to know what the units are and what the include
 # directories are (in include/td.mk).  Hence, this list is here instead of in
 # unit/td.mk.
-UNITS := domUtils \
-	mzr \
-	mol \
-	plex \
-	dimer \
-	stoch \
-	modKinase \
-	bndKinase \
+UNITS := dimer \
+	domUtils \
 	ftr \
-	gpa \
-	sampleDist \
+	mol \
+	mzr \
 	odie \
-	rk4tau
-
-# UNITS := domUtils \
-# 	mzr \
-# 	mol \
-# 	plex \
-# 	dimer \
-# 	stoch \
-# 	modKinase \
-# 	bndKinase \
-# 	gpa \
-# 	nucEx \
-# 	scaffold \
-# 	sampleDist \
-# 	odie \
-# 	rk4tau
+	plex \
+	rk4tau \
+	sampleDist \
+	stoch
 
 # This target copies the entire moleculizer ball'o'wax to /tmp,
 # then removes soureces, etc. from the copy, then moves the copy

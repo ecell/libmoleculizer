@@ -25,11 +25,6 @@
 
 DOT := $(DOT)/cc
 
-SOURCES := stochDomParse.cc \
-	stochEltName.cc \
-	stochSpecies.cc \
-	stochUnit.cc
-
 PREEN_LIST := $(PREEN_LIST) $(DOT)/*~
 
 TAGS_LIST := $(TAGS_LIST) $(addprefix $(DOT)/,$(SOURCES))

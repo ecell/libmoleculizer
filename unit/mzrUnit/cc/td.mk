@@ -25,24 +25,6 @@
 
 DOT := $(DOT)/cc
 
-SOURCES := continuator.cc \
-	dumpable.cc \
-	dumpUtils.cc \
-	event.cc \
-	eventQueue.cc \
-	linearHash.cc \
-	moleculizer.cc \
-	mzrEltName.cc \
-	mzrUnit.cc \
-	mzrUnitParse.cc \
-	mzrXcpt.cc \
-	parametrizer.cc \
-	pchem.cc \
-	reaction.cc \
-	reactionFamily.cc \
-	species.cc \
-	util.cc
-
 PREEN_LIST := $(PREEN_LIST) $(DOT)/*~
 
 TAGS_LIST := $(TAGS_LIST) $(addprefix $(DOT)/,$(SOURCES))

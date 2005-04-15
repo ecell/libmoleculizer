@@ -25,19 +25,6 @@
 
 DOT := $(DOT)/cc
 
-SOURCES := bindingSite.cc \
-	modification.cc \
-	modMixin.cc \
-	modMol.cc \
-	modQuery.cc \
-	molDomParse.cc \
-	molEltName.cc \
-	molQuery.cc \
-	molUnit.cc \
-	molXcpt.cc \
-	siteShape.cc \
-	smallMol.cc
-
 PREEN_LIST := $(PREEN_LIST) $(DOT)/*~
 
 TAGS_LIST := $(TAGS_LIST) $(addprefix $(DOT)/,$(SOURCES))

@@ -25,13 +25,6 @@
 
 DOT := $(DOT)/cc
 
-SOURCES := decompRxnGen.cc \
-	dimerDomParse.cc \
-	dimerEltName.cc \
-	dimerizeRxnGen.cc \
-	dimerUnit.cc \
-	dimerXcpt.cc
-
 PREEN_LIST := $(PREEN_LIST) $(DOT)/*~
 
 TAGS_LIST := $(TAGS_LIST) $(addprefix $(DOT)/,$(SOURCES))

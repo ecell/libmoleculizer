@@ -34,11 +34,6 @@
 #include "dimer/dimerUnit.hh"
 #include "plex/plexUnit.hh"
 #include "stoch/stochUnit.hh"
-#include "gpa/gpaUnit.hh"
-#include "nucEx/nucExUnit.hh"
-#include "modKinase/modKinaseUnit.hh"
-#include "scaffold/scaffoldUnit.hh"
-#include "bndKinase/bndKinaseUnit.hh"
 #include "ftr/ftrUnit.hh"
 
 namespace mzr
@@ -75,11 +70,6 @@ namespace mzr
     plx::plexUnit thePlexUnit;
     dimer::dimerUnit theDimerUnit;
     stoch::stochUnit theStochUnit;
-//     gpa::gpaUnit theGpaUnit;
-//     nucEx::nucExUnit theNucExUnit;
-    kinase::modKinaseUnit theModKinaseUnit;
-//     scaf::scaffoldUnit theScaffoldUnit;
-    bndKinase::bndKinaseUnit theBndKinaseUnit;
     ftr::ftrUnit theFtrUnit;
 
     unitsMgr(moleculizer& rMoleculizer) :
@@ -95,29 +85,6 @@ namespace mzr
 		   thePlexUnit),
       theStochUnit(rMoleculizer,
 		   theMzrUnit),
-//       theGpaUnit(rMoleculizer,
-// 		 theMzrUnit,
-// 		 theMolUnit,
-// 		 thePlexUnit,
-// 		 theStochUnit),
-//       theNucExUnit(rMoleculizer,
-// 		   theMzrUnit,
-// 		   theMolUnit,
-// 		   thePlexUnit,
-// 		   theStochUnit),
-      theModKinaseUnit(rMoleculizer,
-		       theMzrUnit,
-		       theMolUnit,
-		       thePlexUnit,
-		       theStochUnit),
-//       theScaffoldUnit(rMoleculizer,
-// 		      theMzrUnit,
-// 		      theMolUnit,
-// 		      thePlexUnit),
-      theBndKinaseUnit(rMoleculizer,
-		       theMzrUnit,
-		       theMolUnit,
-		       thePlexUnit),
       theFtrUnit(rMoleculizer,
 		 theMzrUnit,
 		 theMolUnit,
@@ -130,12 +97,7 @@ namespace mzr
       push_back(&theDimerUnit);
       push_back(&thePlexUnit);
       push_back(&theStochUnit);
-//       push_back(&theGpaUnit);
-//       push_back(&theNucExUnit);
-      push_back(&theModKinaseUnit);
-//       push_back(&theScaffoldUnit);
       push_back(&theMzrUnit);
-      push_back(&theBndKinaseUnit);
       push_back(&theFtrUnit);
     }
 

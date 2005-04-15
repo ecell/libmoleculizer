@@ -25,13 +25,6 @@
 
 DOT := $(DOT)/cc
 
-SOURCES := cashKarp.cc \
-	dump.cc \
-	setup.cc \
-	tauApp.cc \
-	tauEltName.cc \
-	tauParse.cc
-
 PREEN_LIST := $(PREEN_LIST) $(DOT)/*~
 
 TAGS_LIST := $(TAGS_LIST) $(addprefix $(DOT)/,$(SOURCES))

@@ -23,18 +23,11 @@
 #   Berkeley, CA 94704
 ###############################################################################
 
-# The name of this unit.
-UNIT_NAME := domUtils
+DOT := $(DOT)/domUtilsUnit
 
-# Other units (really libs made by this build) that this
-# unit requires for linking.
-REQUIRED_UNITS :=
+include $(DOT)/unit-config.mk
 
-# Libraries that are required for linking this unit,
-# but are not made by this build.
-EXTRA_LIBS := xml++-1.0 xml2
-
-DOT := $(DOT)/$(UNIT_NAME)Unit
+CC_DIR := $(DOT)/cc
 
 include $(DOT)/cc/td.mk
 include $(DOT)/dbg-o/td.mk

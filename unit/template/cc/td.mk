@@ -25,8 +25,6 @@
 
 DOT := $(DOT)/cc
 
-SOURCES := 
-
 PREEN_LIST := $(PREEN_LIST) $(DOT)/*~
 
 TAGS_LIST := $(TAGS_LIST) $(addprefix $(DOT)/,$(SOURCES))

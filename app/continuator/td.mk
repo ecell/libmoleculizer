@@ -23,67 +23,11 @@
 #   Berkeley, CA 94704
 ###############################################################################
 
-APP_NAME := continuator
+DOT := $(DOT)/continuator
 
-# Units compiled by this project that are required as shared objects
-# (or archives for profiling.)
-REQUIRED_UNITS := domUtils \
-	sampleDist \
-	mzr \
-	mol \
-	plex \
-	dimer \
-	stoch \
-	modKinase \
-	bndKinase \
-	ftr
+include $(DOT)/app-config.mk
 
-# REQUIRED_UNITS := domUtils \
-# 	sampleDist \
-# 	mzr \
-# 	mol \
-# 	plex \
-# 	dimer \
-# 	stoch \
-# 	gpa \
-# 	nucEx \
-# 	modKinase \
-# 	scaffold \
-# 	bndKinase
-
-# Libraries not compiled by this project, required as shared objects.  These
-# are used in dynamic linking only.
-EXTRA_LIBS :=
-
-# List of archive libraries for static linking.  This list may (usually does)
-# contain repetitions, and order is important.  Normally, every element of
-# this list should appear in 'REQUIRED_UNITS' above, which is used to
-# construct dependencies on the archives. This variable is used to make the
-# profiling version of the program.
-STATIC_ARCHIVE_LINK_LIST := mzr \
-	ftr \
-	bndKinase \
-	scaffold \
-	nucEx \
-	modKinase \
-	gpa \
-	plex \
-	dimer \
-	mol \
-	stoch \
-	domUtils \
-	sampleDist \
-	mzr
-
-# List of libraries that have to be linked dynamically into statically-built
-# executable.  This is normally the union of all the "EXTRA_LIBS" for all
-# the "REQUIRED_UNITS" above.  In the dynamic-linking regime, these libraries
-# are linked into the unit .so's.  In the static-linking regime, the only
-# place for them to go in is when the executable is being linked.
-STATIC_EXTRAS := xml++-1.0 \
-	xml2
-
-DOT := $(DOT)/$(APP_NAME)
+CC_DIR := $(DOT)/cc
 
 include $(DOT)/cc/td.mk
 include $(DOT)/dbg-o/td.mk

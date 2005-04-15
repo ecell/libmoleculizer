@@ -25,15 +25,6 @@
 
 DOT := $(DOT)/cc
 
-SOURCES := ftrEltName.cc \
-	ftrParse.cc \
-	omniExtrap.cc \
-	omniGen.cc \
-	parseOmniGen.cc \
-	parseUniMolGen.cc \
-	uniMolExtrap.cc \
-	uniMolGen.cc
-
 PREEN_LIST := $(PREEN_LIST) $(DOT)/*~
 
 TAGS_LIST := $(TAGS_LIST) $(addprefix $(DOT)/,$(SOURCES))

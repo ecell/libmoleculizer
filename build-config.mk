@@ -23,20 +23,62 @@
 #   Berkeley, CA 94704
 ###############################################################################
 
-# XML parsing libraries, libxml2 and libxml++.
+PLATFORM := PLATFORM_LINUX
+
+# Gnome's C-based XML parsing library.
 XML2_INCLUDE_DIR := /usr/include/libxml2
+XML2_LIB_DIR :=
 XML2_LIB := xml2
+
+# C++ wrapper library for XML2.
 XMLPP_INCLUDE_DIR := /usr/local/include/libxml++-1.0
 XMLPP_LIB_DIR := /usr/local/lib
 XMLPP_LIB := xml++-1.0
 
+# Gnu scientific library.
+GSL_INCLUDE_DIR :=
+GSL_LIB_DIR :=
+GSL_LIB := gsl
+
+# GSL linear algebra.
+GSL_CBLAS_INCLUDE_DIR :=
+GSL_CBLAS_LIB_DIR :=
+GSL_CBLAS_LIB := gslcblas
+
 # Archive library that includes name demangling.
 LIBIBERTY_A := /usr/lib/libiberty.a
 
-# Compile and link flags.
-CXXFLAGS := -I include -I $(XML2_INCLUDE_DIR) -I $(XMLPP_INCLUDE_DIR) -fPIC -Wall -D_REENTRANT -DPLATFORM_LINUX
+#################
 
-SHOB_LINK_FLAGS := -shared -L$(LIB) -L/usr/local/lib -L$(XMLPP_LIB_DIR)
+PROJECT := moleculizer
+MAJOR_VERSION := 1
+MINOR_VERSION := 0.8
 
-APP_LINK_FLAGS := -L$(LIB) -L/usr/local/lib -L$(XMLPP_LIB_DIR)
+#################
+
+# Compile flags.
+INCLUDE_DIRS := $(INCLUDE) \
+	$(XML2_INCLUDE_DIR) \
+	$(XMLPP_INCLUDE_DIR) \
+	$(GSL_INCLUDE_DIR) \
+	$(GSL_CBLAS_INCLUDE_DIR)
+
+INCLUDE_DIR_FLAGS := $(addprefix -I ,$(INCLUDE_DIRS))
+
+CXXFLAGS := $(INCLUDE_DIR_FLAGS) -fPIC -Wall -D_REENTRANT -D$(PLATFORM)
+
+#################
+
+# Link flags.
+LINK_DIRS := $(LIB) \
+	$(XML2_LIB_DIR) \
+	$(XMLPP_LIB_DIR) \
+	$(GSL_LIB_DIR) \
+	$(GSL_CBLAS_LIB_DIR)
+
+LINK_DIR_FLAGS := $(addprefix -L ,$(LINK_DIRS))
+
+SHOB_LINK_FLAGS := $(LINK_DIR_FLAGS) -shared 
+
+APP_LINK_FLAGS := $(LINK_DIR_FLAGS)
 

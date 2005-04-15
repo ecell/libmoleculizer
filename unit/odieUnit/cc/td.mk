@@ -25,13 +25,6 @@
 
 DOT := $(DOT)/cc
 
-SOURCES := odieApp.cc \
-	odieDump.cc \
-	odieEltName.cc \
-	odieGlue.cc \
-	odieParse.cc \
-	odieSetup.cc
-
 PREEN_LIST := $(PREEN_LIST) $(DOT)/*~
 
 TAGS_LIST := $(TAGS_LIST) $(addprefix $(DOT)/,$(SOURCES))

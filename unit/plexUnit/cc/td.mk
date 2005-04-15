@@ -25,28 +25,6 @@
 
 DOT := $(DOT)/cc
 
-SOURCES := alloSiteQuery.cc \
-	omniPlex.cc \
-	omniPlexFeature.cc \
-	omniStructureQuery.cc \
-	parsePlex.cc \
-	parserPlex.cc \
-	parseOmniPlex.cc \
-	plexAllostery.cc \
-	plex.cc \
-	plexConnect.cc \
-	plexEltName.cc \
-	plexFamily.cc \
-	plexMap.cc \
-	plexQuery.cc \
-	plexSpec.cc \
-	plexSpecies.cc \
-	plexUnit.cc \
-	plexUnitParse.cc \
-	prm.cc \
-	recognizer.cc \
-	topHash.cc
-
 PREEN_LIST := $(PREEN_LIST) $(DOT)/*~
 
 TAGS_LIST := $(TAGS_LIST) $(addprefix $(DOT)/,$(SOURCES))

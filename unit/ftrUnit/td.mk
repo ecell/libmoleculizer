@@ -23,18 +23,11 @@
 #   Berkeley, CA 94704
 ###############################################################################
 
-# The name of this module.
-UNIT_NAME := ftr
+DOT := $(DOT)/ftrUnit
 
-# Other units (really libs made by this build) that this
-# module requires for linking.
-REQUIRED_UNITS := domUtils mzr mol plex
+include $(DOT)/unit-config.mk
 
-# Libraries that are required for linking this module,
-# but are not made by this build.
-EXTRA_LIBS :=
-
-DOT := $(DOT)/$(UNIT_NAME)Unit
+CC_DIR := $(DOT)/cc
 
 include $(DOT)/cc/td.mk
 include $(DOT)/dbg-o/td.mk

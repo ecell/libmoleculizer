@@ -25,32 +25,16 @@
 
 DOT := $(DOT)/demo
 
-SHORT_DEMOS := 	bndKinase \
-	continuator \
+SHORT_DEMOS := continuator \
 	heinrich \
 	heinrich-odie \
 	heinrich-rk4tau \
 	heinrich-sbml \
 	heinrich-state \
-	kinase \
-	kinase-extrap \
-	kinase-odie \
-	kinase-sbml \
-	modify \
 	omniKinase \
 	omniPtase \
 	omniReceptor \
 	query-allostery \
-	receptor \
-	receptor-nx-extrap \
-	receptor-nx-sst2 \
-	receptor-odie \
-	receptor-sbml \
-	receptor-state \
-	receptor-structure \
-	scaffold-odie \
-	scaffold-sbml \
-	scaffold-state \
 	simple \
 	simple-extrap \
 	simple-odie \
@@ -60,9 +44,7 @@ SHORT_DEMOS := 	bndKinase \
 	small-mol \
 	uniMolPtase
 
-LONG_DEMOS := scaffold \
-	scaffold-basal \
-	scaffold-extrap
+LONG_DEMOS :=
 
 DEMOS := $(SHORT_DEMOS) $(LONG_DEMOS)
 

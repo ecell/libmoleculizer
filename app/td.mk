@@ -32,13 +32,13 @@ APP_NAMES := continuator \
 	rk4tau \
 	xmlpretty
 
-$(DOT)/dbg : $(addprefix $(DOT)/,$(addsuffix /dbg-o/target,$(APP_NAMES))) \
+$(DOT)/dbg : $(addprefix $(DOT)/,$(addsuffix /dbg-o/dynamic,$(APP_NAMES))) \
 	$(DOT)/scripts/target
 
-$(DOT)/opt : $(addprefix $(DOT)/,$(addsuffix /opt-o/target,$(APP_NAMES))) \
+$(DOT)/opt : $(addprefix $(DOT)/,$(addsuffix /opt-o/dynamic,$(APP_NAMES))) \
 	$(DOT)/scripts/target
 
-$(DOT)/prf : $(addprefix $(DOT)/,$(addsuffix /prf-o/target,$(APP_NAMES))) \
+$(DOT)/prf : $(addprefix $(DOT)/,$(addsuffix /prf-o/static,$(APP_NAMES))) \
 	$(DOT)/scripts/target
 
 include $(addprefix $(DOT)/,$(addsuffix /td.mk,$(APP_NAMES)))

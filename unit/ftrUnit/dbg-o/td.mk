@@ -23,13 +23,11 @@
 #   Berkeley, CA 94704
 ###############################################################################
 
-DOT_DOT := $(DOT)
-
-# These are for adapting this makefile to opt, prf.
 DOT := $(DOT)/dbg-o
+
 EXT := Dbg
 COMPILE_FLAGS := -g
 
-include $(UNIT)/o.mk
+include $(UNIT)/unit-o.mk
 
 DOT := $(call dotdot,$(DOT))

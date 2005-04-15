@@ -23,13 +23,11 @@
 #   Berkeley, CA 94704
 ###############################################################################
 
-DOT_DOT := $(DOT)
-
-# These are for adapting this makefile to opt, prf.
 DOT := $(DOT)/opt-o
+
 EXT := Opt
 COMPILE_FLAGS := -O2
 
-include $(UNIT)/o.mk
+include $(UNIT)/unit-o.mk
 
 DOT := $(call dotdot,$(DOT))

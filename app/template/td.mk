@@ -23,23 +23,11 @@
 #   Berkeley, CA 94704
 ###############################################################################
 
-APP_NAME :=
+DOT := $(DOT)/template
 
-# Units compiled by this project that are required as shared objects
-# (or archives for profiling.)
-REQUIRED_UNITS := 
+include $(DOT)/app-config.mk
 
-# Libraries not compiled by this project, required as shared objects.
-EXTRA_LIBS :=
-
-# List of archive libraries for static linking.  This list may (usually does)
-# contain repetitions, and order is important.  Normally, every element of
-# this list should appear in 'REQUIRED_UNITS' above, which is used to
-# construct dependencies on the archives. This variable is used to make the
-# profiling version of the program.
-STATIC_ARCHIVE_LINK_LIST :=
-
-DOT := $(DOT)/$(APP_NAME)
+CC_DIR := $(DOT)/cc
 
 include $(DOT)/cc/td.mk
 include $(DOT)/dbg-o/td.mk

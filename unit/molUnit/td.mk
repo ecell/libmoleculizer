@@ -23,26 +23,11 @@
 #   Berkeley, CA 94704
 ###############################################################################
 
-# The name of this module.
-UNIT_NAME := mol
+DOT := $(DOT)/molUnit
 
-# Other units (really libs made by this build) that this
-# module requires for linking.
-REQUIRED_UNITS := mzr domUtils
+include $(DOT)/unit-config.mk
 
-# Libraries that are required for linking this module,
-# but are not made by this build.
-EXTRA_LIBS :=
-
-# Archive libraries, not made by this build, used in the linking of this
-# module. These locations are typically configured in build-config.mk.
-EXTRA_ARCHIVES := $(LIBIBERTY_A)
-
-# Compiler flags and definitions to be used in compiling c++ files for this
-# module.
-COMPILE_DEFS :=
-
-DOT := $(DOT)/$(UNIT_NAME)Unit
+CC_DIR := $(DOT)/cc
 
 include $(DOT)/cc/td.mk
 include $(DOT)/dbg-o/td.mk

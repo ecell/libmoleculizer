@@ -23,55 +23,11 @@
 #   Berkeley, CA 94704
 ###############################################################################
 
-DOT_DOT := $(DOT)
 DOT := $(DOT)/dbg-o
 
 EXT := Dbg
 COMPILE_FLAGS := -g
 
-# Copies local executable to bin with generic name.
-LOCAL_EXE := $(DOT)/$(APP_NAME)$(EXT)
-
-$(DOT)/target : BIN_EXE := $(BIN)/$(APP_NAME)
-$(DOT)/target : $(LOCAL_EXE)
-	cp $< $(BIN_EXE)
-
-# Links local executable
-OBJECTS := $(addprefix $(DOT)/,$(SOURCES:.cc=.o))
-REQUIRED_SOS := $(addprefix $(LIB)/lib,$(addsuffix $(EXT).so,$(REQUIRED_UNITS)))
-LNK_MODS := $(addprefix -l,$(addsuffix $(EXT),$(REQUIRED_UNITS)))
-LNK_SYS  := $(addprefix -l,$(EXTRA_LIBS))
-
-$(LOCAL_EXE) : LNKS :=  $(LNK_SYS) $(LNK_MODS) $(OBJECTS)
-$(LOCAL_EXE) : $(OBJECTS) $(REQUIRED_SOS)
-	g++ $(APP_LINK_FLAGS) -o $@ $(LNKS)
-
-# Definitions for inclusion in C++ files.
-COMPILE_DEFS :=
-
-# Local C++ compiler flags, all put together.
-COMPILE_LOCAL_FLAGS := $(COMPILE_FLAGS) $(COMPILE_DEFS)
-
-# Compiles local objects
-$(OBJECTS) : CLF := $(COMPILE_LOCAL_FLAGS)
-$(OBJECTS) : $(DOT)/%.o : $(DOT_DOT)/cc/%.cc
-	$(CXX) -c $(CXXFLAGS) $(CLF) -o $@ $<
-
-# Generates dependencies for this application's objects.
-APP_MAKEFILES := $(addprefix $(DOT)/,$(SOURCES:.cc=.d))
-$(APP_MAKEFILES) : CLF := $(COMPILE_LOCAL_FLAGS)
-$(APP_MAKEFILES) : $(DOT)/%.d : $(DOT_DOT)/cc/%.cc
-	g++ -MM -MT $(@:.d=.o) $(CXXFLAGS) $(CLF) $< > $@.$$$$; \
-	sed 's/^\(.*\)\.o\s*:\s*/\1.d \1.o : /' < $@.$$$$ > $@; \
-	rm -f $@.$$$$
-
-MAKEFILES := $(MAKEFILES) $(APP_MAKEFILES)
-
-CLEAN_LIST := $(CLEAN_LIST) \
-	$(OBJECTS) \
-	$(LOCAL_EXE) \
-	$(BIN)/$(APP_NAME)
-
-PREEN_LIST := $(PREEN_LIST) $(DOT)/*~
+include $(APP)/app-o.mk
 
 DOT := $(call dotdot,$(DOT))

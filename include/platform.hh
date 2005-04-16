@@ -30,7 +30,7 @@
 #define RANDOM_IS_RANDOM
 #endif
 
-#ifdef PLATFORM_LINUX
+#ifdef PLATFORM_SUSE_LINUX
 #define RANDOM_IS_RAND48
 #endif
 

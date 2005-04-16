@@ -23,7 +23,9 @@
 #   Berkeley, CA 94704
 ###############################################################################
 
-PLATFORM := PLATFORM_LINUX
+PLATFORM := PLATFORM_SUSE_LINUX
+
+ifeq ($(PLATFORM), PLATFORM_SUSE_LINUX)
 
 # Gnome's C-based XML parsing library.
 XML2_INCLUDE_DIR := /usr/include/libxml2
@@ -47,6 +49,8 @@ GSL_CBLAS_LIB := gslcblas
 
 # Archive library that includes name demangling.
 LIBIBERTY_A := /usr/lib/libiberty.a
+
+endif # PLATFORM_SUSE_LINUX
 
 #################
 

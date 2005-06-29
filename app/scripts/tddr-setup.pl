@@ -63,12 +63,9 @@ for($sim_ndx = 0;
     $sim_ndx++)
 {
     $sim_dir = "$value_file_dir/$sim_dir_stem\_$sim_ndx";
-    print "Making directory $sim_dir.\n";
     mkdir $sim_dir;
 
     $value = $values[$sim_ndx];
-    print "The values are @values.\n";
-    print "Value $sim_ndx is $value\n";
     open(VALUE_HANDLE, ">$sim_dir/value");
     print VALUE_HANDLE "$value\n";
     close(VALUE_HANDLE);

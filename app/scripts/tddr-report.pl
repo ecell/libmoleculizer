@@ -61,16 +61,12 @@ for($sim_ndx = 0;
     push @sim_dir_list, $sim_dir;
 }
 
-print "Reporting from simulation directories @sim_dir_list.\n";
-
 # Read the headers out of the first .dmp file.
 $typical_dmp_file = "$sim_dir_list[0]/$dmp_file";
-print "Getting column headers from $typical_dmp_file.\n";
 open(DMP_FILE, $typical_dmp_file);
 $_=<DMP_FILE>;
 @col_headers = split;
 close(DMP_FILE);
-print "Column headers are @col_headers.\n";
 
 # Tease out the .dmp file name "stem," minus the .dmp,
 # to construct the name of the tddr file.
@@ -90,8 +86,6 @@ for($col_ndx = 1;
     $cut_dir = "$tddr_dir/$dmp_file_stem--cuts";
     mkdir $cut_dir;
 
-    print "Cut directory is $cut_dir.\n";
-
     # Generate the simulation time cut.
     system("cut -f 1 $sim_dir_list[0]/$dmp_file > $cut_dir/simulation_time");
 
@@ -104,10 +98,7 @@ for($col_ndx = 1;
 
 	# Cut the column of the .dmp file from this simulation.
 	$tmp_cut_file = "/tmp/$$";
-	print "The temporary cut file is $tmp_cut_file.\n";
-	
 	$cut_ndx = $col_ndx + 1;
-	print "Cut command is cut -f $cut_ndx $sim_dir/$dmp_file > $tmp_cut_file\n";
 	system("cut -f $cut_ndx $sim_dir/$dmp_file > $tmp_cut_file");
 
 	# Read the substituted value from the "value" file in the
@@ -120,7 +111,6 @@ for($col_ndx = 1;
 	# Push the cut file onto the list of cut files
 	# to be used in preparing the tddr file.
 	$cut_file = "$cut_dir/$sim_dir";
-	print "The final cut file is $cut_file.\n";
 	push @cut_files, ($cut_file);
 
 	# Use the substituted value as a header in the cut file.
@@ -142,7 +132,6 @@ for($col_ndx = 1;
     
     # Paste the cuts into the tddr file.
     $tddr_file = "$tddr_dir/$dmp_file_stem--$col_headers[$col_ndx].tddr";
-    print "Paste command: paste @cut_files > $tddr_file\n";
     system("paste @cut_files > $tddr_file\n");
 
     # Remove the directory full of cuts.

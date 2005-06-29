@@ -56,7 +56,7 @@ endif # PLATFORM_SUSE_LINUX
 
 PROJECT := moleculizer
 MAJOR_VERSION := 1
-MINOR_VERSION := 0.8
+MINOR_VERSION := 0.9
 
 #################
 

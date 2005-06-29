@@ -23,27 +23,8 @@
 #   Berkeley, CA 94704
 ###############################################################################
 
-# Tools for the hierarchical approach to make.
-dotdot = $(patsubst %/,%,$(dir $(1)))
-DOT := .
-
-# Principal landmarks in the build tree.
-#
-# An alternative here would be to have the td.mk's in these directories
-# to define these variables themselves.  In unit/td.mk, you'd see
-# UNIT := $(DOT), for example.  But these navigational aids are needed
-# before the actual directories have been included.
-LIB := ./lib
-BIN := ./bin
-DOC := ./doc
-INCLUDE := ./include
-INSTALL := ./install
-SERVER := ./server
-UNIT := ./unit
-APP := ./app
-XML := ./xml
-XSL := $(XML)/xsl
-SCHEMA := $(XML)/schema
+# Include directory tree navigation tools and landmarks.
+include navigation.mk
 
 # Include build configuration, such as library locations and
 # compiler flags.

@@ -1,4 +1,3 @@
-#!/bin/bash
 ###############################################################################
 # Moleculizer - a stochastic simulator for cellular chemistry.
 # Copyright (C) 2001  Walter Lawrence (Larry) Lok.
@@ -24,32 +23,44 @@
 #   Berkeley, CA 94704
 ###############################################################################
 
-if test -z "$MOLRC_LOADED"
-then
-	MOLRC_LOADED=yes
-	export MOLRC_LOADED
+# Generates and runs simulations now (not in batch queue), then
+# generates tddr report.
+report-now : sims-now
+	$(MAKE) report
 
-	MOLECULIZER_DIR=/home/lok/src/moleculizer-mdl
-	MOLECULIZER_SERVER=http://genome.molsci.org
+# Sets up simulations for tddr, writes batch script and immediate
+# simulation script.
+setup :
+	tddr-setup.pl in.xml values sim
+	chmod a+x ./batch_script.sh
+	chmod a+x ./immed_script.sh
 
-	export MOLECULIZER_DIR
-	export MOLECULIZER_SERVER
+# Run simulations in batch queue.
+sims-batch : setup
+	./batch_script.sh 2>&1 | tee batch_script.log
 
-	# To find moleculizer executables.
-	PATH=$MOLECULIZER_DIR/bin:$PATH
+# Run simulations now.
+sims-now : setup
+	./immed_script.sh 2>&1 | tee immed_script.log
 
-	# Add moleculizer libraries and modules to the library search path.
-	LD_LIBRARY_PATH=$MOLECULIZER_DIR/lib:$LD_LIBRARY_PATH
+# Generate tddr report files and do simple plots.
+report :
+	for dmp_file in `cd sim_0 && echo *.dmp` ; do \
+	tddr-report.pl $$dmp_file values sim ;\
+	done
+	cd tddrs ;\
+	for tddr in *.tddr ; do \
+	plt -n $$tddr > $${tddr%.tddr}.png ;\
+	done
 
-	# Add xml++ libraries to the library search path.
-	LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
+# General clean-up.
+clean :
+	rm -rf sim_*
+	rm -f batch_script.sh
+	rm -f batch_script.log
+	rm -f immed_script.sh
+	rm -f immed_script.log
+	rm -rf tddrs
 
-	# Just in case.
-	export LD_LIBRARY_PATH
-
-	# Some moleculizer-associated perl scripts (plt) look for
-	# perl modules here.
-	MOLECULIZER_PERL_PATH=$MOLECULIZER_DIR/bin
-	export MOLECULIZER_PERL_PATH
-fi
-
+preen : clean
+	rm -f *~ *.bak

@@ -38,6 +38,8 @@ SCRIPTS := altSeedString \
 	state2odie \
 	state2rk4tau \
 	state2sbml \
+	tddr-report.pl \
+	tddr-setup.pl \
 	vary-param \
 
 BIN_SCRIPTS := $(addprefix $(BIN)/,$(SCRIPTS))
@@ -83,6 +85,12 @@ $(BIN)/state2rk4tau : $(DOT)/state2rk4tau
 	cp $< $@
 
 $(BIN)/state2sbml : $(DOT)/state2sbml
+	cp $< $@
+
+$(BIN)/tddr-report.pl : $(DOT)/tddr-report.pl
+	cp $< $@
+
+$(BIN)/tddr-setup.pl : $(DOT)/tddr-setup.pl
 	cp $< $@
 
 $(BIN)/vary-param : $(DOT)/vary-param

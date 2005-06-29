@@ -1,4 +1,3 @@
-#!/bin/bash
 ###############################################################################
 # Moleculizer - a stochastic simulator for cellular chemistry.
 # Copyright (C) 2001  Walter Lawrence (Larry) Lok.
@@ -24,32 +23,25 @@
 #   Berkeley, CA 94704
 ###############################################################################
 
-if test -z "$MOLRC_LOADED"
-then
-	MOLRC_LOADED=yes
-	export MOLRC_LOADED
+# Tools for the hierarchical approach to make.
+dotdot = $(patsubst %/,%,$(dir $(1)))
+DOT := .
 
-	MOLECULIZER_DIR=/home/lok/src/moleculizer-mdl
-	MOLECULIZER_SERVER=http://genome.molsci.org
-
-	export MOLECULIZER_DIR
-	export MOLECULIZER_SERVER
-
-	# To find moleculizer executables.
-	PATH=$MOLECULIZER_DIR/bin:$PATH
-
-	# Add moleculizer libraries and modules to the library search path.
-	LD_LIBRARY_PATH=$MOLECULIZER_DIR/lib:$LD_LIBRARY_PATH
-
-	# Add xml++ libraries to the library search path.
-	LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
-
-	# Just in case.
-	export LD_LIBRARY_PATH
-
-	# Some moleculizer-associated perl scripts (plt) look for
-	# perl modules here.
-	MOLECULIZER_PERL_PATH=$MOLECULIZER_DIR/bin
-	export MOLECULIZER_PERL_PATH
-fi
+# Principal landmarks in the build tree.
+#
+# An alternative here would be to have the td.mk's in these directories
+# to define these variables themselves.  In unit/td.mk, you'd see
+# UNIT := $(DOT), for example.  But these navigational aids are needed
+# before the actual directories have been included.
+LIB := ./lib
+BIN := ./bin
+DOC := ./doc
+INCLUDE := ./include
+INSTALL := ./install
+SERVER := ./server
+UNIT := ./unit
+APP := ./app
+XML := ./xml
+XSL := $(XML)/xsl
+SCHEMA := $(XML)/schema
 

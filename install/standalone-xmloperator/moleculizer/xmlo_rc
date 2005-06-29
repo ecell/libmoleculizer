@@ -24,8 +24,8 @@
 #   Berkeley, CA 94704
 ###############################################################################
 
-XMLOPERATOR_HOME=/home/lok/src/moleculizer/xmloperator_2_3_0
-XALAN_LIB=/home/lok/src/moleculizer/xmloperator_2_3_0
+XMLOPERATOR_HOME=/home/lok/src/moleculizer-mdl/xmloperator_2_3_0
+XALAN_LIB=/home/lok/src/moleculizer-mdl/xmloperator_2_3_0
 XMLOPERATOR_USER_HOME=~/.xmloperator
 
 . $XMLOPERATOR_USER_HOME/moleculizer/user.molrc

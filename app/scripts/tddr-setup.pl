@@ -65,7 +65,8 @@ for($sim_ndx = 0;
     $sim_dir = "$value_file_dir/$sim_dir_stem\_$sim_ndx";
     mkdir $sim_dir;
 
-    $value = $values[$sim_ndx];
+    # Trying to get it to use scientific notation here.
+    $value = sprintf "%g", ($values[$sim_ndx]);
     open(VALUE_HANDLE, ">$sim_dir/value");
     print VALUE_HANDLE "$value\n";
     close(VALUE_HANDLE);

@@ -26,10 +26,14 @@
 #ifndef MOL_H
 #define MOL_H
 
-extern "C"
-{
-#include <demangle.h>
-}
+// Uncommented this because it was causing problems with compiling templates.
+// Something to do with extern "C" linkage on template functions.  Don't know,
+// don't need it.
+
+// extern "C"
+// {
+// #include <demangle.h>
+// }
 
 #include <vector>
 #include <string>
@@ -368,7 +372,7 @@ namespace bnd
       stateMol<stateClass>(rName,
 			   rSites)
     {
-      pDefaultState = internState(rDefaultState);
+      this->pDefaultState = internState(rDefaultState);
     }
 
     // Sometimes, the default state can't be constructed until the rest of the
@@ -394,7 +398,7 @@ namespace bnd
 	{
 	  iStateEntry
 	    = alloMap.insert(std::make_pair(rState,
-					    defaultSiteParams)).first;
+					    this->defaultSiteParams)).first;
 	}
 
       return &(iStateEntry->first);
@@ -409,11 +413,13 @@ namespace bnd
 
       if(! pOurState)
 	{
-	  std::string paramClassName
-	    = cplus_demangle(typeid(*prm).name(), DMGL_TYPES);
+	  // Changing this for the time being.  This function seems to not want 
+	  // to work...
+	  std::string paramClassName = typeid(*prm).name();
+	    // = cplus_demangle(typeid(*prm).name(), DMGL_TYPES);
 	  
 	  throw badMolParamClassXcpt(paramClassName,
-				     getName());
+				     this->getName());
 	}
 
       return *pOurState;
@@ -433,7 +439,7 @@ namespace bnd
 	{
 	  iStateEntry
 	    = alloMap.insert(std::make_pair(rState,
-					    defaultSiteParams)).first;
+					    this->defaultSiteParams)).first;
 	}
 
       return iStateEntry->second;

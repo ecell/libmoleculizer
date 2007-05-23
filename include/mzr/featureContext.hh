@@ -81,7 +81,7 @@ namespace mzr
     bearerSpecies*
     getSpecies(void) const
     {
-      return first;
+      return this->first;
     }
 
     /*! \brief Returns the way that the species displays the feature.
@@ -91,7 +91,7 @@ namespace mzr
     const featureSpec&
     getSpec(void) const
     {
-      return second;
+      return this->second;
     }
   };
 }

@@ -63,7 +63,7 @@ private:
   
   //! Function class in support of notifyNew.
   class notifyFeature :
-    std::unary_function<featureMap::value_type, void>
+    std::unary_function<typename featureMap::value_type, void>
   {
     bearerSpecies* pSpecies;
   public:
@@ -88,7 +88,7 @@ public:
 	     feature<bearerSpecies, featureSpec>* pFeature)
   {
     bool insertSucceeded
-      = insert(featureMap::value_type(rSpec, pFeature)).second;
+      = insert(typename featureMap::value_type(rSpec, pFeature)).second;
     
     if(! insertSucceeded)
       throw featureAlreadyMappedXcpt();
@@ -98,8 +98,8 @@ public:
   void
   notifyNew(bearerSpecies* pNewSpecies) const
   {
-    for_each(begin(),
-	     end(),
+    for_each(this->begin(),
+	     this->end(),
 	     notifyFeature(pNewSpecies));
   }
 };

@@ -23,6 +23,8 @@
 //   Berkeley, CA 94704
 /////////////////////////////////////////////////////////////////////////////
 
+#include <cmath>
+
 #include "mzr/mzrEltName.hh"
 #include "mzr/moleculizer.hh"
 #include "mzr/reaction.hh"
@@ -522,7 +524,7 @@ namespace mzr
       double eventPeriod = pTabDumpEvent->getPeriod();
       double now = rMolzer.eventQ.getSimTime();
 
-      double nextTime = std::ceil(now / eventPeriod) * eventPeriod;
+      double nextTime = ceil(now / eventPeriod) * eventPeriod;
       
       rMolzer.eventQ.scheduleEvent(pTabDumpEvent,
 				   nextTime);

@@ -252,14 +252,14 @@ namespace rk4util
     {
       std::transform(rCol.begin(),
 		     rCol.end(),
-		     begin(),
+		     this->begin(),
 		     makeConstantRow(colCnt));
     }
 
     int
     rowCount(void) const
     {
-      return size();
+      return this->size();
     }
 
     int
@@ -278,8 +278,8 @@ namespace rk4util
     column(int columnNdx,
 	   std::vector<scalarType>& rTargetVector) const
     {
-      std::transform(begin(),
-		     end(),
+      std::transform(this->begin(),
+		     this->end(),
 		     rTargetVector.begin(),
 		     extractColumn(columnNdx));
     }
@@ -300,8 +300,8 @@ namespace rk4util
     apply(const std::vector<extensionType>& rVector,
 	  std::vector<extensionType>& rTargetVector) const
     {
-      std::transform(begin(),
-		     end(),
+      std::transform(this->begin(),
+		     this->end(),
 		     rTargetVector.begin(),
 		     std::bind2nd(dotProductOp<scalarType, extensionType>(),
 				  rVector));

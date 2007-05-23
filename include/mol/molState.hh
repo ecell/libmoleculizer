@@ -41,6 +41,8 @@ namespace bnd
     molState(double molWeight) :
       baseWeight(molWeight)
     {}
+
+    virtual ~molState(){}
   
     virtual double
     getMolWeight(void) const

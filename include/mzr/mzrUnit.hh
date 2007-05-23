@@ -282,7 +282,7 @@ namespace mzr
 		 xmlpp::Element* pEventsElt) throw(std::exception);
 
     void
-    mzrUnit::prepareToDump(xmlpp::Element* pRootElt,
+    prepareToDump(xmlpp::Element* pRootElt,
 			   xmlpp::Element* pModelElt,
 			   xmlpp::Element* pStreamsElt,
 			   xmlpp::Element* pEventsElt,

@@ -102,6 +102,8 @@ namespace mzr
   class massive
   {
   public:
+    virtual ~massive(){}
+
     virtual double
     getWeight(void) const = 0;
   };

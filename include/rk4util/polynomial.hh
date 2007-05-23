@@ -200,9 +200,9 @@ namespace rk4util
     scalarType
     getCoeff(const monomial& rMonomial) const
     {
-      const_iterator iEntry = find(rMonomial);
+      const_iterator iEntry = this->find(rMonomial);
 
-      return iEntry == end()
+      return iEntry == this->end()
 	? (scalarType) 0
 	: iEntry->second;
     }
@@ -243,8 +243,8 @@ namespace rk4util
     {
       extensionType result(0);
       
-      for_each(begin(),
-	       end(),
+      for_each(this->begin(),
+	       this->end(),
 	       evalTerm<extensionType>(rVarValues,
 				       result));
       return result;
@@ -255,8 +255,8 @@ namespace rk4util
     void
     addTo(polynomial<extensionType>& rTargetPoly) const
     {
-      for_each(begin(),
-	       end(),
+      for_each(this->begin(),
+	       this->end(),
 	       addTermToTarget<extensionType>(rTargetPoly));
     }
 
@@ -275,8 +275,8 @@ namespace rk4util
     multiply(const polynomial<extensionType>& rOtherFactor,
 	     polynomial<extensionType>& rTargetPoly) const
     {
-      for_each(begin(),
-	       end(),
+      for_each(this->begin(),
+	       this->end(),
 	       multiplyByTerm<extensionType>(rOtherFactor,
 					     rTargetPoly));
     }
@@ -298,8 +298,8 @@ namespace rk4util
     {
       multiplyTermByScalar<extensionType> mm(theScalar);
       
-      std::transform(begin(),
-		     end(),
+      std::transform(this->begin(),
+		     this->end(),
 		     std::inserter(rTarget, rTarget.begin()),
 		     mm);
     }
@@ -334,8 +334,8 @@ namespace rk4util
     void
     extendScalars(polynomial<extensionType>& rTargetPoly) const
     {
-      for_each(begin(),
-	       end(),
+      for_each(this->begin(),
+	       this->end(),
 	       extendTermScalars<extensionType>(rTargetPoly));
     }
 
@@ -437,8 +437,8 @@ namespace rk4util
   ::partialDerivative(int varNdx,
 		      polynomial<extensionType>& rTarget) const
   {
-    std::for_each(begin(),
-		  end(),
+    std::for_each(this->begin(),
+		  this->end(),
 		  partialOfPolyTerm<scalarType, extensionType>(varNdx,
 							       rTarget));
   }

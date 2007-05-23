@@ -88,8 +88,8 @@ namespace rk4util
     evaluate(const std::vector<extensionType>& rVariableValues,
 	     std::vector<extensionType>& rTargetVector) const
     {
-      transform(begin(),
-		end(),
+      transform(this->begin(),
+		this->end(),
 		rTargetVector.begin(),
 		evaluatePoly<extensionType>(rVariableValues));
     }
@@ -100,7 +100,7 @@ namespace rk4util
     {
       // The result has as many coordinates as there are polynomials
       // in this vector.
-      std::vector<extensionType> result(size());
+      std::vector<extensionType> result(this->size());
       
       evaluate(rVariableValues,
 	       result);
@@ -120,8 +120,8 @@ namespace rk4util
       // mem_fun_ref(&polynomial<scalarType>::extendScalars<extensionType>)
       //
       // signals a parse error.
-      std::transform(begin(),
-		     end(),
+      std::transform(this->begin(),
+		     this->end(),
 		     std::back_inserter(rConverted),
 		     extendPolyScalars<extensionType>());
     }
@@ -190,11 +190,11 @@ namespace rk4util
     // Each row of the Jacobian is the gradient of the corresponding
     // row of the polymap.
     std::vector<polymap<extensionType> >
-      result(size(),
+      result(this->size(),
 	     polymap<extensionType>(varCount));
 
-    std::transform(begin(),
-		   end(),
+    std::transform(this->begin(),
+		   this->end(),
 		   result.begin(),
 		   takeGradient<scalarType, extensionType>(varCount));
 

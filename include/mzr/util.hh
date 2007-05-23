@@ -85,8 +85,8 @@ namespace mzr
     findEntry(const std::string& rObjectName) const
     {
       const_iterator iNamePtr;
-      iNamePtr = find(rObjectName);
-      return end() == iNamePtr
+      iNamePtr = this->find(rObjectName);
+      return this->end() == iNamePtr
 	? 0
 	: iNamePtr->second;
     }
@@ -123,8 +123,8 @@ namespace mzr
   public:
     ~autoCatalog(void)
     {
-      for_each(begin(),
-	       end(),
+      for_each(this->begin(),
+	       this->end(),
 	       doDelete());
     }
   };
@@ -148,8 +148,8 @@ namespace mzr
   public:
     ~autoVector(void)
     {
-      for_each(begin(),
-	       end(),
+      for_each(this->begin(),
+	       this->end(),
 	       doDelete());
     }
 

@@ -27,15 +27,31 @@ PLATFORM := PLATFORM_SUSE_LINUX
 
 ifeq ($(PLATFORM), PLATFORM_SUSE_LINUX)
 
+# Demangler headers from libcwd.
+DEMANGLE_INCLUDE_DIR := /usr/include/libcwd/
+
 # Gnome's C-based XML parsing library.
 XML2_INCLUDE_DIR := /usr/include/libxml2
 XML2_LIB_DIR :=
 XML2_LIB := xml2
 
 # C++ wrapper library for XML2.
-XMLPP_INCLUDE_DIR := /usr/local/include/libxml++-1.0
-XMLPP_LIB_DIR := /usr/local/lib
+XMLPP_INCLUDE_DIR := /usr/include/libxml++-1.0
+XMLPP_LIB_DIR := /usr/lib
 XMLPP_LIB := xml++-1.0
+
+
+GLIBMM_COMPILE_FLAGS := $(shell pkg-config --cflags glibmm-2.4)
+# Note that these come with the -L attached.  An alternative would
+# be to remove the -L's using make's subst or patsubst function.
+
+
+GLIBMM_LIB_DIRS := $(shell pkg-config --libs-only-L glibmm-2.4)
+# Note that these come with the -l attached.  An alternative would
+# be to remove the -l's using make's subst or patsubst function.
+
+
+GLIBMM_LIBS := $(shell pkg-config --libs-only-l glibmm-2.4)
 
 # Gnu scientific library.
 GSL_INCLUDE_DIR :=
@@ -48,7 +64,8 @@ GSL_CBLAS_LIB_DIR :=
 GSL_CBLAS_LIB := gslcblas
 
 # Archive library that includes name demangling.
-LIBIBERTY_A := /usr/lib/libiberty.a
+# LIBIBERTY_A := /usr/lib/libiberty.a
+LIBIBERTY_A := 
 
 endif # PLATFORM_SUSE_LINUX
 
@@ -62,6 +79,7 @@ MINOR_VERSION := 0.9
 
 # Compile flags.
 INCLUDE_DIRS := $(INCLUDE) \
+	$(DEMANGLE_INCLUDE_DIR) \
 	$(XML2_INCLUDE_DIR) \
 	$(XMLPP_INCLUDE_DIR) \
 	$(GSL_INCLUDE_DIR) \
@@ -86,3 +104,5 @@ SHOB_LINK_FLAGS := $(LINK_DIR_FLAGS) -shared
 
 APP_LINK_FLAGS := $(LINK_DIR_FLAGS)
 
+# Set java class path
+export CLASSPATH=$CLASSPATH:xmloperator_2_3_0/xalan.jar

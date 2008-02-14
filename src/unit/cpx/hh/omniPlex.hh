@@ -99,11 +99,6 @@ namespace cpx
 
   public:
     template<typename structureQueryType>
-    omniPlex<molT,
-	     plexT,
-	     plexSpeciesT,
-	     plexFamilyT,
-	     omniPlexT>::
     omniPlex(plexFamilyType* pPlexFamily,
 	     fnd::andQueries<structureQueryType>* pOmniStructureQueries,
 	     stateQueriesType* pOmniStateQueries) :

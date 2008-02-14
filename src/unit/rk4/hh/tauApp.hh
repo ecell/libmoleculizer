@@ -161,13 +161,13 @@ namespace rk4tau
 
     // Parsing routines.  Could I factor this out???
     void
-    tauApp::makeDerivatives(std::vector<parserReaction>& rReactions);
+    makeDerivatives(std::vector<parserReaction>& rReactions);
 
     void
-    tauApp::makeRateConverter(polymap<double>& rConverterPoly,
+    makeRateConverter(polymap<double>& rConverterPoly,
 			      std::vector<parserReaction>& rReactions);
     void
-    tauApp::makeCountConverter(std::vector<parserReaction>& rReactions);
+    makeCountConverter(std::vector<parserReaction>& rReactions);
 
     void
     parseDomInput(xmlpp::Document* pDoc) throw(std::exception);

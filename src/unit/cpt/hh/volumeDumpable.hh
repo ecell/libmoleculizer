@@ -48,7 +48,6 @@ namespace cpt
     doDump(const globalDumpArg& rDumpArg) const;
 
     virtual void
-    volumeDumpable::
     dumpHeader(const globalDumpArg& rDumpArg) const;
   };
 }

@@ -28,49 +28,46 @@
 
 namespace utl
 {
-  namespace dom
+  std::string
+  insuffArgsXcpt::
+  mkCountsMsg(int actualArgCount,
+              int minimumArgCount)
   {
-    std::string
-    insuffArgsXcpt::
-    mkCountsMsg(int actualArgCount,
-		int minimumArgCount)
-    {
-      std::ostringstream msgStream;
-      msgStream << "Expected "
-		<< minimumArgCount
-		<< " command line arguments; got "
-		<< actualArgCount
-		<< ".";
-      return msgStream.str();
-    }
+    std::ostringstream msgStream;
+    msgStream << "Expected "
+              << minimumArgCount
+              << " command line arguments; got "
+              << actualArgCount
+              << ".";
+    return msgStream.str();
+  }
 
-    std::string
-    insuffArgsXcpt::
-    mkGeneralMsg(void)
-    {
-      return std::string("Insufficient command-line arguments or "
-			 "missing command-line argument.");
-    }
+  std::string
+  insuffArgsXcpt::
+  mkGeneralMsg(void)
+  {
+    return std::string("Insufficient command-line arguments or "
+                       "missing command-line argument.");
+  }
 
-    insuffArgsXcpt::
-    insuffArgsXcpt(const std::string& rMsg) :
-      utl::xcpt(rMsg)
-    {}
+  insuffArgsXcpt::
+  insuffArgsXcpt(const std::string& rMsg) :
+    utl::xcpt(rMsg)
+  {}
 
-    insuffArgsXcpt
-    insuffArgsXcpt::
-    general(void)
-    {
-      return insuffArgsXcpt(mkGeneralMsg());
-    }
+  insuffArgsXcpt
+  insuffArgsXcpt::
+  general(void)
+  {
+    return insuffArgsXcpt(mkGeneralMsg());
+  }
 
-    insuffArgsXcpt
-    insuffArgsXcpt::
-    counts(int actualArgCount,
-	   int minimumArgCount)
-    {
-      return insuffArgsXcpt(mkCountsMsg(actualArgCount,
-					minimumArgCount));
-    }
+  insuffArgsXcpt
+  insuffArgsXcpt::
+  counts(int actualArgCount,
+         int minimumArgCount)
+  {
+    return insuffArgsXcpt(mkCountsMsg(actualArgCount,
+                                      minimumArgCount));
   }
 }

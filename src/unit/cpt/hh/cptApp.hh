@@ -56,7 +56,6 @@ namespace cpt
     // Verifies input elements can be handled by units.  Invokes each unit's
     // parsing routine.
     void
-    cptApp::
     constructorCore(xmlpp::Element* pRootElement,
 		    xmlpp::Element* pModelElement,
 		    xmlpp::Element* pStreamsElement,

@@ -33,7 +33,7 @@ XML2_LIB_DIR :=
 XML2_LIB := xml2
 
 # C++ wrapper library for XML2.
-XMLPP_INCLUDE_DIR := /usr/local/include/libxml++-2.6
+XMLPP_INCLUDE_DIR := /usr/include/libxml++-2.6 /usr/lib/libxml++-2.6/include
 XMLPP_LIB_DIR := /usr/local/lib
 XMLPP_LIB := xml++-2.6
 
@@ -58,7 +58,7 @@ GSL_CBLAS_LIB_DIR :=
 GSL_CBLAS_LIB := gslcblas
 
 # Archive library that includes name demangling.
-LIBIBERTY_A := /usr/lib/libiberty.a
+LIBIBERTY_A := 
 
 endif # PLATFORM_SUSE_LINUX
 

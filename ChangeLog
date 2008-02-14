@@ -1,0 +1,9 @@
+ (C) 2008 Molecular Sciences Institute
+
+ Copying and distribution of this file, with or without modification,
+ are permitted in any medium without royalty provided the copyright
+ notice and this notice are preserved.
+
+2008-01-31	Nathan Addy	<addy@molsci.org>
+
+	* Changed the build system to automake from Gnu Make.

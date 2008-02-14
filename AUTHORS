@@ -1,0 +1,19 @@
+Authors of libmoleculizer
+
+Copyright (C) 2008 Molecular Sciences Institute
+
+Copying and distribution of this file, with or without modification,
+are permitted in any medium without royalty provided the copyright
+notice and this notice are preserved.
+
+The following contributions warranted legal paper exchanges with
+the Molecular Sciences Institute.  Also see ChangeLog and THANKS.
+
+NAME		EMAIL
+Nathan Addy	<addy@molsci.org>	Refactored compartmentalizer into libmoleculizer
+
+Larry Lok	<lok@molsci.org>	Original author of compartmentalizer
+Research Fellow
+The Molecular Sciences Institute      
+2168 Shattuck Ave.                  
+Berkeley, CA 94704

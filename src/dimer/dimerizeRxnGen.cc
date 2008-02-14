@@ -41,8 +41,7 @@ namespace dimer
    const cpx::cxSite<plx::mzrPlexSpecies, plx::mzrPlexFamily>& rRightContext,
    int generateDepth) const
   {
-    if(rMzrUnit.getGenerateOk())
-      {
+
 	// Construct the (only) new reaction and install it in the family
 	// of dimerization reactions.
 	mzr::mzrReaction* pReaction
@@ -130,7 +129,7 @@ namespace dimer
 	      }
 	  }
 
-	// Construct result species.
+	// Construct result species.   
 	plx::mzrPlexSpecies* pResult
 	  = pResultFamily->getMember(resultMolParams);
 
@@ -138,12 +137,24 @@ namespace dimer
 	pReaction->addProduct(pResult,
 			      1);
 
+	// Record all species and reactions that have been created
+	// by this reaction generation here
+	// **IMPORTANT**
+	// ** The code to follow should not be moved to a point prior to 
+	// completion construction of the complete reacction.
+
+	// Record the result species and reactions generated here
+        // with moleculizer's catalog of all species and reactions.
+	rMzrUnit.rMolzer.recordReaction( pReaction );
+        rMzrUnit.rMolzer.recordSpecies( pResult );
+
+
 	// Continue reaction generation at one lower depth.
 	int notificationDepth = generateDepth - 1;
 	if(0 <= notificationDepth)
 	  {
 	    pResult->ensureNotified(notificationDepth);
 	  }
-      }
+  
   }
 }

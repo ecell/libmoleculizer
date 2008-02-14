@@ -32,14 +32,20 @@ namespace bnd
   smallMol::
   makeBindingSites(const std::string& rMolName)
   {
-    // Make set of binding site names.
-    std::set<std::string> siteNames;
-    siteNames.insert(rMolName);
+      // Heavyweight in order for pedantry.
 
+    const std::string& bindingSiteName( rMolName );
+
+    // Make set of binding site names.
+    const std::string& defaultBindingSiteShapeName( rMolName );
+
+      std::set<std::string> bindingSiteShapeNames;
+      bindingSiteShapeNames.insert(defaultBindingSiteShapeName);
+      
     // Make the single binding site.
-    mzrBndSite theSite(rMolName,
-		       siteNames,
-		       rMolName);
+    mzrBndSite theSite(bindingSiteName,
+		       bindingSiteShapeNames,
+		       defaultBindingSiteShapeName);
 
     // Return vector just containing the one binding site.
     return std::vector<mzrBndSite>(1, theSite);

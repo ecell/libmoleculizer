@@ -69,18 +69,6 @@ namespace dimer
     plx::plexUnit& rPlexUnit;
 
 
-//     void
-//     addDecompGen(decompRxnGen* pGenerator)
-//     {
-//       decompGens.addEntry(pGenerator);
-//     }
-
-//     void
-//     addDimerizeGen(dimerizeRxnGenPair* pGenerator)
-//     {
-//       dimerizeGens.addEntry(pGenerator);
-//     }
-
     dimerUnit(mzr::moleculizer& rMoleculizer,
 	      mzr::mzrUnit& refMzrUnit,
 	      bnd::molUnit& refMolUnit,
@@ -104,8 +92,7 @@ namespace dimer
     void
     parseDomInput(xmlpp::Element* pRootElement,
 		  xmlpp::Element* pModelElement,
-		  xmlpp::Element* pStreamsElement,
-		  xmlpp::Element* pEventsElement) throw(std::exception);
+		  xmlpp::Element* pStreamsElement) throw(std::exception);
 
     void
     insertStateElts(xmlpp::Element* pRootElt) throw(std::exception);

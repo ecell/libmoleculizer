@@ -72,7 +72,7 @@ namespace mzr
     throw(std::exception)
   {
     // Must invoke; this initializes random seed.
-    processCommandLineArgs(argc, argv);
+    // processCommandLineArgs(argc, argv);
     
     // Do the "input capabilities" thing.
     constructorPrelude();

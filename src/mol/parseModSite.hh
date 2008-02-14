@@ -78,6 +78,7 @@ namespace bnd
       // validation.
       const cpx::modification* pDefaultMod
 	= rMolUnit.getMod(defaultModName);
+
       if(0 == pDefaultMod) throw unkModXcpt(defaultModName,
 					    pDefaultModRefElt);
 

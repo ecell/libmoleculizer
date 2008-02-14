@@ -51,9 +51,9 @@ namespace mzr
 
     // Reschedule everybody.  This invocation stinks to high
     // heaven of confused reference structure in this program.
-    for_each(affectedReactions.begin(),
-	     affectedReactions.end(),
-	     respondReaction(rMolzer));
+    // for_each(affectedReactions.begin(),
+    // 	     affectedReactions.end(),
+    // 	     respondReaction(rMolzer));
 
     return fnd::go;
   }

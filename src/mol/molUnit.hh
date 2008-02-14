@@ -144,13 +144,15 @@ namespace bnd
     void
     parseDomInput(xmlpp::Element* pRootElement,
 		  xmlpp::Element* pModelElement,
-		  xmlpp::Element* pStreamsElement,
-		  xmlpp::Element* pEventsElement)
+		  xmlpp::Element* pStreamsElement)
       throw(std::exception);
 
     void
     insertStateElts(xmlpp::Element* pRootElt)
       throw(std::exception);
+
+      std::vector<std::string>
+      getAllKnownMods() const;
   };
 }
 

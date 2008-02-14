@@ -29,47 +29,66 @@
 #include "cpx/prm.hh"
 #include "cpx/siteToShapeMap.hh"
 #include "cpx/molState.hh"
+#include "nmr/newMol.hh"
+#include "nmr/complexSpecies.hh"
+#include "nmr/mangledNameAssembler.hh"
+#include "nmr/basicNameAssembler.hh"
+#include "nmr/readableNameAssembler.hh"
 
 namespace cpx
 {
-  // For mixing-in with a "base" species type to produce plexSpecies.
-  template<class plexFamilyT>
-  class plexSpeciesMixin
-  {
-  public:
-    // The plexFamily to which this species belongs.
-    plexFamilyT& rFamily;
+    // For mixing-in with a "base" species type to produce plexSpecies.
+    template<class plexFamilyT>
+    class plexSpeciesMixin
+    {
+    public:
+        // The plexFamily to which this species belongs.
+        plexFamilyT& rFamily;
 
-    // The shapes of the plexSpecies's binding sites, both free and bound.
-    //
-    // This caches the allostery calculation done when the plexSpecies
-    // is created in plexFamilyT::makeMember.
-    siteToShapeMap siteParams;
+        // The shapes of the plexSpecies's binding sites, both free and bound.
+        //
+        // This caches the allostery calculation done when the plexSpecies
+        // is created in plexFamilyT::makeMember.
+        siteToShapeMap siteParams;
 
-    // The states of the plexSpecies's mols.
-    std::vector<molParam> molParams;
+        // The states of the plexSpecies's mols.
+        std::vector<molParam> molParams;
     
-    plexSpeciesMixin(plexFamilyT& rContainingFamily,
-		     const siteToShapeMap& rSiteParams,
-		     const std::vector<molParam>& rMolParams) :
-      rFamily(rContainingFamily),
-      siteParams(rSiteParams),
-      molParams(rMolParams)
-    {}
+        plexSpeciesMixin(plexFamilyT& rContainingFamily,
+                         const siteToShapeMap& rSiteParams,
+                         const std::vector<molParam>& rMolParams) :
+            rFamily(rContainingFamily),
+            siteParams(rSiteParams),
+            molParams(rMolParams)
+        {}
 
-    double
-    getWeight(void) const;
+        double
+        getWeight(void) const;
 
-    // Notification has to be done in the final species.  It should notify
-    // rFamily with a fnd::newSpeciesStimulus<finalSpecies>.
+        // Notification has to be done in the final species.  It should notify
+        // rFamily with a fnd::newSpeciesStimulus<finalSpecies>.
 
-    // Generate non-canonical, "informative" name.  Not so sure that this
-    // should go here.
-    std::string
-    getInformativeName(void) const;
-  };
+        // Generate non-canonical, "informative" name.  Not so sure that this
+        // should go here.
+        std::string
+        getInformativeName(void) const;
+
+        std::string
+        getCanonicalName( void ) const;
+
+        std::string
+        getCanonicalName( const complexspecies::NameAssembler<complexspecies::SimpleMol>* ptrNameAssembler) const;
+
+    protected:
+        typedef complexspecies::ComplexSpecies<complexspecies::SimpleMol> ComplexRepresentation;
+        
+        void
+        createComplexRepresentation( ComplexRepresentation& aComplexRepresentation ) const;
+
+    };
 }
 
 #include "cpx/plexSpcsMixinImpl.hh"
+#include "cpx/plexSpcsMixinCanonicalNamingImpl.hh"
 
 #endif // CPX_PLEXSPECIES_H

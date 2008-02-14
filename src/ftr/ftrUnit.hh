@@ -76,8 +76,7 @@ namespace ftr
     void
     parseDomInput(xmlpp::Element* pRootElement,
 		  xmlpp::Element* pModelElement,
-		  xmlpp::Element* pStreamsElement,
-		  xmlpp::Element* pEventsElement)
+		  xmlpp::Element* pStreamsElement)
       throw(std::exception);
 
     // The state output routine for this unit.

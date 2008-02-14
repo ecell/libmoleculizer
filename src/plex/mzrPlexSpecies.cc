@@ -50,7 +50,7 @@ namespace plx
   mzrPlexSpecies::
   getName(void) const
   {
-    return getInformativeName();
+      return getCanonicalName();
   }
 
   xmlpp::Element*

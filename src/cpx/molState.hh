@@ -26,6 +26,8 @@
 #ifndef MOLSTATE_H
 #define MOLSTATE_H
 
+#include "mzr/debug.hh"
+
 namespace cpx
 {
     /*! \ingroup plexSpeciesGroup

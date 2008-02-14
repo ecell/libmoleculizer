@@ -50,14 +50,9 @@ namespace mzr
     rMzrUnit.getMolarFactor().updateVolume(currentVolume * factor,
 					   affectedReactions);
 
-    for_each(affectedReactions.begin(),
-	     affectedReactions.end(),
-	     respondReaction(rMolzer));
-
-    // Reschedule this event for later.
-    eventQueue& rQ = rMolzer.eventQ;
-    rQ.scheduleEvent(this,
-		     rQ.getSimTime() + period);
+    // for_each(affectedReactions.begin(),
+    // 	     affectedReactions.end(),
+    // 	     respondReaction(rMolzer));
 
     return fnd::go;
   }

@@ -27,6 +27,7 @@
 #define CPX_MODSTATEMIXIN_H
 
 #include "cpx/modification.hh"
+#include "mzr/debug.hh"
 
 namespace cpx
 {
@@ -49,6 +50,8 @@ namespace cpx
 
     double
     totalWeightDelta(void) const;
+
+
   };
 }
 

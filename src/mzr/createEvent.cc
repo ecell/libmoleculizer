@@ -54,9 +54,12 @@ namespace mzr
 			     affectedReactions,
 			     generateDepth);
 
-    for_each(affectedReactions.begin(),
-	     affectedReactions.end(),
-	     respondReaction(rMolzer));
+
+    // respondReaction only reschedules reactions so we kill it.
+
+    // for_each(affectedReactions.begin(),
+    //	     affectedReactions.end(),
+    //	     respondReaction(rMolzer));
 
     return fnd::go;
   }

@@ -74,6 +74,8 @@ namespace mzr
     dimer::dimerUnit* pDimerUnit;
     ftr::ftrUnit* pFtrUnit;
 
+    // Now the moleculizer unit is also a recorder of species..
+    // which is a ReactionNetworkDescription<mzrSpecies, mzrReactions>.
     unitsMgr(moleculizer& rMoleculizer);
 
     // Prepares the overall input capabilities of moleculizer from

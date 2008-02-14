@@ -29,6 +29,7 @@
 
 #include <set>
 #include <string>
+#include "mzr/debug.hh"
 #include "utl/dom.hh"
 
 namespace mzr
@@ -168,7 +169,8 @@ namespace mzr
     {}
 
     virtual ~unit(void)
-    {}
+    {
+    }
 
     // Keeps track of the elements that are handled by this unit,
     // so that elements don't "fall through the cracks."
@@ -178,8 +180,7 @@ namespace mzr
     virtual void
     parseDomInput(xmlpp::Element* pRootElt,
 		  xmlpp::Element* pModelElt,
-		  xmlpp::Element* pStreamsElt,
-		  xmlpp::Element* pEventsElt) throw(std::exception) = 0;
+		  xmlpp::Element* pStreamsElt) throw(std::exception) = 0;
 
     // This allows finalization steps after parsing but before running.
     // In this phase, plexUnit runs notifications on parsed (but never created)
@@ -190,30 +191,12 @@ namespace mzr
     virtual void
     prepareToRun(xmlpp::Element* pRootElt,
 		 xmlpp::Element* pModelElt,
-		 xmlpp::Element* pStreamsElt,
-		 xmlpp::Element* pEventsElt) throw(std::exception)
+		 xmlpp::Element* pStreamsElt) throw(std::exception)
     {
       // The plex unit does a lot; the mzrUnit does a little.  So far,
       // nobody else does anything.
     }
 
-    // This is the after-phase of parsing, analogous in parametrizer to
-    // prepareToRun's role in moleculizer.
-    virtual void
-    prepareToDump(xmlpp::Element* pRootElt,
-		  xmlpp::Element* pModelElt,
-		  xmlpp::Element* pStreamsElt,
-		  xmlpp::Element* pEventsElt,
-		  xmlpp::Element* pTaggedSpeciesElement) throw(std::exception)
-    {
-      // Default implementation is to ignore the tagged-species (which most
-      // units don't have) and to go on as if preparing to do a moleculizer
-      // simulation.
-      prepareToRun(pRootElt,
-		   pModelElt,
-		   pStreamsElt,
-		   pEventsElt);
-    }
 
     // This is the after-phase of parsing, analogous in continuator to
     // prepareToRun's role in moleculizer and that of prepareToDump in
@@ -222,7 +205,6 @@ namespace mzr
     prepareToContinue(xmlpp::Element* pRootElt,
 		      xmlpp::Element* pModelElt,
 		      xmlpp::Element* pStreamsElt,
-		      xmlpp::Element* pEventsElt,
 		      std::map<std::string, std::string>& rTagToName,
 		      xmlpp::Element* pTaggedSpeciesElement)
       throw(std::exception)
@@ -232,8 +214,7 @@ namespace mzr
       // simulation.
       prepareToRun(pRootElt,
 		   pModelElt,
-		   pStreamsElt,
-		   pEventsElt);
+		   pStreamsElt);
     }
 
     // How a unit contributes its part of a state dump.

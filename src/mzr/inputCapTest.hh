@@ -33,9 +33,9 @@ namespace mzr
   class modelNodeNotInCap :
     public std::unary_function<xmlpp::Node*, bool>
   {
-    inputCapabilities& rInputCap;
+      const inputCapabilities& rInputCap;
   public:
-    modelNodeNotInCap(inputCapabilities& rInputCapabilities) :
+    modelNodeNotInCap(const inputCapabilities& rInputCapabilities) :
       rInputCap(rInputCapabilities)
     {}
     
@@ -59,9 +59,9 @@ namespace mzr
   class explicitSpeciesNodeNotInCap :
     public std::unary_function<xmlpp::Node*, bool>
   {
-    inputCapabilities& rInputCap;
+      const inputCapabilities& rInputCap;
   public:
-    explicitSpeciesNodeNotInCap(inputCapabilities& rInputCapabilities) :
+    explicitSpeciesNodeNotInCap(const inputCapabilities& rInputCapabilities) :
       rInputCap(rInputCapabilities)
     {}
     
@@ -81,9 +81,9 @@ namespace mzr
   class speciesStreamNodeNotInCap :
     public std::unary_function<xmlpp::Node*, bool>
   {
-    inputCapabilities& rInputCap;
+      const inputCapabilities& rInputCap;
   public:
-    speciesStreamNodeNotInCap(inputCapabilities& rInputCapabilities) :
+    speciesStreamNodeNotInCap(const inputCapabilities& rInputCapabilities) :
       rInputCap(rInputCapabilities)
     {}
     
@@ -103,9 +103,9 @@ namespace mzr
   class eventNodeNotInCap :
     public std::unary_function<xmlpp::Node*, bool>
   {
-    inputCapabilities& rInputCap;
+      const inputCapabilities& rInputCap;
   public:
-    eventNodeNotInCap(inputCapabilities& rInputCapabilities) :
+    eventNodeNotInCap(const inputCapabilities& rInputCapabilities) :
       rInputCap(rInputCapabilities)
     {}
     
@@ -125,9 +125,9 @@ namespace mzr
   class reactionGenNotInCap :
     public std::unary_function<xmlpp::Node*, bool>
   {
-    inputCapabilities& rInputCap;
+      const inputCapabilities& rInputCap;
   public:
-    reactionGenNotInCap(inputCapabilities& rInputCapabilities) :
+    reactionGenNotInCap(const inputCapabilities& rInputCapabilities) :
       rInputCap(rInputCapabilities)
     {}
     

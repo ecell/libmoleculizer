@@ -157,16 +157,15 @@ namespace ftr
   omniRxnGen::
   respond(const fnd::featureStimulus<cpx::cxOmni<bnd::mzrMol, plx::mzrPlexSpecies, plx::mzrPlexFamily, plx::mzrOmniPlex> >& rStimulus)
   {
-    // See if reaction generation is enabled.
-    if(rMzrUnit.getGenerateOk())
-      {
 	const cpx::cxOmni<bnd::mzrMol, plx::mzrPlexSpecies, plx::mzrPlexFamily, plx::mzrOmniPlex>& rContext
 	  = rStimulus.getContext();
 	  
+
 	// Construct the reaction and intern it for memory management.
 	mzr::mzrReaction* pReaction
 	  = new mzr::mzrReaction(rMzrUnit.globalVars.begin(),
 				 rMzrUnit.globalVars.end());
+
 	pFamily->addEntry(pReaction);
 
 	// Add the triggering complex as a reactant of multiplicity 1.
@@ -252,7 +251,19 @@ namespace ftr
 	pReaction->addProduct(pProductSpecies,
 			      1);
 
-	// Continue reaction generation at one depth lower.
+
+	// Record all species and reactions that have been created
+	// by this reaction generation here
+	// **IMPORTANT**
+	// ** The code to follow should not be moved to a point prior to 
+	// completion construction of the complete reacction.
+
+	// Record the result species and reactions generated here
+        // with moleculizer's catalog of all species and reactions.
+	rMzrUnit.rMolzer.recordReaction( pReaction );
+        rMzrUnit.rMolzer.recordSpecies( pProductSpecies );
+
+        // Continue reaction generation at one depth lower.
 	int generateDepth
 	  = rStimulus.getNotificationDepth() - 1;
 	if(0 <= generateDepth)
@@ -260,5 +271,4 @@ namespace ftr
 	    pProductSpecies->ensureNotified(generateDepth);
 	  }
       }
-  }
 }

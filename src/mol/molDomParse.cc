@@ -57,9 +57,12 @@ namespace bnd
       cpx::modification* pModification
 	= modParser(pModNode);
 
-      if(! rMolUnit.addMod(pModification))
-	throw dupModNameXcpt(pModification->getName(),
-			     pModNode);
+//       if(! rMolUnit.addMod(pModification))
+// 	   throw dupModNameXcpt(pModification->getName(),
+// 		                pModNode);
+
+      rMolUnit.mustAddMod(pModification);
+
     }
   };
 
@@ -320,8 +323,7 @@ namespace bnd
   void
   molUnit::parseDomInput(xmlpp::Element* pRootElement,
 			 xmlpp::Element* pModelElement,
-			 xmlpp::Element* pStreamsElement,
-			 xmlpp::Element* pEventsElement) 
+			 xmlpp::Element* pStreamsElement) 
     throw(std::exception)
   {
     // Get the modifications element.

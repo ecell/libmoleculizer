@@ -35,4 +35,34 @@ namespace mzr
   {
     return ((double) getPop()) / rMoleculizer.pUserUnits->pMzrUnit->getMolarFactor().getFactor();
   }
+
+    void 
+    mzrSpecies::expandReactionNetwork() 
+    {
+
+
+        fnd::sensitivityList<mzrReaction> affectedReactions;
+
+        // NJA -- fix this...
+        update(10,
+               affectedReactions,
+               mzrSpecies::getGenerateDepth());
+
+    }
+
+
+    void
+    mzrSpecies::setGenerateDepth(unsigned int i)
+    {
+        mzrSpecies::generateDepth = i;
+    }
+
+
+    unsigned int 
+    mzrSpecies::getGenerateDepth()
+    {
+        return mzrSpecies::generateDepth;
+    }
+
+    unsigned int mzrSpecies::generateDepth = 1;
 }

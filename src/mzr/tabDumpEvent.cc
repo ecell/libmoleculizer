@@ -45,8 +45,8 @@ namespace mzr
     doDump();
       
     // Reschedule the event after time period.
-    rMolzer.eventQ.scheduleEvent(this,
-				 rMolzer.eventQ.getSimTime() + period);
+//     rMolzer.eventQ.scheduleEvent(this,
+// 				 rMolzer.eventQ.getSimTime() + period);
 
     return fnd::go;
   }

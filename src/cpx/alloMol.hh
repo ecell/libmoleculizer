@@ -39,6 +39,7 @@ namespace cpx
     public stateMolT
   {
   protected:
+
     // Mapping from state to the shapes of the binding sites when
     // the mol is in the state, conveying the allosteric properties of
     // the mol.

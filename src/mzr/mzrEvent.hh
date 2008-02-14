@@ -27,67 +27,13 @@
 #define MZR_MZREVENT_H
 
 #include "fnd/event.hh"
-#include "mzr/eventQueue.hh"
 
 namespace mzr
 {
-  class moleculizer;
-  
-  // Note that continuator and parametrizer inherit from moleculizer.
-  class mzrEvent :
-    public fnd::event<moleculizer>
-  {
-    /*! \name Event queue entry access.
-    
-    Access is through an iterator to the event's entry in the event schedule.
-    The bool just tells if the iterator is valid or not.
+    class moleculizer;
 
-    Using end() might have been a better way, but this way allows a
-    default constructor, not needing access to the event queue to
-    initialize the iterator. */
-    //@{
-    eventQueue::iterator iQueueEntry;
-    bool scheduled;
-    //@}
-
-  public:
-    mzrEvent(void) :
-      scheduled(false)
-    {}
-
-    virtual
-    ~mzrEvent(void)
-    {}
-
-    void
-    schedule(eventQueue::iterator iEntry)
-    {
-      iQueueEntry = iEntry;
-      scheduled = true;
-    }
-
-    // Returns true if the event was scheduled, and returns the
-    // event queue entry at which it was scheduled in that case.
-    bool
-    deschedule(eventQueue::iterator& riEntry)
-    {
-      if(scheduled)
-	{
-	  scheduled = false;
-	  riEntry = iQueueEntry;
-	  return true;
-	}
-      else return false;
-    }
-
-    /*! Uses accessors to eventQueue entry to get current scheduled time.
-      If the event is not in the queue, then event::never is returned. */
-    double
-    getTime(void)
-    {
-      return scheduled ? iQueueEntry->first : eventQueue::never;
-    }
-  };
+    // Note that continuator and parametrizer inherit from moleculizer.
+    typedef fnd::event<moleculizer> mzrEvent;
 }
 
 #endif // MZR_MZREVENT_H

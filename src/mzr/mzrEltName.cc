@@ -57,9 +57,6 @@ namespace mzr
     const std::string statStream_reactionCount("reaction-count");
     const std::string statStream_reactionEventCount("reaction-event-count");
     const std::string statStream_volume("volume");
-//     const std::string statStream_firstReactionQueueSize("first-reaction-queue-size");
-//     const std::string statStream_nextReactionQueueSize("next-reaction-queue-size");
-    
 
     const std::string reactionGens("reaction-gens");
 

@@ -29,22 +29,37 @@
 #include "fnd/basicSpecies.hh"
 #include "fnd/massive.hh"
 #include "mzr/mzrReaction.hh"
+#include "fnd/reactionNetworkComponent.hh"
 
 namespace mzr
 {
-  class moleculizer;
+    class moleculizer;
   
-  class mzrSpecies :
-    public fnd::basicSpecies<mzrReaction>,
-    public fnd::massive
-  {
-  public:
+    class mzrSpecies :
+        public fnd::basicSpecies<mzrReaction>,
+        public fnd::massive,
+        public fnd::reactionNetworkComponent
+    {
+    public:
 
-    // Gets the (only) volume from Moleculizer, then
-    // does getConcentration.
-    double
-    getConc(const moleculizer& rMoleculizer) const;
-  };
+        // Gets the (only) volume from Moleculizer, then
+        // does getConcentration.
+        double
+        getConc(const moleculizer& rMoleculizer) const;
+        
+        virtual void
+        expandReactionNetwork();
+
+        static void
+        setGenerateDepth(unsigned int i);
+        
+        static unsigned int
+        getGenerateDepth();
+
+        static unsigned int generateDepth;
+        
+        
+    };
 }
 
 #endif

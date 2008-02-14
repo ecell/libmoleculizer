@@ -26,6 +26,8 @@
 #ifndef CPX_MODMOLIMPL_H
 #define CPX_MODMOLIMPL_H
 
+#include "mzr/debug.hh"
+
 namespace cpx
 {
   template<class baseMolT>

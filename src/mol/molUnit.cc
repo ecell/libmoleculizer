@@ -154,4 +154,20 @@ namespace bnd
 		       rMapToMods.begin()),
 	      getValueMod(*this));
   }
+
+    std::vector<std::string>
+    molUnit::
+    getAllKnownMods() const
+    {
+        std::vector<std::string> modificationVector;
+        modificationVector.reserve( this->knownMods.size() );
+        for( utl::autoCatalog<const cpx::modification>::const_iterator iter = knownMods.begin();
+             iter != knownMods.end();
+             ++iter)
+        {
+            modificationVector.push_back( iter->first );
+        }
+
+        return modificationVector;
+    }
 }

@@ -28,10 +28,10 @@
 
 #include <map>
 #include "utl/xcpt.hh"
+#include "mzr/mzrEvent.hh"
 
 namespace mzr
 {
-  class mzrEvent;
   class moleculizer;
 
   class eventQueue :

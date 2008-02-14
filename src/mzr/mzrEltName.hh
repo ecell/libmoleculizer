@@ -60,8 +60,6 @@ namespace mzr
     extern const std::string statStream_reactionCount;
     extern const std::string statStream_reactionEventCount;
     extern const std::string statStream_volume;
-//     extern const std::string statStream_firstReactionQueueSize;
-//     extern const std::string statStream_nextReactionQueueSize;
 
     extern const std::string reactionGens;
 

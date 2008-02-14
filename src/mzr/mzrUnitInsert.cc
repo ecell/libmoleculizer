@@ -29,21 +29,6 @@
 
 namespace mzr
 {
-//   class insertReaction :
-//     public std::unary_function<const mzrReaction*, void>
-//   {
-//     xmlpp::Element* pTagReactionsElt;
-//   public:
-//     insertReaction(xmlpp::Element* pTagReactionsElement) :
-//       pTagReactionsElt(pTagReactionsElement)
-//     {
-//     }
-//     void
-//     operator()(const mzrReaction* pReaction) throw(std::exception)
-//     {
-//       pReaction->insertElt(pTagReactionsElt);
-//     }
-//   };
 
   class insertFamilyReactions :
     public std::unary_function<const std::vector<mzrReaction>*, void>
@@ -93,71 +78,6 @@ namespace mzr
     }
   };
 
-  // Inserts a tagged-species-stream element for each dumpable
-  // in the autoCatalog that is actually a species dumpable.
-  //
-  // This is an isolated, non-time-critical, but somewhat dubious use of
-  // dynamic_cast, since I could maintain a separate list of the species
-  // dumpables.
-//   class insertTaggedSpeciesStream :
-//     public std::unary_function<utl::autoCatalog<dumpable>::value_type, void>
-//   {
-//     xmlpp::Element* pTaggedSpeciesStreamsElt;
-//   public:
-//     insertTaggedSpeciesStream(xmlpp::Element* pTaggedSpeciesStreamsElement) :
-//       pTaggedSpeciesStreamsElt(pTaggedSpeciesStreamsElement)
-//     {
-//     }
-
-//     void
-//     operator()(const argument_type& rNameDumpablePair) const
-//       throw(std::exception)
-//     {
-//       speciesDumpable* pSpeciesDumpable
-// 	= dynamic_cast<speciesDumpable*>(rNameDumpablePair.second);
-
-//       if(0 != pSpeciesDumpable)
-// 	{
-// 	  xmlpp::Element* pTaggedSpeciesStreamElt
-// 	    = pTaggedSpeciesStreamsElt
-// 	    ->add_child(eltName::taggedSpeciesStream);
-
-// 	  pTaggedSpeciesStreamElt
-// 	    ->set_attribute(eltName::taggedSpeciesStream_nameAttr,
-// 			    pSpeciesDumpable->getName());
-
-// 	  pSpeciesDumpable->insertDumpedSpeciesTags(pTaggedSpeciesStreamElt);
-// 	}
-//     }
-//   };
-
-//   class insertTaggedDumpStream :
-//     public std::unary_function<const event*, void>
-//   {
-//     xmlpp::Element* pTaggedDumpStreamsElt;
-//   public:
-//     insertTaggedDumpStream(xmlpp::Element* pTaggedDumpStreamsElement) :
-//       pTaggedDumpStreamsElt(pTaggedDumpStreamsElement)
-//     {
-//     }
-
-//     void
-//     operator()(const event* pEvent) const
-//       throw(std::exception)
-//     {
-//       // This is another convenient, if dubious use of dynamic_cast,
-//       // since I could keep a separate vector of tabDumpEvents, rather
-//       // than filtering for them here.
-//       const tabDumpEvent* pTabDumpEvent
-// 	= dynamic_cast<const tabDumpEvent*>(pEvent);
-
-//       if(0 != pTabDumpEvent)
-// 	{
-// 	  pTabDumpEvent->insertTaggedDumpStreamElts(pTaggedDumpStreamsElt);
-// 	}
-//     }
-//   };
-
   void
   mzrUnit::insertStateElts(xmlpp::Element* pRootElt) throw(std::exception)
   {
@@ -198,16 +118,6 @@ namespace mzr
 			eltName::volume,
 			eltName::volume_litersAttr,
 			volume);
-
-    // Insert the simulation time (when the dump happens) so that
-    // the simulation can be continuted from the dump.
-    xmlpp::Element* pTimeElt
-      = utl::dom::mustGetUniqueChild(pModelElt,
-				     eltName::time);
-
-    double time = rMolzer.eventQ.getSimTime();
-    pTimeElt->set_attribute(eltName::time_secondsAttr,
-			    utl::stringify<double>(time));
 
     // Streams element.
     xmlpp::Element* pStreamsElt

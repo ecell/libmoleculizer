@@ -82,8 +82,7 @@ namespace stoch
   void
   stochUnit::parseDomInput(xmlpp::Element* pRootElement,
 			   xmlpp::Element* pModelElement,
-			   xmlpp::Element* pStreamsElement,
-			   xmlpp::Element* pEventsElement) throw(std::exception)
+			   xmlpp::Element* pStreamsElement) throw(std::exception)
   {
     // Parse all the stoch species as named species.
     xmlpp::Element* pExplicitSpeciesElt
@@ -145,8 +144,7 @@ namespace stoch
   void
   stochUnit::prepareToRun(xmlpp::Element* pRootElt,
 			  xmlpp::Element* pModelElt,
-			  xmlpp::Element* pStreamsElt,
-			  xmlpp::Element* pEventsElt)
+			  xmlpp::Element* pStreamsElt)
     throw(std::exception)
   {
     // Create the initial population of all explicit stochSpecies.
@@ -232,11 +230,11 @@ namespace stoch
   stochUnit::prepareToContinue(xmlpp::Element* pRootElt,
 			       xmlpp::Element* pModelElt,
 			       xmlpp::Element* pStreamsElt,
-			       xmlpp::Element* pEventsElt,
 			       std::map<std::string, std::string>& rTagToName,
 			       xmlpp::Element* pTaggedSpeciesElement)
     throw(std::exception)
   {
+
     // Parse the tagged-stoch-species.
     xmlpp::Node::NodeList taggedStochSpeciesNodes
       = pTaggedSpeciesElement->get_children(eltName::taggedStochSpecies);
@@ -251,9 +249,9 @@ namespace stoch
 					    rMzrUnit));
 
     // Reschedule the affected reactions.
-    std::for_each(affectedReactions.begin(),
-		  affectedReactions.end(),
-		  mzr::respondReaction(rMolzer));
+    // std::for_each(affectedReactions.begin(),
+    // 		  affectedReactions.end(),
+    // 		  mzr::respondReaction(rMolzer));
 
     // In this version, do NOT run prepareToRun, as that sets the
     // populations of the stochSpecies to that given in the explicit

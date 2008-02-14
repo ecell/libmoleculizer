@@ -66,8 +66,7 @@ namespace plx
   void
   plexUnit::parseDomInput(xmlpp::Element* pRootElt,
 			  xmlpp::Element* pModelElt,
-			  xmlpp::Element* pStreamsElt,
-			  xmlpp::Element* pEventsElt)
+			  xmlpp::Element* pStreamsElt)
     throw(utl::xcpt)
   {
     // First we pick out a number of elements and lists of elements
@@ -229,6 +228,7 @@ namespace plx
 	mzr::createEvent creator(pSpecies,
 				 pop,
 				 rMzrUnit);
+
 	creator.happen(rMolzer);
       }
     };
@@ -237,8 +237,7 @@ namespace plx
   void
   plexUnit::prepareToRun(xmlpp::Element* pRootElt,
 			 xmlpp::Element* pModelElt,
-			 xmlpp::Element* pStreamsElt,
-			 xmlpp::Element* pEventsElt)
+			 xmlpp::Element* pStreamsElt)
     throw(utl::xcpt)
   {
     // Create the initial population of all explicit plex species.
@@ -296,66 +295,7 @@ namespace plx
     };
   }
 
-  void
-  plexUnit::prepareToDump(xmlpp::Element* pRootElt,
-			  xmlpp::Element* pModelElt,
-			  xmlpp::Element* pStreamsElt,
-			  xmlpp::Element* pEventsElt,
-			  xmlpp::Element* pTaggedSpeciesElement)
-    throw(utl::xcpt)
-  {
-    // Parse the tagged-plex-species just about like explicit plex-species,
-    // just ignoring the tag.  The population will also end up being ingnored.
-    // (For explicit plex-species, they are traversed again, in order to
-    // initialize the populations.)
-    xmlpp::Node::NodeList taggedPlexSpeciesNodes
-      = pTaggedSpeciesElement->get_children(eltName::taggedPlexSpecies);
-
-    // Going along with the now-well-established principle of stupid names.
-    // The analogous routine for reading explicit plex-species is
-    // "processPlexSpecies".
-    std::vector<mzrPlexSpecies*> updatedSpecies;
-    std::for_each(taggedPlexSpeciesNodes.begin(),
-		  taggedPlexSpeciesNodes.end(),
-		  parseTaggedPlexSpecies(rMzrUnit,
-					 rMolUnit,
-					 *this,
-					 updatedSpecies));
-
-    // Run through all the plexSpecies, and update each by 0.
-    // This should cause all the reactions for the species to come
-    // into existence.  This may be a few more reactions than
-    // were dumped, since some of the dumped species (with population 0)
-    // may not ever have been updated.
-
-
-    // Update each plexSpecies by zero, accumulating the
-    // set of affected reactions.
-    fnd::sensitivityList<mzr::mzrReaction> affectedReactions;
-    std::for_each(updatedSpecies.begin(),
-		  updatedSpecies.end(),
-		  zeroUpdateSpecies(affectedReactions,
-				    rMzrUnit.getGenerateDepth()));
-
-    // Checking on just how bad the inflation of species and reactions is.
-    std::vector<mzrPlexSpecies*> afterPlexSpecies;
-    std::for_each(recognize.plexHasher.begin(),
-		  recognize.plexHasher.end(),
-		  accumulateSpecies(afterPlexSpecies));
-
-    // For consistency's sake, rescheduling the affected reactions.
-    // Since the update was by 0, this isn't really necessary.
-    std::for_each(affectedReactions.begin(),
-		  affectedReactions.end(),
-		  mzr::respondReaction(rMolzer));
-
-    // This is unit's default implementation of prepareToDump.
-    prepareToRun(pRootElt,
-		 pModelElt,
-		 pStreamsElt,
-		 pEventsElt);
-  }
-
+    
   class parseTaggedPlexSpeciesNpop :
     public std::unary_function<xmlpp::Node*, void>
   {
@@ -434,7 +374,6 @@ namespace plx
   plexUnit::prepareToContinue(xmlpp::Element* pRootElt,
 			      xmlpp::Element* pModelElt,
 			      xmlpp::Element* pStreamsElt,
-			      xmlpp::Element* pEventsElt,
 			      std::map<std::string, std::string>& rTagToName,
 			      xmlpp::Element* pTaggedSpeciesElement)
     throw(utl::xcpt)

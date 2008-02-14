@@ -51,81 +51,92 @@ namespace ftr
   uniMolRxnGen::
   respond(const fnd::featureStimulus<cpx::cxMol<plx::mzrPlexSpecies, plx::mzrPlexFamily> >& rStimulus)
   {
-    // See if reaction generation is enabled.
-    if(rMzrUnit.getGenerateOk())
-      {
-	const cpx::cxMol<plx::mzrPlexSpecies, plx::mzrPlexFamily>& rContext
+      const cpx::cxMol<plx::mzrPlexSpecies, plx::mzrPlexFamily>& rContext
 	  = rStimulus.getContext();
 	
-	// Check if the mol's state passes the tests for reaction generation.
-	cpx::andMolStateQueries& rMolQueries = *pMolQueries;
-	cpx::molParam enablingParam = rContext.getMolParam();
-	if(rMolQueries(enablingParam))
-	  {
-	    // Construct the reaction and intern it for memory management.
-	    mzr::mzrReaction* pReaction
+      // Check if the mol's state passes the tests for reaction generation.
+      cpx::andMolStateQueries& rMolQueries = *pMolQueries;
+      cpx::molParam enablingParam = rContext.getMolParam();
+      if(rMolQueries(enablingParam))
+      {
+          // Construct the reaction and intern it for memory management.
+          mzr::mzrReaction* pReaction
 	      = new mzr::mzrReaction(rMzrUnit.globalVars.begin(),
 				     rMzrUnit.globalVars.end());
-	    pFamily->addEntry(pReaction);
+          pFamily->addEntry(pReaction);
 
-	    // Add the triggering complex as a reactant of multiplicity 1.
-	    pReaction->addReactant(rContext.getSpecies(),
-				    1);
+          // Add the triggering complex as a reactant of multiplicity 1.
+          pReaction->addReactant(rContext.getSpecies(),
+                                 1);
 
-	    // If an auxiliary reactant was specified, add it with
-	    // multiplicity 1.
-	    if(pAdditionalReactant)
-	      {
-		pReaction->addReactant(pAdditionalReactant,
-					1);
-	      }
+          // If an auxiliary reactant was specified, add it with
+          // multiplicity 1.
+          if(pAdditionalReactant)
+          {
+              pReaction->addReactant(pAdditionalReactant,
+                                     1);
+          }
 
-	    // If an auxiliary product was specified, add it with multiplicity
-	    // 1.
-	    if(pAdditionalProduct)
-	      {
-		pReaction->addProduct(pAdditionalProduct,
-				      1);
-	      }
+          // If an auxiliary product was specified, add it with multiplicity
+          // 1.
+          if(pAdditionalProduct)
+          {
+              pReaction->addProduct(pAdditionalProduct,
+                                    1);
+          }
 
-	    // Set the rate of the reaction.
-	    pReaction->setRate(pExtrapolator->getRate(rContext));
+          // Set the rate of the reaction.
+          pReaction->setRate(pExtrapolator->getRate(rContext));
 
-	    // Construct the primary product species.
-	    // 
-	    // Start by constructing the state of the enabling mol
-	    // after modification exchange.
-	    cpx::modMolState enablingState
+          // Construct the primary product species.
+          // 
+          // Start by constructing the state of the enabling mol
+          // after modification exchange.
+          cpx::modMolState enablingState
 	      = pEnablingMol->externState(enablingParam);
-	    std::for_each(molModExchanges.begin(),
-			  molModExchanges.end(),
-			  exchangeMods(enablingState));
+          std::for_each(molModExchanges.begin(),
+                        molModExchanges.end(),
+                        exchangeMods(enablingState));
 
-	    // Put the post-modification state of the mol into the product
-	    // species's molParams.
-	    std::vector<cpx::molParam> productMolParams 
+          // Put the post-modification state of the mol into the product
+          // species's molParams.
+          std::vector<cpx::molParam> productMolParams 
 	      = rContext.getMolParams();
-	    productMolParams[rContext.getMolSpec()]
+          productMolParams[rContext.getMolSpec()]
 	      = pEnablingMol->internState(enablingState);
 
-	    // Determine the primary product species.
-	    plx::mzrPlexFamily& rPlexFamily
+          // Determine the primary product species.
+          plx::mzrPlexFamily& rPlexFamily
 	      = rContext.getPlexFamily();
-	    plx::mzrPlexSpecies* pProductSpecies
+          plx::mzrPlexSpecies* pProductSpecies
 	      = rPlexFamily.makeMember(productMolParams);
 
-	    // Add the primary product species to the reaction, with
-	    // multiplicity 1.
-	    pReaction->addProduct(pProductSpecies,
-				  1);
-	    // Continue reaction generation at one depth lower.
-	    int generateDepth
+          // Add the primary product species to the reaction, with
+          // multiplicity 1.
+          pReaction->addProduct(pProductSpecies,
+                                1);
+
+
+	// Record all species and reactions that have been created
+	// by this reaction generation here
+	// **IMPORTANT**
+	// ** The code to follow should not be moved to a point prior to 
+	// completion construction of the complete reacction.
+
+	// Record the result species and reactions generated here
+        // with moleculizer's catalog of all species and reactions.
+	rMzrUnit.rMolzer.recordReaction( pReaction );
+        rMzrUnit.rMolzer.recordSpecies( pProductSpecies );
+
+
+          // Continue reaction generation at one depth lower.
+          int generateDepth
 	      = rStimulus.getNotificationDepth() - 1;
-	    if(0 <= generateDepth)
-	      {
-		pProductSpecies->ensureNotified(generateDepth);
-	      }
-	  }
+          if(0 <= generateDepth)
+          {
+              pProductSpecies->ensureNotified(generateDepth);
+          }
       }
+
   }
 }

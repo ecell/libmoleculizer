@@ -1,0 +1,104 @@
+lib_LTLIBRARIES = libmoleculizer_cpx.la
+
+abs_top_builddir=@abs_top_builddir@
+
+SRCDIR = ..
+
+
+VERSION = @PACKAGE_VERSION@
+MOLECULIZER_DIRNAME = moleculizer-$(VERSION)
+libmoleculizer_cpxdir=$(includedir)/$(MOLECULIZER_DIRNAME)/moleculizer/cpx
+
+LIBFND = ../fnd/libmoleculizer_fnd.la
+LIBUTL = ../utl/libmoleculizer_utl.la
+LIBMZR = ../mzr/libmoleculizer_mzr.la
+LIBSTOCH = ../stoch/libmoleculizer_stoch.la
+LIBNMR = ../nmr/libmoleculizer_nmr.la
+LIBCPX = ../cpx/libmoleculizer_cpx.la
+LIBMOL = ../mol/libmoleculizer_mol.la
+LIBPLEX = ../plex/libmoleculizer_plex.la
+LIBDIMER = ../dimer/libmoleculizer_dimer.la
+LIBFTR = ../ftr/libmoleculizer_ftr.la
+
+AM_CXXFLAGS = -I/usr/include/libxml++-1.0
+
+libmoleculizer_cpx_la_SOURCES =\
+badModMolStateXcpt.cc \
+basicBndSite.cc \
+modMolMixin.cc \
+modPlexQueryTypeXcpt.cc \
+modStateMixin.cc \
+noKineticConstsXcpt.cc \
+plexIso.cc \
+plexMap.cc \
+plexNotConnectedXcpt.cc \
+siteToShapeMap.cc \
+unmappedSiteSpecXcpt.cc
+
+libmoleculizer_cpx_HEADERS=\
+alloMol.hh \
+alloMolImpl.hh \
+badModMolStateXcpt.hh \
+basicBndSite.hh \
+basicMol.hh \
+basicMolImpl.hh \
+basicPlex.hh \
+basicPlexImpl.hh \
+binding.hh \
+cxBinding.hh \
+cxBindingImpl.hh \
+cxMol.hh \
+cxMolImpl.hh \
+cxOmni.hh \
+cxOmniImpl.hh \
+cxSite.hh \
+cxSiteImpl.hh \
+ftrSpec.hh \
+hashMolRec.hh \
+hashMolRecImpl.hh \
+isoSearch.hh \
+isoSearchImpl.hh \
+knownBindings.hh \
+modMixinQuery.hh \
+modMol.hh \
+modMolImpl.hh \
+modMolMixin.hh \
+modMolState.hh \
+modMolStateQuery.hh \
+modPlexQueryTypeXcpt.hh \
+modStateMixin.hh \
+modification.hh \
+molState.hh \
+molStateQuery.hh \
+noKineticConstsXcpt.hh \
+omniPlex.hh \
+omniPlexFeature.hh \
+omniStructureQuery.hh \
+omniStructureQueryImpl.hh \
+plexFamily.hh \
+plexFamilyImpl.hh \
+plexIso.hh \
+plexIsoImpl.hh \
+plexMap.hh \
+plexMapImpl.hh \
+plexNotConnectedXcpt.hh \
+plexQuery.hh \
+plexQueryImpl.hh \
+plexSpcsMixin.hh \
+plexSpcsMixinCanonicalNamingImpl.hh \
+plexSpcsMixinImpl.hh \
+prm.hh \
+queryAlloList.hh \
+queryAlloListImpl.hh \
+recognizer.hh \
+recognizerImpl.hh \
+reportIsoSearch.hh \
+siteShape.hh \
+siteToShapeMap.hh \
+siteToShapeMapImpl.hh \
+smallMol.hh \
+stateMol.hh \
+structuralBinding.hh \
+subPlexSpec.hh \
+unmappedSiteSpecXcpt.hh
+

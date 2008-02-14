@@ -220,7 +220,7 @@ namespace mzr
     moleculizer::RunInteractiveDebugMode()
     {
         unsigned int result;
-        bool cont = false;
+        bool cont = true;
 
         while( cont )
         {

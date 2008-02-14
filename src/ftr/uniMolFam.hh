@@ -23,40 +23,45 @@
 //   Berkeley, CA 94704
 /////////////////////////////////////////////////////////////////////////////
 
-#ifndef CONTUNUATOR_H
-#define CONTUNUATOR_H
+#ifndef FTR_UNIMOLFAM_H
+#define FTR_UNIMOLFAM_H
 
-#include "utl/dom.hh"
-#include "mzr/moleculizer.hh"
+#include "utl/autoVector.hh"
+#include "ftr/uniMolGen.hh"
 
-namespace mzr
+namespace ftr
 {
-  class continuator :
-    public moleculizer
+  class uniMolFam :
+    public utl::autoVector<mzr::mzrReaction>
   {
-  public:
-    // The point of this program is to continue a moleculizer simulation
-    // given the original moleculizer-input and a moleculizer-state dump.
-    //
-    // It parses moleculizer-input as usual, then parses tagged species from
-    // moleculizer-state.  The populations of the tagged species are used for
-    // all species, instead of the populations given for explicit-species in
-    // explicit-species.  The initial simulation time is set to the simulation
-    // time at which state was dumped.  Thus the simulation picks up where it
-    // left off.
-    continuator(int argc,
-		char** argv,
-		xmlpp::Document* pMoleculizerInput,
-		xmlpp::Document* pMoleculizerState)
-      throw(std::exception);
+    uniMolRxnGen rxnGen;
 
-    ~continuator(void)
+  public:
+    uniMolFam(mzr::mzrUnit& refMzrUnit,
+	      plx::plexUnit& refPlexUnit,
+	      bnd::mzrModMol* pEnablingModMol,
+	      cpx::andMolStateQueries* pAndMolQueries,
+	      const std::vector<molModExchange>& rModExchanges,
+	      mzr::mzrSpecies* pAuxReactant,
+	      mzr::mzrSpecies* pAuxProduct,
+	      const uniMolExtrapolator* pUniMolExtrapolator) :
+      rxnGen(refMzrUnit,
+	     refPlexUnit,
+	     pEnablingModMol,
+	     pAndMolQueries,
+	     rModExchanges,
+	     pAuxReactant,
+	     pAuxProduct,
+	     this,
+	     pUniMolExtrapolator)
     {}
+
+    uniMolRxnGen*
+    getRxnGen(void)
+    {
+      return &rxnGen;
+    }
   };
 }
 
-#endif
-  
-    
-
-    
+#endif // FTR_UNIMOLFAM_H

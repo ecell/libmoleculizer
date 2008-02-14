@@ -23,40 +23,28 @@
 //   Berkeley, CA 94704
 /////////////////////////////////////////////////////////////////////////////
 
-#ifndef CONTUNUATOR_H
-#define CONTUNUATOR_H
+#ifndef FTR_BADSMALLMOLINSTANCEXCPT_H
+#define FTR_BADSMALLMOLINSTANCEXCPT_H
 
 #include "utl/dom.hh"
-#include "mzr/moleculizer.hh"
 
-namespace mzr
+namespace ftr
 {
-  class continuator :
-    public moleculizer
+  
+  class badSmallMolInstanceXcpt :
+    public utl::xcpt
   {
-  public:
-    // The point of this program is to continue a moleculizer simulation
-    // given the original moleculizer-input and a moleculizer-state dump.
-    //
-    // It parses moleculizer-input as usual, then parses tagged species from
-    // moleculizer-state.  The populations of the tagged species are used for
-    // all species, instead of the populations given for explicit-species in
-    // explicit-species.  The initial simulation time is set to the simulation
-    // time at which state was dumped.  Thus the simulation picks up where it
-    // left off.
-    continuator(int argc,
-		char** argv,
-		xmlpp::Document* pMoleculizerInput,
-		xmlpp::Document* pMoleculizerState)
-      throw(std::exception);
+    static std::string
+    mkMsg(const std::string& rInstanceName,
+	  const xmlpp::Node* pOffendingNode = 0);
 
-    ~continuator(void)
+  public:
+    badSmallMolInstanceXcpt(const std::string& rInstanceName,
+			    const xmlpp::Node* pOffendingNode = 0) :
+      utl::xcpt(mkMsg(rInstanceName,
+		      pOffendingNode))
     {}
   };
 }
 
-#endif
-  
-    
-
-    
+#endif // FTR_BADSMALLMOLINSTANCEXCPT_H

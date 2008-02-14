@@ -23,40 +23,49 @@
 //   Berkeley, CA 94704
 /////////////////////////////////////////////////////////////////////////////
 
-#ifndef CONTUNUATOR_H
-#define CONTUNUATOR_H
+#include "fnd/pchem.hh"
+#include "mol/mzrModMol.hh"
+#include "ftr/uniMolExtrap.hh"
+#include "fnd/pchem.hh"
 
-#include "utl/dom.hh"
-#include "mzr/moleculizer.hh"
-
-namespace mzr
+namespace ftr
 {
-  class continuator :
-    public moleculizer
+  uniMolMassExtrap::
+  uniMolMassExtrap(double theRate,
+		   const bnd::mzrModMol* pEnablingMol,
+		   const fnd::massive* pMassiveAuxiliarySpecies) :
+    pMassive(pMassiveAuxiliarySpecies)
   {
-  public:
-    // The point of this program is to continue a moleculizer simulation
-    // given the original moleculizer-input and a moleculizer-state dump.
-    //
-    // It parses moleculizer-input as usual, then parses tagged species from
-    // moleculizer-state.  The populations of the tagged species are used for
-    // all species, instead of the populations given for explicit-species in
-    // explicit-species.  The initial simulation time is set to the simulation
-    // time at which state was dumped.  Thus the simulation picks up where it
-    // left off.
-    continuator(int argc,
-		char** argv,
-		xmlpp::Document* pMoleculizerInput,
-		xmlpp::Document* pMoleculizerState)
-      throw(std::exception);
+    if(pMassive)
+      {
+	cpx::molParam pEnablingMolDefaultState
+	  = pEnablingMol->getDefaultState();
+	  
+	rateOrInvariant
+	  = fnd::bindingInvariant(theRate,
+				  pEnablingMolDefaultState->getMolWeight(),
+				  pMassive->getWeight());
+      }
+    else
+      {
+	rateOrInvariant = theRate;
+      }
+  }
 
-    ~continuator(void)
-    {}
-  };
+  double
+  uniMolMassExtrap::
+  getRate(const cpx::cxMol<plx::mzrPlexSpecies, plx::mzrPlexFamily>& rWrappedContext) const
+  {
+    // Are we generating unary or binary reactions?
+    if(pMassive)
+      {
+	return fnd::bindingRate(rateOrInvariant,
+				rWrappedContext.getPlexWeight(),
+				pMassive->getWeight());
+      }
+    else
+      {
+	return rateOrInvariant;
+      }
+  }
 }
-
-#endif
-  
-    
-
-    

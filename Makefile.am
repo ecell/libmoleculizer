@@ -1,0 +1,6 @@
+# ./Makefile.am
+SUBDIRS = src
+
+
+
+

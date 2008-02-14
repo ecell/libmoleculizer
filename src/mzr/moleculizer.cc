@@ -23,15 +23,19 @@
 //   Berkeley, CA 94704
 /////////////////////////////////////////////////////////////////////////////
 
+#include <libxml++/libxml++.h>
+#include "utl/noDocumentParsedXcpt.hh"
+#include "utl/modelPreviouslyLoadedXcpt.hh"
 #include <set>
 #include <algorithm>
 #include <fstream>
 #include <ctime>
 #include "utl/platform.hh"
-#include "utl/dom.hh"
 #include "utl/linearHash.hh"
-#include "utl/arg.hh"
-#include "utl/unkArgXcpt.hh"
+
+// Maybe this can be taken out too....
+#include "utl/dom.hh"
+
 #include "mzr/mzrSpecies.hh"
 #include "mzr/mzrReaction.hh"
 #include "mzr/mzrUnit.hh"
@@ -41,361 +45,365 @@
 #include "mzr/inputCapTest.hh"
 #include "mzr/inputCapXcpt.hh"
 
+#include "mzr/debug.hh"
+#include "utl/string.hh"
+
+
 namespace mzr
 {
-  // For getting each unit to do its part of parsing input.
-  class unitParseDomInput :
-    public std::unary_function<unit*, void>
-  {
-    xmlpp::Element* pRootElt;
-    xmlpp::Element* pModelElt;
-    xmlpp::Element* pStreamsElt;
-    xmlpp::Element* pEventsElt;
-  public:
-    unitParseDomInput(xmlpp::Element* pRootElement,
-		      xmlpp::Element* pModelElement,
-		      xmlpp::Element* pStreamsElement,
-		      xmlpp::Element* pEventsElement) :
-      pRootElt(pRootElement),
-      pModelElt(pModelElement),
-      pStreamsElt(pStreamsElement),
-      pEventsElt(pEventsElement)
-    {}
+    // For getting each unit to do its part of parsing input.
+    class unitParseDomInput :
+        public std::unary_function<unit*, void>
+    {
+        xmlpp::Element* pRootElt;
+        xmlpp::Element* pModelElt;
+        xmlpp::Element* pStreamsElt;
+
+    public:
+        unitParseDomInput(xmlpp::Element* pRootElement,
+                          xmlpp::Element* pModelElement,
+                          xmlpp::Element* pStreamsElement) :
+            pRootElt(pRootElement),
+            pModelElt(pModelElement),
+            pStreamsElt(pStreamsElement)
+        {}
+        void
+        operator()(unit* pUnit) const throw(std::exception)
+        {
+            pUnit->parseDomInput(pRootElt,
+                                 pModelElt,
+                                 pStreamsElt);
+        }
+    };
+
+    class prepareUnitToRun :
+        public std::unary_function<unit*, void>
+    {
+        xmlpp::Element* pRootElt;
+        xmlpp::Element* pModelElt;
+        xmlpp::Element* pStreamsElt;
+    public:
+        prepareUnitToRun(xmlpp::Element* pRootElement,
+                         xmlpp::Element* pModelElement,
+                         xmlpp::Element* pStreamsElement) :
+            pRootElt(pRootElement),
+            pModelElt(pModelElement),
+            pStreamsElt(pStreamsElement)
+        {
+        }
+
+        void
+        operator()(unit* pUnit) const
+            throw(std::exception)
+        {
+            pUnit->prepareToRun(pRootElt,
+                                pModelElt,
+                                pStreamsElt);
+        }
+    };
+
     void
-    operator()(unit* pUnit) const throw(std::exception)
+    moleculizer::constructorPrelude(void)
     {
-      pUnit->parseDomInput(pRootElt,
-			   pModelElt,
-			   pStreamsElt,
-			   pEventsElt);
-    }
-  };
-
-  class prepareUnitToRun :
-    public std::unary_function<unit*, void>
-  {
-    xmlpp::Element* pRootElt;
-    xmlpp::Element* pModelElt;
-    xmlpp::Element* pStreamsElt;
-    xmlpp::Element* pEventsElt;
-  public:
-    prepareUnitToRun(xmlpp::Element* pRootElement,
-		     xmlpp::Element* pModelElement,
-		     xmlpp::Element* pStreamsElement,
-		     xmlpp::Element* pEventsElement) :
-      pRootElt(pRootElement),
-      pModelElt(pModelElement),
-      pStreamsElt(pStreamsElement),
-      pEventsElt(pEventsElement)
-    {
+        // Add up the input capabilities of the units.
+        pUserUnits->unionInputCaps(inputCap);
     }
 
     void
-    operator()(unit* pUnit) const
-      throw(std::exception)
+    moleculizer::constructorCore(xmlpp::Element* pRootElement,
+                                 xmlpp::Element* pModelElement,
+                                 xmlpp::Element* pStreamsElement)
+        throw(std::exception)
     {
-      pUnit->prepareToRun(pRootElt,
-			  pModelElt,
-			  pStreamsElt,
-			  pEventsElt);
+        // Verify that the input can all be sucessfully handled by 
+        // various units.
+
+        try
+        {
+            verifyInput(pRootElement, 
+                        pModelElement,
+                        pStreamsElement);
+        }
+        catch(std::exception e)
+        {
+            throw e;
+        }
+        
+
+        // Have each unit do its parsing thing.
+        std::for_each(pUserUnits->begin(),
+                      pUserUnits->end(),
+                      unitParseDomInput(pRootElement,
+                                        pModelElement,
+                                        pStreamsElement));
     }
-  };
 
-  void
-  moleculizer::constructorPrelude(void)
-  {
-    // Add up the input capabilities of the units.
-    pUserUnits->unionInputCaps(inputCap);
 
-    // Formerly initialized random seed here.
-  }
 
-  void
-  moleculizer::constructorCore(xmlpp::Element* pRootElement,
-			       xmlpp::Element* pModelElement,
-			       xmlpp::Element* pStreamsElement,
-			       xmlpp::Element* pEventsElement)
-    throw(std::exception)
-  {
-    // Verify that every element in the model section is handled by some
-    // unit or another.
-    //
-    // I discover very late in the game that this code incorrectly tries
-    // to convert comments to elements.
-    xmlpp::Node::NodeList modelContentNodes
-      = pModelElement->get_children();
-    xmlpp::Node::NodeList::iterator iUnhandledModelContent
-      = std::find_if(modelContentNodes.begin(),
-		     modelContentNodes.end(),
-		     modelNodeNotInCap(inputCap));
-    if(modelContentNodes.end() != iUnhandledModelContent)
-      throw unhandledModelContentXcpt(*iUnhandledModelContent);
+    moleculizer::moleculizer(void)         
+        :
+        modelLoaded( false )
+    {
+        
+        this->configureDataRepository( &canonicalCatalogOfSpecies,
+                                       &listOfAllSpecies,
+                                       &canonicalCatalogOfRxns,
+                                       &listOfAllReactions );
 
-    // Get the reaction-gens node, which contains kinds of reaction generators
-    // introduced by units.
-    xmlpp::Element* pReactionGensElt
-      = utl::dom::mustGetUniqueChild(pModelElement,
-				     eltName::reactionGens);
+        pUserUnits = new unitsMgr(*this);
 
-    // Verify that every kind of reaction generator is handled by some
-    // unit or another.
-    xmlpp::Node::NodeList reactionGensContentNodes
-      = pReactionGensElt->get_children();
-    xmlpp::Node::NodeList::iterator iUnhandledReactionGenContent
-      = std::find_if(reactionGensContentNodes.begin(),
-		     reactionGensContentNodes.end(),
-		     reactionGenNotInCap(inputCap));
-    if(reactionGensContentNodes.end() !=
-       iUnhandledReactionGenContent)
-      throw unhandledReactionGenXcpt(*iUnhandledReactionGenContent);
+        // Now just does the "input capabilities" thing.
+        constructorPrelude();
+    }
 
-    // Get the explicit species model node, which can contain kinds of explicit
-    // species introduced by units.
-    xmlpp::Element* pExplicitSpeciesElt
-      = utl::dom::mustGetUniqueChild(pModelElement,
-				     eltName::explicitSpecies);
+    moleculizer::~moleculizer(void)
+    {
+        delete pUserUnits;
+    }
 
-    // Verify that every kind of explicit species is handled by some
-    // unit or another.
-    xmlpp::Node::NodeList explicitSpeciesContentNodes
-      = pExplicitSpeciesElt->get_children();
-    xmlpp::Node::NodeList::iterator iUnhandledExplicitSpeciesContent
-      = std::find_if(explicitSpeciesContentNodes.begin(),
-		     explicitSpeciesContentNodes.end(),
-		     explicitSpeciesNodeNotInCap(inputCap));
-    if(explicitSpeciesContentNodes.end() != iUnhandledExplicitSpeciesContent)
-      throw
-	unhandledExplicitSpeciesContentXcpt(*iUnhandledExplicitSpeciesContent);
+    void moleculizer::attachFileName(const std::string& filename)
+    {
+        xmlpp::DomParser parser;
+        parser.set_validate(false);
+        parser.parse_file( filename );
+        if (!parser) throw utl::dom::noDocumentParsedXcpt();
+            
+        this->attachDocument( parser.get_document() );
+    }
 
-    // Get the speciesStreams node, which can contain kinds of species streams
-    // introduced by units.
-    xmlpp::Element* pSpeciesStreamsElt
-      = utl::dom::mustGetUniqueChild(pStreamsElement,
-				     eltName::speciesStreams);
+    void moleculizer::attachString( const std::string& documentAsString )
+    {
+        xmlpp::DomParser parser;
+        parser.set_validate( false );
+        parser.parse_memory( documentAsString );
+        if (!parser) throw utl::dom::noDocumentParsedXcpt();
+
+        this->attachDocument( parser.get_document() );
+    }
+
+    void
+    moleculizer::attachDocument(xmlpp::Document* pDoc)
+    {
+        // Note that this new pattern here will allow old style moleculizer
+        // files, ie those that contain events, to be parsed and run.
+
+        if (modelLoaded) throw utl::modelAlreadyLoaded();
+        else modelLoaded = true;
+
+        // Get the basic framework of the document.
+        xmlpp::Element* pRootElement
+            = pDoc->get_root_node();
+
+        // Get the unique model element.
+        xmlpp::Element* pModelElement
+            = utl::dom::mustGetUniqueChild(pRootElement,
+                                           eltName::model);
+        // Get the unique streams element.
+        xmlpp::Element* pStreamsElement
+            = utl::dom::mustGetUniqueChild(pRootElement,
+                                           eltName::streams);
+        // Extract model info.
+        constructorCore(pRootElement,
+                        pModelElement,
+                        pStreamsElement);
+        // Have each unit do its prepareToRun thing.
+        std::for_each(pUserUnits->begin(),
+                      pUserUnits->end(),
+                      prepareUnitToRun(pRootElement,
+                                       pModelElement,
+                                       pStreamsElement));
+
+    }
+
+
+    void 
+    moleculizer::RunInteractiveDebugMode()
+    {
+        unsigned int result;
+        bool cont = false;
+
+        while( cont )
+        {
+            std::cout << "\n\n";
+            std::cout << "0: Quit" << std::endl;
+            std::cout << "1: Show number of species" << std::endl;
+            std::cout << "2: Show number of reactions" << std::endl;
+            std::cout << "3: Show species" << std::endl;
+            std::cout << "4: Show reactions" << std::endl;
+            std::cout << "5: Fire Reaction by index" << std::endl;
+            std::cout << "6: Increment species by index" << std::endl;
+            std::cout << "Give input:\t" << std::endl;
+            std::cin >> result;
+            std::cout << "\n" << std::endl;
+            switch (result)
+            {
+            case 0:
+                cont = false;
+                break;
+            case 1:
+                // DEBUG_showNumberSpecies();
+                break;
+            case 2:
+                // DEBUG_showNumberReactions();
+                break;
+            case 3:
+                // DEBUG_showSpecies();
+                break;
+            case 4:
+                // DEBUG_showReactions();
+                break;
+            case 5:
+                // DEBUG_showNewlyCreated();
+                break;
+            case 6:
+            case 7:
+            case 8:
+
+                
+            default:
+                std::cout << "Option " << result << " not yet implemented" << std::endl;
+                continue;
+            }
+        }
+    }
+
+
+    void
+    moleculizer::setGenerateDepth(unsigned int generateDepth)
+    {
+        mzrUnit& rMzrUnit = *(pUserUnits->pMzrUnit);
+        rMzrUnit.setGenerateDepth(generateDepth);
+    }
+
+    void
+    moleculizer::setTolerance(double tolerance)
+    {
+        // Check that tolerance is a non-negative double.
+        mzrReaction::setTolerance( tolerance );
+    }
+
+    class unitInsertStateElements :
+        public std::unary_function<unit*, void>
+    {
+        xmlpp::Element* pModelElt;
+    public:
+        unitInsertStateElements(xmlpp::Element* pModelElement) :
+            pModelElt(pModelElement)
+        {}
+
+        void
+        operator()(unit* pUnit) const throw(std::exception)
+        {
+            pUnit->insertStateElts(pModelElt);
+        }
+    };
+
+    // State dump, invoked in a dump-state event.
+    xmlpp::Document*
+    moleculizer::makeDomOutput(void) throw(std::exception)
+    {
+        xmlpp::Document* pDoc = new xmlpp::Document();
+
+        // Create the moleculizer-state node.
+        xmlpp::Element* pRootElt
+            = pDoc->create_root_node(eltName::moleculizerState);
+
+        // Add some mandatory elements.
+        xmlpp::Element* pModelElt
+            = pRootElt->add_child(eltName::model);
+        pModelElt->add_child(eltName::unitsStates);
+        pModelElt->add_child(eltName::explicitSpeciesTags);
+        pModelElt->add_child(eltName::taggedSpecies);
+        pModelElt->add_child(eltName::tagReactions);
+
+        // The only reason for inserting these elements here seems
+        // to have been (thought to be?) that various modules would insert
+        // elements under them.
+        pModelElt->add_child(eltName::time);
+        pRootElt->add_child(eltName::streams);
+
+        // Run through the units, letting each make its complete state
+        // contribution, for now.
+        std::for_each(pUserUnits->begin(),
+                      pUserUnits->end(),
+                      unitInsertStateElements(pRootElt));
+
+        return pDoc;
+    }
+
+    void
+    moleculizer::verifyInput(xmlpp::Element const * const pRootElement,
+                             xmlpp::Element const * const pModelElement,
+                             xmlpp::Element const * const pStreamsElement) const
+        throw(std::exception)
+    {
+        // Verify that every element in the model section is handled by some
+        // unit or another.
+        //
+        // I discover very late in the game that this code incorrectly tries
+        // to convert comments to elements.
+        xmlpp::Node::NodeList modelContentNodes
+            = pModelElement->get_children();
+        xmlpp::Node::NodeList::iterator iUnhandledModelContent
+            = std::find_if(modelContentNodes.begin(),
+                           modelContentNodes.end(),
+                           modelNodeNotInCap(inputCap));
+        if(modelContentNodes.end() != iUnhandledModelContent)
+            throw unhandledModelContentXcpt(*iUnhandledModelContent);
+
+        // Get the reaction-gens node, which contains kinds of reaction generators
+        // introduced by units.
+        xmlpp::Element* pReactionGensElt
+            = utl::dom::mustGetUniqueChild(pModelElement,
+                                           eltName::reactionGens);
+
+        // Verify that every kind of reaction generator is handled by some
+        // unit or another.
+        xmlpp::Node::NodeList reactionGensContentNodes
+            = pReactionGensElt->get_children();
+        xmlpp::Node::NodeList::iterator iUnhandledReactionGenContent
+            = std::find_if(reactionGensContentNodes.begin(),
+                           reactionGensContentNodes.end(),
+                           reactionGenNotInCap(inputCap));
+        if(reactionGensContentNodes.end() !=
+           iUnhandledReactionGenContent)
+            throw unhandledReactionGenXcpt(*iUnhandledReactionGenContent);
+
+        // Get the explicit species model node, which can contain kinds of explicit
+        // species introduced by units.
+        xmlpp::Element* pExplicitSpeciesElt
+            = utl::dom::mustGetUniqueChild(pModelElement,
+                                           eltName::explicitSpecies);
+
+        // Verify that every kind of explicit species is handled by some
+        // unit or another.
+        xmlpp::Node::NodeList explicitSpeciesContentNodes
+            = pExplicitSpeciesElt->get_children();
+        xmlpp::Node::NodeList::iterator iUnhandledExplicitSpeciesContent
+            = std::find_if(explicitSpeciesContentNodes.begin(),
+                           explicitSpeciesContentNodes.end(),
+                           explicitSpeciesNodeNotInCap(inputCap));
+        if(explicitSpeciesContentNodes.end() != iUnhandledExplicitSpeciesContent)
+            throw
+                unhandledExplicitSpeciesContentXcpt(*iUnhandledExplicitSpeciesContent);
+
+        // Get the speciesStreams node, which can contain kinds of species streams
+        // introduced by units.
+        xmlpp::Element* pSpeciesStreamsElt
+            = utl::dom::mustGetUniqueChild(pStreamsElement,
+                                           eltName::speciesStreams);
   
-    // Verify that every kind of species stream is handled by some
-    // unit or another.
-    xmlpp::Node::NodeList speciesStreamsContentNodes
-      = pSpeciesStreamsElt->get_children();
-    xmlpp::Node::NodeList::iterator iUnhandledSpeciesStreamsContent
-      = std::find_if(speciesStreamsContentNodes.begin(),
-		     speciesStreamsContentNodes.end(),
-		     speciesStreamNodeNotInCap(inputCap));
-    if(speciesStreamsContentNodes.end() != iUnhandledSpeciesStreamsContent)
-      throw unhandledSpeciesStreamsContentXcpt(*iUnhandledSpeciesStreamsContent);
-  
-    // Verify that every element in the events section is handled by some
-    // unit or another.
-    xmlpp::Node::NodeList eventsContentNodes
-      = pEventsElement->get_children();
-    xmlpp::Node::NodeList::iterator iUnhandledEventsContent
-      = std::find_if(eventsContentNodes.begin(),
-		     eventsContentNodes.end(),
-		     eventNodeNotInCap(inputCap));
-    if(eventsContentNodes.end() != iUnhandledEventsContent)
-      throw unhandledEventsContentXcpt(*iUnhandledEventsContent);
+        // Verify that every kind of species stream is handled by some
+        // unit or another.
+        xmlpp::Node::NodeList speciesStreamsContentNodes
+            = pSpeciesStreamsElt->get_children();
+        xmlpp::Node::NodeList::iterator iUnhandledSpeciesStreamsContent
+            = std::find_if(speciesStreamsContentNodes.begin(),
+                           speciesStreamsContentNodes.end(),
+                           speciesStreamNodeNotInCap(inputCap));
+        if(speciesStreamsContentNodes.end() != iUnhandledSpeciesStreamsContent)
+            throw unhandledSpeciesStreamsContentXcpt(*iUnhandledSpeciesStreamsContent);
 
-    // Have each unit do its parsing thing.
-    std::for_each(pUserUnits->begin(),
-		  pUserUnits->end(),
-		  unitParseDomInput(pRootElement,
-				    pModelElement,
-				    pStreamsElement,
-				    pEventsElement));
-  }
-
-  moleculizer::moleculizer(void)
-    throw(std::exception) :
-    pUserUnits(new unitsMgr(*this))
-  {}
-
-  moleculizer::moleculizer(int argc,
-			   char* argv[],
-			   xmlpp::Document* pDoc)
-    throw(std::exception) :
-    pUserUnits(new unitsMgr(*this))
-  {
-    // This also initializes the random seed.
-    processCommandLineArgs(argc, argv);
-
-    // Now just does the "input capabilities" thing.
-    constructorPrelude();
-
-    // Get the basic framework of the document.
-    xmlpp::Element* pRootElement
-      = pDoc->get_root_node();
-
-    // Get the unique model element.
-    xmlpp::Element* pModelElement
-      = utl::dom::mustGetUniqueChild(pRootElement,
-				     eltName::model);
-
-    // Get the unique streams element.
-    xmlpp::Element* pStreamsElement
-      = utl::dom::mustGetUniqueChild(pRootElement,
-				     eltName::streams);
-
-    // Get the unique events element.
-    xmlpp::Element* pEventsElement
-      = utl::dom::mustGetUniqueChild(pRootElement,
-				     eltName::events);
-
-    // Extract model info.
-    constructorCore(pRootElement,
-		    pModelElement,
-		    pStreamsElement,
-		    pEventsElement);
-  
-    // Have each unit do its prepareToRun thing.
-    std::for_each(pUserUnits->begin(),
-		  pUserUnits->end(),
-		  prepareUnitToRun(pRootElement,
-				   pModelElement,
-				   pStreamsElement,
-				   pEventsElement));
-  }
-
-  moleculizer::~moleculizer(void)
-  {
-    delete pUserUnits;
-  }
-
-  void
-  moleculizer::processCommandLineArgs(int argc,
-				      char* argv[])
-  {
-    mzrUnit& rMzrUnit = *(pUserUnits->pMzrUnit);
+    }
     
-    // Since this routine CAN initialize the random number generator,
-    // I'm going to make it THE routine that initializes the rng.
-    // It does it twice when a random seed is given on the command line.
-    rMzrUnit.rng.seed(42);
-
-    // Skip the command name.
-    argc--;
-    argv++;
-
-    // Peel off arguments one by one.
-    while(0 < argc)
-      {
-	std::string arg(*argv);
-	argv++;
-	argc--;
-
-	// The timeout time.
-	if(arg == "-t")
-	  {
-	    std::string timeoutString
-	      = utl::mustGetArg(argc,
-				argv);
-
-	    int timeoutSeconds
-	      = utl::argMustBePosInt(timeoutString);
-
-	    rMzrUnit.setTimeout((time_t) timeoutSeconds);
-	  }
-
-	// Depth to which to generate species and reactions.
-	else if(arg == "-d")
-	  {
-	    std::string depthString
-	      = utl::mustGetArg(argc,
-				argv);
-
-	    int depth
-	      = utl::argMustBeNNInt(depthString);
-
-	    rMzrUnit.setGenerateDepth(depth);
-	  }
-	
-	// Turns off reaction generation, except for what must happen
-	// before the simulation starts.
-	else if (arg == "-g")
-	  {
-	    rMzrUnit.setGenerateOption(false);
-	  }
-
-	// A random seed string.
-	else if(arg == "-s")
-	  {
-	    std::string seedString
-	      = utl::mustGetArg(argc,
-				argv);
-
-	    utl::linearHash lh;
-	    rMzrUnit.rng.seed(lh(seedString));
-	  }
-
-	// Sets the tolerance for reaction rescheduling.
-	else if (arg == "-T")
-	  {
-	    std::string toleranceString
-	      = utl::mustGetArg(argc,
-				argv);
-
-	    double tolerance
-	      = utl::argMustBeNNDouble(toleranceString);
-
-	    mzrReaction::setTolerance(tolerance);
-	  }
-
-	else throw utl::unkArgXcpt(arg);
-      }
-  }
-
-  class unitInsertStateElements :
-    public std::unary_function<unit*, void>
-  {
-    xmlpp::Element* pModelElt;
-  public:
-    unitInsertStateElements(xmlpp::Element* pModelElement) :
-      pModelElt(pModelElement)
-    {}
-
-    void
-    operator()(unit* pUnit) const throw(std::exception)
-    {
-      pUnit->insertStateElts(pModelElt);
-    }
-  };
-
-  int
-  moleculizer::run(void) throw(std::exception)
-  {
-    eventQ.run(*this);
-    return 0;
-  }
-
-  // State dump, invoked in a dump-state event.
-  xmlpp::Document*
-  moleculizer::makeDomOutput(void) throw(std::exception)
-  {
-    xmlpp::Document* pDoc = new xmlpp::Document();
-
-    // Create the moleculizer-state node.
-    xmlpp::Element* pRootElt
-      = pDoc->create_root_node(eltName::moleculizerState);
-
-    // Add some mandatory elements.
-    xmlpp::Element* pModelElt
-      = pRootElt->add_child(eltName::model);
-    pModelElt->add_child(eltName::unitsStates);
-    pModelElt->add_child(eltName::explicitSpeciesTags);
-    pModelElt->add_child(eltName::taggedSpecies);
-    pModelElt->add_child(eltName::tagReactions);
-
-    // The only reason for inserting these elements here seems
-    // to have been (thought to be?) that various modules would insert
-    // elements under them.
-    pModelElt->add_child(eltName::time);
-    pRootElt->add_child(eltName::streams);
-
-    // Run through the units, letting each make its complete state
-    // contribution, for now.
-    std::for_each(pUserUnits->begin(),
-		  pUserUnits->end(),
-		  unitInsertStateElements(pRootElt));
-
-    return pDoc;
-  }
 }

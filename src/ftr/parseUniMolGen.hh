@@ -23,40 +23,36 @@
 //   Berkeley, CA 94704
 /////////////////////////////////////////////////////////////////////////////
 
-#ifndef CONTUNUATOR_H
-#define CONTUNUATOR_H
+#ifndef FTR_PARSEUNIMOLGEN_H
+#define FTR_PARSEUNIMOLGEN_H
 
 #include "utl/dom.hh"
-#include "mzr/moleculizer.hh"
+#include "mzr/mzrUnit.hh"
+#include "mol/molUnit.hh"
+#include "plex/plexUnit.hh"
 
-namespace mzr
+namespace ftr
 {
-  class continuator :
-    public moleculizer
+  class parseUniMolGen :
+    public std::unary_function<xmlpp::Node*, void>
   {
-  public:
-    // The point of this program is to continue a moleculizer simulation
-    // given the original moleculizer-input and a moleculizer-state dump.
-    //
-    // It parses moleculizer-input as usual, then parses tagged species from
-    // moleculizer-state.  The populations of the tagged species are used for
-    // all species, instead of the populations given for explicit-species in
-    // explicit-species.  The initial simulation time is set to the simulation
-    // time at which state was dumped.  Thus the simulation picks up where it
-    // left off.
-    continuator(int argc,
-		char** argv,
-		xmlpp::Document* pMoleculizerInput,
-		xmlpp::Document* pMoleculizerState)
-      throw(std::exception);
+    mzr::mzrUnit& rMzrUnit;
+    bnd::molUnit& rMolUnit;
+    plx::plexUnit& rPlexUnit;
 
-    ~continuator(void)
+  public:
+    parseUniMolGen(mzr::mzrUnit& refMzrUnit,
+		   bnd::molUnit& refMolUnit,
+		   plx::plexUnit& refPlexUnit) :
+      rMzrUnit(refMzrUnit),
+      rMolUnit(refMolUnit),
+      rPlexUnit(refPlexUnit)
     {}
+
+    void
+    operator()(xmlpp::Node* pUniMolGenNode) const
+      throw(utl::xcpt);
   };
 }
 
-#endif
-  
-    
-
-    
+#endif // FTR_PARSEUNIMOLGEN_H

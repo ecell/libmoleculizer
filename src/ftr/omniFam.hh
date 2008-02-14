@@ -23,40 +23,42 @@
 //   Berkeley, CA 94704
 /////////////////////////////////////////////////////////////////////////////
 
-#ifndef CONTUNUATOR_H
-#define CONTUNUATOR_H
+#ifndef OMNIFAM_H
+#define OMNIFAM_H
 
-#include "utl/dom.hh"
-#include "mzr/moleculizer.hh"
+#include "ftr/omniGen.hh"
 
-namespace mzr
+namespace ftr
 {
-  class continuator :
-    public moleculizer
+  class omniFam :
+    public utl::autoVector<mzr::mzrReaction>
   {
-  public:
-    // The point of this program is to continue a moleculizer simulation
-    // given the original moleculizer-input and a moleculizer-state dump.
-    //
-    // It parses moleculizer-input as usual, then parses tagged species from
-    // moleculizer-state.  The populations of the tagged species are used for
-    // all species, instead of the populations given for explicit-species in
-    // explicit-species.  The initial simulation time is set to the simulation
-    // time at which state was dumped.  Thus the simulation picks up where it
-    // left off.
-    continuator(int argc,
-		char** argv,
-		xmlpp::Document* pMoleculizerInput,
-		xmlpp::Document* pMoleculizerState)
-      throw(std::exception);
+    omniRxnGen rxnGen;
 
-    ~continuator(void)
+  public:
+    omniFam(mzr::mzrUnit& refMzrUnit,
+	    plx::plexUnit& refPlexUnit,
+	    const std::vector<smallMolExchange>& rSMExchanges,
+	    const std::vector<modificationExchange>& rModExchanges,
+	    mzr::mzrSpecies* pAuxReactant,
+	    mzr::mzrSpecies* pAuxProduct,
+	    const omniExtrapolator* pOmniExtrapolator) :
+      rxnGen(refMzrUnit,
+	     refPlexUnit,
+	     rSMExchanges,
+	     rModExchanges,
+	     pAuxReactant,
+	     pAuxProduct,
+	     this,
+	     pOmniExtrapolator)
     {}
+
+    omniRxnGen*
+    getRxnGen(void)
+    {
+      return &rxnGen;
+    }
   };
 }
 
-#endif
-  
-    
-
-    
+#endif // OMNIFAM_H

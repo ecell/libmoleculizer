@@ -37,7 +37,6 @@ namespace mzr
     xmlpp::Element* pRootElt;
     xmlpp::Element* pModelElt;
     xmlpp::Element* pStreamsElt;
-    xmlpp::Element* pEventsElt;
     std::map<std::string, std::string>& rTagToName;
     xmlpp::Element* pTaggedSpeciesElt;
     
@@ -45,13 +44,11 @@ namespace mzr
     prepareUnitToContinue(xmlpp::Element* pRootElement,
 			  xmlpp::Element* pModelElement,
 			  xmlpp::Element* pStreamsElement,
-			  xmlpp::Element* pEventsElement,
 			  std::map<std::string, std::string>& refTagToName,
 			  xmlpp::Element* pTaggedSpeciesElement) :
       pRootElt(pRootElement),
       pModelElt(pModelElement),
       pStreamsElt(pStreamsElement),
-      pEventsElt(pEventsElement),
       rTagToName(refTagToName),
       pTaggedSpeciesElt(pTaggedSpeciesElement)
     {}
@@ -63,7 +60,6 @@ namespace mzr
       pUnit->prepareToContinue(pRootElt,
 			       pModelElt,
 			       pStreamsElt,
-			       pEventsElt,
 			       rTagToName,
 			       pTaggedSpeciesElt);
     }
@@ -99,7 +95,7 @@ namespace mzr
     throw(std::exception)
   {
     // This also initializes random seed.
-    processCommandLineArgs(argc, argv);
+    // processCommandLineArgs(argc, argv);
     
     // Do the "input capabilities" thing.
     constructorPrelude();
@@ -114,9 +110,6 @@ namespace mzr
     xmlpp::Element* pInputStreamsElement
       = utl::dom::mustGetUniqueChild(pInputRootElement,
 				     eltName::streams);
-    xmlpp::Element* pInputEventsElement
-      = utl::dom::mustGetUniqueChild(pInputRootElement,
-				     eltName::events);
 
     // Similar digestion of moleculizer-state.
     xmlpp::Element* pStateRootElement
@@ -137,16 +130,13 @@ namespace mzr
       = utl::dom::mustGetAttrDouble(pTimeElement,
 				    eltName::time_secondsAttr);
 
-    // Set the current simulation time to the dump time.
-    eventQ.setSimTime(dumpTime);
 
     // Extract model info.  This has to be done after the simulation time is
     // restored, so that explicit events in the moleculizer-input that have
     // already happened will not be scheduled.
     constructorCore(pInputRootElement,
 		    pInputModelElement,
-		    pInputStreamsElement,
-		    pInputEventsElement);
+		    pInputStreamsElement);
 
     // Get the map from dump tag to explicit species names.
     // The stochastirator species are known only by name, so that
@@ -170,7 +160,6 @@ namespace mzr
 		  prepareUnitToContinue(pInputRootElement,
 					pInputModelElement,
 					pInputStreamsElement,
-					pInputEventsElement,
 					tagToName,
 					pStateTaggedSpeciesElement));
   }

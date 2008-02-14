@@ -23,40 +23,46 @@
 //   Berkeley, CA 94704
 /////////////////////////////////////////////////////////////////////////////
 
-#ifndef CONTUNUATOR_H
-#define CONTUNUATOR_H
+#include "mol/mzrModMol.hh"
+#include "ftr/ftrUnit.hh"
+#include "ftr/ftrEltName.hh"
+#include "ftr/parseOmniGen.hh"
+#include "ftr/parseUniMolGen.hh"
 
-#include "utl/dom.hh"
-#include "mzr/moleculizer.hh"
-
-namespace mzr
+namespace ftr
 {
-  class continuator :
-    public moleculizer
+  void
+  ftrUnit::parseDomInput(xmlpp::Element* pRootElement,
+			 xmlpp::Element* pModelElement,
+			 xmlpp::Element* pStreamsElement,
+			 xmlpp::Element* pEventsElement)
+    throw(std::exception)
   {
-  public:
-    // The point of this program is to continue a moleculizer simulation
-    // given the original moleculizer-input and a moleculizer-state dump.
-    //
-    // It parses moleculizer-input as usual, then parses tagged species from
-    // moleculizer-state.  The populations of the tagged species are used for
-    // all species, instead of the populations given for explicit-species in
-    // explicit-species.  The initial simulation time is set to the simulation
-    // time at which state was dumped.  Thus the simulation picks up where it
-    // left off.
-    continuator(int argc,
-		char** argv,
-		xmlpp::Document* pMoleculizerInput,
-		xmlpp::Document* pMoleculizerState)
-      throw(std::exception);
+    // This unit only adds a reaction generator for now.
+    xmlpp::Element* pReactionGensElt
+      = utl::dom::mustGetUniqueChild(pModelElement,
+				     mzr::eltName::reactionGens);
 
-    ~continuator(void)
-    {}
-  };
+    // Get the omniGen nodes.
+    xmlpp::Node::NodeList omniGenNodes
+      = pReactionGensElt->get_children(eltName::omniGen);
+
+    // Add omniFam reaction family for each of the generator nodes.
+    std::for_each(omniGenNodes.begin(),
+		  omniGenNodes.end(),
+		  parseOmniGen(rMzrUnit,
+			       rMolUnit,
+			       rPlexUnit));
+
+    // Get the uniMolGen nodes.
+    xmlpp::Node::NodeList uniMolGenNodes
+      = pReactionGensElt->get_children(eltName::uniMolGen);
+
+    // Add uniMolFam reaction family for each of the generator nodes.
+    std::for_each(uniMolGenNodes.begin(),
+		  uniMolGenNodes.end(),
+		  parseUniMolGen(rMzrUnit,
+				 rMolUnit,
+				 rPlexUnit));
+  }
 }
-
-#endif
-  
-    
-
-    

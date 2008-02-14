@@ -60,75 +60,98 @@
   in fact Moleculizer units.
 
   Quick links:
-         - <A HREF="../../index.html">Up to main index.</A>
-         - \link unitsGroup Moleculizer units. \endlink
+  - <A HREF="../../index.html">Up to main index.</A>
+  - \link unitsGroup Moleculizer units. \endlink
 */
 
-#include "mzr/eventQueue.hh"
+#include "utl/reactionNetworkCatalog.hh"
+#include "utl/autoCatalog.hh"
 #include "mzr/unit.hh"
-#include "utl/domJob.hh"
+#include "mzr/mzrSpecies.hh"
+#include "mzr/mzrReaction.hh"
 
 namespace mzr
 {
-  class unitsMgr;
+    class unitsMgr;
   
-  /*! \ingroup mzrGroup
-    \brief The main application object. */
+    /*! \ingroup mzrGroup
+      \brief The main application object. */
+
+
+  //  The main bulk of this class can be found in ReactionNetworkDescription.
   class moleculizer :
-    public utl::dom::domBatchApp
-  {
-  protected:
-    void
-    constructorPrelude(void);
+    public ReactionNetworkDescription<mzrSpecies, mzrReaction>
+    {
+    public:
+      void RunInteractiveDebugMode();
+
+      void attachFileName(const std::string& aFileName);
+      void attachString(const std::string& documentAsString);
+      void attachDocument(xmlpp::Document* pDoc);
+      
+    public:
+       
+//       void DEBUG_printAllSpecies() const;
+//       void DEBUG_printAllReactions() const;
+//       void DEBUG_printDeltaSpecies() const;
+//       void DEBUG_printDeltaReactions() const;
+
+    public:
+
+      void setGenerateDepth(unsigned int generateDepth);
+      void setRateExtrapolation( bool rateExtrapolation ){ return; }
+      void setToleranceOption( bool tolerenceOption ) { return; }
+      void setTolerance(double tolerance);
+
+    public:
+      moleculizer(void);
+      ~moleculizer(void);
+
+      
+        xmlpp::Document*
+        makeDomOutput(void) throw(std::exception);
+
+
+    protected:
+        void
+        constructorPrelude(void);
+
+        void 
+        verifyInput(xmlpp::Element const * const pRootElt,
+                    xmlpp::Element const * const pModelElt,
+                    xmlpp::Element const * const pStreamsElt) const 
+            throw(std::exception);
     
-    void
-    constructorCore(xmlpp::Element* pRootElt,
-		    xmlpp::Element* pModelElt,
-		    xmlpp::Element* pStreamsElt,
-		    xmlpp::Element* pEventsElt)
-      throw(std::exception);
+        void
+        constructorCore(xmlpp::Element* pRootElt,
+                        xmlpp::Element* pModelElt,
+                        xmlpp::Element* pStreamsElt)
+            throw(std::exception);
 
-  public:
 
-    // Units loaded by the user, waiting for destruction.
-    // 
-    // This class is the manager for units, and the place that new units
-    // can be installed.  It's public because units need to get to
-    // each other.
-    unitsMgr* pUserUnits;
+    public:
+        // Units loaded by the user, waiting for destruction.
+        // 
+        // This class is the manager for units, and the place that new units
+        // can be installed.  It's public because units need to get to
+        // each other.
+        unitsMgr* pUserUnits;
 
-    eventQueue eventQ;
+        // Codes the input capabilities of moleculizer, including its parsing 
+        // routine.
+        inputCapabilities inputCap;
 
-    // Codes the input capabilities of moleculizer, including its
-    // parsing routine.
-    inputCapabilities inputCap;
+    private:
 
-    // This constructor is used in the construction of the two
-    // descendant apps, continuator and parametrizer.
-    moleculizer(void)
-      throw(std::exception);
+        utl::catalog<mzrSpecies> canonicalCatalogOfSpecies;
+        std::list<mzrSpecies*> listOfAllSpecies;
 
-    // This constructor is used for runs as moleculizer.
-    moleculizer(int argc,
-		char** argv,
-		xmlpp::Document* pDoc) throw(std::exception);
+        utl::catalog<mzrReaction> canonicalCatalogOfRxns;
+        std::list<mzrReaction*> listOfAllReactions;
 
-    ~moleculizer(void);
-
-    void
-    processCommandLineArgs(int argc,
-			   char* argv[]);
-    
-    // Were it not for generating output with xmlpp code, which throws base
-    // std::exceptions, I would probably just be throwing my own exceptions
-    // here.
-    int
-    run(void) throw(std::exception);
-
-    // Generate an output document for rk4tau or rk4ode.
-    xmlpp::Document*
-    makeDomOutput(void) throw(std::exception);
-  };
+    private:
+        bool modelLoaded;
+    };
 }
 
 #endif

@@ -1,0 +1,21 @@
+
+	export MOLECULIZER_DIR
+
+	# To find moleculizer executables.
+	PATH=$MOLECULIZER_DIR/bin:$PATH
+
+	# Add moleculizer libraries and modules to the library search path.
+	LD_LIBRARY_PATH=$MOLECULIZER_DIR/lib:$LD_LIBRARY_PATH
+
+	# Add xml++ libraries to the library search path.
+	LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
+
+	# Just in case.
+	export LD_LIBRARY_PATH
+
+	# Some moleculizer-associated perl scripts (plt) look for
+	# perl modules here.
+	MOLECULIZER_PERL_PATH=$MOLECULIZER_DIR/bin
+	export MOLECULIZER_PERL_PATH
+fi
+

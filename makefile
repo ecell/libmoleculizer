@@ -23,120 +23,108 @@
 #   Berkeley, CA 94704
 ###############################################################################
 
-# Include directory tree navigation tools and landmarks.
-include navigation.mk
+# The default target and some documentation of other primary
+# targets.
+
+default : opt xml-target usr-doc
+
+# Produces dynamically-linked, optimized executables.
+opt : 
+
+# Produces dynamically-linked, debugging executables.
+dbg :
+
+# Produces statically-linked executables for profiling,
+# performance analysis.
+prf :
+
+# Produces various kinds of schema files from schema-doc files; copies xslt
+# transformations.
+xml-target :
+
+# Produces trees of HTML documentation of XML file formats from
+# schema-doc files.
+usr-doc :
+
+# Produces documentation of source code, using Doxygen.
+src-doc :
+
+# Generates the user.xmloperator directory, which each user installs in her
+# own home directory in order to use Moleculizer, xmloperator, etc.
+usr-install :
+
+# Generates a binary release.
+# 
+# First, the code is exported from Subversion to remove all the .svn
+# directories from the tree, followed by the default build.  Then src and
+# build/scratch are deleted.  Then the top-level makefile is replaced with one
+# that does user-install, demos, and examples, but that doesn't look for
+# src.
+# 
+# Then, the whole thing is made into a tarball with the right name.
+binary-release :
+
+# Generates a source release.
+#
+# First, the code is exported from Subversion to remove all the .svn
+# directories from the tree.
+# 
+# Then, the whole thing is made into a tarball with the right name.
+source-release : 
+
+# This triggers generation and loading of all the dependency files.
+test-target :
+	@echo Dummy target compiled!
+
+######################################################
+
+# Include landmarks in the build tree.
+include build/navigation.mk
 
 # Include build configuration, such as library locations and
-# compiler flags.
-include build-config.mk
+# compiler flags, configuration for different platforms, etc.
+include build/build-config.mk
 
-# These are needed both to know what the units are and what the include
-# directories are (in include/td.mk).  Hence, this list is here instead of in
-# unit/td.mk.
-UNITS := dimer \
-	domUtils \
-	ftr \
-	mol \
-	mzr \
-	odie \
-	plex \
-	rk4tau \
-	sampleDist \
-	stoch
+# Include rules for removing products of build; clean and preen.
+include build/clean.mk
 
-# This target copies the entire moleculizer ball'o'wax to /tmp,
-# then removes soureces, etc. from the copy, then moves the copy
-# into this directory as the standalone binary delivery.
-STANDALONE_BINARY_DIR := $(PROJECT)-standalone-binary-$(MAJOR_VERSION).$(MINOR_VERSION)
-STANDALONE_STAGING_DIR := /tmp/$(STANDALONE_BINARY_DIR)
-standalone-binary : target
-	rm -rf $(STANDALONE_BINARY_DIR)
-	rm -rf $(STANDALONE_STAGING_DIR)
-	cp -a . $(STANDALONE_STAGING_DIR)
-	$(MAKE) -C $(STANDALONE_STAGING_DIR) standalone-clean
-	cp -a $(STANDALONE_STAGING_DIR) $(STANDALONE_BINARY_DIR)
-	rm -rf $(STANDALONE_STAGING_DIR)
+# Include rules for generating tags files and browse files.  This file list
+# is also used for generating html source-code documentation using doxygen.
+include build/tags.mk
 
-# Removes what is not needed in a standalone binary release. (Some XSL files
-# are needed to do transformations in the demos.) Then swaps in new makefile.
-standalone-clean :
-	rm -rf app include unit
-	rm -rf server session-makefiles
-	mv $(INSTALL)/standalone-install.mk makefile
+# Include rules for assembling src/include during the build and removing
+# it at clean time.
+include build/headers.mk
 
-# Similar to the above, but for the server binary.
-SERVER_BINARY_DIR := $(PROJECT)-server-binary-$(MAJOR_VERSION).$(MINOR_VERSION)
-SERVER_STAGING_DIR := /tmp/$(SERVER_BINARY_DIR)
-server-binary : target
-	rm -rf $(SERVER_BINARY_DIR)
-	rm -rf $(SERVER_STAGING_DIR)
-	cp -a . $(SERVER_STAGING_DIR)
-	$(MAKE) -C $(SERVER_STAGING_DIR) server-clean
-	cp -a $(SERVER_STAGING_DIR) $(SERVER_BINARY_DIR)
-	rm -rf $(SERVER_STAGING_DIR)
+# Include rules for building, cleaning, etc. shared libraries (units).
+include build/units.mk
 
-# Removes what is not needed in server binary release, and swaps in
-# new makefile.
-server-clean :
-	rm -rf app include unit
-	mv $(INSTALL)/server-install.mk makefile
+# Include rules for building, cleaning, etc. apps.
+include build/apps.mk
 
-# Generates preened source delivery.
-SOURCE_RELEASE_DIR := $(PROJECT)-source-$(MAJOR_VERSION).$(MINOR_VERSION)
-SOURCE_STAGING_DIR := /tmp/$(SOURCE_RELEASE_DIR)
-source-release :
-	rm -rf $(SOURCE_RELEASE_DIR)
-	rm -rf $(SOURCE_STAGING_DIR)
-	cp -a . $(SOURCE_STAGING_DIR)
-	$(MAKE) -C $(SOURCE_STAGING_DIR) preen
-	cp -a $(SOURCE_STAGING_DIR) $(SOURCE_RELEASE_DIR)
-	rm -rf $(SOURCE_STAGING_DIR)
+# Include rules for processing schemas and other xml files.
+include build/xml.mk
 
-# For using the development area as an installation.
-local-install : target
-	$(MAKE) -f $(INSTALL)/standalone-install.mk standalone-install
+# Include rules for processing documentation.
+include build/doc.mk
 
-# The main part of an optimized release, either standalone or server.
-target : opt \
-	doc/target \
-	install/target \
-	server/target
+# Add rules to generate user's .xmloperator directory, which performs
+# all user's environment setup for moleculizer, xmloperator, etc.
+include build/install.mk
 
-# Optimized libraries, binaries.
-opt : app/opt
+# Add rules to generate binary release.
+include build/release.mk
 
-# Debug libraries, binaries.
-dbg : app/dbg
+# Add rules to run the demos.
+include build/demos.mk
 
-# Profiling libraries, binaries.
-prf : app/prf
+# Add rules to run the examples.
+include build/examples.mk
 
-TAGS_LIST :=
-tags :
-	etags $(TAGS_LIST)
+# This arranges that all the headers in $(INCLUDE) are up-to-date with respect
+# to their modules before dependency checking begins.  The headers must be in
+# place so that g++ can find them in its dependency-generation pass.
+$(MAKEFILES) : $(INCLUDE)/.headers
 
-CLEAN_LIST := TAGS \
-	user.xmloperator \
-	$(STANDALONE_BINARY_DIR) \
-	$(SERVER_BINARY_DIR) \
-	$(SOURCE_RELEASE_DIR)
-
-clean :
-	rm -rf $(CLEAN_LIST)
-
-PREEN_LIST := *~
-preen : clean
-	rm -rf $(PREEN_LIST)
-	rm -rf $(MAKEFILES)
-
-# Recursively include "top down" makefiles from the entire hierarchy.
-include app/td.mk \
-	demo/td.mk \
-	doc/td.mk \
-	include/td.mk \
-	install/td.mk \
-	server/td.mk \
-	unit/td.mk \
-	xml/td.mk
-
+# Include dependency files.
 -include $(MAKEFILES)

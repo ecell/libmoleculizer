@@ -1,0 +1,131 @@
+
+Mon Jul 23 10:59:41 PDT 2007
+
+Looks like I just did some minor revisions on the dr-optimize example.
+
+-----------------------------------------------------------------------------
+
+To do wiki/web-related:
+
+There are many elements and attributes in moleculizer and cpt whose
+documentation needs attention, and they need to have user-doc elements added in
+the schema, too.
+
+I have proposed a web-app, tentatively named "rngLive".  Here, just a few
+notes:
+
+An "rngLive" would be a thing like a simple Wiki, a directory containing
+a few perl scripts, a few XSLT transformations, and a subdirectory for versions
+of the xml document.  If one does not need to keep a comment for each version,
+then the versions could just be the very documents themselves, otherwise, each
+version would have to be a directory containing document, comment, and
+whatever.  There would be three perl scripts:
+
+1. Display the back versions as links for access, along with their comments,
+   in a simple, ordered list from newest to oldest.  Taking one of these links
+   would invoke script 2 below.  Also display a simple
+   button for uploading a new version, along with a comment field for the
+   upload.
+
+2. Display a particular xml file in an html form, showing each editable
+   attribute's value in an edit box.  Only one action buttons: update, with an
+   edit box for giving the reason for the edit.  Also a link for downloading
+   the current version of the document, which would not be a cgi action.
+
+3. The cgi script to do the edit.  It might emit the same html as 2,
+   displaying the results of editing, and preparing for another edit.
+   Another possibility would be to "return" to the main page.
+
+------------------------------------------
+
+Web server notes:
+
+In /etc/apache2/default-server.conf, it appears that I configured a "wikis"
+directory in my htdocs area (at /srv/www/htdocs on genome) to allow overrides
+of permissions using a .htaccess file.
+
+Then there is a file /srv/www/htdocs/wikis/.htaccess that appears to turn on
+CGI execution for executables with the .cgi extension.  This seems to mean
+that all these perl scripts will need .cgi extensions.
+
+In /srv/www/htdocs/wikis/.htaccess, I also configured it to follow symlinks;
+probably irrelevant to this project.
+
+-----------------------------------------------------------------------------
+
+To do build-related:
+
+Compartmentalizer does not have the timeout option, though it has some
+provisions for it in code.  Doesn't seem to check timeout during simulation
+cycle.  Can't tell at this moment whether it's just an omission or if there
+was some complication.  Compartmentalizer does appear to do state dump.  There
+are no compartmental versions of continuator or parametrizer, so I may have
+omitted timeout because there would be nothing to do with the resulting state
+dump.
+
+Another detail realized while working with compartmentalizer (e.g. in
+cpt-receptor10 versions) is that column headers associated with dump-streams
+are not optionally settable.  This causes a problem when the default column
+headers come out the same, as when dumping different compartments of the same
+species in different dump streams.
+
+The "tolerance" acceleration doesn't seem to be parsed from the command line;
+don't know what happened to it.
+
+Demos:
+
+In some cases where a demo has more than one version, all the versions have
+basically the same makefile, and these could be consolidated.
+
+cpt-receptor10		4 versions; haven't run these through yet--too long.
+
+cpt-receptor-sphere	7 versions; haven't run these through yet--too long.
+
+cpt-uniMolPtase		Needs better commentary in html.
+
+heinrich-odie,
+heinrich-rk4tau,
+heinrich-state		Why am I running parametrizer in these?
+			Figure it out and explain it in the html file, or
+			remove it.
+
+heinrich-sbml		This doesn't add anything to the vanilla heinrich
+			demo except for generation and pretty-printing of
+			sbml file.  It should probably just be consolidated
+			with the vanilla heinrich demo.
+
+heinrich-state		This really seems to be a continuator demo.
+			It also seems not to be working exactly right;
+			populations in the state dump seem to be 0,
+			incorrectly.  I note that they are all stoch-species.
+
+omniPtase		
+omniReceptor		Need html pages.
+
+simple-extrap		Needs html page fix on link to plot.
+
+simple-odie		Again, I'm running parametrizer, but I don't really
+			remember why.
+
+simple-sbml		Needs html page fix.
+
+small-mol		Need html page.  Rename "simple-small-mol" ?
+
+uniMolPtase		Need html page.
+
+
+Add the wiki simulation as a demo?  It's really a version of omniReceptor;
+perhaps the present omniReceptor demo should just be replaced with the new
+version on the wiki?
+
+Adding html translation of each demo input file, and link from each demo's html
+page to the html translation of the associated input file(s).
+Something along these lines might be good for state dumps, too, but I don't
+have this set up.  The state dump schema is missing lots of documentation.
+
+Add target to demos.mk to make all the demos.
+
+Attend to overall demos html page.  Make sure that it's targeted by the
+overall documentation and targets the top of the overall documentation.
+
+-----------------------------------------------------------------------------

@@ -31,7 +31,7 @@ report-now : sims-now
 # Sets up simulations for tddr, writes batch script and immediate
 # simulation script.
 setup :
-	tddr-setup.pl in.xml values sim
+	tddr-int-setup.pl in.xml values sim
 	chmod a+x ./batch_script.sh
 	chmod a+x ./immed_script.sh
 
@@ -53,6 +53,16 @@ report :
 	plt -n $$tddr > $${tddr%.tddr}.png ;\
 	done
 
+# Try out plotting of equilibrium distributions.
+#
+# Leaving this out, since it requires nu and isn't relevant for Andrew.
+#	./do-gamma-densities.sh
+histos :
+	mkdir $@
+	./tail-histos.pl tddrs/active-kinases--active-kin2.tddr 200 5 $@
+	gnuplot $@/plot-histograms.gp > $@/histograms.png
+	nu -load transinfo.scm -stats-file histos/all-stats
+
 # General clean-up.
 clean :
 	rm -rf sim_*
@@ -61,6 +71,7 @@ clean :
 	rm -f immed_script.sh
 	rm -f immed_script.log
 	rm -rf tddrs
+	rm -rf histos
 
 preen : clean
 	rm -f *~ *.bak

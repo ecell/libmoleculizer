@@ -1,1 +1,0 @@
-These documents are available on http://www.tei-c.org/Schemas/RelaxNG/P4X/

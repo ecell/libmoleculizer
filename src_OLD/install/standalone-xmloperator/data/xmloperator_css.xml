@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<css xmlns="http://www.xmloperator.net/namespace/cssxml"><comment>Stylesheet used by The_xmloperator_project web site.</comment><ruleSet><selector html-selector="body"/><font><font-family generic-family="sans-serif"/></font><color><background-color color="white"/></color></ruleSet><ruleSet><selector selector="h1 h2 h3 h4 h5 h6"/><color><foreground-color blue_value="16" green_value="0" red_value="128"/></color></ruleSet><ruleSet><selector html-selector="code"/><font><font-family generic-family="monospace"/><font-weight weight="bold"/></font></ruleSet><ruleSet><selector html-selector="img"/><color><foreground-color color="white"/></color><box><border><border-style border-style="none"/></border></box></ruleSet></css>
-
-

@@ -55,4 +55,4 @@ moleculizer_DEPENDENCIES = $(ALL_MZR_LIBS)
 
 moleculizer_SOURCES=main.cc
 
-all-local: moleculizer
+

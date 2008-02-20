@@ -39,6 +39,9 @@ processCommandLineArgs(int argc,
                        std::string* fileName);
                        
 
+// This is a global that is used in processCommandLineArgs
+int DEBUG_NUM = 30;
+
 int
 main(int argc, char** argv)
 {
@@ -52,7 +55,7 @@ main(int argc, char** argv)
       theApp.attachFileName( filename );
 
       // theApp.RunInteractiveDebugMode();
-      theApp.RunProfileMode();
+      theApp.RunProfileMode(DEBUG_NUM);
   
       return 0;
     }
@@ -66,7 +69,9 @@ main(int argc, char** argv)
 }
 
 
-void 
+
+
+void
 processCommandLineArgs(int argc,
                        char* argv[],
                        mzr::moleculizer& theMzrObject,
@@ -98,6 +103,11 @@ processCommandLineArgs(int argc,
 
             theMzrObject.setGenerateDepth( depth );
         }
+	else if ( arg == "-n" )
+	  {
+	    std::string aNumber = utl::mustGetArg(argc, argv);
+	    DEBUG_NUM = utl::argMustBeNNInt( aNumber );
+	  }
 
 	// Sets the tolerance for reaction rescheduling.
 	else if (arg == "-T")

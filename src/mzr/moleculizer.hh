@@ -84,7 +84,7 @@ namespace mzr
     {
     public:
         void RunInteractiveDebugMode();
-        void RunProfileMode();
+        void RunProfileMode(unsigned int numIters = 100);
 
         void attachFileName(const std::string& aFileName);
         void attachString(const std::string& documentAsString);

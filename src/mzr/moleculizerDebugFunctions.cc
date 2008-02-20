@@ -99,16 +99,17 @@ namespace mzr
         }
     }
 
-    void moleculizer::RunProfileMode()
+    void moleculizer::RunProfileMode(unsigned int Num_Iterations)
     {
         for( unsigned int i = 0;
-             i != 1000;
+             i != Num_Iterations;
              ++i)
         {
-            if (i % 20 == 0 )
+	  if (i % (10) == 0 )
             {
-                cout << i * 100 / 1000 << "% done..." << endl;
+	      cout << i * 100.0 / static_cast<float>(Num_Iterations) << "% done..." << endl;
             }
+
             recordCurrentState();
             std::list<mzrSpecies*>::reverse_iterator riter = find_if( listOfAllSpecies.rbegin(),
                                                                       listOfAllSpecies.rend(),
@@ -125,9 +126,15 @@ namespace mzr
             cout << "\t" << getDeltaNumberSpecies() << " species generated\n";
             cout << "\t" << getDeltaNumberReactions() << " reactions generated." << endl;
 
-
+	    DEBUG_showNumberSpecies();
+	    DEBUG_showNumberReactions();
+	    
+	    cout << "######################################################" << endl;
 
         }
+
+	DEBUG_showSpecies();
+	DEBUG_showReactions();
              
                
     }
@@ -150,24 +157,31 @@ namespace mzr
     void
     moleculizer::DEBUG_showSpecies() const
     {
-        unsigned int i = 0;
-        for( std::list<mzrSpecies*>::const_iterator iter = listOfAllSpecies.begin();
-             iter != listOfAllSpecies.end();
-             ++iter, ++i)
-        {
-            cout << i << ":\t" << (*iter)->getName() << endl;
-        }
+        unsigned int index = 0;
+        for( utl::catalog<mzrSpecies>::const_iterator iter = canonicalCatalogOfSpecies.begin();
+	     iter != canonicalCatalogOfSpecies.end();
+	     ++iter, ++index)
+	  {
+	    cout << index << ":\t" << iter->first << endl;
+	  }
+
+// 	list<mzrSpecies*>::const_iterator iter = listOfAllSpecies.begin();
+//              iter != listOfAllSpecies.end();
+//              ++iter, ++i)
+//         {
+//             cout << i << ":\t" << (*iter)->getName() << endl;
+//         }
     }
 
     void
     moleculizer::DEBUG_showReactions() const
     {
-        unsigned int i = 0;
-        for( std::list<mzrReaction*>::const_iterator iter = listOfAllReactions.begin();
-             iter != listOfAllReactions.end();
-             ++iter, ++i)
+        unsigned int ndx = 0;
+        for( utl::catalog<mzrReaction>::const_iterator iter = canonicalCatalogOfRxns.begin();
+	     iter != canonicalCatalogOfRxns.end();
+	     ++iter, ++ndx)
         {
-            cout << i << ":\t" << (*iter)->getName() << endl;
+            cout << ndx << ":\t" << iter->first << endl;
         }
     }
 

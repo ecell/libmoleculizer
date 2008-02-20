@@ -45,9 +45,6 @@
 #include "mzr/inputCapTest.hh"
 #include "mzr/inputCapXcpt.hh"
 
-#include "mzr/debug.hh"
-#include "utl/string.hh"
-
 
 namespace mzr
 {
@@ -213,58 +210,6 @@ namespace mzr
                                        pModelElement,
                                        pStreamsElement));
 
-    }
-
-
-    void 
-    moleculizer::RunInteractiveDebugMode()
-    {
-        unsigned int result;
-        bool cont = true;
-
-        while( cont )
-        {
-            std::cout << "\n\n";
-            std::cout << "0: Quit" << std::endl;
-            std::cout << "1: Show number of species" << std::endl;
-            std::cout << "2: Show number of reactions" << std::endl;
-            std::cout << "3: Show species" << std::endl;
-            std::cout << "4: Show reactions" << std::endl;
-            std::cout << "5: Fire Reaction by index" << std::endl;
-            std::cout << "6: Increment species by index" << std::endl;
-            std::cout << "Give input:\t" << std::endl;
-            std::cin >> result;
-            std::cout << "\n" << std::endl;
-            switch (result)
-            {
-            case 0:
-                cont = false;
-                break;
-            case 1:
-                // DEBUG_showNumberSpecies();
-                break;
-            case 2:
-                // DEBUG_showNumberReactions();
-                break;
-            case 3:
-                // DEBUG_showSpecies();
-                break;
-            case 4:
-                // DEBUG_showReactions();
-                break;
-            case 5:
-                // DEBUG_showNewlyCreated();
-                break;
-            case 6:
-            case 7:
-            case 8:
-
-                
-            default:
-                std::cout << "Option " << result << " not yet implemented" << std::endl;
-                continue;
-            }
-        }
     }
 
 

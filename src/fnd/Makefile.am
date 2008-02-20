@@ -59,6 +59,8 @@ physConst.hh \
 query.hh \
 queryImpl.hh \
 querySpeciesDumpable.hh \
+reactionNetworkCatalog.hh \
+reactionNetworkComponent.hh \
 rxnGen.hh \
 sensitive.hh \
 sensitiveOnce.hh \

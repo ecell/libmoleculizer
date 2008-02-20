@@ -51,7 +51,8 @@ main(int argc, char** argv)
       processCommandLineArgs( argc, argv, theApp, &filename);
       theApp.attachFileName( filename );
 
-      theApp.RunInteractiveDebugMode();
+      // theApp.RunInteractiveDebugMode();
+      theApp.RunProfileMode();
   
       return 0;
     }

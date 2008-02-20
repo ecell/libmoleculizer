@@ -119,9 +119,6 @@ namespace cpx
         createComplexRepresentation(aComplexSpecies);
         string theName( ptrNameAssembler->createCanonicalName(aComplexSpecies) );
 
-
-        cout << theName << endl;
-
         return theName;
     }
 

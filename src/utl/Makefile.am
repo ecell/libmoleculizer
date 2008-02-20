@@ -81,7 +81,6 @@ missingAttrXcpt.hh \
 modelPreviouslyLoadedXcpt.hh \
 noDocumentParsedXcpt.hh \
 platform.hh \
-reactionNetworkCatalog.hh \
 string.hh \
 unkArgXcpt.hh \
 utility.hh \

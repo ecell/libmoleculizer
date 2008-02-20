@@ -68,6 +68,9 @@ namespace cpx
         // Notification has to be done in the final species.  It should notify
         // rFamily with a fnd::newSpeciesStimulus<finalSpecies>.
 
+        std::string
+        getName() const;
+
         // Generate non-canonical, "informative" name.  Not so sure that this
         // should go here.
         std::string

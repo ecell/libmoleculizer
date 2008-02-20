@@ -27,6 +27,9 @@
 #define BASICREACTION_H
 
 #include <map>
+#include <string>
+#include <vector>
+#include <sstream>
 
 namespace fnd
 {
@@ -50,7 +53,9 @@ namespace fnd
   public:
     basicReaction(double reactionRate = 0.0) :
       arity(0),
-      rate(reactionRate)
+      rate(reactionRate),
+      nameUnclean( true ),
+      theName( "" )
     {}
     
     void
@@ -78,6 +83,33 @@ namespace fnd
     {
       return arity;
     }
+
+      
+      std::string
+      getCanonicalName() const
+      {
+          if (nameUnclean) generateCanonicalName();
+          return theName;
+      }
+
+      void
+      generateCanonicalName() const;
+
+      virtual
+      std::string
+      getName() const
+      {
+          return getCanonicalName();
+      }
+
+
+  private:
+      // This is all naming stuff.  This is also the first time I've used the "mutable" 
+      // keyword.  I'm a badass.
+
+      mutable bool nameUnclean;
+      mutable std::string theName;
+      
   };
 
   // Note that this does nothing with regard to sensitization.  Sensitization
@@ -122,6 +154,10 @@ namespace fnd
 
     // Add the reactant multiplicity to the arity.
     arity += multiplicity;
+
+    // Adding a reactant means we will need to regenerate the name if anyone 
+    // requests it.
+    nameUnclean = true;
   }
 
   template<class speciesType>
@@ -159,7 +195,92 @@ namespace fnd
       {
 	insertResult.first->second += multiplicity;
       }
+
+    // Adding a reactant means we will need to regenerate the name if anyone 
+    // requests it.
+    nameUnclean = true;
   }
+
+    template <typename speciesType>
+    class CompareSpeciesEntries
+    {
+    public:
+        int operator()( const std::pair<speciesType*, int>& numOne, const std::pair<speciesType*, int>& numTwo)
+        {
+            return numOne.first->getName() < numTwo.first->getName();
+        }
+    };
+
+    template <class speciesType>
+    void basicReaction<speciesType>::
+    generateCanonicalName() const
+    {
+        std::vector< std::pair<speciesType*, int> > theReactants( reactants.begin(),
+                                                                  reactants.end() );
+        
+        std::vector< std::pair<speciesType*, int> > theProducts( products.begin(),
+                                                                 products.end() );
+
+        std::sort( theReactants.begin(),
+                   theReactants.end(),
+                   CompareSpeciesEntries<speciesType>()
+            );
+        
+
+        std::sort( theProducts.begin(),
+                   theProducts.end(),
+                   CompareSpeciesEntries<speciesType>()
+            );
+
+        std::ostringstream reactionName;
+        
+        // This is sort of goofy because of the following
+        // vector = first| a, b, c| last
+        // " a + b + c" => add a " + " iff ndx of what we've just added 
+        
+        for(unsigned int ii = 0; 
+            ii != theReactants.size();
+            ++ii)
+        {
+            reactionName << theReactants[ii].second
+                         << " " 
+                         << theReactants[ii].first->getName();
+            
+            // I don't like this condition as it seems error-prone.  
+            // However
+            // if size == 4 and 
+            // NDX: 0  1  2  3
+            //      a  b  c  d
+            // We want to add pluses for everything up to and including 2
+            if (ii != theReactants.size() - 1)
+            {
+                reactionName << " + ";
+            }
+            
+        }
+
+        reactionName << " -> ";
+
+        for(unsigned int ii = 0;
+            ii != theProducts.size();
+            ++ii)
+        {
+            reactionName << theProducts[ii].second
+                         << " "
+                         << theProducts[ii].first->getName();
+            
+            if (ii != theProducts.size())
+            {
+                reactionName << " + ";
+            }
+                
+        }
+
+        nameUnclean = false;
+        theName = reactionName.str();
+        
+    }
+
 }
 
 #endif // BASICREACTION_H

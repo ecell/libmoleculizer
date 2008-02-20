@@ -177,11 +177,6 @@ namespace mzr
         insertElt(xmlpp::Element* pParentElt) const 
         throw(std::exception);
 
-        std::string
-        getCanonicalName() const
-        {
-            return std::string("Foo");
-        }
     };
 }
 

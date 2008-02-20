@@ -176,36 +176,6 @@ namespace mzr
 
 
 
-// Now commenting out all of this, as I don't believe it is useful now...
-
-        /////////////////////////////////////////////
-        // This is in the spirit of larry's add/must add code.  This is for
-        // recording in a "canonical" way all of the species and reactions that 
-        // must be generated here.
-//     bool
-//     recordSpecies( mzrSpecies* pSpecies)
-//     {
-//       return rMolzer.recordSpecies( pSpecies );
-//     }
-
-    
-//     bool mustRecordSpecies( mzrSpecies* pSpecies,
-//                             xmlpp::Node* pRequestingNode = 0)
-//       throw(utl::xcpt);
-
-
-//     bool
-//     recordReaction( mzrReaction* pRxn)
-//     {
-//       return rMolzer.recordReaction( pRxn );
-//     }
-
-//     bool
-//     mustRecordReaction( mzrReaction* pRxn,
-// 			xmlpp::Node* pRequestingNode = 0)
-//       throw(utl::xcpt);
-
-
         /////////////////////////////////////////////////////////
 
 

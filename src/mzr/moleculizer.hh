@@ -64,7 +64,7 @@
   - \link unitsGroup Moleculizer units. \endlink
 */
 
-#include "utl/reactionNetworkCatalog.hh"
+#include "fnd/reactionNetworkCatalog.hh"
 #include "utl/autoCatalog.hh"
 #include "mzr/unit.hh"
 #include "mzr/mzrSpecies.hh"
@@ -78,34 +78,45 @@ namespace mzr
       \brief The main application object. */
 
 
-  //  The main bulk of this class can be found in ReactionNetworkDescription.
-  class moleculizer :
-    public ReactionNetworkDescription<mzrSpecies, mzrReaction>
+    //  The main bulk of this class can be found in ReactionNetworkDescription.
+    class moleculizer :
+        public ReactionNetworkDescription<mzrSpecies, mzrReaction>
     {
     public:
-      void RunInteractiveDebugMode();
+        void RunInteractiveDebugMode();
+        void RunProfileMode();
 
-      void attachFileName(const std::string& aFileName);
-      void attachString(const std::string& documentAsString);
-      void attachDocument(xmlpp::Document* pDoc);
+        void attachFileName(const std::string& aFileName);
+        void attachString(const std::string& documentAsString);
+        void attachDocument(xmlpp::Document* pDoc);
       
     public:
        
-//       void DEBUG_printAllSpecies() const;
-//       void DEBUG_printAllReactions() const;
-//       void DEBUG_printDeltaSpecies() const;
-//       void DEBUG_printDeltaReactions() const;
-
     public:
 
-      void setGenerateDepth(unsigned int generateDepth);
-      void setRateExtrapolation( bool rateExtrapolation ){ return; }
-      void setToleranceOption( bool tolerenceOption ) { return; }
-      void setTolerance(double tolerance);
+        void setGenerateDepth(unsigned int generateDepth);
+        void setRateExtrapolation( bool rateExtrapolation ){ return; }
+        void setToleranceOption( bool tolerenceOption ) { return; }
+        void setTolerance(double tolerance);
 
+    public: 
+        // DEBUG interface.
+        void DEBUG_showNumberSpecies() const;
+        void DEBUG_showNumberReactions() const;
+        void DEBUG_showSpecies() const;
+        void DEBUG_showReactions() const;
+        void DEBUG_showNewlyCreated() const;
+
+        void DEBUG_showDeltaSpecies() const;
+        void DEBUG_showDeltaReactions() const;
+        void DEBUG_showLiveSpecies() const;
+        void DEBUG_incrementSpecies();
+
+
+        
     public:
-      moleculizer(void);
-      ~moleculizer(void);
+        moleculizer(void);
+        ~moleculizer(void);
 
       
         xmlpp::Document*

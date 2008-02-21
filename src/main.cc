@@ -39,7 +39,10 @@ processCommandLineArgs(int argc,
                        std::string* fileName);
                        
 
+
 // This is a global that is used in processCommandLineArgs
+bool INTERACTIVE = false;
+bool VERBOSITY = false;
 int DEBUG_NUM = 30;
 
 int
@@ -54,8 +57,15 @@ main(int argc, char** argv)
       processCommandLineArgs( argc, argv, theApp, &filename);
       theApp.attachFileName( filename );
 
-      // theApp.RunInteractiveDebugMode();
-      theApp.RunProfileMode(DEBUG_NUM);
+
+      if (INTERACTIVE)
+      {
+          theApp.RunInteractiveDebugMode();
+      }
+      else
+      {
+          theApp.RunProfileMode(DEBUG_NUM, VERBOSITY);
+      }
   
       return 0;
     }
@@ -108,6 +118,14 @@ processCommandLineArgs(int argc,
 	    std::string aNumber = utl::mustGetArg(argc, argv);
 	    DEBUG_NUM = utl::argMustBeNNInt( aNumber );
 	  }
+        else if (arg == "-v" )
+        {
+            VERBOSITY = true;
+        }
+        else if (arg == "-i")
+        {
+            INTERACTIVE = true;
+        }
 
 	// Sets the tolerance for reaction rescheduling.
 	else if (arg == "-T")

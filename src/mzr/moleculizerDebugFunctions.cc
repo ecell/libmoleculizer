@@ -99,7 +99,7 @@ namespace mzr
         }
     }
 
-    void moleculizer::RunProfileMode(unsigned int Num_Iterations)
+    void moleculizer::RunProfileMode(unsigned int Num_Iterations, bool verbose)
     {
         for( unsigned int i = 0;
              i != Num_Iterations;
@@ -133,8 +133,11 @@ namespace mzr
 
         }
 
-	DEBUG_showSpecies();
-	DEBUG_showReactions();
+        if (verbose )
+        {
+            DEBUG_showSpecies();
+            DEBUG_showReactions();
+        }
              
                
     }

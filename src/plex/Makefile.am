@@ -4,7 +4,7 @@ lib_LTLIBRARIES = libmoleculizer_plex.la
 
 abs_top_builddir=@abs_top_builddir@
 
-# SRCDIR = $(abs_top_builddir)/src
+## SRCDIR = $(abs_top_builddir)/src
 SRCDIR = ..
 
 VERSION = @PACKAGE_VERSION@

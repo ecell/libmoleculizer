@@ -2,25 +2,25 @@
 
 abs_top_builddir=@abs_top_builddir@
 
-# This is the order in which the libraries should be built.
-# (dependencies go from left to right)
+## This is the order in which the libraries should be built.
+## (dependencies go from left to right)
 SUBDIRS = fnd utl mzr stoch cpx mol nmr plex dimer ftr
 
-# This is the name ./moleculizer-2.0, for the purpose of having
-# /usr/local/include/moleculizer-2.0/ and possibly something 
-# like /usr/local/lib/moleculizer-2.0/.
+## This is the name ./moleculizer-2.0, for the purpose of having
+## /usr/local/include/moleculizer-2.0/ and possibly something 
+## like /usr/local/lib/moleculizer-2.0/.
 
 MOLECULIZER_DIRNAME = @MOLECULIZER_DIRNAME@
 moleculizerheaderdir=${include_dir}/${MOLECULIZER_DIRNAME}
 
 SRCDIR = $(abs_top_builddir)/src
 
-# This is the local target directory name.
-# I think it has something to do with header dependencies.
+## This is the local target directory name.
+## I think it has something to do with header dependencies.
 moleculizerdir = $(SRCDIR)
 
-# These are constants defining the different library
-# dependencies (clearly).
+## These are constants defining the different library
+## dependencies (clearly).
 
 LIBFND = fnd/libmoleculizer_fnd.la
 LIBUTL = utl/libmoleculizer_utl.la

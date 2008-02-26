@@ -57,6 +57,18 @@ namespace fnd
       nameUnclean( true ),
       theName( "" )
     {}
+
+      const multMap&
+      getReactants() const
+      {
+          return reactants;
+      }
+
+      const multMap&
+      getProducts() const
+      {
+          return products;
+      }
     
     void
     addReactant(speciesType* pSpecies,
@@ -104,8 +116,8 @@ namespace fnd
 
 
   private:
-      // This is all naming stuff.  This is also the first time I've used the "mutable" 
-      // keyword.  I'm a badass.
+      // This is all naming stuff.  Students of history may find it notable that
+      // this is also the first time I've used the "mutable" keyword.
 
       mutable bool nameUnclean;
       mutable std::string theName;

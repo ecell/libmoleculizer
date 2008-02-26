@@ -22,17 +22,108 @@
 #include "mzr/debug.hh"
 #include "utl/string.hh"
 #include <algorithm>
+#include <fstream>
 
 namespace mzr
 {
+
+    class stringPtrSorter
+    {
+    public:
+        stringPtrSorter() 
+        {}
+
+        bool
+        operator()(std::string* a, std::string* b)
+        {
+            return (*a) < (*b);
+        }
+        
+    };
+
+    class stringPtrEquals
+    {
+    public:
+        bool operator()(std::string* a, std::string* b)
+        {
+            return *a == *b ;
+        }
+    };
+
+
     class printObject
     {
     public:
         template <typename objType>
         void operator()(objType* ptrObject)
         {
-            cout << ptrObject->getName()  << endl;
+            std::cout << ptrObject->getName()  << std::endl;
         }
+    };
+
+    class getListOfNodes
+    {
+    public:
+        getListOfNodes( std::vector<std::string*>& theVect)
+            :
+            theStringVector( theVect )
+        {}
+
+        void
+        operator()(mzrReaction* rxn )
+        {
+
+            // All the following generates a vector of reactants and products.
+            std::vector<std::string> reactants, products;
+
+            for (mzrReaction::multMap::const_iterator iter = rxn->getReactants().begin();
+                 iter != rxn->getReactants().end();
+                 ++iter)
+            {
+                reactants.push_back(iter->first->getName());
+            }
+
+            for (mzrReaction::multMap::const_iterator iter = rxn->getProducts().begin();
+                 iter != rxn->getProducts().end();
+                 ++iter)
+            {
+                products.push_back( iter->first->getName() );
+            }
+
+
+            std::string theReactant, theProduct;
+            for( unsigned int ii = 0; ii != reactants.size(); ++ii)
+            {
+                for( unsigned int jj = 0; jj != products.size(); ++jj)
+                {
+                    theReactant = reactants[ii];
+                    theProduct = products[jj];
+
+                    std::string* ptrOutputString = new std::string;
+
+                    theStringVector.push_back(ptrOutputString);
+
+                    if (theReactant < theProduct) 
+                    {
+                        ptrOutputString->append( theReactant );
+                        ptrOutputString->append( "--" );
+                        ptrOutputString->append( theProduct );
+                    }
+                    else
+                    {
+                        ptrOutputString->append( theProduct );
+                        ptrOutputString->append( "--" );
+                        ptrOutputString->append( theReactant );
+                    }
+                    
+                }
+            }
+            
+
+        }
+
+    private:
+        std::vector<std::string*>& theStringVector;
     };
 
 
@@ -55,6 +146,8 @@ namespace mzr
             std::cout << "7: showDeltaReactions()" << std::endl;
             std::cout << "8: showLiveSpecies()" << std::endl;
             std::cout << "9: incrementSpecies()" << endl;
+            std::cout << "10: runProfile()" << endl;
+            std::cout << "11: dump output" << endl;
             std::cout << "Give input:\t" << std::endl;
             std::cin >> result;
             std::cout << "\n" << std::endl;
@@ -90,8 +183,13 @@ namespace mzr
             case 9:
                 DEBUG_incrementSpecies();
                 break;
-                    
-                
+            case 10:
+                RunProfileMode();
+                break;
+            case 11:
+                DEBUG_outputState();
+                break;
+
             default:
                 std::cout << "Option " << result << " not yet implemented" << std::endl;
                 continue;
@@ -168,12 +266,6 @@ namespace mzr
 	    cout << index << ":\t" << iter->first << endl;
 	  }
 
-// 	list<mzrSpecies*>::const_iterator iter = listOfAllSpecies.begin();
-//              iter != listOfAllSpecies.end();
-//              ++iter, ++i)
-//         {
-//             cout << i << ":\t" << (*iter)->getName() << endl;
-//         }
     }
 
     void
@@ -259,6 +351,71 @@ namespace mzr
             cout << "continuing...." << endl;
         }
         
+    }
+
+    void moleculizer::DEBUG_outputState() const
+    {
+        std::string filename;
+        std::cout << "Please gimme a filename: ";
+        std::cin >> filename;
+        
+        this->DEBUG_outputGraphFormat( filename );
+    }
+
+
+    void moleculizer::DEBUG_outputGraphFormat( std::string filename) const
+    {
+        std::ofstream outputFile( filename.c_str() );
+
+        outputFile << "graph HELLO {" << endl;
+
+        outputFile << "###\n### Species Nodes ###\n###\n";
+        
+        for(utl::catalog<mzrSpecies>::const_iterator iter = canonicalCatalogOfSpecies.begin();
+            iter != canonicalCatalogOfSpecies.end();
+            ++iter)
+        {
+            outputFile << iter->first << ";" << endl;
+        }
+        
+        outputFile << "\n###\n### Rxn Nodes ###\n###\n";
+
+        std::vector<std::string*> theEdges;
+
+        std::for_each( listOfAllReactions.begin(),
+                       listOfAllReactions.end(),
+                       getListOfNodes(theEdges) );
+
+
+        stringPtrSorter a;
+        std::sort( theEdges.begin(),
+                   theEdges.end(),
+                   a );
+        
+//         std::vector<std::string*>::iterator myIter = std::unique( theEdges.begin(),
+//                                                                   theEdges.end(),
+//                                                                   a);
+
+        for(std::vector<std::string*>::const_iterator iter = theEdges.begin();
+            iter != theEdges.end();
+            ++iter)
+        {
+            outputFile << **iter << "\n";
+        }
+
+        // Deleting all this shit.
+        for(std::vector<std::string*>::iterator i = theEdges.begin();
+            i != theEdges.end();
+            ++i)
+        {
+            delete (*i);
+        }
+
+
+
+                  
+        outputFile << "}" << endl;
+
     }
 
 }

@@ -111,6 +111,8 @@ namespace mzr
         void DEBUG_showDeltaReactions() const;
         void DEBUG_showLiveSpecies() const;
         void DEBUG_incrementSpecies();
+        void DEBUG_outputState() const;
+        void DEBUG_outputGraphFormat(std::string filename) const;
 
 
         

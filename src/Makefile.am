@@ -1,4 +1,5 @@
-# ./src/Makefile.am
+## Process this file with automake to produce Makefile.in.
+
 abs_top_builddir=@abs_top_builddir@
 
 # This is the order in which the libraries should be built.
@@ -32,8 +33,6 @@ LIBPLEX = plex/libmoleculizer_plex.la
 LIBDIMER = dimer/libmoleculizer_dimer.la
 LIBFTR = ftr/libmoleculizer_ftr.la
 ALL_MZR_LIBS = $(LIBFND) $(LIBUTL) $(LIBMZR) $(LIBSTOCH) $(LIBNMR) $(LIBNMR) $(LIBCPX) $(LIBMOL) $(LIBPLEX) $(LIBDIMER) $(LIBFTR)
-
-# This lib add, with this syntax (I think) was taken from ecell/libecs/Makefile.am
 
 bin_PROGRAMS = moleculizer
 

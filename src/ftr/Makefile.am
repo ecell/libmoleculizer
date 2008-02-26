@@ -1,3 +1,5 @@
+## Process this file with automake to produce Makefile.in.
+
 lib_LTLIBRARIES = libmoleculizer_ftr.la
 
 abs_top_builddir=@abs_top_builddir@

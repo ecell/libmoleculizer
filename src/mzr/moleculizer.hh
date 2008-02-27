@@ -80,7 +80,7 @@ namespace mzr
 
     //  The main bulk of this class can be found in ReactionNetworkDescription.
     class moleculizer :
-        public ReactionNetworkDescription<mzrSpecies, mzrReaction>
+        public fnd::ReactionNetworkDescription<mzrSpecies, mzrReaction>
     {
     public:
         void RunInteractiveDebugMode();

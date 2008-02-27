@@ -55,7 +55,7 @@ feature.hh \
 featureContext.hh \
 featureMap.hh \
 featureStimulus.hh \
-fndExceptons.hh \
+fndExceptions.hh \
 gillspReaction.hh \
 massive.hh \
 multiSpeciesDumpable.hh \

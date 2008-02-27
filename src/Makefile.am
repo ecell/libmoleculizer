@@ -6,10 +6,6 @@ abs_top_builddir=@abs_top_builddir@
 ## (dependencies go from left to right)
 SUBDIRS = fnd utl mzr stoch cpx mol nmr plex dimer ftr
 
-## This is the name ./moleculizer-2.0, for the purpose of having
-## /usr/local/include/moleculizer-2.0/ and possibly something 
-## like /usr/local/lib/moleculizer-2.0/.
-
 MOLECULIZER_DIRNAME = @MOLECULIZER_DIRNAME@
 moleculizerheaderdir=${include_dir}/${MOLECULIZER_DIRNAME}
 
@@ -32,6 +28,7 @@ LIBMOL = mol/libmoleculizer_mol.la
 LIBPLEX = plex/libmoleculizer_plex.la
 LIBDIMER = dimer/libmoleculizer_dimer.la
 LIBFTR = ftr/libmoleculizer_ftr.la
+
 ALL_MZR_LIBS = $(LIBFND) $(LIBUTL) $(LIBMZR) $(LIBSTOCH) $(LIBNMR) $(LIBNMR) $(LIBCPX) $(LIBMOL) $(LIBPLEX) $(LIBDIMER) $(LIBFTR)
 
 bin_PROGRAMS = moleculizer
@@ -49,6 +46,11 @@ $(LIBDIMER) \
 $(LIBFTR)
 
 AM_CXXFLAGS = -I/usr/include/libxml++-1.0
+
+if STATIC_BUILD
+AM_CXXFLAGS +=-pg
+AM_LDFLAGS=-static
+endif
 
 moleculizer_DEPENDENCIES = $(ALL_MZR_LIBS)
 

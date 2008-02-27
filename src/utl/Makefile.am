@@ -24,6 +24,12 @@ LIBFTR = ../ftr/libmoleculizer_ftr.la
 ALL_MZR_LIBS = $(LIBFND) $(LIBUTL) $(LIBMZR) $(LIBSTOCH) $(LIBNMR) $(LIBNMR) $(LIBCPX) $(LIBMOL) $(LIBPLEX) $(LIBDIMER) $(LIBFTR)
 
 AM_CXXFLAGS = -I/usr/include/libxml++-1.0
+
+if STATIC_BUILD
+AM_LDFLAGS= -all-static
+AM_CXXFLAGS += -pg
+endif
+
 libmoleculizer_utl_la_LIBADD = -lstdc++ -lxml2 -lxml++-1.0 -lgsl -lgslcblas
 
 libmoleculizer_utl_la_SOURCES =\

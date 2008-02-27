@@ -25,6 +25,11 @@ ALL_MZR_LIBS = $(LIBFND) $(LIBUTL) $(LIBMZR) $(LIBSTOCH) $(LIBNMR) $(LIBNMR) $(L
 libmoleculizer_dimer_la_LIBADD = -lstdc++ $(LIBUTL) $(LIBFND) $(LIBCPX) $(LIBMZR) $(LIBMOL) $(LIBPLEX)
 AM_CXXFLAGS = -I/usr/include/libxml++-1.0
 
+if STATIC_BUILD
+AM_CXXFLAGS += -pg
+AM_LDFLAGS= -all-static
+endif
+
 libmoleculizer_dimer_la_SOURCES =\
 decompRxnGen.cc \
 decomposeExtrap.cc \

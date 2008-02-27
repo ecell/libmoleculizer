@@ -41,6 +41,15 @@ AC_CONFIG_FILES([Makefile
 		src/utl/Makefile
 		])
 
+
+AC_ARG_ENABLE(static-build,
+ [  --enable-static-build  Build the entire file as one giant static program],
+ [ static_build=yes
+ ])
+
+
+AM_CONDITIONAL([STATIC_BUILD], [test "$static_build" = yes])
+
 # Output this header file.
 AC_CONFIG_HEADERS([src/moleculizer_config.hh])
 

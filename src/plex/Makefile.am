@@ -26,6 +26,11 @@ ALL_MZR_LIBS = $(LIBFND) $(LIBUTL) $(LIBMZR) $(LIBSTOCH) $(LIBNMR) $(LIBNMR) $(L
 libmoleculizer_plex_la_LIBADD = -lstdc++ $(LIBUTL) $(LIBNMR) $(LIBFND) $(LIBCPX) $(LIBMZR) $(LIBMOL)
 AM_CXXFLAGS = -I/usr/include/libxml++-1.0
 
+if STATIC_BUILD
+AM_CXXFLAGS += -pg
+AM_LDFLAGS= -all-static
+endif
+
 libmoleculizer_plex_la_SOURCES =\
 dupNodeOmniXcpt.cc \
 multBoundSiteXcpt.cc \

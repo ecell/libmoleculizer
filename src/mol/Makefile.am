@@ -26,6 +26,11 @@ ALL_MZR_LIBS = $(LIBFND) $(LIBUTL) $(LIBMZR) $(LIBSTOCH) $(LIBNMR) $(LIBNMR) $(L
 libmoleculizer_mol_la_LIBADD = -lstdc++ $(LIBMZR) $(LIBCPX)
 AM_CXXFLAGS = -I/usr/include/libxml++-1.0
 
+if STATIC_BUILD
+AM_CXXFLAGS += -pg
+AM_LDFLAGS= -all-static
+endif
+
 libmoleculizer_mol_la_SOURCES =\
 badModMolXcpt.cc \
 badMolParamXcpt.cc \

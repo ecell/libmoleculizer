@@ -24,7 +24,6 @@ ALL_MZR_LIBS = $(LIBFND) $(LIBUTL) $(LIBMZR) $(LIBSTOCH) $(LIBNMR) $(LIBNMR) $(L
 
 MOLECULIZER_INCLUDE_DIR=${includedir}/moleculizer
 
-libmoleculizer_ftr_la_LDFLAGS = 
 libmoleculizer_ftr_la_LIBADD = -lstdc++ $(LIBUTL) $(LIBFND) $(LIBMZR) $(LIBMOL) $(LIBPLEX)
 
 AM_CXXFLAGS = -I/usr/include/libxml++-1.0

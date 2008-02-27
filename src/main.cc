@@ -57,7 +57,6 @@ main(int argc, char** argv)
       processCommandLineArgs( argc, argv, theApp, &filename);
       theApp.attachFileName( filename );
 
-
       if (INTERACTIVE)
       {
           theApp.RunInteractiveDebugMode();

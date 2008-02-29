@@ -27,7 +27,6 @@ AM_CXXFLAGS = -I/usr/include/libxml++-1.0
 
 if STATIC_BUILD
 AM_LDFLAGS= -all-static
-AM_CXXFLAGS += -pg
 endif
 
 libmoleculizer_utl_la_LIBADD = -lstdc++ -lxml2 -lxml++-1.0 -lgsl -lgslcblas
@@ -73,7 +72,6 @@ badNNIntAttrXcpt.hh \
 badPosDoubleAttrXcpt.hh \
 badPosIntArgXcpt.hh \
 badPosIntAttrXcpt.hh \
-debug.hh \
 dom.hh \
 domJob.hh \
 domJobImpl.hh \
@@ -89,6 +87,7 @@ missingAttrXcpt.hh \
 modelPreviouslyLoadedXcpt.hh \
 noDocumentParsedXcpt.hh \
 platform.hh \
+stdIncludes.hh \
 string.hh \
 unkArgXcpt.hh \
 utility.hh \

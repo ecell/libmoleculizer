@@ -30,7 +30,6 @@ AM_CXXFLAGS = -I/usr/include/libxml++-1.0
 
 if STATIC_BUILD
 AM_LDFLAGS= -all-static
-AM_CXXFLAGS += -pg
 endif
 
 libmoleculizer_ftr_la_SOURCES =\

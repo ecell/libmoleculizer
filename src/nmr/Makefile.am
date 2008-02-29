@@ -24,7 +24,6 @@ LIBFTR = ../ftr/libmoleculizer_ftr.la
 ALL_MZR_LIBS = $(LIBFND) $(LIBUTL) $(LIBMZR) $(LIBSTOCH) $(LIBNMR) $(LIBNMR) $(LIBCPX) $(LIBMOL) $(LIBPLEX) $(LIBDIMER) $(LIBFTR)
 
 if STATIC_BUILD
-AM_CXXFLAGS = -pg
 AM_LDFLAGS= -all-static
 endif
 

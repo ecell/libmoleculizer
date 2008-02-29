@@ -25,7 +25,6 @@ LIBFTR = ../ftr/libmoleculizer_ftr.la
 AM_CXXFLAGS = -I/usr/include/libxml++-1.0
 
 if STATIC_BUILD
-AM_CXXFLAGS += -pg
 AM_LDFLAGS= -all-static
 endif
 

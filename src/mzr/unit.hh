@@ -29,7 +29,7 @@
 
 #include <set>
 #include <string>
-#include "mzr/debug.hh"
+
 #include "utl/dom.hh"
 
 namespace mzr

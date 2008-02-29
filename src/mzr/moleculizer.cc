@@ -142,11 +142,6 @@ namespace mzr
         modelLoaded( false )
     {
         
-        this->configureDataRepository( &canonicalCatalogOfSpecies,
-                                       &listOfAllSpecies,
-                                       &canonicalCatalogOfRxns,
-                                       &listOfAllReactions );
-
         pUserUnits = new unitsMgr(*this);
 
         // Now just does the "input capabilities" thing.

@@ -27,7 +27,6 @@ ALL_MZR_LIBS = $(LIBFND) $(LIBUTL) $(LIBMZR) $(LIBSTOCH) $(LIBNMR) $(LIBNMR) $(L
 AM_CXXFLAGS = -I/usr/include/libxml++-1.0
 
 if STATIC_BUILD
-AM_CXXFLAGS += -pg
 AM_LDFLAGS= -all-static
 endif
 
@@ -77,6 +76,7 @@ inputCapXcpt.hh \
 molarFactor.hh \
 moleculizer.hh \
 mzrEltName.hh \
+mzrHelperFunctions.hh \
 mzrEvent.hh \
 mzrReaction.hh \
 mzrSpecies.hh \

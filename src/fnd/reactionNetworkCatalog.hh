@@ -24,104 +24,152 @@
 
 
 #include "fndExceptions.hh"
-
+#include "rnHelperClasses.hh"
 #include "utl/autoCatalog.hh"
 
 #include <vector>
-#include <sstream>
 #include <list>
 #include <stack>
+#include <sstream>
+
+// NOTES
+// 2/26/08 
+// Trying to update this file to be faster.
 
 namespace fnd
 {
 
-    // Both speciesType and reactionType must have a public function
-    // expand reaction network, ie each derived from ReactionNetworkComponent.
+    // I obviously need to add some kind of public API function for expanding by a speciesID.
 
-    template <typename speciesType,
-              typename reactionType>
+    // Both speciesType and reactionType must have a public function
+    // void expandReactionNetwork(). 
+    // That is,  derived from fnd::reactionNetworkComponent.
+  
+    template <typename speciesT,
+              typename reactionT>
     class ReactionNetworkDescription
     {
     
     public:
-        typedef speciesType SpeciesType;
+        typedef speciesT SpeciesType;
         typedef SpeciesType* ptrSpeciesType;
     
-        typedef reactionType ReactionType;
+        typedef reactionT ReactionType;
         typedef ReactionType* ptrReactionType;
 
-        typedef utl::catalog<SpeciesType> SpeciesCatalog;
-        typedef utl::catalog<ReactionType> ReactionCatalog;
+        typedef std::map< const std::string*, ptrSpeciesType, aux::compareByPtrValue<std::string> > SpeciesCatalog;
+        typedef typename SpeciesCatalog::iterator SpeciesCatalogIter;
+        typedef typename SpeciesCatalog::const_iterator SpeciesCatalogCIter;
+
         typedef std::list<ptrSpeciesType> SpeciesList;
         typedef std::list<ptrReactionType> ReactionList;
-    
+
+        typedef std::list< std::pair<std::string*, ptrSpeciesType> > SpeciesListCatalog;
+
+        typedef typename SpeciesListCatalog::iterator SpeciesListCatalogIter;
+        typedef typename SpeciesListCatalog::const_iterator SpeciesListCatalogCIter;
+        
         typedef typename SpeciesList::iterator SpeciesListIter;
         typedef typename SpeciesList::const_iterator SpeciesListCIter;
-        typedef SpeciesListCIter SpeciesToken;
     
         typedef typename ReactionList::iterator ReactionListIter;
         typedef typename ReactionList::const_iterator ReactionListCIter;
-        typedef ReactionListCIter ReactionToken;
-    
-        typedef std::stack<SpeciesListCIter> SpeciesDeltaStack;
-        typedef std::stack<ReactionListCIter> ReactionDeltaStack;
 
     public:
 
-        // The catalogs record everything in the reaction network.
-        // There are two of them, the SpeciesCatalog and the ReactionCatalog.
-        const SpeciesCatalog& 
-        getSpeciesCatalog() const
+        SpeciesType&
+        findSpecies(const std::string& name) 
         {
-            return (*theSpeciesCatalog);
+            const std::string* pString = &name;
+            SpeciesCatalogCIter theIter = theSpeciesListCatalog.find(pString);
+            if (theIter != theSpeciesListCatalog.end() )
+            {
+                return *(theIter->second);
+            }
+            else
+            {
+                throw fnd::NoSuchSpeciesXcpt(name);
+            }
+            
         }
 
-        const ReactionCatalog&
-        getReactionCatalog() const
+        SpeciesListCatalog& 
+        getSpeciesCatalog()
         {
-            return (*theReactionCatalog);
+            return theSpeciesListCatalog;
+        }
+      
+
+        const SpeciesListCatalog& 
+        getSpeciesCatalog() const
+        {
+            return theSpeciesListCatalog;
+        }
+
+        const ReactionList&
+        getReactionList() const
+        {
+            return theCompleteReactionList;
         }
 
         // These two functions are the interface that reaction generators use 
         // to record their species.  They add the (speciesName, speciesPtr)
         // and (reactionName, reactionPtr) entries to the catalog respectively.
-
         // If the object being recorded is new, we also record it as a hit in the
         // total number of species/reactions as well as the delta number of species/
         // reactions.
-        
+      
         bool 
         recordSpecies( ptrSpeciesType pSpecies)
         {
-            const bool speciesNewToCatalog = theSpeciesCatalog->addEntry( pSpecies->getName(),
-                                                                          pSpecies);
-            if (speciesNewToCatalog) 
-            {
-                theSpeciesList->push_back( pSpecies );
-                ++totalSpeciesCreated;
-                ++deltaSpeciesCreated;
-            }
+//              std::string* pSpeciesName = new std::string( pSpecies->getName() );
+             
+//              Species
+             
+             
 
-            return speciesNewToCatalog;
+//             // Remove this loop and find some real algorithm for doing this.
+//             SpeciesListCatalogIter iter = theSpeciesListCatalog.begin();
+//             SpeciesListCatalogIter endIter = theSpeciesListCatalog.end();
+            
+//             while( *(iter->first) < *pSpeciesName && iter != endIter) ++iter;            
+            
+//             // So now iter points to the first <string*, species*>  element that has 
+//             // *(iter->first) >= the <pSpeciesName, ptrSpecies> we are trying to insert.
+//             // If we are already in the dictionary, return.
+//             if (*pSpeciesName == *(iter->first)) return false;
+
+//             // Otherwise, put is in the various lists.
+//             theSpeciesListCatalog.insert(iter, std::make_pair( pSpeciesName, pSpecies) );
+//             theDeltaSpeciesList.push_back( pSpecies );
+                                                               
+//             return true;
+
+            std::string* pSpeciesName = new std::string( pSpecies->getName() );
+
+            SpeciesCatalogCIter iter = theSpeciesListCatalog.find( pSpeciesName);
+            if (iter == theSpeciesListCatalog.end() )
+            {
+                theSpeciesListCatalog.insert( std::make_pair( pSpeciesName, pSpecies) );
+                theDeltaSpeciesList.push_back( pSpecies );
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+                                                               
+
         }
 
         bool
         recordReaction( ptrReactionType pRxn )
         {
-            // Ensure that "getCanonicalName" is correct.
-            const bool rxnNewToCatalog = theReactionCatalog->addEntry( pRxn->getCanonicalName(), 
-                                                                       pRxn );
-            if (rxnNewToCatalog) 
-            {
-                theReactionList->push_back( pRxn );
-                ++totalReactionsCreated;
-                ++deltaReactionsCreated;
-            }
-
-            return rxnNewToCatalog;
+            // At the moment, this does not check to see if a reaction has been added before.
+            theCompleteReactionList.push_back( pRxn );
+            theDeltaReactionList.push_back( pRxn );
+            return true;
         }
-
-
         
         // These are not used by anyone at the moment.  It might be better to use them instead
         // of the plain old recordSpecies/recordReaction functions, but who knows.
@@ -136,249 +184,138 @@ namespace fnd
         void
         mustRecordReaction( ptrReactionType pRxn) throw(utl::xcpt)
         {
-            if ( !recordReactions( pRxn ) )
+
+          if ( recordReactions( pRxn ) ) 
             {
-                throw DuplicatedCatalogEntryXcpt( pRxn->getName() );
+              return;
             }
+          else
+            {
+              throw DuplicatedCatalogEntryXcpt( pRxn->getName() );
+            }
+
         }
 
-        // The getTotalNumber functions are fairly obvious.  Every time a new species or reaction
-        // is recorded, the member variables totalNumberSpecies or totalNumberReactions is 
-        // incremented.  This number is returned by these two functions.  
         unsigned int 
         getTotalNumberSpecies() const
         {
-            return totalSpeciesCreated;
+            return theSpeciesListCatalog.size();
         }
 
         unsigned int 
         getTotalNumberReactions() const
         {
-            return totalReactionsCreated;
+            return theCompleteReactionList.size();
         }
 
         // The getDeltaNumber(Species|Reactions) functions return the number
         // of those objects created since the last time the recordCurrentState
-        // function was called.
+        // funsource ction was source called.
         unsigned int 
-        getDeltaNumberReactions() const
+        getNumberDeltaReactions() const
         {
-            return deltaReactionsCreated;
+            return theDeltaReactionList.size();
         }
 
         unsigned int 
-        getDeltaNumberSpecies() const
+        getNumberDeltaSpecies() const
         {
-            return deltaSpeciesCreated;
+            return theDeltaSpeciesList.size();
         }
 
-
-        // This returns a stack of iterators to the speciesList and reactionList.
-        // Both work according to the following principle.
-
-        // Bottom| I_0, I_1, I_2, ...., I_n | top
-        // Such that the range [I_j, I_k) where j<k, will consist of all the 
-        // (species|reactions) that were created between the jth and kth callings 
-        // of "recordCurrentState".  Among other things 
-        // [get(Species|Reaction)DeltaStack.top(), the(Species|Reactions)List.end() )
-        // will list all (species|reactions) that have been recorded since the last time 
-        // getCurrentState was called.
-
-        const SpeciesDeltaStack&
-        getSpeciesDeltaStack() const
-        {
-            return theSpeciesDeltaStack;
+        void resetCurrentState()
+        { 
+           theDeltaSpeciesList.clear();
+           theDeltaReactionList.clear();
         }
 
-        const ReactionDeltaStack&
-        getReactionDeltaStack() const
-        {
-            return theReactionDeltaStack;
-        }
+        // I doubt very much this will work.
+        // void resetCurrentState() = recordCurrentState;
 
-        // THese two are self-explanatory.  They were created in order to easily be able to 
-        // iterate through [getLastSpeciesCreationDelta(), theSpeciesList.end() ) and 
-        // [getLastReactionCreationDelta(), theReactionList.end() ), which will give all the 
-        // (species|reactions) created since the last time recordCurrent state was called.
-        const SpeciesListCIter&
-        getLastSpeciesCreationDelta() const
-        {
-            return theSpeciesDeltaStack.top();
-        }
-
-        const ReactionListCIter&
-        getLastReactionCreationDelta() const
-        {
-            return theReactionDeltaStack.top();
-        }
-
-        // This is QUITE IMPORTANT.  This function is used as the reset button here.  
-        // This interface is only told to record new species and reactions.  This 
-        // recording typically happens automatically as a consequence of species/reaction
-        // generation.  Thus the user needs to call this function when appropriate.
-
-        // [ SIDEBAR -- It could be possible to have the ReactionNetworkComponents   ]
-        // [ SIDEBAR -- call this right before ending their expandNetwork member     ]
-        // [ SIDEBAR -- functions.  NJA                                              ]
-
-        // What this function actually does is reset the deltaNumberCreated indexes and 
-        // pushes the back end of the NewSpecies/NewReactions lists onto a thing
-        // caled the(Species|Reaction)DeltaStack.
-        void recordCurrentState()
-        {
-            deltaSpeciesCreated = 0;
-            deltaReactionsCreated = 0;
-
-            theSpeciesDeltaStack.push( theSpeciesList->end() );
-            theReactionDeltaStack.push( theReactionList->end() );
-        }
-
-
-
-        // These four functions are largely surperfluous, just nice interface 
-        // functions for
         void incrementNetworkBySpeciesName(const std::string& rName) throw(utl::xcpt)
         {
-            ptrSpeciesType ptrSpecies = theSpeciesCatalog->findEntry(rName);
-
-            // Throw an exception if we can't find our man.
-            if ( !ptrSpecies ) throw NoSuchSpeciesXcpt( rName );
-
-            recordCurrentState();
-            ptrSpecies->expandReactionNetwork();
-        }
-
-        void incrementNetworkByReactionName(const std::string& rName) throw(utl::xcpt)
-        {
-            ptrReactionType pRxn = theReactionCatalog->findEntry( rName );
-      
-            // Throw an exception if we can't find our man.
-            if (!pRxn) throw NoSuchReactionXcpt( rName );
-
-            recordCurrentState();
-            pRxn->expandReactionNetwork();
-        }
-
-
-//         void incrementNetworkBySpeciesToken(const SpeciesToken& specTok)
-//         {
-//             // Is there way to check this is a valid iterator to the SpeciesList?
-//             // Probably not....
-
-//             recordCurrentState();
-//             (*specTok)->expandReactionNetwork();
-//         }
-
-
-    
-//         void incrementNetworkByReactionToken(const SpeciesToken& rxnTok)
-//         {
-//             recordCurrentState();
-//             (*rxnTok)->expandReactionNetwork();
-//         }
-
-        ~ReactionNetworkDescription()
-        {
-
-            // DO NOT DELETE THESE OBJECTS.  Because they are provided by an inheriting class, 
-            // they probably don't even exist at the point of this function.
-
-            // DO NOT delete theSpeciesCatalog;
-            // DO NOT delete theSpeciesList;
-            // DO NOT delete theReactionCatalog;
-            // DO NOT delete theReactionList;
-
-            // But we DO memory manage SpeciesDeltaStack and ReactionDeltaStack.
-            // This is currently allocated on the stack, and so is automatically 
-            // memory managed.  I suspect this may change when memory usage is profiled.
-        }
-
-        ReactionNetworkDescription()
-            : 
-            theSpeciesCatalog( NULL ),
-            theSpeciesList( NULL ),
-            theReactionCatalog( NULL ),
-            theReactionList( NULL ),
-            totalSpeciesCreated( 0 ),
-            totalReactionsCreated( 0 )
-        {}
-
-        ReactionNetworkDescription( SpeciesCatalog* aSpeciesCatalog,
-                                    SpeciesList* aSpeciesList,
-                                    ReactionCatalog* aReactionCatalog,
-                                    ReactionList* aReactionList)
-            :
-            theSpeciesCatalog( aSpeciesCatalog ),
-            theSpeciesList( aSpeciesList ),
-            theReactionCatalog( aReactionCatalog ),
-            theReactionList( aReactionList ),
-            totalSpeciesCreated( 0 ),
-            totalReactionsCreated( 0 )
-        {
-            recordCurrentState();
-        }
-
-
-        // This is kinda bogus and I don't much care for it.  The problem is that
-        // This class is made to be inherited from. (in this application this is done by the 
-        // moleculizer class).  Unfortunately I would like the inheriting class to provide its 
-        // data storage here (although this class does manage the DeltaStacks of iterators), and
-        // so this class will usually be constructed prior to the storage provided by its child.
-        // As near as I can tell, the implication is that this may be the best way I can go.  
-        void configureDataRepository( SpeciesCatalog* aSpeciesCatalog,
-                                      SpeciesList* aSpeciesList,
-                                      ReactionCatalog* aReactionCatalog,
-                                      ReactionList* aReactionList )
-        {
-            theSpeciesCatalog = aSpeciesCatalog;
-            theSpeciesList = aSpeciesList;
-            theReactionCatalog = aReactionCatalog;
-            theReactionList = aReactionList;
-
+            resetCurrentState();
             
-            // We decide to be agnostic about the data located here; however, we must blow
-            // out the deltaStacks because we can't risk having bad iterators to non-existant
-            // data.  
-            clearDeltaStacks();
-            recordCurrentState();
-        }
+            SpeciesCatalogCIter iter = theSpeciesListCatalog.find( &rName );
 
-    private:
-
-        void clearDeltaStacks()
-        {
-            this->clearStack( theSpeciesDeltaStack );
-            this->clearStack( theReactionDeltaStack );
-        }
-
-        
-        template <typename T>
-        void clearStack( std::stack<T>& aStack)
-        {
-            while (! aStack.empty() )
+            if (iter != theSpeciesListCatalog.end() )
             {
-                aStack.pop();
+                iter->second->expandReactionNetwork();
+            }
+            else
+            {
+                throw NoSuchSpeciesXcpt( rName );
             }
         }
 
-        SpeciesCatalog* theSpeciesCatalog;
-        SpeciesList*    theSpeciesList;
+        ~ReactionNetworkDescription()
+        {
+          // We don't memory manage any SpeciesType* or ReactionType*, but we do memory 
+          // manage the string* in theSpeciesListCatalog.
 
-        ReactionCatalog* theReactionCatalog;
-        ReactionList*    theReactionList;
+            // IMPORTANT.
+            // Not deleting the std::string*'s leaks memory here...
+//           std::for_each(theSpeciesListCatalog.begin(),
+//                         theSpeciesListCatalog.end(),
+//                         aux::doDeleteStringPtrs<SpeciesListCatalog>());
 
-        // Could these get too big?...
-        SpeciesDeltaStack theSpeciesDeltaStack;
-        ReactionDeltaStack theReactionDeltaStack;
+        }
 
-        unsigned int deltaSpeciesCreated;
-        unsigned int deltaReactionsCreated;
+        ReactionNetworkDescription(bool reserveMemory = true)
+        {
+             if (reserveMemory)
+             {
+                 // theSpeciesListCatalog.reserve( getPredictedSpeciesNetworkSize() );
+                 //                 theCompleteReactionList.reserve( getPredictedSpeciesNetworkSize() * \
+                 // static_cast<unsigned int>(getPredictedSpeciesReactionRatio() + 1) );
+             }
+        }
 
-        unsigned int totalSpeciesCreated;
-        unsigned int totalReactionsCreated;
+        static void setPredictedSpeciesNetworkSize(unsigned int maxSize)
+        {
+            ReactionNetworkDescription<SpeciesType, ReactionType>::estimatedTotalNumberSpecies = maxSize;
+        }
 
+        static void setPredictedSpeciesReactionRatio(float maxSize)
+        {
+            if (maxSize <= 0.0f) return
+            ReactionNetworkDescription<SpeciesType, ReactionType>::estimatedSpeciesReactionRatio = maxSize;
+        }
 
+        static unsigned int getPredictedSpeciesNetworkSize()
+        {
+            return ReactionNetworkDescription<SpeciesType, ReactionType>::estimatedTotalNumberSpecies;
+        }
+
+        static float getPredictedSpeciesReactionRatio()
+        {
+            return ReactionNetworkDescription<SpeciesType, ReactionType>::estimatedSpeciesReactionRatio;
+        }
+
+        // -- The pointers to the strings in theSpeciesListCatalog ARE memory managed.
+        // -- The pointers to the species and reactions ARE NOT memory managed here.
+
+        SpeciesCatalog theSpeciesListCatalog;
+        // SpeciesListCatalog theSpeciesListCatalog;
+        ReactionList theCompleteReactionList;
+        
+        SpeciesList    theDeltaSpeciesList;
+        ReactionList    theDeltaReactionList;
+
+        // Static
+        static unsigned int estimatedSpeciesReactionNetworkSize;
+        static float estimatedSpeciesReactionRatio;
+        
     };    
+
+    template <typename speciesT, typename reactionT>
+    unsigned int 
+    ReactionNetworkDescription<speciesT, reactionT>::estimatedSpeciesReactionNetworkSize = 1e6;
+    
+    template <typename speciesT, typename reactionT>
+    float
+    ReactionNetworkDescription<speciesT, reactionT>::estimatedSpeciesReactionRatio = 4.0f;
+    
 
     
 }

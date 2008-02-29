@@ -19,403 +19,238 @@
 /////////////////////////////////////////////////////////////////////////////
 
 #include "moleculizer.hh"
-#include "mzr/debug.hh"
+#include "mzrHelperFunctions.hh"
+#include "debug.hh" 
+
+#include "utl/utlHelper.hh"
 #include "utl/string.hh"
 #include <algorithm>
 #include <fstream>
 
 namespace mzr
 {
+  void 
+  moleculizer::RunInteractiveDebugMode()
+  {
+    mzr::InteractiveModeManager<moleculizer> theInteractiveMode(this);
 
-    class stringPtrSorter
-    {
-    public:
-        stringPtrSorter() 
-        {}
+    theInteractiveMode.addFunction("showNumberSpecies", &moleculizer::DEBUG_showTotalNumberSpecies);
+    theInteractiveMode.addFunction("showNumberReactions", &moleculizer::DEBUG_showTotalNumberReactions);
+    theInteractiveMode.addFunction("showNumberDeltaSpecies", &moleculizer::DEBUG_showNumberDeltaSpecies);
+    theInteractiveMode.addFunction("showNumberDeltaReactions", &moleculizer::DEBUG_showNumberDeltaReactions);
+    theInteractiveMode.addFunction("showAllSpecies", &moleculizer::DEBUG_showAllSpecies);
+    theInteractiveMode.addFunction("showAllReactions", &moleculizer::DEBUG_showAllReactions);
+    theInteractiveMode.addFunction("showNewlyCreatedSpecies", &moleculizer::DEBUG_showDeltaSpecies);
+    theInteractiveMode.addFunction("showNewlyCreatedReactions", &moleculizer::DEBUG_showDeltaReactions);
+    theInteractiveMode.addFunction("showSingleLiveSpecies", &moleculizer::DEBUG_showRandomLiveSpecies);
+    theInteractiveMode.addFunction("showNumberLiveSpecies", &moleculizer::DEBUG_showNumberLiveSpecies);
+    theInteractiveMode.addFunction("incrementSpecies", &moleculizer::DEBUG_incrementSpecies);
+    theInteractiveMode.addFunction("incrementRandomSpecies", &moleculizer::DEBUG_incrementRandomSpecies);
 
-        bool
-        operator()(std::string* a, std::string* b)
-        {
-            return (*a) < (*b);
-        }
-        
-    };
-
-    class stringPtrEquals
-    {
-    public:
-        bool operator()(std::string* a, std::string* b)
-        {
-            return *a == *b ;
-        }
-    };
+    theInteractiveMode.runInteractiveMode();
 
 
-    class printObject
-    {
-    public:
-        template <typename objType>
-        void operator()(objType* ptrObject)
-        {
-            std::cout << ptrObject->getName()  << std::endl;
-        }
-    };
+  }
 
-    class getListOfNodes
-    {
-    public:
-        getListOfNodes( std::vector<std::string*>& theVect)
-            :
-            theStringVector( theVect )
-        {}
+  void moleculizer::RunProfileMode(unsigned int Num_Iterations, bool verbose)
+  {
+    for( unsigned int i = 0;
+         i != Num_Iterations;
+         ++i)
+      {
+        if (i % 10 == 0 )
+          {
+            cout << i / static_cast<float>(Num_Iterations)  * 100.0f << "% done..." << endl;
+          }
 
-        void
-        operator()(mzrReaction* rxn )
-        {
+        resetCurrentState();
 
-            // All the following generates a vector of reactants and products.
-            std::vector<std::string> reactants, products;
+        try
+          {
+            DEBUG_incrementNRandomLiveSpecies(1);
+            DEBUG_showTotalNumberSpecies();
+            DEBUG_showTotalNumberReactions();
+          }
+        catch(utl::xcpt x)
+          {
+            x.warn();
+            cerr << "Unexpectedly could not find anything...Quitting" << endl;
+            i = Num_Iterations;
+            break;
+          }
+      }
 
-            for (mzrReaction::multMap::const_iterator iter = rxn->getReactants().begin();
-                 iter != rxn->getReactants().end();
-                 ++iter)
-            {
-                reactants.push_back(iter->first->getName());
-            }
-
-            for (mzrReaction::multMap::const_iterator iter = rxn->getProducts().begin();
-                 iter != rxn->getProducts().end();
-                 ++iter)
-            {
-                products.push_back( iter->first->getName() );
-            }
-
-
-            std::string theReactant, theProduct;
-            for( unsigned int ii = 0; ii != reactants.size(); ++ii)
-            {
-                for( unsigned int jj = 0; jj != products.size(); ++jj)
-                {
-                    theReactant = reactants[ii];
-                    theProduct = products[jj];
-
-                    std::string* ptrOutputString = new std::string;
-
-                    theStringVector.push_back(ptrOutputString);
-
-                    if (theReactant < theProduct) 
-                    {
-                        ptrOutputString->append( theReactant );
-                        ptrOutputString->append( "--" );
-                        ptrOutputString->append( theProduct );
-                    }
-                    else
-                    {
-                        ptrOutputString->append( theProduct );
-                        ptrOutputString->append( "--" );
-                        ptrOutputString->append( theReactant );
-                    }
-                    
-                }
-            }
-            
-
-        }
-
-    private:
-        std::vector<std::string*>& theStringVector;
-    };
-
-
-    void 
-    moleculizer::RunInteractiveDebugMode()
-    {
-        unsigned int result;
-        bool cont = true;
-
-        while( cont )
-        {
-            std::cout << "\n\n";
-            std::cout << "0: Quit" << std::endl;
-            std::cout << "1: showNumberSpecies()" << std::endl;
-            std::cout << "2: showNumberReactions()" << std::endl;
-            std::cout << "3: showSpecies()" << std::endl;
-            std::cout << "4: showReactions()" << std::endl;
-            std::cout << "5: showNewlyCreated()" << std::endl;
-            std::cout << "6: showDeltaSpecies()" << std::endl;
-            std::cout << "7: showDeltaReactions()" << std::endl;
-            std::cout << "8: showLiveSpecies()" << std::endl;
-            std::cout << "9: incrementSpecies()" << endl;
-            std::cout << "10: runProfile()" << endl;
-            std::cout << "11: dump output" << endl;
-            std::cout << "Give input:\t" << std::endl;
-            std::cin >> result;
-            std::cout << "\n" << std::endl;
-            switch (result)
-            {
-            case 0:
-                cont = false;
-                break;
-            case 1:
-                DEBUG_showNumberSpecies();
-                break;
-            case 2:
-                DEBUG_showNumberReactions();
-                break;
-            case 3:
-                DEBUG_showSpecies();
-                break;
-            case 4:
-                DEBUG_showReactions();
-                break;
-            case 5:
-                DEBUG_showNewlyCreated();
-                break;
-            case 6:
-                DEBUG_showDeltaSpecies();
-                break;
-            case 7:
-                DEBUG_showDeltaReactions();
-                break;
-            case 8:
-                DEBUG_showLiveSpecies();
-                break;
-            case 9:
-                DEBUG_incrementSpecies();
-                break;
-            case 10:
-                RunProfileMode();
-                break;
-            case 11:
-                DEBUG_outputState();
-                break;
-
-            default:
-                std::cout << "Option " << result << " not yet implemented" << std::endl;
-                continue;
-            }
-        }
-    }
-
-    void moleculizer::RunProfileMode(unsigned int Num_Iterations, bool verbose)
-    {
-        for( unsigned int i = 0;
-             i != Num_Iterations;
-             ++i)
-        {
-	  if (i % (10) == 0 )
-            {
-	      cout << i * 100.0 / static_cast<float>(Num_Iterations) << "% done..." << endl;
-            }
-
-            recordCurrentState();
-            std::list<mzrSpecies*>::reverse_iterator riter = find_if( listOfAllSpecies.rbegin(),
-                                                                      listOfAllSpecies.rend(),
-                                                                      std::not1( std::mem_fun( &mzrSpecies::hasNotified ) ) );
-
-            if (riter == listOfAllSpecies.rend() )
-            {
-                cout << "Unexpectedly could not find anything... Quitting..." << endl;
-                break;
-            }
-            cout << "Expanding " << (*riter)->getName() << "..." << endl;
-            (*riter)->expandReactionNetwork();
-            
-            cout << "\t" << getDeltaNumberSpecies() << " species generated\n";
-            cout << "\t" << getDeltaNumberReactions() << " reactions generated." << endl;
-
-	    DEBUG_showNumberSpecies();
-	    DEBUG_showNumberReactions();
-	    
-	    cout << "######################################################" << endl;
-
-        }
-
-        if (verbose )
-        {
-            DEBUG_showSpecies();
-            DEBUG_showReactions();
-        }
-             
+    if (verbose )
+      {
+        DEBUG_showAllSpecies();
+        DEBUG_showAllReactions();
+      }
                
-    }
+  }
 
+  void
+  moleculizer::DEBUG_showTotalNumberSpecies() 
+  {
+    cout << "There are " << getTotalNumberSpecies() << " species in the list." << endl;
+  }
 
+  void
+  moleculizer::DEBUG_showTotalNumberReactions() 
+  {
+    cout << "There are " << getTotalNumberReactions() << " reactions in the list." << endl;
+  }
 
+  void 
+  moleculizer::DEBUG_showNumberDeltaSpecies() 
+  {
+    cout << "There are " << getNumberDeltaSpecies() << " delta species." << endl;
+  }
 
-    void
-    moleculizer::DEBUG_showNumberSpecies() const
+  void 
+  moleculizer::DEBUG_showNumberDeltaReactions() 
+  {
+    cout << " There are " << getNumberDeltaReactions() << " delta reactions." << endl;
+  }
+    
+  void
+  moleculizer::DEBUG_showAllSpecies() 
+  {
+    unsigned int index = 0;
+
+    for(SpeciesCatalogCIter iter = theSpeciesListCatalog.begin();
+        iter != theSpeciesListCatalog.end();
+        ++iter, ++index)
+      {
+        cout << *(iter->first) << endl;
+      }
+  }
+
+  void 
+  moleculizer::DEBUG_showAllReactions() 
+  {
+    std::for_each( theCompleteReactionList.begin(),
+                   theCompleteReactionList.end(),
+                   aux::printPtrWithName());
+        
+  }
+
+  void
+  moleculizer::DEBUG_showDeltaSpecies() 
+  {
+    std::for_each(theDeltaSpeciesList.begin(),
+                  theDeltaSpeciesList.end(),
+                  aux::printPtrWithName());
+  }
+
+  void moleculizer::DEBUG_showDeltaReactions() 
+  {
+    std::for_each(theDeltaReactionList.begin(),
+                  theDeltaReactionList.end(),
+                  aux::printPtrWithIndexedName());
+  }
+
+  void moleculizer::DEBUG_incrementSpecies()
+  {
+    resetCurrentState();
+
+    std::string nameToIncrement;
+    std::cin >> nameToIncrement;
+        
+    try
     {
-        cout << "There are " << getTotalNumberSpecies() << " species in the list." << endl;
-    }
-
-    void
-    moleculizer::DEBUG_showNumberReactions() const
-    {
-        cout << "There are " << getTotalNumberReactions() << " reactions in the list." << endl;
-    }
-
-    void
-    moleculizer::DEBUG_showSpecies() const
-    {
-        unsigned int index = 0;
-        for( utl::catalog<mzrSpecies>::const_iterator iter = canonicalCatalogOfSpecies.begin();
-	     iter != canonicalCatalogOfSpecies.end();
-	     ++iter, ++index)
-	  {
-	    cout << index << ":\t" << iter->first << endl;
-	  }
-
-    }
-
-    void
-    moleculizer::DEBUG_showReactions() const
-    {
-        unsigned int ndx = 0;
-        for( utl::catalog<mzrReaction>::const_iterator iter = canonicalCatalogOfRxns.begin();
-	     iter != canonicalCatalogOfRxns.end();
-	     ++iter, ++ndx)
-        {
-            cout << ndx << ":\t" << iter->first << endl;
-        }
-    }
+        cout << "Incrementing '" << nameToIncrement << "'..." << endl;
+        incrementNetworkBySpeciesName( nameToIncrement );
+        cout << "Generation Results:" << endl;
+        DEBUG_showNumberDeltaSpecies();
+        DEBUG_showNumberDeltaReactions();
+      }
+    catch( utl::xcpt x)
+      {
+        cout << x.getMessage() << endl;
+        cout << "Continuing...." << endl;
+      }
+  }
 
     
-    void
-    moleculizer::DEBUG_showNewlyCreated() const
-    {
-        cout << "The new Species: " << endl;
-        DEBUG_showDeltaSpecies();
-        cout << "The new Reactions: " << endl;
-        DEBUG_showDeltaReactions();
-    }
+  std::string
+  moleculizer::DEBUG_getRandomLiveSpecies() const 
+  {
 
-    void
-    moleculizer::DEBUG_showDeltaSpecies() const
-    {
-        for( std::list<mzrSpecies*>::const_iterator iter = getLastSpeciesCreationDelta();
-             iter != listOfAllSpecies.end();
-             ++iter)
-        {
-            cout << (*iter)->getName() << endl;
-        }
-        cout << "\tThere are " << getDeltaNumberSpecies() << " delta species." << endl;
-    }
+      SpeciesListCIter speciesListIter = theDeltaSpeciesList.begin();
 
-    void moleculizer::DEBUG_showDeltaReactions() const
-    {
+      while(speciesListIter != theDeltaSpeciesList.end()) 
+      {
+          if (!(*speciesListIter)->hasNotified())
+          {
+              return (*speciesListIter)->getName();
+          }
 
-        for(std::list<mzrReaction*>::const_iterator iter = getLastReactionCreationDelta();
-            iter != listOfAllReactions.end();
-            ++iter)
-        {
-            cout << (*iter)->getName() << endl;
-        }
-        cout << "\tThere are " << getDeltaNumberReactions() << " delta reactions." << endl;
-    }
+          ++speciesListIter;
+      }
 
-    void moleculizer::DEBUG_showLiveSpecies() const
-    {
-        std::vector<const mzrSpecies*> speciesVector;
-        speciesVector.reserve( listOfAllSpecies.size() );
+      SpeciesCatalogCIter speciesCatalogIter  = theSpeciesListCatalog.begin();
+      while( speciesCatalogIter != theSpeciesListCatalog.end())
+      {
+          if ( !speciesCatalogIter->second->hasNotified() )
+          {
+              return *(speciesCatalogIter->first);
+          }
+          speciesCatalogIter++;
+      }
+             
+      throw utl::xcpt("Error.  Reaction network has no \"live\" species.");
+  }
+  
+  
+  void
+  moleculizer::DEBUG_incrementRandomSpecies()
+  {
+        std::string randomSpeciesName = DEBUG_getRandomLiveSpecies();
+        cout << "Expanding '" << randomSpeciesName << "'..." << endl;
+        incrementNetworkBySpeciesName( randomSpeciesName );
+   
+        cout << "Following expansion:" << endl;
+        DEBUG_showNumberDeltaSpecies();
+        DEBUG_showNumberDeltaReactions();
+        DEBUG_showTotalNumberSpecies();
+        DEBUG_showTotalNumberReactions();
+  }
+  
+  void 
+  moleculizer::DEBUG_incrementNRandomLiveSpecies(unsigned int numIters)
+  {
+    for (unsigned int index = 0;
+         index != numIters;
+         ++index)
+      {
+            DEBUG_incrementRandomSpecies();
+      }
+  }
 
-        // Copy any element which does not match the predicate 
-        // "the value of that thing ->hadNotified is true".
-        std::remove_copy_if(listOfAllSpecies.begin(),
-                            listOfAllSpecies.end(),
-                            std::back_inserter( speciesVector ),
-                            std::mem_fun( &mzrSpecies::hasNotified ) );
-
-        cout << "There are " << speciesVector.size() << " 'live' species." << endl;
-        std::for_each( speciesVector.begin(),
-                       speciesVector.end(),
-                       printObject() );
+  void moleculizer::DEBUG_showNumberLiveSpecies()
+  {
+    unsigned int number = 0;
+    for( SpeciesCatalogCIter iter = theSpeciesListCatalog.begin();
+         iter != theSpeciesListCatalog.end();
+         ++iter)
+      {
+        if (!iter->second->hasNotified()) ++number;
+      }
+        
+    cout << "There are " << number <<  " live species." << endl;
         
         
-    }
+  }
 
-    void moleculizer::DEBUG_incrementSpecies()
-    {
-
-        recordCurrentState();
-        std::string nameToIncrement;
-        std::cin >> nameToIncrement;
-        
-        try
-        {
-            incrementNetworkBySpeciesName( nameToIncrement );
-        }
-        catch( utl::xcpt x)
-        {
-            cout << x.getMessage() << endl;
-            cout << "continuing...." << endl;
-        }
-        
-    }
-
-    void moleculizer::DEBUG_outputState() const
-    {
-        std::string filename;
-        std::cout << "Please gimme a filename: ";
-        std::cin >> filename;
-        
-        this->DEBUG_outputGraphFormat( filename );
-    }
+  void moleculizer::DEBUG_showRandomLiveSpecies()
+  {
+    cout << DEBUG_getRandomLiveSpecies() << endl;
+  }
 
 
-    void moleculizer::DEBUG_outputGraphFormat( std::string filename) const
-    {
-        std::ofstream outputFile( filename.c_str() );
-
-        outputFile << "graph HELLO {" << endl;
-
-        outputFile << "###\n### Species Nodes ###\n###\n";
-        
-        for(utl::catalog<mzrSpecies>::const_iterator iter = canonicalCatalogOfSpecies.begin();
-            iter != canonicalCatalogOfSpecies.end();
-            ++iter)
-        {
-            outputFile << iter->first << ";" << endl;
-        }
-        
-        outputFile << "\n###\n### Rxn Nodes ###\n###\n";
-
-        std::vector<std::string*> theEdges;
-
-        std::for_each( listOfAllReactions.begin(),
-                       listOfAllReactions.end(),
-                       getListOfNodes(theEdges) );
-
-
-        stringPtrSorter a;
-        std::sort( theEdges.begin(),
-                   theEdges.end(),
-                   a );
-        
-//         std::vector<std::string*>::iterator myIter = std::unique( theEdges.begin(),
-//                                                                   theEdges.end(),
-//                                                                   a);
-
-        for(std::vector<std::string*>::const_iterator iter = theEdges.begin();
-            iter != theEdges.end();
-            ++iter)
-        {
-            outputFile << **iter << "\n";
-        }
-
-        // Deleting all this shit.
-        for(std::vector<std::string*>::iterator i = theEdges.begin();
-            i != theEdges.end();
-            ++i)
-        {
-            delete (*i);
-        }
-
-
-
-                  
-        outputFile << "}" << endl;
-
-    }
 
 }
+
+
+
+

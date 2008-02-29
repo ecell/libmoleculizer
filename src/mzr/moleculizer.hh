@@ -100,21 +100,37 @@ namespace mzr
         void setTolerance(double tolerance);
 
     public: 
-        // DEBUG interface.
-        void DEBUG_showNumberSpecies() const;
-        void DEBUG_showNumberReactions() const;
-        void DEBUG_showSpecies() const;
-        void DEBUG_showReactions() const;
-        void DEBUG_showNewlyCreated() const;
+        // DEBUG interface.  Most of these should be const,
+        // but since the InteractiveModeManager stores pointers to member 
+        // functions, it gets mad if some are const and others non-const.
 
-        void DEBUG_showDeltaSpecies() const;
-        void DEBUG_showDeltaReactions() const;
-        void DEBUG_showLiveSpecies() const;
+        // This is fixable though, with an overloaded addFunction method
+        // in InteractiveModeManager and an extra vector of function ptr 
+        // storage.
+
+        void 
+        incrementSpecies(std::string& speciesName);
+
+        void DEBUG_showTotalNumberSpecies();
+        void DEBUG_showTotalNumberReactions();
+        void DEBUG_showNumberDeltaSpecies();
+        void DEBUG_showNumberDeltaReactions();
+
+        void DEBUG_showAllSpecies();
+        void DEBUG_showAllReactions();
+
+        void DEBUG_showDeltaSpecies();
+        void DEBUG_showDeltaReactions();
+
         void DEBUG_incrementSpecies();
-        void DEBUG_outputState() const;
-        void DEBUG_outputGraphFormat(std::string filename) const;
 
+        std::string DEBUG_getRandomLiveSpecies() const;
+        void DEBUG_incrementRandomSpecies();
+        void DEBUG_incrementNRandomLiveSpecies(unsigned int number = 1 );
 
+        void DEBUG_showRandomLiveSpecies();
+        void DEBUG_showNumberLiveSpecies();
+        
         
     public:
         moleculizer(void);
@@ -153,14 +169,6 @@ namespace mzr
         // Codes the input capabilities of moleculizer, including its parsing 
         // routine.
         inputCapabilities inputCap;
-
-    private:
-
-        utl::catalog<mzrSpecies> canonicalCatalogOfSpecies;
-        std::list<mzrSpecies*> listOfAllSpecies;
-
-        utl::catalog<mzrReaction> canonicalCatalogOfRxns;
-        std::list<mzrReaction*> listOfAllReactions;
 
     private:
         bool modelLoaded;

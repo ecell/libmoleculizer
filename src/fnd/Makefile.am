@@ -29,7 +29,6 @@ libmoleculizer_fnd_la_LIBADD = -lstdc++
 AM_CXXFLAGS = -I/usr/include/libxml++-1.0
 
 if STATIC_BUILD
-AM_CXXFLAGS += -pg
 AM_LDFLAGS= -all-static
 endif
 
@@ -69,6 +68,7 @@ queryImpl.hh \
 querySpeciesDumpable.hh \
 reactionNetworkCatalog.hh \
 reactionNetworkComponent.hh \
+rnHelperClasses.hh \
 rxnGen.hh \
 sensitive.hh \
 sensitiveOnce.hh \

@@ -32,10 +32,6 @@
 #include <stack>
 #include <sstream>
 
-// NOTES
-// 2/26/08 
-// Trying to update this file to be faster.
-
 namespace fnd
 {
 
@@ -93,6 +89,22 @@ namespace fnd
             
         }
 
+        const SpeciesType&
+        findSpecies(const std::string& name) const
+        {
+            const std::string* pString = &name;
+            SpeciesCatalogCIter theIter = theSpeciesListCatalog.find(pString);
+            if (theIter != theSpeciesListCatalog.end() )
+            {
+                return *(theIter->second);
+            }
+            else
+            {
+                throw fnd::NoSuchSpeciesXcpt(name);
+            }
+            
+        }
+
         SpeciesListCatalog& 
         getSpeciesCatalog()
         {
@@ -122,29 +134,6 @@ namespace fnd
         bool 
         recordSpecies( ptrSpeciesType pSpecies)
         {
-//              std::string* pSpeciesName = new std::string( pSpecies->getName() );
-             
-//              Species
-             
-             
-
-//             // Remove this loop and find some real algorithm for doing this.
-//             SpeciesListCatalogIter iter = theSpeciesListCatalog.begin();
-//             SpeciesListCatalogIter endIter = theSpeciesListCatalog.end();
-            
-//             while( *(iter->first) < *pSpeciesName && iter != endIter) ++iter;            
-            
-//             // So now iter points to the first <string*, species*>  element that has 
-//             // *(iter->first) >= the <pSpeciesName, ptrSpecies> we are trying to insert.
-//             // If we are already in the dictionary, return.
-//             if (*pSpeciesName == *(iter->first)) return false;
-
-//             // Otherwise, put is in the various lists.
-//             theSpeciesListCatalog.insert(iter, std::make_pair( pSpeciesName, pSpecies) );
-//             theDeltaSpeciesList.push_back( pSpecies );
-                                                               
-//             return true;
-
             std::string* pSpeciesName = new std::string( pSpecies->getName() );
 
             SpeciesCatalogCIter iter = theSpeciesListCatalog.find( pSpeciesName);
@@ -170,6 +159,13 @@ namespace fnd
             theDeltaReactionList.push_back( pRxn );
             return true;
         }
+
+      
+        int 
+        getPopulation( const std::string& rName) const
+        {
+          return findSpecies(rName).getPop();
+        }
         
         // These are not used by anyone at the moment.  It might be better to use them instead
         // of the plain old recordSpecies/recordReaction functions, but who knows.
@@ -184,7 +180,6 @@ namespace fnd
         void
         mustRecordReaction( ptrReactionType pRxn) throw(utl::xcpt)
         {
-
           if ( recordReactions( pRxn ) ) 
             {
               return;

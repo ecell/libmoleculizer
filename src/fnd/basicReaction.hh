@@ -40,6 +40,23 @@ namespace fnd
 
     typedef typename std::map<speciesType*, int> multMap;
 
+    //    const std::map<const speciesType* const, int>&
+
+    const multMap&
+    getReactants() const
+    {
+      return reactants;
+    }
+
+
+    //    const std::map<const speciesType* const, int>&
+
+    const multMap&
+    getProducts() const
+    {
+      return products;
+    }
+
   protected:
     
     multMap reactants;
@@ -58,18 +75,6 @@ namespace fnd
       theName( "" )
     {}
 
-      const multMap&
-      getReactants() const
-      {
-          return reactants;
-      }
-
-      const multMap&
-      getProducts() const
-      {
-          return products;
-      }
-    
     void
     addReactant(speciesType* pSpecies,
 		int multiplicity);

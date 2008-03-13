@@ -55,7 +55,16 @@ namespace fnd
     public std::set<sensitiveT*>
   {
   public:
+    
     typedef sensitiveT sensitiveType;
+
+    sensitivityList()
+    {}
+    
+    sensitivityList( const std::set<sensitiveT*> aSet)
+      :
+      std::set<sensitiveT*>(aSet.begin(), aSet.end())
+    {}
 
     // Here is the reason for using a set here: a reaction can add itself to a
     // reactant's sensitivity list more than once with no subsequent loss of

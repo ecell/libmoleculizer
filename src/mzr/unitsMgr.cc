@@ -1,6 +1,6 @@
 /////////////////////////////////////////////////////////////////////////////
 // Moleculizer - a stochastic simulator for cellular chemistry.
-// Copyright (C) 2001  Walter Lawrence (Larry) Lok.
+// Copyright (C) 2001, 2008  Walter Lawrence (Larry) Lok.
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -31,6 +31,8 @@
 #include "plex/plexUnit.hh"
 #include "stoch/stochUnit.hh"
 #include "ftr/ftrUnit.hh"
+#include "nmr/newMol.hh"
+#include "nmr/nmrUnit.hh"
 
 namespace mzr
 {
@@ -50,7 +52,8 @@ namespace mzr
     pFtrUnit(new ftr::ftrUnit(rMoleculizer,
      			      *pMzrUnit,
 			      *pMolUnit,
-			      *pPlexUnit))
+			      *pPlexUnit)),
+    pNmrUnit( new nmr::nmrUnit<nmr::SimpleMol>(rMoleculizer) )
   {
     // Note that these need to be in output order, which is slightly
     // different from linkage order: mzrUnit "plays cleanup" by parsing
@@ -67,6 +70,7 @@ namespace mzr
     addEntry(pPlexUnit);
     addEntry(pFtrUnit);
     addEntry(pMzrUnit);
+    addEntry(pNmrUnit);
   }
 
   // Class for constructing overall input capabilities of moleculizer

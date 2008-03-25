@@ -1,6 +1,6 @@
 #include "nmr/mol.hh"
 
-namespace complexspecies
+namespace nmr
 {
 
     bool 

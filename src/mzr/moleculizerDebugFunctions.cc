@@ -26,6 +26,7 @@
 #include "utl/string.hh"
 #include <algorithm>
 #include <fstream>
+#include <pause.hpp>
 
 namespace mzr
 {
@@ -46,10 +47,9 @@ namespace mzr
     theInteractiveMode.addFunction("showNumberLiveSpecies", &moleculizer::DEBUG_showNumberLiveSpecies);
     theInteractiveMode.addFunction("incrementSpecies", &moleculizer::DEBUG_incrementSpecies);
     theInteractiveMode.addFunction("incrementRandomSpecies", &moleculizer::DEBUG_incrementRandomSpecies);
+    theInteractiveMode.addFunction("calculate reaction between species", &moleculizer::DEBUG_showReactionsBetweenSpecies);
 
     theInteractiveMode.runInteractiveMode();
-
-
   }
 
   void moleculizer::RunProfileMode(unsigned int Num_Iterations, bool verbose)
@@ -245,6 +245,32 @@ namespace mzr
   void moleculizer::DEBUG_showRandomLiveSpecies()
   {
     cout << DEBUG_getRandomLiveSpecies() << endl;
+  }
+
+
+  void moleculizer::DEBUG_showReactionsBetweenSpecies() 
+  {
+
+    std::string speciesOne, speciesTwo;
+    cout << "-- Please enter two species names --\nSpecies 1:\t";
+    cin >> speciesOne;
+    cout << "\nSpecies 2:\t";
+    cin >> speciesTwo;
+    cout << endl;
+
+
+    try
+      {
+        mzr::mzrSpecies* ptrSpeciesOne = getSpeciesFromName( speciesOne );
+        mzr::mzrSpecies* ptrSpeciesTwo = getSpeciesFromName( speciesTwo );
+      }
+     catch(mzr::illegalSpeciesNameXcpt xcpt)
+       {
+       }
+    catch(...)
+      {
+      }
+
   }
 
 

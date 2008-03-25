@@ -1,7 +1,7 @@
 /////////////////////////////////////////////////////////////////////////////
 // libComplexSpecies - a library for canonically naming species of protein 
 //                     complexes.
-// Copyright (C) 2007  Nathan Addy
+// Copyright (C) 2007, 2008  Nathan Addy
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -25,7 +25,7 @@
 /////////////////////////////////////////////////////////////////////////////
 
 
-namespace complexspecies
+namespace nmr
 {
 
   template <class molT>

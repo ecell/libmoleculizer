@@ -1,7 +1,7 @@
 /////////////////////////////////////////////////////////////////////////////
 // libComplexSpecies - a library for canonically naming species of protein 
 //                     complexes.
-// Copyright (C) 2007  Nathan Addy
+// Copyright (C) 2007, 2008  Nathan Addy
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -28,7 +28,7 @@
 #include <set>
 #include <vector>
 
-namespace complexspecies
+namespace nmr
 {
 
     namespace detail
@@ -41,7 +41,7 @@ namespace complexspecies
         }
 
         template <class molT>
-        ComplexOutputState ComplexSpeciesOutputMinimizer<molT>::getMinimalOutputState(complexspecies::ComplexSpecies<molT> aComplexSpecies)
+        ComplexOutputState ComplexSpeciesOutputMinimizer<molT>::getMinimalOutputState(nmr::ComplexSpecies<molT> aComplexSpecies)
         {
             this->theUnnamedComplex = aComplexSpecies;
 
@@ -61,7 +61,7 @@ namespace complexspecies
    
             if( !checkPlexIsSorted(theUnnamedComplex) )
             {
-                throw complexspecies::CSXcpt("ComplexSpeciesOutputMinimizer<molT>::calculateMinimizingPermutationForComplex()", "ComplexSpecies theComplexSpecies has not been sorted.");
+                throw nmr::CSXcpt("ComplexSpeciesOutputMinimizer<molT>::calculateMinimizingPermutationForComplex()", "ComplexSpecies theComplexSpecies has not been sorted.");
             }
   
             std::set<Permutation> setOfPossibleSolutions; // This is a set of partial permutations, which represent, all possible permutations (each incomplete pp represents a particular coset of permutations)
@@ -330,7 +330,7 @@ namespace complexspecies
             aComplexSpeciesPartialTokenList.isComplete = true;
 
             // The mols are already sorted in an abstractPlex, so we can just copy those into aComplexSpeciesPartialTokenList.theMols.
-            typename complexspecies::ComplexSpecies<molT>::MolList aComplexSpeciesMolList = aComplexSpecies.getMolList();
+            typename nmr::ComplexSpecies<molT>::MolList aComplexSpeciesMolList = aComplexSpecies.getMolList();
 
             copy(aComplexSpeciesMolList.begin(),
                  aComplexSpeciesMolList.end(),

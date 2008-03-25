@@ -50,7 +50,7 @@ namespace cpx
         {
             typename plexFamilyT::molType* pMol = rMols[molNdx];
             
-            complexspecies::SimpleMol aMol( pMol->getName() );
+            nmr::SimpleMol aMol( pMol->getName() );
 
             // Create all the binding sites to this mol.
             for( typename plexFamilyT::molType::bindingSiteIterator iter = pMol->getBindingSitesBegin();
@@ -122,19 +122,19 @@ namespace cpx
     std::string
     plexSpeciesMixin<plexFamilyT>::getCanonicalName(void) const
     {
-        // static complexspecies::basicNameAssembler<complexspecies::SimpleMol> defaultNameAssembler;
-        static complexspecies::MangledNameAssembler<complexspecies::SimpleMol> defaultNameAssembler;
+        // static nmr::basicNameAssembler<nmr::SimpleMol> defaultNameAssembler;
+        static nmr::MangledNameAssembler<nmr::SimpleMol> defaultNameAssembler;
 
-        // complexspecies::readableNameAssembler<complexspecies::SimpleMol> defaultNameAssembler;
+        // nmr::readableNameAssembler<nmr::SimpleMol> defaultNameAssembler;
         return getCanonicalName( &defaultNameAssembler );
     }
 
     template <class plexFamilyT>
     std::string
     plexSpeciesMixin<plexFamilyT>::
-    getCanonicalName( const complexspecies::NameAssembler<complexspecies::SimpleMol>* const ptrNameAssembler) const
+    getCanonicalName( const nmr::NameAssembler<nmr::SimpleMol>* const ptrNameAssembler) const
     {
-        complexspecies::ComplexSpecies<complexspecies::SimpleMol> aComplexSpecies;
+        nmr::ComplexSpecies<nmr::SimpleMol> aComplexSpecies;
         createComplexRepresentation(aComplexSpecies);
         string theName( ptrNameAssembler->createCanonicalName(aComplexSpecies) );
 

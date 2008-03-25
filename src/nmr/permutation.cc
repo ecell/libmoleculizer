@@ -7,7 +7,7 @@
 #include "nmr/permutation.hh"
 #include "nmr/csUtl.hh"
 
-namespace complexspecies
+namespace nmr
 {
 
   namespace detail

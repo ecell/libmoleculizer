@@ -1,7 +1,7 @@
 /////////////////////////////////////////////////////////////////////////////
 // libComplexSpecies - a library for canonically naming species of protein 
 //                     complexes.
-// Copyright (C) 2007  Nathan Addy
+// Copyright (C) 2007, 2008  Nathan Addy
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -25,8 +25,8 @@
 /////////////////////////////////////////////////////////////////////////////
 
 
-#ifndef __MOL_HH
-#define __MOL_HH
+#ifndef NMR_MOL_HH
+#define NMR_MOL_HH
 
 #include <map>
 #include <string>
@@ -36,19 +36,19 @@
 #include "abstractMol.hh"
 
 
-namespace complexspecies
+namespace nmr
 {
 
-    class SimpleMol 
-        : 
-        public AbstractMol
-    {
-
-    public:
-        typedef std::vector<std::pair<ModificationSite, ModificationValue>  > ModificationList;
-
-        SimpleMol( MolType theMolType ) 
-            : 
+  class SimpleMol 
+    : 
+    public AbstractMol
+  {
+    
+  public:
+    typedef std::vector<std::pair<ModificationSite, ModificationValue>  > ModificationList;
+    
+    SimpleMol( MolType theMolType ) 
+      : 
             AbstractMol(theMolType)
         {
             ; // do nothing

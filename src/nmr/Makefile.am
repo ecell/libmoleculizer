@@ -28,7 +28,9 @@ AM_LDFLAGS= -all-static
 endif
 
 libmoleculizer_nmr_la_SOURCES =\
+ComplexSpeciesManglerNames.cc \
 newMol.cc \
+nmrEltName.cc \
 permutation.cc
 
 libmoleculizer_nmr_HEADERS=\
@@ -39,12 +41,14 @@ complexSpecies.hh \
 complexSpeciesImpl.hh \
 complexSpeciesOutputMinimizer.hh \
 complexSpeciesOutputMinimizerImpl.hh \
+ComplexSpeciesManglerNames.hh \
 csException.hh \
 csUtl.hh \
 mangledNameAssembler.hh \
 mangledNameAssemblerImpl.hh \
-newMol.hh \
 nameAssembler.hh \
+newMol.hh \
+nmrEltName.hh \
 partialTokenList.hh \
 permutation.hh \
 permutationName.hh \

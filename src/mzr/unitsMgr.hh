@@ -1,6 +1,6 @@
 /////////////////////////////////////////////////////////////////////////////
 // Moleculizer - a stochastic simulator for cellular chemistry.
-// Copyright (C) 2001  Walter Lawrence (Larry) Lok.
+// Copyright (C) 2001, 2008  Walter Lawrence (Larry) Lok.
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -27,6 +27,8 @@
 #define UNITSMGR_H
 
 #include "utl/autoVector.hh"
+#include "nmr/newMol.hh"
+#include "nmr/nmrUnit.hh"
 #include "mzr/unit.hh"
 
 namespace mzr
@@ -73,6 +75,7 @@ namespace mzr
     stoch::stochUnit* pStochUnit;
     dimer::dimerUnit* pDimerUnit;
     ftr::ftrUnit* pFtrUnit;
+    nmr::nmrUnit<nmr::SimpleMol>* pNmrUnit;
 
     // Now the moleculizer unit is also a recorder of species..
     // which is a ReactionNetworkDescription<mzrSpecies, mzrReactions>.

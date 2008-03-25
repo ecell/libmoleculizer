@@ -40,6 +40,7 @@ dumpUtils.cc \
 dumpableNotSpeciesStreamXcpt.cc \
 dupDumpableNameXcpt.cc \
 dupSpeciesNameXcpt.cc \
+illegalSpeciesNameXcpt.cc \
 growEvent.cc \
 moleculizer.cc \
 moleculizerDebugFunctions.cc \
@@ -71,6 +72,7 @@ dupDumpableNameXcpt.hh \
 dupSpeciesNameXcpt.hh \
 eventQueue.hh \
 growEvent.hh \
+illegalSpeciesNameXcpt.hh \
 inputCapTest.hh \
 inputCapXcpt.hh \
 molarFactor.hh \

@@ -1,6 +1,6 @@
 /////////////////////////////////////////////////////////////////////////////
 // Moleculizer - a stochastic simulator for cellular chemistry.
-// Copyright (C) 2001  Walter Lawrence (Larry) Lok.
+// Copyright (C) 2001, 2008  Walter Lawrence (Larry) Lok.
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -80,10 +80,10 @@ namespace cpx
         getCanonicalName( void ) const;
 
         std::string
-        getCanonicalName( const complexspecies::NameAssembler<complexspecies::SimpleMol>* ptrNameAssembler) const;
+        getCanonicalName( const nmr::NameAssembler<nmr::SimpleMol>* ptrNameAssembler) const;
 
     protected:
-        typedef complexspecies::ComplexSpecies<complexspecies::SimpleMol> ComplexRepresentation;
+        typedef nmr::ComplexSpecies<nmr::SimpleMol> ComplexRepresentation;
         
         void
         createComplexRepresentation( ComplexRepresentation& aComplexRepresentation ) const;

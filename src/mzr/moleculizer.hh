@@ -1,6 +1,6 @@
 /////////////////////////////////////////////////////////////////////////////
 // Moleculizer - a stochastic simulator for cellular chemistry.
-// Copyright (C) 2001  Walter Lawrence (Larry) Lok.
+// Copyright (C) 2001, 2008  Walter Lawrence (Larry) Lok.
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -69,110 +69,116 @@
 #include "mzr/unit.hh"
 #include "mzr/mzrSpecies.hh"
 #include "mzr/mzrReaction.hh"
+#include "mzr/illegalSpeciesNameXcpt.hh"
 
 namespace mzr
 {
-    class unitsMgr;
+  class unitsMgr;
   
-    /*! \ingroup mzrGroup
-      \brief The main application object. */
+  /*! \ingroup mzrGroup
+    \brief The main application object. */
 
 
-    //  The main bulk of this class can be found in ReactionNetworkDescription.
-    class moleculizer :
-        public fnd::ReactionNetworkDescription<mzrSpecies, mzrReaction>
-    {
-    public:
-        void RunInteractiveDebugMode();
-        void RunProfileMode(unsigned int numIters = 100, bool verbose = false);
+  //  The main bulk of this class can be found in ReactionNetworkDescription.
+  class moleculizer :
+    public fnd::ReactionNetworkDescription<mzrSpecies, mzrReaction>
+  {
+  public:
+    void RunInteractiveDebugMode();
+    void RunProfileMode(unsigned int numIters = 100, bool verbose = false);
 
-        void attachFileName(const std::string& aFileName);
-        void attachString(const std::string& documentAsString);
-        void attachDocument(xmlpp::Document* pDoc);
+    void attachFileName(const std::string& aFileName);
+    void attachString(const std::string& documentAsString);
+    void attachDocument(xmlpp::Document* pDoc);
       
-    public:
+  public:
        
-    public:
+  public:
 
-        void setGenerateDepth(unsigned int generateDepth);
-        void setRateExtrapolation( bool rateExtrapolation ){ return; }
-        void setToleranceOption( bool tolerenceOption ) { return; }
-        void setTolerance(double tolerance);
+    void setGenerateDepth(unsigned int generateDepth);
+    void setRateExtrapolation( bool rateExtrapolation ){ return; }
+    void setToleranceOption( bool tolerenceOption ) { return; }
+    void setTolerance(double tolerance);
 
-    public: 
-        // DEBUG interface.  Most of these should be const,
-        // but since the InteractiveModeManager stores pointers to member 
-        // functions, it gets mad if some are const and others non-const.
+    mzrSpecies* 
+    getSpeciesFromName( const std::string& speciesName ) throw( illegalSpeciesNameXcpt );
 
-        // This is fixable though, with an overloaded addFunction method
-        // in InteractiveModeManager and an extra vector of function ptr 
-        // storage.
 
-        void 
-        incrementSpecies(std::string& speciesName);
+  public: 
+    // DEBUG interface.  Most of these should be const,
+    // but since the InteractiveModeManager stores pointers to member 
+    // functions, it gets mad if some are const and others non-const.
 
-        void DEBUG_showTotalNumberSpecies();
-        void DEBUG_showTotalNumberReactions();
-        void DEBUG_showNumberDeltaSpecies();
-        void DEBUG_showNumberDeltaReactions();
+    // This is fixable though, with an overloaded addFunction method
+    // in InteractiveModeManager and an extra vector of function ptr 
+    // storage.
 
-        void DEBUG_showAllSpecies();
-        void DEBUG_showAllReactions();
+    void 
+    incrementSpecies(std::string& speciesName);
 
-        void DEBUG_showDeltaSpecies();
-        void DEBUG_showDeltaReactions();
+    void DEBUG_showTotalNumberSpecies();
+    void DEBUG_showTotalNumberReactions();
+    void DEBUG_showNumberDeltaSpecies();
+    void DEBUG_showNumberDeltaReactions();
 
-        void DEBUG_incrementSpecies();
+    void DEBUG_showAllSpecies();
+    void DEBUG_showAllReactions();
 
-        std::string DEBUG_getRandomLiveSpecies() const;
-        void DEBUG_incrementRandomSpecies();
-        void DEBUG_incrementNRandomLiveSpecies(unsigned int number = 1 );
+    void DEBUG_showDeltaSpecies();
+    void DEBUG_showDeltaReactions();
 
-        void DEBUG_showRandomLiveSpecies();
-        void DEBUG_showNumberLiveSpecies();
+    void DEBUG_incrementSpecies();
+
+    std::string DEBUG_getRandomLiveSpecies() const;
+    void DEBUG_incrementRandomSpecies();
+    void DEBUG_incrementNRandomLiveSpecies(unsigned int number = 1 );
+
+    void DEBUG_showRandomLiveSpecies();
+    void DEBUG_showNumberLiveSpecies();
+    void DEBUG_showReactionsBetweenSpecies();
         
         
-    public:
-        moleculizer(void);
-        ~moleculizer(void);
+  public:
+    moleculizer(void);
+    ~moleculizer(void);
 
       
-        xmlpp::Document*
-        makeDomOutput(void) throw(std::exception);
+    xmlpp::Document*
+    makeDomOutput(void) throw(std::exception);
 
 
-    protected:
-        void
-        constructorPrelude(void);
+  protected:
+    void
+    constructorPrelude(void);
 
-        void 
-        verifyInput(xmlpp::Element const * const pRootElt,
-                    xmlpp::Element const * const pModelElt,
-                    xmlpp::Element const * const pStreamsElt) const 
-            throw(std::exception);
+    void 
+    verifyInput(xmlpp::Element const * const pRootElt,
+                xmlpp::Element const * const pModelElt,
+                xmlpp::Element const * const pStreamsElt) const 
+      throw(std::exception);
     
-        void
-        constructorCore(xmlpp::Element* pRootElt,
-                        xmlpp::Element* pModelElt,
-                        xmlpp::Element* pStreamsElt)
-            throw(std::exception);
+    void
+    constructorCore(xmlpp::Element* pRootElt,
+                    xmlpp::Element* pModelElt,
+                    xmlpp::Element* pStreamsElt)
+      throw(std::exception);
 
 
-    public:
-        // Units loaded by the user, waiting for destruction.
-        // 
-        // This class is the manager for units, and the place that new units
-        // can be installed.  It's public because units need to get to
-        // each other.
-        unitsMgr* pUserUnits;
+  public:
+    // Units loaded by the user, waiting for destruction.
+    // 
+    // This class is the manager for units, and the place that new units
+    // can be installed.  It's public because units need to get to
+    // each other.
+    unitsMgr* pUserUnits;
 
-        // Codes the input capabilities of moleculizer, including its parsing 
-        // routine.
-        inputCapabilities inputCap;
+    // Codes the input capabilities of moleculizer, including its parsing 
+    // routine.
+    inputCapabilities inputCap;
 
-    private:
-        bool modelLoaded;
-    };
+  private:
+    bool modelLoaded;
+  };
 }
 
 #endif

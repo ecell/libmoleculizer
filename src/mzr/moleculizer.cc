@@ -1,6 +1,6 @@
 /////////////////////////////////////////////////////////////////////////////
 // Moleculizer - a stochastic simulator for cellular chemistry.
-// Copyright (C) 2001  Walter Lawrence (Larry) Lok.
+// Copyright (C) 2001, 2008  Walter Lawrence (Larry) Lok.
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -345,5 +345,26 @@ namespace mzr
             throw unhandledSpeciesStreamsContentXcpt(*iUnhandledSpeciesStreamsContent);
 
     }
+
+  mzrSpecies* moleculizer::getSpeciesFromName( const std::string& speciesName) throw( illegalSpeciesNameXcpt )
+  {
+    // Search the catalog for this species name; if we find it, return it.  
+
+    try
+      {
+        mzrSpecies& theSpecies = findSpecies( speciesName );
+        return &theSpecies;
+      }
+    catch(fnd::NoSuchSpeciesXcpt)
+      {
+        ; // Do nothing and merely continue.
+      }
+
+    // Parse the name and install it.
+
+
+    return NULL;
+    
+  }
     
 }

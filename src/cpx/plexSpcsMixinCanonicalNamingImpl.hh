@@ -24,7 +24,7 @@
 #include "modMol.hh"
 #include "binding.hh"
 
-// Veni, Vidi, Vinchi. -- Julius Ceasar 
+// Veni, Vidi, Vici. -- Julius Ceasar 
 
 namespace cpx
 {

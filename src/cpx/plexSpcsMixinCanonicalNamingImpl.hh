@@ -137,7 +137,7 @@ namespace cpx
         nmr::ComplexSpecies<nmr::SimpleMol> aComplexSpecies;
         createComplexRepresentation(aComplexSpecies);
         string theName( ptrNameAssembler->createCanonicalName(aComplexSpecies) );
-
+        
         return theName;
     }
 

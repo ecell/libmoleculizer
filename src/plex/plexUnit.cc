@@ -32,12 +32,14 @@ namespace plx
   plexUnit::
   plexUnit(mzr::moleculizer& rMoleculizer,
 	   mzr::mzrUnit& refMzrUnit,
-	   bnd::molUnit& refMolUnit) :
+	   bnd::molUnit& refMolUnit,
+           nmr::nmrUnit<nmr::SimpleMol>& refNmrUnit) :
     mzr::unit("plex",
 	      rMoleculizer),
     rMzrUnit(refMzrUnit),
     rMolUnit(refMolUnit),
-    recognize(*this)
+    rNmrUnit(refNmrUnit),
+    recognize(*this, rNmrUnit)
   {
     // Model elements for which plex unit is responsible.
     inputCap.addModelContentName(eltName::allostericPlexes);

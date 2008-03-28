@@ -21,6 +21,9 @@
 #include "moleculizer.hh"
 #include "mzrHelperFunctions.hh"
 #include "debug.hh" 
+#include "nmr/nmrUnit.hh"
+#include "nmr/newMol.hh"
+#include "mzr/unitsMgr.hh"
 
 #include "utl/utlHelper.hh"
 #include "utl/string.hh"
@@ -48,12 +51,13 @@ namespace mzr
     theInteractiveMode.addFunction("incrementSpecies", &moleculizer::DEBUG_incrementSpecies);
     theInteractiveMode.addFunction("incrementRandomSpecies", &moleculizer::DEBUG_incrementRandomSpecies);
     theInteractiveMode.addFunction("calculate reaction between species", &moleculizer::DEBUG_showReactionsBetweenSpecies);
+    theInteractiveMode.addFunction("Change naming strategy", &moleculizer::DEBUG_changeNamingStrategy);
 
     theInteractiveMode.runInteractiveMode();
   }
 
   void moleculizer::RunProfileMode(unsigned int Num_Iterations, bool verbose)
-  {
+  { 
     for( unsigned int i = 0;
          i != Num_Iterations;
          ++i)
@@ -270,6 +274,60 @@ namespace mzr
     catch(...)
       {
       }
+
+  }
+
+  void moleculizer::DEBUG_changeNamingStrategy()
+  {
+    unsigned int choice = 0;
+
+    while( choice < 1 || choice > 3)
+      {
+        cout << "1:\tDefault" << endl;
+        cout << "2:\tInformative" << endl;
+        cout << "3:\tCompact" << endl;
+        cout << "Pick a naming scheme: ";
+        cin >> choice;
+      }
+
+    std::string newNameMangler("");
+
+    if( choice == 1)
+      {
+        newNameMangler = "basic-name-assembler";
+      }
+    else if (choice == 2)
+      {
+        newNameMangler = "detailed-name-assembler";
+      }
+    else if (choice == 3)
+      {
+        newNameMangler = "mangled-name-assembler";
+      }
+    
+    pUserUnits->pNmrUnit->setDefaultNameMangler( newNameMangler );
+
+    SpeciesCatalog newCatalog;
+    
+    for(SpeciesCatalog::const_iterator specIter = theSpeciesListCatalog.begin();
+        specIter != theSpeciesListCatalog.end();
+        ++specIter)
+      {
+
+        
+        mzrSpecies* ptrMzrSpecies = specIter->second;
+        delete specIter->first;
+
+        std::string* newName = new std::string( ptrMzrSpecies->getName() );
+        newCatalog.insert( std::make_pair(newName, ptrMzrSpecies));
+      }
+    
+    theSpeciesListCatalog.clear();
+
+    theSpeciesListCatalog.insert( newCatalog.begin(), newCatalog.end() );
+
+
+
 
   }
 

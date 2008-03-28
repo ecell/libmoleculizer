@@ -44,7 +44,7 @@ namespace nmr
       ptrNameManglerFactory( new NameManglerFactory<molT> ),
       ptrNameAssembler( NULL )
     {
-      setDefaultNameMangler( manglernames::basicManglerName );
+      setDefaultNameMangler( manglernames::compactManglerName );
     }
     
     ~nmrUnit()

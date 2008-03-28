@@ -37,6 +37,8 @@
 #include "cpx/plexFamily.hh"
 #include "plex/mzrPlex.hh"
 #include "plex/mzrPlexSpecies.hh"
+#include "nmr/nmrUnit.hh"
+#include "nmr/newMol.hh"
 
 namespace plx
 {
@@ -57,13 +59,16 @@ namespace plx
 			     mzrPlexFamily,
 			     mzrOmniPlex>
   {
+    nmr::nmrUnit<nmr::SimpleMol>& rNmrUnit;
+
   public:
     // The arguments other than the paradigm plex are passed on to the base
     // class constructor.  The knownBindings and the set of all omniPlexes
     // are maintained by the plexUnit.
     mzrPlexFamily(const mzrPlex& rParadigm,
 		  cpx::knownBindings<bnd::mzrMol, fnd::feature<cpx::cxBinding<mzrPlexSpecies, mzrPlexFamily> > >& refKnownBindings,
-		  std::set<mzrPlexFamily*>& refOmniplexFamilies);
+		  std::set<mzrPlexFamily*>& refOmniplexFamilies,
+                  nmr::nmrUnit<nmr::SimpleMol>& refNmrUnit);
 
     // Fulfills plexFamily::constructSpecies pure virtual function.
     // This exists so that mzrPlexSpecies can have a reference to
@@ -71,6 +76,12 @@ namespace plx
     mzrPlexSpecies*
     constructSpecies(const cpx::siteToShapeMap& rSiteParams,
 		     const std::vector<cpx::molParam>& rMolParams);
+
+    const nmr::NameAssembler<nmr::SimpleMol>*
+    getNamingStrategy() const
+    {
+      return rNmrUnit.getNameAssembler();
+    }
 
     // Output routine.
     void

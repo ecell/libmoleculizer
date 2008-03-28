@@ -69,13 +69,14 @@ namespace mzr
   {
   public:
 
+    nmr::nmrUnit<nmr::SimpleMol>* pNmrUnit;
     mzr::mzrUnit* pMzrUnit;
     bnd::molUnit* pMolUnit;
     plx::plexUnit* pPlexUnit;
     stoch::stochUnit* pStochUnit;
     dimer::dimerUnit* pDimerUnit;
     ftr::ftrUnit* pFtrUnit;
-    nmr::nmrUnit<nmr::SimpleMol>* pNmrUnit;
+
 
     // Now the moleculizer unit is also a recorder of species..
     // which is a ReactionNetworkDescription<mzrSpecies, mzrReactions>.

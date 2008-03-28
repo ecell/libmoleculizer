@@ -31,14 +31,16 @@ namespace plx
   mzrPlexFamily::
   mzrPlexFamily(const mzrPlex& rParadigm,
 		cpx::knownBindings<bnd::mzrMol, fnd::feature<cpx::cxBinding<mzrPlexSpecies, mzrPlexFamily> > >& refKnownBindings,
-		std::set<mzrPlexFamily*>& refOmniplexFamilies) :
+		std::set<mzrPlexFamily*>& refOmniplexFamilies, 
+                nmr::nmrUnit<nmr::SimpleMol>& refNmrUnit) :
     cpx::plexFamily<bnd::mzrMol,
 		    mzrPlex,
 		    mzrPlexSpecies,
 		    mzrPlexFamily,
 		    mzrOmniPlex>(rParadigm,
 				 refKnownBindings,
-				 refOmniplexFamilies)
+				 refOmniplexFamilies),
+    rNmrUnit( refNmrUnit )
   {}
 
   mzrPlexSpecies*

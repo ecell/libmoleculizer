@@ -42,15 +42,8 @@ namespace nmr
       {
         NameAssembler<MolType>* ptrNA = ptrNameManglerFactory->create(nameManglerName);
         
-        if (!ptrNameAssembler)
-          {
-            throw utl::xcpt( "Unknown error." );
-          }
-        else
-          {
-            delete ptrNameAssembler;
-            ptrNameAssembler = ptrNA;
-          }
+        delete ptrNameAssembler;
+        ptrNameAssembler = ptrNA;
       }
     catch( NoSuchNameManglerXcpt xcpt)
       {

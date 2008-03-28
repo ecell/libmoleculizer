@@ -35,7 +35,8 @@ namespace plx
   {
     return new mzrPlexFamily(rPlex,
 			     rPlexUnit.bindingFeatures,
-			     rPlexUnit.omniPlexFamilies);
+			     rPlexUnit.omniPlexFamilies,
+                             rNmrUnit);
   }
   
   class insertFamilySpecies :

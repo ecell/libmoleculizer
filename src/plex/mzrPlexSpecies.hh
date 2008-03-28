@@ -71,7 +71,7 @@ namespace plx
     notify(int generateDepth);
 
     // This overrides basicSpecies::getName(), which just returns a tag.
-    std::string
+    virtual std::string
     getName(void) const;
 
     xmlpp::Element*

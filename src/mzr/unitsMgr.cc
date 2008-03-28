@@ -38,11 +38,13 @@ namespace mzr
 {
   unitsMgr::
   unitsMgr(moleculizer& rMoleculizer) :
+    pNmrUnit( new nmr::nmrUnit<nmr::SimpleMol>(rMoleculizer) ),
     pMzrUnit(new mzr::mzrUnit(rMoleculizer)),
     pMolUnit(new bnd::molUnit(rMoleculizer)),
     pPlexUnit(new plx::plexUnit(rMoleculizer,
 				*pMzrUnit,
-				*pMolUnit)),
+				*pMolUnit,
+                                *pNmrUnit)),
     pStochUnit(new stoch::stochUnit(rMoleculizer,
 				    *pMzrUnit)),
     pDimerUnit(new dimer::dimerUnit(rMoleculizer,
@@ -52,8 +54,8 @@ namespace mzr
     pFtrUnit(new ftr::ftrUnit(rMoleculizer,
      			      *pMzrUnit,
 			      *pMolUnit,
-			      *pPlexUnit)),
-    pNmrUnit( new nmr::nmrUnit<nmr::SimpleMol>(rMoleculizer) )
+			      *pPlexUnit))
+
   {
     // Note that these need to be in output order, which is slightly
     // different from linkage order: mzrUnit "plays cleanup" by parsing
@@ -64,13 +66,13 @@ namespace mzr
     //
     // ftrUnit has to come after plexUnit, since it uses omniPlexes in its
     // reaction generators.
+    addEntry(pNmrUnit);
     addEntry(pStochUnit);
     addEntry(pMolUnit);
     addEntry(pDimerUnit);
     addEntry(pPlexUnit);
     addEntry(pFtrUnit);
     addEntry(pMzrUnit);
-    addEntry(pNmrUnit);
   }
 
   // Class for constructing overall input capabilities of moleculizer

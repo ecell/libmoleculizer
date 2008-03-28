@@ -29,6 +29,8 @@
 #include "utl/dom.hh"
 #include "cpx/recognizer.hh"
 #include "plex/mzrPlexFamily.hh"
+#include "nmr/nmrUnit.hh"
+#include "nmr/newMol.hh"
 
 namespace plx
 {
@@ -38,10 +40,13 @@ namespace plx
     public cpx::recognizer<mzrPlex, mzrPlexFamily>
   {
     plexUnit& rPlexUnit;
+    nmr::nmrUnit<nmr::SimpleMol>& rNmrUnit;
 
   public:
-    mzrRecognizer(plexUnit& refPlexUnit) :
-      rPlexUnit(refPlexUnit)
+    mzrRecognizer(plexUnit& refPlexUnit,
+                  nmr::nmrUnit<nmr::SimpleMol>& refNmrUnit) :
+      rPlexUnit(refPlexUnit),
+      rNmrUnit(refNmrUnit)
     {}
 
     mzrPlexFamily*

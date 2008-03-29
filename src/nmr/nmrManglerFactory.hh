@@ -22,9 +22,9 @@
 #define NMRMANGLERFACTORY_HH
 
 #include "nameAssembler.hh"
-#include "ComplexSpeciesManglerNames.hh"
-#include "NameAssemblers.hh"
-#include "NoSuchNameManglerXcpt.hh"
+#include "complexSpeciesManglerNames.hh"
+#include "nameAssemblers.hh"
+#include "noSuchNameManglerXcpt.hh"
 
 namespace nmr
 {

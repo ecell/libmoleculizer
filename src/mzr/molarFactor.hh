@@ -54,10 +54,10 @@ namespace mzr
     }
 
     void
-    updateFactor(double newMolarFactor,
+    updateFactor(double simpleMolarFactor,
 		 fnd::sensitivityList<mzrReaction>& rAffectedReactions)
     {
-      updateValue(newMolarFactor,
+      updateValue(simpleMolarFactor,
 		  rAffectedReactions);
     }
 
@@ -91,10 +91,10 @@ namespace mzr
     }
 
     void
-    updateFactor(double newMolarFactor,
+    updateFactor(double simpleMolarFactor,
 		 fnd::sensitivityList<mzrReaction>& rAffectedReactions)
     {
-      updateValue(newMolarFactor / fnd::avogadrosNumber,
+      updateValue(simpleMolarFactor / fnd::avogadrosNumber,
 		  rAffectedReactions);
     }
 

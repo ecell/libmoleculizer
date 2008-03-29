@@ -37,7 +37,7 @@
 #include "mzr/unitsMgr.hh"
 #include "mol/mzrMol.hh"
 #include "mol/molUnit.hh"
-#include "nmr/newMol.hh"
+#include "nmr/simpleMol.hh"
 #include "nmr/nmrUnit.hh"
 #include "plex/plexEltName.hh"
 #include "plex/mzrPlexSpecies.hh"

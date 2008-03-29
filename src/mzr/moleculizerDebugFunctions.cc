@@ -22,7 +22,7 @@
 #include "mzrHelperFunctions.hh"
 #include "debug.hh" 
 #include "nmr/nmrUnit.hh"
-#include "nmr/newMol.hh"
+#include "nmr/simpleMol.hh"
 #include "mzr/unitsMgr.hh"
 
 #include "utl/utlHelper.hh"

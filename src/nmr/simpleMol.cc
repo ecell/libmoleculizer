@@ -1,4 +1,4 @@
-#include "nmr/newMol.hh"
+#include "nmr/simpleMol.hh"
 
 namespace nmr
 {

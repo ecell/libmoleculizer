@@ -60,8 +60,8 @@ namespace nmr
 
     theMols.push_back(someMol);
 
-    int newMolIndex = theMols.size()-1;
-    theMolAliasToNdxMap.insert( std::make_pair(anAlias, newMolIndex) );
+    int simpleMolIndex = theMols.size()-1;
+    theMolAliasToNdxMap.insert( std::make_pair(anAlias, simpleMolIndex) );
   }
 
   template <class molT>

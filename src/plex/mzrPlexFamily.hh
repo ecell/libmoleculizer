@@ -38,7 +38,7 @@
 #include "plex/mzrPlex.hh"
 #include "plex/mzrPlexSpecies.hh"
 #include "nmr/nmrUnit.hh"
-#include "nmr/newMol.hh"
+#include "nmr/simpleMol.hh"
 
 namespace plx
 {

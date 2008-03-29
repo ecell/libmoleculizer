@@ -27,7 +27,7 @@
 #define UNITSMGR_H
 
 #include "utl/autoVector.hh"
-#include "nmr/newMol.hh"
+#include "nmr/simpleMol.hh"
 #include "nmr/nmrUnit.hh"
 #include "mzr/unit.hh"
 

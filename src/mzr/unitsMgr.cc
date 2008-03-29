@@ -31,7 +31,7 @@
 #include "plex/plexUnit.hh"
 #include "stoch/stochUnit.hh"
 #include "ftr/ftrUnit.hh"
-#include "nmr/newMol.hh"
+#include "nmr/simpleMol.hh"
 #include "nmr/nmrUnit.hh"
 
 namespace mzr

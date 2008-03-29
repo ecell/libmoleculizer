@@ -29,7 +29,7 @@
 #include "cpx/prm.hh"
 #include "cpx/siteToShapeMap.hh"
 #include "cpx/molState.hh"
-#include "nmr/newMol.hh"
+#include "nmr/simpleMol.hh"
 #include "nmr/complexSpecies.hh"
 #include "nmr/mangledNameAssembler.hh"
 #include "nmr/basicNameAssembler.hh"

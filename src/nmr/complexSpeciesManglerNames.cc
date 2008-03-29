@@ -19,7 +19,7 @@
 /////////////////////////////////////////////////////////////////////////////
 
 
-#include "nmr/ComplexSpeciesManglerNames.hh"
+#include "nmr/complexSpeciesManglerNames.hh"
 
 namespace nmr
 {

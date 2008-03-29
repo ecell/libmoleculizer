@@ -23,7 +23,7 @@
 
 #include "nmrEltName.hh"
 #include "nameAssembler.hh"
-#include "NoSuchNameManglerXcpt.hh"
+#include "noSuchNameManglerXcpt.hh"
 #include "nmrManglerFactory.hh"
 #include "mzr/mzrSpecies.hh"
 #include "mzr/unit.hh"

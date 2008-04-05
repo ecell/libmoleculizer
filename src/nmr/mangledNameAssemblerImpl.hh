@@ -26,9 +26,40 @@
 
 
 #include "complexSpeciesOutputMinimizer.hh"
+#include <iostream>
 
 namespace nmr
 {
+  template <typename molT>
+  detail::ComplexOutputState MangledNameAssembler<molT>::createOutputStateFromName( const std::string& name) const
+  {
+    std::string deliminator("___");
+
+    std::string::size_type firstCharOfMols = name.find_first_not_of(deliminator, 0);
+    std::string::size_type lastCharOfMols = name.find_first_of(deliminator, firstCharOfMols);
+    std::string::size_type firstCharOfBindings = name.find_first_not_of(deliminator, lastCharOfMols);
+    std::string::size_type lastCharOfBindings = name.find_first_of(deliminator, firstCharOfBindings);
+    std::string::size_type firstCharOfModifications = name.find_first_not_of(deliminator, lastCharOfBindings);
+    std::string::size_type lastCharOfModifications = name.size();
+
+
+    std::string molString(name,
+                          firstCharOfMols, 
+                          lastCharOfMols);
+    
+    std::string bindingsString(name,
+                               firstCharOfBindings,
+                               lastCharOfBindings);
+    
+    std::string modificationsString(name,
+                                    firstCharOfModifications);
+    
+    std::cout << molString << std::endl;
+    std::cout << bindingsString << std::endl;
+    std::cout << modificationsString << std::endl;
+    
+  }
+  
   template <typename molT>
   std::string MangledNameAssembler<molT>::createNameFromOutputState( const detail::ComplexOutputState& aComplexSpeciesOutputState) const
   {
@@ -40,6 +71,8 @@ namespace nmr
     aComplexSpeciesName += constructMangledBindingList(aComplexSpeciesOutputState);
     aComplexSpeciesName += "___";
     aComplexSpeciesName += constructMangledModificationList(aComplexSpeciesOutputState);
+
+    createOutputStateFromName( aComplexSpeciesName );
 
     return aComplexSpeciesName;
   }

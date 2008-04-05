@@ -215,12 +215,12 @@ namespace mzr
         rMzrUnit.setGenerateDepth(generateDepth);
     }
 
-    void
-    moleculizer::setTolerance(double tolerance)
-    {
-        // Check that tolerance is a non-negative double.
-        mzrReaction::setTolerance( tolerance );
-    }
+     void
+     moleculizer::setTolerance(double tolerance)
+     {
+       // Check that tolerance is a non-negative double.
+       mzrReaction::setTolerance( tolerance );
+     }
 
     class unitInsertStateElements :
         public std::unary_function<unit*, void>

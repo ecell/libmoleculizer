@@ -38,15 +38,24 @@ namespace nmr
     NameAssemblerType*
     create(const std::string& manglerName) throw( NoSuchNameManglerXcpt )
     {
-      if( manglerName == manglernames::basicManglerName )
-        {
-          return new basicNameAssembler<molT>;
-        }
-      else if ( manglerName == manglernames::detailedManglerName )
-        {
-          return new readableNameAssembler<molT>;
-        }
-      else if ( manglerName == manglernames::compactManglerName )
+//       if( manglerName == manglernames::basicManglerName )
+//         {
+//           return new basicNameAssembler<molT>;
+//         }
+//       else if ( manglerName == manglernames::detailedManglerName )
+//         {
+//           return new readableNameAssembler<molT>;
+//         }
+//       else if ( manglerName == manglernames::compactManglerName )
+//         {
+//           return new MangledNameAssembler<molT>;
+//         }
+//       else
+//         {
+//           throw NoSuchNameManglerXcpt( manglerName );
+//         }
+
+      if( manglerName == manglernames::compactManglerName )
         {
           return new MangledNameAssembler<molT>;
         }
@@ -54,6 +63,7 @@ namespace nmr
         {
           throw NoSuchNameManglerXcpt( manglerName );
         }
+
     }
 
   };

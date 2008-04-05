@@ -89,6 +89,20 @@ namespace fnd
             
     }
 
+    // The unary reaction case
+    // This will ONLY return an unary reaction. 
+    const ptrReactionType
+    findReactionWithSubstrates(ptrSpeciesType A) const
+    {
+
+      // TODO
+      for(ReactionListCIter iter = theCompleteReactionList.begin();
+          iter != theCompleteReactionList.end();
+          ++iter)
+        {
+          // Skip it if not an unary reaction.p
+        }
+    }
 
     const ptrReactionType
     findReactionWithSubstrates( ptrSpeciesType A, ptrSpeciesType B) const
@@ -275,9 +289,6 @@ namespace fnd
       theDeltaReactionList.clear();
     }
 
-    // I doubt very much this will work.
-    // void resetCurrentState() = recordCurrentState;
-
     void incrementNetworkBySpeciesName(const std::string& rName) throw(utl::xcpt)
     {
       SpeciesCatalogCIter iter = theSpeciesListCatalog.find( &rName );
@@ -293,7 +304,8 @@ namespace fnd
     }
 
     ~ReactionNetworkDescription()
-    {
+     {
+      // FIXME...
       // We don't memory manage any SpeciesType* or ReactionType*, but we do memory 
       // manage the string* in theSpeciesListCatalog.
 
@@ -322,8 +334,9 @@ namespace fnd
 
     static void setPredictedSpeciesReactionRatio(float maxSize)
     {
-      if (maxSize <= 0.0f) return
-                             ReactionNetworkDescription<SpeciesType, ReactionType>::estimatedSpeciesReactionRatio = maxSize;
+      if (maxSize <= 0.0f) return;
+      ReactionNetworkDescription<SpeciesType, ReactionType>::estimatedSpeciesReactionRatio = maxSize;
+                             
     }
 
     static unsigned int getPredictedSpeciesNetworkSize()

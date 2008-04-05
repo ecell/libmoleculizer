@@ -26,21 +26,34 @@
 #include "noSuchNameManglerXcpt.hh"
 #include "nmrManglerFactory.hh"
 #include "mzr/mzrSpecies.hh"
+#include "plex/mzrPlexSpecies.hh"
 #include "mzr/unit.hh"
-
+#include "mol/molUnit.hh"
+#include "plex/plexUnit.hh"
 
 namespace nmr
 {
+
   template <typename molT>
   class nmrUnit : public mzr::unit
   {
     typedef molT MolType;
 
+    mzr::mzrUnit& rMzrUnit;
+    bnd::molUnit& rMolUnit;
+    plx::plexUnit& rPlexUnit;
+
   public:
-    nmrUnit(mzr::moleculizer& rMoleculizer)
+    nmrUnit(mzr::moleculizer& rMoleculizer,
+            mzr::mzrUnit& refMzrUnit,
+            bnd::molUnit& refMolUnit,
+            plx::plexUnit& refPlexUnit)
       :
       unit("nmr", 
            rMoleculizer),
+      rMzrUnit(refMzrUnit),
+      rMolUnit(refMolUnit),
+      rPlexUnit(refPlexUnit),
       ptrNameManglerFactory( new NameManglerFactory<molT> ),
       ptrNameAssembler( NULL )
     {
@@ -51,6 +64,12 @@ namespace nmr
     {
       delete ptrNameManglerFactory;
       delete ptrNameAssembler;
+    }
+
+    plx::mzrPlexSpecies* 
+    makePlexFromName(const std::string mangledName)
+    {
+      return NULL;
     }
     
     const NameAssembler<molT>* getNameAssembler() const throw( utl::xcpt );

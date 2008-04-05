@@ -37,8 +37,14 @@
 #include "cpx/plexFamily.hh"
 #include "plex/mzrPlex.hh"
 #include "plex/mzrPlexSpecies.hh"
-#include "nmr/nmrUnit.hh"
-#include "nmr/simpleMol.hh"
+
+namespace nmr
+{
+  class SimpleMol;
+
+  template <typename T>
+  class nmrUnit;
+}
 
 namespace plx
 {
@@ -78,10 +84,8 @@ namespace plx
 		     const std::vector<cpx::molParam>& rMolParams);
 
     const nmr::NameAssembler<nmr::SimpleMol>*
-    getNamingStrategy() const
-    {
-      return rNmrUnit.getNameAssembler();
-    }
+    getNamingStrategy() const;
+
 
     // Output routine.
     void

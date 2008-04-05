@@ -29,8 +29,15 @@
 #include "utl/dom.hh"
 #include "cpx/recognizer.hh"
 #include "plex/mzrPlexFamily.hh"
-#include "nmr/nmrUnit.hh"
-#include "nmr/simpleMol.hh"
+// #include "nmr/nmrUnit.hh"
+// #include "nmr/simpleMol.hh"
+
+namespace nmr
+{
+  class SimpleMol;
+  template <typename T>
+  class NmrUnit;
+}
 
 namespace plx
 {

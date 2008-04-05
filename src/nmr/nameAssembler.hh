@@ -60,7 +60,10 @@ namespace nmr
       return createNameFromOutputState( anOutputState );
     }
 
-    virtual std::string createNameFromOutputState( const detail::ComplexOutputState& aComplexOutputstate) const = 0;
+
+    virtual std::string createNameFromOutputState( const detail::ComplexOutputState& aComplexOutputState) const = 0;
+    virtual detail::ComplexOutputState createOutputStateFromName( const std::string& aComplexOutputState) const = 0;
+    
 
   };
 

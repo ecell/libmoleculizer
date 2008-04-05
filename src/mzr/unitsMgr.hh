@@ -27,8 +27,8 @@
 #define UNITSMGR_H
 
 #include "utl/autoVector.hh"
-#include "nmr/simpleMol.hh"
-#include "nmr/nmrUnit.hh"
+//#include "nmr/simpleMol.hh"
+//#include "nmr/nmrUnit.hh"
 #include "mzr/unit.hh"
 
 namespace mzr
@@ -54,6 +54,14 @@ namespace stoch
 namespace ftr
 {
   class ftrUnit;
+}
+
+namespace nmr
+{
+  class SimpleMol;
+ 
+  template <typename T>
+  class nmrUnit;
 }
 
 namespace mzr

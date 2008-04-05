@@ -25,6 +25,8 @@
 
 #include "plex/mzrOmniPlex.hh"
 #include "plex/mzrPlexFamily.hh"
+#include "nmr/nmrUnit.hh"
+#include "nmr/simpleMol.hh"
 
 namespace plx
 {
@@ -86,4 +88,11 @@ namespace plx
 		  insertMzrPlexSpecies(pExplicitSpeciesElt,
 				       molarFactor));
   }
+
+  const nmr::NameAssembler<nmr::SimpleMol>*
+  mzrPlexFamily::getNamingStrategy() const
+  {
+    return rNmrUnit.getNameAssembler();
+  }
+
 }

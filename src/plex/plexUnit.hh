@@ -26,11 +26,13 @@
 #ifndef PLEXUNIT_H
 #define PLEXUNIT_H
 
+
 #include <algorithm>
 #include "utl/platform.hh"
 #include "cpx/plexQuery.hh"
 #include "cpx/omniStructureQuery.hh"
 #include "cpx/omniPlex.hh"
+#include "plex/mzrRecognizer.hh"
 #include "mzr/mzrUnit.hh"
 #include "mzr/mzrEltName.hh"
 #include "mzr/moleculizer.hh"
@@ -41,12 +43,14 @@
 #include "nmr/nmrUnit.hh"
 #include "plex/plexEltName.hh"
 #include "plex/mzrPlexSpecies.hh"
-#include "plex/mzrRecognizer.hh"
 #include "plex/mzrPlexFamily.hh"
 #include "plex/mzrOmniPlex.hh"
 
 namespace plx
 {
+
+  class mzrRecognizer;
+
   /*! \defgroup plexGroup The plex unit.
     \ingroup unitsGroup
     \brief Provides complexes and subcomplexes.

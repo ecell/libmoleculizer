@@ -39,21 +39,18 @@ namespace nmr
   {
     typedef molT MolType;
 
-    mzr::mzrUnit& rMzrUnit;
-    bnd::molUnit& rMolUnit;
-    plx::plexUnit& rPlexUnit;
+    mzr::mzrUnit* pMzrUnit;
+    bnd::molUnit* pMolUnit;
+    plx::plexUnit* pPlexUnit;
 
   public:
-    nmrUnit(mzr::moleculizer& rMoleculizer,
-            mzr::mzrUnit& refMzrUnit,
-            bnd::molUnit& refMolUnit,
-            plx::plexUnit& refPlexUnit)
+    nmrUnit(mzr::moleculizer& rMoleculizer)
       :
       unit("nmr", 
            rMoleculizer),
-      rMzrUnit(refMzrUnit),
-      rMolUnit(refMolUnit),
-      rPlexUnit(refPlexUnit),
+      pMzrUnit(NULL),
+      pMolUnit(NULL),
+      pPlexUnit(NULL),
       ptrNameManglerFactory( new NameManglerFactory<molT> ),
       ptrNameAssembler( NULL )
     {
@@ -62,9 +59,45 @@ namespace nmr
     
     ~nmrUnit()
     {
+      // Don't delete any pointers to Units.
       delete ptrNameManglerFactory;
       delete ptrNameAssembler;
     }
+
+    void
+    setMzrUnit(mzr::mzrUnit* ptrMzrUnit)
+    {
+      pMzrUnit = ptrMzrUnit;
+    }
+
+    mzr::mzrUnit* getMzrUnit()
+    {
+      return pMzrUnit;
+    }
+
+    void 
+    setPlexUnit(plx::plexUnit* ptrPlexUnit)
+    {
+      pPlexUnit = ptrPlexUnit;
+    }
+
+    plx::plexUnit* getPlexUnit()
+    {
+      return pPlexUnit;
+    }
+
+    void setMolUnit(bnd::molUnit* ptrMolUnit)
+    {
+      pMolUnit = ptrMolUnit;
+    }
+
+    bnd::molUnit* getMolUnit()
+    {
+      return pMolUnit;
+    }
+
+    
+
 
     plx::mzrPlexSpecies* 
     makePlexFromName(const std::string mangledName)

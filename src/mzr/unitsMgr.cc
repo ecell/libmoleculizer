@@ -38,6 +38,7 @@ namespace mzr
 {
   unitsMgr::
   unitsMgr(moleculizer& rMoleculizer) :
+    pNmrUnit(new nmr::nmrUnit<nmr::SimpleMol>(rMoleculizer) ),
     pMzrUnit(new mzr::mzrUnit(rMoleculizer)),
     pMolUnit(new bnd::molUnit(rMoleculizer)),
     pPlexUnit(new plx::plexUnit(rMoleculizer,
@@ -53,12 +54,12 @@ namespace mzr
     pFtrUnit(new ftr::ftrUnit(rMoleculizer,
      			      *pMzrUnit,
 			      *pMolUnit,
-			      *pPlexUnit)),
-    pNmrUnit(new nmr::nmrUnit<nmr::SimpleMol>(rMoleculizer,
-                                              *pMzrUnit,
-                                              *pMolUnit,
-                                              *pPlexUnit))
+			      *pPlexUnit))
   {
+
+    pNmrUnit->setMzrUnit(pMzrUnit);
+    pNmrUnit->setMolUnit(pMolUnit);
+    pNmrUnit->setPlexUnit(pPlexUnit);
 
     // Note that these need to be in output order, which is slightly
     // different from linkage order: mzrUnit "plays cleanup" by parsing
@@ -76,6 +77,8 @@ namespace mzr
     addEntry(pPlexUnit);
     addEntry(pFtrUnit);
     addEntry(pMzrUnit);
+
+
   }
 
   // Class for constructing overall input capabilities of moleculizer

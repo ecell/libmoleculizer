@@ -98,6 +98,7 @@ namespace mzr
         addFunction(std::string name, DebugClassFunctionPtr theFuncPtr)
         {
             theDebugFunctions.push_back( std::make_pair( name, theFuncPtr) );
+            return true;
         }
         
     private:

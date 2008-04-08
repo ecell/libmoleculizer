@@ -275,6 +275,8 @@ namespace mzr
       {
       }
 
+    return;
+
   }
 
   void moleculizer::DEBUG_changeNamingStrategy()

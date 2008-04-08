@@ -75,6 +75,9 @@ namespace fnd
       theName( "" )
     {}
 
+    virtual ~basicReaction()
+    {}
+
     void
     addReactant(speciesType* pSpecies,
 		int multiplicity);

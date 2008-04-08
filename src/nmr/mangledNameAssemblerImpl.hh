@@ -26,6 +26,7 @@
 
 
 #include "complexSpeciesOutputMinimizer.hh"
+#include "utl/utility.hh"
 #include <iostream>
 
 namespace nmr
@@ -33,30 +34,45 @@ namespace nmr
   template <typename molT>
   detail::ComplexOutputState MangledNameAssembler<molT>::createOutputStateFromName( const std::string& name) const
   {
-    std::string deliminator("___");
-
-    std::string::size_type firstCharOfMols = name.find_first_not_of(deliminator, 0);
-    std::string::size_type lastCharOfMols = name.find_first_of(deliminator, firstCharOfMols);
-    std::string::size_type firstCharOfBindings = name.find_first_not_of(deliminator, lastCharOfMols);
-    std::string::size_type lastCharOfBindings = name.find_first_of(deliminator, firstCharOfBindings);
-    std::string::size_type firstCharOfModifications = name.find_first_not_of(deliminator, lastCharOfBindings);
-    std::string::size_type lastCharOfModifications = name.size();
+//     std::string molString;
+//     std::string bindingsString;
+//     std::string modificationString;
 
 
-    std::string molString(name,
-                          firstCharOfMols, 
-                          lastCharOfMols);
+//     const std::string DELIMINATOR("___");
+
+//     std::string::size_type firstCharOfMols = name.find_first_not_of(DELIMINATOR, 0);
+//     std::string::size_type lastCharOfMols = name.find_first_of(DELIMINATOR, firstCharOfMols);
+//     std::string::size_type firstCharOfBindings = name.find_first_not_of(DELIMINATOR, lastCharOfMols);
+//     std::string::size_type lastCharOfBindings = name.find_first_of(DELIMINATOR, firstCharOfBindings);
+//     std::string::size_type firstCharOfModifications = name.find_first_not_of(DELIMINATOR, lastCharOfBindings);
+//     std::string::size_type lastCharOfModifications = name.size();
+
+
+//     std::string molString(name,
+//                           firstCharOfMols, 
+//                           lastCharOfMols - firstCharOfMols);
     
-    std::string bindingsString(name,
-                               firstCharOfBindings,
-                               lastCharOfBindings);
+//     std::string bindingsString(name,
+//                                firstCharOfBindings,
+//                                lastCharOfBindings - firstCharOfBindings);
     
-    std::string modificationsString(name,
-                                    firstCharOfModifications);
-    
-    std::cout << molString << std::endl;
-    std::cout << bindingsString << std::endl;
-    std::cout << modificationsString << std::endl;
+//     std::string modificationsString(name,
+//                                     firstCharOfModifications,
+//                                     lastCharOfModifications - firstCharOfModifications);
+
+//     std::cout << name << std::endl;
+//     std::cout << molString << std::endl;
+//     std::cout << bindingsString << std::endl;
+//     std::cout << modificationsString << std::endl;
+
+    std::vector<std::string> tokens;
+    utl::tokenize(name, tokens, "___");
+    std::cout << tokens[0] << std::endl;
+    std::cout << tokens[1] << std::endl;
+    std::cout << tokens[2] << std::endl;
+
+    return detail::ComplexOutputState();
     
   }
   

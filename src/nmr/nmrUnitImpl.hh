@@ -48,6 +48,7 @@ namespace nmr
     catch( NoSuchNameManglerXcpt xcpt)
       {
         // Catch and release...
+        std::cout << "HELP ME HELP ME" << endl;
         throw xcpt;
       }
   }

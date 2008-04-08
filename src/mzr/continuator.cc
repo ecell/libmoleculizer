@@ -130,7 +130,6 @@ namespace mzr
       = utl::dom::mustGetAttrDouble(pTimeElement,
 				    eltName::time_secondsAttr);
 
-
     // Extract model info.  This has to be done after the simulation time is
     // restored, so that explicit events in the moleculizer-input that have
     // already happened will not be scheduled.

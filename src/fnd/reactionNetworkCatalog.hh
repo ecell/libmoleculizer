@@ -322,7 +322,7 @@ namespace fnd
       if (reserveMemory)
         {
           // theSpeciesListCatalog.reserve( getPredictedSpeciesNetworkSize() );
-          //                 theCompleteReactionList.reserve( getPredictedSpeciesNetworkSize() * \
+          // theCompleteReactionList.reserve( getPredictedSpeciesNetworkSize() );
           // static_cast<unsigned int>(getPredictedSpeciesReactionRatio() + 1) );
         }
     }

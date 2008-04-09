@@ -34,6 +34,14 @@ namespace utl
                 std::vector<std::string>& tokens,
                 const std::string& deliminator = " ");
 
+  template <class T>
+  bool from_string(T& t, 
+                   const std::string& s)
+  {
+    std::istringstream iss(s);
+    return !(iss >> t).fail();
+  }
+  
 
 }
 

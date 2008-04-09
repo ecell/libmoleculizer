@@ -55,6 +55,10 @@ namespace nmr
     std::string constructMangledBindingList(const detail::ComplexOutputState& aComplexOutputState) const;
     std::string constructMangledModificationList(const detail::ComplexOutputState& aComplexOutputState) const;
     std::string getEncodedLength(const std::string& stringInQuestion) const;
+
+    void parseMolString(const std::string& molString, std::vector<detail::ComplexOutputState::MolTokenStr>& molTokenVector) const;
+    void parseBindingString(const std::string& bindingString, std::vector<detail::ComplexOutputState::BindingTokenStr>& bindingTokenVector ) const;
+    void parseModificationString(const std::string& modString, std::vector<detail::ComplexOutputState::ModificationTokenStr>& modificationTokenVector) const;
    
     std::string processBindingString(const std::string& aString) const
     {

@@ -34,46 +34,23 @@ namespace nmr
   template <typename molT>
   detail::ComplexOutputState MangledNameAssembler<molT>::createOutputStateFromName( const std::string& name) const
   {
-//     std::string molString;
-//     std::string bindingsString;
-//     std::string modificationString;
-
-
-//     const std::string DELIMINATOR("___");
-
-//     std::string::size_type firstCharOfMols = name.find_first_not_of(DELIMINATOR, 0);
-//     std::string::size_type lastCharOfMols = name.find_first_of(DELIMINATOR, firstCharOfMols);
-//     std::string::size_type firstCharOfBindings = name.find_first_not_of(DELIMINATOR, lastCharOfMols);
-//     std::string::size_type lastCharOfBindings = name.find_first_of(DELIMINATOR, firstCharOfBindings);
-//     std::string::size_type firstCharOfModifications = name.find_first_not_of(DELIMINATOR, lastCharOfBindings);
-//     std::string::size_type lastCharOfModifications = name.size();
-
-
-//     std::string molString(name,
-//                           firstCharOfMols, 
-//                           lastCharOfMols - firstCharOfMols);
-    
-//     std::string bindingsString(name,
-//                                firstCharOfBindings,
-//                                lastCharOfBindings - firstCharOfBindings);
-    
-//     std::string modificationsString(name,
-//                                     firstCharOfModifications,
-//                                     lastCharOfModifications - firstCharOfModifications);
-
-//     std::cout << name << std::endl;
-//     std::cout << molString << std::endl;
-//     std::cout << bindingsString << std::endl;
-//     std::cout << modificationsString << std::endl;
 
     std::vector<std::string> tokens;
     utl::tokenize(name, tokens, "___");
-    std::cout << tokens[0] << std::endl;
-    std::cout << tokens[1] << std::endl;
-    std::cout << tokens[2] << std::endl;
+
+    std::string theMolString( tokens[0] );
+    std::string theBindingString(tokens[1] );
+    std::string theModificationString( tokens[0] );
+
+    std::vector<detail::ComplexOutputState::MolTokenStr> molTokens;
+    std::vector<detail::ComplexOutputState::BindingTokenStr> bindingTokens;
+    std::vector<detail::ComplexOutputState::ModificationTokenStr> modificationTokens;
+      
+    parseMolString(theMolString, molTokens);
+    parseBindingString( theBindingString, bindingTokens);
+//     parseModificationString( theModificationString, modificationTokens);
 
     return detail::ComplexOutputState();
-    
   }
   
   template <typename molT>
@@ -176,6 +153,99 @@ namespace nmr
 	tmp="_" + detail::stringify(len) + "_";
 	return tmp;
       }
+  }
+
+  template <typename molT>
+  void MangledNameAssembler<molT>::parseMolString(const std::string& molString, std::vector<detail::ComplexOutputState::MolTokenStr>& molTokenVector) const
+  {
+    std::string::size_type index = 0;
+    while(true)
+      {
+        if( index == molString.size() ) return;
+        
+
+        std::string::size_type lengthOfMolNameToken(0);
+        
+        // Index here is going to point to the LengthToken
+        if ( molString[index] == '_' )
+          {
+            index+=1;
+            std::string::size_type numberEnd = molString.find( "_", index);
+            utl::from_string<std::string::size_type>(lengthOfMolNameToken, std::string(molString, index, numberEnd - index));
+            index = numberEnd + 1;
+          }
+        else
+          {
+            utl::from_string<std::string::size_type>(lengthOfMolNameToken, std::string(molString, index, 1));
+            index += 1;
+          }
+
+        // Post conditions:
+        // 1.  Index should point to the first character of the name
+        // 2.  length should be the appropriate length of the name.
+
+        molTokenVector.push_back( std::string(molString, index, lengthOfMolNameToken) );
+        index += lengthOfMolNameToken;
+
+        return;
+      }
+    
+    
+  }
+
+  template <typename molT>
+  void MangledNameAssembler<molT>::parseBindingString(const std::string& bindingString, std::vector<detail::ComplexOutputState::BindingTokenStr>& bindingTokenVector ) const
+  {
+    std::vector<std::string> tmpVector;
+    std::string::size_type currentBindingLength;
+    
+    std::string::size_type index = 0;
+    
+    while(true)
+      {
+        if ( index == bindingString.size() ) break;
+        
+        if ( bindingString[index] == '_' )
+          {
+            index += 1;
+            std::string::size_type endOfLengthToken = bindingString.find("_", index);
+            utl::from_string<std::string::size_type>(currentBindingLength, std::string(bindingString, index, endOfLengthToken - index));
+            index = endOfLengthToken + 1;
+          }
+        else
+          {
+            utl::from_string<std::string::size_type>(currentBindingLength, std::string(bindingString, index, 1) );
+            index += 1;
+          }
+
+        // Post conditions:
+        // 1. Index should point to the first character of the name
+        // 2. currentBindingLength should be the length of the next index number.
+
+        tmpVector.push_back( std::string(bindingString, index, currentBindingLength) );
+        index += currentBindingLength;
+      }
+
+    if (tmpVector.size() % 4 != 0)
+      {
+        throw 1;
+      }
+
+    for(unsigned int ii = 0;
+        ii != tmpVector.size() / 4;
+        ++ii)
+      {
+        bindingTokenVector.push_back( std::make_pair( std::make_pair(tmpVector[4*ii], tmpVector[4*ii + 1]), 
+                                                      std::make_pair(tmpVector[4*ii+2], tmpVector[4*ii+3]) ) );
+      }
+
+    return;
+            
+  }
+
+  template <typename molT>
+  void MangledNameAssembler<molT>::parseModificationString(const std::string& modString, std::vector<detail::ComplexOutputState::ModificationTokenStr>& modificationTokenVector) const
+  {
   }
 
 

@@ -28,11 +28,13 @@
 #ifndef __MANGLEDNAMEASSEMBLER_HH
 #define __MANGLEDNAMEASSEMBLER_HH
 
-#include <string>
-#include <vector>
 #include "nameAssembler.hh"
 #include "complexSpecies.hh"
 #include "complexOutputState.hh"
+
+#include <iostream>
+#include <string>
+#include <vector>
 
 namespace nmr
 {
@@ -45,6 +47,20 @@ namespace nmr
     typedef std::vector<std::string>::iterator strVectIter;
     typedef std::vector<std::string>::const_iterator cstrVectIter;
 
+    MangledNameAssembler()
+      :
+      NameAssembler<molT>("MangledNameAssembler")
+    {
+      try
+        {
+          assertEncodeDecodeAccuracy(this);
+        }
+      catch(encodeDecodeInconsistencyXcpt xcpt)
+        {
+          xcpt.warn();
+          std::cerr << "Continuing..." << std::endl;
+        }
+    }
 
     std::string createNameFromOutputState( const detail::ComplexOutputState& aCOS) const;
     detail::ComplexOutputState createOutputStateFromName(const std::string& name) const;
@@ -89,6 +105,7 @@ namespace nmr
     std::string processModificationToken(const std::string& aModString) const
     {
       std::string returnVal;
+
       if (aModString.size()<10)
 	{
 	  returnVal =  "_" + detail::stringify(aModString.size()) + aModString;

@@ -24,23 +24,23 @@
 //   Berkeley, CA 94704
 /////////////////////////////////////////////////////////////////////////////
 
-
-#include "complexSpeciesOutputMinimizer.hh"
 #include "utl/utility.hh"
+#include "nmr/nmrExceptions.hh"
+#include "complexSpeciesOutputMinimizer.hh"
 #include <iostream>
+#include <utility>
 
 namespace nmr
 {
   template <typename molT>
   detail::ComplexOutputState MangledNameAssembler<molT>::createOutputStateFromName( const std::string& name) const
   {
-
     std::vector<std::string> tokens;
     utl::tokenize(name, tokens, "___");
 
     std::string theMolString( tokens[0] );
     std::string theBindingString(tokens[1] );
-    std::string theModificationString( tokens[0] );
+    std::string theModificationString( tokens[2] );
 
     std::vector<detail::ComplexOutputState::MolTokenStr> molTokens;
     std::vector<detail::ComplexOutputState::BindingTokenStr> bindingTokens;
@@ -48,9 +48,16 @@ namespace nmr
       
     parseMolString(theMolString, molTokens);
     parseBindingString( theBindingString, bindingTokens);
-//     parseModificationString( theModificationString, modificationTokens);
+    parseModificationString( theModificationString, modificationTokens);
 
-    return detail::ComplexOutputState();
+    detail::ComplexOutputState newOutputState;
+    newOutputState.theMolTokens = molTokens;
+    newOutputState.theBindingTokens = bindingTokens;
+    newOutputState.theModificationTokens = modificationTokens;
+
+    std::cout << "#############################################" << std::endl;
+    std::cout << name << std::endl << "->" << std::endl << newOutputState << std::endl;
+    return newOutputState;
   }
   
   template <typename molT>
@@ -124,7 +131,6 @@ namespace nmr
 	 i!=aComplexOutputState.theModificationTokens.end();
 	 ++i)
        {
-
 	 std::string currentModificationString;
 	 std::string first = i->first;
 	 std::string second = i->second.first;
@@ -163,7 +169,6 @@ namespace nmr
       {
         if( index == molString.size() ) return;
         
-
         std::string::size_type lengthOfMolNameToken(0);
         
         // Index here is going to point to the LengthToken
@@ -196,6 +201,7 @@ namespace nmr
   template <typename molT>
   void MangledNameAssembler<molT>::parseBindingString(const std::string& bindingString, std::vector<detail::ComplexOutputState::BindingTokenStr>& bindingTokenVector ) const
   {
+    
     std::vector<std::string> tmpVector;
     std::string::size_type currentBindingLength;
     
@@ -208,14 +214,14 @@ namespace nmr
         if ( bindingString[index] == '_' )
           {
             index += 1;
+            //
             std::string::size_type endOfLengthToken = bindingString.find("_", index);
             utl::from_string<std::string::size_type>(currentBindingLength, std::string(bindingString, index, endOfLengthToken - index));
             index = endOfLengthToken + 1;
           }
         else
           {
-            utl::from_string<std::string::size_type>(currentBindingLength, std::string(bindingString, index, 1) );
-            index += 1;
+            currentBindingLength = 1;
           }
 
         // Post conditions:
@@ -226,11 +232,14 @@ namespace nmr
         index += currentBindingLength;
       }
 
+    // Checking for an badly formed binding string
+    // Error condition.
     if (tmpVector.size() % 4 != 0)
       {
-        throw 1;
+        throw badBindingNameXcpt( bindingString);
       }
 
+    // Package the sequence of integers into a sequence of bindingTokens
     for(unsigned int ii = 0;
         ii != tmpVector.size() / 4;
         ++ii)
@@ -246,6 +255,74 @@ namespace nmr
   template <typename molT>
   void MangledNameAssembler<molT>::parseModificationString(const std::string& modString, std::vector<detail::ComplexOutputState::ModificationTokenStr>& modificationTokenVector) const
   {
+    // A mod string should be ( string, (string, string) )
+
+    std::vector<std::string> tmpVector;
+    std::string::size_type index(0);
+    std::string::size_type numberOfCharactersInNextToken;
+    
+    while(true)
+      {
+        if (index == modString.size() ) break;
+
+        // According to processModificationToken, each token begins with a _
+        if (modString[index] != '_') throw badModificationNameXcpt( modString );
+
+        ++index;
+
+        if (modString[index] == '_')
+          {
+            // We have a multi-charecter length to read.
+
+            index += 1;
+            
+            std::string::size_type endOfLengthString = modString.find("_", index);
+            utl::from_string<std::string::size_type>(numberOfCharactersInNextToken, 
+                                                     std::string(modString, 
+                                                                 index, 
+                                                                 endOfLengthString - index));
+            index = endOfLengthString + 1;
+          }
+        else
+          {
+            utl::from_string<std::string::size_type>(numberOfCharactersInNextToken,
+                                                     std::string(modString, 
+                                                                 index,
+                                                                 1));
+            index += 1;
+          }
+
+        tmpVector.push_back( std::string(modString,
+                                         index, 
+                                         numberOfCharactersInNextToken) );
+
+        index += numberOfCharactersInNextToken;
+
+      }
+
+    if( tmpVector.size() % 3 != 0)
+      {
+        std::cerr << "##############################" << std::endl;
+        std::cerr << "Error in parsing modificaton string '" << modString << "'." << std::endl;
+        std::cerr << "Which was parsed as: " << std::endl;
+        for (unsigned int ii = 0;
+             ii != tmpVector.size();
+             ++ii)
+          {
+            std::cerr << ii << ":\t\"" << tmpVector[ii] << "\"" << std::endl;
+          }
+        throw badModificationNameXcpt( modString );
+      }
+
+    for( unsigned int ii = 0;
+         ii != tmpVector.size() / 3;
+         ++ii)
+      {
+        modificationTokenVector.push_back( std::make_pair( tmpVector[3*ii],
+                                                           std::make_pair(tmpVector[3*ii + 1], tmpVector[3*ii + 2])));
+      }
+
+
   }
 
 

@@ -27,14 +27,16 @@
 #ifndef __NAMEASSEMBLER_HH
 #define __NAMEASSEMBLER_HH
 
-#include <iterator>
-#include <vector>
-#include <string>
-#include <utility>
+#include "nmrExceptions.hh"
 
 #include "complexSpecies.hh"
 #include "complexOutputState.hh"
 #include "complexSpeciesOutputMinimizer.hh"
+
+#include <iterator>
+#include <vector>
+#include <string>
+#include <utility>
 
 namespace nmr
 {
@@ -43,6 +45,12 @@ namespace nmr
   class NameAssembler
   {
   public:
+    NameAssembler(const std::string& assemblerName)
+      :
+      name(assemblerName)
+    {
+    }
+
     virtual ~NameAssembler()
     {}
 
@@ -59,6 +67,30 @@ namespace nmr
       aComplexSpecies.constructOutputState( anOutputState );
       return createNameFromOutputState( anOutputState );
     }
+
+    const std::string& getName()
+    {
+      return name;
+    }
+
+  protected:
+
+    const std::string name;
+
+    // This function is intended as a debugish sort of a function, which throws an exception if a complex 
+    // output state does not get encoded and then decoded in the same way
+
+    static void assertEncodeDecodeAccuracy(NameAssembler<molT>* ptrNameAssembler) throw(encodeDecodeInconsistencyXcpt) 
+    {
+      detail::ComplexOutputState aComplexOutputState;
+
+      detail::ComplexOutputState decodedEncodingOS = ptrNameAssembler->createOutputStateFromName( ptrNameAssembler->createNameFromOutputState( aComplexOutputState ) );
+      if (! (decodedEncodingOS == aComplexOutputState)  )
+        {
+          throw encodeDecodeInconsistencyXcpt(ptrNameAssembler->getName());
+        }
+    }
+
 
 
     virtual std::string createNameFromOutputState( const detail::ComplexOutputState& aComplexOutputState) const = 0;

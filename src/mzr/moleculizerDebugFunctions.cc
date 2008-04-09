@@ -262,21 +262,29 @@ namespace mzr
     cin >> speciesTwo;
     cout << endl;
 
-
     try
       {
         mzr::mzrSpecies* ptrSpeciesOne = getSpeciesFromName( speciesOne );
         mzr::mzrSpecies* ptrSpeciesTwo = getSpeciesFromName( speciesTwo );
+        mzrReaction* reactionBetweenSpecies= 
+          this->findReactionWithSubstrates(ptrSpeciesOne, ptrSpeciesTwo);
+
+        if(reactionBetweenSpecies)
+          {
+            std::cout << "Found one." << std::endl;
+          }
+        else
+          {
+            std::cout << "No reaction between" << std::endl;
+          }
+
       }
+
      catch(mzr::illegalSpeciesNameXcpt xcpt)
        {
+         xcpt.warn();
+         std::cerr << "Continuing." << std::endl;
        }
-    catch(...)
-      {
-      }
-
-    return;
-
   }
 
   void moleculizer::DEBUG_changeNamingStrategy()

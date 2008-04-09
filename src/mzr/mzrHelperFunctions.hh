@@ -52,7 +52,7 @@ namespace mzr
         // strategy, as this means users don't have to provide template paramaters.
 
         // On the other hand, it means we cannot derive from std::unary_function...
-
+      // TODO -- the derivation
         class printPtrWithName
         {
         public:

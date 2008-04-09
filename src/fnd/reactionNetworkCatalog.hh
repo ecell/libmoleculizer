@@ -102,6 +102,7 @@ namespace fnd
         {
           // Skip it if not an unary reaction.p
         }
+      return NULL;
     }
 
     const ptrReactionType
@@ -149,6 +150,7 @@ namespace fnd
     {
       const std::string* pString = &name;
       SpeciesCatalogCIter theIter = theSpeciesListCatalog.find(pString);
+
       if (theIter != theSpeciesListCatalog.end() )
         {
           return *(theIter->second);

@@ -29,6 +29,7 @@
 
 #include <vector>
 #include <string>
+#include <iostream>
 
 namespace nmr
 {
@@ -40,15 +41,61 @@ namespace nmr
     {
       typedef std::string MolTokenStr;
       typedef std::pair<std::pair<std::string, std::string>, std::pair<std::string, std::string> > BindingTokenStr;
+
+
       typedef std::pair<std::string, std::pair<std::string, std::string> > ModificationTokenStr; 
+
 
       // ModificationTokens correspond 1-1 with modifications.  A ModToken 
       // (a, (b,c)) will have a and b as stringified ints.  In this case, a is the MolIndex,
       // b is the value of getModificationSiteIndex() and c in the value of the Modification.
-
       std::vector<MolTokenStr> theMolTokens;
       std::vector<BindingTokenStr> theBindingTokens;
       std::vector<ModificationTokenStr> theModificationTokens;
+
+      bool operator!=(const ComplexOutputState& other) const
+      {
+        return (*this != other);
+      }
+
+      bool operator==(const ComplexOutputState& other) const
+      {
+        if (theMolTokens.size() != other.theMolTokens.size() || 
+            theBindingTokens.size() != other.theBindingTokens.size() || 
+            theModificationTokens.size() != other.theModificationTokens.size() )
+          {
+            return false;
+          }
+
+        for(std::vector<MolTokenStr>::const_iterator thisIter = theMolTokens.begin(), 
+              otherIter = other.theMolTokens.begin();
+            thisIter != theMolTokens.end();
+            ++thisIter, ++otherIter)
+          {
+            if (*thisIter != *otherIter) return false;
+          }
+
+        for(std::vector<BindingTokenStr>::const_iterator thisIter = theBindingTokens.begin(), 
+              otherIter = other.theBindingTokens.begin();
+            thisIter != theBindingTokens.end();
+            ++thisIter, ++otherIter)
+          {
+            if (*thisIter != *otherIter) return false;
+          }
+
+        for(std::vector<ModificationTokenStr>::const_iterator thisIter = theModificationTokens.begin(), 
+              otherIter = other.theModificationTokens.begin();
+            thisIter != theModificationTokens.end();
+            ++thisIter, ++otherIter)
+          {
+            if (*thisIter != *otherIter) return false;
+          }
+        
+        // If we've gone through all that and still haven't show them to be different, chances are good they're 
+        // the same...
+
+        return true;
+      }
       
       void addMolTokenToOutputState(MolTokenStr aMolToken)
       {
@@ -72,11 +119,12 @@ namespace nmr
       }
       
     };
-
   }
 
 }
 
+std::ostream& operator<<(std::ostream& os, const nmr::detail::ComplexOutputState& cos);
+  
 
 
 #endif

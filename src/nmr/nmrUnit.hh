@@ -96,9 +96,6 @@ namespace nmr
       return pMolUnit;
     }
 
-    
-
-
     plx::mzrPlexSpecies* 
     makePlexFromName(const std::string mangledName)
     {

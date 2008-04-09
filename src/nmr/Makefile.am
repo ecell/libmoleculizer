@@ -28,6 +28,7 @@ AM_LDFLAGS= -all-static
 endif
 
 libmoleculizer_nmr_la_SOURCES =\
+complexOutputState.cc \
 complexSpeciesManglerNames.cc \
 nmrEltName.cc \
 permutation.cc \

@@ -52,6 +52,44 @@ namespace nmr
     {}
   };
 
+  class NoSuchBindingSiteXcpt : public utl::xcpt
+  {
+    static std::string 
+    mkMsg( const std::string& rNonexistentBindingSiteName )
+    {
+      std::ostringstream msgStream;
+      msgStream << "BindingSite '" 
+                << rNonexistentBindingSiteName 
+                << "' does not exist.";
+      return msgStream.str();
+    }
+
+  public:
+    NoSuchBindingSiteXcpt(const std::string& rNonexistentBindingSiteName)
+      :
+      utl::xcpt(rNonexistentBindingSiteName)
+    {}
+  };
+
+  class NoSuchModificationSiteXcpt : public utl::xcpt
+  {
+    static std::string 
+    mkMsg( const std::string& rNonexistentModificationSiteName )
+    {
+      std::ostringstream msgStream;
+      msgStream << "ModificationSite '" 
+                << rNonexistentModificationSiteName 
+                << "' does not exist.";
+      return msgStream.str();
+    }
+
+  public:
+    NoSuchModificationSiteXcpt(const std::string& rNonexistentModificationSiteName)
+      :
+      utl::xcpt(rNonexistentModificationSiteName)
+    {}
+  };
+    
   class badBindingNameXcpt : public utl::xcpt
   {
   public:

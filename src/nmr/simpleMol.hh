@@ -38,7 +38,7 @@ namespace nmr
 {
   class SimpleMol 
     : 
-    public AbstractMol
+    public Mol
   {
     
   public:

@@ -28,60 +28,87 @@
 #ifndef __MOL_HH
 #define __MOL_HH
 
+#include "abstractMol.hh"
+
 #include <map>
 #include <string>
 #include <vector>
 #include <set>
 
-#include "abstractMol.hh"
-
 namespace nmr
 {
-    class MinimulNamedMol 
-        : 
-        public AbstractMol
+
+  class MinimalMol 
+    : 
+    public Mol
+  {
+      
+  public:
+    DECLARE_TYPE( std::vector<std::pair<ModificationSite, ModificationValue> >, ModificationList );
+      
+    MinimalMol( MolTypeCref mMolType ) 
+      : 
+      Mol(molType) 
     {
-
-    public:
-        typedef std::vector<std::pair<ModificationSite, ModificationValue>  > ModificationList;
-
-        Mol( MolType theMolType ) 
-            : 
-            AbstractMol(theMolType) 
-        {
-            ; // do nothing
-        }
-
-        bool checkIfBindingSiteExists(BindingSite aBindingSite) const;
-        bool checkIfModificationSiteExists(ModificationSite aModificationSite) const;
-
-        bool checkIfBindingSiteIsBound(BindingSite aBindingSite) const;
-
-        ModificationValue getModificationValueAtModificationSite(ModificationSite aModificationSite) const;
-        ModificationList getModificationList() const;
-
-        void bindAtBindingSite(BindingSite aBindingSite);
-        void unbindAtBindingSite(BindingSite aBindingSite);
-        void updateModificationState(ModificationSite aModificationSite,
-                                     ModificationValue aModificationValue);
+      ; // do nothing else.
+    }
+      
+    bool 
+    checkIfBindingSiteExists(BindingSite aBindingSite) 
+      const throw(NoSuchBindingSiteXcpt);
     
-        int getBindingSiteInteger(BindingSite aBindingSite) const;
-        int getModificationSiteInteger(ModificationSite aModificationSite) const;    
+    bool 
+    checkIfModificationSiteExists(ModificationSite aModificationSite) 
+      const throw(NoSuchModificationSiteXcpt);
+      
+    bool 
+    checkIfBindingSiteIsBound(BindingSite aBindingSite) 
+      const throw(NoSuchBindingSiteXcpt);
+      
+    ModificationValue 
+    getModificationValueAtModificationSite(ModificationSite aModificationSite) 
+      const throw(NoSuchModificationSiteXcpt);
 
-        void addNewBindingSite(BindingSite aBindingSite);
-        void addNewModificationSite(ModificationSite aModificationSite);
+    ModificationList 
+    getModificationList() const;
 
-//     void addNewModificationSite(ModificationSite aModificationSite,
-// 				ListOfModificationValues aListOfValidModificationValues);
+    void 
+    bindAtBindingSite(BindingSite aBindingSite) 
+      throw(NoSuchBindingSiteXcpt);
 
-    protected:
-        std::map<BindingSite, bool> theBindingSiteStates; // true means bound, false,unbound.
-        std::map<ModificationSite, ModificationValue> theModificationStates;
+    void 
+    unbindAtBindingSite(BindingSite aBindingSite) 
+      throw(NoSuchBindingSiteXcpt);
 
-        std::map<ModificationSite, std::set<ModificationValue> > theLegalModifications;
-        std::map<ModificationSite, ModificationValue> theDefaultModificationValues;
+    void 
+    updateModificationState(ModificationSite aModificationSite,
+                            ModificationValue aModificationValue) 
+      throw(NoSuchModificationSiteXcpt);
+    
+    int 
+    getBindingSiteInteger(BindingSite aBindingSite) 
+      const throw(NoSuchBindingSiteXcpt);
 
-    };
+    int 
+    getModificationSiteInteger(ModificationSite aModificationSite) 
+      const throw(NoSuchModificationSiteXcpt);    
+
+    void 
+    addNewBindingSite(BindingSite aBindingSite) 
+      throw(NoSuchBindingSiteXcpt);
+
+    void 
+    addNewModificationSite(ModificationSite aModificationSite) 
+      throw(NoSuchModificationSiteXcpt);
+
+  protected:
+    std::map<BindingSite, bool> theBindingSiteStates; // true means bound, false,unbound.
+    std::map<ModificationSite, ModificationValue> theModificationStates;
+
+    std::map<ModificationSite, std::set<ModificationValue> > theLegalModifications;
+    std::map<ModificationSite, ModificationValue> theDefaultModificationValues;
+
+  };
 
 
 }

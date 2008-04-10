@@ -71,7 +71,7 @@ namespace nmr
       typedef ModificationToken;
 
       // TODO: Change these to boost::shared_ptr sometime.
-      typedef std::vector<Mol*> MolList;
+      typedef std::vector<spMol> MolList;
       typedef std::vector<Binding> BindingList;
       typedef BindingList::iterator BindingListIter;
       typedef BindingList::const_iterator ConstBindingListIter;

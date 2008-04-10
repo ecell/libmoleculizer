@@ -23,7 +23,7 @@
 
 #include "nmrExceptions.hh"
 #include "nameAssembler.hh"
-#include "complexSpeciesManglerNames.hh"
+#include "complexSpeciesEncoderNames.hh"
 #include "nameAssemblers.hh"
 
 

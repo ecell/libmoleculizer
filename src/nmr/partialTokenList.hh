@@ -28,37 +28,50 @@
 #ifndef __PARTIALTOKENLIST_HH
 #define __PARTIALTOKENLIST_HH
 
+#include "utl/macros.hh"
+#include "nmr/mol.hh"
+
 #include <vector>
 #include <utility>
 #include <iterator>
 
 namespace nmr
 {
-
   namespace detail
   {
+    // PartialTokenList Notes
 
-    template <class molT>
+    // PartialTokenLists are designed for comparing partial name sequences, lists
+    // produced by isomorphic lists -- ie lists produced by identical complexes.
+
+    // Because of this assumption, we conclude that the MolList 'theMol' is completely known,
+    // and consists of the same members, between any two PartialTokenLists that are allowed
+    // to interact, we conclude that the words produced by any two PartialTokenLists will
+    // always be equal.
+
+    // Thus, at minimum, PartialTokenList::operator< and operator== use this assumption in their 
+    // code.
+
+    // Do not try to compare non-isomorphic PartialTokenList's.  Results will be undefined, and
+    // will likely result in a crash.
+
     struct PartialTokenList
     {
-      // PartialTokenLists are designed to compare isomorphic lists -- ie lists produced by indentical
-      // complexes.  At least operator< and operator== use this assumption in their code.
-      // Do not try to compare non-isomorphic PartialTokenList's.  Results will be undefined, and
-      // will likely result in a crash.
+      typedef boost::shared_ptr<Mol> spMol; // smart pointer
 
-      typedef molT Mol;
       typedef int MolNdx; 
-
       typedef int MolBindingSite;    
       typedef std::pair<MolNdx, MolBindingSite> BindingSite;
       typedef std::pair<BindingSite, BindingSite> Binding;
+      typedef Binding BindingToken;
 
       typedef std::string ModificationSite;
       typedef std::string ModificationValue;
       typedef std::pair<MolNdx, std::pair<ModificationSite, ModificationValue> > Modification;
+      typedef ModificationToken;
 
-
-      typedef std::vector<Mol> MolList;
+      // TODO: Change these to boost::shared_ptr sometime.
+      typedef std::vector<Mol*> MolList;
       typedef std::vector<Binding> BindingList;
       typedef BindingList::iterator BindingListIter;
       typedef BindingList::const_iterator ConstBindingListIter;
@@ -66,165 +79,42 @@ namespace nmr
       typedef ModificationList::iterator ModificationListIter;
       typedef ModificationList::const_iterator ConstModificationListIter;
 
-      PartialTokenList()
-	:
-	theMols(),
-	theBindings(),
-	theModifications(),
-	isComplete()
-      {
-	; // do nothing
-      }
-
-      PartialTokenList(const PartialTokenList<molT>& aPns) : theMols(aPns.theMols.begin(), aPns.theMols.end()),
-							     theBindings(aPns.theBindings.begin(), aPns.theBindings.end()),
-							     theModifications(aPns.theModifications.begin(), aPns.theModifications.end()),
-							     isComplete(aPns.isComplete)
+      PartialTokenList();
+      PartialTokenList(const PartialTokenList& aPns) 
+        : 
+        theMols(aPns.theMols.begin(), aPns.theMols.end()),
+        theBindings(aPns.theBindings.begin(), aPns.theBindings.end()),
+        theModifications(aPns.theModifications.begin(), aPns.theModifications.end()),
+        isComplete(aPns.isComplete)
       {}
 
-      void clear()
+      ~PartialTokenList()
       {
-	theMols.clear();
-	theBindings.clear();
-	theModifications.clear();
+        // PartialTokenLists never memory manages anything it uses.
       }
 
-    
+      void clear();
+
+    public:
+      bool isSubsetOf(const PartialTokenList& aPns) const;
+      bool isEquivalentTo(const PartialTokenList& aPns) const;
+
+      bool operator<(const PartialTokenList& aPns) const; 
+      bool operator==(const PartialTokenList& aPns) const;
+
+
+    public:
+
+    // Data Members
+    //
+
       MolList theMols;
       BindingList theBindings;
       ModificationList theModifications;  
       bool isComplete;      
-      
-      bool isSubsetOf(const PartialTokenList<molT>& aPns) const;
-      bool isEquivalentTo(const PartialTokenList<molT>& aPns) const;
-      bool operator<(const PartialTokenList<molT>& aPns) const; 
-      bool operator==(const PartialTokenList<molT>& aPns) const;
-
     };
 
-    template <class molT>
-    bool PartialTokenList<molT>::isSubsetOf(const PartialTokenList<molT>& aPns) const
-    {
-      if (theBindings.size() > aPns.theBindings.size())
-	{
-	  return false;
-	}
-      
-      ConstBindingListIter thisBindingListIter;
-      ConstBindingListIter aPnsBindingListIter;
-      
-
-      for(thisBindingListIter = theBindings.begin(), aPnsBindingListIter = aPns.theBindings.begin();
-	  thisBindingListIter != theBindings.end();
-	  ++thisBindingListIter, ++aPnsBindingListIter)
-	{
-	  if (*thisBindingListIter != *aPnsBindingListIter)
-	    {
-	      return false;
-	    }
-	}
-
-      // If we make it here, the binding list of this is a subset of the binding list of aPns.
-      // Therefore aPns does not have fewer modifications in its ModificationList than this.
-      // (If this has an incomplete binding list, it will have 0 modifications in it's list.
-      // If it has a complete binding list, then so does aPns, which means that every modification
-      // in the complex being studied is in the aPns MolList.
-      
-      ConstModificationListIter thisModificationListIter;
-      ConstModificationListIter aPnsModificationListIter;
-      
-      for(thisModificationListIter = theModifications.begin(), aPnsModificationListIter = aPns.theModifications.begin();
-	  thisModificationListIter != theModifications.end();
-	  ++thisModificationListIter, ++aPnsModificationListIter)
-	{
-	  if (*thisModificationListIter != *aPnsModificationListIter)
-	    {
-	      return false;
-	    }
-	}
-
-      return true;
-    }
-
-    template <class molT>
-    bool PartialTokenList<molT>::operator<(const PartialTokenList<molT>& aPns) const
-    {
-      // Important! This function is only properly defined when this and aPns come from 
-      // the some complex.  Don't try to compare PartialTokenLists from two 
-      // non-isomorphic complexes.  It may or may not crash, and it defenitly won't give you 
-      // meaningful results.
-
-
-      // Beacuse we assume that both aPns and this come from trying to canonicalize the same
-      // complex, we can assume their MolLists are identical, and therefore we start our comparisons
-      // with the binding lists.
-      
-      ConstBindingListIter thisBindingListIter;
-      ConstBindingListIter aPnsBindingListIter;
-
-      for(thisBindingListIter = theBindings.begin(), aPnsBindingListIter = aPns.theBindings.begin();
-	  thisBindingListIter != theBindings.end() && aPnsBindingListIter != aPns.theBindings.end();
-	  ++thisBindingListIter, ++aPnsBindingListIter)
-	{
-	  if (*thisBindingListIter < *aPnsBindingListIter)
-	    {
-	      return true;
-	    }
-	  if (*aPnsBindingListIter > *thisBindingListIter)
-	    {
-	      return false;
-	    }
-	}
-      
-      // If not both are complete, we cannot say.  Therefore return false, for this 
-      // cannot be guarenteed to be less than aPns.
-      if (!(this->isComplete && aPns.isComplete))
-	{
-	  return false;
-	}
-
-      // So their binding lists are complete, which means that we can completely compare their
-      // modification lists.  Since they both come from the same complex, we know they must 
-      // have the same number of modifications.
-
-      return theModifications < aPns.theModifications;
-    }
-      
-
-    template <class molT>
-    bool PartialTokenList<molT>::operator==(const PartialTokenList<molT>& aPns) const
-    {  
-      if (this->isSubsetOf(aPns))
-	{
-	  return true;
-	}
-      else if (aPns.isSubsetOf(*this))
-	{
-	  return true;
-	}
-      else 
-	{
-	  return false;
-	}
-    }
-
-    template <class molT>
-    bool PartialTokenList<molT>::isEquivalentTo(const PartialTokenList<molT>& aPns) const
-    {
-      if (theMols == aPns.theMols && theBindings == aPns.theBindings && theModifications == aPns.theModifications)
-	{
-	  return true;
-	}
-      else
-	{
-	  return false;
-	}
-    }
-
-
-
   }
-
 }
 
 #endif

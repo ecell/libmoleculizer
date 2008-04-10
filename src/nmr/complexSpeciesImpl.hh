@@ -24,12 +24,12 @@
 //   Berkeley, CA 94704
 /////////////////////////////////////////////////////////////////////////////
 
+#incldue "complexSpecies.hh"
 
 namespace nmr
 {
 
-  template <class molT>
-  ComplexSpecies<molT>::ComplexSpecies() 
+  ComplexSpecies::ComplexSpecies() 
     : 
     theMolAliasToNdxMap(),
     theMols(),
@@ -38,8 +38,8 @@ namespace nmr
     ; // do nothing
   }
 
-  template <class molT>
-  ComplexSpecies<molT>::ComplexSpecies(const ComplexSpecies<molT>& aComplexSpecies) 
+  
+  ComplexSpecies::ComplexSpecies(const ComplexSpecies& aComplexSpecies) 
     : 
     theMolAliasToNdxMap(aComplexSpecies.theMolAliasToNdxMap.begin(), aComplexSpecies.theMolAliasToNdxMap.end()),
     theMols(aComplexSpecies.theMols.begin(), aComplexSpecies.theMols.end()),
@@ -48,13 +48,13 @@ namespace nmr
     ; // do nothing
   }
 
-  template <class molT>
-  void ComplexSpecies<molT>::addMolToComplex(molT someMol, Alias anAlias)
+  
+  void ComplexSpecies::addMolToComplex(molT someMol, Alias anAlias)
   {
     MolMapIter loc= theMolAliasToNdxMap.find(anAlias);
     if (loc != theMolAliasToNdxMap.end()) 
       {
-	std::string anErrorMessage = "Error: complexSpecies<molT>::addMolToComplex failed.\n" + anAlias + " already used in this complex.";
+	std::string anErrorMessage = "Error: ComplexSpecies::addMolToComplex failed.\n" + anAlias + " already used in this complex.";
 	throw CSXcpt(anErrorMessage);
       }
 
@@ -64,8 +64,8 @@ namespace nmr
     theMolAliasToNdxMap.insert( std::make_pair(anAlias, simpleMolIndex) );
   }
 
-  template <class molT>
-  void ComplexSpecies<molT>::addBindingToComplex(Alias firstMolAlias, 
+  
+  void ComplexSpecies::addBindingToComplex(Alias firstMolAlias, 
 						 BindingSite firstMolBindingSiteAlias, 
 						 Alias secondMolAlias, 
 						 BindingSite secondMolBindingSiteAlias)
@@ -75,13 +75,13 @@ namespace nmr
 
     if (locFirstMol == theMolAliasToNdxMap.end()) 
       {
-	std::string anErrorMessage = "Error: complexSpecies<molT>::addBindingToComplex failed.\n" + firstMolAlias + " does not exist in this complex.";
+	std::string anErrorMessage = "Error: ComplexSpecies::addBindingToComplex failed.\n" + firstMolAlias + " does not exist in this complex.";
 	throw CSXcpt(anErrorMessage);
       }
     
     if (locSecondMol == theMolAliasToNdxMap.end()) 
       {
-	std::string anErrorMessage = "Error: complexSpecies<molT>::addBindingToComplex failed.\n" + secondMolAlias + " does not exist in this complex.";
+	std::string anErrorMessage = "Error: ComplexSpecies::addBindingToComplex failed.\n" + secondMolAlias + " does not exist in this complex.";
 	throw CSXcpt(anErrorMessage);
       }
 
@@ -91,28 +91,28 @@ namespace nmr
     if( !(theMols[firstMolNdx].checkIfBindingSiteExists(firstMolBindingSiteAlias)))
       {
 	// throw exception
-	std::string anErrorMessage = "Error: complexSpecies<molT>::addBindingToComplex failed.\nMol with alias " + firstMolAlias + " does not have binding site " + firstMolBindingSiteAlias;
+	std::string anErrorMessage = "Error: ComplexSpecies::addBindingToComplex failed.\nMol with alias " + firstMolAlias + " does not have binding site " + firstMolBindingSiteAlias;
 	throw CSXcpt(anErrorMessage);
       }
 
     if( !(theMols[secondMolNdx].checkIfBindingSiteExists(secondMolBindingSiteAlias)))
       {
 	// throw exception
-	std::string anErrorMessage = "Error: complexSpecies<molT>::addBindingToComplex failed.\nMol with alias " + secondMolAlias + "does not have binding site " + secondMolBindingSiteAlias;
+	std::string anErrorMessage = "Error: ComplexSpecies::addBindingToComplex failed.\nMol with alias " + secondMolAlias + "does not have binding site " + secondMolBindingSiteAlias;
 	throw CSXcpt(anErrorMessage);
       }
 
     if( theMols[firstMolNdx].checkIfBindingSiteIsBound(firstMolBindingSiteAlias))
       {
 	// throw exception
-	std::string anErrorMessage = "Error: complexSpecies<molT>::addBindingToComplex failed.\n Mol " + firstMolAlias + "is already bound at site " + firstMolBindingSiteAlias;
+	std::string anErrorMessage = "Error: ComplexSpecies::addBindingToComplex failed.\n Mol " + firstMolAlias + "is already bound at site " + firstMolBindingSiteAlias;
 	throw CSXcpt(anErrorMessage);
       }
 
     if( theMols[secondMolNdx].checkIfBindingSiteIsBound(secondMolBindingSiteAlias))
       {
 	// throw exception
-	std::string anErrorMessage = "Error: complexSpecies<molT>::addBindingToComplex failed.\n Mol " + secondMolAlias + "is already bound at site " + secondMolBindingSiteAlias;
+	std::string anErrorMessage = "Error: ComplexSpecies::addBindingToComplex failed.\n Mol " + secondMolAlias + "is already bound at site " + secondMolBindingSiteAlias;
 	throw CSXcpt(anErrorMessage);
       }
 
@@ -129,38 +129,38 @@ namespace nmr
   }
 
 
-  template <class molT>
-  int ComplexSpecies<molT>::getNumberOfMolsInComplex() const
+  
+  int ComplexSpecies::getNumberOfMolsInComplex() const
   {
     return theMols.size();
   }
 
-  template <class molT>
-  int ComplexSpecies<molT>::getNumberOfBindingsInComplex() const
+  
+  int ComplexSpecies::getNumberOfBindingsInComplex() const
   {
     return theBindings.size();
   }
 
 
-  template <class molT>
-  const typename ComplexSpecies<molT>::MolList& ComplexSpecies<molT>::getMolList() const
+  
+  const typename ComplexSpecies::MolList& ComplexSpecies::getMolList() const
   {
     return theMols;
   }
 
-  template <class molT>
-  const typename ComplexSpecies<molT>::BindingList& ComplexSpecies<molT>::getBindingList() const
+  
+  const typename ComplexSpecies::BindingList& ComplexSpecies::getBindingList() const
   {
     return theBindings;
   }
 
 
-  template <class molT>
-  void ComplexSpecies<molT>::constructOutputState(detail::ComplexOutputState& anOutputState) const
+  
+  void ComplexSpecies::constructOutputState(detail::ComplexOutputState& anOutputState) const
   {
     anOutputState.clear();
   
-    for(typename std::vector<molT>::const_iterator ii = theMols.begin();
+    for(typename std::vector::const_iterator ii = theMols.begin();
 	ii != theMols.end();
 	++ii)
       {
@@ -223,8 +223,8 @@ namespace nmr
     return;
   }
 
-  template <class molT>
-  void ComplexSpecies<molT>::constructPartialTokenList(detail::PartialTokenList<molT>& rComplexPartialTokenList) const
+  
+  void ComplexSpecies::constructPartialTokenList(detail::PartialTokenList& rComplexPartialTokenList) const
   {
     for(typename MolList::const_iterator index = theMols.begin();
 	index != theMols.end();
@@ -258,8 +258,8 @@ namespace nmr
   }
 
 
-  template <class molT>
-  void ComplexSpecies<molT>::applyPermutationToComplex(detail::Permutation& aPermutation)
+  
+  void ComplexSpecies::applyPermutationToComplex(detail::Permutation& aPermutation)
   {
     if (aPermutation.getPermutationSize()==0)
       {
@@ -318,8 +318,7 @@ namespace nmr
   }
 
 
-  template <class molT>
-  void ComplexSpecies<molT>::sortBinding(Binding& aBinding)
+  void ComplexSpecies::sortBinding(Binding& aBinding)
   {
     if (aBinding.first > aBinding.second)
       {

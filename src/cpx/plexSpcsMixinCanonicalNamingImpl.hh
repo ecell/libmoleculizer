@@ -70,12 +70,10 @@ namespace cpx
 
                  if( nuMolParam.size() !=aModMol->modSiteNames.size() )
                  {
-                     // Throw something better...
+                     // TODO.  Throw something better.
                      throw 666;
                  }
                 
-
-
                 for(unsigned int ndx = 0;
                     ndx != aModMol->modSiteNames.size();
                     ++ndx)

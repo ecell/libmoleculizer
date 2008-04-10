@@ -21,6 +21,7 @@
 #ifndef NMRUNIT_HH
 #define NMRUNIT_HH
 
+#include "plex/plexUnit.hh"
 #include "nmrEltName.hh"
 #include "nameAssembler.hh"
 #include "nameEncoderFactory.hh"
@@ -28,7 +29,11 @@
 #include "plex/mzrPlexSpecies.hh"
 #include "mzr/unit.hh"
 #include "mol/molUnit.hh"
-#include "plex/plexUnit.hh"
+
+namespace plx
+{
+  class plexUnit;
+}
 
 namespace nmr
 {
@@ -62,14 +67,33 @@ namespace nmr
     plx::mzrPlexSpecies* 
     makePlexFromName(const std::string& mangledName) const
     {
+      detail::ComplexOutputState cos = getNameEncoder()->createOutputStateFromName( mangledName );
+      std::cout << mangledName << " was decoded into ";
+      std::cout << cos << std::endl;
+
       return NULL;
     }
     
-
-
     mzr::mzrSpecies*
     getSpeciesFromName( const std::string& speciesName)
     {
+
+      if(0)
+        {
+          // TODO: If the name is present in moleculizer's list, return that.  
+        }
+      else
+        {
+          detail::ComplexOutputState aCOS = getNameEncoder()->createOutputStateFromName( speciesName );
+
+          // This intentionally does not use the template typename parameter molT.  The 
+          // reason for this is that SimpleMol is the 
+          ComplexSpecies<SimpleMol> theNewComplexSpecies( aCOS );
+
+          mzr::mzrSpecies* newMzrSpecies = pPlexUnit->constructNewPlexSpeciesFromComplexSpecies( theNewComplexSpecies );
+          return newMzrSpecies;
+        }
+
       return NULL;
     }
     

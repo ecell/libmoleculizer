@@ -29,7 +29,7 @@ endif
 
 libmoleculizer_nmr_la_SOURCES =\
 complexOutputState.cc \
-complexSpeciesManglerNames.cc \
+complexSpeciesEncoderNames.cc \
 nmrEltName.cc \
 permutation.cc \
 simpleMol.cc 
@@ -42,7 +42,7 @@ complexSpecies.hh \
 complexSpeciesImpl.hh \
 complexSpeciesOutputMinimizer.hh \
 complexSpeciesOutputMinimizerImpl.hh \
-complexSpeciesManglerNames.hh \
+complexSpeciesEncoderNames.hh \
 csException.hh \
 csUtl.hh \
 mangledNameAssembler.hh \

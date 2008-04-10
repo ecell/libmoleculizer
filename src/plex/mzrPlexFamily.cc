@@ -92,7 +92,7 @@ namespace plx
   const nmr::NameAssembler<nmr::SimpleMol>*
   mzrPlexFamily::getNamingStrategy() const
   {
-    return rNmrUnit.getNameAssembler();
+    return rNmrUnit.getNameEncoder();
   }
 
 }

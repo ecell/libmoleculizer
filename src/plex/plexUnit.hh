@@ -26,25 +26,25 @@
 #ifndef PLEXUNIT_H
 #define PLEXUNIT_H
 
-
-#include <algorithm>
-#include "utl/platform.hh"
-#include "cpx/plexQuery.hh"
-#include "cpx/omniStructureQuery.hh"
-#include "cpx/omniPlex.hh"
-#include "plex/mzrRecognizer.hh"
-#include "mzr/mzrUnit.hh"
-#include "mzr/mzrEltName.hh"
-#include "mzr/moleculizer.hh"
-#include "mzr/unitsMgr.hh"
-#include "mol/mzrMol.hh"
-#include "mol/molUnit.hh"
-#include "nmr/simpleMol.hh"
-#include "nmr/nmrUnit.hh"
-#include "plex/plexEltName.hh"
-#include "plex/mzrPlexSpecies.hh"
-#include "plex/mzrPlexFamily.hh"
 #include "plex/mzrOmniPlex.hh"
+#include "plex/mzrPlexFamily.hh"
+#include "plex/mzrPlexSpecies.hh"
+#include "plex/plexEltName.hh"
+#include "nmr/nmrUnit.hh"
+#include "nmr/simpleMol.hh"
+#include "mol/molUnit.hh"
+#include "mol/mzrMol.hh"
+#include "mzr/unitsMgr.hh"
+#include "mzr/moleculizer.hh"
+#include "mzr/mzrEltName.hh"
+#include "mzr/mzrUnit.hh"
+#include "plex/mzrRecognizer.hh"
+#include "cpx/omniPlex.hh"
+#include "cpx/omniStructureQuery.hh"
+#include "cpx/plexQuery.hh"
+#include "utl/platform.hh"
+#include <algorithm>
+
 
 namespace plx
 {
@@ -211,6 +211,7 @@ namespace plx
                 xmlpp::Node* pParentNode)
       throw(utl::xcpt);
 
+
     // For use by plexFamily::connectToFeatures.  This allows one to determine
     // which omniplexes (i.e. distinguished subcomplexes) appear in a new
     // structural family of complex species.
@@ -219,6 +220,7 @@ namespace plx
     {
       return omniPlexFamilies;
     }
+
 
     // The plexUnit has to parse omniPlexes for other units, so that
     // they are known before plex species, etc. are parsed.  This is
@@ -242,7 +244,15 @@ namespace plx
 
     mzrRecognizer recognize;
 
-    void
+
+    template <typename molT>
+    mzrPlexSpecies*
+    constructNewPlexSpeciesFromComplexSpecies( const nmr::ComplexSpecies<molT>& aComplexSpecies)
+    {
+      return NULL;
+    }
+
+        void
     addPlexQuery(plexQueryType* pQuery)
     {
       plexQueries.push_back(pQuery);

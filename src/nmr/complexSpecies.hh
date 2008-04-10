@@ -43,60 +43,62 @@
 namespace nmr
 {
 
-    template <class molT>
-    class ComplexSpecies
+  // Rewriting ComplexSpecies to operate in terms of Mol*'s.
+  class ComplexSpecies
+  {
+
+  public:
+    typedef std::string Alias;
+    typedef int MolNdx;
+    typedef std::vector<Mol*> MolList;
+    typedef typename Mol::BindingSite BindingSite;
+    typedef typename Mol::ModificationList ModificationList;
+    typedef int BndNdx;
+    typedef std::pair<std::pair<MolNdx, BndNdx>, std::pair<MolNdx, BndNdx> > Binding;
+    typedef std::vector<Binding> BindingList;
+
+  public:
+
+    ComplexSpecies();
+    ComplexSpecies(const ComplexSpecies& aComplexSpecies);
+    ComplexSpecies(const detail::ComplexOutputState& aComplexOutputState)
     {
+      // TODO: Write me, as I am used in nmrUnit::getSpeciesFromName.
+    }
+    ~ComplexSpecies();
 
-    public:
-        typedef std::string Alias;
-        typedef int MolNdx;
-        typedef std::vector<molT> MolList;
-        typedef molT Mol;
-        typedef typename Mol::BindingSite BindingSite;
-        typedef typename Mol::ModificationList ModificationList;
-        typedef int BndNdx;
-        typedef std::pair<std::pair<MolNdx, BndNdx>, std::pair<MolNdx, BndNdx> > Binding;
-        typedef std::vector<Binding> BindingList;
-
-    public:
-
-        ComplexSpecies();
-        ComplexSpecies(const ComplexSpecies<molT>& aComplexSpecies);
-
-        void addMolToComplex(molT someMol, Alias anAlias);
-        void addBindingToComplex(Alias firstMolAlias, BindingSite firstMolSiteAlias, Alias secondMolAlias, BindingSite secondMolSiteAlias);
-        int getNumberOfMolsInComplex() const;
-        int getNumberOfBindingsInComplex() const;
+    void addMolToComplex(Mol* ptrMol, Alias anAlias);
+    void addBindingToComplex(Alias firstMolAlias, BindingSite firstMolSiteAlias, Alias secondMolAlias, BindingSite secondMolSiteAlias);
+    int getNumberOfMolsInComplex() const;
+    int getNumberOfBindingsInComplex() const;
   
-        const MolList& getMolList() const;
-        const BindingList& getBindingList() const;
-        void applyPermutationToComplex(detail::Permutation& aPermutation);
+    const MolList& getMolList() const;
+    const BindingList& getBindingList() const;
+    void applyPermutationToComplex(detail::Permutation& aPermutation);
 
-        // This is a partialNameSentence with everything "stringified".  This plexOutputState is 
-        // the object passed to a particular nameAssembler.
-        void constructOutputState(detail::ComplexOutputState& rOutputState) const;
+    // This is a partialNameSentence with everything "stringified".  This plexOutputState is 
+    // the object passed to a particular nameAssembler.
+    void constructOutputState(detail::ComplexOutputState& rOutputState) const;
 
-    protected:
+  protected:
 
-        typedef std::map<Alias, MolNdx> MolMap;
-        typedef MolMap::iterator MolMapIter;
+    typedef std::map<Alias, MolNdx> MolMap;
+    typedef MolMap::iterator MolMapIter;
 
-        typedef detail::ComplexOutputState::MolTokenStr MolTokenStr;
-        typedef detail::ComplexOutputState::BindingTokenStr BindingTokenStr;
-        typedef detail::ComplexOutputState::ModificationTokenStr ModificationTokenStr;
+    typedef detail::ComplexOutputState::MolTokenStr MolTokenStr;
+    typedef detail::ComplexOutputState::BindingTokenStr BindingTokenStr;
+    typedef detail::ComplexOutputState::ModificationTokenStr ModificationTokenStr;
 
-        void constructPartialTokenList(detail::PartialTokenList<molT>& rComplexPartialTokenList) const;
-        void sortBinding(Binding& aBinding);
+    void constructPartialTokenList(detail::PartialTokenList<molT>& rComplexPartialTokenList) const;
+    void sortBinding(Binding& aBinding);
 
-        MolMap theMolAliasToNdxMap;  
-        MolList theMols;
-        BindingList theBindings;
+    MolMap theMolAliasToNdxMap;  
+    MolList theMols;
+    BindingList theBindings;
 
-    };
+  };
 
 }
-
-#include "complexSpeciesImpl.hh"
 
 #endif
 

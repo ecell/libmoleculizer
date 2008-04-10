@@ -24,8 +24,8 @@
 //   Berkeley, CA 94704
 /////////////////////////////////////////////////////////////////////////////
 
-#ifndef __ABSTRACTMOL_HH
-#define __ABSTRACTMOL_HH
+#ifndef __NMR_MOL_HH
+#define __NMR_MOL_HH
 
 #include <string>
 #include <vector>
@@ -37,7 +37,7 @@
 namespace nmr
 {
 
-    class AbstractMol
+    class Mol
     {
 
     public:
@@ -50,18 +50,19 @@ namespace nmr
 
     public:
 
-        AbstractMol(MolType aMolType) 
+        Mol(MolType aMolType) 
             : 
             theMolType(aMolType) 
         {
             ; // do nothing
         }
-        virtual ~AbstractMol()
+
+        virtual ~Mol()
         {
             ; // do nothing
         }
 
-        MolType getMolType() const
+        const MolType& getMolType() const
         { 
             return theMolType; 
         }
@@ -80,9 +81,9 @@ namespace nmr
         virtual int getBindingSiteInteger(BindingSite aBindingSite) const =0;
         virtual int getModificationSiteInteger(ModificationSite aModificationSite) const =0;
 
-        virtual bool operator<(const AbstractMol& rhsAbstractMol) const
+        virtual bool operator<(const Mol& rhsMol) const
         {
-            return (this->getMolType() < rhsAbstractMol.getMolType());
+            return (this->getMolType() < rhsMol.getMolType());
         }
 
     protected:

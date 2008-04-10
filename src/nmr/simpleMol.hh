@@ -28,17 +28,14 @@
 #ifndef NMR_MOL_HH
 #define NMR_MOL_HH
 
+#include "abstractMol.hh"
 #include <map>
 #include <string>
 #include <vector>
 #include <set>
 
-#include "abstractMol.hh"
-
-
 namespace nmr
 {
-
   class SimpleMol 
     : 
     public AbstractMol
@@ -49,35 +46,35 @@ namespace nmr
     
     SimpleMol( MolType theMolType ) 
       : 
-            AbstractMol(theMolType)
-        {
-            ; // do nothing
-        }
-
-        bool checkIfBindingSiteExists(BindingSite aBindingSite) const;
-        bool checkIfModificationSiteExists(ModificationSite aModificationSite) const;
-
-        bool checkIfBindingSiteIsBound(BindingSite aBindingSite) const;
-
-        ModificationValue getModificationValueAtModificationSite(ModificationSite aModificationSite) const;
-
-        void bindAtBindingSite(BindingSite aBindingSite);
-        void unbindAtBindingSite(BindingSite aBindingSite);
-        void updateModificationState(ModificationSite aModificationSite,
-                                     ModificationValue aModificationValue);
+      AbstractMol(theMolType)
+    {
+      ; // do nothing
+    }
     
-        ModificationList getModificationList() const;
-        int getBindingSiteInteger(BindingSite aBindingSite) const;
-        int getModificationSiteInteger(ModificationSite aModificationSite) const;
+    bool checkIfBindingSiteExists(BindingSite aBindingSite) const;
+    bool checkIfModificationSiteExists(ModificationSite aModificationSite) const;
 
-        void addNewBindingSite(BindingSite aBindingSite);
-        void addNewModificationSite(ModificationSite , ModificationValue);
+    bool checkIfBindingSiteIsBound(BindingSite aBindingSite) const;
 
-    protected:
-        std::map<BindingSite, bool> theBindingSiteStates; // true means bound, false,unbound.
-        std::map<ModificationSite, ModificationValue> theModificationStates;
+    ModificationValue getModificationValueAtModificationSite(ModificationSite aModificationSite) const;
 
-    };
+    void bindAtBindingSite(BindingSite aBindingSite);
+    void unbindAtBindingSite(BindingSite aBindingSite);
+    void updateModificationState(ModificationSite aModificationSite,
+                                 ModificationValue aModificationValue);
+    
+    ModificationList getModificationList() const;
+    int getBindingSiteInteger(BindingSite aBindingSite) const;
+    int getModificationSiteInteger(ModificationSite aModificationSite) const;
+
+    void addNewBindingSite(BindingSite aBindingSite);
+    void addNewModificationSite(ModificationSite , ModificationValue);
+
+  protected:
+    std::map<BindingSite, bool> theBindingSiteStates; // true means bound, false,unbound.
+    std::map<ModificationSite, ModificationValue> theModificationStates;
+
+  };
 
 
 }

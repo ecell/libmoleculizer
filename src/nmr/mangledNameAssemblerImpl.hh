@@ -72,8 +72,6 @@ namespace nmr
     aComplexSpeciesName += "___";
     aComplexSpeciesName += constructMangledModificationList(aComplexSpeciesOutputState);
 
-    createOutputStateFromName( aComplexSpeciesName );
-
     return aComplexSpeciesName;
   }
 

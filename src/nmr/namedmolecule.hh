@@ -35,11 +35,9 @@
 
 #include "abstractMol.hh"
 
-
 namespace nmr
 {
-
-    class Mol 
+    class MinimulNamedMol 
         : 
         public AbstractMol
     {

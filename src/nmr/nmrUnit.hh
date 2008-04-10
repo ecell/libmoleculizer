@@ -23,8 +23,7 @@
 
 #include "nmrEltName.hh"
 #include "nameAssembler.hh"
-#include "noSuchNameManglerXcpt.hh"
-#include "nmrManglerFactory.hh"
+#include "nameEncoderFactory.hh"
 #include "mzr/mzrSpecies.hh"
 #include "plex/mzrPlexSpecies.hh"
 #include "mzr/unit.hh"
@@ -39,10 +38,6 @@ namespace nmr
   {
     typedef molT MolType;
 
-    mzr::mzrUnit* pMzrUnit;
-    bnd::molUnit* pMolUnit;
-    plx::plexUnit* pPlexUnit;
-
   public:
     nmrUnit(mzr::moleculizer& rMoleculizer)
       :
@@ -51,28 +46,43 @@ namespace nmr
       pMzrUnit(NULL),
       pMolUnit(NULL),
       pPlexUnit(NULL),
-      ptrNameManglerFactory( new NameManglerFactory<molT> ),
+      ptrNameEncoderFactory( new NameEncoderFactory<molT> ),
       ptrNameAssembler( NULL )
     {
-      setDefaultNameMangler( manglernames::compactManglerName );
+      setDefaultNameEncoder( manglernames::compactEncoderName );
     }
     
     ~nmrUnit()
     {
       // Don't delete any pointers to Units.
-      delete ptrNameManglerFactory;
+      delete ptrNameEncoderFactory;
       delete ptrNameAssembler;
     }
+
+    plx::mzrPlexSpecies* 
+    makePlexFromName(const std::string& mangledName) const
+    {
+      return NULL;
+    }
+    
+
+
+    mzr::mzrSpecies*
+    getSpeciesFromName( const std::string& speciesName)
+    {
+      return NULL;
+    }
+    
+    const NameAssembler<molT>* 
+    getNameEncoder() const throw( utl::xcpt );
+
+    void 
+    setDefaultNameEncoder( const std::string& nameEncoderName) throw( NoSuchNameEncoderXcpt  );
 
     void
     setMzrUnit(mzr::mzrUnit* ptrMzrUnit)
     {
       pMzrUnit = ptrMzrUnit;
-    }
-
-    mzr::mzrUnit* getMzrUnit()
-    {
-      return pMzrUnit;
     }
 
     void 
@@ -81,71 +91,23 @@ namespace nmr
       pPlexUnit = ptrPlexUnit;
     }
 
-    plx::plexUnit* getPlexUnit()
-    {
-      return pPlexUnit;
-    }
-
     void setMolUnit(bnd::molUnit* ptrMolUnit)
     {
       pMolUnit = ptrMolUnit;
     }
 
-    bnd::molUnit* getMolUnit()
-    {
-      return pMolUnit;
-    }
+    void parseDomInput(xmlpp::Element* pRootElt, xmlpp::Element* pModelElt, xmlpp::Element* pStreamsElt) throw(std::exception);
+    void insertStateElts(xmlpp::Element* pRootElt) throw(std::exception);
 
-    plx::mzrPlexSpecies* 
-    makePlexFromName(const std::string mangledName)
-    {
-      return NULL;
-    }
-    
-    const NameAssembler<molT>* getNameAssembler() const throw( utl::xcpt );
-    void setDefaultNameMangler( const std::string& nameManglerName) throw( NoSuchNameManglerXcpt  );
-    
-
-    mzr::mzrSpecies*
-    getSpeciesFromName( const std::string& speciesName)
-    {
-      return NULL;
-    }
-
-    virtual void
-    parseDomInput(xmlpp::Element* pRootElt,
-		  xmlpp::Element* pModelElt,
-		  xmlpp::Element* pStreamsElt) throw(std::exception)
-    {
-      try
-        {
-
-          // Redo this, as it is much (maybe) worse than it should be.
-          std::string namingConventionStyle = utl::dom::mustGetAttrString( pModelElt,
-                                                                           eltName::namingConvention);
-          setDefaultNameMangler( namingConventionStyle );
-
-        }
-      catch(...)
-        {
-          return;
-        }
-    }
-
-    virtual void
-    insertStateElts(xmlpp::Element* pRootElt) throw(std::exception)
-    {
-      // For now, do nothing.  It may be best that when the parseDomInput function is 
-      // implemented, we will want to insert the generator we are using too.
-    }
-    
   private:
 
-    NameManglerFactory<molT>* ptrNameManglerFactory;
-    NameAssembler<molT>* ptrNameAssembler;
-    
-  };
+    mzr::mzrUnit* pMzrUnit;
+    bnd::molUnit* pMolUnit;
+    plx::plexUnit* pPlexUnit;
 
+    NameEncoderFactory<molT>* ptrNameEncoderFactory;
+    NameAssembler<molT>* ptrNameAssembler;
+  };
 }
 
 

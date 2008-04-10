@@ -19,16 +19,16 @@
 /////////////////////////////////////////////////////////////////////////////
 
 
-#include "nmr/complexSpeciesManglerNames.hh"
+#include "nmr/complexSpeciesEncoderNames.hh"
 
 namespace nmr
 {
 
   namespace manglernames
   {
-    const std::string basicManglerName("basic-name-assembler");
-    const std::string detailedManglerName("detailed-name-assembler");
-    const std::string compactManglerName("mangled-name-assembler");
+    const std::string basicEncoderName("basic-name-assembler");
+    const std::string detailedEncoderName("detailed-name-assembler");
+    const std::string compactEncoderName("mangled-name-assembler");
   }
 
 }

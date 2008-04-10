@@ -300,22 +300,22 @@ namespace mzr
         cin >> choice;
       }
 
-    std::string newNameMangler("");
+    std::string newNameEncoder("");
 
     if( choice == 1)
       {
-        newNameMangler = "basic-name-assembler";
+        newNameEncoder = "basic-name-assembler";
       }
     else if (choice == 2)
       {
-        newNameMangler = "detailed-name-assembler";
+        newNameEncoder = "detailed-name-assembler";
       }
     else if (choice == 3)
       {
-        newNameMangler = "mangled-name-assembler";
+        newNameEncoder = "mangled-name-assembler";
       }
     
-    pUserUnits->pNmrUnit->setDefaultNameMangler( newNameMangler );
+    pUserUnits->pNmrUnit->setDefaultNameEncoder( newNameEncoder );
 
     SpeciesCatalog newCatalog;
     

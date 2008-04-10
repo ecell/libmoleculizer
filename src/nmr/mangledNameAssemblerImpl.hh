@@ -191,11 +191,9 @@ namespace nmr
 
         molTokenVector.push_back( std::string(molString, index, lengthOfMolNameToken) );
         index += lengthOfMolNameToken;
-
-        return;
       }
-    
-    
+
+    return;
   }
 
   template <typename molT>

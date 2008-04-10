@@ -32,6 +32,26 @@
 namespace nmr
 {
 
+  class NoSuchNameEncoderXcpt 
+    :
+    public utl::xcpt
+  {
+    static std::string
+    mkMsg( const std::string& rBadNameEncoderName)
+    {
+      std::ostringstream msgStream;
+      msgStream << "There is no NameEncoder provided in this distribution with the name '"
+                << rBadNameEncoderName 
+                << "'.";
+      return msgStream.str();
+    }
+    
+  public:
+    NoSuchNameEncoderXcpt( const std::string& rBadName):
+      utl::xcpt( mkMsg(rBadName) )
+    {}
+  };
+
   class badBindingNameXcpt : public utl::xcpt
   {
   public:

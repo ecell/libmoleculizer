@@ -48,7 +48,6 @@ csUtl.hh \
 mangledNameAssembler.hh \
 mangledNameAssemblerImpl.hh \
 nameAssembler.hh \
-noSuchNameManglerXcpt.hh \
 nmrEltName.hh \
 partialTokenList.hh \
 permutation.hh \

@@ -28,9 +28,9 @@ namespace nmr
 {
   namespace manglernames
   {
-    extern const std::string basicManglerName;
-    extern const std::string detailedManglerName;
-    extern const std::string compactManglerName;
+    extern const std::string basicEncoderName;
+    extern const std::string detailedEncoderName;
+    extern const std::string compactEncoderName;
   }
 
 }

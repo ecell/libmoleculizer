@@ -23,11 +23,11 @@ namespace nmr
 
   template <typename molT>
   const NameAssembler<molT>* 
-  nmrUnit<molT>::getNameAssembler() const throw( utl::xcpt )
+  nmrUnit<molT>::getNameEncoder() const throw( utl::xcpt )
   {
     if (!ptrNameAssembler)
       {
-        throw utl::xcpt( "No NameMangler has been set.  Therefore we certainly cannot \"get\" it.");
+        throw utl::xcpt( "No NameEncoder has been set.  Therefore we certainly cannot \"get\" it.");
       }
     else
       {
@@ -36,21 +36,49 @@ namespace nmr
   }
     
   template <typename molT>
-  void nmrUnit<molT>::setDefaultNameMangler( const std::string& nameManglerName ) throw (NoSuchNameManglerXcpt)
+  void nmrUnit<molT>::setDefaultNameEncoder( const std::string& nameEncoderName ) throw (NoSuchNameEncoderXcpt)
   {
     try
       {
-        NameAssembler<MolType>* ptrNA = ptrNameManglerFactory->create(nameManglerName);
+        NameAssembler<MolType>* ptrNA = ptrNameEncoderFactory->create(nameEncoderName);
         
         delete ptrNameAssembler;
         ptrNameAssembler = ptrNA;
       }
-    catch( NoSuchNameManglerXcpt xcpt)
+    catch( NoSuchNameEncoderXcpt xcpt)
       {
         // Catch and release...
         std::cout << "HELP ME HELP ME" << endl;
         throw xcpt;
       }
+  }
+
+  template <typename molT>
+  void nmrUnit<molT>::parseDomInput(xmlpp::Element* pRootElt,
+                                    xmlpp::Element* pModelElt,
+                                    xmlpp::Element* pStreamsElt) throw(std::exception)
+    {
+      try
+        {
+
+          // Redo this, as it is much (maybe) worse than it should be.
+          std::string namingConventionStyle = utl::dom::mustGetAttrString( pModelElt,
+                                                                           eltName::namingConvention);
+          setDefaultNameEncoder( namingConventionStyle );
+
+        }
+      catch(...)
+        {
+          return;
+        }
+    }
+
+
+  template <typename molT>
+  void nmrUnit<molT>::insertStateElts(xmlpp::Element* pRootElt) throw(std::exception)
+  {
+    // For now, do nothing.  It may be best that when the parseDomInput function is 
+    // implemented, we will want to insert the generator we are using too.
   }
 
 }

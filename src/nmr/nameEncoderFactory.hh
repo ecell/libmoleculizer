@@ -21,22 +21,23 @@
 #ifndef NMRMANGLERFACTORY_HH
 #define NMRMANGLERFACTORY_HH
 
+#include "nmrExceptions.hh"
 #include "nameAssembler.hh"
 #include "complexSpeciesManglerNames.hh"
 #include "nameAssemblers.hh"
-#include "noSuchNameManglerXcpt.hh"
+
 
 namespace nmr
 {
 
   template <typename molT>
-  class NameManglerFactory
+  class NameEncoderFactory
   {
   public:
     typedef typename nmr::NameAssembler<molT> NameAssemblerType;
 
     NameAssemblerType*
-    create(const std::string& manglerName) throw( NoSuchNameManglerXcpt )
+    create(const std::string& manglerName) throw( NoSuchNameEncoderXcpt )
     {
 //       if( manglerName == manglernames::basicManglerName )
 //         {
@@ -55,13 +56,13 @@ namespace nmr
 //           throw NoSuchNameManglerXcpt( manglerName );
 //         }
 
-      if( manglerName == manglernames::compactManglerName )
+      if( manglerName == manglernames::compactEncoderName )
         {
           return new MangledNameAssembler<molT>;
         }
       else
         {
-          throw NoSuchNameManglerXcpt( manglerName );
+          throw NoSuchNameEncoderXcpt( manglerName );
         }
 
     }

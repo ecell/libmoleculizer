@@ -31,24 +31,6 @@
 
 namespace utl
 {
-  // There may be a massively more efficient way to do this,
-  // but for now....
-  template<class writeableType>
-  std::string
-  stringify(const writeableType& rThingToStringify)
-  {
-    typename std::ostringstream oss;
-    oss << rThingToStringify;
-    return oss.str();
-  }
-
-  bool
-  stringIsInt(const std::string& rString,
-	      int& rInt);
-
-  bool
-  stringIsDouble(const std::string& rString,
-		 double& rDouble);
 }
 
 

@@ -28,11 +28,10 @@
 #define MACROS_HH
 
 #include <boost/shared_ptr.hpp>
-
 #define DECLARE_TYPE( mydecl, mytype ) \
   typedef mydecl         mytype;       \
   typedef mytype *       mytype ## Ptr;                \
-  typedef boost::shared_ptr<mytype>  mytype ## SmartPtr;        \
+  typedef boost::shared_ptr<mytype>  mytype ## SharedPtr;        \
   typedef const mytype * mytype ## Cptr;                        \
   typedef mytype &       mytype ## Ref;                         \
   typedef const mytype & mytype ## Cref;                        \

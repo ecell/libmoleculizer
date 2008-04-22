@@ -29,7 +29,7 @@
 #include <sstream>
 #include "fnd/physConst.hh"
 #include "utl/xcpt.hh"
-#include "utl/string.hh"
+#include "utl/utility.hh"
 #include "fnd/stateVar.hh"
 #include "fnd/notifier.hh"
 

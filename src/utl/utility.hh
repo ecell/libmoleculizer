@@ -20,27 +20,66 @@
 
 #include <string>
 #include <vector>
+#include <sstream>
 
 #ifndef UTILITY_HH
 #define UTILITY_HH
 
 namespace utl
 {
-  std::string
-  getFileName(int argc,
-              char* argv[]);
+    std::string
+    getFileName(int argc,
+                char* argv[]);
+    
+    void tokenize(const std::string& str,
+                  std::vector<std::string>& tokens,
+                  const std::string& deliminator = " ");
+    
+    template <class T>
+    bool from_string(T& t, 
+                     const std::string& s)
+    {
+        std::istringstream iss(s);
+        return !(iss >> t).fail();
+    }
+    
+    template <class ForwardIter,
+	      class OutputIter,
+	      class UnaryPred>
+    OutputIter copy_if(ForwardIter begin,
+		       ForwardIter end,
+		       OutputIter dest,
+		       UnaryPred f)
+    {
+        while(begin!=end)
+	{
+            if( f(*begin))
+	    {
+                *dest=*begin;
+                ++dest;
+	    }
+            ++begin;
+	}
+        return dest;
+    }
+    
+	    
+    template <typename WriteableType>
+    std::string
+    stringify(const WriteableType& rThingToStringify)
+    {
+        typename std::ostringstream oss;
+        oss << rThingToStringify;
+        return oss.str();
+    }
 
-  void tokenize(const std::string& str,
-                std::vector<std::string>& tokens,
-                const std::string& deliminator = " ");
+  bool
+  stringIsInt(const std::string& rString,
+	      int& rInt);
 
-  template <class T>
-  bool from_string(T& t, 
-                   const std::string& s)
-  {
-    std::istringstream iss(s);
-    return !(iss >> t).fail();
-  }
+  bool
+  stringIsDouble(const std::string& rString,
+		 double& rDouble);
   
 
 }

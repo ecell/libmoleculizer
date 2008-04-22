@@ -26,7 +26,9 @@
 #include "plex/mzrOmniPlex.hh"
 #include "plex/mzrPlexFamily.hh"
 #include "nmr/nmrUnit.hh"
-#include "nmr/simpleMol.hh"
+#include "plex/mzrPlex.hh"
+#include "plex/mzrPlexSpecies.hh"
+#include "nmr/nmrUnit.hh"
 
 namespace plx
 {
@@ -34,7 +36,7 @@ namespace plx
   mzrPlexFamily(const mzrPlex& rParadigm,
 		cpx::knownBindings<bnd::mzrMol, fnd::feature<cpx::cxBinding<mzrPlexSpecies, mzrPlexFamily> > >& refKnownBindings,
 		std::set<mzrPlexFamily*>& refOmniplexFamilies, 
-                nmr::nmrUnit<nmr::SimpleMol>& refNmrUnit) :
+                nmr::nmrUnit& refNmrUnit) :
     cpx::plexFamily<bnd::mzrMol,
 		    mzrPlex,
 		    mzrPlexSpecies,
@@ -89,7 +91,7 @@ namespace plx
 				       molarFactor));
   }
 
-  const nmr::NameAssembler<nmr::SimpleMol>*
+  const nmr::NameAssembler*
   mzrPlexFamily::getNamingStrategy() const
   {
     return rNmrUnit.getNameEncoder();

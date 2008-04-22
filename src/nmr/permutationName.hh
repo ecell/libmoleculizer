@@ -33,37 +33,33 @@
 
 namespace nmr
 {
-  namespace detail
-  {
+        DECLARE_CLASS( PermutationName );
+        struct PermutationName
+        {
+            PermutationName()
+            {
+                ; // do nothing
+            }
 
-    template <class molT>
-    struct PermutationName
-    {
-      PermutationName()
-      {
-	; // do nothing
-      }
+            PermutationName(PermutationNameCref aPermutationName) 
+                :   
+                thePermutation(aPermutationName.thePermutation),
+                theCorrespondingPartialTokenList(aPermutationName.theCorrespondingPartialTokenList)
+            {
+                ; // do nothing
+            }
 
-      PermutationName(const PermutationName<molT>& aPermutationName) 
-	:   
-	thePermutation(aPermutationName.thePermutation),
-	theCorrespondingPartialTokenList(aPermutationName.theCorrespondingPartialTokenList)
-      {
-	; // do nothing
-      }
+            bool operator<(const PermutationName& aPermutationName) const
+            {
+                return (theCorrespondingPartialTokenList < aPermutationName.theCorrespondingPartialTokenList);
+            }
 
-      bool operator<(const PermutationName& aPermutationName) const
-      {
-	return (theCorrespondingPartialTokenList < aPermutationName.theCorrespondingPartialTokenList);
-      }
+            Permutation thePermutation;
+            PartialTokenList theCorrespondingPartialTokenList;
 
-      Permutation thePermutation;
-      PartialTokenList<molT> theCorrespondingPartialTokenList;
-
-    };
+        };
 
 
-  }
 }
 
 

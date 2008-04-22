@@ -24,7 +24,7 @@
 /////////////////////////////////////////////////////////////////////////////
 
 #include "utl/dom.hh"
-#include "utl/string.hh"
+#include "utl/utility.hh"
 #include "plex/mzrPlexSpecies.hh"
 #include "plex/mzrPlexFamily.hh"
 #include "plex/plexEltName.hh"
@@ -52,7 +52,7 @@ namespace plx
   {
     // First we get the nmrAssembler from the family's reference to the nmrUnit.
 
-    const nmr::NameAssembler<nmr::SimpleMol>* pNameAssembler = rFamily.getNamingStrategy();
+    const nmr::NameAssembler* pNameAssembler = rFamily.getNamingStrategy();
     return getCanonicalName(pNameAssembler);
   }
 

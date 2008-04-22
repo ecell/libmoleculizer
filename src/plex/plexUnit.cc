@@ -35,7 +35,7 @@ namespace plx
   plexUnit(mzr::moleculizer& rMoleculizer,
 	   mzr::mzrUnit& refMzrUnit,
 	   bnd::molUnit& refMolUnit,
-           nmr::nmrUnit<nmr::SimpleMol>& refNmrUnit) :
+           nmr::nmrUnit& refNmrUnit) :
     mzr::unit("plex",
 	      rMoleculizer),
     rMzrUnit(refMzrUnit),

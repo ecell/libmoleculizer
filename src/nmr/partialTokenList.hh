@@ -29,7 +29,7 @@
 #define __PARTIALTOKENLIST_HH
 
 #include "utl/macros.hh"
-#include "nmr/mol.hh"
+#include "nmr/abstractMol.hh"
 
 #include <vector>
 #include <utility>
@@ -37,8 +37,6 @@
 
 namespace nmr
 {
-  namespace detail
-  {
     // PartialTokenList Notes
 
     // PartialTokenLists are designed for comparing partial name sequences, lists
@@ -55,66 +53,66 @@ namespace nmr
     // Do not try to compare non-isomorphic PartialTokenList's.  Results will be undefined, and
     // will likely result in a crash.
 
+    DECLARE_CLASS( PartialTokenList );
     struct PartialTokenList
     {
-      typedef boost::shared_ptr<Mol> spMol; // smart pointer
+        typedef boost::shared_ptr<Mol> spMol; // smart pointer
 
-      typedef int MolNdx; 
-      typedef int MolBindingSite;    
-      typedef std::pair<MolNdx, MolBindingSite> BindingSite;
-      typedef std::pair<BindingSite, BindingSite> Binding;
-      typedef Binding BindingToken;
+        typedef int MolNdx; 
+        typedef int MolBindingSite;    
+        typedef std::pair<MolNdx, MolBindingSite> BindingSite;
+        typedef std::pair<BindingSite, BindingSite> Binding;
+        typedef Binding BindingToken;
 
-      typedef std::string ModificationSite;
-      typedef std::string ModificationValue;
-      typedef std::pair<MolNdx, std::pair<ModificationSite, ModificationValue> > Modification;
-      typedef ModificationToken;
+        typedef std::string ModificationSite;
+        typedef std::string ModificationValue;
+        typedef std::pair<MolNdx, std::pair<ModificationSite, ModificationValue> > Modification;
+        typedef Modification ModificationToken;
 
-      // TODO: Change these to boost::shared_ptr sometime.
-      typedef std::vector<spMol> MolList;
-      typedef std::vector<Binding> BindingList;
-      typedef BindingList::iterator BindingListIter;
-      typedef BindingList::const_iterator ConstBindingListIter;
-      typedef std::vector<Modification> ModificationList;
-      typedef ModificationList::iterator ModificationListIter;
-      typedef ModificationList::const_iterator ConstModificationListIter;
+        // TODO: Change these to boost::shared_ptr sometime.
+        typedef std::vector<spMol> MolList;
+        typedef std::vector<Binding> BindingList;
+        typedef BindingList::iterator BindingListIter;
+        typedef BindingList::const_iterator ConstBindingListIter;
+        typedef std::vector<Modification> ModificationList;
+        typedef ModificationList::iterator ModificationListIter;
+        typedef ModificationList::const_iterator ConstModificationListIter;
 
-      PartialTokenList();
-      PartialTokenList(const PartialTokenList& aPns) 
-        : 
-        theMols(aPns.theMols.begin(), aPns.theMols.end()),
-        theBindings(aPns.theBindings.begin(), aPns.theBindings.end()),
-        theModifications(aPns.theModifications.begin(), aPns.theModifications.end()),
-        isComplete(aPns.isComplete)
-      {}
+        PartialTokenList();
+        PartialTokenList(const PartialTokenList& aPns) 
+            : 
+            theMols(aPns.theMols.begin(), aPns.theMols.end()),
+            theBindings(aPns.theBindings.begin(), aPns.theBindings.end()),
+            theModifications(aPns.theModifications.begin(), aPns.theModifications.end()),
+            isComplete(aPns.isComplete)
+        {}
 
-      ~PartialTokenList()
-      {
-        // PartialTokenLists never memory manages anything it uses.
-      }
+        ~PartialTokenList()
+        {
+            // PartialTokenLists never memory manages anything it uses.
+        }
 
-      void clear();
-
-    public:
-      bool isSubsetOf(const PartialTokenList& aPns) const;
-      bool isEquivalentTo(const PartialTokenList& aPns) const;
-
-      bool operator<(const PartialTokenList& aPns) const; 
-      bool operator==(const PartialTokenList& aPns) const;
-
+        void clear();
 
     public:
+        bool isSubsetOf(const PartialTokenList& aPns) const;
+        bool isEquivalentTo(const PartialTokenList& aPns) const;
 
-    // Data Members
-    //
+        bool operator<(const PartialTokenList& aPns) const; 
+        bool operator==(const PartialTokenList& aPns) const;
 
-      MolList theMols;
-      BindingList theBindings;
-      ModificationList theModifications;  
-      bool isComplete;      
+
+    public:
+
+        // Data Members
+        //
+
+        MolList theMols;
+        BindingList theBindings;
+        ModificationList theModifications;  
+        bool isComplete;      
     };
 
-  }
 }
 
 #endif

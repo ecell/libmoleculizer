@@ -23,7 +23,7 @@
 //   Berkeley, CA 94704
 /////////////////////////////////////////////////////////////////////////////
 
-#include "utl/string.hh"
+#include "utl/utility.hh"
 #include "mzr/mzrEltName.hh"
 #include "mol/molEltName.hh"
 #include "stoch/stochEltName.hh"

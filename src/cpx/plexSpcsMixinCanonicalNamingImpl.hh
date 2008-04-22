@@ -19,7 +19,7 @@
 /////////////////////////////////////////////////////////////////////////////
 
 #include "utl/stdIncludes.hh"
-#include "utl/string.hh"
+#include "utl/utility.hh"
 
 #include "modMol.hh"
 #include "binding.hh"
@@ -50,18 +50,19 @@ namespace cpx
         {
             typename plexFamilyT::molType* pMol = rMols[molNdx];
             
-            nmr::SimpleMol aMol( pMol->getName() );
+            nmr::MinimalMolSharedPtr aMol( new nmr::MinimalMol( pMol->getName() ) );
 
             // Create all the binding sites to this mol.
             for( typename plexFamilyT::molType::bindingSiteIterator iter = pMol->getBindingSitesBegin();
                  iter != pMol->getBindingSitesEnd();
                  ++iter)
             {
-                aMol.addNewBindingSite( (*iter).getName() );
+                aMol->addNewBindingSite( (*iter).getName() );
             }
 
-            // This line seems to confuse the bejeezus out of emacs, and I don't know why.
-            const cpx::modMol<typename plexFamilyT::molType>* aModMol = dynamic_cast<const cpx::modMol<typename plexFamilyT::molType>* >(pMol);
+            // This line seems to confuse the bejeezus out of emacs, and I don't know why...
+            const cpx::modMol<typename plexFamilyT::molType>* aModMol = 
+                dynamic_cast<const cpx::modMol<typename plexFamilyT::molType>* >(pMol);
 
             if(aModMol)
             {
@@ -70,8 +71,7 @@ namespace cpx
 
                  if( nuMolParam.size() !=aModMol->modSiteNames.size() )
                  {
-                     // TODO.  Throw something better.
-                     throw 666;
+                     throw utl::xcpt("Unknown Error in plexSpeciesMixin::createComplexRepresentation. (key: axjfdek)");
                  }
                 
                 for(unsigned int ndx = 0;
@@ -79,7 +79,7 @@ namespace cpx
                     ++ndx)
                 {
                     
-                    aMol.addNewModificationSite( aModMol->modSiteNames[ndx],
+                    aMol->addNewModificationSite( aModMol->modSiteNames[ndx],
                                                  nuMolParam[ndx]->getName() );
                 }
 
@@ -120,19 +120,19 @@ namespace cpx
     std::string
     plexSpeciesMixin<plexFamilyT>::getCanonicalName(void) const
     {
-        // static nmr::basicNameAssembler<nmr::SimpleMol> defaultNameAssembler;
-        static nmr::MangledNameAssembler<nmr::SimpleMol> defaultNameAssembler;
+        // static nmr::basicNameAssembler defaultNameAssembler;
+        static nmr::MangledNameAssembler defaultNameAssembler;
+        // nmr::readableNameAssembler defaultNameAssembler;
 
-        // nmr::readableNameAssembler<nmr::SimpleMol> defaultNameAssembler;
         return getCanonicalName( &defaultNameAssembler );
     }
 
     template <class plexFamilyT>
     std::string
     plexSpeciesMixin<plexFamilyT>::
-    getCanonicalName( const nmr::NameAssembler<nmr::SimpleMol>* const ptrNameAssembler) const
+    getCanonicalName( const nmr::NameAssembler* const ptrNameAssembler) const
     {
-        nmr::ComplexSpecies<nmr::SimpleMol> aComplexSpecies;
+        nmr::ComplexSpecies aComplexSpecies;
         createComplexRepresentation(aComplexSpecies);
         string theName( ptrNameAssembler->createCanonicalName(aComplexSpecies) );
         

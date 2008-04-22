@@ -29,30 +29,32 @@ endif
 
 libmoleculizer_nmr_la_SOURCES =\
 complexOutputState.cc \
+complexSpecies.cc \
 complexSpeciesEncoderNames.cc \
+complexSpeciesOutputMinimizer.cc \
+mangledNameAssembler.cc \
+namedMolecule.cc \
 nmrEltName.cc \
-permutation.cc \
-simpleMol.cc 
+nmrUnit.cc \
+partialTokenList.cc \
+permutation.cc 
 
 libmoleculizer_nmr_HEADERS=\
 abstractMol.hh \
 basicNameAssembler.hh \
 complexOutputState.hh \
-complexSpecies.hh \
-complexSpeciesImpl.hh \
-complexSpeciesOutputMinimizer.hh \
-complexSpeciesOutputMinimizerImpl.hh \
 complexSpeciesEncoderNames.hh \
-csException.hh \
-csUtl.hh \
+complexSpecies.hh \
+complexSpeciesOutputMinimizer.hh \
 mangledNameAssembler.hh \
-mangledNameAssemblerImpl.hh \
 nameAssembler.hh \
+nameAssemblers.hh \
+namedMolecule.hh \
+nameEncoderFactory.hh \
 nmrEltName.hh \
+nmrExceptions.hh \
+nmrUnit.hh \
 partialTokenList.hh \
 permutation.hh \
 permutationName.hh \
-readableNameAssembler.hh \
-simpleMol.hh
-
-
+readableNameAssembler.hh 

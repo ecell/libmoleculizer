@@ -59,9 +59,6 @@ namespace ftr
 
 namespace nmr
 {
-  class SimpleMol;
- 
-  template <typename T>
   class nmrUnit;
 }
 
@@ -78,7 +75,7 @@ namespace mzr
   {
   public:
 
-    nmr::nmrUnit<nmr::SimpleMol>* pNmrUnit;
+    nmr::nmrUnit* pNmrUnit;
     mzr::mzrUnit* pMzrUnit;
     bnd::molUnit* pMolUnit;
     plx::plexUnit* pPlexUnit;

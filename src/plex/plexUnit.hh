@@ -31,7 +31,7 @@
 #include "plex/mzrPlexSpecies.hh"
 #include "plex/plexEltName.hh"
 #include "nmr/nmrUnit.hh"
-#include "nmr/simpleMol.hh"
+#include "nmr/namedMolecule.hh"
 #include "mol/molUnit.hh"
 #include "mol/mzrMol.hh"
 #include "mzr/unitsMgr.hh"
@@ -97,7 +97,7 @@ namespace plx
     
     mzr::mzrUnit& rMzrUnit;
     bnd::molUnit& rMolUnit;
-    nmr::nmrUnit<nmr::SimpleMol>& rNmrUnit;
+    nmr::nmrUnit& rNmrUnit;
       
 
     // Maps %pairs of structural sites (i.e. particular sites on particular
@@ -163,7 +163,7 @@ namespace plx
     plexUnit(mzr::moleculizer& rMoleculizer,
              mzr::mzrUnit& refMzrUnit,
              bnd::molUnit& refMolUnit,
-             nmr::nmrUnit<nmr::SimpleMol>& refNmrUnit);
+             nmr::nmrUnit& refNmrUnit);
 
     /*! \name Database of binding features.
 
@@ -244,11 +244,10 @@ namespace plx
 
     mzrRecognizer recognize;
 
-
-    template <typename molT>
     mzrPlexSpecies*
-    constructNewPlexSpeciesFromComplexSpecies( const nmr::ComplexSpecies<molT>& aComplexSpecies)
+    constructNewPlexSpeciesFromComplexSpecies( const nmr::ComplexSpecies& aComplexSpecies)
     {
+        // TODO: Figure out what this is and write me...
       return NULL;
     }
 

@@ -25,8 +25,8 @@
 /////////////////////////////////////////////////////////////////////////////
 
 
-#ifndef __MOL_HH
-#define __MOL_HH
+#ifndef __MINIMALMOL_HH
+#define __MINIMALMOL_HH
 
 #include "abstractMol.hh"
 
@@ -38,79 +38,87 @@
 namespace nmr
 {
 
-  class MinimalMol 
-    : 
-    public Mol
-  {
-      
-  public:
-    DECLARE_TYPE( std::vector<std::pair<ModificationSite, ModificationValue> >, ModificationList );
-      
-    MinimalMol( MolTypeCref mMolType ) 
-      : 
-      Mol(molType) 
+    // This class is a "MinimalMol" because it has no a priori structure.
+    // BindingSites and ModificationSites are always presumed to exist.
+
+    DECLARE_CLASS( MinimalMol );
+    class MinimalMol 
+        : 
+        public Mol
     {
-      ; // do nothing else.
-    }
+    public:
+
+        MinimalMol( MolTypeCref molType)
+            :
+            Mol( molType)
+        {}
+
+        MinimalMol( MolTypeCref molType, BindingSiteListCref bindingSitesList ) 
+            : 
+            Mol( molType) 
+        {
+            for(BindingSiteList::const_iterator iter = bindingSitesList.begin();
+                iter != bindingSitesList.end();
+                ++iter)
+            {
+                theBindingSiteStates.insert( std::make_pair(*iter,
+                                                            false) );
+            }
+        }
+
+        bool checkIfBindingSiteExists(BindingSiteCref aBindingSite) const;
+        bool checkIfModificationSiteExists( ModificationSiteCref aModificationSite) const;
+
+        bool 
+        checkIfBindingSiteIsBound(BindingSiteCref aBindingSite) 
+            const throw(NoSuchBindingSiteXcpt);
+
+        void 
+        addNewBindingSite( BindingSiteCref aBindingSite);
+
+
       
-    bool 
-    checkIfBindingSiteExists(BindingSite aBindingSite) 
-      const throw(NoSuchBindingSiteXcpt);
+        ModificationValue 
+        getModificationValueAtModificationSite(ModificationSiteCref aModificationSite) 
+            const throw(NoSuchModificationSiteXcpt);
+
+        ModificationList 
+        getModificationList() const;
+
+        void 
+        bindAtBindingSite(BindingSiteCref aBindingSite) 
+            throw(NoSuchBindingSiteXcpt);
+
+        void 
+        unbindAtBindingSite(BindingSiteCref aBindingSite) 
+            throw(NoSuchBindingSiteXcpt);
+
+        void 
+        updateModificationState(ModificationSiteCref aModificationSite,
+                                ModificationValueCref aModificationValue) 
+            throw(NoSuchModificationSiteXcpt);
     
-    bool 
-    checkIfModificationSiteExists(ModificationSite aModificationSite) 
-      const throw(NoSuchModificationSiteXcpt);
-      
-    bool 
-    checkIfBindingSiteIsBound(BindingSite aBindingSite) 
-      const throw(NoSuchBindingSiteXcpt);
-      
-    ModificationValue 
-    getModificationValueAtModificationSite(ModificationSite aModificationSite) 
-      const throw(NoSuchModificationSiteXcpt);
+        int 
+        getBindingSiteInteger(BindingSiteCref aBindingSite) 
+            const throw(NoSuchBindingSiteXcpt);
 
-    ModificationList 
-    getModificationList() const;
+        int 
+        getModificationSiteInteger(ModificationSiteCref aModificationSite) 
+            const throw(NoSuchModificationSiteXcpt);    
 
-    void 
-    bindAtBindingSite(BindingSite aBindingSite) 
-      throw(NoSuchBindingSiteXcpt);
+        void
+        addNewModificationSite( ModificationSiteCref newModSite,
+                                ModificationValueCref modValue);
 
-    void 
-    unbindAtBindingSite(BindingSite aBindingSite) 
-      throw(NoSuchBindingSiteXcpt);
+    protected:
+        std::map<BindingSite, bool> theBindingSiteStates; // true means bound, false,unbound.
+        std::map<ModificationSite, ModificationValue> theModificationStates;
 
-    void 
-    updateModificationState(ModificationSite aModificationSite,
-                            ModificationValue aModificationValue) 
-      throw(NoSuchModificationSiteXcpt);
-    
-    int 
-    getBindingSiteInteger(BindingSite aBindingSite) 
-      const throw(NoSuchBindingSiteXcpt);
-
-    int 
-    getModificationSiteInteger(ModificationSite aModificationSite) 
-      const throw(NoSuchModificationSiteXcpt);    
-
-    void 
-    addNewBindingSite(BindingSite aBindingSite) 
-      throw(NoSuchBindingSiteXcpt);
-
-    void 
-    addNewModificationSite(ModificationSite aModificationSite) 
-      throw(NoSuchModificationSiteXcpt);
-
-  protected:
-    std::map<BindingSite, bool> theBindingSiteStates; // true means bound, false,unbound.
-    std::map<ModificationSite, ModificationValue> theModificationStates;
-
-    std::map<ModificationSite, std::set<ModificationValue> > theLegalModifications;
-    std::map<ModificationSite, ModificationValue> theDefaultModificationValues;
-
-  };
+        std::map<ModificationSite, std::set<ModificationValue> > theLegalModifications;
+    };
 
 
 }
 
 #endif
+

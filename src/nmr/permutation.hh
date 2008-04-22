@@ -24,63 +24,128 @@
 //   Berkeley, CA 94704
 /////////////////////////////////////////////////////////////////////////////
 
+#ifndef __NMR_PERMUTATION_HH
+#define __NMR_PERMUTATION_HH
 
-#ifndef __PERMUTATION_HH
-#define __PERMUTATION_HH
+#include "nmr/nmrExceptions.hh"
 
+#include "utl/macros.hh"
 #include <ostream>
 #include <vector>
 
-#include "csException.hh"
-
 namespace nmr
 {
+        // The Permutation class represents a "partial permutation" on Z_n = {0, ..., n-1}.
+        // A "partial permutation" is a relation on Z_n X Z_n that can be extended to a 
+        // permutation (which is a bijection from Z_n -> Z_n).
 
-  namespace detail
-  {
+        // In this class, this is represented as a function from Z_n -> Z_n U Permutation::UNDEF, 
+        // where any domain element that conceptually has no partner in the range Z_n yet is 
+        // mapped to Permutation::UNDEF.  The class member function checkPermutationLegality
+        // ensures that the Permutation is pre-bijective -- ie that any element of the range which 
+        // is not equal to Permutation::UNDEF only shows up once.
 
-    const int UNDEF = -1;
+        DECLARE_CLASS( Permutation );
+        struct Permutation
+        {
+            // NOTES, TODO:
+            // Right now the situation is that the domain is {0, ... , n-1}
+            // and the range is {0, ... , n-1} U Permutation::UNDEF.
+            // Consequently any of the domain elements (the indexes) are 
+            // represented as "unsigned ints" and all the range elements are
+            // represented as "ints".  If I ever get the chance, I'd like to come
+            // up with better types here.  (although it works along perfectly fine
+            // at the moment)
+
+        public:
+            static const int UNDEF;
+
+        public:
+            DECLARE_TYPE( unsigned int, BindingNdx);
+            DECLARE_TYPE( unsigned int, Dimension);
+            DECLARE_TYPE( std::vector<int>, IntegerVector);
+            DECLARE_TYPE( IntegerVector, CorePermutationType);
+            
+        public:
+
+            // Constructors 
+            //
+
+            // This makes a completely undefined permutation on n objects.
+            Permutation(Dimension dim = 0);
+            Permutation(PermutationCref aPermutation);
+            Permutation(CorePermutationTypeCref aPermutationVector);
+
+            // This constructor copies aPermutation, and then adds the point perm(pos)=value to it.
+            Permutation(PermutationCref aPermutation, BindingNdx pos, int value) 
+                throw(nmr::BadPermutationConstructorXcpt);
   
-    struct Permutation
-    {
 
-    public:
+            // API
+            // 
+            int getValueAtPosition(BindingNdx pos) const 
+                throw( nmr::BadPermutationIndexXcpt );
 
-      Permutation();
+            void setValueAtPosition(BindingNdx pos, int val) 
+                throw( nmr::BadPermutationIndexXcpt) ;
 
-      // This makes a completely undefined permutation on n objects.
-      Permutation(int n);
-      Permutation(const std::vector<int>& aPermutationVector);
-      Permutation(const Permutation& aPermutation);
-    
-      // This constructor copies aPermutation, and then adds the point perm(pos)=value to it.
-      Permutation(const Permutation& aPermutation, int pos, int value);
+            void resetValueAtPosition(BindingNdx pos) 
+                throw(nmr::BadPermutationIndexXcpt);
+
+            // Returns the Permutation (*this)( compositionPermutation(x) )
+            Permutation 
+            of(PermutationCref compositionPermutation) const
+                throw( nmr::IncompatiblePermutationsXcpt);
+
+            Permutation 
+            invertPermutation() const;
   
-      int getValueAtPosition(int pos) const;
-      void setValueAtPosition(int pos, int val);
-      void resetValueAtPosition(int pos);
+            bool
+            getIsBijection() const;
 
-      int getValueAtPositionXcpt(int pos) const;
-      void setValueAtPositionXcpt(int pos, int val);
-      void resetValueAtPositionXcpt(int pos);
+            bool 
+            getIsComplete() const;
 
-      Permutation of(Permutation& compositionPermutation); // Returns the Permutation (*this)( compositionPermutation(x) )
-      Permutation invertPermutation();
-  
-      bool getIsComplete() const;
-      bool getIsIncomplete() const ;
-      int getPermutationSize() const;
-      int& operator[](const int& n); //in the spirit of std::vector, this has no exception throwing version
-      int getLeastValueNotInPermutation() const;
-      bool checkPermutationLegality();
-      bool operator==(const Permutation& pm);
-      bool operator<(const Permutation& pm) const;
+            bool 
+            getIsIncomplete() const ;
 
-    protected:
-      std::vector<int> thePermutation;
-    };
+            Dimension 
+            getPermutationSize() const;
+            
+            Dimension
+            getDimension() const
+            {
+                return getPermutationSize();
+            }
+            
+            int& operator[](const BindingNdx& n) 
+                throw(nmr::BadPermutationIndexXcpt);
+            const int& operator[](const BindingNdx& n) const
+                throw(nmr::BadPermutationIndexXcpt);
 
-  }
+            int 
+            getLeastValueNotInPermutation() const;
+
+            bool 
+            checkPermutationLegality() const;
+
+            bool 
+            operator==(PermutationCref pm);
+
+            bool 
+            operator<(PermutationCref pm) const;
+
+            CorePermutationTypeCref
+            getCorePermutation() const
+            {
+                return thePermutation;
+            }
+
+        protected:
+            CorePermutationType thePermutation;
+            Dimension theDimension;
+        };
+
 }
 
 #endif

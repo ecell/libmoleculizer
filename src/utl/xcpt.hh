@@ -26,9 +26,11 @@
 #ifndef UTL_XCPT_H
 #define UTL_XCPT_H
 
+#include <sstream>
 #include <iostream>
 #include <string>
 #include <exception>
+#include <stdexcept>
 
 namespace utl
 {

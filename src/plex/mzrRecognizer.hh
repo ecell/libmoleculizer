@@ -34,8 +34,6 @@
 
 namespace nmr
 {
-  class SimpleMol;
-  template <typename T>
   class NmrUnit;
 }
 
@@ -47,11 +45,11 @@ namespace plx
     public cpx::recognizer<mzrPlex, mzrPlexFamily>
   {
     plexUnit& rPlexUnit;
-    nmr::nmrUnit<nmr::SimpleMol>& rNmrUnit;
+    nmr::nmrUnit& rNmrUnit;
 
   public:
     mzrRecognizer(plexUnit& refPlexUnit,
-                  nmr::nmrUnit<nmr::SimpleMol>& refNmrUnit) :
+                  nmr::nmrUnit& refNmrUnit) :
       rPlexUnit(refPlexUnit),
       rNmrUnit(refNmrUnit)
     {}

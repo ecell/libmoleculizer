@@ -26,22 +26,23 @@
 #ifndef PLEX_MZROMNIPLEX_H
 #define PLEX_MZROMNIPLEX_H
 
+#include "plex/mzrPlexFamily.hh"
 #include "cpx/omniPlex.hh"
 #include "mol/mzrMol.hh"
 #include "plex/mzrPlex.hh"
 #include "plex/mzrPlexSpecies.hh"
-#include "plex/mzrPlexFamily.hh"
 
 namespace plx
 {
-  class mzrOmniPlex : public
-  cpx::omniPlex<bnd::mzrMol,
-		      mzrPlex,
-		      mzrPlexSpecies,
-		      mzrPlexFamily,
-		      mzrOmniPlex>
+  class mzrOmniPlex : 
+        public cpx::omniPlex<bnd::mzrMol,
+                             mzrPlex,
+                             mzrPlexSpecies,
+                             mzrPlexFamily,
+                             mzrOmniPlex>
   {
   public:
+
     mzrOmniPlex(mzrPlexFamily* pPlexFamily,
 		fnd::andQueries<structureQueryType>* pOmniStructureQueries,
 		stateQueriesType* pOmniStateQueries) :

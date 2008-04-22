@@ -27,11 +27,11 @@
 #ifndef __NAMEASSEMBLER_HH
 #define __NAMEASSEMBLER_HH
 
+#include "complexSpeciesOutputMinimizer.hh"
 #include "nmrExceptions.hh"
-
 #include "complexSpecies.hh"
 #include "complexOutputState.hh"
-#include "complexSpeciesOutputMinimizer.hh"
+
 
 #include <iterator>
 #include <vector>
@@ -41,63 +41,63 @@
 namespace nmr
 {
 
-  template <typename molT>
-  class NameAssembler
-  {
-  public:
-    NameAssembler(const std::string& assemblerName)
-      :
-      name(assemblerName)
+    class NameAssembler
     {
-    }
+    public:
+        NameAssembler(const std::string& name)
+            :
+            assemblerName(name)
+        {}
 
-    virtual ~NameAssembler()
-    {}
+        virtual ~NameAssembler()
+        {}
 
-    std::string createCanonicalName(ComplexSpecies<molT> aComplexSpecies) const
-    {
-      detail::ComplexSpeciesOutputMinimizer<molT> canonicalNameGenerator;
-      detail::ComplexOutputState nameSkeleton = canonicalNameGenerator.getMinimalOutputState( aComplexSpecies );
-      return createNameFromOutputState( nameSkeleton );
-    }
-
-    std::string createName(const ComplexSpecies<molT>& aComplexSpecies) const
-    {
-      detail::ComplexOutputState anOutputState;
-      aComplexSpecies.constructOutputState( anOutputState );
-      return createNameFromOutputState( anOutputState );
-    }
-
-    const std::string& getName()
-    {
-      return name;
-    }
-
-  protected:
-
-    const std::string name;
-
-    // This function is intended as a debugish sort of a function, which throws an exception if a complex 
-    // output state does not get encoded and then decoded in the same way
-
-    static void assertEncodeDecodeAccuracy(NameAssembler<molT>* ptrNameAssembler) throw(encodeDecodeInconsistencyXcpt) 
-    {
-      detail::ComplexOutputState aComplexOutputState;
-
-      detail::ComplexOutputState decodedEncodingOS = ptrNameAssembler->createOutputStateFromName( ptrNameAssembler->createNameFromOutputState( aComplexOutputState ) );
-      if (! (decodedEncodingOS == aComplexOutputState)  )
+        const std::string& 
+        getName() const 
         {
-          throw encodeDecodeInconsistencyXcpt(ptrNameAssembler->getName());
+            return assemblerName;
         }
-    }
 
+        std::string 
+        createName(ComplexSpeciesCref aComplexSpecies) const
+        {
+            ComplexOutputState anOutputState;
+            aComplexSpecies.constructOutputState( anOutputState );
 
+            return createNameFromOutputState( anOutputState );
+        }
 
-    virtual std::string createNameFromOutputState( const detail::ComplexOutputState& aComplexOutputState) const = 0;
-    virtual detail::ComplexOutputState createOutputStateFromName( const std::string& aComplexOutputState) const = 0;
+        std::string 
+        createCanonicalName( ComplexSpeciesCref aComplexSpecies) const
+        {
+            ComplexSpeciesOutputMinimizer canonicalNameGenerator;
+            ComplexOutputState minimalOutputState = canonicalNameGenerator.getMinimalOutputState( aComplexSpecies );
+            return createNameFromOutputState( minimalOutputState );
+        }
+
+        virtual std::string createNameFromOutputState( ComplexOutputStateCref aComplexOutputState) const = 0;
+        virtual ComplexOutputState createOutputStateFromName( const std::string& aComplexOutputState) const = 0;
     
+    protected:
+        const std::string assemblerName;
+        
+    protected:
+        // This function is intended as a debugish sort of a function that can be called during constructors of 
+        // different NameAssemblers.  It will throw an exception if startingComplexOutputState != endingComplexOutputState
+        static void assertEncodeDecodeAccuracy(NameAssembler* ptrNameAssembler) throw(encodeDecodeInconsistencyXcpt) 
+        {
 
-  };
+            // TODO: Create a much better and 2more complicated ComplexOutputState...
+            ComplexOutputState aComplexOutputState;
+
+            ComplexOutputState decodedEncodingOS = ptrNameAssembler->createOutputStateFromName( ptrNameAssembler->createNameFromOutputState( aComplexOutputState ) );
+            if (! (decodedEncodingOS == aComplexOutputState)  )
+            {
+                throw encodeDecodeInconsistencyXcpt(ptrNameAssembler->getName());
+            }
+        }
+
+    };
 
 }
 

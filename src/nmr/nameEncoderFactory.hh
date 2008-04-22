@@ -30,13 +30,11 @@
 namespace nmr
 {
 
-  template <typename molT>
   class NameEncoderFactory
   {
   public:
-    typedef typename nmr::NameAssembler<molT> NameAssemblerType;
 
-    NameAssemblerType*
+    NameAssembler*
     create(const std::string& manglerName) throw( NoSuchNameEncoderXcpt )
     {
 //       if( manglerName == manglernames::basicManglerName )
@@ -58,7 +56,7 @@ namespace nmr
 
       if( manglerName == manglernames::compactEncoderName )
         {
-          return new MangledNameAssembler<molT>;
+          return new MangledNameAssembler;
         }
       else
         {

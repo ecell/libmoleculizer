@@ -34,21 +34,29 @@
   \ingroup plexStructGroup
   \brief Defines plexFamily, a structural family of species of complexes. */
 
+#include "utl/macros.hh"
 #include "cpx/plexFamily.hh"
 #include "plex/mzrPlex.hh"
 #include "plex/mzrPlexSpecies.hh"
+// #include "nmr/nmrUnit.hh"
 
 namespace nmr
 {
-  class SimpleMol;
+    DECLARE_CLASS( nmrUnit );
+    DECLARE_CLASS( nameAssembler );
+}
 
-  template <typename T>
-  class nmrUnit;
+namespace bnd
+{ 
+    DECLARE_CLASS( mzrMol );
 }
 
 namespace plx
 {
-  class mzrOmniPlex;
+    DECLARE_CLASS( mzrOmniPlex );
+    DECLARE_CLASS( mzrPlex );
+    DECLARE_CLASS( mzrPlexFamily );
+    DECLARE_CLASS( mzrOmniPlex );
   
   /*! \ingroup plexStructGroup
 
@@ -65,7 +73,7 @@ namespace plx
 			     mzrPlexFamily,
 			     mzrOmniPlex>
   {
-    nmr::nmrUnit<nmr::SimpleMol>& rNmrUnit;
+    nmr::nmrUnit& rNmrUnit;
 
   public:
     // The arguments other than the paradigm plex are passed on to the base
@@ -74,7 +82,7 @@ namespace plx
     mzrPlexFamily(const mzrPlex& rParadigm,
 		  cpx::knownBindings<bnd::mzrMol, fnd::feature<cpx::cxBinding<mzrPlexSpecies, mzrPlexFamily> > >& refKnownBindings,
 		  std::set<mzrPlexFamily*>& refOmniplexFamilies,
-                  nmr::nmrUnit<nmr::SimpleMol>& refNmrUnit);
+                  nmr::nmrUnit& refNmrUnit);
 
     // Fulfills plexFamily::constructSpecies pure virtual function.
     // This exists so that mzrPlexSpecies can have a reference to
@@ -83,7 +91,7 @@ namespace plx
     constructSpecies(const cpx::siteToShapeMap& rSiteParams,
 		     const std::vector<cpx::molParam>& rMolParams);
 
-    const nmr::NameAssembler<nmr::SimpleMol>*
+    const nmr::NameAssembler*
     getNamingStrategy() const;
 
 

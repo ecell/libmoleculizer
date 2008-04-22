@@ -24,7 +24,7 @@
 /////////////////////////////////////////////////////////////////////////////
 
 #include "utl/dom.hh"
-#include "utl/string.hh"
+#include "utl/utility.hh"
 #include "utl/frexp10.hh"
 #include "utl/badElementCastXcpt.hh"
 #include "utl/badChildCountXcpt.hh"

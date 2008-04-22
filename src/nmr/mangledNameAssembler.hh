@@ -28,9 +28,11 @@
 #ifndef __MANGLEDNAMEASSEMBLER_HH
 #define __MANGLEDNAMEASSEMBLER_HH
 
+#include "nmrExceptions.hh"
 #include "nameAssembler.hh"
 #include "complexSpecies.hh"
 #include "complexOutputState.hh"
+#include "utl/utility.hh"
 
 #include <iostream>
 #include <string>
@@ -39,89 +41,77 @@
 namespace nmr
 {
 
-  template <typename molT>
-  class MangledNameAssembler : public NameAssembler<molT>
-  {
-  public:
-    typedef std::vector<std::string> strVect;
-    typedef std::vector<std::string>::iterator strVectIter;
-    typedef std::vector<std::string>::const_iterator cstrVectIter;
-
-    MangledNameAssembler()
-      :
-      NameAssembler<molT>("MangledNameAssembler")
+    class MangledNameAssembler : public NameAssembler
     {
-      try
+    public:
+
+        typedef std::vector<std::string> strVect;
+        typedef std::vector<std::string>::iterator strVectIter;
+        typedef std::vector<std::string>::const_iterator cstrVectIter;
+
+        MangledNameAssembler()
+            :
+            NameAssembler("MangledNameAssembler")
         {
-          assertEncodeDecodeAccuracy(this);
+            try
+            {
+                assertEncodeDecodeAccuracy(this);
+            }
+            catch(encodeDecodeInconsistencyXcpt xcpt)
+            {
+                xcpt.warn();
+                std::cerr << "Continuing..." << std::endl;
+            }
         }
-      catch(encodeDecodeInconsistencyXcpt xcpt)
-        {
-          xcpt.warn();
-          std::cerr << "Continuing..." << std::endl;
-        }
-    }
 
-    std::string createNameFromOutputState( const detail::ComplexOutputState& aCOS) const;
-    detail::ComplexOutputState createOutputStateFromName(const std::string& name) const;
+        std::string 
+        createNameFromOutputState( const ComplexOutputState& aCOS) const;
+        
+        ComplexOutputState createOutputStateFromName(const std::string& name) const;
 
-  protected:
+    protected:
 
-    std::string constructMangledMolList(const detail::ComplexOutputState& aComplexOutputState) const;
-    std::string constructMangledBindingList(const detail::ComplexOutputState& aComplexOutputState) const;
-    std::string constructMangledModificationList(const detail::ComplexOutputState& aComplexOutputState) const;
-    std::string getEncodedLength(const std::string& stringInQuestion) const;
+        std::string constructMangledMolList(const ComplexOutputState& aComplexOutputState) const;
+        std::string constructMangledBindingList(const ComplexOutputState& aComplexOutputState) const;
+        std::string constructMangledModificationList(const ComplexOutputState& aComplexOutputState) const;
+        std::string getEncodedLength(const std::string& stringInQuestion) const;
 
-    void parseMolString(const std::string& molString, std::vector<detail::ComplexOutputState::MolTokenStr>& molTokenVector) const;
-    void parseBindingString(const std::string& bindingString, std::vector<detail::ComplexOutputState::BindingTokenStr>& bindingTokenVector ) const;
-    void parseModificationString(const std::string& modString, std::vector<detail::ComplexOutputState::ModificationTokenStr>& modificationTokenVector) const;
+        void parseMolString(const std::string& molString, std::vector<ComplexOutputState::MolTokenStr>& molTokenVector) const;
+        void parseBindingString(const std::string& bindingString, std::vector<ComplexOutputState::BindingTokenStr>& bindingTokenVector ) const;
+        void parseModificationString(const std::string& modString, std::vector<ComplexOutputState::ModificationTokenStr>& modificationTokenVector) const;
    
-    std::string processBindingString(const std::string& aString) const
-    {
-      if (aString.empty())
-	{
-	  throw CSXcpt("Error.  MangledNameAssembler::processBindingString failed.\nThis function cannot be called on a null string.");
-	}
+        std::string processBindingString(const std::string& aString) const
+        {
+            if (aString.empty())
+            {
+                throw GeneralNmrXcpt("Error.  MangledNameAssembler::processBindingString failed.\nThis function cannot be called on a null string.");
+            }
       
 
-      std::string returnVal;
+            std::string returnVal;
 
-      if (aString.size()==1)
-	{
-	  returnVal = aString;
-	}
-      else if (aString.size()<10)
-	{
-	  returnVal = "_" + detail::stringify(aString.size())+ aString;
-	}
-      else 
-	{
-	  returnVal = "__"+detail::stringify(aString.size()) + "_" + aString;
-	}
+            if (aString.size()==1)
+            {
+                returnVal = aString;
+            }
+            else if (aString.size()<10)
+            {
+                returnVal = "_" + utl::stringify(aString.size())+ aString;
+            }
+            else 
+            {
+                returnVal = "__"+utl::stringify(aString.size()) + "_" + aString;
+            }
       
-      return returnVal;
-    }
+            return returnVal;
+        }
 
-    std::string processModificationToken(const std::string& aModString) const
-    {
-      std::string returnVal;
+        std::string processModificationToken(const std::string& aModString) const;
+        
 
-      if (aModString.size()<10)
-	{
-	  returnVal =  "_" + detail::stringify(aModString.size()) + aModString;
-	}
-      else
-	{
-	  returnVal = "__" + detail::stringify(aModString.size()) +  "_" + aModString;
-	}
-      return returnVal;
-    }
-
-  };
+    };
     
 
 }
-
-#include "mangledNameAssemblerImpl.hh"
 
 #endif

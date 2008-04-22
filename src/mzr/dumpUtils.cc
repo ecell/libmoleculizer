@@ -23,7 +23,7 @@
 //   Berkeley, CA 94704
 /////////////////////////////////////////////////////////////////////////////
 
-#include "utl/string.hh"
+#include "utl/utility.hh"
 #include "utl/frexp10.hh"
 #include "mzr/dumpUtils.hh"
 #include "mzr/mzrEltName.hh"

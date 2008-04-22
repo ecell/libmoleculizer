@@ -31,14 +31,13 @@
 #include "plex/plexUnit.hh"
 #include "stoch/stochUnit.hh"
 #include "ftr/ftrUnit.hh"
-#include "nmr/simpleMol.hh"
 #include "nmr/nmrUnit.hh"
 
 namespace mzr
 {
   unitsMgr::
   unitsMgr(moleculizer& rMoleculizer) :
-    pNmrUnit(new nmr::nmrUnit<nmr::SimpleMol>(rMoleculizer) ),
+    pNmrUnit(new nmr::nmrUnit(rMoleculizer) ),
     pMzrUnit(new mzr::mzrUnit(rMoleculizer)),
     pMolUnit(new bnd::molUnit(rMoleculizer)),
     pPlexUnit(new plx::plexUnit(rMoleculizer,

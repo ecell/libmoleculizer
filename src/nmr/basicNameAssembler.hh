@@ -36,12 +36,11 @@
 namespace nmr
 {
 
-  template <typename molT>
-  class basicNameAssembler : public NameAssembler<molT>
+  class basicNameAssembler : public NameAssembler
   {
   public:
 
-    std::string createNameFromOutputState( const detail::ComplexOutputState& aCOS) const
+    std::string createNameFromOutputState( ComplexOutputStateCref aCOS) const
     {
       std::string name("");
       for(std::vector<std::string>::const_iterator i = aCOS.theMolTokens.begin();
@@ -54,7 +53,7 @@ namespace nmr
       name = name.substr(0 , name.length() - 2);
       name += " -- ";
       
-      for( std::vector< detail::ComplexOutputState::BindingTokenStr >::const_iterator i = aCOS.theBindingTokens.begin();
+      for( std::vector< ComplexOutputState::BindingTokenStr >::const_iterator i = aCOS.theBindingTokens.begin();
            i != aCOS.theBindingTokens.end();
            ++i)
         {
@@ -69,7 +68,7 @@ namespace nmr
       name += " -- ";
 
       
-      for( std::vector< detail::ComplexOutputState::ModificationTokenStr >::const_iterator iter = aCOS.theModificationTokens.begin();
+      for( std::vector< ComplexOutputState::ModificationTokenStr >::const_iterator iter = aCOS.theModificationTokens.begin();
            iter != aCOS.theModificationTokens.end();
            ++iter)
         {

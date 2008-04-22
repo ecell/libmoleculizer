@@ -28,6 +28,7 @@
 #define __ABSTRACT_MOL_HH
 
 #include "nmrExceptions.hh"
+
 #include "utl/macros.hh"
 
 #include <string>
@@ -37,82 +38,99 @@
 
 namespace nmr
 {
-  // An abstract class that implements a Molecule with a name.
-  DECLARE_CLASS( Mol );
+    // An abstract class that implements a Molecule with a name.
+    DECLARE_CLASS( Mol );
 
-  class Mol
+    class Mol
     {
     public:
 
-      DECLARE_TYPE(std::string, MolType);
-      DECLARE_TYPE(std::string, BindingType);
-      DECLARE_TYPE(std::string, ModificationSite);
-      DECLARE_TYPE(std::string, ModificationValue);
-      DECLARE_TYPE(std::vector<ModificationValue>, ListOfModificationValues);
+        DECLARE_TYPE(std::string, MolType);
+        DECLARE_TYPE(std::string, BindingSite);
+        DECLARE_TYPE(std::vector<BindingSite>, BindingSiteList);
+     
+        DECLARE_TYPE(std::string, ModificationSite);
+        DECLARE_TYPE(std::string, ModificationValue);
 
-      Mol(const MolType& aMolType) 
-        : 
-        theMolType(aMolType) 
-      {
-        ; // do nothing
-      }
+
+        typedef std::pair<ModificationSite, ModificationValue> _ModificationToken;
+        DECLARE_TYPE( _ModificationToken, ModificationToken);
+        DECLARE_TYPE( std::vector<ModificationToken>,  ModificationList );
+
+        Mol(MolTypeCref aMolType) 
+            : 
+            theMolType(aMolType) 
+        {
+            ; // do nothing
+        }
       
-      virtual ~Mol()
-      {
-        ; // do nothing
-      }
+        virtual ~Mol()
+        {
+            ; // do nothing
+        }
       
-      MolTypeCref getMolType() const
-      { 
-        return theMolType; 
-      }
+        inline MolTypeCref 
+        getMolType() const
+        { 
+            return theMolType; 
+        }
 
-      virtual bool 
-      checkIfBindingSiteExists(BindingSiteCref aBindingSite) 
-        const =0;
+        virtual void 
+        addNewBindingSite( BindingSiteCref aBindingSite ) = 0;
 
-      virtual bool 
-      checkIfModificationSiteExists(ModificationSiteCref aModificationSite) 
-        const =0;
+        virtual bool 
+        checkIfBindingSiteExists(BindingSiteCref aBindingSite) 
+            const =0;
 
-      virtual bool 
-      checkIfBindingSiteIsBound(BindingSiteCref aBindingSite) 
-        const throw(NoSuchBindingSiteXcpt) =0;
+        virtual bool 
+        checkIfBindingSiteIsBound(BindingSiteCref aBindingSite) 
+            const throw(NoSuchBindingSiteXcpt) =0;
 
-      virtual ModificationValue 
-      getModificationValueAtModificationSite(ModificationSiteCref aModificationSite) 
-        const throw(NoSuchModificationSiteXcpt) =0;
+        virtual void 
+        bindAtBindingSite(BindingSiteCref aBindingSite) 
+            throw(NoSuchBindingSiteXcpt) =0;
 
-      virtual void 
-      bindAtBindingSite(BindingSiteCref aBindingSite) 
-        throw(NoSuchBindingSiteXcpt) =0;
+        virtual void 
+        unbindAtBindingSite(BindingSiteCref aBindingSite)
+            throw(NoSuchBindingSiteXcpt) =0;
 
-      virtual void 
-      unbindAtBindingSite(BindingSiteCref aBindingSite)
-        throw(NoSuchBindingSiteXcpt) =0;
+        virtual int 
+        getBindingSiteInteger(BindingSiteCref aBindingSite) const 
+            throw(NoSuchBindingSiteXcpt) =0; 
 
-      virtual void 
-      updateModificationState(ModificationSiteCref aModificationSite,
-                              ModificationValueCref aModificationValue) 
-        throw(NoSuchModificationSiteXcpt) =0;
+        virtual void
+        addNewModificationSite( ModificationSiteCref newModSite,
+                                ModificationValueCref modValue) = 0;
 
-      virtual int 
-      getBindingSiteInteger(BindingSiteCref aBindingSite) const 
-        throw(NoSuchBindingSiteXcpt) =0; 
+        virtual bool 
+        checkIfModificationSiteExists(ModificationSiteCref aModificationSite) 
+            const =0;
 
-      virtual int 
-      getModificationSiteInteger(ModificationSiteCref aModificationSite) 
-        const throw(NoSuchModificationSiteXcpt) =0;
+        virtual ModificationValue 
+        getModificationValueAtModificationSite(ModificationSiteCref aModificationSite) 
+            const throw(NoSuchModificationSiteXcpt) =0;
 
-      virtual bool 
-      operator<(MolCref rhsMol) const
-      {
-        return (this->getMolType() < rhsMol.getMolType());
-      }
+        virtual void 
+        updateModificationState(ModificationSiteCref aModificationSite,
+                                ModificationValueCref aModificationValue) 
+            throw(NoSuchModificationSiteXcpt) =0;
+
+        virtual int 
+        getModificationSiteInteger(ModificationSiteCref aModificationSite) 
+            const throw(NoSuchModificationSiteXcpt) =0;
+        
+        virtual ModificationList
+        getModificationList() const = 0;
+
+        virtual bool 
+        operator<(MolCref rhsMol) const
+        {
+            return (this->getMolType() < rhsMol.getMolType());
+        }
 
     protected:
-      MolType theMolType;
-  };
+        MolType theMolType;
+    };
 }
 
 #endif 

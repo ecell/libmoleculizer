@@ -29,7 +29,7 @@
 #include "cpx/prm.hh"
 #include "cpx/siteToShapeMap.hh"
 #include "cpx/molState.hh"
-#include "nmr/simpleMol.hh"
+#include "nmr/namedMolecule.hh"
 #include "nmr/complexSpecies.hh"
 #include "nmr/mangledNameAssembler.hh"
 #include "nmr/basicNameAssembler.hh"
@@ -87,10 +87,10 @@ namespace cpx
     getCanonicalName( void ) const;
 
     std::string
-    getCanonicalName( const nmr::NameAssembler<nmr::SimpleMol>* ptrNameAssembler) const;
+    getCanonicalName( const nmr::NameAssembler* ptrNameAssembler) const;
 
   protected:
-    typedef nmr::ComplexSpecies<nmr::SimpleMol> ComplexRepresentation;
+    typedef nmr::ComplexSpecies ComplexRepresentation;
         
     void
     createComplexRepresentation( ComplexRepresentation& aComplexRepresentation ) const;

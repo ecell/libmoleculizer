@@ -24,131 +24,363 @@
 //   Berkeley, CA 94704
 /////////////////////////////////////////////////////////////////////////////
 
-#ifndef NMR_XCPTS_HH
-#define NMR_XCPTS_HH
+#ifndef NMR_NMREXCEPTIONS_HH
+#define NMR_NMREXCEPTIONS_HH
 
 #include "utl/xcpt.hh"
 
 namespace nmr
 {
 
-  class NoSuchNameEncoderXcpt 
-    :
-    public utl::xcpt
-  {
-    static std::string
-    mkMsg( const std::string& rBadNameEncoderName)
+    class GeneralNmrXcpt
+        :
+        public utl::xcpt
     {
-      std::ostringstream msgStream;
-      msgStream << "There is no NameEncoder provided in this distribution with the name '"
-                << rBadNameEncoderName 
-                << "'.";
-      return msgStream.str();
-    }
+        public:
+        GeneralNmrXcpt(const std::string& message)
+            :
+            utl::xcpt( message )
+        {}
+    };
+
+    class MissingMolAliasXcpt
+        :
+        public utl::xcpt
+    {
+        static std::string
+        mkMsg(const std::string& unfoundMolAlias)
+        {
+            std::ostringstream oss;
+            oss << "Error: mol alias '"
+                << unfoundMolAlias 
+                << "' was looked up but not found in complex.";
+            return oss.str();
+        }
+
+    public:
+        MissingMolAliasXcpt(const std::string& unfoundMolAlias) 
+            : 
+            utl::xcpt( mkMsg( unfoundMolAlias) )
+        {}
+    };
+
+
+    class MissingBindingSiteXcpt
+        :
+        public utl::xcpt
+    {
+        static std::string
+        mkMsg(const std::string& missingBindingSite, const std::string& ostensiblyOwningMol)
+        {
+            std::ostringstream oss;
+            oss << "Error: Binding site '"
+                << missingBindingSite
+                << "' was looked up on mol '"
+                << ostensiblyOwningMol 
+                << "' but was not found.";
+            return oss.str();
+        }
+
+    public:
+        MissingBindingSiteXcpt(const std::string& missingBindingSite, 
+                            const std::string& ostensiblyOwningMol) 
+            : 
+            utl::xcpt( mkMsg( missingBindingSite, ostensiblyOwningMol) )
+        {}
+    };
+
+    class DuplicateMolAliasXcpt
+        :
+        public utl::xcpt
+    {
+        static std::string
+        mkMsg( const std::string& molType, const std::string& molAlias )
+        {
+            std::ostringstream oss;
+            oss << "Error: mol of type '"
+                << molType 
+                << "' was attempted to be added to a complex under a duplicate alias '"
+                << molAlias
+                << "'";
+            return oss.str();
+        }
+
+    public:
+        DuplicateMolAliasXcpt( const std::string& molType, const std::string& molAlias )
+            :
+            utl::xcpt( mkMsg(molType, molAlias) )
+        {}
+    };
     
-  public:
-    NoSuchNameEncoderXcpt( const std::string& rBadName):
-      utl::xcpt( mkMsg(rBadName) )
-    {}
-  };
 
-  class NoSuchBindingSiteXcpt : public utl::xcpt
-  {
-    static std::string 
-    mkMsg( const std::string& rNonexistentBindingSiteName )
+    class BadPermutationConstructorXcpt
+        :
+        public utl::xcpt
     {
-      std::ostringstream msgStream;
-      msgStream << "BindingSite '" 
-                << rNonexistentBindingSiteName 
-                << "' does not exist.";
-      return msgStream.str();
-    }
+        static std::string
+        mkMsg( int ActualValue, unsigned int pos)
+        {
+            std::ostringstream oss;
+            oss << "Error in permutation constructor.  The permutation being extended should "
+                << "have UNDEFINED value at position = '" 
+                << pos
+                << "'; however value("
+                << pos 
+                << ") = " 
+                << ActualValue << ".";
+            return oss.str();
+        }
+    public:
 
-  public:
-    NoSuchBindingSiteXcpt(const std::string& rNonexistentBindingSiteName)
-      :
-      utl::xcpt(rNonexistentBindingSiteName)
-    {}
-  };
-
-  class NoSuchModificationSiteXcpt : public utl::xcpt
-  {
-    static std::string 
-    mkMsg( const std::string& rNonexistentModificationSiteName )
-    {
-      std::ostringstream msgStream;
-      msgStream << "ModificationSite '" 
-                << rNonexistentModificationSiteName 
-                << "' does not exist.";
-      return msgStream.str();
-    }
-
-  public:
-    NoSuchModificationSiteXcpt(const std::string& rNonexistentModificationSiteName)
-      :
-      utl::xcpt(rNonexistentModificationSiteName)
-    {}
-  };
+        BadPermutationConstructorXcpt( int ActualValue, unsigned int pos)
+            :
+            utl::xcpt(mkMsg(ActualValue, pos) )
+        {}
+    };
     
-  class badBindingNameXcpt : public utl::xcpt
-  {
-  public:
-    static std::string
-    mkMsg(const std::string& bindingList)
+    class IncompatiblePermutationsXcpt
+        :
+        public utl::xcpt
     {
-      std::ostringstream msgStream;
-      msgStream << "Binding phrase '" 
-                << bindingList
-                << "' could not be decoded as it is an illegal binding list.";
+        static std::string mkMsg( unsigned int dimension1, unsigned int dimension2)
+        {
+            std::ostringstream oss;
+            oss << "Error: Two permutations with incompatible dimensionalities ('" 
+                << dimension1
+                << "' and '"
+                << dimension2
+                << "') were used together.";
+            return oss.str();
+        }
 
-      return msgStream.str();
-    }
+    public:
+        IncompatiblePermutationsXcpt( unsigned int dimension1, unsigned int dimension2)
+            :
+            utl::xcpt( mkMsg( dimension1, dimension2) )
+        {}
+    };
 
-    badBindingNameXcpt(const std::string& bindingName)
-      :
-      utl::xcpt( mkMsg(bindingName) )
-    {}
-  };
-
-  class badModificationNameXcpt : public utl::xcpt
-  {
-  public:
-    static std::string
-    mkMsg(const std::string& modificationString)
+    class BadPermutationIndexXcpt
+        :
+        public utl::xcpt
     {
-      std::ostringstream msgStream;
-      msgStream << "Modification string '"
-                << modificationString 
-                << "' could not be decoded as it is an illegal modification string.";
-      return msgStream.str();
-    }
+        static std::string
+        mkMsg( unsigned int dimension, unsigned int badNdx)
+        {
+            std::ostringstream oss;
+            oss << "Bad domain element used with permutation.  Permutation has dimension " 
+                << dimension
+                << ", however the value at "
+                << badNdx 
+                << " was called for.";
 
-    badModificationNameXcpt(const std::string& modificationString )
-      :
-      utl::xcpt( mkMsg(modificationString) )
-    {}
-  };
+            return oss.str();
+        }
 
+    public:
+        BadPermutationIndexXcpt( unsigned int permutationDimension, unsigned int badNdx)
+            :
+            utl::xcpt( mkMsg(permutationDimension, badNdx) )
+        {}
+    };
 
-  class encodeDecodeInconsistencyXcpt : public utl::xcpt
-  {
-  public:
-    static std::string
-    mkMsg(const std::string& encodingScheme)
+    class NoSuchNameEncoderXcpt 
+        :
+        public utl::xcpt
     {
-      std::ostringstream msgStream;
-      msgStream << "ComplexSpecies encoding scheme '"
-                << encodingScheme
-                << "' does not have the property that decode( encode( \"A Complex Species State\") ) == \"A Complex Species State\"";
-      return msgStream.str();
-    }
+        static std::string
+        mkMsg( const std::string& rBadNameEncoderName)
+        {
+            std::ostringstream msgStream;
+            msgStream << "There is no NameEncoder provided in this distribution with the name '"
+                      << rBadNameEncoderName 
+                      << "'.";
+            return msgStream.str();
+        }
+    
+    public:
+        NoSuchNameEncoderXcpt( const std::string& rBadName):
+            utl::xcpt( mkMsg(rBadName) )
+        {}
+    };
 
-    encodeDecodeInconsistencyXcpt(const std::string& encodingScheme)
-      :
-      utl::xcpt(mkMsg(encodingScheme))
-    {}
-  };
+    class NoSuchBindingSiteXcpt : public utl::xcpt
+    {
+        static std::string 
+        mkMsg( const std::string& rNonexistentBindingSiteName )
+        {
+            std::ostringstream msgStream;
+            msgStream << "BindingSite '" 
+                      << rNonexistentBindingSiteName 
+                      << "' does not exist.";
+            return msgStream.str();
+        }
+
+        static std::string 
+        mkMsg( const std::string& rMolName, const std::string& rNonexistentBindingSiteName )
+        {
+            std::ostringstream msgStream;
+            msgStream << "BindingSite '" 
+                      << rNonexistentBindingSiteName 
+                      << "' does not exist on mol '"
+                      << rMolName
+                      << "'";
+
+            return msgStream.str();
+        }
+
+    public:
+        NoSuchBindingSiteXcpt(const std::string& rNonexistentBindingSiteName)
+            :
+            utl::xcpt( mkMsg(rNonexistentBindingSiteName) )
+        {}
+
+        NoSuchBindingSiteXcpt(const std::string& rMolName, const std::string& rNonexistentBindingSiteName)
+            :
+            utl::xcpt( mkMsg( rMolName, rNonexistentBindingSiteName) )
+        {}
+    };
+
+    class NoSuchModificationSiteXcpt : public utl::xcpt
+    {
+        static std::string 
+        mkMsg( const std::string& rNonexistentModificationSiteName )
+        {
+            std::ostringstream msgStream;
+            msgStream << "ModificationSite '" 
+                      << rNonexistentModificationSiteName 
+                      << "' does not exist.";
+            return msgStream.str();
+        }
+
+        static std::string 
+        mkMsg( const std::string& rMolName, const std::string& rNonexistentModificationSiteName )
+        {
+            std::ostringstream msgStream;
+            msgStream << "ModificationSite '" 
+                      << rNonexistentModificationSiteName 
+                      << "' does not exist on mol '"
+                      << rMolName 
+                      << "'.";
+            return msgStream.str();
+        }
+
+    public:
+        NoSuchModificationSiteXcpt(const std::string& rNonexistentModificationSiteName)
+            :
+            utl::xcpt(mkMsg( rNonexistentModificationSiteName))
+        {}
+
+        NoSuchModificationSiteXcpt(const std::string& rMolName, const std::string& rNonexistentModificationSiteName)
+            :
+            utl::xcpt(mkMsg( rMolName, rNonexistentModificationSiteName))
+        {}
+    };
+    
+    class badBindingNameXcpt : public utl::xcpt
+    {
+        static std::string
+        mkMsg(const std::string& bindingList)
+        {
+            std::ostringstream msgStream;
+            msgStream << "Binding phrase '" 
+                      << bindingList
+                      << "' could not be decoded as it is an illegal binding list.";
+
+            return msgStream.str();
+        }
+
+    public:
+        badBindingNameXcpt(const std::string& bindingName)
+            :
+            utl::xcpt( mkMsg(bindingName) )
+        {}
+    };
+
+    class badModificationNameXcpt : public utl::xcpt
+    {
+        static std::string
+        mkMsg(const std::string& modificationString)
+        {
+            std::ostringstream msgStream;
+            msgStream << "Modification string '"
+                      << modificationString 
+                      << "' could not be decoded as it is an illegal modification string.";
+            return msgStream.str();
+        }
+
+    public:
+        badModificationNameXcpt(const std::string& modificationString )
+            :
+            utl::xcpt( mkMsg(modificationString) )
+        {}
+    };
+
+
+    class encodeDecodeInconsistencyXcpt : public utl::xcpt
+    {
+        static std::string
+        mkMsg(const std::string& encodingScheme)
+        {
+            std::ostringstream msgStream;
+            msgStream << "ComplexSpecies encoding scheme '"
+                      << encodingScheme
+                      << "' does not have the property that decode( encode( \"A Complex Species State\") ) == \"A Complex Species State\"";
+            return msgStream.str();
+        }
+
+    public:
+        encodeDecodeInconsistencyXcpt(const std::string& encodingScheme)
+            :
+            utl::xcpt(mkMsg(encodingScheme))
+        {}
+    };
+
+    class BindingSiteAlreadyBoundXcpt : public utl::xcpt
+    {
+        static std::string
+        mkMsg(const std::string& molName, const std::string& bindingSiteName)
+        {
+            std::ostringstream msgStream;
+            msgStream << "Mol '" 
+                      << molName 
+                      << "' reqested already-bound binding site '"
+                      << bindingSiteName 
+                      << "' to be bound.  Semantic error.";
+            return msgStream.str();
+        }
+
+    public:
+        BindingSiteAlreadyBoundXcpt(const std::string& molName, const std::string& bindingSiteName)
+            :
+            utl::xcpt(mkMsg(molName, bindingSiteName))
+        {}
+    };
+
+
+    class BindingSiteAlreadyUnboundXcpt : public utl::xcpt
+    {
+        static std::string
+        mkMsg(const std::string& molName, const std::string& bindingSiteName)
+        {
+            std::ostringstream msgStream;
+            msgStream << "Mol '" 
+                      << molName 
+                      << "' reqested already non-bound binding site '"
+                      << bindingSiteName 
+                      << "' to be unbound.  Semantic error.";
+            return msgStream.str();
+        }
+
+    public:
+        BindingSiteAlreadyUnboundXcpt(const std::string& molName, const std::string& bindingSiteName)
+            :
+            utl::xcpt(mkMsg(molName, bindingSiteName))
+        {}
+    };
+
+    
 
 }
 
-#endif // NMR_XCPTS_HH
+#endif

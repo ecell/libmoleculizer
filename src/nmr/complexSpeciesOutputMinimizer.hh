@@ -27,129 +27,122 @@
 #ifndef __CANONICALNMR_HH
 #define __CANONICALNMR_HH
 
-#include <map>
-#include <functional>
-
 #include "complexSpecies.hh"
-#include "nameAssembler.hh"
 #include "permutation.hh"
 #include "partialTokenList.hh"
 #include "permutationName.hh"
+#include "abstractMol.hh"
+
+#include <set>
+#include <map>
+#include <functional>
 
 namespace nmr
 {
-
-    namespace detail
+    DECLARE_CLASS(ComplexSpeciesOutputMinimizer);
+    class ComplexSpeciesOutputMinimizer
     {
-        template <class molT>
-        class ComplexSpeciesOutputMinimizer
+
+    public:
+        typedef nmr::Mol Mol;
+        typedef std::pair<int, int> Range;
+        typedef std::pair<int, int> BindingSite;
+        typedef std::pair<BindingSite, BindingSite> Binding;
+        typedef std::set<Permutation>::const_iterator ConstPermSetIter;  
+
+    public:
+
+        ComplexSpeciesOutputMinimizer();
+        ComplexOutputState getMinimalOutputState(ComplexSpecies aComplexSpecies);
+
+    protected:
+
+        Permutation getPlexSortingPermutation(ComplexSpecies aComplexSpecies);
+        Permutation calculateMinimizingPermutationForComplex(ComplexSpecies aComplexSpecies);
+        void setupDataStructuresForCalculation();
+        void maximallyExtendPermutation(Permutation& aRefPermutation);
+        PartialTokenList calculatePartialTokenListForPermutation(ComplexSpecies& anAP, Permutation& aPerm); 
+        Permutation calculateMolSortingPermutationForComplex(ComplexSpecies& aComplexSpecies);
+        bool checkMolsInComplexAreIsSorted();
+        bool checkExistsIncompletePermutations(std::set<Permutation>& setOfPPs);
+        bool checkPlexIsSorted(const ComplexSpecies& aComplexSpecies) const;
+
+    protected:
+
+        ComplexSpecies theUnnamedComplex;
+        std::map<int, std::string> indexToMolMap;
+        std::map<std::string, Range > molToIndexRangeMap;
+
+
+        struct MolIndexLessThanCmp : public std::binary_function<int, int, bool>
         {
+            DECLARE_TYPE(ComplexSpecies::MolList, MolList);
 
-        public:
-            typedef molT Mol;
-            typedef std::pair<int, int> Range;
-            typedef std::pair<int, int> BindingSite;
-            typedef std::pair<BindingSite, BindingSite> Binding;
-            typedef std::set<Permutation>::const_iterator ConstPermSetIter;  
-
-        public:
-
-            ComplexSpeciesOutputMinimizer();
-            ComplexOutputState getMinimalOutputState(ComplexSpecies<molT> aComplexSpecies);
-
-        protected:
-
-            Permutation getPlexSortingPermutation(ComplexSpecies<molT> aComplexSpecies);
-            Permutation calculateMinimizingPermutationForComplex(ComplexSpecies<molT> aComplexSpecies);
-            void setupDataStructuresForCalculation();
-            void maximallyExtendPermutation(Permutation& aRefPermutation);
-            PartialTokenList<molT> calculatePartialTokenListForPermutation(ComplexSpecies<molT>& anAP, Permutation& aPerm); 
-            Permutation calculateMolSortingPermutationForComplex(ComplexSpecies<molT>& aComplexSpecies);
-            bool checkMolsInComplexAreIsSorted();
-            bool checkExistsIncompletePermutations(std::set<Permutation>& setOfPPs);
-            bool checkPlexIsSorted(const ComplexSpecies<molT>& aComplexSpecies) const;
-
-        protected:
-
-            ComplexSpecies<molT> theUnnamedComplex;
-            std::map<int, std::string> indexToMolMap;
-            std::map<std::string, Range > molToIndexRangeMap;
-
-
-            struct MolIndexLessThanCmp : public std::binary_function<int, int, bool>
-            {
-                typedef std::vector<molT> MolList;
-
-                MolIndexLessThanCmp(const ComplexSpecies<molT>& aComplexSpeciesForCmp) 
-                    : 
-                    theComparisonMolList(aComplexSpeciesForCmp.getMolList())
-                {
-                    ; // do nothing
-                }
-
-                bool operator()(int ndx1, int ndx2)
-                {
-                    return theComparisonMolList[ndx1] < theComparisonMolList[ndx2];
-                } 
-	
-            protected:
-                const MolList& theComparisonMolList;
-            };
-        };
-
-
-        struct namerBindingCmp
-        {
-
-            typedef std::pair<int, int> BindingSite;
-            typedef std::pair<BindingSite, BindingSite> Binding;
-     
-            namerBindingCmp(int theBinding) 
+            MolIndexLessThanCmp(ComplexSpeciesCref aComplexSpeciesForCmp) 
                 : 
-                bindingNumber(theBinding)
+                theComparisonMolList( aComplexSpeciesForCmp.getMolList() )
+            {}
+
+            bool operator()(int ndx1, int ndx2)
             {
-                ; // do nothing
+                return theComparisonMolList[ndx1] < theComparisonMolList[ndx2];
+            } 
+	
+        protected:
+            MolListCref theComparisonMolList;
+        }; 
+
+    };
+
+    struct namerBindingCmp
+    {
+
+        typedef std::pair<int, int> BindingSite;
+        typedef std::pair<BindingSite, BindingSite> Binding;
+     
+        namerBindingCmp(int theBinding) 
+            : 
+            bindingNumber(theBinding)
+        {
+            ; // do nothing
+        }
+
+        bool operator()(Binding a, Binding b)
+        {
+            //This will sort the bindings by the binding number of a particular binding.  
+	
+            int aNumToComp;
+            int bNumToComp;
+	
+            if (a.first.first==bindingNumber)
+            {
+                aNumToComp=a.first.second;
+            }
+            else 
+            {
+                aNumToComp=a.second.second;
+            }
+	
+            if (b.first.first==bindingNumber)
+            {
+                bNumToComp=b.first.second;
+            }
+            else 
+            {
+                bNumToComp=b.second.second;
             }
 
-            bool operator()(Binding a, Binding b)
-            {
-                //This will sort the bindings by the binding number of a particular binding.  
-	
-                int aNumToComp;
-                int bNumToComp;
-	
-                if (a.first.first==bindingNumber)
-                {
-                    aNumToComp=a.first.second;
-                }
-                else 
-                {
-                    aNumToComp=a.second.second;
-                }
-	
-                if (b.first.first==bindingNumber)
-                {
-                    bNumToComp=b.first.second;
-                }
-                else 
-                {
-                    bNumToComp=b.second.second;
-                }
+            return (aNumToComp < bNumToComp);
+        }
+    
 
-                return (aNumToComp < bNumToComp);
-            }
-
-            int bindingNumber;
-
-        };
+        int bindingNumber;
+    };
 
 
+} // namespace nmr
 
-    }
 
-} //this r-brace ends namespace nmr; make sure it is on this side of the next #include line.  Otherwise trouble.  
-
-#include "complexSpeciesOutputMinimizerImpl.hh"
 
 #endif 
 

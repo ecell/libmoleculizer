@@ -35,12 +35,11 @@
 
 namespace nmr
 {
-  template <typename molT>
-  class readableNameAssembler : public NameAssembler<molT>
+  class readableNameAssembler : public NameAssembler
   {
     
   public:
-    std::string createNameFromOutputState( const detail::ComplexOutputState& aCOS) const
+    std::string createNameFromOutputState( ComplexOutputStateCref aCOS) const
     {
       // We would like the output to be something like the following.
       // X(phosphorylated):Y:Z(not_phos).
@@ -53,7 +52,7 @@ namespace nmr
 
           std::string modSitesString("");
           int numberModSites = 0;
-          std::string molNdxAsString = this->stringify( molNdx );
+          std::string molNdxAsString = utl::stringify( molNdx );
           
           for( unsigned int i = 0 ; i!= aCOS.theModificationTokens.size(); ++i)
             {
@@ -75,19 +74,6 @@ namespace nmr
         }
       name = name.substr(0, name.length() - 1);
       return name;
-    }
-
-  private:
-    std::string 
-    stringify(int i) const
-    {
-      std::stringstream stream;
-      stream << i;
-      
-      std::string numAsString;
-      stream >> numAsString;
-      
-      return numAsString;
     }
 
   };

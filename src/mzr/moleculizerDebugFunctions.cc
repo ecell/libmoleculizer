@@ -22,11 +22,10 @@
 #include "mzrHelperFunctions.hh"
 #include "debug.hh" 
 #include "nmr/nmrUnit.hh"
-#include "nmr/simpleMol.hh"
 #include "mzr/unitsMgr.hh"
 
 #include "utl/utlHelper.hh"
-#include "utl/string.hh"
+#include "utl/utility.hh"
 #include <algorithm>
 #include <fstream>
 #include <pause.hpp>

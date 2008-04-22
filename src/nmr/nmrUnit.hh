@@ -25,117 +25,98 @@
 #include "nmrEltName.hh"
 #include "nameAssembler.hh"
 #include "nameEncoderFactory.hh"
-#include "mzr/mzrSpecies.hh"
+//#include "mzr/mzrSpecies.hh"
 #include "plex/mzrPlexSpecies.hh"
 #include "mzr/unit.hh"
 #include "mol/molUnit.hh"
 
 namespace plx
 {
-  class plexUnit;
+    DECLARE_CLASS( plexUnit);
+}
+
+namespace mzr
+{
+    DECLARE_CLASS( mzrSpecies );
 }
 
 namespace nmr
 {
-
-  template <typename molT>
-  class nmrUnit : public mzr::unit
-  {
-    typedef molT MolType;
-
-  public:
-    nmrUnit(mzr::moleculizer& rMoleculizer)
-      :
-      unit("nmr", 
-           rMoleculizer),
-      pMzrUnit(NULL),
-      pMolUnit(NULL),
-      pPlexUnit(NULL),
-      ptrNameEncoderFactory( new NameEncoderFactory<molT> ),
-      ptrNameAssembler( NULL )
+    class nmrUnit : public mzr::unit
     {
-      setDefaultNameEncoder( manglernames::compactEncoderName );
-    }
-    
-    ~nmrUnit()
-    {
-      // Don't delete any pointers to Units.
-      delete ptrNameEncoderFactory;
-      delete ptrNameAssembler;
-    }
-
-    plx::mzrPlexSpecies* 
-    makePlexFromName(const std::string& mangledName) const
-    {
-      detail::ComplexOutputState cos = getNameEncoder()->createOutputStateFromName( mangledName );
-      std::cout << mangledName << " was decoded into ";
-      std::cout << cos << std::endl;
-
-      return NULL;
-    }
-    
-    mzr::mzrSpecies*
-    getSpeciesFromName( const std::string& speciesName)
-    {
-
-      if(0)
+    public:
+        nmrUnit(mzr::moleculizer& rMoleculizer)
+            :
+            unit("nmr", 
+                 rMoleculizer),
+            pMzrUnit(NULL),
+            pMolUnit(NULL),
+            pPlexUnit(NULL),
+            ptrNameEncoderFactory( new NameEncoderFactory ),
+            ptrNameAssembler( NULL )
         {
-          // TODO: If the name is present in moleculizer's list, return that.  
+            setDefaultNameEncoder( manglernames::compactEncoderName );
         }
-      else
+    
+        ~nmrUnit()
         {
-          detail::ComplexOutputState aCOS = getNameEncoder()->createOutputStateFromName( speciesName );
-
-          // This intentionally does not use the template typename parameter molT.  The 
-          // reason for this is that SimpleMol is the 
-          ComplexSpecies<SimpleMol> theNewComplexSpecies( aCOS );
-
-          mzr::mzrSpecies* newMzrSpecies = pPlexUnit->constructNewPlexSpeciesFromComplexSpecies( theNewComplexSpecies );
-          return newMzrSpecies;
+            // Don't delete any pointers to Units as they are memory managed elsewhere.
+            delete ptrNameEncoderFactory;
+            delete ptrNameAssembler;
         }
 
-      return NULL;
-    }
+        plx::mzrPlexSpecies* 
+        makePlexFromName(const std::string& mangledName) const
+        {
+
+            // TODO: write me.
+            ComplexOutputState cos = getNameEncoder()->createOutputStateFromName( mangledName );
+            std::cout << mangledName << " was decoded into ";
+            std::cout << cos << std::endl;
+
+            return NULL;
+        }
     
-    const NameAssembler<molT>* 
-    getNameEncoder() const throw( utl::xcpt );
+        mzr::mzrSpecies*
+        getSpeciesFromName( const std::string& speciesName);
+    
+        const NameAssembler* 
+        getNameEncoder() const throw( utl::xcpt );
 
-    void 
-    setDefaultNameEncoder( const std::string& nameEncoderName) throw( NoSuchNameEncoderXcpt  );
+        void 
+        setDefaultNameEncoder( const std::string& nameEncoderName) throw( NoSuchNameEncoderXcpt  );
 
-    void
-    setMzrUnit(mzr::mzrUnit* ptrMzrUnit)
-    {
-      pMzrUnit = ptrMzrUnit;
-    }
+        void
+        setMzrUnit(mzr::mzrUnit* ptrMzrUnit)
+        {
+            pMzrUnit = ptrMzrUnit;
+        }
 
-    void 
-    setPlexUnit(plx::plexUnit* ptrPlexUnit)
-    {
-      pPlexUnit = ptrPlexUnit;
-    }
+        void 
+        setPlexUnit(plx::plexUnit* ptrPlexUnit)
+        {
+            pPlexUnit = ptrPlexUnit;
+        }
 
-    void setMolUnit(bnd::molUnit* ptrMolUnit)
-    {
-      pMolUnit = ptrMolUnit;
-    }
+        void setMolUnit(bnd::molUnit* ptrMolUnit)
+        {
+            pMolUnit = ptrMolUnit;
+        }
 
-    void parseDomInput(xmlpp::Element* pRootElt, xmlpp::Element* pModelElt, xmlpp::Element* pStreamsElt) throw(std::exception);
-    void insertStateElts(xmlpp::Element* pRootElt) throw(std::exception);
+        void parseDomInput(xmlpp::Element* pRootElt, xmlpp::Element* pModelElt, xmlpp::Element* pStreamsElt) throw(std::exception);
+        void insertStateElts(xmlpp::Element* pRootElt) throw(std::exception);
 
-  private:
+    private:
 
-    mzr::mzrUnit* pMzrUnit;
-    bnd::molUnit* pMolUnit;
-    plx::plexUnit* pPlexUnit;
+        mzr::mzrUnit* pMzrUnit;
+        bnd::molUnit* pMolUnit;
+        plx::plexUnit* pPlexUnit;
 
-    NameEncoderFactory<molT>* ptrNameEncoderFactory;
-    NameAssembler<molT>* ptrNameAssembler;
-  };
+        NameEncoderFactory* ptrNameEncoderFactory;
+        NameAssembler* ptrNameAssembler;
+    };
 }
 
-
-#include "nmrUnitImpl.hh"
 
 #endif
 

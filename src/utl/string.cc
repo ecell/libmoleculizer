@@ -27,25 +27,5 @@
 
 namespace utl
 {
-  bool
-  stringIsInt(const std::string& rString,
-	      int& rInt)
-  {
-    const char* start = rString.c_str();
-    char* pEnd;
-    // Setting the base to 0 here means that strings with C-style base
-    // indicators (e.g. 0xFFF) can be read successfully.
-    rInt = strtol(start, &pEnd, 0);
-    return 0 == *pEnd;
-  }
 
-  bool
-  stringIsDouble(const std::string& rString,
-		 double& rDouble)
-  {
-    const char* start = rString.c_str();
-    char* pEnd;
-    rDouble = strtod(start, &pEnd);
-    return 0 == *pEnd;
-  }
 }

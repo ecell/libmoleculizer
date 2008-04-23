@@ -69,7 +69,7 @@ namespace nmr
         makePlexFromName(const std::string& mangledName) const
         {
 
-            // TODO: write me.
+            // TODO: Write nmrUnit::makePlexFromName.
             ComplexOutputState cos = getNameEncoder()->createOutputStateFromName( mangledName );
             std::cout << mangledName << " was decoded into ";
             std::cout << cos << std::endl;

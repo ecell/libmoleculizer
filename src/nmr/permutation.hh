@@ -120,11 +120,13 @@ namespace nmr
             
             int& operator[](const BindingNdx& n) 
                 throw(nmr::BadPermutationIndexXcpt);
+
             const int& operator[](const BindingNdx& n) const
                 throw(nmr::BadPermutationIndexXcpt);
 
-            int 
-            getLeastValueNotInPermutation() const;
+            unsigned int 
+            getLeastValueNotInPermutation() const 
+                throw(nmr::GeneralNmrXcpt);
 
             bool 
             checkPermutationLegality() const;

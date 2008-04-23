@@ -27,58 +27,62 @@
 #ifndef __BASICNAMEASSEMBLER_HH
 #define __BASICNAMEASSEMBLER_HH
 
-#include <string>
-#include <vector>
+#include "nmrExceptions.hh"
 #include "nameAssembler.hh"
 #include "complexSpecies.hh"
 #include "complexOutputState.hh"
 
+#include "utl/macros.hh"
+
+#include <string>
+#include <vector>
+
 namespace nmr
 {
 
-  class basicNameAssembler : public NameAssembler
-  {
-  public:
-
-    std::string createNameFromOutputState( ComplexOutputStateCref aCOS) const
+    DECLARE_CLASS( basicNameAssembler);
+    class basicNameAssembler : public NameAssembler
     {
-      std::string name("");
-      for(std::vector<std::string>::const_iterator i = aCOS.theMolTokens.begin();
-          i != aCOS.theMolTokens.end();
-          ++i)
+    public:
+        std::string createNameFromOutputState( ComplexOutputStateCref aCOS) const
         {
-          name += *i + ", ";
-        }
+            std::string name("");
+            for(std::vector<std::string>::const_iterator i = aCOS.theMolTokens.begin();
+                i != aCOS.theMolTokens.end();
+                ++i)
+            {
+                name += *i + ", ";
+            }
 
-      name = name.substr(0 , name.length() - 2);
-      name += " -- ";
+            name = name.substr(0 , name.length() - 2);
+            name += " -- ";
       
-      for( std::vector< ComplexOutputState::BindingTokenStr >::const_iterator i = aCOS.theBindingTokens.begin();
-           i != aCOS.theBindingTokens.end();
-           ++i)
-        {
-          name +=  (*i).first.first + (*i).first.second + (*i).second.first + (*i).second.second + ", ";
-        }
+            for( std::vector< ComplexOutputState::BindingTokenStr >::const_iterator i = aCOS.theBindingTokens.begin();
+                 i != aCOS.theBindingTokens.end();
+                 ++i)
+            {
+                name +=  (*i).first.first + (*i).first.second + (*i).second.first + (*i).second.second + ", ";
+            }
 
-      if (aCOS.theBindingTokens.size())
-        {
-          name = name.substr(0 , name.length() - 2);
-        }
+            if (aCOS.theBindingTokens.size())
+            {
+                name = name.substr(0 , name.length() - 2);
+            }
 
-      name += " -- ";
+            name += " -- ";
 
       
-      for( std::vector< ComplexOutputState::ModificationTokenStr >::const_iterator iter = aCOS.theModificationTokens.begin();
-           iter != aCOS.theModificationTokens.end();
-           ++iter)
-        {
-          name += "( " + (*iter).first + ", " + (*iter).second.first + ", " + (*iter).second.second + "), ";
-        }
+            for( std::vector< ComplexOutputState::ModificationTokenStr >::const_iterator iter = aCOS.theModificationTokens.begin();
+                 iter != aCOS.theModificationTokens.end();
+                 ++iter)
+            {
+                name += "( " + (*iter).first + ", " + (*iter).second.first + ", " + (*iter).second.second + "), ";
+            }
       
-      return name;
-    }
+            return name;
+        }
 
-  };
+    };
 
 }
 #endif

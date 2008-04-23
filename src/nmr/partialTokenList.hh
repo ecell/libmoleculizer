@@ -95,7 +95,7 @@ namespace nmr
         void clear();
 
     public:
-        bool isSubsetOf(const PartialTokenList& aPns) const;
+        bool isSubTokenListOf(const PartialTokenList& aPns) const;
         bool isEquivalentTo(const PartialTokenList& aPns) const;
 
         bool operator<(const PartialTokenList& aPns) const; 

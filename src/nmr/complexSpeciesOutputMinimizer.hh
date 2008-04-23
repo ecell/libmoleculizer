@@ -44,20 +44,21 @@ namespace nmr
     {
 
     public:
-        typedef nmr::Mol Mol;
-        typedef std::pair<int, int> Range;
-        typedef std::pair<int, int> BindingSite;
-        typedef std::pair<BindingSite, BindingSite> Binding;
-        typedef std::set<Permutation>::const_iterator ConstPermSetIter;  
 
-    public:
-
-        ComplexSpeciesOutputMinimizer();
-        ComplexOutputState getMinimalOutputState(ComplexSpecies aComplexSpecies);
+        ComplexOutputState getMinimalOutputState(ComplexSpeciesCref aComplexSpecies);
 
     protected:
+        typedef std::pair<int, int> __Range;
+        typedef std::pair<int, int> __BindingSite;
+        typedef std::pair<BindingSite, BindingSite>, __Binding;
+        typedef std::set<Permutation>::const_iterator ConstPermSetIter;
 
-        Permutation getPlexSortingPermutation(ComplexSpecies aComplexSpecies);
+        DECLARE_TYPE( __Range,  Range);
+        DECLARE_TYPE( __BindngSite, BindingSite );
+        DELCARE_TYPE( std::__Binding, Binding);
+
+
+        Permutation getPlexSortingPermutatoion(ComplexSpecies aComplexSpecies);
         Permutation calculateMinimizingPermutationForComplex(ComplexSpecies aComplexSpecies);
         void setupDataStructuresForCalculation();
         void maximallyExtendPermutation(Permutation& aRefPermutation);
@@ -66,8 +67,6 @@ namespace nmr
         bool checkMolsInComplexAreIsSorted();
         bool checkExistsIncompletePermutations(std::set<Permutation>& setOfPPs);
         bool checkPlexIsSorted(const ComplexSpecies& aComplexSpecies) const;
-
-    protected:
 
         ComplexSpecies theUnnamedComplex;
         std::map<int, std::string> indexToMolMap;
@@ -78,67 +77,53 @@ namespace nmr
         {
             DECLARE_TYPE(ComplexSpecies::MolList, MolList);
 
-            MolIndexLessThanCmp(ComplexSpeciesCref aComplexSpeciesForCmp) 
-                : 
-                theComparisonMolList( aComplexSpeciesForCmp.getMolList() )
-            {}
+            MolIndexLessThanCmp(ComplexSpeciesCref aComplexSpeciesForCmp);
+            bool operator()(int ndx1, int ndx2);
 
-            bool operator()(int ndx1, int ndx2)
-            {
-                return theComparisonMolList[ndx1] < theComparisonMolList[ndx2];
-            } 
-	
         protected:
             MolListCref theComparisonMolList;
         }; 
 
-    };
-
-    struct namerBindingCmp
-    {
-
-        typedef std::pair<int, int> BindingSite;
-        typedef std::pair<BindingSite, BindingSite> Binding;
-     
-        namerBindingCmp(int theBinding) 
-            : 
-            bindingNumber(theBinding)
+        struct namerBindingCmp : public std::binary_function<binding, binding, bool>
         {
-            ; // do nothing
-        }
+            namerBindingCmp(int theBinding) 
+                : 
+                bindingNumber(theBinding)
+            {}
 
-        bool operator()(Binding a, Binding b)
-        {
-            //This will sort the bindings by the binding number of a particular binding.  
+            bool operator()(Binding a, Binding b)
+            {
+                // TODO/ 10 ???
+                //This will sort the bindings by the binding number of a particular binding.  
 	
-            int aNumToComp;
-            int bNumToComp;
+                int aNumToComp;
+                int bNumToComp;
 	
-            if (a.first.first==bindingNumber)
-            {
-                aNumToComp=a.first.second;
-            }
-            else 
-            {
-                aNumToComp=a.second.second;
-            }
+                if (a.first.first==bindingNumber)
+                {
+                    aNumToComp=a.first.second;
+                }
+                else 
+                {
+                    aNumToComp=a.second.second;
+                }
 	
-            if (b.first.first==bindingNumber)
-            {
-                bNumToComp=b.first.second;
-            }
-            else 
-            {
-                bNumToComp=b.second.second;
-            }
+                if (b.first.first==bindingNumber)
+                {
+                    bNumToComp=b.first.second;
+                }
+                else 
+                {
+                    bNumToComp=b.second.second;
+                }
 
-            return (aNumToComp < bNumToComp);
-        }
-    
+                return (aNumToComp < bNumToComp);
+            }
+            int bindingNumber;
 
-        int bindingNumber;
+        };
+
     };
-
 
 } // namespace nmr
 

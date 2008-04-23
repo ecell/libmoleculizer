@@ -29,9 +29,12 @@
 #define __MANGLEDNAMEASSEMBLER_HH
 
 #include "nmrExceptions.hh"
+
 #include "nameAssembler.hh"
 #include "complexSpecies.hh"
 #include "complexOutputState.hh"
+
+#include "utl/macros.hh"
 #include "utl/utility.hh"
 
 #include <iostream>
@@ -41,13 +44,17 @@
 namespace nmr
 {
 
+
+    // TODO/9 Fill in detailed description of the mangling method used by MangledNameAssembler.
+
+    DECLARE_CLASS( MangledNameAssembler);
     class MangledNameAssembler : public NameAssembler
     {
     public:
 
-        typedef std::vector<std::string> strVect;
-        typedef std::vector<std::string>::iterator strVectIter;
-        typedef std::vector<std::string>::const_iterator cstrVectIter;
+        DECLARE_TYPE(std::vector<std::string>, strVect);
+        DECLARE_TYPE(std::vector<std::string>::iterator, strVectIter);
+        DECLARE_TYPE(std::vector<std::string>::const_iterator, cstrVectIter);
 
         MangledNameAssembler()
             :
@@ -108,9 +115,7 @@ namespace nmr
 
         std::string processModificationToken(const std::string& aModString) const;
         
-
     };
-    
 
 }
 

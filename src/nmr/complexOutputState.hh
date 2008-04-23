@@ -27,7 +27,6 @@
 #ifndef __COMPLEXOUTPUTSTATE_HH
 #define __COMPLEXOUTPUTSTATE_HH
 
-
 #include "utl/macros.hh"
 
 #include <vector>
@@ -38,14 +37,12 @@ namespace nmr
 {
 
     // A Complex Output State is an intermediate between a complex species and a mangled
-    // name 
-
+    // name
+ 
     DECLARE_CLASS( ComplexOutputState );
     struct ComplexOutputState
     {
-        DECLARE_TYPE( std::string, 
-                      MolTokenStr);
-
+        DECLARE_TYPE( std::string, MolTokenStr);
         typedef std::pair<std::pair<std::string, std::string>, std::pair<std::string, std::string> > __BindingTokenStr;
         typedef std::pair<std::string, std::pair<std::string, std::string> > __ModificationTokenStr;
 
@@ -54,10 +51,6 @@ namespace nmr
 
         std::vector<MolTokenStr> theMolTokens;
         std::vector<BindingTokenStr> theBindingTokens;
-
-        // ModificationTokens correspond 1-1 with modifications.  A ModToken 
-        // (a, (b,c)) will have a and b as stringified ints.  In this case, a is the MolIndex,
-        // b is the value of getModificationSiteIndex() and c in the value of the Modification.
         std::vector<ModificationTokenStr> theModificationTokens;
 
         bool operator!=(const ComplexOutputState& other) const
@@ -67,50 +60,10 @@ namespace nmr
 
         bool operator==(const ComplexOutputState& other) const
         {
-
-//       // If any of the sizes of the three vectors of tokens don't match up, 
-//       // they cannot be equal.
-//       if (theMolTokens.size() != other.theMolTokens.size() || 
-//           theBindingTokens.size() != other.theBindingTokens.size() || 
-//           theModificationTokens.size() != other.theModificationTokens.size() )
-//         {
-//           return false;
-//         }
-      
-//       for(std::vector<MolTokenStr>::const_iterator thisIter = theMolTokens.begin(), 
-//             std::vector<MolTokenStr>::const_iterator otherIter = other.theMolTokens.begin();
-//           thisIter != theMolTokens.end();
-//           ++thisIter, ++otherIter)
-//         {
-//           if (*thisIter != *otherIter) return false;
-//         }
-
-//       for(std::vector<BindingTokenStr>::const_iterator thisIter = theBindingTokens.begin(), 
-//             otherIter = other.theBindingTokens.begin();
-//           thisIter != theBindingTokens.end();
-//           ++thisIter, ++otherIter)
-//         {
-//           if (*thisIter != *otherIter) return false;
-//         }
-
-//       for(std::vector<ModificationTokenStr>::const_iterator thisIter = theModificationTokens.begin(), 
-//             otherIter = other.theModificationTokens.begin();
-//           thisIter != theModificationTokens.end();
-//           ++thisIter, ++otherIter)
-//         {
-//           if (*thisIter != *otherIter) return false;
-//         }
-        
-//       // If we've gone through all that and still haven't show them to be different, chances are good they're 
-//       // the same...
-
-//       return true;
-
-
             return (theMolTokens == other.theMolTokens &&
                     theBindingTokens == other.theBindingTokens &&
                     theModificationTokens == other.theModificationTokens);
-                }
+        }
       
         void addMolTokenToOutputState(MolTokenStrCref aMolToken)
         {
@@ -132,7 +85,6 @@ namespace nmr
             theBindingTokens.clear();
             theModificationTokens.clear();
         }
-      
     };
 }
 

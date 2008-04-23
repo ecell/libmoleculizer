@@ -95,7 +95,7 @@ namespace fnd
     findReactionWithSubstrates(ptrSpeciesType A) const
     {
 
-      // TODO
+      // TODO Finish writing this function.
       for(ReactionListCIter iter = theCompleteReactionList.begin();
           iter != theCompleteReactionList.end();
           ++iter)

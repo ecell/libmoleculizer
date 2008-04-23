@@ -20,6 +20,7 @@
 
 #include "mzr/mzrSpecies.hh"
 #include "nmrUnit.hh"
+#include "nmr/nmrEltName.hh"
 #include "plex/plexUnit.hh"
 #include <string>
 
@@ -41,20 +42,22 @@ namespace nmr
     mzr::mzrSpecies*
     nmrUnit::getSpeciesFromName( const std::string& speciesName)
     {
-        if(0)
+        try
         {
-            // TODO: If the name is present in moleculizer's list, return that.  
+            mzr::mzrSpecies* ptrSpecies = &(rMolzer.findSpecies( speciesName ));
+            return ptrSpecies;
         }
-        else
+        catch(fnd::NoSuchSpeciesXcpt)
         {
+            // We could not find it, therefore we must construct it.
+
             ComplexOutputState aCOS = getNameEncoder()->createOutputStateFromName( speciesName );
             ComplexSpecies theNewComplexSpecies( aCOS );
 
             mzr::mzrSpecies* newMzrSpecies = pPlexUnit->constructNewPlexSpeciesFromComplexSpecies( theNewComplexSpecies );
             return newMzrSpecies;
-        }
 
-        return NULL;
+        }
     }
 
     void
@@ -69,12 +72,40 @@ namespace nmr
     void nmrUnit::parseDomInput(xmlpp::Element* pRootElt, xmlpp::Element* pModelElt, xmlpp::Element* pStreamsElt) 
         throw(std::exception)
     {
-        // TODO: write me
+        // TODO: Debug nmrUnit::parseDomInput and make sure it all works.
+        // For the moment, the one thing (the naming strategy that should be used) is contained 
+        // in an attribute entitled "naming-convention".  The value of that string should 
+        // be passed to nmrUnit::setDefaultNameEncoder.  
+
+
+        try
+        {
+            std::string strategy = utl::dom::mustGetAttrString(pModelElt, eltName::namingConvention);
+            setDefaultNameEncoder(strategy);
+        }
+        catch(NoSuchNameEncoderXcpt xcpt)
+        {
+            xcpt.wailAndBail();
+        }
+        catch(utl::xcpt x)
+        {
+            // This is somewhat bad mojo, but it would be if something is an utl::xcpt
+            // but has not already been caught.
+            
+            // Do nothing because this element is not mandatory.
+            x.warn();
+        }
+        
     }
 
     void nmrUnit::insertStateElts(xmlpp::Element* pRootElt) 
         throw(std::exception)
     {
-        // TODO: write me.
+        // TODO: Debug nmrUnit::insertStateElts and make sure it all works.
+        xmlpp::Element* modelElt = utl::dom::mustGetUniqueChild(pRootElt, 
+                                                                mzr::eltName::model);
+        
+        modelElt->set_attribute( eltName::namingConvention,
+                                getNameEncoder()->getName() );
     }
 }

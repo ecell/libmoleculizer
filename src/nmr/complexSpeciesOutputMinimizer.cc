@@ -32,12 +32,8 @@
 namespace nmr
 {
 
-    ComplexSpeciesOutputMinimizer::ComplexSpeciesOutputMinimizer()
-    {
-        ; // do nothing
-    }
-
-    ComplexOutputState ComplexSpeciesOutputMinimizer::getMinimalOutputState(nmr::ComplexSpecies aComplexSpecies)
+    ComplexOutputState 
+    ComplexSpeciesOutputMinimizer::getMinimalOutputState(ComplexSpeciesCref aComplexSpecies)
     {
         this->theUnnamedComplex = aComplexSpecies;
 
@@ -56,8 +52,7 @@ namespace nmr
    
         if( !checkPlexIsSorted(theUnnamedComplex) )
         {
-            // TODO: Change the exception.
-            throw nmr::GeneralNmrXcpt("Error in ComplexSpeciesOutputMinimizer::calculateMinimizingPermutationForComplex(): ComplexSpecies theComplexSpecies has not been sorted.");
+            throw nmr::GeneralNmrXcpt("Error in ComplexSpeciesOutputMinimizer::calculateMinimizingPermutationForComplex(): ComplexSpecies.\nThe precondition that theComplexSpecies is already sorted such that the  named be a priori sorted has not been met.");
         }
   
         std::set<Permutation> setOfPossibleSolutions; // This is a set of partial permutations, which represent, all possible permutations (each incomplete pp represents a particular coset of permutations)
@@ -224,8 +219,8 @@ namespace nmr
 
     void ComplexSpeciesOutputMinimizer::maximallyExtendPermutation(Permutation& refPermToExtend)
     {
-        //TODO I think this might not be doing what it ought to be doing, so for now it does nothing.
-        //TODO Fix this as the first order of buisiness.
+        // TODO it appears that the function ComplexSpeciesOutputMinimizer::maximallyExtendPermutation was commented
+        // out upon fears that it may not be working adequately.  Investigate, restore, and perfect this function.
 
         //     Permutation inversePerm = refPermToExtend.invert();
 
@@ -530,9 +525,11 @@ namespace nmr
 
     bool ComplexSpeciesOutputMinimizer::checkExistsIncompletePermutations( std::set<Permutation>& setOfPPs)
     {
-        //Loop over each element of the set.  If any member is Incomplete, return true; otherwise, return false.  
-        std::set<Permutation>::const_iterator i;
-        for(i = setOfPPs.begin(); i != setOfPPs.end(); ++i)
+        // Iterate over the set and if any member is incomplete, 
+        // return true; otherwise, return false.
+        for(std::set<Permutation>::const_iterator i;
+            i = setOfPPs.begin(); 
+            i != setOfPPs.end(); ++i)
         {
             if (i->getIsIncomplete())
             {
@@ -543,35 +540,59 @@ namespace nmr
     }
 
 
-
-
-    bool ComplexSpeciesOutputMinimizer::checkPlexIsSorted(const ComplexSpecies& aComplexSpecies) const
+    bool 
+    ComplexSpeciesOutputMinimizer::checkPlexIsSorted(ComplexSpeciesCref aComplexSpecies) const
     {
+        // This is the first time I've tried something like this.  It's probably too 
+        // pedantic for most functions, but might be a nice trick to have around.
+        const bool PLEX_IS_SORTED( true );
+        const bool PLEX_IS_NOT_SORTED( false );
 
-        if (theUnnamedComplex.getNumberOfMolsInComplex() ==0)
+        if (theUnnamedComplex.getNumberOfMolsInComplex() == 0)
         {
-            std::cout<<"Error, unnamed plex has not been initialized"<<std::endl;
+            throw GeneralNmrXcpt("Error in ComplexSpeciesOutputMinimizer::checkPlexIsSorted.  Unnamed plex has not been initialized");
         }
 
         ComplexSpecies::MolListCref aMolList = aComplexSpecies.getMolList();
 
-        if (aMolList.size()==1)
-        {
-            return true;
-        }
+        if( aMolList.size() == 1) return PLEX_IS_SORTED;
 
+        // This works because if for every pair of elements m_i and m_{i+1}
+        // in a list, m_i <= m_{i+1}, the list is sorted.
         for(ComplexSpecies::MolList::const_iterator iter = aMolList.begin(), 
-                iterPlusOne = iter+1;
+                iterPlusOne = iter + 1;
             iterPlusOne != aMolList.end();
             ++iter, ++iterPlusOne)
         {
             if (((*iter)->getMolType())>((*iterPlusOne)->getMolType()))
             {
-                return false;
+                return PLEX_IS_NOT_SORTED;
             }
         }
-        return true;
+        return PLEX_IS_SORTED;
     }
 
+
+
+    ComplexOutputState::
+    MolIndexLessThanCmp::MolIndexLessThanCmp(ComplexSpeciesCref aComplexSpeciesForCmp) 
+        : 
+        theComparisonMolList( aComplexSpeciesForCmp.getMolList() )
+    {}
+
+    bool 
+    ComplexOutputState::
+    MolIndexLessThanCmp::operator()(int ndx1, int ndx2)
+    {
+        return theComparisonMolList[ndx1] < theComparisonMolList[ndx2];
+    } 
+    
+
+
+
+
+
 }
+
+
 

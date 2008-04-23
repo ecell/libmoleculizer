@@ -27,11 +27,12 @@
 #ifndef __NAMEASSEMBLER_HH
 #define __NAMEASSEMBLER_HH
 
-#include "complexSpeciesOutputMinimizer.hh"
+#include "utl/macros.hh"
+
 #include "nmrExceptions.hh"
 #include "complexSpecies.hh"
 #include "complexOutputState.hh"
-
+#include "complexSpeciesOutputMinimizer.hh"
 
 #include <iterator>
 #include <vector>
@@ -41,12 +42,42 @@
 namespace nmr
 {
 
+    DECLARE_CLASS( NameAssembler );
     class NameAssembler
     {
     public:
-        NameAssembler(const std::string& name)
+        
+        // This is intended as a sanity check function that can be called during constructors of 
+        // different NameAssemblers.  It will throw an exception if startingComplexOutputState != endingComplexOutputState
+        static void assertEncodeDecodeAccuracy(NameAssembler* ptrNameAssembler) throw(encodeDecodeInconsistencyXcpt) 
+        {
+            // TODO/7: In NameAssembler::assertEncodeDecodeAccuracey, create a much more 
+            // complicated ComplexOutputState for checking encoding/decoding equivelence.
+
+            // Create a sufficiently complicated ComplexOutputState.
+            ComplexOutputState aComplexOutputState;
+            
+            // Encode the COS into a name, then decode the name back into a COS.
+            ComplexOutputState decodedEncodingOS = ptrNameAssembler->createOutputStateFromName( ptrNameAssembler->createNameFromOutputState( aComplexOutputState ) );
+
+            try
+            {
+                // If they don't match, throw an exception.
+                if (decodedEncodingOS != aComplexOutputState)
+                {
+                    throw encodeDecodeInconsistencyXcpt( ptrNameAssembler->getName() );
+                }
+            }
+            catch( utl::NotImlementedXcpt x)
+            {
+                throw encodeDecodeInconsistencyXcpt( ptrNameAssembler->getName() );
+            }
+        }
+
+    public:
+        NameAssembler(const std::string& nameAssemblerName)
             :
-            assemblerName(name)
+            assemblerName(nameAssemblerName)
         {}
 
         virtual ~NameAssembler()
@@ -58,6 +89,8 @@ namespace nmr
             return assemblerName;
         }
 
+        // TODO/5 Depreciate NameAssembler::createName in favor 
+        // of "generateNameFromComplexSpecies".        
         std::string 
         createName(ComplexSpeciesCref aComplexSpecies) const
         {
@@ -67,36 +100,48 @@ namespace nmr
             return createNameFromOutputState( anOutputState );
         }
 
+        // TODO/5 Depreciate NameAssembler::createCanonicalName in favor 
+        // of "generateCanonicalNameFromComplexSpecies".        
         std::string 
         createCanonicalName( ComplexSpeciesCref aComplexSpecies) const
         {
             ComplexSpeciesOutputMinimizer canonicalNameGenerator;
             ComplexOutputState minimalOutputState = canonicalNameGenerator.getMinimalOutputState( aComplexSpecies );
+
+            return createNameFromOutputState( minimalOutputState );
+        }
+
+        std::string 
+        generateNameFromComplexSpecies(ComplexSpeciesCref aComplexSpecies) const
+        {
+            ComplexOutputState anOutputState;
+            aComplexSpecies.constructOutputState( anOutputState );
+
+            // I'm surprised this works....
+            return createNameFromOutputState( anOutputState );
+        }
+
+        std::string 
+        generateCanonicalNameFromComplexSpecies( ComplexSpeciesCref aComplexSpecies) const
+        {
+            ComplexSpeciesOutputMinimizer canonicalNameGenerator;
+            ComplexOutputState minimalOutputState = canonicalNameGenerator.getMinimalOutputState( aComplexSpecies );
+
+            // I'm surprised this works
             return createNameFromOutputState( minimalOutputState );
         }
 
         virtual std::string createNameFromOutputState( ComplexOutputStateCref aComplexOutputState) const = 0;
-        virtual ComplexOutputState createOutputStateFromName( const std::string& aComplexOutputState) const = 0;
+        virtual ComplexOutputState createOutputStateFromName( const std::string& aMangledName) const
+        {
+            // For the time being, I am trying out making this throw something but be overridable.
+            // If it isn't successful, this function should go back to being pure-virtual.
+            throw utl::NotImplementedXcpt( "NameAssembler::createOutputStateFromName" );
+        }
     
     protected:
         const std::string assemblerName;
         
-    protected:
-        // This function is intended as a debugish sort of a function that can be called during constructors of 
-        // different NameAssemblers.  It will throw an exception if startingComplexOutputState != endingComplexOutputState
-        static void assertEncodeDecodeAccuracy(NameAssembler* ptrNameAssembler) throw(encodeDecodeInconsistencyXcpt) 
-        {
-
-            // TODO: Create a much better and 2more complicated ComplexOutputState...
-            ComplexOutputState aComplexOutputState;
-
-            ComplexOutputState decodedEncodingOS = ptrNameAssembler->createOutputStateFromName( ptrNameAssembler->createNameFromOutputState( aComplexOutputState ) );
-            if (! (decodedEncodingOS == aComplexOutputState)  )
-            {
-                throw encodeDecodeInconsistencyXcpt(ptrNameAssembler->getName());
-            }
-        }
-
     };
 
 }

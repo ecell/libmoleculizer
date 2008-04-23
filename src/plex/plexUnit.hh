@@ -247,8 +247,8 @@ namespace plx
     mzrPlexSpecies*
     constructNewPlexSpeciesFromComplexSpecies( const nmr::ComplexSpecies& aComplexSpecies)
     {
-        // TODO: Figure out what this is and write me...
-      return NULL;
+        // TODO: Write this VERY important function.
+        return NULL;
     }
 
         void

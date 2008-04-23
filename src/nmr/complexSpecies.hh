@@ -1,4 +1,4 @@
-/////////////////////////////////////////////////////////////////////////////
+o/////////////////////////////////////////////////////////////////////////////
 // libComplexSpecies - a library for canonically naming species of protein 
 //                     complexes.
 // Copyright (C) 2007, 2008  Nathan Addy
@@ -43,15 +43,16 @@
 
 namespace nmr
 {
-  
-    // Rewriting ComplexSpecies to operate in terms of Mol*'s.
 
+
+    // April 20 - I am proceeding to change the Mols that ComplexSpecies have to 
+    // boost::shared_ptr<Mol> in the hopes of more efficient memory management 
+    // shoon/eventually.
     DECLARE_CLASS( ComplexSpecies );
     class ComplexSpecies
     {
 
     public:
-
         DECLARE_TYPE( std::string, Alias);
         DECLARE_TYPE( int, MolNdx );
         DECLARE_TYPE( std::vector<MolSharedPtr>, MolList);
@@ -80,9 +81,11 @@ namespace nmr
                                  BindingSiteCref secondMolSiteAlias) throw( MissingMolAliasXcpt, 
                                                                             MissingBindingSiteXcpt );
 
-        unsigned int getNumberOfMolsInComplex() const;
+        unsigned int 
+        getNumberOfMolsInComplex() const;
 
-        unsigned int getNumberOfBindingsInComplex() const;
+        unsigned int 
+        getNumberOfBindingsInComplex() const;
   
         MolListCref 
         getMolList() const;

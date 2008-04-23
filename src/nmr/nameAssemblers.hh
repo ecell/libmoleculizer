@@ -18,11 +18,14 @@
 //    
 /////////////////////////////////////////////////////////////////////////////
 
-#ifndef NAMEASSEMBLERS_HH
-#define NAMEASSEMBLERS_HH
+// This is just a utility file that includes all the name-assemblers defined in the system.  
 
-#include "basicNameAssembler.hh"
-#include "readableNameAssembler.hh"
+#ifndef __NAMEASSEMBLERS_HH
+#define __NAMEASSEMBLERS_HH
+
+// TODO/3 Fix these two files so they can be included once more.
+// #include "basicNameAssembler.hh"
+// #include "readableNameAssembler.hh"
 #include "mangledNameAssembler.hh"
 
 #endif

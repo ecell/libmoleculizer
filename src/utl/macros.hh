@@ -19,8 +19,8 @@
 /////////////////////////////////////////////////////////////////////////////
 
 // Acknowledgements:  
-// The "DECLARE_XXX" macros are VERY heavily based (everything but the 
-// boost::shared_ptr bits) were copied verbatim from stuff written by Koichi 
+// The "DECLARE_XXX" macros (everything but the 
+// boost::shared_ptr bits) were copied from stuff written by Koichi 
 // Takahashi in his work on the E-Cell Project <http://www.e-cell.org>.
 //
 

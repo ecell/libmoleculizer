@@ -49,16 +49,17 @@ namespace nmr
 
     protected:
         typedef std::pair<int, int> __Range;
+        DECLARE_TYPE( __Range,  Range);
+
         typedef std::pair<int, int> __BindingSite;
-        typedef std::pair<BindingSite, BindingSite>, __Binding;
+        DECLARE_TYPE( __BindingSite, BindingSite );
+
+        typedef std::pair<BindingSite, BindingSite> __Binding;
+        DECLARE_TYPE( __Binding, Binding);
+
         typedef std::set<Permutation>::const_iterator ConstPermSetIter;
 
-        DECLARE_TYPE( __Range,  Range);
-        DECLARE_TYPE( __BindngSite, BindingSite );
-        DELCARE_TYPE( std::__Binding, Binding);
-
-
-        Permutation getPlexSortingPermutatoion(ComplexSpecies aComplexSpecies);
+        Permutation getPlexSortingPermutation(ComplexSpecies aComplexSpecies);
         Permutation calculateMinimizingPermutationForComplex(ComplexSpecies aComplexSpecies);
         void setupDataStructuresForCalculation();
         void maximallyExtendPermutation(Permutation& aRefPermutation);
@@ -77,14 +78,22 @@ namespace nmr
         {
             DECLARE_TYPE(ComplexSpecies::MolList, MolList);
 
-            MolIndexLessThanCmp(ComplexSpeciesCref aComplexSpeciesForCmp);
-            bool operator()(int ndx1, int ndx2);
+            MolIndexLessThanCmp(ComplexSpeciesCref aComplexSpeciesForCmp)
+                : 
+                theComparisonMolList( aComplexSpeciesForCmp.getMolList() )
+            {}
+
+            bool operator()(int ndx1, int ndx2)
+            {
+                return theComparisonMolList[ndx1] < theComparisonMolList[ndx2];
+            } 
+    
 
         protected:
             MolListCref theComparisonMolList;
         }; 
 
-        struct namerBindingCmp : public std::binary_function<binding, binding, bool>
+        struct namerBindingCmp : public std::binary_function<Binding, Binding, bool>
         {
             namerBindingCmp(int theBinding) 
                 : 

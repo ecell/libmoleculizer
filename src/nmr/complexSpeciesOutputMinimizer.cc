@@ -171,7 +171,9 @@ namespace nmr
 
     void ComplexSpeciesOutputMinimizer::setupDataStructuresForCalculation()
     {
-        Permutation aMolSortingPermutation = getPlexSortingPermutation(theUnnamedComplex);
+        Permutation aMolSortingPermutation 
+            = getPlexSortingPermutation(theUnnamedComplex);
+
         theUnnamedComplex.applyPermutationToComplex(aMolSortingPermutation);
 
         indexToMolMap.clear();
@@ -527,15 +529,14 @@ namespace nmr
     {
         // Iterate over the set and if any member is incomplete, 
         // return true; otherwise, return false.
-        for(std::set<Permutation>::const_iterator i;
-            i = setOfPPs.begin(); 
-            i != setOfPPs.end(); ++i)
+
+        for(std::set<Permutation>::const_iterator iter = setOfPPs.begin(); 
+            iter != setOfPPs.end(); 
+            ++iter)
         {
-            if (i->getIsIncomplete())
-            {
-                return true;
-            }
+            if (iter->getIsIncomplete()) return true;
         }
+
         return false;
     }
 
@@ -571,25 +572,6 @@ namespace nmr
         }
         return PLEX_IS_SORTED;
     }
-
-
-
-    ComplexOutputState::
-    MolIndexLessThanCmp::MolIndexLessThanCmp(ComplexSpeciesCref aComplexSpeciesForCmp) 
-        : 
-        theComparisonMolList( aComplexSpeciesForCmp.getMolList() )
-    {}
-
-    bool 
-    ComplexOutputState::
-    MolIndexLessThanCmp::operator()(int ndx1, int ndx2)
-    {
-        return theComparisonMolList[ndx1] < theComparisonMolList[ndx2];
-    } 
-    
-
-
-
 
 
 }

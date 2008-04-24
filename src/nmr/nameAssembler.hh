@@ -68,7 +68,7 @@ namespace nmr
                     throw encodeDecodeInconsistencyXcpt( ptrNameAssembler->getName() );
                 }
             }
-            catch( utl::NotImlementedXcpt x)
+            catch( utl::NotImplementedXcpt x)
             {
                 throw encodeDecodeInconsistencyXcpt( ptrNameAssembler->getName() );
             }

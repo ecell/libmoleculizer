@@ -110,7 +110,8 @@ namespace utl
                 << "' has not yet been implemented.";
             return oss.str();
         }
-        
+
+    public:
         NotImplementedXcpt( const std::string& funcName)
             :
             xcpt( mkMsg(funcName))

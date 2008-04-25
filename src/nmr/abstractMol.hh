@@ -53,7 +53,6 @@ namespace nmr
         DECLARE_TYPE(std::string, ModificationSite);
         DECLARE_TYPE(std::string, ModificationValue);
 
-
         DECLARE_TYPE(std::vector<BindingSite>, BindingSiteList);
         typedef std::pair<ModificationSite, ModificationValue> _ModificationToken;
         DECLARE_TYPE( _ModificationToken, ModificationToken);
@@ -97,7 +96,7 @@ namespace nmr
         virtual bool 
         operator<(MolCref rhsMol) const
         {
-            return (this->getMolType() < rhsMol.getMolType());
+            return getMolType() < rhsMol.getMolType();
         }
 
     protected:

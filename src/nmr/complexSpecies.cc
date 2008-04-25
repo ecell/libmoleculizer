@@ -267,16 +267,11 @@ namespace nmr
   
     void ComplexSpecies::applyPermutationToComplex(const Permutation& aPermutation)
     {
-        // TODO: Replace all the utl::xcpts with proper exceptions
-        if (aPermutation.getPermutationSize()==0)
-        {
-            throw GeneralNmrXcpt("ComplexSpecies is empty");
-        }
-        if (!aPermutation.getIsComplete())
+        if ( !aPermutation.getIsComplete() )
         {
             throw GeneralNmrXcpt("Permutation is not complete");
         }
-        if( aPermutation.getPermutationSize() != this->getNumberOfMolsInComplex() )
+        if( aPermutation.getDimension() != this->getNumberOfMolsInComplex() )
         {
             throw GeneralNmrXcpt("Permutation in not the same size as our mol");
         }

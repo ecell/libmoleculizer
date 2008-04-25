@@ -27,56 +27,17 @@
 #ifndef __READABLENAMEASSEMBLER_HH
 #define __READABLENAMEASSEMBLER_HH
 
-#include <string>
-#include <vector>
 #include "nameAssembler.hh"
-#include "complexSpecies.hh"
-#include "complexOutputState.hh"
+
 
 namespace nmr
 {
-  class readableNameAssembler : public NameAssembler
-  {
-    
-  public:
-    std::string createNameFromOutputState( ComplexOutputStateCref aCOS) const
+    class readableNameAssembler : public NameAssembler
     {
-      // We would like the output to be something like the following.
-      // X(phosphorylated):Y:Z(not_phos).
-
-      std::string name("");
-
-      for(unsigned int molNdx = 0; molNdx != aCOS.theMolTokens.size(); ++molNdx)
-        {
-          name += aCOS.theMolTokens[molNdx];
-
-          std::string modSitesString("");
-          int numberModSites = 0;
-          std::string molNdxAsString = utl::stringify( molNdx );
-          
-          for( unsigned int i = 0 ; i!= aCOS.theModificationTokens.size(); ++i)
-            {
-              if (aCOS.theModificationTokens[i].first == molNdxAsString)
-                {
-                  modSitesString += aCOS.theModificationTokens[i].second.second;
-                  modSitesString += ",";
-                  numberModSites++;
-                }
-            }
-          
-          if (numberModSites)
-            {
-              modSitesString = modSitesString.substr(0, modSitesString.length() - 1);
-              modSitesString = "(" + modSitesString + ")";
-              name += modSitesString;
-            }
-          name += "-";
-        }
-      name = name.substr(0, name.length() - 1);
-      return name;
-    }
-
-  };
+    
+    public:
+        std::string createNameFromOutputState( ComplexOutputStateCref aCOS) const;
+    };
 
 }
 

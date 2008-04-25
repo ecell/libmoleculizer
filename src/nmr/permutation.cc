@@ -41,7 +41,19 @@ namespace nmr
         : 
         thePermutation(n, Permutation::UNDEF), //n values of UNDEF
         theDimension( n )
-    {}
+    {
+//         // Assert the dimension to be >= 1
+//         if (n == 0)
+//         {
+//             throw GeneralNmrXcpt("Error in constructing Permutation. Dimension cannot have value '0'");
+//         }
+
+        // There is only one permutation in S_{1}, the identity function.
+        if(n == 1)
+        {
+            setValueAtPosition(0, 0);
+        }
+    }
 
     Permutation::Permutation(PermutationCref aPermutation) 
         : 
@@ -59,15 +71,15 @@ namespace nmr
     Permutation::Permutation(PermutationCref aPermutation, BindingNdx pos, int value) 
         throw(nmr::BadPermutationConstructorXcpt)
         : 
-        thePermutation(aPermutation.getCorePermutation() ),
-        theDimension( aPermutation.getPermutationSize() )
+        thePermutation( aPermutation.getCorePermutation() ),
+        theDimension( aPermutation.getDimension() )
     {
         if ( aPermutation.getValueAtPosition(pos) != Permutation::UNDEF )
         {
             throw nmr::BadPermutationConstructorXcpt( aPermutation[pos], pos );
         }
 
-        thePermutation[pos]=value;
+        setValueAtPosition(pos, value);
     }
 
     int 
@@ -80,12 +92,12 @@ namespace nmr
         }
         catch(std::out_of_range& e)
         {
-            throw nmr::BadPermutationIndexXcpt( getPermutationSize(), pos);
+            throw nmr::BadPermutationIndexXcpt( getDimension(), pos);
         }
     }
 
     void 
-    Permutation::setValueAtPosition(BindingNdx pos, int val)
+    Permutation::setValueAtPosition(BindingNdx pos, unsigned int val)
         throw(nmr::BadPermutationIndexXcpt)
     {
         try
@@ -94,7 +106,7 @@ namespace nmr
         }
         catch(std::out_of_range& e)
         {
-            throw nmr::BadPermutationIndexXcpt( getPermutationSize(), pos);
+            throw nmr::BadPermutationIndexXcpt( getDimension(), pos);
         }
     }
 
@@ -108,7 +120,7 @@ namespace nmr
         }
         catch(std::out_of_range& e)
         {
-            throw nmr::BadPermutationIndexXcpt( getPermutationSize(), pos);
+            throw nmr::BadPermutationIndexXcpt( getDimension(), pos);
         }
     }
 
@@ -193,7 +205,7 @@ namespace nmr
     }
 
     Permutation::Dimension 
-    Permutation::getPermutationSize() const
+    Permutation::getDimension() const
     {
         return theDimension;
     }
@@ -221,6 +233,8 @@ namespace nmr
     Permutation::getLeastValueNotInPermutation() const
         throw(GeneralNmrXcpt)
     {
+        if ( getIsComplete() ) throw GeneralNmrXcpt("Logical Error in Permutation::getLeastValueNotInPermutation.  Function was called on a completed permutation.");
+
         // This function returns the least positive number that is not yet "fixed" 
         // by this partial permutation.
         // For instance, if the permutation is on [0,1,2,3]
@@ -228,7 +242,7 @@ namespace nmr
         // the value to be returned is 1.
        
         // 1. Copy all non-negative values in the Permutation to a new vector.
-        IntegerVector positiveValues;
+        UnsignedIntegerVector positiveValues;
         utl::copy_if(thePermutation.begin(),
                      thePermutation.end(),
                      back_inserter(positiveValues),
@@ -248,15 +262,9 @@ namespace nmr
             if (positiveValues[index] != index) return index;
         }
 
-        // If we get here, it would appear the permutation is complete.  
-        if ( getIsComplete() )
-        {
-            throw GeneralNmrXcpt("Logical Error in Permutation::getLeastValueNotInPermutation.  Function was called on a completed permutation.");
-        }
-        else
-        {
-            throw GeneralNmrXcpt("Error in Permutation::getLeastValueNotInPermutation.  unknown error.  (key: fdahfda)");
-        }
+        //TODO/4 Write a real explanation here.
+        //4. I'm too brain-dead to explain this.  It's what the doctor ordered here.  
+        return positiveValues.size();
     }
 
 
@@ -328,6 +336,62 @@ namespace nmr
 
         return false;
     }
+    
+
+    void 
+    Permutation::getPreimage(const int& rangeElement,
+                             std::set<unsigned int>& refDomainElements) const
+    {
+        for(unsigned int domainElement = 0;
+            domainElement != getDimension();
+            ++domainElement)
+        {
+            if( getValueAtPosition(domainElement) == rangeElement) 
+            {
+                refDomainElements.insert( domainElement );
+            }
+        }
+
+        return;
+    }
+
+    void 
+    Permutation::maximallyExtend()
+    {
+        if( getNumberOfUndefElements() == 1)
+        {
+
+            std::set<unsigned int> domainSubset;
+            getUnfixedDomainElements( domainSubset);
+            unsigned int singlyRemainingValue = *domainSubset.begin();
+            setValueAtPosition(singlyRemainingValue, 
+                               getLeastValueNotInPermutation() );
+        }
+    }
+
+    unsigned int
+    Permutation::getNumberOfFixedElements() const
+    {
+        return getDimension() - getNumberOfUndefElements();
+    }
+
+    unsigned int
+    Permutation::getNumberOfUndefElements() const
+    {
+        std::set<unsigned int> domainSubset;
+        getPreimage(Permutation::UNDEF,
+                    domainSubset);
+        return domainSubset.size();
+    }
+
+    void 
+    Permutation::getUnfixedDomainElements( std::set<unsigned int>& refDomainElements) const
+    {
+        getPreimage( Permutation::UNDEF, refDomainElements);
+    }
+
+
+
 }
 
 

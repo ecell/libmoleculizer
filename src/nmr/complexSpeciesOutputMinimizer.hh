@@ -85,7 +85,7 @@ namespace nmr
 
             bool operator()(int ndx1, int ndx2)
             {
-                return theComparisonMolList[ndx1] < theComparisonMolList[ndx2];
+                return *theComparisonMolList[ndx1] < *theComparisonMolList[ndx2];
             } 
     
 

@@ -28,6 +28,49 @@
 #include <ostream>
 #include "complexOutputState.hh"
 
+namespace nmr
+{
+    bool 
+    ComplexOutputState::operator==(ComplexOutputStateCref other) const
+    {
+        return (theMolTokens == other.theMolTokens &&
+                theBindingTokens == other.theBindingTokens &&
+                theModificationTokens == other.theModificationTokens);
+    }
+
+    bool 
+    ComplexOutputState::operator!=(ComplexOutputStateCref other) const
+    {
+        return !( *this == other );
+    }
+      
+    void 
+    ComplexOutputState::addMolTokenToOutputState(MolTokenStrCref aMolToken)
+    {
+        theMolTokens.push_back(aMolToken);
+    }
+
+    void 
+    ComplexOutputState::addBindingTokenToOutputState(BindingTokenStrCref aBindingToken)
+    {
+        theBindingTokens.push_back(aBindingToken);
+    }
+
+    void 
+    ComplexOutputState::addModificationTokenToOutputState(ModificationTokenStrCref aModificationToken)
+    {
+        theModificationTokens.push_back(aModificationToken);
+    }
+
+    void 
+    ComplexOutputState::clear()
+    {
+        theMolTokens.clear();
+        theBindingTokens.clear();
+        theModificationTokens.clear();
+    }
+}
+
 std::ostream& operator<<(std::ostream& os, const nmr::ComplexOutputState& cos)
 {
   os << "Mols:\n";

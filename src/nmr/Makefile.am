@@ -4,7 +4,6 @@ lib_LTLIBRARIES = libmoleculizer_nmr.la
 
 abs_top_builddir=@abs_top_builddir@
 
-## SRCDIR = $(abs_top_builddir)/src
 SRCDIR = ..
 
 VERSION = @PACKAGE_VERSION@
@@ -28,6 +27,7 @@ AM_LDFLAGS= -all-static
 endif
 
 libmoleculizer_nmr_la_SOURCES =\
+basicNameAssembler.cc \
 complexOutputState.cc \
 complexSpecies.cc \
 complexSpeciesEncoderNames.cc \
@@ -37,7 +37,8 @@ namedMolecule.cc \
 nmrEltName.cc \
 nmrUnit.cc \
 partialTokenList.cc \
-permutation.cc 
+permutation.cc \
+readableNameAssembler.cc 
 
 libmoleculizer_nmr_HEADERS=\
 abstractMol.hh \

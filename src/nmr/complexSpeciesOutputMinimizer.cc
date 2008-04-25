@@ -52,6 +52,7 @@ namespace nmr
    
         if( !checkPlexIsSorted(theUnnamedComplex) )
         {
+            theUnnamedComplex.DEBUG_print();
             throw nmr::GeneralNmrXcpt("Error in ComplexSpeciesOutputMinimizer::calculateMinimizingPermutationForComplex(): ComplexSpecies.\nThe precondition that theComplexSpecies is already sorted such that the  named be a priori sorted has not been met.");
         }
   
@@ -433,77 +434,6 @@ namespace nmr
         return aComplexSpeciesPartialTokenList;
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     Permutation ComplexSpeciesOutputMinimizer::getPlexSortingPermutation(ComplexSpecies aComplexSpecies)
     {
         //initialize a vector with entries 0...size-1
@@ -518,7 +448,7 @@ namespace nmr
         //Sort permutation using a function which compares the theMols belonging at that index.
         std::sort(permutationVect.begin(),
                   permutationVect.end(),
-                  MolIndexLessThanCmp(aComplexSpecies));
+                  MolIndexLessThanCmp(aComplexSpecies) );
 
         Permutation inversePerm = Permutation(permutationVect);
         Permutation forwardPerm = inversePerm.invertPermutation();

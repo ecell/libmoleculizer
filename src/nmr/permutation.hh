@@ -32,6 +32,7 @@
 #include "utl/macros.hh"
 #include <ostream>
 #include <vector>
+#include <set>
 
 namespace nmr
 {
@@ -63,6 +64,7 @@ namespace nmr
         public:
             DECLARE_TYPE( unsigned int, BindingNdx);
             DECLARE_TYPE( unsigned int, Dimension);
+            DECLARE_TYPE( std::vector<unsigned int>, UnsignedIntegerVector);
             DECLARE_TYPE( std::vector<int>, IntegerVector);
             DECLARE_TYPE( IntegerVector, CorePermutationType);
             
@@ -80,13 +82,12 @@ namespace nmr
             Permutation(PermutationCref aPermutation, BindingNdx pos, int value) 
                 throw(nmr::BadPermutationConstructorXcpt);
   
-
             // API
             // 
             int getValueAtPosition(BindingNdx pos) const 
                 throw( nmr::BadPermutationIndexXcpt );
 
-            void setValueAtPosition(BindingNdx pos, int val) 
+            void setValueAtPosition(BindingNdx pos, unsigned int val) 
                 throw( nmr::BadPermutationIndexXcpt) ;
 
             void resetValueAtPosition(BindingNdx pos) 
@@ -99,6 +100,12 @@ namespace nmr
 
             Permutation 
             invertPermutation() const;
+
+            void
+            getPreimage( const int& rangeElement,
+                         std::set<unsigned int>& refDomainElements) const;
+
+            void getUnfixedDomainElements( std::set<unsigned int>& refDomainElements) const;
   
             bool
             getIsBijection() const;
@@ -109,14 +116,8 @@ namespace nmr
             bool 
             getIsIncomplete() const ;
 
-            Dimension 
-            getPermutationSize() const;
-            
             Dimension
-            getDimension() const
-            {
-                return getPermutationSize();
-            }
+            getDimension() const;
             
             int& operator[](const BindingNdx& n) 
                 throw(nmr::BadPermutationIndexXcpt);
@@ -144,6 +145,10 @@ namespace nmr
             }
 
         protected:
+            void maximallyExtend();
+            unsigned int getNumberOfFixedElements() const;
+            unsigned int getNumberOfUndefElements() const;
+
             CorePermutationType thePermutation;
             Dimension theDimension;
         };

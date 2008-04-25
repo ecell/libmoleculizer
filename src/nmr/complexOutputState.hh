@@ -53,38 +53,14 @@ namespace nmr
         std::vector<BindingTokenStr> theBindingTokens;
         std::vector<ModificationTokenStr> theModificationTokens;
 
-        bool operator!=(const ComplexOutputState& other) const
-        {
-            return !( *this == other );
-        }
+        bool operator==(const ComplexOutputState& other) const;
+        bool operator!=(const ComplexOutputState& other) const;
+        
+        void addMolTokenToOutputState(MolTokenStrCref aMolToken);
+        void addBindingTokenToOutputState(BindingTokenStrCref aBindingToken);
+        void addModificationTokenToOutputState(ModificationTokenStrCref aModificationToken);
 
-        bool operator==(const ComplexOutputState& other) const
-        {
-            return (theMolTokens == other.theMolTokens &&
-                    theBindingTokens == other.theBindingTokens &&
-                    theModificationTokens == other.theModificationTokens);
-        }
-      
-        void addMolTokenToOutputState(MolTokenStrCref aMolToken)
-        {
-            theMolTokens.push_back(aMolToken);
-        }
-        void addBindingTokenToOutputState(BindingTokenStrCref aBindingToken)
-        {
-            theBindingTokens.push_back(aBindingToken);
-        }
-
-        void addModificationTokenToOutputState(ModificationTokenStrCref aModificationToken)
-        {
-            theModificationTokens.push_back(aModificationToken);
-        }
-
-        void clear()
-        {
-            theMolTokens.clear();
-            theBindingTokens.clear();
-            theModificationTokens.clear();
-        }
+        void clear();
     };
 }
 

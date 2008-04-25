@@ -106,6 +106,27 @@ namespace nmr
         // the object passed to a particular nameAssembler.
         void constructOutputState(ComplexOutputState& rOutputState) const;
 
+        void 
+        DEBUG_print() const
+        {
+            std::cout << "Printing theMols" << std::endl;
+            for(MolList::const_iterator iter = theMols.begin();
+                iter != theMols.end();
+                ++iter)
+            {
+                std::cout << (*iter)->getMolType() << std::endl;
+            }
+            std::cout << "##############################" << std::endl;
+
+            std::cout << "Printing the Alias to Ndx map" << std::endl;
+            for( MolMap::const_iterator iter = theMolAliasToNdxMap.begin();
+                 iter != theMolAliasToNdxMap.end();
+                 ++iter)
+            {
+                std::cout << iter->first << '\t' << iter->second << std::endl;
+            }
+        }
+
     protected:
         typedef std::map<Alias, MolNdx> _molMap;
         DECLARE_TYPE( _molMap, MolMap);

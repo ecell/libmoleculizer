@@ -51,9 +51,9 @@ namespace nmr
         std::vector<ComplexOutputState::BindingTokenStr> bindingTokens;
         std::vector<ComplexOutputState::ModificationTokenStr> modificationTokens;
       
-        parseMolString(theMolString, molTokens);
-        parseBindingString( theBindingString, bindingTokens);
-        parseModificationString( theModificationString, modificationTokens);
+        parseMangledMolString(theMolString, molTokens);
+        parseMangledBindingString( theBindingString, bindingTokens);
+        parseMangledModificationString( theModificationString, modificationTokens);
 
         ComplexOutputState newOutputState;
         newOutputState.theMolTokens = molTokens;
@@ -171,7 +171,7 @@ namespace nmr
 
   
     void 
-    MangledNameAssembler::parseMolString(const std::string& molString, std::vector<ComplexOutputState::MolTokenStr>& molTokenVector) const
+    MangledNameAssembler::parseMangledMolString(const std::string& molString, std::vector<ComplexOutputState::MolTokenStr>& molTokenVector) const
     {
         std::string::size_type index = 0;
         while(true)
@@ -207,7 +207,7 @@ namespace nmr
 
   
     void 
-    MangledNameAssembler::parseBindingString(const std::string& bindingString, 
+    MangledNameAssembler::parseMangledBindingString(const std::string& bindingString, 
                                              std::vector<ComplexOutputState::BindingTokenStr>& bindingTokenVector ) const
     {
     
@@ -263,8 +263,8 @@ namespace nmr
 
   
     void 
-    MangledNameAssembler::parseModificationString(const std::string& modString, 
-                                                  std::vector<ComplexOutputState::ModificationTokenStr>& modificationTokenVector) const
+    MangledNameAssembler::parseMangledModificationString(const std::string& modString, 
+                                                         std::vector<ComplexOutputState::ModificationTokenStr>& modificationTokenVector) const
     {
         // A mod string should be ( string, (string, string) )
 
@@ -335,6 +335,35 @@ namespace nmr
 
 
     }
+
+
+    std::string 
+    MangledNameAssembler::processBindingString( const std::string& aString) const
+    {
+        if (aString.empty())
+        {
+            throw GeneralNmrXcpt("Error.  MangledNameAssembler::processBindingString failed.\nThis function cannot be called on a null string.");
+        }
+      
+
+        std::string returnVal;
+
+        if (aString.size()==1)
+        {
+            returnVal = aString;
+        }
+        else if (aString.size()<10)
+        {
+            returnVal = "_" + utl::stringify(aString.size())+ aString;
+        }
+        else 
+        {
+            returnVal = "__"+utl::stringify(aString.size()) + "_" + aString;
+        }
+      
+        return returnVal;
+    }
+
 
     std::string 
     MangledNameAssembler::processModificationToken(const std::string& aModString) const

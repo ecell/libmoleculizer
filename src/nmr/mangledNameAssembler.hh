@@ -78,43 +78,23 @@ namespace nmr
 
     protected:
 
-        std::string constructMangledMolList(const ComplexOutputState& aComplexOutputState) const;
-        std::string constructMangledBindingList(const ComplexOutputState& aComplexOutputState) const;
-        std::string constructMangledModificationList(const ComplexOutputState& aComplexOutputState) const;
+        // These functions are used for construct
+        std::string constructMangledMolList(ComplexOutputStateCref aComplexOutputState) const;
+        std::string constructMangledBindingList(ComplexOutputStateCref aComplexOutputState) const;
+        std::string constructMangledModificationList(ComplexOutputStateCref aComplexOutputState) const;
+
+        std::string processBindingString(const std::string& aString) const;
+        std::string processModificationToken(const std::string& aModString) const;
+
         std::string getEncodedLength(const std::string& stringInQuestion) const;
 
-        void parseMolString(const std::string& molString, std::vector<ComplexOutputState::MolTokenStr>& molTokenVector) const;
-        void parseBindingString(const std::string& bindingString, std::vector<ComplexOutputState::BindingTokenStr>& bindingTokenVector ) const;
-        void parseModificationString(const std::string& modString, std::vector<ComplexOutputState::ModificationTokenStr>& modificationTokenVector) const;
-   
-        std::string processBindingString(const std::string& aString) const
-        {
-            if (aString.empty())
-            {
-                throw GeneralNmrXcpt("Error.  MangledNameAssembler::processBindingString failed.\nThis function cannot be called on a null string.");
-            }
-      
 
-            std::string returnVal;
+    protected:
+        // These functions are used to decode the encoded names.
+        void parseMangledMolString(const std::string& molString, std::vector<ComplexOutputState::MolTokenStr>& molTokenVector) const;
+        void parseMangledBindingString(const std::string& bindingString, std::vector<ComplexOutputState::BindingTokenStr>& bindingTokenVector ) const;
+        void parseMangledModificationString(const std::string& modString, std::vector<ComplexOutputState::ModificationTokenStr>& modificationTokenVector) const;
 
-            if (aString.size()==1)
-            {
-                returnVal = aString;
-            }
-            else if (aString.size()<10)
-            {
-                returnVal = "_" + utl::stringify(aString.size())+ aString;
-            }
-            else 
-            {
-                returnVal = "__"+utl::stringify(aString.size()) + "_" + aString;
-            }
-      
-            return returnVal;
-        }
-
-        std::string processModificationToken(const std::string& aModString) const;
-        
     };
 
 }

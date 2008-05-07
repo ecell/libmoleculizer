@@ -27,11 +27,14 @@
 #include "nmr/permutation.hh"
 #include "utl/utility.hh"
 
+#include <list>
+
 #include <exception>
 #include <functional>
 #include <iterator>
 #include <algorithm>
 #include <map>
+#include <boost/foreach.hpp>
 
 namespace nmr
 {
@@ -67,6 +70,21 @@ namespace nmr
                        aPermutationVector.end()),
         theDimension( aPermutationVector.size() )
     {}
+
+    Permutation::Permutation( PermutationCref aPermutation, 
+                              PermutationCref bPermutation)
+    {
+        std::vector<int> corePerm ( aPermutation.getCorePermutation().begin(),
+                                    aPermutation.getCorePermutation().end());
+
+        BOOST_FOREACH( int i, bPermutation.getCorePermutation() )
+        {
+            corePerm.push_back( i + aPermutation.getDimension() );
+        }
+        
+        thePermutation = corePerm;
+        theDimension = thePermutation.size();
+    }
 
     Permutation::Permutation(PermutationCref aPermutation, BindingNdx pos, int value) 
         throw(nmr::BadPermutationConstructorXcpt)
@@ -390,8 +408,110 @@ namespace nmr
         getPreimage( Permutation::UNDEF, refDomainElements);
     }
 
+    void
+    Permutation::generate_Sn( std::set<Permutation>& setOfPermutations, unsigned int N)
+    {
+        // Illegal dimension.
+        if (N == 0) throw 666;
+
+        setOfPermutations.clear();
+        
+        if ( N == 1)
+        {
+            std::vector<int> corePermutation(1, 0);
+            try
+            {
+                setOfPermutations.insert( Permutation( std::vector<int>(1, 0) ));
+            }
+            catch(...)
+            {
+                int x = 10;
+                x += 10;
+            }
+
+            return;
+        }
+        else
+        {
+            // recursive step.
+            generate_Sn( setOfPermutations, N - 1);
+
+            // This could definitely be more efficient if I make set of permutations a ** or 
+            // something.
+            std::set< Permutation > tmpSet( setOfPermutations.begin(), setOfPermutations.end() );
+            setOfPermutations.clear();
 
 
+            // For example, an element from S_2 might be [1, 0].
+            // To Take this element into N=3, we must add the number 2. 
+            const int NEXT_RANGE_ELEMENT = N - 1; 
+
+            for( SetOfPermutations::iterator iter = tmpSet.begin();
+                 iter != tmpSet.end();
+                 ++iter)
+            {
+                std::list<int> prevDimPerm( iter->getCorePermutation().begin(), 
+                                            iter->getCorePermutation().end() );
+
+                std::list<int>::iterator permIter = prevDimPerm.begin();
+                
+                do
+                {
+                    permIter = prevDimPerm.insert( permIter, NEXT_RANGE_ELEMENT );
+                    setOfPermutations.insert( Permutation( std::vector<int>( prevDimPerm.begin(),
+                                                                             prevDimPerm.end())));
+                    prevDimPerm.erase( permIter);
+                }
+
+                while( permIter++ != prevDimPerm.end());
+            }
+        }
+    }
+    
+
+
+    void
+    Permutation::generateAllPermutationsMatchingSignature( SetOfPermutationsRef permSet,
+                                                           const std::vector<unsigned int>& signature)
+    {
+        DECLARE_TYPE( std::vector<unsigned int>, Signature);
+
+        // Make permSet = to S_0
+        permSet.clear();
+        permSet.insert( Permutation(0) );
+        
+        for(Signature::const_iterator iter = signature.begin();
+            iter != signature.end();
+            ++iter)
+        {
+
+            // Copy from prev to here.
+            SetOfPermutations originalSet(permSet.begin(),
+                                          permSet.end());
+            permSet.clear();
+
+            // Create the next tmpSet
+            SetOfPermutations tmpSet;
+            generate_Sn(tmpSet, *iter);
+
+            for( SetOfPermutations::iterator origSetIter = originalSet.begin();
+                 origSetIter != originalSet.end();
+                 ++origSetIter)
+            {
+
+                for( SetOfPermutations::iterator tmpSetIter = tmpSet.begin();
+                     tmpSetIter != tmpSet.end();
+                     ++tmpSetIter)
+                {
+                    permSet.insert( Permutation( *origSetIter, *tmpSetIter) );
+
+                }
+
+            }
+
+        }
+
+    }
 }
 
 

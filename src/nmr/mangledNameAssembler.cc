@@ -29,7 +29,7 @@
 #include "complexSpeciesOutputMinimizer.hh"
 
 #include "utl/utility.hh"
-
+#include "nmr/nmrUnit.hh"
 
 #include <iostream>
 #include <utility>
@@ -60,8 +60,6 @@ namespace nmr
         newOutputState.theBindingTokens = bindingTokens;
         newOutputState.theModificationTokens = modificationTokens;
 
-        std::cout << "#############################################" << std::endl;
-        std::cout << name << std::endl << "->" << std::endl << newOutputState << std::endl;
         return newOutputState;
     }
   
@@ -70,13 +68,18 @@ namespace nmr
     MangledNameAssembler::createNameFromOutputState( ComplexOutputStateCref aComplexSpeciesOutputState) const
     {
         std::string aComplexSpeciesName("");
-
+        
         aComplexSpeciesName += "___";
         aComplexSpeciesName += constructMangledMolList(aComplexSpeciesOutputState);
         aComplexSpeciesName += "___";
         aComplexSpeciesName += constructMangledBindingList(aComplexSpeciesOutputState);
         aComplexSpeciesName += "___";
         aComplexSpeciesName += constructMangledModificationList(aComplexSpeciesOutputState);
+
+//         if (aComplexSpeciesName != "_________")
+//         {
+//             theNmrUnit.getSpeciesFromName( aComplexSpeciesName );
+//         }
 
         return aComplexSpeciesName;
     }
@@ -222,14 +225,28 @@ namespace nmr
         
             if ( bindingString[index] == '_' )
             {
+                // We go into special mode....
                 index += 1;
-                //
-                std::string::size_type endOfLengthToken = bindingString.find("_", index);
-                utl::from_string<std::string::size_type>(currentBindingLength, std::string(bindingString, index, endOfLengthToken - index));
-                index = endOfLengthToken + 1;
+                
+                if(bindingString[index] == '_')
+                {
+                    // Not implemented.
+                    throw utl::NotImplementedXcpt("Error when trying to parse the bindingString '" + bindingString + "'.  Double '__' is a valid binding string, but has not yet been implemented by the maintainer (those lazy shits)");
+                }
+                else
+                {
+                    // like 52_2100
+                    utl::from_string<std::string::size_type>(currentBindingLength, 
+                                                             std::string( bindingString, index, 1) );
+                    index += 1;
+                                                             
+                }
+
             }
             else
             {
+                // Implicit binding length.
+                index += 0;
                 currentBindingLength = 1;
             }
 
@@ -237,7 +254,9 @@ namespace nmr
             // 1. Index should point to the first character of the name
             // 2. currentBindingLength should be the length of the next index number.
 
-            tmpVector.push_back( std::string(bindingString, index, currentBindingLength) );
+            std::string number(bindingString, index, currentBindingLength);
+            tmpVector.push_back( number );
+
             index += currentBindingLength;
         }
 

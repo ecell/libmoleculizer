@@ -28,7 +28,9 @@
 #include "utl/utility.hh"
 #include <algorithm>
 #include <fstream>
-#include <pause.hpp>
+using std::cout;
+using std::cerr;
+using std::endl;
 
 namespace mzr
 {
@@ -51,6 +53,7 @@ namespace mzr
     theInteractiveMode.addFunction("incrementRandomSpecies", &moleculizer::DEBUG_incrementRandomSpecies);
     theInteractiveMode.addFunction("calculate reaction between species", &moleculizer::DEBUG_showReactionsBetweenSpecies);
     theInteractiveMode.addFunction("Change naming strategy", &moleculizer::DEBUG_changeNamingStrategy);
+    theInteractiveMode.addFunction("Get species from name", &moleculizer::DEBUG_getSpeciesFromName);
 
     theInteractiveMode.runInteractiveMode();
   }
@@ -339,6 +342,19 @@ namespace mzr
 
 
   }
+
+
+void
+moleculizer::DEBUG_getSpeciesFromName()
+{
+    cout << "Enter species name:\t" ;
+    std::string name;
+    cin >> name;
+
+    mzr::mzrSpecies* pSpecies = pUserUnits->pNmrUnit->getSpeciesFromName( name );
+    
+    cout << "You got back species with name:\t'" << pSpecies->getName() << "'"<< endl;
+}
 
 
 

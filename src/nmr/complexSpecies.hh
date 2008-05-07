@@ -44,10 +44,10 @@
 namespace nmr
 {
 
-
     // April 20 - I am proceeding to change the Mols that ComplexSpecies have to 
     // boost::shared_ptr<Mol> in the hopes of more efficient memory management 
     // shoon/eventually.
+
     DECLARE_CLASS( ComplexSpecies );
     class ComplexSpecies
     {
@@ -80,7 +80,6 @@ namespace nmr
                                  AliasCref secondMolAlias, 
                                  BindingSiteCref secondMolSiteAlias) throw( MissingMolAliasXcpt, 
                                                                             MissingBindingSiteXcpt );
-
         unsigned int 
         getNumberOfMolsInComplex() const;
 
@@ -105,27 +104,6 @@ namespace nmr
         // This is a partialNameSentence with everything "stringified".  This plexOutputState is 
         // the object passed to a particular nameAssembler.
         void constructOutputState(ComplexOutputState& rOutputState) const;
-
-        void 
-        DEBUG_print() const
-        {
-            std::cout << "Printing theMols" << std::endl;
-            for(MolList::const_iterator iter = theMols.begin();
-                iter != theMols.end();
-                ++iter)
-            {
-                std::cout << (*iter)->getMolType() << std::endl;
-            }
-            std::cout << "##############################" << std::endl;
-
-            std::cout << "Printing the Alias to Ndx map" << std::endl;
-            for( MolMap::const_iterator iter = theMolAliasToNdxMap.begin();
-                 iter != theMolAliasToNdxMap.end();
-                 ++iter)
-            {
-                std::cout << iter->first << '\t' << iter->second << std::endl;
-            }
-        }
 
     protected:
         typedef std::map<Alias, MolNdx> _molMap;

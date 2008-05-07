@@ -31,6 +31,7 @@
 #include "plex/mzrPlexSpecies.hh"
 #include "plex/plexEltName.hh"
 #include "nmr/nmrUnit.hh"
+#include "nmr/complexOutputState.hh"
 #include "nmr/namedMolecule.hh"
 #include "mol/molUnit.hh"
 #include "mol/mzrMol.hh"
@@ -245,13 +246,9 @@ namespace plx
     mzrRecognizer recognize;
 
     mzrPlexSpecies*
-    constructNewPlexSpeciesFromComplexSpecies( const nmr::ComplexSpecies& aComplexSpecies)
-    {
-        // TODO: Write this VERY important function.
-        return NULL;
-    }
-
-        void
+    constructNewPlexSpeciesFromComplexOutputState( nmr::ComplexOutputStateCref cos);
+  
+    void
     addPlexQuery(plexQueryType* pQuery)
     {
       plexQueries.push_back(pQuery);

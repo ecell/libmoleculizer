@@ -39,37 +39,103 @@
 
 namespace nmr
 {
+    
     DECLARE_CLASS(ComplexSpeciesOutputMinimizer);
     class ComplexSpeciesOutputMinimizer
     {
 
     public:
 
-        ComplexOutputState getMinimalOutputState(ComplexSpeciesCref aComplexSpecies);
+        ComplexOutputState 
+        getMinimalOutputState(ComplexSpecies aComplexSpecies);
+
+        ComplexOutputState
+        getMinimalOutputStateViaBruteForce( ComplexSpecies aComplexSpecies);
 
     protected:
         typedef std::pair<int, int> __Range;
-        DECLARE_TYPE( __Range,  Range);
-
         typedef std::pair<int, int> __BindingSite;
-        DECLARE_TYPE( __BindingSite, BindingSite );
+        typedef std::pair<__BindingSite, __BindingSite> __Binding;
 
-        typedef std::pair<BindingSite, BindingSite> __Binding;
+        DECLARE_TYPE( __Range,  Range);
+        DECLARE_TYPE( __BindingSite, BindingSite );
         DECLARE_TYPE( __Binding, Binding);
 
-        typedef std::set<Permutation>::const_iterator ConstPermSetIter;
+    protected:
+        // This function ensures that aComplexSpecies is sorted molwise.  It also 
+        // ensures the two pieces of class data, the indexToMolMap and the 
+        // molToIndexRangeMap are setup.
+        void setupDataStructuresForCalculation(ComplexSpeciesRef aComplexSpecies);
 
-        Permutation getPlexSortingPermutation(ComplexSpecies aComplexSpecies);
-        Permutation calculateMinimizingPermutationForComplex(ComplexSpecies aComplexSpecies);
-        void setupDataStructuresForCalculation();
-        void maximallyExtendPermutation(Permutation& aRefPermutation);
-        PartialTokenList calculatePartialTokenListForPermutation(ComplexSpecies& anAP, Permutation& aPerm); 
-        Permutation calculateMolSortingPermutationForComplex(ComplexSpecies& aComplexSpecies);
-        bool checkMolsInComplexAreIsSorted();
-        bool checkExistsIncompletePermutations(std::set<Permutation>& setOfPPs);
-        bool checkPlexIsSorted(const ComplexSpecies& aComplexSpecies) const;
+        // This function returns a permutation such that, when applied to the complex
+        // species, leaves it in a mol sorted state.  
+        // Ie mol[i].getType() <= mol[j].getType() for all i<=k.
+        Permutation calculateMolSortingPermutationForComplex(ComplexSpeciesCref aComplexSpecies);
 
-        ComplexSpecies theUnnamedComplex;
+        // This is the daddy function of them all.  This function calculates a Permutation such 
+        // that when applied to the complex, will leave the complex in a state such that
+        // the complex output state is minimal amongst all potential complex output states.
+        Permutation calculateMinimizingPermutationForComplex(ComplexSpeciesCref aComplexSpecies);
+
+        // ???
+        void maximallyExtendPermutation(PermutationRef aRefPermutation);
+
+        PartialTokenList calculatePartialTokenListForPermutation(ComplexSpeciesCref anAP, PermutationCref aPerm); 
+
+        // Returns true if at least one permutation in the set of permutations is incomplete.
+        // Returns false if every one is a complete and proper permutation/function.
+        bool checkExistsIncompletePermutations(const std::set<Permutation>& setOfPPs) const;
+
+        // Returns true if aComplexSpecies is sorted molwise.  Ie returns true
+        // if for all i, j mol[i].getMolType() < mol[j].getMolType().
+        bool checkPlexIsSortedByMol(ComplexSpeciesCref aComplexSpecies) const;
+
+
+//         // TODO write brute force function and generally a checker to make sure all this works.
+//         // This function works on molToIndex
+//         void 
+//         produceAllValidPermutations( std::set<Permutation>& setOfPerms);
+        
+//         template <typename T>
+//         void 
+//         extend( std::vector<T>& main, const std::vector<T>& sub)
+//         {
+//             for(typename std::vector<T>::const_iterator iter = sub.begin();
+//                 iter != sub.end();
+//                 ++iter)
+//             {
+//                 main.push_back( *iter);
+//             }
+//         }
+
+//         template <typename T>
+//         void
+//         offset(std::set< std::vector<T> >& theSet, T aT)
+//         {
+//             for(typename std::set< std::vector<T> >::iterator iter = theSet.begin();
+//                 iter != theSet.end();
+//                 ++iter)
+//             {
+//                 offset( *iter, aT);
+//             }
+//         }
+
+//         template <typename T>
+//         void 
+//         offset(typename std::vector<T>& main, T aT)
+//         {
+//             for(unsigned int i = 0;
+//                 i != main.size();
+//                 ++i)
+//             {
+//                 main[i] += aT;
+//             }
+//         }
+
+//         void 
+//         generate_Sn(std::set< std::vector<int> >& setOfPermutations, unsigned int i);
+        
+
         std::map<int, std::string> indexToMolMap;
         std::map<std::string, Range > molToIndexRangeMap;
 
@@ -78,58 +144,20 @@ namespace nmr
         {
             DECLARE_TYPE(ComplexSpecies::MolList, MolList);
 
-            MolIndexLessThanCmp(ComplexSpeciesCref aComplexSpeciesForCmp)
-                : 
-                theComparisonMolList( aComplexSpeciesForCmp.getMolList() )
-            {}
-
-            bool operator()(int ndx1, int ndx2)
-            {
-                return *theComparisonMolList[ndx1] < *theComparisonMolList[ndx2];
-            } 
-    
+            MolIndexLessThanCmp(ComplexSpeciesCref aComplexSpeciesForCmp);
+            bool operator()(int ndx1, int ndx2);
 
         protected:
             MolListCref theComparisonMolList;
-        }; 
+        };  
 
         struct namerBindingCmp : public std::binary_function<Binding, Binding, bool>
         {
-            namerBindingCmp(int theBinding) 
-                : 
-                bindingNumber(theBinding)
-            {}
+            namerBindingCmp(int theBinding);
+            bool operator()(Binding a, Binding b);
 
-            bool operator()(Binding a, Binding b)
-            {
-                // TODO/ 10 ???
-                //This will sort the bindings by the binding number of a particular binding.  
-	
-                int aNumToComp;
-                int bNumToComp;
-	
-                if (a.first.first==bindingNumber)
-                {
-                    aNumToComp=a.first.second;
-                }
-                else 
-                {
-                    aNumToComp=a.second.second;
-                }
-	
-                if (b.first.first==bindingNumber)
-                {
-                    bNumToComp=b.first.second;
-                }
-                else 
-                {
-                    bNumToComp=b.second.second;
-                }
-
-                return (aNumToComp < bNumToComp);
-            }
+        protected:
             int bindingNumber;
-
         };
 
     };

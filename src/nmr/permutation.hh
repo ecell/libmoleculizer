@@ -67,6 +67,7 @@ namespace nmr
             DECLARE_TYPE( std::vector<unsigned int>, UnsignedIntegerVector);
             DECLARE_TYPE( std::vector<int>, IntegerVector);
             DECLARE_TYPE( IntegerVector, CorePermutationType);
+            DECLARE_TYPE( std::set<Permutation>, SetOfPermutations);
             
         public:
 
@@ -81,6 +82,9 @@ namespace nmr
             // This constructor copies aPermutation, and then adds the point perm(pos)=value to it.
             Permutation(PermutationCref aPermutation, BindingNdx pos, int value) 
                 throw(nmr::BadPermutationConstructorXcpt);
+
+            Permutation( PermutationCref aPermutation,
+                         PermutationCref bPermution);
   
             // API
             // 
@@ -144,6 +148,16 @@ namespace nmr
                 return thePermutation;
             }
 
+            static void
+            generate_Sn( SetOfPermutationsRef setOfPermutations, unsigned int N);
+
+
+            // Produce from S_{ Sum(signature)} the subgroup isomorphic to 
+            // S_n1 x S_n2 x ... x S_nk, where signature[i] = n_i.
+            static void
+            generateAllPermutationsMatchingSignature( SetOfPermutationsRef permSet, 
+                                                      const std::vector<unsigned int>& signature);
+
         protected:
             void maximallyExtend();
             unsigned int getNumberOfFixedElements() const;
@@ -152,6 +166,11 @@ namespace nmr
             CorePermutationType thePermutation;
             Dimension theDimension;
         };
+
+    
+
+
+
 
 }
 

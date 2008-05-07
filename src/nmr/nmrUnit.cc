@@ -18,22 +18,26 @@
 //    
 /////////////////////////////////////////////////////////////////////////////
 
+#include "plex/mzrPlex.hh"
 #include "mzr/mzrSpecies.hh"
+#include "plex/mzrPlexSpecies.hh"
 #include "nmrUnit.hh"
 #include "nmr/nmrEltName.hh"
 #include "plex/plexUnit.hh"
+#include "nmrExceptions.hh"
+#include "mol/mzrMol.hh"
+
 #include <string>
 
 namespace nmr
 {
-
     const NameAssembler*
     nmrUnit::getNameEncoder() const 
-        throw(utl::xcpt)
+        throw( MissingNameEncoderXcpt )
     {
         if (!ptrNameAssembler)
         {
-            throw utl::xcpt("Error in nmrUnit::getNameEncoder.  No ptrNameAssembler set yet!!!.");
+            throw MissingNameEncoderXcpt();
         }
 
         return ptrNameAssembler;
@@ -44,20 +48,31 @@ namespace nmr
     {
         try
         {
+            // If this thing has appeared before, return it.  
+            // This will also catch all the cases where the species is *not* a plexSpecies, as these are always 
+            // in a state of existance throughout simulation.
             mzr::mzrSpecies* ptrSpecies = &(rMolzer.findSpecies( speciesName ));
             return ptrSpecies;
         }
-        catch(fnd::NoSuchSpeciesXcpt)
+        catch(fnd::NoSuchSpeciesXcpt x)
         {
+
             // We could not find it, therefore we must construct it.
 
-            ComplexOutputState aCOS = getNameEncoder()->createOutputStateFromName( speciesName );
-            ComplexSpecies theNewComplexSpecies( aCOS );
+            // 1.  The currently set nameEncoder has the responsibility of decoding the thing into a complexOutputState.
+            ComplexOutputState aCOS;
+            plx::mzrPlexSpecies* newMzrSpecies;
 
-            mzr::mzrSpecies* newMzrSpecies = pPlexUnit->constructNewPlexSpeciesFromComplexSpecies( theNewComplexSpecies );
+            aCOS = getNameEncoder()->createOutputStateFromName( speciesName );
+            newMzrSpecies = pPlexUnit->constructNewPlexSpeciesFromComplexOutputState( aCOS );
+
             return newMzrSpecies;
-
         }
+        catch( utl::xcpt e)
+        {
+            e.wailAndBail();
+        }
+
     }
 
     void

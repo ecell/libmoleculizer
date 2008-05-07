@@ -25,7 +25,6 @@
 #include "nmrEltName.hh"
 #include "nameAssembler.hh"
 #include "nameEncoderFactory.hh"
-//#include "mzr/mzrSpecies.hh"
 #include "plex/mzrPlexSpecies.hh"
 #include "mzr/unit.hh"
 #include "mol/molUnit.hh"
@@ -52,7 +51,7 @@ namespace nmr
             pMzrUnit(NULL),
             pMolUnit(NULL),
             pPlexUnit(NULL),
-            ptrNameEncoderFactory( new NameEncoderFactory ),
+            ptrNameEncoderFactory( new NameEncoderFactory(*this) ),
             ptrNameAssembler( NULL )
         {
             setDefaultNameEncoder( manglernames::compactEncoderName );
@@ -65,23 +64,12 @@ namespace nmr
             delete ptrNameAssembler;
         }
 
-        plx::mzrPlexSpecies* 
-        makePlexFromName(const std::string& mangledName) const
-        {
-
-            // TODO: Write nmrUnit::makePlexFromName.
-            ComplexOutputState cos = getNameEncoder()->createOutputStateFromName( mangledName );
-            std::cout << mangledName << " was decoded into ";
-            std::cout << cos << std::endl;
-
-            return NULL;
-        }
-    
         mzr::mzrSpecies*
         getSpeciesFromName( const std::string& speciesName);
+
     
         const NameAssembler* 
-        getNameEncoder() const throw( utl::xcpt );
+        getNameEncoder() const throw( MissingNameEncoderXcpt );
 
         void 
         setDefaultNameEncoder( const std::string& nameEncoderName) throw( NoSuchNameEncoderXcpt  );
@@ -106,11 +94,13 @@ namespace nmr
         void parseDomInput(xmlpp::Element* pRootElt, xmlpp::Element* pModelElt, xmlpp::Element* pStreamsElt) throw(std::exception);
         void insertStateElts(xmlpp::Element* pRootElt) throw(std::exception);
 
-    private:
-
         mzr::mzrUnit* pMzrUnit;
         bnd::molUnit* pMolUnit;
         plx::plexUnit* pPlexUnit;
+
+        // Protect this next function.
+//         plx::mzrPlexSpecies* 
+//         makePlexFromName(const std::string& mangledName) const;
 
         NameEncoderFactory* ptrNameEncoderFactory;
         NameAssembler* ptrNameAssembler;

@@ -56,9 +56,9 @@ namespace nmr
         DECLARE_TYPE(std::vector<std::string>::iterator, strVectIter);
         DECLARE_TYPE(std::vector<std::string>::const_iterator, cstrVectIter);
 
-        MangledNameAssembler()
+        MangledNameAssembler(nmrUnit& theNmrUnit)
             :
-            NameAssembler("MangledNameAssembler")
+            NameAssembler("MangledNameAssembler", theNmrUnit)
         {
             try
             {

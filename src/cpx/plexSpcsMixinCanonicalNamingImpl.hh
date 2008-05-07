@@ -60,7 +60,18 @@ namespace cpx
                 aMol->addNewBindingSite( (*iter).getName() );
             }
 
-            // This line seems to confuse the bejeezus out of emacs, and I don't know why...
+            // std::cout << "########   ASSERTION ##############################" << std::endl;
+
+            // Want to make sure the molecule 
+
+
+
+
+            // std::cout << "#################### ##############################" << std::endl;
+            
+            
+
+
             const cpx::modMol<typename plexFamilyT::molType>* aModMol = 
                 dynamic_cast<const cpx::modMol<typename plexFamilyT::molType>* >(pMol);
 
@@ -80,7 +91,7 @@ namespace cpx
                 {
                     
                     aMol->addNewModificationSite( aModMol->modSiteNames[ndx],
-                                                 nuMolParam[ndx]->getName() );
+                                                  nuMolParam[ndx]->getName() );
                 }
 
             }

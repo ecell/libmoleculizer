@@ -32,6 +32,28 @@
 #include <exception>
 #include <stdexcept>
 
+#define DEFINE_MZR_EXCEPTION( xcptName )        \
+    class xcptName : public utl::xcpt           \
+    {                                           \
+    public:                                     \
+        xcptName()                              \
+            :                                           \
+            utl::xcpt("Internal Exception: xcptName.")  \
+        {}                                              \
+    };                                                  \
+
+
+
+#define DEFINE_STANDARD_MSG_EXCEPTION_CLASS( xcptName, message)    \
+    class xcptName : public utl::xcpt            \
+    {                                            \
+    public:                                      \
+        xcptName()                               \
+            :                                    \
+            utl::xcpt( message )                 \
+        {}                                       \
+    };
+
 namespace utl
 {
     class xcpt :

@@ -203,7 +203,6 @@ namespace nmr
             utl::xcpt( mkMsg(rBadName) )
         {}
     };
-
     class NoSuchBindingSiteXcpt : public utl::xcpt
     {
         static std::string 
@@ -378,9 +377,9 @@ namespace nmr
             utl::xcpt(mkMsg(molName, bindingSiteName))
         {}
     };
-
     
-
+    DEFINE_STANDARD_MSG_EXCEPTION_CLASS( MissingNameEncoderXcpt, 
+                                         "Missing Name Encoder Exception: No No ptrNameAssembler set yet!!!.");
 }
 
 #endif

@@ -42,6 +42,7 @@
 namespace nmr
 {
 
+    DECLARE_CLASS( nmrUnit );
     DECLARE_CLASS( NameAssembler );
     class NameAssembler
     {
@@ -75,9 +76,11 @@ namespace nmr
         }
 
     public:
-        NameAssembler(const std::string& nameAssemblerName)
+        NameAssembler(const std::string& nameAssemblerName,
+                      nmr::nmrUnit& refNmrUnit)
             :
-            assemblerName(nameAssemblerName)
+            assemblerName(nameAssemblerName),
+            theNmrUnit( refNmrUnit )
         {}
 
         virtual ~NameAssembler()
@@ -108,7 +111,36 @@ namespace nmr
             ComplexSpeciesOutputMinimizer canonicalNameGenerator;
             ComplexOutputState minimalOutputState = canonicalNameGenerator.getMinimalOutputState( aComplexSpecies );
 
-            return createNameFromOutputState( minimalOutputState );
+
+//             // TODO DEBUG Delete this debugging only code
+//             std::string calculatedName = createNameFromOutputState( minimalOutputState );
+
+//             bool DEBUGFLAG = false;
+//             if (calculatedName == "___3ADP3ADP4Fus34Ste7___002110312030____12__22_phosphorylation-site-1_4none_12__22_phosphorylation-site-2_4none_13__29_site-phosphorylated-by-eleven_4none_13__28_site-phosphorylated-by-three_4none" )
+//             {
+//                 DEBUGFLAG = true;
+//             }
+
+//             std::cout << "CN: \n\t" << calculatedName << std::endl;
+
+//             ComplexOutputState debugMinimalOutputState = canonicalNameGenerator.getMinimalOutputStateViaBruteForce( aComplexSpecies );
+
+
+//             std::string bruteForceName = createNameFromOutputState( debugMinimalOutputState );
+//             std::cout << "BN:\n\t" << bruteForceName << std::endl;
+
+//             if (calculatedName != bruteForceName) 
+//             {
+//                  std::cout << "#############################################" << std::endl;
+//                  std::cout << "NOTEQUAL" << std::endl;
+//                  std::cout << "CN:\n\t" << calculatedName << '\n' 
+//                            << "BN:\n\t" << bruteForceName << std::endl;
+//                  std::cout << "#############################################" << std::endl;
+//             }
+//             // TODO END DEBUG Delete
+            
+            std::string answer = createNameFromOutputState( minimalOutputState );
+            return answer;
         }
 
         std::string 
@@ -141,6 +173,7 @@ namespace nmr
     
     protected:
         const std::string assemblerName;
+        nmr::nmrUnit& theNmrUnit;
         
     };
 

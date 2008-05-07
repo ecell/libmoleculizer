@@ -60,7 +60,6 @@ namespace cpx
       return bindingMap[sourceBindingSpec];
     }
 
-    // Ever used?
     molSpec
     applyToMolSpec(molSpec sourceMolSpec) const
     {

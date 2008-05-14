@@ -45,28 +45,6 @@ namespace cpx
 		int rightSiteNdx)
     {
 
-        // DEBUG CODE -- DELETE
-        std::cout << "In knownBindings::findFeature...." << std::endl;
-        for(typename std::map<structuralBinding<molT>, bindingFeatureT>::iterator iter = this->begin();
-            iter != this->end();
-            ++iter)
-        {
-            std::cout << "(" 
-                      << (*iter).first.first.first->getName()
-                      << ", "
-                      << (*iter).first.first.second 
-                      << ") -> ("
-                      << (*iter).first.second.first->getName()
-                      << ", " 
-                      << (*iter).first.second.second
-                      << ")" 
-                      << std::endl;
-            
-            
-        }
-
-        // END DEBUG CODE
-
       structuralSite<molT> leftSite(pLeftMol,
 				    leftSiteNdx);
       structuralSite<molT> rightSite(pRightMol,

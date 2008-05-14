@@ -246,6 +246,11 @@ namespace bnd
 		     std::back_inserter(bindingSites),
 		     parseMzrBndSite());
 
+      // TODO: DEBUG_TRY
+      // This is just a trial thing here....
+//       std::sort( bindingSites.begin(),
+//                  bindingSites.end());
+
       // Process the modification sites.
       xmlpp::Node::NodeList modSiteNodes
 	= pModMolElt->get_children(eltName::modSite);

@@ -65,6 +65,12 @@ namespace cpx
       return name;
     }
 
+      bool 
+      operator<( const basicBndSite& refBndSite)
+      {
+          return getName() < refBndSite.getName();
+      }
+
     // These have to be traversed in parsing dimerizations; hence
     // exposed publicly.
     std::map<std::string, siteShape> shapesByName;

@@ -52,11 +52,17 @@ namespace nmr
             // This will also catch all the cases where the species is *not* a plexSpecies, as these are always 
             // in a state of existance throughout simulation.
             mzr::mzrSpecies* ptrSpecies = &(rMolzer.findSpecies( speciesName ));
+            if (!ptrSpecies)
+            {
+                std::cout << "EMERGENCY!!!!" << std::endl;
+            }
+            std::cout << "Found species in catalog." << std::endl;
             return ptrSpecies;
         }
         catch(fnd::NoSuchSpeciesXcpt x)
         {
 
+            std::cout << "NOT present. Constructing...." << std::endl;
             // We could not find it, therefore we must construct it.
 
             // 1.  The currently set nameEncoder has the responsibility of decoding the thing into a complexOutputState.

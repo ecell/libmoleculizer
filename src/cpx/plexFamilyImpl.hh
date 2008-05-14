@@ -522,7 +522,7 @@ namespace cpx
 		   rMolVector.end(),
 		   defaultParams.begin(),
 		   std::mem_fun(&molType::getDefaultParam));
-
+ 
     return defaultParams;
   }
 }

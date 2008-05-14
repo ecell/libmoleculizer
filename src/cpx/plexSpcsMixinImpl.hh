@@ -78,6 +78,8 @@ namespace cpx
         const molVectorType& rMols
             = rFamily.getParadigm().mols;
 
+        const std::vectory<binding>& rBindings = rFamily.getParadigm().bindings();
+
         std::string theName;
 
         typename molVectorType::const_iterator iMol = rMols.begin();
@@ -93,6 +95,11 @@ namespace cpx
             theName += "_";
             theName += pMol->getName();
         }
+
+
+
+        
+        
 
         return theName;
     }

@@ -52,11 +52,9 @@ namespace nmr
             // This will also catch all the cases where the species is *not* a plexSpecies, as these are always 
             // in a state of existance throughout simulation.
             mzr::mzrSpecies* ptrSpecies = &(rMolzer.findSpecies( speciesName ));
-            if (!ptrSpecies)
-            {
-                std::cout << "EMERGENCY!!!!" << std::endl;
-            }
+
             std::cout << "Found species in catalog." << std::endl;
+
             return ptrSpecies;
         }
         catch(fnd::NoSuchSpeciesXcpt x)

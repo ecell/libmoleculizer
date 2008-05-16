@@ -232,17 +232,6 @@ namespace plx
             {
                 bnd::mzrMol* ptrMzrMol = rMolUnit.mustFindMol( *iter );
                 pMzrPlex->mols.push_back( ptrMzrMol );
-
-                std::cout << "########  BEGIN ##############################" << std::endl;
-                std::cout << "Mol: " << ptrMzrMol->getName() << std::endl;
-                for( std::vector<bnd::mzrBndSite>::const_iterator iter = ((std::vector<bnd::mzrBndSite>*) ptrMzrMol)->begin();
-                     iter != ((std::vector<bnd::mzrBndSite>*) ptrMzrMol)->end();
-                     ++iter)
-                {
-                    std::cout << "\t" << iter->getName() << std::endl;
-                }
-
-                std::cout << "#######   END  ##############################" << std::endl;
             }
 
             catch( nmr::MissingNameEncoderXcpt e)
@@ -271,11 +260,11 @@ namespace plx
 
             pMzrPlex->bindings.push_back( cpx::binding( firstBinding, secondBinding) );
 
-//             std::cout << "Creating binding from " << pMzrPlex->mols[first_molIndex]->getName() << ", " 
-//                       << (*pMzrPlex->mols[first_molIndex])[first_bndIndex].getName() 
-//                       << " to " 
-//                       << pMzrPlex->mols[second_molIndex]->getName() << ", " 
-//                       << (*pMzrPlex->mols[second_molIndex])[second_bndIndex].getName()  << std::endl;
+            std::cout << "Creating binding from " << pMzrPlex->mols[first_molIndex]->getName() << ", " 
+                      << (*pMzrPlex->mols[first_molIndex])[first_bndIndex].getName() 
+                      << " to " 
+                      << pMzrPlex->mols[second_molIndex]->getName() << ", " 
+                      << (*pMzrPlex->mols[second_molIndex])[second_bndIndex].getName()  << std::endl;
         }
 
         cpx::plexIso resultToResultParadigm;

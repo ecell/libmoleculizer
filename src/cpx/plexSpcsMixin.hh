@@ -35,6 +35,8 @@
 #include "nmr/basicNameAssembler.hh"
 #include "nmr/readableNameAssembler.hh"
 
+#include <vector>
+
 namespace cpx
 {
   // For mixing-in with a "base" species type to produce plexSpecies.

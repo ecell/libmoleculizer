@@ -57,13 +57,13 @@ namespace nmr
             : 
             Mol( molType) 
         {
-            for(BindingSiteList::const_iterator iter = bindingSitesList.begin();
-                iter != bindingSitesList.end();
-                ++iter)
-            {
-                theBindingSiteStates.insert( std::make_pair(*iter,
-                                                            false) );
-            }
+//             for(BindingSiteList::const_iterator iter = bindingSitesList.begin();
+//                 iter != bindingSitesList.end();
+//                 ++iter)
+//             {
+//                 theBindingSiteStates.insert( std::make_pair(*iter,
+//                                                             false) );
+//             }
         }
 
         bool checkIfBindingSiteExists(BindingSiteCref aBindingSite) const;
@@ -77,7 +77,6 @@ namespace nmr
         addNewBindingSite( BindingSiteCref aBindingSite);
 
 
-      
         ModificationValue 
         getModificationValueAtModificationSite(ModificationSiteCref aModificationSite) 
             const throw(NoSuchModificationSiteXcpt);
@@ -111,12 +110,16 @@ namespace nmr
                                 ModificationValueCref modValue);
 
     protected:
-        std::map<BindingSite, bool> theBindingSiteStates; // true means bound, false,unbound.
-        std::map<ModificationSite, ModificationValue> theModificationStates;
+        // std::map<BindingSite, bool> theBindingSiteStates; // true means bound, false,unbound.
 
+        std::map<BindingSite, unsigned int> bindingSiteNameToNdxMap;
+
+        // This is maybe not the best... Dragons! Beware!
+        std::vector<bool> bindingSiteIsBound;
+
+        std::map<ModificationSite, ModificationValue> theModificationStates;
         std::map<ModificationSite, std::set<ModificationValue> > theLegalModifications;
     };
-
 
 }
 

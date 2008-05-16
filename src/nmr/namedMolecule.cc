@@ -31,18 +31,21 @@ namespace nmr
     void 
     MinimalMol::addNewBindingSite( BindingSiteCref aBindingSite)
     {
-        if (theBindingSiteStates.find(aBindingSite) != theBindingSiteStates.end())
+
+        if (bindingSiteNameToNdxMap.find( aBindingSite) != bindingSiteNameToNdxMap.end() )
         {
             throw GeneralNmrXcpt( "Binding Site already has been added in MinimalMol::addNewBindingSite. (key: lfjdkas)");
         }
 
-        theBindingSiteStates.insert( std::make_pair( aBindingSite, false) );
+        
+        bindingSiteNameToNdxMap.insert( std::make_pair( aBindingSite, bindingSiteIsBound.size() ));
+        bindingSiteIsBound.push_back( false );
     }
 
     bool 
     MinimalMol::checkIfBindingSiteExists( BindingSiteCref aBindingSite) const
     {
-        return (theBindingSiteStates.find(aBindingSite) != theBindingSiteStates.end() );
+        return (bindingSiteNameToNdxMap.find(aBindingSite) != bindingSiteNameToNdxMap.end() );
     }
 
     bool
@@ -55,15 +58,15 @@ namespace nmr
     MinimalMol::checkIfBindingSiteIsBound(BindingSiteCref aBindingSite) 
         const throw(NoSuchBindingSiteXcpt)
     {
-        std::map<BindingSite, bool>::const_iterator aBindingSiteLocation = theBindingSiteStates.find(aBindingSite);
-        if (aBindingSiteLocation == theBindingSiteStates.end()) 
+        std::map<BindingSite, unsigned int>::const_iterator aBindingSiteLocation = bindingSiteNameToNdxMap.find(aBindingSite);
+        if (aBindingSiteLocation == bindingSiteNameToNdxMap.end()) 
         {
             throw NoSuchBindingSiteXcpt( getMolType(),
                                          aBindingSite);
         }
         else
         {
-            return aBindingSiteLocation->second;
+            return bindingSiteIsBound[ aBindingSiteLocation->second ];
         }
     }
 
@@ -94,18 +97,20 @@ namespace nmr
         throw(NoSuchBindingSiteXcpt)
     {
 
-        if (theBindingSiteStates.find(aBindingSite) == theBindingSiteStates.end()) 
+        std::map<BindingSite, unsigned int>::const_iterator iter = bindingSiteNameToNdxMap.find(aBindingSite);
+
+        if ( iter == bindingSiteNameToNdxMap.end()) 
         {
             throw NoSuchBindingSiteXcpt( getMolType(), aBindingSite);
         }
-        else if (theBindingSiteStates[aBindingSite] == true) 
+        else if ( bindingSiteIsBound[iter->second] ) 
         {
             // The only way this can fail is if the bindingSite is already bound.
             throw BindingSiteAlreadyBoundXcpt( getMolType(), aBindingSite );
         }
         else
         {
-            theBindingSiteStates[aBindingSite] = true;
+            bindingSiteIsBound[iter->second] = true;
         }
 
     }
@@ -115,20 +120,19 @@ namespace nmr
         throw(NoSuchBindingSiteXcpt)
     {
         // Make sure the site exists.
-        std::map<BindingSite, bool>::iterator aBindingSiteLocation = theBindingSiteStates.find(aBindingSite);
+        std::map<BindingSite, unsigned int>::const_iterator aBindingSiteLocation = bindingSiteNameToNdxMap.find(aBindingSite);
 
-        if (aBindingSiteLocation == theBindingSiteStates.end()) 
+        if (aBindingSiteLocation == bindingSiteNameToNdxMap.end()) 
         {
             throw NoSuchBindingSiteXcpt( getMolType(), aBindingSite);
-            
         }
-        else if (theBindingSiteStates[aBindingSite] == false)
+        else if (bindingSiteIsBound[aBindingSiteLocation->second] == false)
         {
             throw BindingSiteAlreadyUnboundXcpt( getMolType(), aBindingSite);
         }
         else
         {
-            theBindingSiteStates[aBindingSite] = false;
+            bindingSiteIsBound[aBindingSiteLocation->second] = false;
         }
    
     }
@@ -156,24 +160,15 @@ namespace nmr
         const throw(NoSuchBindingSiteXcpt)
     {
         // Make sure the site exists.
-        std::map<BindingSite, bool>::const_iterator aBindingSiteLocation = theBindingSiteStates.find(aBindingSite);
-        if (aBindingSiteLocation == theBindingSiteStates.end()) 
+        std::map<BindingSite, unsigned int>::const_iterator aBindingSiteLocation = 
+            bindingSiteNameToNdxMap.find(aBindingSite);
+
+        if ( aBindingSiteLocation == bindingSiteNameToNdxMap.end() ) 
         {
             throw NoSuchBindingSiteXcpt( getMolType(), aBindingSite);
         }
 
-        int index = 0;
-        for(std::map<BindingSite, bool>::const_iterator aBindingSiteLocation = theBindingSiteStates.begin();
-            aBindingSiteLocation != theBindingSiteStates.end();
-            ++aBindingSiteLocation, ++index)
-        {
-            if (aBindingSiteLocation->first == aBindingSite)
-            {
-                return index;
-            }
-        }
-        
-        throw utl::xcpt( "Unexpected Error in MinimalMol::getBindingSiteInteger. Please contact the maintainer of this code.");
+        return aBindingSiteLocation->second;
     }
 
     int 

@@ -60,18 +60,6 @@ namespace cpx
                 aMol->addNewBindingSite( (*iter).getName() );
             }
 
-            // std::cout << "########   ASSERTION ##############################" << std::endl;
-
-            // Want to make sure the molecule 
-
-
-
-
-            // std::cout << "#################### ##############################" << std::endl;
-            
-            
-
-
             const cpx::modMol<typename plexFamilyT::molType>* aModMol = 
                 dynamic_cast<const cpx::modMol<typename plexFamilyT::molType>* >(pMol);
 

@@ -26,6 +26,7 @@
 #ifndef CPX_PLEXSPECIESIMPL_H
 #define CPX_PLEXSPECIESIMPL_H
 
+#include "binding.hh"
 
 namespace cpx
 {
@@ -74,11 +75,11 @@ namespace cpx
         // Bad that the type "gets out" like this; could be avoided, of course,
         // by using lots more typedefs.
         typedef typename std::vector<typename plexFamilyT::molType*> molVectorType;
-    
+
         const molVectorType& rMols
             = rFamily.getParadigm().mols;
 
-        const std::vectory<binding>& rBindings = rFamily.getParadigm().bindings();
+        const std::vector<binding>& rBindings = rFamily.getParadigm().bindings;
 
         std::string theName;
 
@@ -96,10 +97,30 @@ namespace cpx
             theName += pMol->getName();
         }
 
+        theName += "::";
 
+        for(std::vector<binding>::const_iterator iter = rBindings.begin();
+            iter != rBindings.end();
+            ++iter)
+        {
+            const binding& theBinding = *iter;
+            theName += "( ";
+            
+            const typename plexFamilyT::molType& firstMol = *rMols[theBinding.first.first];
+            const typename plexFamilyT::molType& secondMol = *rMols[theBinding.second.first];
 
-        
-        
+            theName += firstMol.getName();
+            theName += "//";
+            theName += firstMol[theBinding.first.second].getName();
+
+            theName += " -> ";
+            
+            theName += secondMol.getName();
+            theName += "//";
+            theName += secondMol[theBinding.second.second].getName();
+
+            theName += ") ";
+        }
 
         return theName;
     }

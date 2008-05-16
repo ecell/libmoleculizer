@@ -196,23 +196,24 @@ namespace fnd
 
       std::string* pSpeciesName = new std::string( pSpecies->getName() );
 
-      std::cout << "######################################" << std::endl;
-      std::cout << "Adding: " << *pSpeciesName << std::endl;
-
-      plx::mzrPlexSpecies* thePlex = dynamic_cast<plx::mzrPlexSpecies*>(pSpecies);
-      if(thePlex)
-      {
-          std::cout << '\t' << thePlex->getInformativeName() << std::endl;
-      }
-
-
-      std::cout << "######################################" << std::endl;
-
       SpeciesCatalogCIter iter = theSpeciesListCatalog.find( pSpeciesName);
       if (iter == theSpeciesListCatalog.end() )
         {
           theSpeciesListCatalog.insert( std::make_pair( pSpeciesName, pSpecies) );
           theDeltaSpeciesList.push_back( pSpecies );
+
+          std::cout << "######################################" << std::endl;
+          std::cout << "Adding: " << *pSpeciesName << std::endl;
+          
+          plx::mzrPlexSpecies* thePlex = dynamic_cast<plx::mzrPlexSpecies*>(pSpecies);
+          if(thePlex)
+          {
+              std::cout << '\t' << thePlex->getInformativeName() << std::endl;
+          }
+          
+          
+          std::cout << "######################################" << std::endl;
+          
           return true;
         }
       else

@@ -98,9 +98,7 @@ namespace mzr
     mzrUnit(moleculizer& rMoleculizer) :
         unit("mzr",
              rMoleculizer),
-        generateDepth(0),
-        startSeconds(time(0)),
-        secondsLimit(0)
+        generateDepth(0)
     {
         // Initialize the vector of global state variables, with which each
         // reaction is initialized.  At this point, there is only one
@@ -118,16 +116,6 @@ namespace mzr
 
         // This unit is not responsible for any reaction generators
         // or species streams.
-
-
-        // Removing dumpables.  --NJA
-        // Add the standard, built-in dumpables.
-//         addDumpable(new clockDumpable());
-//         addDumpable(new secondsDumpable(*this));
-//         addDumpable(new reactEventCountDumpable());
-//         addDumpable(new reactCountDumpable());
-//         addDumpable(new speciesCountDumpable());
-//         addDumpable(new volumeDumpable(*this));
     }
 
 
@@ -135,9 +123,7 @@ namespace mzr
     mzrUnit::prepareToRun(xmlpp::Element* pRootElt,
                           xmlpp::Element* pModelElt,
                           xmlpp::Element* pStreamsElt) throw(std::exception)
-    {
-
-    }
+    {}
 
     void
     mzrUnit::prepareToContinue(xmlpp::Element* pRootElt,
@@ -146,14 +132,7 @@ namespace mzr
                                std::map<std::string, std::string>& rTagToName,
                                xmlpp::Element* pTaggedSpeciesElement)
         throw(std::exception)
-    {
-
-//         // Hve each tabDumpEvent schedule itself at the current simulation
-//         // time, which is now the time at which the state dump happened.
-//         std::for_each(tabDumpEvents.begin(),
-//                       tabDumpEvents.end(),
-//                       continueTabDumpEvent(rMolzer));
-    }
+    {}
 
 
 }

@@ -27,7 +27,7 @@
 #define MZRUNIT_H
 
 #include "utl/dom.hh"
-#include "utl/gsl.hh"
+//#include "utl/gsl.hh"
 #include "utl/autoCatalog.hh"
 #include "utl/autoVector.hh"
 
@@ -111,35 +111,14 @@ namespace mzr
 
         mzrUnit(moleculizer& rMoleculizer);
 
-        // The one and only random number generator.
-        utl::gsl::autoGslRng rng;
-
-        // The time this moleculizer was created; taken to be the start
-        // time of the program.  Used in secondsDumpable.  This being static
-        // seems ridiculous; it's easier to get to in the dumpable code, though.
-        time_t startSeconds;
-
-        // Connected with the startSeconds, this member variable can limit
-        // moleculizer to run only a certain number of clock seconds.  If
-        // this number is 0, no check is performed.  If positive, clock seconds
-        // are checked against it on every event(!) and event processing
-        // is terminated when the time is up.
-        time_t secondsLimit;
-
-        void
-        setTimeout(time_t seconds)
-        {
-            secondsLimit = seconds;
-        }
-
-        // Accessors for generation depth command-line argument.
-        void
-        setGenerateDepth(int depth)
-        {
-            generateDepth = depth;
-            mzrReaction::setGenerateDepth( depth );
-            mzrSpecies::setGenerateDepth( depth );
-        }
+         // Accessors for generation depth command-line argument.
+         void
+         setGenerateDepth(int depth)
+         {
+             generateDepth = depth;
+             mzrReaction::setGenerateDepth( depth );
+             mzrSpecies::setGenerateDepth( depth );
+         }
 
         int
         getGenerateDepth(void)

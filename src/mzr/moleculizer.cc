@@ -346,25 +346,4 @@ namespace mzr
 
     }
 
-  mzrSpecies* moleculizer::getSpeciesFromName( const std::string& speciesName) throw( illegalSpeciesNameXcpt )
-  {
-    // Search the catalog for this species name; if we find it, return it.  
-
-    try
-      {
-        mzrSpecies& theSpecies = findSpecies( speciesName );
-        return &theSpecies;
-      }
-    catch(fnd::NoSuchSpeciesXcpt)
-      {
-        ; // Do nothing and merely continue.
-      }
-
-    // Parse the name and install it.
-
-
-    return NULL;
-    
-  }
-    
 }

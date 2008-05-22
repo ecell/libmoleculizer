@@ -260,9 +260,6 @@ namespace plx
       structureQueries.push_back(pQuery);
     }
 
-    unsigned int
-    getNumberPlexSpecies() const;
-      
     void
     addOmniXpath(const std::string& rXpath)
     {

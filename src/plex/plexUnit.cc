@@ -209,15 +209,6 @@ namespace plx
                                 rMzrUnit.getMolarFactor().getFactor());
     }
 
-    unsigned int
-    plexUnit::
-    getNumberPlexSpecies() const
-    {
-        throw "Help from plexUnit::getNumberPlexSpecies";
-        return 0;
-
-    }
-    
 
     mzrPlexSpecies*
     plexUnit::constructNewPlexSpeciesFromComplexOutputState(nmr::ComplexOutputStateCref aCOS)

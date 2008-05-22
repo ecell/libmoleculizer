@@ -83,7 +83,8 @@ namespace stoch
   stochUnit::
   addNoSubstrateArrow(mzr::mzrReaction* pReaction)
   {
-    noSubstrateArrows.push_back(pReaction);
+      rMzrUnit.rMolzer.recordReaction( pReaction );
+      noSubstrateArrows.push_back(pReaction);
   }
 
   class insertStochSpeciesElt :

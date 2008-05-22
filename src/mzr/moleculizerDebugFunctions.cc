@@ -24,13 +24,11 @@
 #include "nmr/nmrUnit.hh"
 #include "mzr/unitsMgr.hh"
 
+#include "utl/debug.hh"
 #include "utl/utlHelper.hh"
 #include "utl/utility.hh"
 #include <algorithm>
 #include <fstream>
-using std::cout;
-using std::cerr;
-using std::endl;
 
 namespace mzr
 {
@@ -54,6 +52,8 @@ namespace mzr
     theInteractiveMode.addFunction("calculate reaction between species", &moleculizer::DEBUG_showReactionsBetweenSpecies);
     theInteractiveMode.addFunction("Change naming strategy", &moleculizer::DEBUG_changeNamingStrategy);
     theInteractiveMode.addFunction("Get species from name", &moleculizer::DEBUG_getSpeciesFromName);
+    theInteractiveMode.addFunction("Clear all species and reactions", &moleculizer::DEBUG_clearAll);
+    theInteractiveMode.addFunction("Find a reaction involving one or more species", &moleculizer::DEBUG_findReaction);
 
     theInteractiveMode.runInteractiveMode();
   }
@@ -264,29 +264,29 @@ namespace mzr
     cin >> speciesTwo;
     cout << endl;
 
-    try
-      {
-        mzr::mzrSpecies* ptrSpeciesOne = getSpeciesFromName( speciesOne );
-        mzr::mzrSpecies* ptrSpeciesTwo = getSpeciesFromName( speciesTwo );
-        mzrReaction* reactionBetweenSpecies= 
-          this->findReactionWithSubstrates(ptrSpeciesOne, ptrSpeciesTwo);
+//     try
+//       {
+//         mzr::mzrSpecies* ptrSpeciesOne = getSpeciesFromName( speciesOne );
+//         mzr::mzrSpecies* ptrSpeciesTwo = getSpeciesFromName( speciesTwo );
+//         mzrReaction* reactionBetweenSpecies= 
+//           this->findReactionWithSubstrates(ptrSpeciesOne, ptrSpeciesTwo);
 
-        if(reactionBetweenSpecies)
-          {
-            std::cout << "Found one." << std::endl;
-          }
-        else
-          {
-            std::cout << "No reaction between" << std::endl;
-          }
+//         if(reactionBetweenSpecies)
+//           {
+//             std::cout << "Found one." << std::endl;
+//           }
+//         else
+//           {
+//             std::cout << "No reaction between" << std::endl;
+//           }
 
-      }
+//       }
 
-     catch(mzr::illegalSpeciesNameXcpt xcpt)
-       {
-         xcpt.warn();
-         std::cerr << "Continuing." << std::endl;
-       }
+//      catch(mzr::illegalSpeciesNameXcpt xcpt)
+//        {
+//          xcpt.warn();
+//          std::cerr << "Continuing." << std::endl;
+//        }
   }
 
   void moleculizer::DEBUG_changeNamingStrategy()
@@ -295,8 +295,8 @@ namespace mzr
 
     while( choice < 1 || choice > 3)
       {
-        cout << "1:\tDefault" << endl;
-        cout << "2:\tInformative" << endl;
+        cout << "1:\tDefault (NOT implemented yet)" << endl;
+        cout << "2:\tInformative (NOT implemented yet)" << endl;
         cout << "3:\tCompact" << endl;
         cout << "Pick a naming scheme: ";
         cin >> choice;
@@ -366,6 +366,20 @@ moleculizer::DEBUG_getSpeciesFromName()
     {
         std::cout << "They are NOT the same" << std::endl;
     }
+}
+
+
+void 
+moleculizer::DEBUG_clearAll()
+{
+    cout << "DEBUG_clearAll does nothing..." << endl;
+}
+
+
+void 
+moleculizer::DEBUG_findReaction()
+{
+    cout << "DEBUG_findReaction does nothing..." << endl;
 }
 
 

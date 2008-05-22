@@ -29,367 +29,364 @@
 #include "plex/mzrPlexFamily.hh"
 #include "plex/mzrPlexSpecies.hh"
 
+
+#include <boost/foreach.hpp>
 #include <vector>
 #include <list>
 #include <stack>
 #include <sstream>
+#include <iostream>
+#include <string>
 
 namespace fnd
 {
 
-  // I obviously need to add some kind of public API function for expanding by a speciesID.
+    // I obviously need to add some kind of public API function for expanding by a speciesID.
 
-  // Both speciesType and reactionType must have a public function
-  // void expandReactionNetwork(). 
-  // That is,  derived from fnd::reactionNetworkComponent.
+    // Both speciesType and reactionType must have a public function
+    // void expandReactionNetwork(). 
+    // That is,  derived from fnd::reactionNetworkComponent.
   
-  template <typename speciesT,
-            typename reactionT>
-  class ReactionNetworkDescription
-  {
+    template <typename speciesT,
+              typename reactionT>
+    class ReactionNetworkDescription
+    {
     
-  public:
-    typedef speciesT SpeciesType;
-    typedef SpeciesType* ptrSpeciesType;
+    public:
+        typedef speciesT SpeciesType;
+        typedef SpeciesType* ptrSpeciesType;
     
-    typedef reactionT ReactionType;
-    typedef ReactionType* ptrReactionType;
+        typedef reactionT ReactionType;
+        typedef ReactionType* ptrReactionType;
 
-    typedef std::map< const std::string*, ptrSpeciesType, aux::compareByPtrValue<std::string> > SpeciesCatalog;
-    typedef typename SpeciesCatalog::iterator SpeciesCatalogIter;
-    typedef typename SpeciesCatalog::const_iterator SpeciesCatalogCIter;
+        typedef std::map< const std::string*, ptrSpeciesType, aux::compareByPtrValue<std::string> > SpeciesCatalog;
+        typedef typename SpeciesCatalog::iterator SpeciesCatalogIter;
+        typedef typename SpeciesCatalog::const_iterator SpeciesCatalogCIter;
 
-    typedef std::list<ptrSpeciesType> SpeciesList;
-    typedef std::list<ptrReactionType> ReactionList;
+        typedef std::list<ptrSpeciesType> SpeciesList;
+        typedef std::list<ptrReactionType> ReactionList;
 
-    typedef std::list< std::pair<std::string*, ptrSpeciesType> > SpeciesListCatalog;
+        typedef std::list< std::pair<std::string*, ptrSpeciesType> > SpeciesListCatalog;
 
-    typedef typename SpeciesListCatalog::iterator SpeciesListCatalogIter;
-    typedef typename SpeciesListCatalog::const_iterator SpeciesListCatalogCIter;
+        typedef typename SpeciesListCatalog::iterator SpeciesListCatalogIter;
+        typedef typename SpeciesListCatalog::const_iterator SpeciesListCatalogCIter;
         
-    typedef typename SpeciesList::iterator SpeciesListIter;
-    typedef typename SpeciesList::const_iterator SpeciesListCIter;
+        typedef typename SpeciesList::iterator SpeciesListIter;
+        typedef typename SpeciesList::const_iterator SpeciesListCIter;
     
-    typedef typename ReactionList::iterator ReactionListIter;
-    typedef typename ReactionList::const_iterator ReactionListCIter;
+        typedef typename ReactionList::iterator ReactionListIter;
+        typedef typename ReactionList::const_iterator ReactionListCIter;
 
-  public:
+    public:
 
-    SpeciesType&
-    findSpecies(const std::string& name) 
-    {
-      const std::string* pString = &name;
-      SpeciesCatalogCIter theIter = theSpeciesListCatalog.find(pString);
-      if (theIter != theSpeciesListCatalog.end() )
+        SpeciesType&
+        findSpecies(const std::string& name) 
         {
-          return *(theIter->second);
-        }
-      else
-        {
-          throw fnd::NoSuchSpeciesXcpt(name);
-        }
+            const std::string* pString = &name;
+            SpeciesCatalogCIter theIter = theSpeciesListCatalog.find(pString);
+            if (theIter != theSpeciesListCatalog.end() )
+            {
+                return *(theIter->second);
+            }
+            else
+            {
+                throw fnd::NoSuchSpeciesXcpt(name);
+            }
             
-    }
-
-    // The unary reaction case
-    // This will ONLY return an unary reaction. 
-    const ptrReactionType
-    findReactionWithSubstrates(ptrSpeciesType A) const
-    {
-
-      // TODO Finish writing this function.
-      for(ReactionListCIter iter = theCompleteReactionList.begin();
-          iter != theCompleteReactionList.end();
-          ++iter)
-        {
-          // Skip it if not an unary reaction.p
         }
-      return NULL;
-    }
 
-    const ptrReactionType
-    findReactionWithSubstrates( ptrSpeciesType A, ptrSpeciesType B) const
-    {
-      // This is a TERRIBLE implementation.  Fix it. 
-      // This also assumes (probably correctly) that the reactions are Binary.
-
-      for(ReactionListCIter iter = theCompleteReactionList.begin();
-          iter != theCompleteReactionList.end();
-          ++iter)
+        // The unary reaction case
+        // This will ONLY return an unary reaction. 
+        const ptrReactionType
+        findReactionWithSubstrates(ptrSpeciesType A) const
         {
-          ptrReactionType pRxn = *iter;
 
-          bool seenA = false;
-          bool seenB = false;
+            // TODO Finish writing this function.
+            for(ReactionListCIter iter = theCompleteReactionList.begin();
+                iter != theCompleteReactionList.end();
+                ++iter)
+            {
+                // Skip it if not an unary reaction.p
+            }
+            return NULL;
+        }
+
+        const ptrReactionType
+        findReactionWithSubstrates( ptrSpeciesType A, ptrSpeciesType B) const
+        {
+            // This is a TERRIBLE implementation.  Fix it. 
+            // This also assumes (probably correctly) that the reactions are Binary.
+
+            for(ReactionListCIter iter = theCompleteReactionList.begin();
+                iter != theCompleteReactionList.end();
+                ++iter)
+            {
+                ptrReactionType pRxn = *iter;
+
+                bool seenA = false;
+                bool seenB = false;
                       
-          for( typename std::map<SpeciesType*, int>::const_iterator jiter = pRxn->getReactants().begin();
-               jiter != pRxn->getReactants().end();
-               ++jiter)
-            {
-              if( jiter->first == A )
+                for( typename std::map<SpeciesType*, int>::const_iterator jiter = pRxn->getReactants().begin();
+                     jiter != pRxn->getReactants().end();
+                     ++jiter)
                 {
-                  seenA = true;
+                    if( jiter->first == A )
+                    {
+                        seenA = true;
+                    }
+                    else if (jiter->first == B)
+                    {
+                        seenB = true;
+                    }
                 }
-              else if (jiter->first == B)
+
+                if ( seenA && seenB )
                 {
-                  seenB = true;
+                    return pRxn;
                 }
+
             }
 
-          if ( seenA && seenB )
+            // Scanned through everything and found nothing.
+            return NULL;
+        }
+
+        const SpeciesType&
+        findSpecies(const std::string& name) const
+        {
+            const std::string* pString = &name;
+            SpeciesCatalogCIter theIter = theSpeciesListCatalog.find(pString);
+
+            if (theIter != theSpeciesListCatalog.end() )
             {
-              return pRxn;
+                return *(theIter->second);
             }
-
-        }
-
-      // Scanned through everything and found nothing.
-      return NULL;
-    }
-
-    const SpeciesType&
-    findSpecies(const std::string& name) const
-    {
-      const std::string* pString = &name;
-      SpeciesCatalogCIter theIter = theSpeciesListCatalog.find(pString);
-
-      if (theIter != theSpeciesListCatalog.end() )
-        {
-          return *(theIter->second);
-        }
-      else
-        {
-          throw fnd::NoSuchSpeciesXcpt(name);
-        }
+            else
+            {
+                throw fnd::NoSuchSpeciesXcpt(name);
+            }
             
-    }
-
-    SpeciesListCatalog& 
-    getSpeciesCatalog()
-    {
-      return theSpeciesListCatalog;
-    }
-      
-
-    const SpeciesListCatalog& 
-    getSpeciesCatalog() const
-    {
-      return theSpeciesListCatalog;
-    }
-
-    const ReactionList&
-    getReactionList() const
-    {
-      return theCompleteReactionList;
-    }
-
-    // These two functions are the interface that reaction generators use 
-    // to record their species.  They add the (speciesName, speciesPtr)
-    // and (reactionName, reactionPtr) entries to the catalog respectively.
-    // If the object being recorded is new, we also record it as a hit in the
-    // total number of species/reactions as well as the delta number of species/
-    // reactions.
-      
-    bool 
-    recordSpecies( ptrSpeciesType pSpecies)
-    {
-
-      std::string* pSpeciesName = new std::string( pSpecies->getName() );
-
-      SpeciesCatalogCIter iter = theSpeciesListCatalog.find( pSpeciesName);
-      if (iter == theSpeciesListCatalog.end() )
-        {
-          theSpeciesListCatalog.insert( std::make_pair( pSpeciesName, pSpecies) );
-          theDeltaSpeciesList.push_back( pSpecies );
-
-          std::cout << "######################################" << std::endl;
-          std::cout << "Adding: " << *pSpeciesName << std::endl;
-          
-          plx::mzrPlexSpecies* thePlex = dynamic_cast<plx::mzrPlexSpecies*>(pSpecies);
-          if(thePlex)
-          {
-              std::cout << '\t' << thePlex->getInformativeName() << std::endl;
-          }
-          
-          
-          std::cout << "######################################" << std::endl;
-          
-          return true;
-        }
-      else
-        {
-          return false;
         }
 
-    }
+        SpeciesListCatalog& 
+        getSpeciesCatalog()
+        {
+            return theSpeciesListCatalog;
+        }
+      
+
+        const SpeciesListCatalog& 
+        getSpeciesCatalog() const
+        {
+            return theSpeciesListCatalog;
+        }
+
+        const ReactionList&
+        getReactionList() const
+        {
+            return theCompleteReactionList;
+        }
+
+        // These two functions are the interface that reaction generators use 
+        // to record their species.  They add the (speciesName, speciesPtr)
+        // and (reactionName, reactionPtr) entries to the catalog respectively.
+        // If the object being recorded is new, we also record it as a hit in the
+        // total number of species/reactions as well as the delta number of species/
+        // reactions.
+      
+        bool 
+        recordSpecies( ptrSpeciesType pSpecies)
+        {
+            std::string* pSpeciesName = new std::string( pSpecies->getName() );
+
+            if (theSpeciesListCatalog.find( pSpeciesName) == theSpeciesListCatalog.end() )
+            {
+
+                theSpeciesListCatalog.insert( std::make_pair( pSpeciesName, pSpecies) );
+                theDeltaSpeciesList.push_back( pSpecies );
+                return true;
+            }
+            else
+            {
+                delete pSpeciesName;
+                return false;
+            }
+
+        }
 
       
 
-    // You don't own this.  Don't delete it.  
-    ptrReactionType
-    calculateReactionBetweenSpecies( const speciesT& firstSpecies,
-                                     const speciesT& secondSpecies)
-    {
-      // If there is no reaction
+        // You don't own this.  Don't delete it.  
+        ptrReactionType
+        calculateReactionBetweenSpecies( const speciesT& firstSpecies,
+                                         const speciesT& secondSpecies)
+        {
+            // If there is no reaction
 
-    }
+        }
 
-    bool
-    recordReaction( ptrReactionType pRxn )
-    {
-      // At the moment, this does not check to see if a reaction has been added before.
-      theCompleteReactionList.push_back( pRxn );
-      theDeltaReactionList.push_back( pRxn );
-      return true;
-    }
+        bool
+        recordReaction( ptrReactionType pRxn )
+        {
+            // At the moment, this does not check to see if a reaction has been added before.
+            theCompleteReactionList.push_back( pRxn );
+            theDeltaReactionList.push_back( pRxn );
+            return true;
+        }
 
       
-    int 
-    getPopulation( const std::string& rName) const
-    {
-      return findSpecies(rName).getPop();
-    }
+        int 
+        getPopulation( const std::string& rName) const
+        {
+            return findSpecies(rName).getPop();
+        }
         
-    // These are not used by anyone at the moment.  It might be better to use them instead
-    // of the plain old recordSpecies/recordReaction functions, but who knows.
-    void mustRecordSpecies( ptrSpeciesType pSpecies ) throw(utl::xcpt)
-    {
-      if ( !recordSpecies( pSpecies ) )
+        // These are not used by anyone at the moment.  It might be better to use them instead
+        // of the plain old recordSpecies/recordReaction functions, but who knows.
+        void mustRecordSpecies( ptrSpeciesType pSpecies ) throw(utl::xcpt)
         {
-          throw DuplicatedCatalogEntryXcpt( pSpecies->getName() );
+            if ( !recordSpecies( pSpecies ) )
+            {
+                throw DuplicatedCatalogEntryXcpt( pSpecies->getName() );
+            }
         }
-    }
   
-    void
-    mustRecordReaction( ptrReactionType pRxn) throw(utl::xcpt)
-    {
-      if ( recordReactions( pRxn ) ) 
+        void
+        mustRecordReaction( ptrReactionType pRxn) throw(utl::xcpt)
         {
-          return;
+            if ( recordReactions( pRxn ) ) 
+            {
+                return;
+            }
+            else
+            {
+                throw DuplicatedCatalogEntryXcpt( pRxn->getName() );
+            }
+
         }
-      else
+
+        unsigned int 
+        getTotalNumberSpecies() const
         {
-          throw DuplicatedCatalogEntryXcpt( pRxn->getName() );
+            return theSpeciesListCatalog.size();
         }
 
-    }
-
-    unsigned int 
-    getTotalNumberSpecies() const
-    {
-      return theSpeciesListCatalog.size();
-    }
-
-    unsigned int 
-    getTotalNumberReactions() const
-    {
-      return theCompleteReactionList.size();
-    }
-
-    // The getDeltaNumber(Species|Reactions) functions return the number
-    // of those objects created since the last time the recordCurrentState
-    // funsource ction was source called.
-    unsigned int 
-    getNumberDeltaReactions() const
-    {
-      return theDeltaReactionList.size();
-    }
-
-    unsigned int 
-    getNumberDeltaSpecies() const
-    {
-      return theDeltaSpeciesList.size();
-    }
-
-    void resetCurrentState()
-    { 
-      theDeltaSpeciesList.clear();
-      theDeltaReactionList.clear();
-    }
-
-    void incrementNetworkBySpeciesName(const std::string& rName) throw(utl::xcpt)
-    {
-      SpeciesCatalogCIter iter = theSpeciesListCatalog.find( &rName );
-
-      if (iter != theSpeciesListCatalog.end() )
+        unsigned int 
+        getTotalNumberReactions() const
         {
-          iter->second->expandReactionNetwork();
+            return theCompleteReactionList.size();
         }
-      else
+
+        // The getDeltaNumber(Species|Reactions) functions return the number
+        // of those objects created since the last time the recordCurrentState
+        // funsource ction was source called.
+        unsigned int 
+        getNumberDeltaReactions() const
         {
-          throw NoSuchSpeciesXcpt( rName );
+            return theDeltaReactionList.size();
         }
-    }
 
-    ~ReactionNetworkDescription()
-     {
-      // FIXME...
-      // We don't memory manage any SpeciesType* or ReactionType*, but we do memory 
-      // manage the string* in theSpeciesListCatalog.
-
-      // IMPORTANT.
-      // Not deleting the std::string*'s leaks memory here...
-      //           std::for_each(theSpeciesListCatalog.begin(),
-      //                         theSpeciesListCatalog.end(),
-      //                         aux::doDeleteStringPtrs<SpeciesListCatalog>());
-
-    }
-
-    ReactionNetworkDescription(bool reserveMemory = true)
-    {
-      if (reserveMemory)
+        unsigned int 
+        getNumberDeltaSpecies() const
         {
-          // theSpeciesListCatalog.reserve( getPredictedSpeciesNetworkSize() );
-          // theCompleteReactionList.reserve( getPredictedSpeciesNetworkSize() );
-          // static_cast<unsigned int>(getPredictedSpeciesReactionRatio() + 1) );
+            return theDeltaSpeciesList.size();
         }
-    }
 
-    static void setPredictedSpeciesNetworkSize(unsigned int maxSize)
-    {
-      ReactionNetworkDescription<SpeciesType, ReactionType>::estimatedTotalNumberSpecies = maxSize;
-    }
+        void resetCurrentState()
+        { 
+            theDeltaSpeciesList.clear();
+            theDeltaReactionList.clear();
+        }
 
-    static void setPredictedSpeciesReactionRatio(float maxSize)
-    {
-      if (maxSize <= 0.0f) return;
-      ReactionNetworkDescription<SpeciesType, ReactionType>::estimatedSpeciesReactionRatio = maxSize;
+        void incrementNetworkBySpeciesName(const std::string& rName) throw(utl::xcpt)
+        {
+            SpeciesCatalogCIter iter = theSpeciesListCatalog.find( &rName );
+
+            if (iter != theSpeciesListCatalog.end() )
+            {
+                iter->second->expandReactionNetwork();
+            }
+            else
+            {
+                throw NoSuchSpeciesXcpt( rName );
+            }
+        }
+
+        ~ReactionNetworkDescription()
+        {
+            // FIXME...
+            // We don't memory manage any SpeciesType* or ReactionType*, but we do memory 
+            // manage the string* in theSpeciesListCatalog.
+
+
+            BOOST_FOREACH( typename SpeciesCatalog::value_type i, theSpeciesListCatalog)
+            {
+                delete i.first;
+            }
+
+            // IMPORTANT.
+            // Not deleting the std::string*'s leaks memory here...
+            //           std::for_each(theSpeciesListCatalog.begin(),
+            //                         theSpeciesListCatalog.end(),
+            //                         aux::doDeleteStringPtrs<SpeciesListCatalog>());
+
+        }
+
+        ReactionNetworkDescription(bool reserveMemory = true)
+        {
+            if (reserveMemory)
+            {
+                // theSpeciesListCatalog.reserve( getPredictedSpeciesNetworkSize() );
+                // theCompleteReactionList.reserve( getPredictedSpeciesNetworkSize() );
+                // static_cast<unsigned int>(getPredictedSpeciesReactionRatio() + 1) );
+            }
+        }
+
+        static void setPredictedSpeciesNetworkSize(unsigned int maxSize)
+        {
+            ReactionNetworkDescription<SpeciesType, ReactionType>::estimatedTotalNumberSpecies = maxSize;
+        }
+
+        static void setPredictedSpeciesReactionRatio(float maxSize)
+        {
+            if (maxSize <= 0.0f) return;
+            ReactionNetworkDescription<SpeciesType, ReactionType>::estimatedSpeciesReactionRatio = maxSize;
                              
-    }
+        }
 
-    static unsigned int getPredictedSpeciesNetworkSize()
-    {
-      return ReactionNetworkDescription<SpeciesType, ReactionType>::estimatedTotalNumberSpecies;
-    }
+        static unsigned int getPredictedSpeciesNetworkSize()
+        {
+            return ReactionNetworkDescription<SpeciesType, ReactionType>::estimatedTotalNumberSpecies;
+        }
 
-    static float getPredictedSpeciesReactionRatio()
-    {
-      return ReactionNetworkDescription<SpeciesType, ReactionType>::estimatedSpeciesReactionRatio;
-    }
+        static float getPredictedSpeciesReactionRatio()
+        {
+            return ReactionNetworkDescription<SpeciesType, ReactionType>::estimatedSpeciesReactionRatio;
+        }
 
-    // -- The pointers to the strings in theSpeciesListCatalog ARE memory managed.
-    // -- The pointers to the species and reactions ARE NOT memory managed here.
+        // -- The pointers to the strings in theSpeciesListCatalog ARE memory managed.
+        // -- The pointers to the species and reactions ARE NOT memory managed here.
 
-    SpeciesCatalog theSpeciesListCatalog;
-    // SpeciesListCatalog theSpeciesListCatalog;
-    ReactionList theCompleteReactionList;
+        SpeciesCatalog theSpeciesListCatalog;
+        // SpeciesListCatalog theSpeciesListCatalog;
+        ReactionList theCompleteReactionList;
         
-    SpeciesList    theDeltaSpeciesList;
-    ReactionList    theDeltaReactionList;
+        SpeciesList    theDeltaSpeciesList;
+        ReactionList    theDeltaReactionList;
 
-    // Static
-    static unsigned int estimatedSpeciesReactionNetworkSize;
-    static float estimatedSpeciesReactionRatio;
+        // Static
+        static unsigned int estimatedSpeciesReactionNetworkSize;
+        static float estimatedSpeciesReactionRatio;
         
-  };    
+    };    
 
-  template <typename speciesT, typename reactionT>
-  unsigned int 
-  ReactionNetworkDescription<speciesT, reactionT>::estimatedSpeciesReactionNetworkSize = 1e6;
+    template <typename speciesT, typename reactionT>
+    unsigned int 
+    ReactionNetworkDescription<speciesT, reactionT>::estimatedSpeciesReactionNetworkSize = 1e6;
     
-  template <typename speciesT, typename reactionT>
-  float
-  ReactionNetworkDescription<speciesT, reactionT>::estimatedSpeciesReactionRatio = 4.0f;
+    template <typename speciesT, typename reactionT>
+    float
+    ReactionNetworkDescription<speciesT, reactionT>::estimatedSpeciesReactionRatio = 4.0f;
     
 
     

@@ -60,7 +60,6 @@ namespace nmr
         catch(fnd::NoSuchSpeciesXcpt x)
         {
 
-            std::cout << "NOT present. Constructing...." << std::endl;
             // We could not find it, therefore we must construct it.
 
             // 1.  The currently set nameEncoder has the responsibility of decoding the thing into a complexOutputState.

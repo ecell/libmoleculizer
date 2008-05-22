@@ -31,48 +31,66 @@
 
 namespace cpx
 {
-  class modMolState :
-    public molState, 
-    public modStateMixin
-  {
-  public:
-    modMolState(double molecularWeight,
-		const modification* pModification,
-		int count) :
-      molState(molecularWeight),
-      modStateMixin(pModification, count)
-    {}
-
-    modMolState(double molecularWeight,
-		const modStateMixin& rModStateMixin) :
-      molState(molecularWeight),
-      modStateMixin(rModStateMixin)
-    {}
-
-    bool operator< (const modMolState& rRight) const
+    class modMolState :
+        public molState, 
+        public modStateMixin
     {
-      const molState& rThisMolState = *this;
-      const molState& rRightMolState = rRight;
+    public:
+        modMolState(double molecularWeight,
+                    const modification* pModification,
+                    int count) :
+            molState(molecularWeight),
+            modStateMixin(pModification, count)
+        {}
 
-      if(rThisMolState < rRightMolState) return true;
-      if(rRightMolState < rThisMolState) return false;
+        modMolState(double molecularWeight,
+                    const modStateMixin& rModStateMixin) :
+            molState(molecularWeight),
+            modStateMixin(rModStateMixin)
+        {}
 
-      const modStateMixin& rThisModState = *this;
-      const modStateMixin& rRightModState = rRight;
+        bool operator< (const modMolState& rRight) const
+        {
+            const molState& rThisMolState = *this;
+            const molState& rRightMolState = rRight;
 
-      return rThisModState < rRightModState;
-    }
+            if(rThisMolState < rRightMolState) return true;
+            if(rRightMolState < rThisMolState) return false;
 
-    virtual
-    ~modMolState(void)
-    {}
+            const modStateMixin& rThisModState = *this;
+            const modStateMixin& rRightModState = rRight;
 
-    virtual double
-    getMolWeight(void) const
-    {
-      return baseWeight + totalWeightDelta();
-    }
-  };
+            return rThisModState < rRightModState;
+        }
+
+        virtual 
+        string 
+        getName() const
+        {
+            ostringstream oss;
+            oss << "Mod mol state with weight '" 
+                << this->getMolWeight() 
+                << "' - ";
+            for( unsigned int ii = 0; ii != size(); ++ii)
+            {
+                oss << "( " << (*this)[ii]->getName() << " )";
+            }
+            
+            return oss.str();
+        }
+
+      
+
+        virtual
+        ~modMolState(void)
+        {}
+
+        virtual double
+        getMolWeight(void) const
+        {
+            return baseWeight + totalWeightDelta();
+        }
+    };
 }
 
 #endif // CPX_MODMOLSTATE_H

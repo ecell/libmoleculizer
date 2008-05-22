@@ -353,7 +353,19 @@ moleculizer::DEBUG_getSpeciesFromName()
 
     mzr::mzrSpecies* pSpecies = pUserUnits->pNmrUnit->getSpeciesFromName( name );
     
+
+    std::string outputName = pSpecies->getName();
+    
     cout << "You got back species with name:\t'" << pSpecies->getName() << "'"<< endl;
+
+    if (name == outputName) 
+    {
+        std::cout << "they are the same." << std::endl;
+    }
+    else
+    {
+        std::cout << "They are NOT the same" << std::endl;
+    }
 }
 
 

@@ -88,6 +88,12 @@ namespace cpx
         {
             typename plexFamilyT::molType* pMol = *iMol++;
             theName = pMol->getName();
+            
+//             bnd::mzrModMol* pModMol = dynamic_cast<bnd::mzrModMol*>(pMol);
+//             if ( pMol )
+//             {
+//                 theName += '(' + pModMol->getInformativeModificationName() + ')';
+//             }
         }
 
         while(rMols.end() != iMol)
@@ -95,6 +101,12 @@ namespace cpx
             typename plexFamilyT::molType* pMol = *iMol++;
             theName += "_";
             theName += pMol->getName();
+
+//             bnd::mzrModMol* pModMol = dynamic_cast<bnd::mzrModMol*>(pMol);
+//             if ( pMol )
+//             {
+//                 theName += '(' + pModMol->getInformativeModificationName() + ')';
+//             }
         }
 
         theName += "::";

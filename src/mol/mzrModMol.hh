@@ -55,6 +55,9 @@ namespace bnd
     std::string
     genInstanceName(int molInstanceNdx) const;
 
+    std::string
+    getInformativeModificationName() const;
+
     // Insert the state of a mod-mol for the serialization of a plex
     // species.  This should be a virtual member funtion of stateMol,
     // I suspect, but I've been avoiding putting (de)serialization into

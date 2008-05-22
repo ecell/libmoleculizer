@@ -40,7 +40,6 @@ namespace cpx
   {
   public:
     typedef stateMol<baseMolT, modMolState> stateMolType;
-      void printModMolState() const;
 
     // Use molUnit::getModMap to convert a
     // map<string, string> into a map<string, const modification*>

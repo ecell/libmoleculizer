@@ -27,31 +27,6 @@ namespace utl
 {
     namespace aux
     {
-
-        // I want to create two functional objects: 
-        // 1. One which is given a pair type and an int 
-        //    (getNthPositionFromPair< std::pair<string*, mzrSpecies*>, 2>
-        //    and returns the object in that position
-
-        // 2.  Something that takes a * and returns the dereferenced value.
-
-//         template <typename Tunsigned int>
-//         class getNthPositionFromPair
-//         {
-//         public:
-//             template
-//         }
-
-        class getFirstFromPair
-        {
-
-            template <typename T, typename V>
-            const T& operator()(const std::pair<T, V>& aPair)
-            {
-                
-            }
-        };
-
         class ptrDereferenceSorter
         {
         public:

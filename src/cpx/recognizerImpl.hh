@@ -26,6 +26,8 @@
 #ifndef CPX_RECOGNIZERIMPL_H
 #define CPX_RECOGNIZERIMPL_H
 
+#include <iostream>
+
 namespace cpx
 {
     // For deleting plexFamilies at the end of time.  plexFamilies are managed

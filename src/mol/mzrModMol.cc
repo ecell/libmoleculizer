@@ -70,6 +70,21 @@ namespace bnd
     return oss.str();
   }
 
+  std::string
+  mzrModMol::
+  getInformativeModificationName() const
+  {
+
+      // TODO non-critical.  Either write or remove.
+      std::string name;
+//       for(unsigned int i = 0; i != modSiteNames.size(); ++i)
+//       {
+//           name += modSiteNames[i] + 
+//       }
+      
+      return name;
+  }
+
   xmlpp::Element*
   mzrModMol::
   insertInstanceState(xmlpp::Element* pInstanceStatesElt,

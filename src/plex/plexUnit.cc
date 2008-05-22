@@ -259,44 +259,48 @@ namespace plx
             cpx::siteSpec secondBinding( second_molIndex, second_bndIndex);
 
             pMzrPlex->bindings.push_back( cpx::binding( firstBinding, secondBinding) );
-
-            std::cout << "Creating binding from " << pMzrPlex->mols[first_molIndex]->getName() << ", " 
-                      << (*pMzrPlex->mols[first_molIndex])[first_bndIndex].getName() 
-                      << " to " 
-                      << pMzrPlex->mols[second_molIndex]->getName() << ", " 
-                      << (*pMzrPlex->mols[second_molIndex])[second_bndIndex].getName()  << std::endl;
         }
 
-        cpx::plexIso resultToResultParadigm;
-
-        // Recognize to create a mzrPlexFamily.
-        // This takes ownership of the pMzrPlex.
+        cpx::plexIso originalToResultIsomorphism;
 	plx::mzrPlexFamily* pProductFamily
-            = recognize(*pMzrPlex, resultToResultParadigm);
+            = recognize(*pMzrPlex, originalToResultIsomorphism);
 
-        std::vector<cpx::molParam> theDefaultParams = pProductFamily->makeDefaultMolParams();
+        const plx::mzrPlex& refParadigm = pProductFamily->getParadigm();
 
-        // TODO -- lots of todos
-        for (std::vector<std::pair< std::string, std::pair<std::string, std::string> > >::const_iterator iter = aCOS.theModificationTokens.begin();
-             iter != aCOS.theModificationTokens.end();
-             ++iter)
-        {
-            int molIndex, modificationIndex;
-            std::string modificationState( iter->second.second);
-            utl::from_string(molIndex, iter->first);
-            utl::from_string(modificationIndex, iter->second.first);
+        std::vector<cpx::molParam> theParams = pProductFamily->makeDefaultMolParams();
 
-            // Make sure this is correct, as opposed to the backwards map.
-            int mappedMolIndex = resultToResultParadigm.forward.applyToMolSpec( molIndex );
+         // For each of the modifications we have here...
+         for (std::vector<std::pair< std::string, std::pair<std::string, std::string> > >::const_iterator iter = aCOS.theModificationTokens.begin();
+              iter != aCOS.theModificationTokens.end();
+              ++iter)
+         {
+              // Whenever we read a new modification with a new mol index, it means that mol is a 
+              // mod-mol and we should prepare to 
 
-            // the mod with index 'mappedMolIndex' should have modification 'modificationState'
-            // applied to itself at modification site numbered 'modificationIndex'.
+              int molIndex;
+              utl::from_string(molIndex, iter->first);
 
+              // DEBUG TODO this is just a trial of something that SHOULD NOT WORK.  
+              // int mappedMolIndex = originalToResultIsomorphism.forward.applyToMolSpec( molIndex );
+              int mappedMolIndex = molIndex;
+              
+              // Get the modMol that must be in that spot (it must be a mod mol because it has a modification...)
+              bnd::mzrModMol* pMzrMol = dynamic_cast<bnd::mzrModMol*>(pMzrPlex->mols[mappedMolIndex]);
+              if (!pMzrMol) throw 666;
+         
+              const cpx::modMolState* pModMolState = dynamic_cast<const cpx::modMolState*>(theParams[originalToResultIsomorphism.forward.applyToMolSpec( molIndex ) ]);
+              pMzrMol->internState( *pModMolState );
+              
+              cpx::modMolState molState = pMzrMol->externState( theParams[originalToResultIsomorphism.forward.applyToMolSpec( molIndex )] );
+              int modificationIndex = (*pMzrMol).modSiteNameToNdx[iter->second.first];
+              const std::string& modificationSiteName = (*pMzrMol).modSiteNames[ modificationIndex ];
 
-            
-        }
+              
+              molState[modificationIndex] = rMolUnit.mustGetMod( iter->second.second );
+              theParams[originalToResultIsomorphism.forward.applyToMolSpec( molIndex )] = pMzrMol->internState( molState );
+          }
 
-        return NULL;
+        return pProductFamily->makeMember(theParams);
 
     }
     

@@ -22,16 +22,17 @@
 #ifndef RNHELPERCLASSES
 #define RNHELPERCLASSES
 
+#include <iostream>
+
 namespace fnd
 {
     namespace aux
     {
-
         template <typename T>
         class compareByPtrValue
         {
         public:
-            bool operator()(const T* a, const T* b) const 
+            bool operator()(const T* const a, const T* const b) const 
             {
                 return *a < *b;
             }

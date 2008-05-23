@@ -260,40 +260,51 @@ namespace plx
 
         std::vector<cpx::molParam> theParams = pProductFamily->makeDefaultMolParams();
 
-         // For each of the modifications we have here...
-         for (std::vector<std::pair< std::string, std::pair<std::string, std::string> > >::const_iterator iter = aCOS.theModificationTokens.begin();
-              iter != aCOS.theModificationTokens.end();
-              ++iter)
-         {
-              // Whenever we read a new modification with a new mol index, it means that mol is a 
-              // mod-mol and we should prepare to 
+        // For each of the modifications we have here...
+        for (std::vector<std::pair< std::string, std::pair<std::string, std::string> > >::const_iterator iter = aCOS.theModificationTokens.begin();
+             iter != aCOS.theModificationTokens.end();
+             ++iter)
+        {
+            // Whenever we read a new modification with a new mol index, it means that mol is a 
+            // mod-mol and we should prepare to 
 
-              int molIndex;
-              utl::from_string(molIndex, iter->first);
+            int molIndex;
+            utl::from_string(molIndex, iter->first);
 
-              // DEBUG TODO this is just a trial of something that SHOULD NOT WORK.  
-              // int mappedMolIndex = originalToResultIsomorphism.forward.applyToMolSpec( molIndex );
-              int mappedMolIndex = molIndex;
+            // DEBUG TODO this is just a trial of something that SHOULD NOT WORK.  
+            // int mappedMolIndex = originalToResultIsomorphism.forward.applyToMolSpec( molIndex );
+            int mappedMolIndex = molIndex;
               
-              // Get the modMol that must be in that spot (it must be a mod mol because it has a modification...)
-              bnd::mzrModMol* pMzrMol = dynamic_cast<bnd::mzrModMol*>(pMzrPlex->mols[mappedMolIndex]);
-              if (!pMzrMol) throw 666;
+            // Get the modMol that must be in that spot (it must be a mod mol because it has a modification...)
+            bnd::mzrModMol* pMzrMol = dynamic_cast<bnd::mzrModMol*>(pMzrPlex->mols[mappedMolIndex]);
+            if (!pMzrMol) throw 666;
          
-              const cpx::modMolState* pModMolState = dynamic_cast<const cpx::modMolState*>(theParams[originalToResultIsomorphism.forward.applyToMolSpec( molIndex ) ]);
-              pMzrMol->internState( *pModMolState );
+            const cpx::modMolState* pModMolState = dynamic_cast<const cpx::modMolState*>(theParams[originalToResultIsomorphism.forward.applyToMolSpec( molIndex ) ]);
+            pMzrMol->internState( *pModMolState );
               
-              cpx::modMolState molState = pMzrMol->externState( theParams[originalToResultIsomorphism.forward.applyToMolSpec( molIndex )] );
-              int modificationIndex = (*pMzrMol).modSiteNameToNdx[iter->second.first];
-              const std::string& modificationSiteName = (*pMzrMol).modSiteNames[ modificationIndex ];
+            cpx::modMolState molState = pMzrMol->externState( theParams[originalToResultIsomorphism.forward.applyToMolSpec( molIndex )] );
+            int modificationIndex = (*pMzrMol).modSiteNameToNdx[iter->second.first];
+            const std::string& modificationSiteName = (*pMzrMol).modSiteNames[ modificationIndex ];
 
               
-              molState[modificationIndex] = rMolUnit.mustGetMod( iter->second.second );
-              theParams[originalToResultIsomorphism.forward.applyToMolSpec( molIndex )] = pMzrMol->internState( molState );
-          }
+            molState[modificationIndex] = rMolUnit.mustGetMod( iter->second.second );
+            theParams[originalToResultIsomorphism.forward.applyToMolSpec( molIndex )] = pMzrMol->internState( molState );
+        }
+    
+        mzrPlexSpecies* defaultSpecies = pProductFamily->makeMember( pProductFamily->makeDefaultMolParams() );
+        mzrPlexSpecies* createdSpecies = pProductFamily->makeMember(theParams);
 
-        return pProductFamily->makeMember(theParams);
+        rMolzer.recordSpecies( defaultSpecies );
+        rMolzer.recordSpecies( createdSpecies );
+
+
+        defaultSpecies->expandReactionNetwork();
+        createdSpecies->expandReactionNetwork();
+
+        return createdSpecies;
 
     }
+
     
 }
         

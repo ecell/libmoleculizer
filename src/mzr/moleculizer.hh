@@ -131,6 +131,7 @@ namespace mzr
 
         void DEBUG_showRandomLiveSpecies();
         void DEBUG_showNumberLiveSpecies();
+        void DEBUG_showUnaryReaction();
         void DEBUG_showReactionsBetweenSpecies();
         void DEBUG_changeNamingStrategy();
         void DEBUG_getSpeciesFromName();

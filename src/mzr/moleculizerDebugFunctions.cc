@@ -53,7 +53,7 @@ namespace mzr
     theInteractiveMode.addFunction("Change naming strategy", &moleculizer::DEBUG_changeNamingStrategy);
     theInteractiveMode.addFunction("Get species from name", &moleculizer::DEBUG_getSpeciesFromName);
     theInteractiveMode.addFunction("Clear all species and reactions", &moleculizer::DEBUG_clearAll);
-    theInteractiveMode.addFunction("Find a reaction involving one or more species", &moleculizer::DEBUG_findReaction);
+    theInteractiveMode.addFunction("Find an unary reaction", &moleculizer::DEBUG_showUnaryReaction);
 
     theInteractiveMode.runInteractiveMode();
   }
@@ -264,29 +264,68 @@ namespace mzr
     cin >> speciesTwo;
     cout << endl;
 
-//     try
-//       {
-//         mzr::mzrSpecies* ptrSpeciesOne = getSpeciesFromName( speciesOne );
-//         mzr::mzrSpecies* ptrSpeciesTwo = getSpeciesFromName( speciesTwo );
-//         mzrReaction* reactionBetweenSpecies= 
-//           this->findReactionWithSubstrates(ptrSpeciesOne, ptrSpeciesTwo);
+     try
+       {
+           mzr::mzrSpecies* pSpeciesOne = pUserUnits->pNmrUnit->getSpeciesFromName( speciesOne );
+           mzr::mzrSpecies* pSpeciesTwo = pUserUnits->pNmrUnit->getSpeciesFromName( speciesTwo );
 
-//         if(reactionBetweenSpecies)
-//           {
-//             std::cout << "Found one." << std::endl;
-//           }
-//         else
-//           {
-//             std::cout << "No reaction between" << std::endl;
-//           }
+           pSpeciesOne->expandReactionNetwork();
+           pSpeciesTwo->expandReactionNetwork();
 
-//       }
+           mzrReaction* reactionBetweenSpecies= 
+             this->findReactionWithSubstrates(pSpeciesOne, pSpeciesTwo);
 
-//      catch(mzr::illegalSpeciesNameXcpt xcpt)
-//        {
-//          xcpt.warn();
-//          std::cerr << "Continuing." << std::endl;
-//        }
+         if(reactionBetweenSpecies)
+           {
+             std::cout << "Found one." << std::endl;
+           }
+         else
+           {
+             std::cout << "No reaction between" << std::endl;
+           }
+
+       }
+     catch(mzr::illegalSpeciesNameXcpt xcpt)
+     {
+         xcpt.warn();
+         std::cerr << "Continuing." << std::endl;
+     }
+  }
+
+
+  void moleculizer::DEBUG_showUnaryReaction() 
+  {
+
+    std::string speciesOne, speciesTwo;
+    cout << "-- Please enter a species name --\nSpecies 1:\t";
+    cin >> speciesOne;
+    cout << endl;
+
+    int count = 0;
+
+     try
+       {
+           mzr::mzrSpecies* pSpeciesOne = pUserUnits->pNmrUnit->getSpeciesFromName( speciesOne );
+
+           mzrReaction* reactionBetweenSpecies= 
+             this->findReactionWithSubstrates(pSpeciesOne);
+
+         if(reactionBetweenSpecies)
+           {
+               0;
+               //std::cout << "Found one." << std::endl;
+           }
+         else
+           {
+               std::cout << "No reaction between" << std::endl;
+           }
+
+       }
+     catch(mzr::illegalSpeciesNameXcpt xcpt)
+     {
+         xcpt.warn();
+         std::cerr << "Continuing." << std::endl;
+     }
   }
 
   void moleculizer::DEBUG_changeNamingStrategy()
@@ -373,13 +412,6 @@ void
 moleculizer::DEBUG_clearAll()
 {
     cout << "DEBUG_clearAll does nothing..." << endl;
-}
-
-
-void 
-moleculizer::DEBUG_findReaction()
-{
-    cout << "DEBUG_findReaction does nothing..." << endl;
 }
 
 

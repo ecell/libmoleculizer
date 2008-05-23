@@ -28,7 +28,7 @@
 #include "utl/autoCatalog.hh"
 #include "plex/mzrPlexFamily.hh"
 #include "plex/mzrPlexSpecies.hh"
-
+#include "utl/debug.hh"
 
 #include <boost/foreach.hpp>
 #include <vector>
@@ -98,17 +98,35 @@ namespace fnd
         // The unary reaction case
         // This will ONLY return an unary reaction. 
         const ptrReactionType
-        findReactionWithSubstrates(ptrSpeciesType A) const
+        findReactionWithSubstrates(const ptrSpeciesType A) const
         {
+
+            int count = 0;
+            std::string reactantName = A->getName();
+
+            ptrReactionType thePtr = NULL;
 
             // TODO Finish writing this function.
             for(ReactionListCIter iter = theCompleteReactionList.begin();
                 iter != theCompleteReactionList.end();
                 ++iter)
             {
-                // Skip it if not an unary reaction.p
+                if ((*iter)->getReactants().size() != 1) continue;
+                else 
+                {
+                    const ptrSpeciesType B = ((*iter)->getReactants().begin()->first);
+                        
+                    if (reactantName == B->getName())
+                    {
+                        count += 1;
+                        thePtr = *iter;
+                    }
+                }
+                
+
             }
-            return NULL;
+            cout << "Found " << count << " unary reactions involving this species" << endl;
+            return thePtr;
         }
 
         const ptrReactionType
@@ -198,10 +216,10 @@ namespace fnd
         recordSpecies( ptrSpeciesType pSpecies)
         {
             std::string* pSpeciesName = new std::string( pSpecies->getName() );
-
             if (theSpeciesListCatalog.find( pSpeciesName) == theSpeciesListCatalog.end() )
             {
-
+                
+                cout << "NewSpec: " << *pSpeciesName << endl;
                 theSpeciesListCatalog.insert( std::make_pair( pSpeciesName, pSpecies) );
                 theDeltaSpeciesList.push_back( pSpecies );
                 return true;
@@ -228,6 +246,8 @@ namespace fnd
         bool
         recordReaction( ptrReactionType pRxn )
         {
+            cout << "NewRxn: " << pRxn->getCanonicalName() << endl;
+
             // At the moment, this does not check to see if a reaction has been added before.
             theCompleteReactionList.push_back( pRxn );
             theDeltaReactionList.push_back( pRxn );

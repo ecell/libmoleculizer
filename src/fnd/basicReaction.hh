@@ -230,6 +230,7 @@ namespace fnd
     void basicReaction<speciesType>::
     generateCanonicalName() const
     {
+        
         std::vector< std::pair<speciesType*, int> > theReactants( reactants.begin(),
                                                                   reactants.end() );
         
@@ -248,6 +249,8 @@ namespace fnd
             );
 
         std::ostringstream reactionName;
+
+        reactionName << "(" << reactants.size() << ", " << products.size() <<  ") -- ";
         
         // This is sort of goofy because of the following
         // vector = first| a, b, c| last

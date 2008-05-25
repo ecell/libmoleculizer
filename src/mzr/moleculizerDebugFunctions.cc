@@ -306,20 +306,15 @@ namespace mzr
      try
        {
            mzr::mzrSpecies* pSpeciesOne = pUserUnits->pNmrUnit->getSpeciesFromName( speciesOne );
+	   pSpeciesOne->expandReactionNetwork();
 
-           mzrReaction* reactionBetweenSpecies= 
-             this->findReactionWithSubstrates(pSpeciesOne);
 
-         if(reactionBetweenSpecies)
-           {
-               0;
-               //std::cout << "Found one." << std::endl;
-           }
-         else
-           {
-               std::cout << "No reaction between" << std::endl;
-           }
+	   std::vector<mzrReaction*> aVector;
 
+	   findReactionWithSubstrates(pSpeciesOne, aVector);
+	   cout << "Found:\t" << aVector.size() << endl;
+
+	   
        }
      catch(mzr::illegalSpeciesNameXcpt xcpt)
      {

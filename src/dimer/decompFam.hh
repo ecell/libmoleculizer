@@ -28,6 +28,7 @@
 
 #include "utl/autoVector.hh"
 #include "dimer/decompRxnGen.hh"
+#include <iostream>g
 
 namespace dimer
 {
@@ -45,6 +46,12 @@ namespace dimer
                       rPlexUnit,
                       pExtrap)
         {}
+        
+        ~decompFam()
+        {
+            std::cout <<  "~DecompFam()" << std::endl;
+        }
+        
 
         decompRxnGen*
         getRxnGen(void)

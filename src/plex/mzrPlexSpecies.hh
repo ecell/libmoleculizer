@@ -58,7 +58,8 @@ namespace plx
     {}
 
     ~mzrPlexSpecies(void)
-    {}
+      {
+      }
 
     // This fulfils the pure virtual function in the ancestor class
     // fnd::massive.

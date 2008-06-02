@@ -15,9 +15,9 @@ SRCDIR = $(abs_top_builddir)/src
 ## I think it has something to do with header dependencies.
 moleculizerdir = $(SRCDIR)
 
+
 ## These are constants defining the different library
 ## dependencies (clearly).
-
 LIBFND = fnd/libmoleculizer_fnd.la
 LIBUTL = utl/libmoleculizer_utl.la
 LIBMZR = mzr/libmoleculizer_mzr.la
@@ -45,7 +45,10 @@ $(LIBPLEX) \
 $(LIBDIMER) \
 $(LIBFTR)
 
-AM_CXXFLAGS = -I/usr/include/libxml++-1.0
+LIBXML_CFLAGS = @LIBXML_CFLAGS@
+LIBXML_LIBS = @LIBXML_LIBS@
+
+AM_CXXFLAGS = $(LIBXML_CFLAGS)
 
 if STATIC_BUILD
 AM_LDFLAGS=-static

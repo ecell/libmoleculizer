@@ -23,13 +23,20 @@ LIBDIMER = ../dimer/libmoleculizer_dimer.la
 LIBFTR = ../ftr/libmoleculizer_ftr.la
 ALL_MZR_LIBS = $(LIBFND) $(LIBUTL) $(LIBMZR) $(LIBSTOCH) $(LIBNMR) $(LIBNMR) $(LIBCPX) $(LIBMOL) $(LIBPLEX) $(LIBDIMER) $(LIBFTR)
 
-AM_CXXFLAGS = -I/usr/include/libxml++-1.0
 
 if STATIC_BUILD
 AM_LDFLAGS= -all-static
 endif
 
-libmoleculizer_utl_la_LIBADD = -lstdc++ -lxml2 -lxml++-1.0 -lgsl -lgslcblas
+LIBXML_CFLAGS = @LIBXML_CFLAGS@
+LIBXML_LIBS = @LIBXML_LIBS@
+
+GSL_CFLAGS = @GSL_CFLAGS@
+GSL_LIBS = @GSL_LIBS@
+
+AM_CXXFLAGS = $(LIBXML_CFLAGS) $(GSL_CFLAGS)
+
+libmoleculizer_utl_la_LIBADD = -lstdc++ $(LIBXML_LIBS) $(GSL_LIBS)
 
 libmoleculizer_utl_la_SOURCES =\
 arg.cc \

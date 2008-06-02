@@ -24,13 +24,20 @@ LIBFTR = ../ftr/libmoleculizer_ftr.la
 ALL_MZR_LIBS = $(LIBFND) $(LIBUTL) $(LIBMZR) $(LIBSTOCH) $(LIBNMR) $(LIBNMR) $(LIBCPX) $(LIBMOL) $(LIBPLEX) $(LIBDIMER) $(LIBFTR)
 
 
-libmoleculizer_fnd_la_LIBADD = -lstdc++ 
+LIBXML_CFLAGS = @LIBXML_CFLAGS@
+LIBXML_LIBS = @LIBXML_LIBS@
 
-AM_CXXFLAGS = -I/usr/include/libxml++-1.0
+GSL_CFLAGS = @GSL_CFLAGS@
+GSL_LIBS = @GSL_LIBS@
+
+AM_CXXFLAGS = @CXXFLAGS@ -Wall $(LIBXML_CFLAGS)
 
 if STATIC_BUILD
 AM_LDFLAGS= -all-static
 endif
+
+
+libmoleculizer_fnd_la_LIBADD = -lstdc++ 
 
 libmoleculizer_fnd_la_SOURCES =\
 badDumpFileXcpt.cc \

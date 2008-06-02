@@ -26,7 +26,10 @@ MOLECULIZER_INCLUDE_DIR=${includedir}/moleculizer
 
 libmoleculizer_ftr_la_LIBADD = -lstdc++ $(LIBUTL) $(LIBFND) $(LIBMZR) $(LIBMOL) $(LIBPLEX)
 
-AM_CXXFLAGS = -I/usr/include/libxml++-1.0
+LIBXML_CFLAGS = @LIBXML_CFLAGS@
+LIBXML_LIBS = @LIBXML_LIBS@
+
+AM_CXXFLAGS = @CXXFLAGS@ -Wall $(LIBXML_CFLAGS)
 
 if STATIC_BUILD
 AM_LDFLAGS= -all-static

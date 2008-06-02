@@ -5,14 +5,12 @@ AM_INIT_AUTOMAKE([-Wall -Werror])
 # Ensure this file is present for sanity.
 AC_CONFIG_SRCDIR([src/mzr/moleculizer.hh]) 
 
-
 # This will be added at alpha-version.
 # AC_CONFIG_TESTDIR([tests])
 
 # This should be be greatly improved.
 ACLOCAL="aclocal"
 AC_SUBST( ACLOCAL )
-
 
 # Do I need to add somethng about dynamic linking?
 AC_PROG_CC			
@@ -21,10 +19,13 @@ AC_PROG_LIBTOOL
 AC_PROG_MAKE_SET
 AC_PROG_INSTALL
 
-# We should search for and export XML_INCLUDE_DIR and XML_LIB_DIR here.
-# As well as anything else.
+PKG_CHECK_MODULES(LIBXML, libxml++-1.0)
+AC_SUBST(LIBXML_CFLAGS)
+AC_SUBST(LIBXML_LIBS)
 
-# We should search for and export * and * here.
+PKG_CHECK_MODULES(GSL, gsl)
+AC_SUBST(GSL_CFLAGS)
+AC_SUBST(GSL_LIBS)
 
 # Checks for libraries.
 AC_CONFIG_FILES([Makefile

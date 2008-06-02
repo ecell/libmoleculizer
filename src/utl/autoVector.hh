@@ -28,6 +28,7 @@
 
 #include <vector>
 #include <functional>
+#include <iostream>
 
 namespace utl
 {
@@ -48,6 +49,7 @@ namespace utl
   public:
     ~autoVector(void)
     {
+
       for_each(this->begin(),
 	       this->end(),
 	       doDelete());

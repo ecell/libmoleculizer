@@ -403,11 +403,12 @@ moleculizer::DEBUG_getSpeciesFromName()
 }
 
 
-void 
-moleculizer::DEBUG_clearAll()
-{
-    cout << "DEBUG_clearAll does nothing..." << endl;
-}
+    void 
+    moleculizer::DEBUG_clearAll()
+    {
+        // First, we can delete all the species that have been created 
+    
+    }
 
 
 

@@ -407,13 +407,6 @@ namespace fnd
 	{
 	  delete i.first;
 	}
-
-      // IMPORTANT.
-      // Not deleting the std::string*'s leaks memory here...
-      //           std::for_each(theSpeciesListCatalog.begin(),
-      //                         theSpeciesListCatalog.end(),
-      //                         aux::doDeleteStringPtrs<SpeciesListCatalog>());
-
     }
 
     ReactionNetworkDescription(bool reserveMemory = true)

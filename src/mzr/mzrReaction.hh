@@ -149,11 +149,6 @@ namespace mzr
             ++reactionCount;
         }
 
-        ~mzrReaction(void)
-        {
-            std::cout << "~mzrReaction" << std::endl;
-        }
-
         // Overriding basic_reaction<mzrSpecies>::addReactant, so that
         // the sensitization happens with the right class of reaction,
         // rather than the basic_reaction template base class.

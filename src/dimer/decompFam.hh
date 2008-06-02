@@ -47,12 +47,6 @@ namespace dimer
                       pExtrap)
         {}
         
-        ~decompFam()
-        {
-            std::cout <<  "~DecompFam()" << std::endl;
-        }
-        
-
         decompRxnGen*
         getRxnGen(void)
         {

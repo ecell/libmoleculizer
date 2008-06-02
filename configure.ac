@@ -19,7 +19,8 @@ AC_PROG_LIBTOOL
 AC_PROG_MAKE_SET
 AC_PROG_INSTALL
 
-PKG_CHECK_MODULES(LIBXML, libxml++-1.0)
+dnl PKG_CHECK_MODULES(LIBXML, libxml++-1.0)
+PKG_CHECK_MODULES(LIBXML, libxml++-2.6)
 AC_SUBST(LIBXML_CFLAGS)
 AC_SUBST(LIBXML_LIBS)
 
@@ -44,10 +45,9 @@ AC_CONFIG_FILES([Makefile
 
 
 AC_ARG_ENABLE(static-build,
- [  --enable-static-build  Build the entire file as one giant static program],
+ [  --enable-static-build  Build the entire project as one monolithic staticly linked program],
  [ static_build=yes
  ])
-
 
 AM_CONDITIONAL([STATIC_BUILD], [test "$static_build" = yes])
 

@@ -150,7 +150,6 @@ namespace mzr
 
     moleculizer::~moleculizer(void)
     {
-        std::cout << "Moleculizer::~Moleculizer called" << std::endl;
         delete pUserUnits;
     }
 

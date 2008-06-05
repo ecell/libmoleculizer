@@ -28,7 +28,7 @@
 
 #include "utl/autoVector.hh"
 #include "dimer/decompRxnGen.hh"
-#include <iostream>g
+#include <iostream>
 
 namespace dimer
 {

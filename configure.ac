@@ -1,4 +1,3 @@
-AC_PREREQ(2.59)
 AC_INIT([libmoleculizer], [1.0], [addy@molsci.org])
 AM_INIT_AUTOMAKE([-Wall -Werror])
 
@@ -19,6 +18,21 @@ AC_PROG_LIBTOOL
 AC_PROG_MAKE_SET
 AC_PROG_INSTALL
 
+dnl
+dnl
+dnl
+AM_PATH_PYTHON(2.3)
+AC_CHECK_PROGS(PYCHECKER, [pychecker], [no])
+if test "$PYCHECKER" == no ; then
+   AC_MSG_WARN([pychecker not found.]) 
+fi
+
+dnl
+dnl
+AC_CHECK_LIB(python${PYTHON_VERSION},main,,AC_MSG_ERROR([could not find libpython.]))
+AC_CHECK_LIB(boost_python,main,,AC_MSG_ERROR([could not find libboost_python.]),-lpython${PYTHON_VERSION})
+dnl
+dnl
 dnl PKG_CHECK_MODULES(LIBXML, libxml++-1.0)
 PKG_CHECK_MODULES(LIBXML, libxml++-2.6)
 AC_SUBST(LIBXML_CFLAGS)

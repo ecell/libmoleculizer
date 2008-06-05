@@ -33,7 +33,10 @@ CLEAN_FILES := $(COMPILED_PYTHON) \
 
 
 default:
-	
+	ls
 
 clean:
 	rm $(CLEAN_FILES)
+
+
+.PHONEY: default clean

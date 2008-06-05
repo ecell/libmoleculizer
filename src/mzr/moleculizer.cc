@@ -135,6 +135,12 @@ namespace mzr
                                         pStreamsElement));
     }
 
+    void
+    moleculizer::greeting(void)
+    {
+        std::cout << "Hello world" << std::endl;
+    }
+
 
 
     moleculizer::moleculizer(void)         

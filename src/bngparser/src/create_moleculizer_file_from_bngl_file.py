@@ -70,16 +70,19 @@ def processOptions(optionsDict):
 	sys.exit(0)
 
     for opt, atr in options:
+
 	if opt in ("--help", "-h"):
 	    usage()
             sys.exit(0)
+	if opt in ("--version", "-v"):
+	    version()
+            sys.exit(0)
+
 	if opt in ("--file", "-f"):
 	    optionsDict["inputfile"] = atr
 	    fileRequired = True
 	if opt in ("--output", "-o"):
 	    optionsDict["outputfile"] = atr
-	if opt in ("--version", "-v"):
-	    version()
         if opt in ("--mixin", "-m"):
             optionsDict["events_and_streams_mixin"] = atr
 

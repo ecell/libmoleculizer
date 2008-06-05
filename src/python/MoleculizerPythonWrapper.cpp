@@ -1,12 +1,11 @@
-#include <boost/python.hp>
+#include <boost/python.hpp>
+#include "mzr/moleculizer.hh"
 using namespace boost::python;
 using namespace mzr;
 
 BOOST_PYTHON_MODULE( Moleculizer )
 {
   class_<moleculizer>("ReactionNetworkGenerator")
-    .def(attachFile, &moleculizer::attachFileName)
-    .def(attachString, &moleculizer:attachString)
-    .def(findUnaryReaction, &moleculizer::findReactionWithSubstrates
+      .def("greeting", &moleculizer::greeting);
     
 }

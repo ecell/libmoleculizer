@@ -84,6 +84,9 @@ namespace mzr
         public fnd::ReactionNetworkDescription<mzrSpecies, mzrReaction>
     {
     public:
+
+        void greeting();
+
         void RunInteractiveDebugMode();
         void RunProfileMode(unsigned int numIters = 100, bool verbose = false);
 

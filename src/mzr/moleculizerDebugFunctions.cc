@@ -211,6 +211,9 @@ namespace mzr
   void
   moleculizer::DEBUG_incrementRandomSpecies()
   {
+      // Clear the delta lists....
+      resetCurrentState();
+
         std::string randomSpeciesName = DEBUG_getRandomLiveSpecies();
         cout << "Expanding '" << randomSpeciesName << "'..." << endl;
         incrementNetworkBySpeciesName( randomSpeciesName );

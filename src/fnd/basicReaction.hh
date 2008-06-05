@@ -33,188 +33,233 @@
 
 namespace fnd
 {
-  template<class speciesType>
-  class basicReaction
-  {
-  public:
-
-    typedef typename std::map<speciesType*, int> multMap;
-
-    const multMap&
-    getReactants() const
+    template<class speciesType>
+    class basicReaction
     {
-      return reactants;
-    }
+    public:
 
-    const multMap&
-    getProducts() const
-    {
-      return products;
-    }
+        typedef typename std::map<speciesType*, int> multMap;
 
-  protected:
+        const multMap&
+        getReactants() const
+        {
+            return reactants;
+        }
+
+        const multMap&
+        getProducts() const
+        {
+            return products;
+        }
+
+        bool
+        isStandardReaction() const
+        {
+            // This may be totally inappropriate here, but I anticipate there will only 
+            // be a few reaction types
+            
+            unsigned int reactantsSize = getReactants().size();
+            unsigned int productsSize = getProducts().size();
+            
+            if (reactantsSize == 0)
+            {
+                // 0->1 is acceptable, everything else is not.
+                return (productsSize == 1);
+            }
+            else if (reactantsSize == 1)
+            {
+                // 1-> 0, 1, or 2
+                return (productsSize >= 0 && productsSize <= 2);
+            }
+            else if (reactantsSize == 2)
+            {
+                // 2->1 || 2->2
+                return (productsSize == 1 || productsSize == 2);
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+//         bool 
+//         isDecompositionReaction() const
+//         {
+//             return (getReactants().size() == 1 &&
+//                     getProducts().size() == 2);
+//         }
+
+//         bool 
+//         isDimerizationReaction() const
+//         {
+//             return (getReactants().size() == 2 &&
+//                     getProducts().size() == 1);
+//         }
     
-    multMap reactants;
-    multMap products;
-    multMap deltas;
 
-    int arity;
+    protected:
+    
+        multMap reactants;
+        multMap products;
+        multMap deltas;
 
-    double rate;
+        int arity;
 
-  public:
-    basicReaction(double reactionRate = 0.0) :
-      arity(0),
-      rate(reactionRate),
-      nameUnclean( true ),
-      theName( "" )
-    {}
+        double rate;
 
-    virtual ~basicReaction()
-    {}
+    public:
+        basicReaction(double reactionRate = 0.0) :
+            arity(0),
+            rate(reactionRate),
+            nameUnclean( true ),
+            theName( "" )
+        {}
 
+        virtual ~basicReaction()
+        {}
+
+        void
+        addReactant(speciesType* pSpecies,
+                    int multiplicity);
+
+        void
+        addProduct(speciesType* pSpecies,
+                   int multiplicity);
+
+        double
+        getRate(void) const
+        {
+            return rate;
+        }
+
+        void
+        setRate(double newRate)
+        {
+            rate = newRate;
+        }
+
+        int
+        getArity(void) const
+        {
+            return arity;
+        }
+
+      
+        std::string
+        getCanonicalName() const
+        {
+            if (nameUnclean) generateCanonicalName();
+            return theName;
+        }
+
+        void
+        generateCanonicalName() const;
+
+        virtual
+        std::string
+        getName() const
+        {
+            return getCanonicalName();
+        }
+
+
+    private:
+        // This is all naming stuff.  Students of history may find it notable that
+        // this is also the first time I've used the "mutable" keyword.
+
+        mutable bool nameUnclean;
+        mutable std::string theName;
+      
+    };
+
+    // Note that this does nothing with regard to sensitization.  Sensitization
+    // of the reaction to the new substrate must be done in descendant reaction
+    // classes themselves, since those are the classes to which the species
+    // are sensitive.
+    template<class speciesType>
     void
+    basicReaction<speciesType>::
     addReactant(speciesType* pSpecies,
-		int multiplicity);
+                int multiplicity)
+    {
+        // Try to insert the new reactant species and its multiplicity into the
+        // reactant multiplicity map, under the assumption that the species is not
+        // already a reactant.
+        std::pair<typename multMap::iterator, bool> insertResult
+            = reactants.insert(std::pair<speciesType*, int>(pSpecies,
+                                                            multiplicity));
 
+        // The insertion will fail if the species is already a reactant.
+        // If this is the case, then add to the reactant's multiplicity
+        // in the existing entry.
+        if(! insertResult.second)
+        {
+            insertResult.first->second += multiplicity;
+        }
+
+        // Try to insert the new reactant species and its (negative) delta
+        // in the delta multiplicity map, under the assumption that the species
+        // is neither a reactant nor a product.
+        insertResult
+            = deltas.insert(std::pair<speciesType*, int>(pSpecies,
+                                                         - multiplicity));
+
+        // The insertion will fail if the species is already a reactant or a
+        // product.  If this is the case, then adjust the multiplicity in its
+        // existing entry.
+        if(! insertResult.second)
+        {
+            insertResult.first->second -= multiplicity;
+        }
+
+        // Add the reactant multiplicity to the arity.
+        arity += multiplicity;
+
+        // Adding a reactant means we will need to regenerate the name if anyone 
+        // requests it.
+        nameUnclean = true;
+    }
+
+    template<class speciesType>
     void
+    basicReaction<speciesType>::
     addProduct(speciesType* pSpecies,
-	       int multiplicity);
-
-    double
-    getRate(void) const
+               int multiplicity)
     {
-      return rate;
+        // Try to insert the new product species and its multiplicity into the
+        // product multiplicity map, under the assumption that the species is not
+        // already a product.
+        std::pair<typename multMap::iterator, bool> insertResult
+            = products.insert(std::pair<speciesType*, int>(pSpecies,
+                                                           multiplicity));
+
+        // The insertion will fail if the species is already a product.
+        // If this is the case, then add to the product's multiplicity
+        // in the existing entry.
+        if(! insertResult.second)
+        {
+            insertResult.first->second += multiplicity;
+        }
+
+        // Try to insert the new product species and its (positive) delta
+        // in the delta multiplicity map, under the assumption that the species
+        // is neither a reactant nor a product.
+        insertResult
+            = deltas.insert(std::pair<speciesType*, int>(pSpecies,
+                                                         multiplicity));
+
+        // The insertion will fail if the species is already a reactant or a
+        // product.  If this is the case, then adjust the multiplicity in its
+        // existing entry.
+        if(! insertResult.second)
+        {
+            insertResult.first->second += multiplicity;
+        }
+
+        // Adding a reactant means we will need to regenerate the name if anyone 
+        // requests it.
+        nameUnclean = true;
     }
-
-    void
-    setRate(double newRate)
-    {
-      rate = newRate;
-    }
-
-    int
-    getArity(void) const
-    {
-      return arity;
-    }
-
-      
-      std::string
-      getCanonicalName() const
-      {
-          if (nameUnclean) generateCanonicalName();
-          return theName;
-      }
-
-      void
-      generateCanonicalName() const;
-
-      virtual
-      std::string
-      getName() const
-      {
-          return getCanonicalName();
-      }
-
-
-  private:
-      // This is all naming stuff.  Students of history may find it notable that
-      // this is also the first time I've used the "mutable" keyword.
-
-      mutable bool nameUnclean;
-      mutable std::string theName;
-      
-  };
-
-  // Note that this does nothing with regard to sensitization.  Sensitization
-  // of the reaction to the new substrate must be done in descendant reaction
-  // classes themselves, since those are the classes to which the species
-  // are sensitive.
-  template<class speciesType>
-  void
-  basicReaction<speciesType>::
-  addReactant(speciesType* pSpecies,
-	      int multiplicity)
-  {
-    // Try to insert the new reactant species and its multiplicity into the
-    // reactant multiplicity map, under the assumption that the species is not
-    // already a reactant.
-    std::pair<typename multMap::iterator, bool> insertResult
-      = reactants.insert(std::pair<speciesType*, int>(pSpecies,
-						      multiplicity));
-
-    // The insertion will fail if the species is already a reactant.
-    // If this is the case, then add to the reactant's multiplicity
-    // in the existing entry.
-    if(! insertResult.second)
-      {
-	insertResult.first->second += multiplicity;
-      }
-
-    // Try to insert the new reactant species and its (negative) delta
-    // in the delta multiplicity map, under the assumption that the species
-    // is neither a reactant nor a product.
-    insertResult
-      = deltas.insert(std::pair<speciesType*, int>(pSpecies,
-						   - multiplicity));
-
-    // The insertion will fail if the species is already a reactant or a
-    // product.  If this is the case, then adjust the multiplicity in its
-    // existing entry.
-    if(! insertResult.second)
-      {
-	insertResult.first->second -= multiplicity;
-      }
-
-    // Add the reactant multiplicity to the arity.
-    arity += multiplicity;
-
-    // Adding a reactant means we will need to regenerate the name if anyone 
-    // requests it.
-    nameUnclean = true;
-  }
-
-  template<class speciesType>
-  void
-  basicReaction<speciesType>::
-  addProduct(speciesType* pSpecies,
-	     int multiplicity)
-  {
-    // Try to insert the new product species and its multiplicity into the
-    // product multiplicity map, under the assumption that the species is not
-    // already a product.
-    std::pair<typename multMap::iterator, bool> insertResult
-      = products.insert(std::pair<speciesType*, int>(pSpecies,
-						      multiplicity));
-
-    // The insertion will fail if the species is already a product.
-    // If this is the case, then add to the product's multiplicity
-    // in the existing entry.
-    if(! insertResult.second)
-      {
-	insertResult.first->second += multiplicity;
-      }
-
-    // Try to insert the new product species and its (positive) delta
-    // in the delta multiplicity map, under the assumption that the species
-    // is neither a reactant nor a product.
-    insertResult
-      = deltas.insert(std::pair<speciesType*, int>(pSpecies,
-						   multiplicity));
-
-    // The insertion will fail if the species is already a reactant or a
-    // product.  If this is the case, then adjust the multiplicity in its
-    // existing entry.
-    if(! insertResult.second)
-      {
-	insertResult.first->second += multiplicity;
-      }
-
-    // Adding a reactant means we will need to regenerate the name if anyone 
-    // requests it.
-    nameUnclean = true;
-  }
 
     template <typename speciesType>
     class CompareSpeciesEntries

@@ -26,6 +26,7 @@
 #include "fndExceptions.hh"
 #include "rnHelperClasses.hh"
 #include "utl/autoCatalog.hh"
+#include "fnd/basicReaction.hh"
 #include "plex/mzrPlexFamily.hh"
 #include "plex/mzrPlexSpecies.hh"
 #include "utl/debug.hh"
@@ -66,6 +67,8 @@ namespace fnd
     typedef std::list<ptrSpeciesType> SpeciesList;
     typedef std::list<ptrReactionType> ReactionList;
 
+    typedef std::multimap<ptrSpeciesType, ptrReactionType> ParticipatingSpeciesRxnMap;
+
     typedef std::list< std::pair<std::string*, ptrSpeciesType> > SpeciesListCatalog;
 
     typedef typename SpeciesListCatalog::iterator SpeciesListCatalogIter;
@@ -96,70 +99,67 @@ namespace fnd
     }
 
 
-    // TODO -- writing and evaluating these two functions.
-    // These somehow seem more sensible at this point.
     void
     findReactionWithSubstrates(const ptrSpeciesType A, 
 			       std::vector<ptrReactionType>& reactionVector)
     {
 
-      for(ReactionListIter iter = theCompleteReactionList.begin();
-	  iter != theCompleteReactionList.end();
-	  ++iter)
-	{
-	  if ((*iter)->getReactants().size() != 1) continue;
-	  else 
-	    {
-	      const ptrSpeciesType B = ((*iter)->getReactants().begin()->first);
+        reactionVector.clear();
+        
+        typename ParticipatingSpeciesRxnMap::const_iterator iter = singleSubstrateRxns.find(A);
+        
 
-	      // The second bit ensures that it isn't an "A + A -> A-A" reaction or some-such.
-	      if ( A == B && (*iter)->getReactants().begin()->second == 1)
-		{
-		  reactionVector.push_back( *iter );
-		}
-	    }
-	}
+        while( iter->first == A)
 
-      return;
+        {
+            reactionVector.push_back(iter->second);
+            ++iter;
+        }
+
+        return;
     }
+      
+      void
+      findReactionWithSubstrates(const ptrSpeciesType A, 
+                                 const ptrSpeciesType B,
+                                 std::vector<ptrReactionType>& reactionVector) const
+      {
 
-    void
-    findReactionWithSubstrates(const ptrSpeciesType A, 
-			       const ptrSpeciesType B,
-			       std::vector<ptrReactionType>& reactionVector) const
-    {
-      for(ReactionListCIter iter = theCompleteReactionList.begin();
-	  iter != theCompleteReactionList.end();
-	  ++iter)
-	{
-	  ptrReactionType pRxn = *iter;
+          reactionVector.clear();
+          const ptrSpeciesType tmp;
 
-	  bool seenA = false;
-	  bool seenB = false;
+          // This can be optimized by searching off the ptrSpececiesType which is a substrate
+          // of fewer reactions.
+          if (doubleSubstrateRxns.count(A) < doubleSubstrateRxns.count(B) )
+          {
+              for(typename ParticipatingSpeciesRxnMap::const_iterator iter = doubleSubstrateRxns.lower_bound(A);
+                  iter != doubleSubstrateRxns.upper_bound(A);
+                  ++iter)
+              {
+                  if ( iter->second->getReactants().find(B) != (iter->second->getReactants().end()) )
+                  {
+                      reactionVector.push_back( iter->second );
+                  }
+              }
+                      
+          }
+          else
+          {
+              for(typename ParticipatingSpeciesRxnMap::const_iterator iter = doubleSubstrateRxns.lower_bound(B);
+                  iter != doubleSubstrateRxns.upper_bound(B);
+                  ++iter)
+              {
+                  if (iter->second->getReactants().find(A) != iter->second->getReactants().end())
+                  {
+                      reactionVector.push_back( iter->second);
+                  }
+              }
+          } 
+              
 
-	  for( typename std::map<SpeciesType*, int>::const_iterator jiter = pRxn->getReactants().begin();
-	       jiter != pRxn->getReactants().end();
-	       ++jiter)
-	    {
-	      if( jiter->first == A )
-		{
-		  seenA = true;
-		}
-	      else if (jiter->first == B)
-		{
-		  seenB = true;
-		}
-	    }
+          return;
 
-	  if ( seenA && seenB )
-	    {
-	      reactionVector.push_back( pRxn );
-	    }
-
-	}
-
-      return;
-    }
+      }
 
 
 
@@ -200,9 +200,6 @@ namespace fnd
     const ptrReactionType
     findReactionWithSubstrates( ptrSpeciesType A, ptrSpeciesType B) const
     {
-      // This is a TERRIBLE implementation.  Fix it. 
-      // This also assumes (probably correctly) that the reactions are Binary.
-
       for(ReactionListCIter iter = theCompleteReactionList.begin();
 	  iter != theCompleteReactionList.end();
 	  ++iter)
@@ -313,8 +310,63 @@ namespace fnd
     bool
     recordReaction( ptrReactionType pRxn )
     {
+        // In the current form of the application, this check is not necessary, as any reaction
+        // is created at most once.
+
+//         if (theCompleteReactionList.end() != std::find(theCompleteReactionList.begin(),
+//                                                        theCompleteReactionList.end(),
+//                                                        pRxn))
+//         {
+//             return false;
+            
+
+//         }
+
+        if(!pRxn->isStandardReaction())
+        {
+            std::cerr<< "A reaction is nonstandard." << std::endl;
+            throw 666;
+        }
+
       theCompleteReactionList.push_back( pRxn );
       theDeltaReactionList.push_back( pRxn );
+
+      switch( pRxn->getReactants().size() )
+      {
+          ptrSpeciesType theSpeciesPtr;
+      case 0:
+          // Register in the map of creation reactions
+          zeroSubstrateRxns.push_back( pRxn );
+          break;
+      case 1:
+          // Register in a multi map of 1->? reactions
+          
+          theSpeciesPtr = pRxn->getReactants().begin()->first;
+          singleSubstrateRxns.insert( std::make_pair(theSpeciesPtr, pRxn ) );
+          break;
+
+      case 2:
+
+          BOOST_FOREACH( typename fnd::basicReaction<SpeciesType>::multMap::value_type vt, 
+                         pRxn->getReactants() )
+          {
+              theSpeciesPtr = vt.first;
+              doubleSubstrateRxns.insert( std::make_pair( theSpeciesPtr, pRxn) );
+          }
+
+          break;
+
+      default:
+          for(unsigned int i = 0; i != 6000; ++i)
+          {
+              // Spider Jerusalem.
+              std::cerr << "FUCK " << std::endl;
+          }
+
+          throw 666;
+          break;
+      }
+
       return true;
     }
 
@@ -419,27 +471,9 @@ namespace fnd
 	}
     }
 
-    static void setPredictedSpeciesNetworkSize(unsigned int maxSize)
-    {
-      ReactionNetworkDescription<SpeciesType, ReactionType>::estimatedTotalNumberSpecies = maxSize;
-    }
+      
+      
 
-    static void setPredictedSpeciesReactionRatio(float maxSize)
-    {
-      if (maxSize <= 0.0f) return;
-      ReactionNetworkDescription<SpeciesType, ReactionType>::estimatedSpeciesReactionRatio = maxSize;
-                             
-    }
-
-    static unsigned int getPredictedSpeciesNetworkSize()
-    {
-      return ReactionNetworkDescription<SpeciesType, ReactionType>::estimatedTotalNumberSpecies;
-    }
-
-    static float getPredictedSpeciesReactionRatio()
-    {
-      return ReactionNetworkDescription<SpeciesType, ReactionType>::estimatedSpeciesReactionRatio;
-    }
 
     // -- The pointers to the strings in theSpeciesListCatalog ARE memory managed.
     // -- The pointers to the species and reactions ARE NOT memory managed here.
@@ -447,24 +481,21 @@ namespace fnd
     SpeciesCatalog theSpeciesListCatalog;
     // SpeciesListCatalog theSpeciesListCatalog;
     ReactionList theCompleteReactionList;
+    ReactionList unaryReactionList;
+    ReactionList binaryReactionList;
         
     SpeciesList    theDeltaSpeciesList;
     ReactionList    theDeltaReactionList;
 
-    // Static
-    static unsigned int estimatedSpeciesReactionNetworkSize;
-    static float estimatedSpeciesReactionRatio;
-        
+    // 0->1, 1->0, 1->1, 1->2, 2->1
+
+      ReactionList zeroSubstrateRxns;
+      ParticipatingSpeciesRxnMap singleSubstrateRxns;
+      ParticipatingSpeciesRxnMap doubleSubstrateRxns;
+      
+
   };    
 
-  template <typename speciesT, typename reactionT>
-  unsigned int 
-  ReactionNetworkDescription<speciesT, reactionT>::estimatedSpeciesReactionNetworkSize = 1e6;
-    
-  template <typename speciesT, typename reactionT>
-  float
-  ReactionNetworkDescription<speciesT, reactionT>::estimatedSpeciesReactionRatio = 4.0f;
-    
 
     
 }

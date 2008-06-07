@@ -81,8 +81,7 @@ namespace stoch
 
   void
   stochUnit::parseDomInput(xmlpp::Element* pRootElement,
-			   xmlpp::Element* pModelElement,
-			   xmlpp::Element* pStreamsElement) throw(std::exception)
+			   xmlpp::Element* pModelElement) throw(std::exception)
   {
     // Parse all the stoch species as named species.
     xmlpp::Element* pExplicitSpeciesElt
@@ -143,8 +142,7 @@ namespace stoch
 
   void
   stochUnit::prepareToRun(xmlpp::Element* pRootElt,
-			  xmlpp::Element* pModelElt,
-			  xmlpp::Element* pStreamsElt)
+			  xmlpp::Element* pModelElt)
     throw(std::exception)
   {
     // Create the initial population of all explicit stochSpecies.

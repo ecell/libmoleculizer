@@ -268,20 +268,19 @@ namespace plx
 
     void
     parseDomInput(xmlpp::Element* pRootElt,
-                  xmlpp::Element* pModelElt,
-                  xmlpp::Element* pStreamsElt)
+                  xmlpp::Element* pModelElt)
       throw(utl::xcpt);
   
     void
     insertStateElts(xmlpp::Element* pRootElt)
       throw(std::exception);
 
+
     // Here, all the dumpables and reactions are notified of all
     // the existing plex species all at once.
     void
     prepareToRun(xmlpp::Element* pRootElt,
-                 xmlpp::Element* pModelElt,
-                 xmlpp::Element* pStreamsElt)
+                 xmlpp::Element* pModelElt)
       throw(utl::xcpt);
 
     void

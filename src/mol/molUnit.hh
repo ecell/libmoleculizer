@@ -143,8 +143,7 @@ namespace bnd
 
     void
     parseDomInput(xmlpp::Element* pRootElement,
-		  xmlpp::Element* pModelElement,
-		  xmlpp::Element* pStreamsElement)
+		  xmlpp::Element* pModelElement)
       throw(std::exception);
 
     void

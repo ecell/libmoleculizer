@@ -84,9 +84,6 @@ namespace mzr
         public fnd::ReactionNetworkDescription<mzrSpecies, mzrReaction>
     {
     public:
-
-        void greeting();
-
         void RunInteractiveDebugMode();
         void RunProfileMode(unsigned int numIters = 100, bool verbose = false);
 
@@ -156,15 +153,13 @@ namespace mzr
         constructorPrelude(void);
 
         void 
-        verifyInput(xmlpp::Element const * const pRootElt,
-                    xmlpp::Element const * const pModelElt,
-                    xmlpp::Element const * const pStreamsElt) const 
+        verifyInput(const xmlpp::Element* const pRootElt,
+                    const xmlpp::Element* const pModelElt) const 
             throw(std::exception);
     
         void
         constructorCore(xmlpp::Element* pRootElt,
-                        xmlpp::Element* pModelElt,
-                        xmlpp::Element* pStreamsElt)
+                        xmlpp::Element* pModelElt)
             throw(std::exception);
 
 

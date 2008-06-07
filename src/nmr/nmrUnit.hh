@@ -91,7 +91,10 @@ namespace nmr
             pMolUnit = ptrMolUnit;
         }
 
-        void parseDomInput(xmlpp::Element* pRootElt, xmlpp::Element* pModelElt, xmlpp::Element* pStreamsElt) throw(std::exception);
+        void 
+        parseDomInput(xmlpp::Element* pRootElt, 
+                      xmlpp::Element* pModelElt) throw(std::exception);
+
         void insertStateElts(xmlpp::Element* pRootElt) throw(std::exception);
 
         mzr::mzrUnit* pMzrUnit;

@@ -320,15 +320,13 @@ namespace mzr
 
         virtual void
         parseDomInput(xmlpp::Element* pRootElt,
-                      xmlpp::Element* pModelElt,
-                      xmlpp::Element* pStreamsElt) throw(std::exception);
+                      xmlpp::Element* pModelElt) throw(std::exception);
 
         // Just emits header lines in all the dumpables, schedules tabDumpEvents
         // for the first time, after which they schedule themselves.
         void
         prepareToRun(xmlpp::Element* pRootElt,
-                     xmlpp::Element* pModelElt,
-                     xmlpp::Element* pStreamsElt) throw(std::exception);
+                     xmlpp::Element* pModelElt) throw(std::exception);
 
 
         // In addition to the above, sets the current (i.e. initial)

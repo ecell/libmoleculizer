@@ -91,8 +91,7 @@ namespace dimer
 
     void
     parseDomInput(xmlpp::Element* pRootElement,
-		  xmlpp::Element* pModelElement,
-		  xmlpp::Element* pStreamsElement) throw(std::exception);
+		  xmlpp::Element* pModelElement) throw(std::exception);
 
     void
     insertStateElts(xmlpp::Element* pRootElt) throw(std::exception);

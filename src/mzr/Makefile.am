@@ -39,7 +39,6 @@ endif
 libmoleculizer_mzr_la_LIBADD = -lstdc++ $(LIBUTL)
 
 libmoleculizer_mzr_la_SOURCES =\
-continuator.cc \
 createEvent.cc \
 dumpStateEvent.cc \
 dumpUtils.cc \
@@ -66,6 +65,7 @@ unkDumpableXcpt.cc \
 unkSpeciesXcpt.cc \
 unkStatStreamXcpt.cc \
 volumeEvent.cc
+# continuator.cc
 
 libmoleculizer_mzr_HEADERS=\
 debug.hh \

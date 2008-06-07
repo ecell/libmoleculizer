@@ -507,8 +507,7 @@ namespace dimer
 
   void
   dimerUnit::parseDomInput(xmlpp::Element* pRootElement,
-			   xmlpp::Element* pModelElement,
-			   xmlpp::Element* pStreamsElement) throw(std::exception)
+			   xmlpp::Element* pModelElement) throw(std::exception)
   {
     // Get the header node for all reaction generators.
     xmlpp::Element* pReactionGensElt

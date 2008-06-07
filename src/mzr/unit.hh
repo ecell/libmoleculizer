@@ -179,8 +179,7 @@ namespace mzr
     // The actual input parsing done by this unit.
     virtual void
     parseDomInput(xmlpp::Element* pRootElt,
-		  xmlpp::Element* pModelElt,
-		  xmlpp::Element* pStreamsElt) throw(std::exception) = 0;
+		  xmlpp::Element* pModelElt) throw(std::exception) = 0;
 
     // This allows finalization steps after parsing but before running.
     // In this phase, plexUnit runs notifications on parsed (but never created)
@@ -190,8 +189,7 @@ namespace mzr
     // still due to the clunkiness of update.)
     virtual void
     prepareToRun(xmlpp::Element* pRootElt,
-		 xmlpp::Element* pModelElt,
-		 xmlpp::Element* pStreamsElt) throw(std::exception)
+		 xmlpp::Element* pModelElt) throw(std::exception)
     {
       // The plex unit does a lot; the mzrUnit does a little.  So far,
       // nobody else does anything.
@@ -213,8 +211,7 @@ namespace mzr
       // units don't have) and to go on as if preparing to do a moleculizer
       // simulation.
       prepareToRun(pRootElt,
-		   pModelElt,
-		   pStreamsElt);
+		   pModelElt);
     }
 
     // How a unit contributes its part of a state dump.

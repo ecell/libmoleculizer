@@ -54,22 +54,18 @@ namespace mzr
     {
         xmlpp::Element* pRootElt;
         xmlpp::Element* pModelElt;
-        xmlpp::Element* pStreamsElt;
 
     public:
         unitParseDomInput(xmlpp::Element* pRootElement,
-                          xmlpp::Element* pModelElement,
-                          xmlpp::Element* pStreamsElement) :
+                          xmlpp::Element* pModelElement) :
             pRootElt(pRootElement),
-            pModelElt(pModelElement),
-            pStreamsElt(pStreamsElement)
+            pModelElt(pModelElement)
         {}
         void
         operator()(unit* pUnit) const throw(std::exception)
         {
             pUnit->parseDomInput(pRootElt,
-                                 pModelElt,
-                                 pStreamsElt);
+                                 pModelElt);
         }
     };
 
@@ -78,14 +74,12 @@ namespace mzr
     {
         xmlpp::Element* pRootElt;
         xmlpp::Element* pModelElt;
-        xmlpp::Element* pStreamsElt;
+
     public:
         prepareUnitToRun(xmlpp::Element* pRootElement,
-                         xmlpp::Element* pModelElement,
-                         xmlpp::Element* pStreamsElement) :
+                         xmlpp::Element* pModelElement) :
             pRootElt(pRootElement),
-            pModelElt(pModelElement),
-            pStreamsElt(pStreamsElement)
+            pModelElt(pModelElement)
         {
         }
 
@@ -94,8 +88,7 @@ namespace mzr
             throw(std::exception)
         {
             pUnit->prepareToRun(pRootElt,
-                                pModelElt,
-                                pStreamsElt);
+                                pModelElt);
         }
     };
 
@@ -108,8 +101,7 @@ namespace mzr
 
     void
     moleculizer::constructorCore(xmlpp::Element* pRootElement,
-                                 xmlpp::Element* pModelElement,
-                                 xmlpp::Element* pStreamsElement)
+                                 xmlpp::Element* pModelElement)
         throw(std::exception)
     {
         // Verify that the input can all be sucessfully handled by 
@@ -117,9 +109,8 @@ namespace mzr
 
         try
         {
-            verifyInput(pRootElement, 
-                        pModelElement,
-                        pStreamsElement);
+            verifyInput(pRootElement,
+                        pModelElement);
         }
         catch(std::exception e)
         {
@@ -128,20 +119,17 @@ namespace mzr
         
 
         // Have each unit do its parsing thing.
+//         std::for_each(pUserUnits->begin(),
+//                       pUserUnits->end(),
+//                       unitParseDomInput(pRootElement,
+//                                         pModelElement,
+//                                         pStreamsElement));
+
         std::for_each(pUserUnits->begin(),
                       pUserUnits->end(),
                       unitParseDomInput(pRootElement,
-                                        pModelElement,
-                                        pStreamsElement));
+                                        pModelElement));
     }
-
-    void
-    moleculizer::greeting(void)
-    {
-        std::cout << "Hello world" << std::endl;
-    }
-
-
 
     moleculizer::moleculizer(void)         
         :
@@ -196,20 +184,16 @@ namespace mzr
         xmlpp::Element* pModelElement
             = utl::dom::mustGetUniqueChild(pRootElement,
                                            eltName::model);
-        // Get the unique streams element.
-        xmlpp::Element* pStreamsElement
-            = utl::dom::mustGetUniqueChild(pRootElement,
-                                           eltName::streams);
+
         // Extract model info.
         constructorCore(pRootElement,
-                        pModelElement,
-                        pStreamsElement);
+                        pModelElement);
+
         // Have each unit do its prepareToRun thing.
         std::for_each(pUserUnits->begin(),
                       pUserUnits->end(),
                       prepareUnitToRun(pRootElement,
-                                       pModelElement,
-                                       pStreamsElement));
+                                       pModelElement));
 
     }
 
@@ -279,8 +263,7 @@ namespace mzr
 
     void
     moleculizer::verifyInput(xmlpp::Element const * const pRootElement,
-                             xmlpp::Element const * const pModelElement,
-                             xmlpp::Element const * const pStreamsElement) const
+                             xmlpp::Element const * const pModelElement) const
         throw(std::exception)
     {
         // Verify that every element in the model section is handled by some
@@ -332,23 +315,6 @@ namespace mzr
         if(explicitSpeciesContentNodes.end() != iUnhandledExplicitSpeciesContent)
             throw
                 unhandledExplicitSpeciesContentXcpt(*iUnhandledExplicitSpeciesContent);
-
-        // Get the speciesStreams node, which can contain kinds of species streams
-        // introduced by units.
-        xmlpp::Element* pSpeciesStreamsElt
-            = utl::dom::mustGetUniqueChild(pStreamsElement,
-                                           eltName::speciesStreams);
-  
-        // Verify that every kind of species stream is handled by some
-        // unit or another.
-        xmlpp::Node::NodeList speciesStreamsContentNodes
-            = pSpeciesStreamsElt->get_children();
-        xmlpp::Node::NodeList::iterator iUnhandledSpeciesStreamsContent
-            = std::find_if(speciesStreamsContentNodes.begin(),
-                           speciesStreamsContentNodes.end(),
-                           speciesStreamNodeNotInCap(inputCap));
-        if(speciesStreamsContentNodes.end() != iUnhandledSpeciesStreamsContent)
-            throw unhandledSpeciesStreamsContentXcpt(*iUnhandledSpeciesStreamsContent);
 
     }
 

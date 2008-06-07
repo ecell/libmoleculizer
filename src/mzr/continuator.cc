@@ -134,8 +134,7 @@ namespace mzr
     // restored, so that explicit events in the moleculizer-input that have
     // already happened will not be scheduled.
     constructorCore(pInputRootElement,
-		    pInputModelElement,
-		    pInputStreamsElement);
+		    pInputModelElement);
 
     // Get the map from dump tag to explicit species names.
     // The stochastirator species are known only by name, so that

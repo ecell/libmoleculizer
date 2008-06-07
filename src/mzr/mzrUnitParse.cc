@@ -169,8 +169,7 @@ namespace mzr
 
     void
     mzrUnit::parseDomInput(xmlpp::Element* pRootElement,
-                           xmlpp::Element* pModelElement,
-                           xmlpp::Element* pStreamsElement) throw(std::exception)
+                           xmlpp::Element* pModelElement) throw(std::exception)
     {
         // Set the volume.  This is peculiar, and interesting, because
         // it's similar to setting the population of a species up front,
@@ -208,10 +207,5 @@ namespace mzr
         std::for_each(reactionNodes.begin(),
                       reactionNodes.end(),
                       installReaction(*this));
-
-
-        // Removed tons of stuff here, basically anything having to do with the parsing of dump
-        // streams. See the old mzrUnitParse.cc for details. --NJA
-
     }
 }

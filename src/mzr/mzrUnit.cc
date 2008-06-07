@@ -121,8 +121,7 @@ namespace mzr
 
     void
     mzrUnit::prepareToRun(xmlpp::Element* pRootElt,
-                          xmlpp::Element* pModelElt,
-                          xmlpp::Element* pStreamsElt) throw(std::exception)
+                          xmlpp::Element* pModelElt) throw(std::exception)
     {}
 
     void

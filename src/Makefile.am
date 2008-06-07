@@ -33,6 +33,24 @@ ALL_MZR_LIBS = $(LIBFND) $(LIBUTL) $(LIBMZR) $(LIBSTOCH) $(LIBNMR) $(LIBNMR) $(L
 
 bin_PROGRAMS = moleculizer
 
+lib_LTLIBRARIES = libmoleculizer_super.la
+libmoleculizer_super_la_SOURCES =
+libmoleculizer_super_la_LIBADD = \
+	$(LIBFND) \
+	$(LIBUTL) \
+	$(LIBMZR) \
+	$(LIBSTOCH) \
+	$(LIBNMR) \
+	$(LIBCPX) \
+	$(LIBMOL) \
+	$(LIBPLEX) \
+	$(LIBDIMER) \
+	$(LIBFTR)
+
+libmoleculizer_super_la_LDFLAGS=-static
+
+
+
 moleculizer_LDADD = \
 $(LIBFND) \
 $(LIBUTL) \

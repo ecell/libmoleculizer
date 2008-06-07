@@ -87,8 +87,9 @@ namespace nmr
 
 
 
-    void nmrUnit::parseDomInput(xmlpp::Element* pRootElt, xmlpp::Element* pModelElt, xmlpp::Element* pStreamsElt) 
-        throw(std::exception)
+    void 
+    nmrUnit::parseDomInput(xmlpp::Element* pRootElt, 
+                           xmlpp::Element* pModelElt) throw(std::exception)
     {
         // TODO: Debug nmrUnit::parseDomInput and make sure it all works.
         // For the moment, the one thing (the naming strategy that should be used) is contained 

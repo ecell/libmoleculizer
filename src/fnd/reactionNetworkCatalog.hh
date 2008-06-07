@@ -93,7 +93,7 @@ namespace fnd
 	}
       else
 	{
-	  throw fnd::NoSuchSpeciesXcpt(name);
+            throw fnd::NoSuchSpeciesXcpt(name);
 	}
             
     }

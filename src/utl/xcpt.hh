@@ -59,7 +59,9 @@ namespace utl
     class xcpt :
         public std::exception
     {
+    protected:
         std::string message;
+
     public:
         xcpt(const std::string& rMessage) throw() :
             message(rMessage)

@@ -5,7 +5,7 @@
 
 DIE=0
 
-PROJECT="brown"
+PROJECT="libmoleculizer"
 
 (autoconf --version) < /dev/null > /dev/null 2>&1 || {
         echo

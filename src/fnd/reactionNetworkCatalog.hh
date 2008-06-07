@@ -93,7 +93,15 @@ namespace fnd
 	}
       else
 	{
-            throw fnd::NoSuchSpeciesXcpt(name);
+	  std::cout << "1"<< std::endl;
+
+	  fnd::NoSuchSpeciesXcpt myXcpt(name);
+
+	  std::cout << "2" << std::endl;
+
+
+
+	  throw myXcpt;
 	}
             
     }
@@ -239,6 +247,8 @@ namespace fnd
     {
       const std::string* pString = &name;
       SpeciesCatalogCIter theIter = theSpeciesListCatalog.find(pString);
+      
+      std::cout<< "0"<< std::endl;
 
       if (theIter != theSpeciesListCatalog.end() )
 	{
@@ -246,9 +256,20 @@ namespace fnd
 	}
       else
 	{
-	  throw fnd::NoSuchSpeciesXcpt(name);
+	  std::cout << "1" << endl;
+	  fnd::NoSuchSpeciesXcpt theXcpt(name);
+	  std::cout<< "2" << endl;
+	  throw theXcpt;
+
+	  std::cout << "3" << endl;
 	}
-            
+    }
+
+    bool
+    checkSpeciesIsKnown(const std::string& speciesName) const
+    {
+      return !(theSpeciesListCatalog.find( &speciesName ) == theSpeciesListCatalog.end());
+	       
     }
 
     SpeciesListCatalog& 

@@ -35,6 +35,8 @@ bin_PROGRAMS = moleculizer
 
 lib_LTLIBRARIES = libmoleculizer_super.la
 libmoleculizer_super_la_SOURCES =
+
+nodist_EXTRA_libmoleculizer_super_la_SOURCES = dummy.cpp
 libmoleculizer_super_la_LIBADD = \
 	$(LIBFND) \
 	$(LIBUTL) \
@@ -47,21 +49,17 @@ libmoleculizer_super_la_LIBADD = \
 	$(LIBDIMER) \
 	$(LIBFTR)
 
-libmoleculizer_super_la_LDFLAGS=-static
-
-
-
 moleculizer_LDADD = \
-$(LIBFND) \
-$(LIBUTL) \
-$(LIBMZR) \
-$(LIBSTOCH) \
-$(LIBNMR) \
-$(LIBCPX) \
-$(LIBMOL) \
-$(LIBPLEX) \
-$(LIBDIMER) \
-$(LIBFTR)
+	$(LIBFND) \
+	$(LIBUTL) \
+	$(LIBMZR) \
+	$(LIBSTOCH) \
+	$(LIBNMR) \
+	$(LIBCPX) \
+	$(LIBMOL) \
+	$(LIBPLEX) \
+	$(LIBDIMER) \
+	$(LIBFTR)
 
 LIBXML_CFLAGS = @LIBXML_CFLAGS@
 LIBXML_LIBS = @LIBXML_LIBS@

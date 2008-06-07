@@ -46,22 +46,15 @@ namespace nmr
     mzr::mzrSpecies*
     nmrUnit::getSpeciesFromName( const std::string& speciesName)
     {
-        try
-        {
-            // If this thing has appeared before, return it.  
-            // This will also catch all the cases where the species is *not* a plexSpecies, as these are always 
-            // in a state of existance throughout simulation.
-            mzr::mzrSpecies* ptrSpecies = &(rMolzer.findSpecies( speciesName ));
+      if( rMolzer.checkSpeciesIsKnown( speciesName ) )
+	{
+	  return &(rMolzer.findSpecies( speciesName ));
+	}
 
-            std::cout << "Found species in catalog." << std::endl;
-
-            return ptrSpecies;
-        }
-        catch(fnd::NoSuchSpeciesXcpt x)
-        {
-
+	try
+	  {
             // We could not find it, therefore we must construct it.
-
+	    
             // 1.  The currently set nameEncoder has the responsibility of decoding the thing into a complexOutputState.
             ComplexOutputState aCOS;
             plx::mzrPlexSpecies* newMzrSpecies;
@@ -70,12 +63,11 @@ namespace nmr
             newMzrSpecies = pPlexUnit->constructNewPlexSpeciesFromComplexOutputState( aCOS );
 
             return newMzrSpecies;
-        }
-        catch( utl::xcpt e)
-        {
-            e.wailAndBail();
-        }
-
+	  }
+	catch(...)
+	  {
+	    return 0;
+	  }
     }
 
     void

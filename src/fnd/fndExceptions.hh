@@ -74,8 +74,8 @@ namespace fnd
 
     class NoSuchReactionXcpt : public utl::xcpt
     {
-        static std::string
-        mkMsg( const std::string& reactionName )
+        std::string
+        makeMessage( const std::string& reactionName )
         {
             std::ostringstream msgStream;
             msgStream << "Internal Error: Reaction '"
@@ -85,10 +85,19 @@ namespace fnd
         }
 
     public:
+      ~NoSuchReactionXcpt() throw(){}
+
+
         NoSuchReactionXcpt( const std::string& reactionName )
             :
-            xcpt( mkMsg( reactionName ) )
-        {}
+	  xcpt(""),
+	  theReactionName( reactionName)
+      {
+	message = this->makeMessage( reactionName );
+      }
+
+    private:
+      std::string theReactionName;
     };
 
 

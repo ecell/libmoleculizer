@@ -26,6 +26,7 @@
 #include "fndExceptions.hh"
 #include "rnHelperClasses.hh"
 #include "utl/autoCatalog.hh"
+#include "utl/macros.hh"
 #include "fnd/basicReaction.hh"
 #include "plex/mzrPlexFamily.hh"
 #include "plex/mzrPlexSpecies.hh"
@@ -54,22 +55,19 @@ namespace fnd
   {
     
   public:
-    typedef speciesT SpeciesType;
-    typedef SpeciesType* ptrSpeciesType;
-    
-    typedef reactionT ReactionType;
-    typedef ReactionType* ptrReactionType;
+    DECLARE_TYPE( speciesT, SpeciesType);
+    DECLARE_TYPE( reactionT, ReactionType);
 
-    typedef std::map< const std::string*, ptrSpeciesType, aux::compareByPtrValue<std::string> > SpeciesCatalog;
+    typedef std::map< const std::string*, SpeciesTypePtr, aux::compareByPtrValue<std::string> > SpeciesCatalog;
     typedef typename SpeciesCatalog::iterator SpeciesCatalogIter;
     typedef typename SpeciesCatalog::const_iterator SpeciesCatalogCIter;
 
-    typedef std::list<ptrSpeciesType> SpeciesList;
-    typedef std::list<ptrReactionType> ReactionList;
+    typedef std::list<SpeciesTypePtr> SpeciesList;
+    typedef std::list<ReactionTypePtr> ReactionList;
 
-    typedef std::multimap<ptrSpeciesType, ptrReactionType> ParticipatingSpeciesRxnMap;
+    typedef std::multimap<SpeciesTypePtr, ReactionTypePtr> ParticipatingSpeciesRxnMap;
 
-    typedef std::list< std::pair<std::string*, ptrSpeciesType> > SpeciesListCatalog;
+    typedef std::list< std::pair<std::string*, SpeciesTypePtr> > SpeciesListCatalog;
 
     typedef typename SpeciesListCatalog::iterator SpeciesListCatalogIter;
     typedef typename SpeciesListCatalog::const_iterator SpeciesListCatalogCIter;
@@ -82,34 +80,40 @@ namespace fnd
 
   public:
 
-    SpeciesType&
-    findSpecies(const std::string& name) 
+    SpeciesTypePtr
+    findSpecies(const std::string& name) throw(fnd::NoSuchSpeciesXcpt)
     {
-      const std::string* pString = &name;
-      SpeciesCatalogCIter theIter = theSpeciesListCatalog.find(pString);
+      SpeciesCatalogIter theIter = theSpeciesListCatalog.find(&name);
       if (theIter != theSpeciesListCatalog.end() )
 	{
-	  return *(theIter->second);
+	  return theIter->second;
 	}
       else
 	{
-	  std::cout << "1"<< std::endl;
-
-	  fnd::NoSuchSpeciesXcpt myXcpt(name);
-
-	  std::cout << "2" << std::endl;
-
-
-
-	  throw myXcpt;
+	  throw fnd::NoSuchSpeciesXcpt(name);
 	}
             
     }
 
+    SpeciesTypeCptr
+    findSpecies(const std::string& name) const throw(fnd::NoSuchSpeciesXcpt)
+    {
+      SpeciesCatalogCIter theIter = theSpeciesListCatalog.find(&name);
+      
+      if (theIter != theSpeciesListCatalog.end() )
+	{
+	  return theIter->second;
+	}
+      else
+	{
+	  throw fnd::NoSuchSpeciesXcpt(name);
+	}
+    }
+
 
     void
-    findReactionWithSubstrates(const ptrSpeciesType A, 
-			       std::vector<ptrReactionType>& reactionVector)
+    findReactionWithSubstrates(const SpeciesTypePtr A, 
+			       std::vector<ReactionTypePtr>& reactionVector)
     {
 
         reactionVector.clear();
@@ -128,13 +132,13 @@ namespace fnd
     }
       
       void
-      findReactionWithSubstrates(const ptrSpeciesType A, 
-                                 const ptrSpeciesType B,
-                                 std::vector<ptrReactionType>& reactionVector) const
+      findReactionWithSubstrates(const SpeciesTypePtr A, 
+                                 const SpeciesTypePtr B,
+                                 std::vector<ReactionTypePtr>& reactionVector) const
       {
 
           reactionVector.clear();
-          const ptrSpeciesType tmp;
+          const SpeciesTypePtr tmp;
 
           // This can be optimized by searching off the ptrSpececiesType which is a substrate
           // of fewer reactions.
@@ -174,14 +178,14 @@ namespace fnd
 
     // The unary reaction case
     // This will ONLY return an unary reaction.  
-    const ptrReactionType
-    findReactionWithSubstrates(const ptrSpeciesType A) const
+    const ReactionTypePtr
+    findReactionWithSubstrates(const SpeciesTypePtr A) const
     {
 
       int count = 0;
       std::string reactantName = A->getName();
 
-      ptrReactionType thePtr = NULL;
+      ReactionTypePtr thePtr = NULL;
 
       // TODO Finish writing this function.
       for(ReactionListCIter iter = theCompleteReactionList.begin();
@@ -191,7 +195,7 @@ namespace fnd
 	  if ((*iter)->getReactants().size() != 1) continue;
 	  else 
 	    {
-	      const ptrSpeciesType B = ((*iter)->getReactants().begin()->first);
+	      const SpeciesTypePtr B = ((*iter)->getReactants().begin()->first);
                         
 	      if (reactantName == B->getName())
 		{
@@ -205,14 +209,14 @@ namespace fnd
       return thePtr;
     }
 
-    const ptrReactionType
-    findReactionWithSubstrates( ptrSpeciesType A, ptrSpeciesType B) const
+    const ReactionTypePtr
+    findReactionWithSubstrates( SpeciesTypePtr A, SpeciesTypePtr B) const
     {
       for(ReactionListCIter iter = theCompleteReactionList.begin();
 	  iter != theCompleteReactionList.end();
 	  ++iter)
 	{
-	  ptrReactionType pRxn = *iter;
+	  ReactionTypePtr pRxn = *iter;
 
 	  bool seenA = false;
 	  bool seenB = false;
@@ -240,29 +244,6 @@ namespace fnd
 
       // Scanned through everything and found nothing.
       return NULL;
-    }
-
-    const SpeciesType&
-    findSpecies(const std::string& name) const
-    {
-      const std::string* pString = &name;
-      SpeciesCatalogCIter theIter = theSpeciesListCatalog.find(pString);
-      
-      std::cout<< "0"<< std::endl;
-
-      if (theIter != theSpeciesListCatalog.end() )
-	{
-	  return *(theIter->second);
-	}
-      else
-	{
-	  std::cout << "1" << endl;
-	  fnd::NoSuchSpeciesXcpt theXcpt(name);
-	  std::cout<< "2" << endl;
-	  throw theXcpt;
-
-	  std::cout << "3" << endl;
-	}
     }
 
     bool
@@ -299,7 +280,7 @@ namespace fnd
     // reactions.
       
     bool 
-    recordSpecies( ptrSpeciesType pSpecies)
+    recordSpecies( SpeciesTypePtr pSpecies)
     {
       std::string* pSpeciesName = new std::string( pSpecies->getName() );
       if (theSpeciesListCatalog.find( pSpeciesName) == theSpeciesListCatalog.end() )
@@ -320,7 +301,7 @@ namespace fnd
       
 
     // You don't own this.  Don't delete it.  
-    ptrReactionType
+    ReactionTypePtr
     calculateReactionBetweenSpecies( const speciesT& firstSpecies,
 				     const speciesT& secondSpecies)
     {
@@ -329,7 +310,7 @@ namespace fnd
     }
 
     bool
-    recordReaction( ptrReactionType pRxn )
+    recordReaction( ReactionTypePtr pRxn )
     {
         // In the current form of the application, this check is not necessary, as any reaction
         // is created at most once.
@@ -354,7 +335,7 @@ namespace fnd
 
       switch( pRxn->getReactants().size() )
       {
-          ptrSpeciesType theSpeciesPtr;
+          SpeciesTypePtr theSpeciesPtr;
       case 0:
           // Register in the map of creation reactions
           zeroSubstrateRxns.push_back( pRxn );
@@ -400,7 +381,7 @@ namespace fnd
         
     // These are not used by anyone at the moment.  It might be better to use them instead
     // of the plain old recordSpecies/recordReaction functions, but who knows.
-    void mustRecordSpecies( ptrSpeciesType pSpecies ) throw(utl::xcpt)
+    void mustRecordSpecies( SpeciesTypePtr pSpecies ) throw(utl::xcpt)
     {
       if ( !recordSpecies( pSpecies ) )
 	{
@@ -409,7 +390,7 @@ namespace fnd
     }
   
     void
-    mustRecordReaction( ptrReactionType pRxn) throw(utl::xcpt)
+    mustRecordReaction( ReactionTypePtr pRxn) throw(utl::xcpt)
     {
       if ( recordReactions( pRxn ) ) 
 	{

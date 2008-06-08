@@ -52,27 +52,27 @@ namespace nmr
         // different NameAssemblers.  It will throw an exception if startingComplexOutputState != endingComplexOutputState
         static void assertEncodeDecodeAccuracy(NameAssembler* ptrNameAssembler) throw(encodeDecodeInconsistencyXcpt) 
         {
-            // TODO/7: In NameAssembler::assertEncodeDecodeAccuracey, create a much more 
-            // complicated ComplexOutputState for checking encoding/decoding equivelence.
+//             // TODO/7: In NameAssembler::assertEncodeDecodeAccuracey, create a much more 
+//             // complicated ComplexOutputState for checking encoding/decoding equivelence.
 
-            // Create a sufficiently complicated ComplexOutputState.
-            ComplexOutputState aComplexOutputState;
+//             // Create a sufficiently complicated ComplexOutputState.
+//             ComplexOutputState aComplexOutputState;
             
-            // Encode the COS into a name, then decode the name back into a COS.
-            ComplexOutputState decodedEncodingOS = ptrNameAssembler->createOutputStateFromName( ptrNameAssembler->createNameFromOutputState( aComplexOutputState ) );
+//             // Encode the COS into a name, then decode the name back into a COS.
+//             ComplexOutputState decodedEncodingOS = ptrNameAssembler->createOutputStateFromName( ptrNameAssembler->createNameFromOutputState( aComplexOutputState ) );
 
-            try
-            {
-                // If they don't match, throw an exception.
-                if (decodedEncodingOS != aComplexOutputState)
-                {
-                    throw encodeDecodeInconsistencyXcpt( ptrNameAssembler->getName() );
-                }
-            }
-            catch( utl::NotImplementedXcpt x)
-            {
-                throw encodeDecodeInconsistencyXcpt( ptrNameAssembler->getName() );
-            }
+//             try
+//             {
+//                 // If they don't match, throw an exception.
+//                 if (decodedEncodingOS != aComplexOutputState)
+//                 {
+//                     throw encodeDecodeInconsistencyXcpt( ptrNameAssembler->getName() );
+//                 }
+//             }
+//             catch( utl::NotImplementedXcpt x)
+//             {
+//                 throw encodeDecodeInconsistencyXcpt( ptrNameAssembler->getName() );
+//             }
         }
 
     public:
@@ -165,6 +165,7 @@ namespace nmr
 
         virtual std::string createNameFromOutputState( ComplexOutputStateCref aComplexOutputState) const = 0;
         virtual ComplexOutputState createOutputStateFromName( const std::string& aMangledName) const
+	  throw(nmr::UnparsableNameXcpt, utl::NotImplementedXcpt)
         {
             // For the time being, I am trying out making this throw something but be overridable.
             // If it isn't successful, this function should go back to being pure-virtual.

@@ -65,7 +65,7 @@ namespace nmr
         }
 
         mzr::mzrSpecies*
-        getSpeciesFromName( const std::string& speciesName);
+        constructSpeciesFromName( const std::string& speciesName);
 
     
         const NameAssembler* 

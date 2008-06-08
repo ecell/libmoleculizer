@@ -26,6 +26,7 @@
 #include <libxml++/libxml++.h>
 #include "utl/noDocumentParsedXcpt.hh"
 #include "utl/modelPreviouslyLoadedXcpt.hh"
+#include "mzr/mzrException.hh"
 #include <set>
 #include <algorithm>
 #include <fstream>
@@ -146,6 +147,38 @@ namespace mzr
     {
         delete pUserUnits;
     }
+
+  mzrSpecies*
+  moleculizer::getSpeciesWithName(const std::string& speciesName) 
+    throw( mzr::IllegalNameXcpt )
+  {
+
+    mzrSpecies* theMzrSpecies;
+    try
+      {
+	theMzrSpecies = findSpecies(speciesName);
+	return theMzrSpecies;
+      }
+    catch(fnd::NoSuchSpeciesXcpt xcpt)
+      {
+      }
+
+
+    try
+      {
+        theMzrSpecies = pUserUnits->pNmrUnit->constructSpeciesFromName(speciesName);
+        
+        // Does mzrSpecies need to be expanded here?
+        theMzrSpecies->expandReactionNetwork();
+        
+        return theMzrSpecies;
+      }
+    catch(nmr::IllegalNameXcpt xcpt)
+      {
+        throw mzr::IllegalNameXcpt( xcpt.getName() );
+      }
+  }
+
 
     void moleculizer::attachFileName(const std::string& filename)
     {

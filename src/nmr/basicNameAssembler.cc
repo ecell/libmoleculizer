@@ -72,7 +72,7 @@ namespace nmr
     }
 
     ComplexOutputState
-    basicNameAssembler::createOutputStateFromName( const std::string& aMangledName) const
+    basicNameAssembler::createOutputStateFromName( const std::string& aMangledName) const throw(utl::NotImplementedXcpt)
     {
         // TODO/3 Write this function( basicNameAssembler::createOutputStateFromName).
         return NameAssembler::createOutputStateFromName( aMangledName );

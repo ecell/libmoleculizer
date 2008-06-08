@@ -269,11 +269,8 @@ namespace mzr
 
      try
        {
-           mzr::mzrSpecies* pSpeciesOne = pUserUnits->pNmrUnit->getSpeciesFromName( speciesOne );
-           mzr::mzrSpecies* pSpeciesTwo = pUserUnits->pNmrUnit->getSpeciesFromName( speciesTwo );
-
-           pSpeciesOne->expandReactionNetwork();
-           pSpeciesTwo->expandReactionNetwork();
+           mzr::mzrSpecies* pSpeciesOne = this->getSpeciesWithName( speciesOne );
+           mzr::mzrSpecies* pSpeciesTwo = this->getSpeciesWithName( speciesTwo );
 
            mzrReaction* reactionBetweenSpecies= 
              this->findReactionWithSubstrates(pSpeciesOne, pSpeciesTwo);
@@ -308,7 +305,7 @@ namespace mzr
 
      try
        {
-           mzr::mzrSpecies* pSpeciesOne = pUserUnits->pNmrUnit->getSpeciesFromName( speciesOne );
+           mzr::mzrSpecies* pSpeciesOne = pUserUnits->pNmrUnit->constructSpeciesFromName( speciesOne );
 	   pSpeciesOne->expandReactionNetwork();
 
 
@@ -388,7 +385,16 @@ moleculizer::DEBUG_getSpeciesFromName()
     std::string name;
     cin >> name;
 
-    mzr::mzrSpecies* pSpecies = pUserUnits->pNmrUnit->getSpeciesFromName( name );
+    mzr::mzrSpecies* pSpecies;
+    try
+      {
+        pSpecies = getSpeciesWithName( name );
+      }
+    catch(IllegalNameXcpt xcpt)
+      {
+        xcpt.warn();
+        return;
+      }
 
     if(pSpecies)
       {

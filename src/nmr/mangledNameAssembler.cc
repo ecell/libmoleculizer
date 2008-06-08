@@ -38,29 +38,41 @@ namespace nmr
 {
   
     ComplexOutputState 
-    MangledNameAssembler::createOutputStateFromName( const std::string& name) const
+    MangledNameAssembler::createOutputStateFromName( const std::string& name) const throw(nmr::UnparsableNameXcpt)
     {
-        std::vector<std::string> tokens;
-        utl::tokenize(name, tokens, "___");
+      try
+	{
+	  std::vector<std::string> tokens;
+	  utl::tokenize(name, tokens, "___");
 
-        std::string theMolString( tokens[0] );
-        std::string theBindingString(tokens[1] );
-        std::string theModificationString( tokens[2] );
+	  if (name.size() != 3) throw nmr::UnparsableNameXcpt( name  );
 
-        std::vector<ComplexOutputState::MolTokenStr> molTokens;
-        std::vector<ComplexOutputState::BindingTokenStr> bindingTokens;
-        std::vector<ComplexOutputState::ModificationTokenStr> modificationTokens;
-      
-        parseMangledMolString(theMolString, molTokens);
-        parseMangledBindingString( theBindingString, bindingTokens);
-        parseMangledModificationString( theModificationString, modificationTokens);
+	  
+	  std::string theMolString( tokens.at(0) );
+	  std::string theBindingString(tokens.at(1) );
+	  std::string theModificationString( tokens.at(2) );
+	  
+	  std::vector<ComplexOutputState::MolTokenStr> molTokens;
+	  std::vector<ComplexOutputState::BindingTokenStr> bindingTokens;
+	  std::vector<ComplexOutputState::ModificationTokenStr> modificationTokens;
+	  
+	
+	  parseMangledMolString(theMolString, molTokens);
+	  parseMangledBindingString( theBindingString, bindingTokens);
+	  parseMangledModificationString( theModificationString, modificationTokens);
+	
+	  ComplexOutputState newOutputState;
+	  newOutputState.theMolTokens = molTokens;
+	  newOutputState.theBindingTokens = bindingTokens;
+	  newOutputState.theModificationTokens = modificationTokens;
+	  
+	  return newOutputState;
+	}
+      catch(...)
+	{
+	  throw nmr::UnparsableNameXcpt( name  );
+	}
 
-        ComplexOutputState newOutputState;
-        newOutputState.theMolTokens = molTokens;
-        newOutputState.theBindingTokens = bindingTokens;
-        newOutputState.theModificationTokens = modificationTokens;
-
-        return newOutputState;
     }
   
   

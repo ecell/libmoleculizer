@@ -70,6 +70,7 @@
 #include "mzr/mzrSpecies.hh"
 #include "mzr/mzrReaction.hh"
 #include "mzr/illegalSpeciesNameXcpt.hh"
+#include "mzr/mzrException.hh"
 
 namespace mzr
 {
@@ -92,6 +93,9 @@ namespace mzr
         void attachDocument(xmlpp::Document* pDoc);
       
     public:
+      
+      mzrSpecies*
+      getSpeciesWithName(const std::string& speciesName) throw( mzr::IllegalNameXcpt );
        
     public:
 

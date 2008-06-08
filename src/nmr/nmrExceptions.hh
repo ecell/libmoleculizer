@@ -377,9 +377,78 @@ namespace nmr
             utl::xcpt(mkMsg(molName, bindingSiteName))
         {}
     };
-    
+
     DEFINE_STANDARD_MSG_EXCEPTION_CLASS( MissingNameEncoderXcpt, 
                                          "Missing Name Encoder Exception: No No ptrNameAssembler set yet!!!.");
+
+  class UnparsableNameXcpt : public GeneralNmrXcpt
+  {
+  public:
+
+    std::string
+    mkMsg(const std::string& unparsableName)
+    {
+      std::ostringstream oss;
+      oss << "Unparsable Name Error: '" 
+	  << unparsableName
+	  << "' cannot be parsed.";
+      return oss.str();
+    }
+    
+    UnparsableNameXcpt()
+      :
+      GeneralNmrXcpt("Error: Unparsable name"),
+      theName("")
+    {
+    }
+
+    UnparsableNameXcpt(const std::string& unparsableName)
+      :
+      GeneralNmrXcpt( mkMsg(unparsableName) ),
+      theName( unparsableName )
+    {}
+
+    ~UnparsableNameXcpt() throw()
+    {}
+
+  private:
+    std::string theName;
+  };
+
+  class IllegalNameXcpt : public GeneralNmrXcpt
+  {
+  public:
+    static std::string
+    mkMsg( const std::string& anIllegalName)
+    {
+      std::ostringstream oss;
+      oss << "Bad Mangled Name: '" << anIllegalName << "'";
+      return oss.str();
+    }
+    IllegalNameXcpt(const std::string& illegalName)
+      :
+      GeneralNmrXcpt(mkMsg(illegalName)),
+      theName( illegalName )
+    {}
+
+    ~IllegalNameXcpt() throw()
+    {}
+
+    const std::string&
+    getName() const
+    {
+      return theName;
+    }
+
+  private:
+    std::string theName;
+  };
+    
 }
 
 #endif
+
+
+
+
+

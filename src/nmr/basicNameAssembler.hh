@@ -42,8 +42,8 @@ namespace nmr
     class basicNameAssembler : public NameAssembler
     {
     public:
-        std::string createNameFromOutputState( ComplexOutputStateCref aCOS) const;
-        ComplexOutputState createOutputStateFromName( const std::string& aMangledName) const;
+      std::string createNameFromOutputState( ComplexOutputStateCref aCOS) const;
+      ComplexOutputState createOutputStateFromName( const std::string& aMangledName) const throw(utl::NotImplementedXcpt);
     };
 
 }

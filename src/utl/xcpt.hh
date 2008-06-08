@@ -63,16 +63,15 @@ namespace utl
         std::string message;
 
     public:
-        xcpt(const std::string& rMessage) throw() :
+      xcpt(const std::string& rMessage):
             message(rMessage)
         {}
 
-        xcpt(const char* pMessage) throw() :
+        xcpt(const char* pMessage) :
             message(pMessage)
         {}
 
-        ~xcpt(void)
-            throw()
+      ~xcpt(void) throw()
         {}
 
         const std::string&

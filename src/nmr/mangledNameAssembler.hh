@@ -74,7 +74,8 @@ namespace nmr
         std::string 
         createNameFromOutputState( const ComplexOutputState& aCOS) const;
         
-        ComplexOutputState createOutputStateFromName(const std::string& name) const;
+      ComplexOutputState 
+      createOutputStateFromName(const std::string& name) const throw(nmr::UnparsableNameXcpt);
 
     protected:
 

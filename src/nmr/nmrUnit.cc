@@ -44,30 +44,25 @@ namespace nmr
     }
     
     mzr::mzrSpecies*
-    nmrUnit::getSpeciesFromName( const std::string& speciesName)
+    nmrUnit::constructSpeciesFromName( const std::string& encodedSpeciesName) 
     {
-      if( rMolzer.checkSpeciesIsKnown( speciesName ) )
+      try
 	{
-	  return &(rMolzer.findSpecies( speciesName ));
+	  // 1.  The currently set nameEncoder has the responsibility of decoding the thing into a complexOutputState.
+	  ComplexOutputState aCOS = getNameEncoder()->createOutputStateFromName( encodedSpeciesName );
+
+	  // TODO: Ensure that this does  not register the constructed plexSpecies into 
+	  plx::mzrPlexSpecies* newMzrSpecies = pPlexUnit->constructNewPlexSpeciesFromComplexOutputState( aCOS );
+	  
+	  return newMzrSpecies;
 	}
 
-	try
-	  {
-            // We could not find it, therefore we must construct it.
-	    
-            // 1.  The currently set nameEncoder has the responsibility of decoding the thing into a complexOutputState.
-            ComplexOutputState aCOS;
-            plx::mzrPlexSpecies* newMzrSpecies;
+      // I should separate
+      catch(...)
+	{
+	  throw nmr::IllegalNameXcpt(encodedSpeciesName);
+	}
 
-            aCOS = getNameEncoder()->createOutputStateFromName( speciesName );
-            newMzrSpecies = pPlexUnit->constructNewPlexSpeciesFromComplexOutputState( aCOS );
-
-            return newMzrSpecies;
-	  }
-	catch(...)
-	  {
-	    return 0;
-	  }
     }
 
     void

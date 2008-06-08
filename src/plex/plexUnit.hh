@@ -26,6 +26,7 @@
 #ifndef PLEXUNIT_H
 #define PLEXUNIT_H
 
+#include "plex/plexExceptions.hh"
 #include "plex/mzrOmniPlex.hh"
 #include "plex/mzrPlexFamily.hh"
 #include "plex/mzrPlexSpecies.hh"
@@ -246,7 +247,7 @@ namespace plx
     mzrRecognizer recognize;
 
     mzrPlexSpecies*
-    constructNewPlexSpeciesFromComplexOutputState( nmr::ComplexOutputStateCref cos);
+    constructNewPlexSpeciesFromComplexOutputState( nmr::ComplexOutputStateCref cos) throw( NonConstructableComplexOutputStateXcpt );
   
     void
     addPlexQuery(plexQueryType* pQuery)

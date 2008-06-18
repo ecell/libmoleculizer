@@ -112,13 +112,13 @@ namespace utl
         static std::string
         mkMsg(void)
         {
-            return std::string("Internal exception: ");
+            return std::string("(CRITICAL) ");
         }
 
         static std::string
         mkWarnMsg(void)
         {
-            return std::string("Warning: ");
+            return std::string("(WARNING) ");
         }
     };
 

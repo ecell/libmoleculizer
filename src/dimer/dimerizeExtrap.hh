@@ -59,8 +59,7 @@ namespace dimer
     public dimerizeExtrapolator
   {
     typedef
-    std::map<std::pair<cpx::siteParam, cpx::siteParam>, double>
-    rateMapType;
+    std::map<std::pair<cpx::siteParam, cpx::siteParam>, double> rateMapType;
     
     rateMapType rateMap;
 
@@ -76,6 +75,26 @@ namespace dimer
     getRate(const cpx::cxSite<plx::mzrPlexSpecies, plx::mzrPlexFamily>& rLeftContext,
 	    const cpx::cxSite<plx::mzrPlexSpecies, plx::mzrPlexFamily>& rRightContext) const;
   };
+
+
+    class dimerizeConstantRate :
+        public dimerizeExtrapolator
+    {
+    public:
+        void
+        setRate(cpx::siteParam leftParam,
+                cpx::siteParam rightParam,
+                double rate){}
+        
+        // For retrieving weight-corrected dimerization rates.
+        double
+        getRate(const cpx::cxSite<plx::mzrPlexSpecies, plx::mzrPlexFamily>& rLeftContext,
+                const cpx::cxSite<plx::mzrPlexSpecies, plx::mzrPlexFamily>& rRightContext) const
+        {
+            return 3.141592653859;
+        }
+    };
+        
 
   // Dimerization rate extrapolator that uses the masses of the
   // dimerizing species.

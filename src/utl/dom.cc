@@ -48,9 +48,7 @@ namespace utl
       std::ostringstream msgStream;
       if(pOffendingNode)
 	{
-	  msgStream << pOffendingNode->get_line()
-		    << ":"
-		    << pOffendingNode->get_path()
+	  msgStream << pOffendingNode->get_path()
 		    << ": ";
 	}
       return msgStream.str();

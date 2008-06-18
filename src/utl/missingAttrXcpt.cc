@@ -36,11 +36,13 @@ namespace utl
 	  const std::string& rAttrName)
     {
       std::ostringstream msgStream;
+
       msgStream << xcpt::mkMsg(pElt)
+                << "'"
 		<< pElt->get_name()
-		<< " element has no "
+		<< "\" element has no \""
 		<< rAttrName
-		<< " attribute.";
+		<< "\" attribute.";
       return msgStream.str();
     }
 

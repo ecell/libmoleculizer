@@ -34,6 +34,7 @@
 #include <vector>
 #include <utility>
 #include <iterator>
+#include <iostream>
 
 namespace nmr
 {
@@ -92,6 +93,9 @@ namespace nmr
             // PartialTokenLists never memory manages anything it uses.
         }
 
+        void
+        print() const;
+
         void clear();
 
     public:
@@ -112,7 +116,16 @@ namespace nmr
         ModificationList theModifications;  
         bool isComplete;      
     };
-
 }
+
+std::ostream& 
+operator<<(std::ostream& os, const nmr::PartialTokenList& ptl);
+
+
+
+
+    
+
+
 
 #endif

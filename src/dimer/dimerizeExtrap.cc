@@ -38,13 +38,13 @@ namespace dimer
     // For the time being, I'm storing the pair in only one order,
     // then searching for both orders when the pair is looked up.
     std::pair<rateMapType::iterator, bool> insertResult
-      = rateMap.insert(std::make_pair(std::make_pair(leftParam,
-						     rightParam),
-				      rate));
+        = rateMap.insert(std::make_pair(std::make_pair(leftParam,
+                                                       rightParam),
+                                        rate));
     if(! insertResult.second)
-      {
+    {
 	insertResult.first->second = rate;
-      }
+    }
   }
 
 

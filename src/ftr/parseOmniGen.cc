@@ -252,32 +252,35 @@ namespace ftr
     // could be either unary or binary, depending on whether an additional
     // reactant is given, and there is a constructor for each of these cases.
     omniMassExtrap* pExtrapolator = 0;
-    if(pAdditionalReactantSpeciesElt)
-      {
-	// Construct the default species of the triggering omniplex.
-	//
-	// The need to construct a default member of a plexFamily arises
-	// again.  Reinsitute it as a member variable of plexFamily?
-	plx::mzrPlexFamily* pTriggeringFamily = pOmni->getFamily();
-	std::vector<cpx::molParam> defaultParams
-	  = pTriggeringFamily->makeDefaultMolParams();
-	plx::mzrPlexSpecies* pDefaultTriggeringSpecies
-	  = pTriggeringFamily->makeMember(defaultParams);
+    pExtrapolator = new omniMassExtrap(rate);
 
-	// Make sure that the molecular weight of the additional reactant
-	// species can be determined.
-	fnd::massive* pAdditionalMassiveSpecies
-	  = fnd::mustBeMassiveSpecies(pAdditionalReactantSpecies,
-				      pAdditionalReactantSpeciesElt);
+// TODO IMPORTANT NOTICE -- temporarily eliminating rate extrapolation.
+//     if(pAdditionalReactantSpeciesElt)
+//       {
+// 	// Construct the default species of the triggering omniplex.
+// 	//
+// 	// The need to construct a default member of a plexFamily arises
+// 	// again.  Reinsitute it as a member variable of plexFamily?
+// 	plx::mzrPlexFamily* pTriggeringFamily = pOmni->getFamily();
+// 	std::vector<cpx::molParam> defaultParams
+// 	  = pTriggeringFamily->makeDefaultMolParams();
+// 	plx::mzrPlexSpecies* pDefaultTriggeringSpecies
+// 	  = pTriggeringFamily->makeMember(defaultParams);
 
-	pExtrapolator = new omniMassExtrap(rate,
-					   pDefaultTriggeringSpecies,
-					   pAdditionalMassiveSpecies);
-      }
-    else
-      {
-	pExtrapolator = new omniMassExtrap(rate);
-      }
+// 	// Make sure that the molecular weight of the additional reactant
+// 	// species can be determined.
+// 	fnd::massive* pAdditionalMassiveSpecies
+// 	  = fnd::mustBeMassiveSpecies(pAdditionalReactantSpecies,
+// 				      pAdditionalReactantSpeciesElt);
+
+// 	pExtrapolator = new omniMassExtrap(rate,
+// 					   pDefaultTriggeringSpecies,
+// 					   pAdditionalMassiveSpecies);
+//       }
+//     else
+//       {
+// 	pExtrapolator = new omniMassExtrap(rate);
+//       }
 
     // Construct the reaction family and register it for memory management.
     omniFam* pFamily

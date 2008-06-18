@@ -113,18 +113,10 @@ namespace mzr
             verifyInput(pRootElement,
                         pModelElement);
         }
-        catch(std::exception e)
+        catch(utl::xcpt e)
         {
-            throw e;
+            e.warn();
         }
-        
-
-        // Have each unit do its parsing thing.
-//         std::for_each(pUserUnits->begin(),
-//                       pUserUnits->end(),
-//                       unitParseDomInput(pRootElement,
-//                                         pModelElement,
-//                                         pStreamsElement));
 
         std::for_each(pUserUnits->begin(),
                       pUserUnits->end(),
@@ -157,6 +149,10 @@ namespace mzr
     try
       {
 	theMzrSpecies = findSpecies(speciesName);
+
+        // Don't know is this is strictly necessary...
+        theMzrSpecies->expandReactionNetwork(); 
+
 	return theMzrSpecies;
       }
     catch(fnd::NoSuchSpeciesXcpt xcpt)
@@ -345,9 +341,9 @@ namespace mzr
             = std::find_if(explicitSpeciesContentNodes.begin(),
                            explicitSpeciesContentNodes.end(),
                            explicitSpeciesNodeNotInCap(inputCap));
+
         if(explicitSpeciesContentNodes.end() != iUnhandledExplicitSpeciesContent)
-            throw
-                unhandledExplicitSpeciesContentXcpt(*iUnhandledExplicitSpeciesContent);
+            throw unhandledExplicitSpeciesContentXcpt(*iUnhandledExplicitSpeciesContent);
 
     }
 

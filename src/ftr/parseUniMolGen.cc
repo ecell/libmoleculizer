@@ -288,24 +288,29 @@ namespace ftr
     
     mzr::mzrSpecies* pAdditionalReactantSpecies = 0;
     uniMolExtrapolator* pExtrapolator = 0;
-    if(pAdditionalReactantSpeciesElt)
-      {
-	pAdditionalReactantSpecies
-	  = parseAdditionalReactantSpecies(pAdditionalReactantSpeciesElt,
-					   rMzrUnit);
+    
+    pExtrapolator = new uniMolMassExtrap(rate);
 
-	fnd::massive* pMassive
-	  = fnd::mustBeMassiveSpecies(pAdditionalReactantSpecies,
-				      pAdditionalReactantSpeciesElt);
+// TODO -- For now there will be NO RATE EXTRAPOLATION!!!!
+//     if(pAdditionalReactantSpeciesElt)
+//       {
 
-	pExtrapolator = new uniMolMassExtrap(rate,
-					     pEnablingModMol,
-					     pMassive);
-      }
-    else
-      {
-	pExtrapolator = new uniMolMassExtrap(rate);
-      }
+// 	pAdditionalReactantSpecies
+// 	  = parseAdditionalReactantSpecies(pAdditionalReactantSpeciesElt,
+// 					   rMzrUnit);
+
+// 	fnd::massive* pMassive
+// 	  = fnd::mustBeMassiveSpecies(pAdditionalReactantSpecies,
+// 				      pAdditionalReactantSpeciesElt);
+
+// 	pExtrapolator = new uniMolMassExtrap(rate,
+// 					     pEnablingModMol,
+// 					     pMassive);
+//       }
+//     else
+//       {
+// 	pExtrapolator = new uniMolMassExtrap(rate);
+//       }
 
     // Parse the additional product species, if any.
     xmlpp::Element* pAdditionalProductSpeciesElt

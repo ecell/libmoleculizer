@@ -413,19 +413,21 @@ namespace dimer
       // the option.  Reaction rate extrapolators are memory-managed by the
       // reaction generators they are attached to.
       dimerizeExtrapolator* pDimerizeExtrap = 0;
-      if(0 != pRateExtrapolatorAttr
-	 && (pRateExtrapolatorAttr->get_value() 
-	     == eltName::dimerizationGen_rateExtrap_none))
-	{
-	  pDimerizeExtrap = new dimerizeNoExtrap();
-	}
-      else
-	{
-	  // This is for the "mass" case, for now the only alternative, as
-	  // well as the default.
-	  pDimerizeExtrap = new dimerizeMassExtrap(leftMolWeight,
-						   rightMolWeight);
-	}
+
+      pDimerizeExtrap = new dimerizeNoExtrap();
+//       if(0 != pRateExtrapolatorAttr
+// 	 && (pRateExtrapolatorAttr->get_value() 
+// 	     == eltName::dimerizationGen_rateExtrap_none))
+// 	{
+// 	  pDimerizeExtrap = new dimerizeNoExtrap();
+// 	}
+//       else
+// 	{
+//  	  pDimerizeExtrap = new dimerizeMassExtrap(leftMolWeight,
+//  						   rightMolWeight);
+
+// //            pDimerizeExtrap = new dimerizeConstantRate();
+// 	}
 
       // There is only one option for decomposition rate extrapolation.
       decomposeExtrapolator* pDecompExtrap

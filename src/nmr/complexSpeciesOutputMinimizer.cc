@@ -137,12 +137,10 @@ namespace nmr
         // 5. Repeat this process until there is no permutation in the set of permutations that has any negative entry.
         while( checkExistsIncompletePermutations(setOfPossibleSolutions) ) 
         {
-
             theNextIterationsPartialPermutations.clear();
 
-            //For each partial permutation, figure out how to automatically extend it into the next round (see NOTES for information on moleculizer-specific
-	  
 
+            //For each partial permutation, figure out how to automatically extend it into the next round.
             for(std::set<Permutation>::const_iterator partialPermIter = setOfPossibleSolutions.begin();
                 partialPermIter != setOfPossibleSolutions.end();
                 ++partialPermIter)
@@ -153,6 +151,8 @@ namespace nmr
 
                 if ( !partialPermIter->getIsComplete() )
                 {
+                    const Permutation& refPerm = *partialPermIter;
+
                     //1. Find the most significant int that hasn't been fixed already.
                     int leastIntNotInPartial = partialPermIter->getLeastValueNotInPermutation();
 		
@@ -186,6 +186,7 @@ namespace nmr
                 }
                 else
                 {
+                    // If the permutation is complete, just copy it...
                     PermutationName tmp;
                     tmp.thePermutation = *partialPermIter;
                     theNextIterationsPartialPermutations.push_back(tmp);
@@ -204,6 +205,23 @@ namespace nmr
             {
                 iter->theCorrespondingPartialTokenList = calculatePartialTokenListForPermutation(aComplexSpecies, iter->thePermutation);
             }
+
+//            std::cout<< "Sorting " << theNextIterationsPartialPermutations.size() << std::endl;
+//             std::cout << "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" << std::endl;
+
+//             int i = 0;
+//             BOOST_FOREACH(const PermutationName& pm , theNextIterationsPartialPermutations)
+//             {
+//                 std::cout << i++<< ":" << std::endl;
+//                 pm.print();
+//                 std::cout << pm.theCorrespondingPartialTokenList << std::endl;
+                
+//             }
+//                  std::cout << "###################################################################" << std::endl;
+
+//            std::cout << "***" << std::endl;
+
+
 
             std::sort(theNextIterationsPartialPermutations.begin(),
                       theNextIterationsPartialPermutations.end());

@@ -46,6 +46,7 @@ nmrEltName.cc \
 nmrUnit.cc \
 partialTokenList.cc \
 permutation.cc \
+permutationName.cc \
 readableNameAssembler.cc 
 
 libmoleculizer_nmr_HEADERS=\

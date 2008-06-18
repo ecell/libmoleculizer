@@ -28,6 +28,7 @@
 #ifndef __PERMUTATIONNAME_HH
 #define __PERMUTATIONNAME_HH
 
+#include <iostream>
 #include "permutation.hh"
 #include "partialTokenList.hh"
 
@@ -36,6 +37,8 @@ namespace nmr
         DECLARE_CLASS( PermutationName );
         struct PermutationName
         {
+
+            static int counter;
             PermutationName()
             {
                 ; // do nothing
@@ -49,18 +52,17 @@ namespace nmr
                 ; // do nothing
             }
 
-            bool operator<(const PermutationName& aPermutationName) const
-            {
-                return (theCorrespondingPartialTokenList < aPermutationName.theCorrespondingPartialTokenList);
-            }
+            void
+            print() const;
 
+            
+            bool operator<(PermutationNameCref aPermutationName) const;
             Permutation thePermutation;
             PartialTokenList theCorrespondingPartialTokenList;
 
         };
-
-
 }
+
 
 
 #endif

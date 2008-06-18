@@ -55,19 +55,16 @@ namespace dimer
     databases are available through static functions.  They are used by
     plexFamily routines in addition to being used in this unit, so
     that for the time being, this is an essentially mandatory unit. */
+
   class dimerUnit :
     public mzr::unit
   {
-    // Reaction generators.
-//     utl::autoVector<decompRxnGen> decompGens;
-//     utl::autoVector<dimerizeRxnGenPair> dimerizeGens;
 
   public:
 
     mzr::mzrUnit& rMzrUnit;
     bnd::molUnit& rMolUnit;
     plx::plexUnit& rPlexUnit;
-
 
     dimerUnit(mzr::moleculizer& rMoleculizer,
 	      mzr::mzrUnit& refMzrUnit,
@@ -79,14 +76,9 @@ namespace dimer
       rMolUnit(refMolUnit),
       rPlexUnit(refPlexUnit)
     {
-      // This unit isn't responsible for any model elements.
-
-      // Register that this unit is responsible for dimerization/decomposition
-      // generators.
-      inputCap.addReactionGenName(eltName::dimerizationGen);
-
-      // This unit isn't responsible for any explicit species, species streams,
-      // or events.
+        // The only thing this unit handles is dimerization/decomposition 
+        // reactions.
+        inputCap.addReactionGenName(eltName::dimerizationGen);
     }
 
     void

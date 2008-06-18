@@ -148,6 +148,8 @@ namespace nmr
                 return thePermutation;
             }
 
+            void print() const;
+
             static void
             generate_Sn( SetOfPermutationsRef setOfPermutations, unsigned int N);
 

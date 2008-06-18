@@ -102,7 +102,7 @@ namespace nmr
             ++thisBindingListIter, ++aPnsBindingListIter)
         {
             if (*thisBindingListIter < *aPnsBindingListIter) return true;
-            if (*aPnsBindingListIter > *thisBindingListIter) return false;
+            if (*thisBindingListIter > *aPnsBindingListIter) return false;
         }
       
         // If not both are complete, we cannot say.  Therefore return false, for this 
@@ -147,4 +147,40 @@ namespace nmr
         }
     }
 
+    void PartialTokenList::print() const
+    {
+        std::cout << *this << std::endl;
+        
+    }
+    
+
+}
+
+std::ostream&
+operator<<(std::ostream& os, 
+           const nmr::PartialTokenList& pt1)
+{
+    for (nmr::PartialTokenList::MolList::const_iterator iter = pt1.theMols.begin();
+         iter != pt1.theMols.end();
+         ++iter)
+    {
+        os << (*iter)->getMolType() << '-';
+    }
+
+    os << "::";
+    
+     for(nmr::PartialTokenList::BindingList::const_iterator iter = pt1.theBindings.begin();
+         iter != pt1.theBindings.end();
+         ++iter)
+     {
+         os << iter->first.first << ","
+            << iter->first.second << ","
+            << iter->second.first << ","
+            << iter->second.second << '-';
+     }
+    
+//    for(PartialTokenList::ModificationList::const_iterator iter = ptr1.the
+
+    return os;
+    
 }

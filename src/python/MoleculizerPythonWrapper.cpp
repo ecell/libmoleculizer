@@ -1,25 +1,12 @@
-#include <vector>
-#include <boost/python.hpp>
-#include "ReactionNetworkGenerator.hpp"
-using namespace boost::python;
-
-
-class ReactionVector_to_Python
-{
-public:
-    static PyObject* convert( const std::vector<Reaction>& theReactionVector );
-};
-
-
-class StringVector_to_Python
-{
-public:
-    static PyObject* convert(const std::vector<std::string>& theStringVector);
-};
-
+#include "MoleculizerPythonWrapper.hpp"
 
 BOOST_PYTHON_MODULE( Moleculizer )
 {
+    class_<Species>("Species")
+        .add_property("name", &Species::getName)
+        .add_property("mass", &Species::getMass)
+        ;
+
     class_<Reaction>("Reaction")
         .def("getRate", &Reaction::getRate)
         .def("getSubstrates", &Reaction::getSubstrates)
@@ -30,49 +17,16 @@ BOOST_PYTHON_MODULE( Moleculizer )
         ;
 
     class_<ReactionNetworkGenerator>("ReactionNetworkGenerator")
-        .def("DEBUG", &ReactionNetworkGenerator::DEBUG)
         .def("addRules", &ReactionNetworkGenerator::addRules)
         .def("getBinaryReactions", &ReactionNetworkGenerator::getBinaryReactions)
         .def("getUnaryReactions", &ReactionNetworkGenerator::getUnaryReactions)
-        .def("showAllSpecies", &ReactionNetworkGenerator::showAllSpecies)
-        .def("checkSpeciesExists", &ReactionNetworkGenerator::checkSpeciesExists)
+        .def ("getSpecies", &ReactionNetworkGenerator::getSpecies)
         .def("checkSpeciesNameLegality", &ReactionNetworkGenerator::checkSpeciesNameLegality)
+        .def("showAllSpecies", &ReactionNetworkGenerator::showAllSpecies)
         ;
 
-    to_python_converter< std::vector<Reaction>, ReactionVector_to_Python>();
-    to_python_converter< std::vector<std::string>, StringVector_to_Python>();
+    DECLARE_DEFAULT_VECT_OF_TYPE_TO_PYTHON_CONVERTER( Reaction );
+    DECLARE_DEFAULT_VECT_OF_TYPE_TO_PYTHON_CONVERTER( std::string );
+    DECLARE_DEFAULT_VECT_OF_TYPE_TO_PYTHON_CONVERTER( Species );
 }
 
-
-PyObject*
-ReactionVector_to_Python::convert(const std::vector<Reaction>& theReactionVector)
-{
-    list myList;
-    
-    for(unsigned int i = 0; i!= theReactionVector.size(); ++i)
-    {
-        object myObject( theReactionVector[i] );
-
-        incref( myObject.ptr() );
-
-        myList.append(myObject);
-    }
-    
-    return incref( myList.ptr() );
-}
-
-
-PyObject*
-StringVector_to_Python::convert(const std::vector<std::string>& theStringVector)
-{
-    list myList;
-    for(unsigned int i = 0; i != theStringVector.size(); ++i)
-    {
-        object myObject( theStringVector[i]);
-        incref( myObject.ptr() );
-        
-        myList.append( myObject);
-    }
-
-    return incref( myList.ptr() );
-}

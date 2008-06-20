@@ -108,8 +108,7 @@ namespace nmr
         void
         addNewModificationSite( ModificationSiteCref newModSite,
                                 ModificationValueCref modValue);
-
-    protected:
+//    protected:
         // std::map<BindingSite, bool> theBindingSiteStates; // true means bound, false,unbound.
 
         std::map<BindingSite, unsigned int> bindingSiteNameToNdxMap;

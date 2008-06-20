@@ -39,7 +39,7 @@
 
 namespace nmr
 {
-    
+    DECLARE_CLASS( BindingSorterByNdx );
     DECLARE_CLASS(ComplexSpeciesOutputMinimizer);
     class ComplexSpeciesOutputMinimizer
     {
@@ -78,7 +78,7 @@ namespace nmr
         Permutation calculateMinimizingPermutationForComplex(ComplexSpeciesCref aComplexSpecies);
 
         // ???
-        void maximallyExtendPermutation(PermutationRef aRefPermutation);
+        void maximallyExtendPermutation(PermutationRef aRefPermutation, ComplexSpeciesCref aComplexSpecies);
 
         PartialTokenList calculatePartialTokenListForPermutation(ComplexSpeciesCref anAP, PermutationCref aPerm); 
 
@@ -139,7 +139,6 @@ namespace nmr
         std::map<int, std::string> indexToMolMap;
         std::map<std::string, Range > molToIndexRangeMap;
 
-
         struct MolIndexLessThanCmp : public std::binary_function<int, int, bool>
         {
             DECLARE_TYPE(ComplexSpecies::MolList, MolList);
@@ -161,6 +160,33 @@ namespace nmr
         };
 
     };
+
+
+    class BindingSorterByNdx
+    {
+    public:
+        BindingSorterByNdx( unsigned int i):
+            ndx(i)
+        {}
+        
+        bool
+        operator()(const ComplexSpecies::Binding& bindingTheFirst, const ComplexSpecies::Binding& bindingTheSecond) const
+        {
+            const ComplexSpecies::HalfBinding *firstHalfBinding, *secondHalfBinding;
+
+            bindingTheFirst.first.first == ndx? firstHalfBinding = &bindingTheFirst.second : firstHalfBinding = &bindingTheFirst.first;
+            
+
+            bindingTheSecond.first.first == ndx? secondHalfBinding = &bindingTheSecond.second : secondHalfBinding = &bindingTheSecond.first;
+
+            return *firstHalfBinding < *secondHalfBinding;
+            
+        }
+
+    private:
+        int ndx;
+    };
+
 
 } // namespace nmr
 

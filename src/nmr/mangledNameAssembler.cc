@@ -45,7 +45,7 @@ namespace nmr
 	  std::vector<std::string> tokens;
 	  utl::tokenize(name, tokens, "___");
 
-	  if (name.size() != 3) throw nmr::UnparsableNameXcpt( name  );
+	  if (tokens.size() != 3) throw nmr::UnparsableNameXcpt( name  );
 
 	  
 	  std::string theMolString( tokens.at(0) );

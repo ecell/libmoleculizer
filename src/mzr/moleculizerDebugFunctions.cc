@@ -182,29 +182,26 @@ namespace mzr
   moleculizer::DEBUG_getRandomLiveSpecies() const 
   {
 
-      SpeciesListCIter speciesListIter = theDeltaSpeciesList.begin();
-
-      while(speciesListIter != theDeltaSpeciesList.end()) 
+      // Highly inefficient - this could be rewritten in a much
+      // much better way by caching the liveSpecies. Each iteration
+      // would begin by clearing the deltaSpecies list.
+      // Next a random element would be chosen, removed from 
+      // the vector, and incremented.  Then, any deltaSpecies would
+      // be copied to the end of the vector.  
+      // This would be FAR better...
+      std::vector<mzrSpecies*> liveSpecies;
+      BOOST_FOREACH( SpeciesCatalog::value_type vt, theSpeciesListCatalog)
       {
-          if (!(*speciesListIter)->hasNotified())
+          if (!vt.second->hasNotified())
           {
-              return (*speciesListIter)->getName();
+              liveSpecies.push_back( vt.second );
           }
-
-          ++speciesListIter;
       }
 
-      SpeciesCatalogCIter speciesCatalogIter  = theSpeciesListCatalog.begin();
-      while( speciesCatalogIter != theSpeciesListCatalog.end())
-      {
-          if ( !speciesCatalogIter->second->hasNotified() )
-          {
-              return *(speciesCatalogIter->first);
-          }
-          speciesCatalogIter++;
-      }
-             
-      throw utl::xcpt("Error.  Reaction network has no \"live\" species.");
+      if (liveSpecies.size() == 0) throw utl::xcpt("Error.  Reaction network has no \"live\" species.");
+      
+      int random_index = rand() % liveSpecies.size();
+      return liveSpecies[random_index]->getName();
   }
   
   

@@ -29,8 +29,11 @@
 #include "mzr/moleculizer.hh"
 #include "utl/badFileNameXcpt.hh"
 #include "utl/utility.hh"
+#include "utl/linearHash.hh"
 
 #include "utl/stdIncludes.hh"
+#include <stdlib.h>
+#include <time.h>
 
 
 void 
@@ -90,6 +93,7 @@ processCommandLineArgs(int argc,
     // Set the default operation of the MzrObject
     theMzrObject.setGenerateDepth( 1 );
 
+    srand(42);
 
     bool filenameWasSeen( false );
 
@@ -115,7 +119,7 @@ processCommandLineArgs(int argc,
         }
 	else if ( arg == "-n" )
 	  {
-	    std::string aNumber = utl::mustGetArg(argc, argv);
+            std::string aNumber = utl::mustGetArg(argc, argv);
 	    DEBUG_NUM = utl::argMustBeNNInt( aNumber );
 	  }
         else if (arg == "-v" )
@@ -125,6 +129,16 @@ processCommandLineArgs(int argc,
         else if (arg == "-i")
         {
             INTERACTIVE = true;
+        }
+        else if (arg == "-s")
+        {
+            std::string argument = utl::mustGetArg(argc, argv);
+            utl::linearHash lh;
+            srand( lh(argument) );
+        }
+        else if (arg == "-r" )
+        {
+            srand(time(NULL));
         }
 
 	// Sets the tolerance for reaction rescheduling.

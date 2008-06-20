@@ -59,7 +59,9 @@ namespace nmr
         DECLARE_TYPE( int, BndNdx);
         DECLARE_TYPE( Mol::BindingSite,  BindingSite);
         DECLARE_TYPE( Mol::ModificationList, ModificationList)
-        typedef std::pair<std::pair<MolNdx, BndNdx>, std::pair<MolNdx, BndNdx> > __Binding;
+        typedef std::pair<MolNdx, BndNdx> __HalfBinding;
+        DECLARE_TYPE(__HalfBinding, HalfBinding);
+        typedef std::pair<HalfBinding, HalfBinding> __Binding;
         DECLARE_TYPE(  __Binding, Binding);
         DECLARE_TYPE( std::vector<Binding>, BindingList)
 

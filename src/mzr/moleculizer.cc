@@ -155,15 +155,12 @@ namespace mzr
 
 	return theMzrSpecies;
       }
-    catch(fnd::NoSuchSpeciesXcpt xcpt)
-      {
-      }
-
+    catch(fnd::NoSuchSpeciesXcpt e)
+      {}
 
     try
       {
         theMzrSpecies = pUserUnits->pNmrUnit->constructSpeciesFromName(speciesName);
-        
         // Does mzrSpecies need to be expanded here?
         theMzrSpecies->expandReactionNetwork();
         

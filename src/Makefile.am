@@ -4,7 +4,7 @@ abs_top_builddir=@abs_top_builddir@
 
 ## This is the order in which the libraries should be built.
 ## (dependencies go from left to right)
-SUBDIRS = fnd utl mzr stoch cpx mol nmr plex dimer ftr
+SUBDIRS = fnd utl mzr stoch cpx mol nmr plex dimer ftr python
 
 MOLECULIZER_DIRNAME = @MOLECULIZER_DIRNAME@
 moleculizerheaderdir=${include_dir}/${MOLECULIZER_DIRNAME}
@@ -14,7 +14,6 @@ SRCDIR = $(abs_top_builddir)/src
 ## This is the local target directory name.
 ## I think it has something to do with header dependencies.
 moleculizerdir = $(SRCDIR)
-
 
 ## These are constants defining the different library
 ## dependencies (clearly).
@@ -34,6 +33,7 @@ ALL_MZR_LIBS = $(LIBFND) $(LIBUTL) $(LIBMZR) $(LIBSTOCH) $(LIBNMR) $(LIBNMR) $(L
 bin_PROGRAMS = moleculizer
 
 lib_LTLIBRARIES = libmoleculizer_super.la
+
 libmoleculizer_super_la_SOURCES =
 
 nodist_EXTRA_libmoleculizer_super_la_SOURCES = dummy.cpp

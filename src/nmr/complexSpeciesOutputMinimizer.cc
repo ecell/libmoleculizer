@@ -179,7 +179,7 @@ namespace nmr
                         tmpPn.thePermutation = tmpPermutation;
 
                         //3.7
-                        maximallyExtendPermutation(tmpPn.thePermutation);
+                        maximallyExtendPermutation(tmpPn.thePermutation, aComplexSpecies);
                         theNextIterationsPartialPermutations.push_back(tmpPn);
 
                     }
@@ -305,17 +305,98 @@ namespace nmr
     }
 
 
-    void ComplexSpeciesOutputMinimizer::maximallyExtendPermutation(Permutation& refPermToExtend)
+    void ComplexSpeciesOutputMinimizer::maximallyExtendPermutation(Permutation& refPermToExtend, ComplexSpeciesCref aComplexSpecies)
     {
-        // TODO it appears that the function ComplexSpeciesOutputMinimizer::maximallyExtendPermutation was commented
-        // out upon fears that it may not be working adequately.  Investigate, restore, and perfect this function.
+        // This function is supposed to take in a permutation and extend it as much as possible, 
 
-        //     Permutation inversePerm = refPermToExtend.invert();
 
-        //     for(int indexToExtend = 0;
-        // 	indexToExtend != static_cast<int>(refPermToExtend.size());
-        // 	++indexToExtend)
-        //       {
+         Permutation inversePerm = refPermToExtend.invertPermutation();
+
+         for(unsigned int indexToExtend = 0;
+             indexToExtend != refPermToExtend.getDimension();
+             ++indexToExtend)
+         {
+             if (refPermToExtend.getValueAtPosition( indexToExtend ) == Permutation::UNDEF )
+                 {
+                     // If this index corresponds to the last of a type of mol,
+                     // assign this index to that mol and continue.
+
+                     // Since any function has at least one valid index (this function is only
+                     // called on already existing permutations, which therefore map at least one
+                     // ndx to 0, so therefore in the inverse 0 must be defined.
+
+                     for( std::map<std::string, Range>::const_iterator iter = molToIndexRangeMap.begin();
+                          iter != molToIndexRangeMap.end();
+                          ++iter)
+                     {
+                         // Ranges go like [inRange, notInRange)
+                         if ( indexToExtend + 1 == iter->second.second)
+                         {
+
+                             // This is the last mol left to be assigned in the range [iter->second.first, iter->second.second)
+                             for(unsigned int originalNdx = iter->second.first;
+                                 originalNdx != iter->second.second;
+                                 ++originalNdx)
+                             {
+                                 if (refPermToExtend[originalNdx] == Permutation::UNDEF)
+                                 {
+                                     inversePerm.setValueAtPosition(indexToExtend, originalNdx);
+                                     refPermToExtend.setValueAtPosition(originalNdx, indexToExtend);
+                                     break;
+                                 }
+                             }
+                          
+                             break;
+                         }
+                     }
+
+                 }
+             else  // refPermToExtend.getValueAtPosition( indexToExtend ) != Permutation::UNDEF )
+             {
+                 // A mol maps to this index.
+                 // We therefore can assign indexes to each of the mols that it binds to.
+
+
+                 // This is RIDICULOUSLY stupid implementation.
+                 int molNdx = refPermToExtend.getValueAtPosition( indexToExtend );
+
+                 std::vector<ComplexSpecies::Binding> theAppropriateBindings;
+
+                 for(unsigned int index = 0; index != aComplexSpecies.getBindingList().size(); ++index)
+                 {
+                     BindingCref theBinding = aComplexSpecies.getBindingList()[index];
+                     if ( theBinding.first.first == indexToExtend || theBinding.second.first == indexToExtend ) theAppropriateBindings.push_back( theBinding );
+                 }
+
+                 // Sort 'theAppropriateBindings' by the index of the non-participating binding...
+                 
+                 std::sort( theAppropriateBindings.begin(),
+                            theAppropriateBindings.end(),
+                            BindingSorterByNdx( indexToExtend ) );
+
+                 for(unsigned int index = 0; index != theAppropriateBindings.end(); ++index)
+                 {
+
+                     int bindingPartnerToEnsureSet;
+                     
+                     theAppropriateBindings[index].first.first == indexToExtend? 
+                         bindingPartnerToEnsureSet = theAppropriateBindings[index].second.first :
+                         bindingPartnerToEnsureSet = theAppropriateBindings[index].first.first;
+                     
+                     if (refPermToExtend.getValueAtPosition( bindingPartnerToEnsureSet ) == Permutation::UNDEF )
+                     {
+                         // Set this value here.....
+                     }
+                     
+
+                 }
+                     
+                 
+
+             }
+         }
+    }
+                     
         // 	//If indexToExtend is mapped somewhere, it will have a preimage of inversePerm[indexToExtend]
 
         // 	int preimage = inversePerm[indexToExtend];
@@ -393,11 +474,7 @@ namespace nmr
         // 	  }
 
         //       }
-  
-        return;
-    }
-
-
+         
 
     PartialTokenList 
     ComplexSpeciesOutputMinimizer::calculatePartialTokenListForPermutation(ComplexSpeciesCref aComplexSpecies, PermutationCref aPerm)

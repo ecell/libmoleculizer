@@ -56,6 +56,8 @@ AC_CONFIG_FILES([Makefile
                 src/python/Makefile
 		src/stoch/Makefile
 		src/utl/Makefile
+                src/mzr/tests/Makefile
+                src/nmr/tests/Makefile
 		])
 
 

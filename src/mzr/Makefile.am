@@ -4,8 +4,8 @@ lib_LTLIBRARIES = libmoleculizer_mzr.la
 
 abs_top_builddir=@abs_top_builddir@
 
-## SRCDIR = $(abs_top_builddir)/src
 SRCDIR = ..
+SUBDIRS = tests
 
 
 VERSION = @PACKAGE_VERSION@

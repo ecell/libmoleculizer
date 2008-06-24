@@ -4,7 +4,9 @@ lib_LTLIBRARIES = libmoleculizer_nmr.la
 
 abs_top_builddir=@abs_top_builddir@
 
-SRCDIR = ..
+SRCDIR = .. 
+
+SUBDIRS = tests
 
 VERSION = @PACKAGE_VERSION@
 MOLECULIZER_DIRNAME = moleculizer-$(VERSION)

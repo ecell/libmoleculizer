@@ -92,7 +92,7 @@ namespace nmr
                 throw( nmr::BadPermutationIndexXcpt );
 
             void setValueAtPosition(BindingNdx pos, unsigned int val) 
-                throw( nmr::BadPermutationIndexXcpt) ;
+                throw( nmr::BadPermutationIndexXcpt, nmr::DuplicateValueXcpt) ;
 
             void resetValueAtPosition(BindingNdx pos) 
                 throw(nmr::BadPermutationIndexXcpt);
@@ -111,8 +111,8 @@ namespace nmr
 
             void getUnfixedDomainElements( std::set<unsigned int>& refDomainElements) const;
   
-            bool
-            getIsBijection() const;
+//             bool
+//             getIsBijection() const;
 
             bool 
             getIsComplete() const;
@@ -169,12 +169,17 @@ namespace nmr
             Dimension theDimension;
         };
 
+}
+
+std::ostream& operator<<(std::ostream& ostr, const nmr::Permutation& thePerm);
+
+
     
 
 
 
 
-}
+
 
 #endif
 

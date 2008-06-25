@@ -21,10 +21,10 @@ ALL_MZR_LIBS = $(LIBFND) $(LIBUTL) $(LIBMZR) $(LIBSTOCH) $(LIBNMR) $(LIBNMR) $(L
 
 check_PROGRAMS = 
 
-check_PROGRAMS += nmr_test
+check_PROGRAMS += permutation_test
 
-nmr_test_SOURCES = nmrTest.cpp
-nmr_test_LDADD = $(ALL_MZR_LIBS)
+permutation_test_SOURCES = permutation_tests.cpp
+permutation_test_LDADD = $(ALL_MZR_LIBS)
 
 
 TESTS=$(check_PROGRAMS)

@@ -415,6 +415,30 @@ namespace nmr
     std::string theName;
   };
 
+   class DuplicateValueXcpt : public GeneralNmrXcpt
+   {
+   public:
+       static
+       std::string
+       mkMsg( const std::string& permRepr, unsigned int pos, unsigned int val)
+       {
+           std::ostringstream oss;
+           oss << "Setting f(" 
+               << pos 
+               << ") = " 
+               << val 
+               << " in permutation '" 
+               << permRepr << 
+               "' makes it no longer a bijection.";
+           return oss.str();
+       }
+
+       DuplicateValueXcpt(const std::string& permRepr, unsigned int pos, unsigned int val)
+           :
+           GeneralNmrXcpt(mkMsg(permRepr, pos, val))
+       {}
+   };
+
   class IllegalNameXcpt : public GeneralNmrXcpt
   {
   public:

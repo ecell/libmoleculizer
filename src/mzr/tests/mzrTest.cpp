@@ -4,7 +4,6 @@ using namespace boost::unit_test;
 
 void test_function()
 {
-    throw 0;
     BOOST_CHECK( 0 == 0); // non-critical test => continue after failure
 }
 

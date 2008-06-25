@@ -115,9 +115,19 @@ namespace nmr
     }
 
     void 
-    Permutation::setValueAtPosition(BindingNdx pos, unsigned int val)
-        throw(nmr::BadPermutationIndexXcpt)
+    Permutation::setValueAtPosition(BindingNdx pos, unsigned int val) 
+        throw( nmr::BadPermutationIndexXcpt, nmr::DuplicateValueXcpt)
     {
+        
+        if ( find( thePermutation.begin(),
+                   thePermutation.end(),
+                   val) != thePermutation.end()) 
+        {
+            std::ostringstream oss;
+            oss << *this;
+            throw nmr::DuplicateValueXcpt( oss.str() , pos, val);
+        }
+
         try
         {
             this->thePermutation.at(pos)=val;
@@ -209,11 +219,11 @@ namespace nmr
         return (checkPermutationLegality() && i == thePermutation.end() );
     }
 
-    bool
-    Permutation::getIsBijection() const
-    {
-        return getIsComplete();
-    }
+//     bool
+//     Permutation::getIsBijection() const
+//     {
+//         return getIsComplete();
+//     }
 
 
     bool 
@@ -526,6 +536,36 @@ namespace nmr
 
     }
 
+}
+
+
+std::ostream& operator<<(std::ostream& s, const nmr::Permutation& thePerm)
+{
+    s << '[';
+
+    for(unsigned int ndx = 0;
+        ndx != thePerm.getDimension();
+        ++ndx)
+        {
+            if ( thePerm.getValueAtPosition(ndx) == nmr::Permutation::UNDEF)
+            {
+                s << '*';
+            }
+            else
+            {
+                s << thePerm.getValueAtPosition( ndx );
+            }
+
+            if (ndx  != thePerm.getDimension() - 1 )
+            {
+                s << ", ";
+            }
+        }
+
+    s << ']';
+
+    return s;
+        
 }
 
 

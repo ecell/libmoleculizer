@@ -254,26 +254,78 @@ int factorial(int i)
 
 void check_generate_SN()
 {
-    Permutation::SetOfPermutations aSet;
-
-    BOOST_FOREACH( int i, range(5) )
     {
+        Permutation::SetOfPermutations aSet;
+
+        cout << "Sizes of S_n..." << endl;
+        BOOST_FOREACH( int i, range(7) )
+        {
+
+            if (i == 0) continue;
+
+            aSet.clear();
+
+            Permutation::generate_Sn(aSet, i);
+
+            int size = aSet.size();
+            int o_size = factorial(i);
+
+            cout << i << ":\t" << size << "(actual), " << o_size << "(pred)"<< endl;
+            BOOST_CHECK( size == o_size);
+        }
+
         aSet.clear();
-        Permutation::generate_Sn(aSet, i);
-        
-        BOOST_CHECK( aSet.size() == factorial(i) );
+        Permutation::generate_Sn(aSet, 3);
+        cout << "S_3 = " << endl;
+        int i = 0;
+        BOOST_FOREACH( PermutationCref perm, aSet)
+        {
+            
+            cout << ++i << ":\t" << perm << endl;
+        }
+
     }
+
+
+    {
+        Permutation::SetOfPermutations aSet;
+        std::vector<unsigned int> sigVector;
+
+        // sigVector.push_back(1);
+        sigVector.push_back(2);
+        sigVector.push_back(3);
+        sigVector.push_back(1);
+
+        // [0 1 2 3 4 5 6]
+        // [0 1 1 2 2 2 3]
+
+        Permutation::generateAllPermutationsMatchingSignature( aSet, sigVector);
+        BOOST_CHECK( aSet.size() == factorial(2) * factorial(3) );
+        BOOST_FOREACH( const Permutation& perm, aSet)
+        {
+            cout << perm << endl;
+        }
+    }
+}
+
+void check_factorial()
+{
+    BOOST_CHECK( factorial(1) == 1 );
+    BOOST_CHECK( factorial(2) == 2 );
+    BOOST_CHECK( factorial(3) == 6 );
+    BOOST_CHECK( factorial(4) == 24);
 }
 
     
 
 test_suite*
 init_unit_test_suite( int, char* [] ) {
-    declare_test_suite("Nmr::Permutation Test Suite")
+        declare_test_suite("Nmr::Permutation Test Suite");
 
     // register the test case in test tree and specify number of expected failures so
     // this example will pass at runtime. We expect 2 errors: one from failed check and 
     // one from memory acces violation
+    add_test(check_factorial);
     add_test(permutation_construction_tests);
     add_test(permutation_value_setting_and_inverse_tests);
     add_test(permutation_composition_tests);
@@ -287,3 +339,8 @@ init_unit_test_suite( int, char* [] ) {
     return 0;
 }
 
+// int main()
+// {
+//     check_generate_SN();
+//     return 0;
+// }

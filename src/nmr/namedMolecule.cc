@@ -26,6 +26,10 @@
 
 #include "nmr/namedMolecule.hh"
 
+#ifdef HAVE_CONFIG_H
+#include "moleculizer_config.hh"
+#endif
+
 namespace nmr
 {
     void 
@@ -36,7 +40,6 @@ namespace nmr
         {
             throw GeneralNmrXcpt( "Binding Site already has been added in MinimalMol::addNewBindingSite. (key: lfjdkas)");
         }
-
         
         bindingSiteNameToNdxMap.insert( std::make_pair( aBindingSite, bindingSiteIsBound.size() ));
         bindingSiteIsBound.push_back( false );

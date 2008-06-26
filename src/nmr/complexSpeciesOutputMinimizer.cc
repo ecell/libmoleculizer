@@ -113,32 +113,40 @@ namespace nmr
     ComplexSpeciesOutputMinimizer::calculateMinimizingPermutationForComplex(ComplexSpeciesCref aComplexSpecies)
     {
         if( !checkPlexIsSortedByMol(aComplexSpecies) ) 
-            throw nmr::GeneralNmrXcpt("Error in ComplexSpeciesOutputMinimizer::calculateMinimizingPermutationForComplex():\nThe precondition that the ComplexSpecies be sorted is not met.");
+            throw nmr::GeneralNmrXcpt("Error in ComplexSpeciesOutputMinimizer::calculateMinimizingPermutationForComplex():\n The precondition that the ComplexSpecies be sorted is not met.");
 
 
-        std::set<Permutation> setOfPossibleSolutions; // This is a set of partial permutations, which represent, all possible permutations (each incomplete pp represents a particular coset of permutations)
-        std::vector<PermutationName> theNextIterationsPartialPermutations; //to be used for holding permutations which will be in the next partialPermiter set in the next round.      
+        std::set<Permutation> setOfPossibleSolutions; // This is a set of partial permutations, which represent, all possible
+                                                      // permutations (each incomplete pp represents a particular coset of
+                                                      // permutations)
 
         setOfPossibleSolutions.insert( Permutation( aComplexSpecies.getNumberOfMolsInComplex()) );
 
+
+        std::vector<PermutationName> theNextIterationsPartialPermutations; // Temorary storage for holding permutations which will
+                                                                           // be in the setOfPossibleSolutions set during the next
+                                                                           // iteration.
+
+
         //Basic idea of this algorithm as follows:
         //
-        //1.  For each permutation in setOfPossibleSolutions, figure out the least int not in that permutation.
-        //2.  That int will be a associated with the Mol that will ultimatly map to it.  Use this information to find all the indexes that can map to that least value.
-        //3.  Now prune the index list above (we are trying to find the smallest set of indexes that can extend the permutation in 1.) by only keeping indexes which correspond to a mol  
-        //3.  that has the lowest binding amonst all the corresponding mols to the cumulative indexes.
-        //3.5 Now generate all the permutations that come from combining the permutation in question with each one of it's possible continuations.
-        //3.7 For each one of these new permutations, extend it maximally.
-        //4.  Now generate the name corresponding to each permutation.  Find the least and throw out any permutation whose name isn't one of the least.  
-        //5.  Repeat this process until there is no permutation in the set of permutations that has any negative entry.
+        // 1.  For each permutation in setOfPossibleSolutions, figure out the least int not in that permutation.
+        // 2.  That int will be a associated with the Mol that will ultimatly map to it.  Use this information to find all the
+        //     indexes that can map to that least value.
+        // 3.  Now prune the index list above (we are trying to find the smallest set of indexes that can extend the
+        //     permutation in 1.) by only keeping indexes which correspond to a mol that has the lowest binding amonst all the
+        //     corresponding mols to the cumulative indexes.
+        // 4.  Now generate all the permutations that come from combining the permutation in question with each one of it's
+        //     possible continuations.
+        // 5.  For each one of these new permutations, extend it maximally.
+        // 6.  Now generate the name corresponding to each permutation.  Find the least and throw out any permutation whose
+        //     name isn't one of the least.
+        // 7.  Repeat this process until there is no permutation in the set of permutations that has any negative entry.
 
 
-
-        // 5. Repeat this process until there is no permutation in the set of permutations that has any negative entry.
-        while( checkExistsIncompletePermutations(setOfPossibleSolutions) ) 
+        while( checkIfSetContainsIncompletePermutations(setOfPossibleSolutions) ) // 7.
         {
             theNextIterationsPartialPermutations.clear();
-
 
             //For each partial permutation, figure out how to automatically extend it into the next round.
             for(std::set<Permutation>::const_iterator partialPermIter = setOfPossibleSolutions.begin();
@@ -559,7 +567,7 @@ namespace nmr
         return forwardPerm;
     }
 
-    bool ComplexSpeciesOutputMinimizer::checkExistsIncompletePermutations( const std::set<Permutation>& setOfPPs) const
+    bool ComplexSpeciesOutputMinimizer::checkIfSetContainsIncompletePermutations( const std::set<Permutation>& setOfPPs) const
     {
         // Iterate over the set and if any member is incomplete, 
         // return true; otherwise, return false.

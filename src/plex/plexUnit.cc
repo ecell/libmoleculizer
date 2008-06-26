@@ -312,7 +312,6 @@ namespace plx
       }
     catch(...)
       {
-	std::cerr << "NO THROWING BULLSHIT XCPTS!" << std::endl;
 	throw plx::NonConstructableComplexOutputStateXcpt();
       }
   }

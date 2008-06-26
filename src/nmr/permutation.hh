@@ -150,15 +150,19 @@ namespace nmr
 
             void print() const;
 
+            std::string
+            repr() const;
+
+
             static void
             generate_Sn( SetOfPermutationsRef setOfPermutations, unsigned int N);
 
 
             // Produce from S_{ Sum(signature)} the subgroup isomorphic to 
             // S_n1 x S_n2 x ... x S_nk, where signature[i] = n_i.
-            static void
-            generateAllPermutationsMatchingSignature( SetOfPermutationsRef permSet, 
-                                                      const std::vector<unsigned int>& signature);
+             static void
+             generateAllPermutationsMatchingSignature( SetOfPermutationsRef permSet, 
+                                                       const std::vector<unsigned int>& signature);
 
         protected:
             void maximallyExtend();

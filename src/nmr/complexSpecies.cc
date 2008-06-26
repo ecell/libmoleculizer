@@ -26,6 +26,7 @@
 
 #include "utl/utility.hh"
 #include "complexSpecies.hh"
+#include <boost/foreach.hpp>
 
 namespace nmr
 {
@@ -328,6 +329,25 @@ namespace nmr
         }
     }
 
+    std::string 
+    ComplexSpecies::repr() const
+    {
+        std::ostringstream oss;
+        oss << *this;
+        return oss.str();
+    }
 
 
+
+}
+
+std::ostream&
+operator<<(std::ostream& stream, nmr::ComplexSpeciesCref aComplexSpecies)
+{
+    BOOST_FOREACH( nmr::MolSharedPtr pMol, aComplexSpecies.getMolList())
+    {
+        stream << pMol->getMolType() << " - ";
+    }
+    stream<<'\n';
+    return stream;
 }

@@ -84,7 +84,7 @@ namespace nmr
 
         // Returns true if at least one permutation in the set of permutations is incomplete.
         // Returns false if every one is a complete and proper permutation/function.
-        bool checkExistsIncompletePermutations(const std::set<Permutation>& setOfPPs) const;
+        bool checkIfSetContainsIncompletePermutations(const std::set<Permutation>& setOfPPs) const;
 
         // Returns true if aComplexSpecies is sorted molwise.  Ie returns true
         // if for all i, j mol[i].getMolType() < mol[j].getMolType().

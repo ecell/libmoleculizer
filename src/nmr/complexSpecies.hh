@@ -35,6 +35,8 @@
 
 #include "utl/macros.hh"
 
+#include <iostream>
+#include <sstream>
 #include <string>
 #include <vector>
 #include <utility>
@@ -107,6 +109,8 @@ namespace nmr
         // the object passed to a particular nameAssembler.
         void constructOutputState(ComplexOutputState& rOutputState) const;
 
+        std::string repr() const;
+
     protected:
         typedef std::map<Alias, MolNdx> _molMap;
         DECLARE_TYPE( _molMap, MolMap);
@@ -126,6 +130,10 @@ namespace nmr
     };
 
 }
+
+
+std::ostream&
+operator<<(std::ostream& stream, nmr::ComplexSpeciesCref aComplexSpecies);
 
 #endif
 

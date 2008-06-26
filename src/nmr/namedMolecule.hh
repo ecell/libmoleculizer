@@ -53,19 +53,6 @@ namespace nmr
             Mol( molType)
         {}
 
-        MinimalMol( MolTypeCref molType, BindingSiteListCref bindingSitesList ) 
-            : 
-            Mol( molType) 
-        {
-//             for(BindingSiteList::const_iterator iter = bindingSitesList.begin();
-//                 iter != bindingSitesList.end();
-//                 ++iter)
-//             {
-//                 theBindingSiteStates.insert( std::make_pair(*iter,
-//                                                             false) );
-//             }
-        }
-
         bool checkIfBindingSiteExists(BindingSiteCref aBindingSite) const;
         bool checkIfModificationSiteExists( ModificationSiteCref aModificationSite) const;
 
@@ -108,12 +95,13 @@ namespace nmr
         void
         addNewModificationSite( ModificationSiteCref newModSite,
                                 ModificationValueCref modValue);
-//    protected:
+    protected:
         // std::map<BindingSite, bool> theBindingSiteStates; // true means bound, false,unbound.
-
         std::map<BindingSite, unsigned int> bindingSiteNameToNdxMap;
 
-        // This is maybe not the best... Dragons! Beware!
+        // I read that vector<bool> is pretty darn unsafe.  I think in this case, because I'm not 
+        // doing any kind of anything other than getting, setting, and push_back'ing in the private 
+        // interface, I think I should be ok, but I should still change it though.  
         std::vector<bool> bindingSiteIsBound;
 
         std::map<ModificationSite, ModificationValue> theModificationStates;

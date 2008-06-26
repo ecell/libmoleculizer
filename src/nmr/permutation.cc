@@ -28,6 +28,7 @@
 #include "utl/utility.hh"
 
 #include <list>
+#include <algorithm>
 
 #include <exception>
 #include <functional>
@@ -45,17 +46,7 @@ namespace nmr
         thePermutation(n, Permutation::UNDEF), //n values of UNDEF
         theDimension( n )
     {
-//         // Assert the dimension to be >= 1
-//         if (n == 0)
-//         {
-//             throw GeneralNmrXcpt("Error in constructing Permutation. Dimension cannot have value '0'");
-//         }
-
-        // There is only one permutation in S_{1}, the identity function.
-        if(n == 1)
-        {
-            setValueAtPosition(0, 0);
-        }
+        if(n == 1) setValueAtPosition(0, 0);
     }
 
     Permutation::Permutation(PermutationCref aPermutation) 
@@ -86,7 +77,9 @@ namespace nmr
         theDimension = thePermutation.size();
     }
 
-    Permutation::Permutation(PermutationCref aPermutation, BindingNdx pos, int value) 
+    Permutation::Permutation(PermutationCref aPermutation, 
+                             BindingNdx pos, 
+                             int value) 
         throw(nmr::BadPermutationConstructorXcpt)
         : 
         thePermutation( aPermutation.getCorePermutation() ),
@@ -112,6 +105,14 @@ namespace nmr
         {
             throw nmr::BadPermutationIndexXcpt( getDimension(), pos);
         }
+    }
+
+    std::string
+    Permutation::repr() const
+    {
+        std::ostringstream oss;
+        oss << *this;
+        return oss.str();
     }
 
     void 
@@ -422,33 +423,32 @@ namespace nmr
     Permutation::generate_Sn( std::set<Permutation>& setOfPermutations, unsigned int N)
     {
         // Illegal dimension.
-        if (N == 0) throw 666;
-
-        setOfPermutations.clear();
-        
-        if ( N == 1)
+        if (N == 0) 
         {
-            std::vector<int> corePermutation(1, 0);
-            try
-            {
-                setOfPermutations.insert( Permutation( std::vector<int>(1, 0) ));
-            }
-            catch(...)
-            {
-                int x = 10;
-                x += 10;
-            }
-
+            setOfPermutations.clear();
             return;
+        }
+        else if (N == 1)
+        {
+            setOfPermutations.clear();
+            std::vector<int> corePermutation(1, 0);
+            setOfPermutations.insert( Permutation( std::vector<int>(1, 0) ));        
         }
         else
         {
             // recursive step.
             generate_Sn( setOfPermutations, N - 1);
 
-            // This could definitely be more efficient if I make set of permutations a ** or 
-            // something.
-            std::set< Permutation > tmpSet( setOfPermutations.begin(), setOfPermutations.end() );
+            // This copying is highly inefficient here.
+
+            // This didn't work for some reason...
+            // std::set<Permutation> tmpSet( setOfPermutations.begin(), setOfPermutations.end() );
+            
+            std::set< Permutation > tmpSet;
+            BOOST_FOREACH(const Permutation& perm, setOfPermutations)
+            {
+                tmpSet.insert( Permutation(perm) );
+            }
             setOfPermutations.clear();
 
 
@@ -460,20 +460,30 @@ namespace nmr
                  iter != tmpSet.end();
                  ++iter)
             {
-                std::list<int> prevDimPerm( iter->getCorePermutation().begin(), 
-                                            iter->getCorePermutation().end() );
+                std::vector<int> constructedCorePermutation;
+                constructedCorePermutation.reserve( iter->getCorePermutation().size() + 1 );
 
-                std::list<int>::iterator permIter = prevDimPerm.begin();
+                constructedCorePermutation.push_back( NEXT_RANGE_ELEMENT );
                 
-                do
+                std::copy(iter->getCorePermutation().begin(),
+                          iter->getCorePermutation().end(),
+                          std::back_inserter(constructedCorePermutation));
+                
+
+                // Copy this first permutation in....
+                setOfPermutations.insert( Permutation(constructedCorePermutation) );
+
+                int index = 1;
+                while( index != constructedCorePermutation.size() )
                 {
-                    permIter = prevDimPerm.insert( permIter, NEXT_RANGE_ELEMENT );
-                    setOfPermutations.insert( Permutation( std::vector<int>( prevDimPerm.begin(),
-                                                                             prevDimPerm.end())));
-                    prevDimPerm.erase( permIter);
+                    std::swap(constructedCorePermutation[index-1],
+                              constructedCorePermutation[index]);
+
+                    // Copy the permutation in....
+                    setOfPermutations.insert( Permutation(constructedCorePermutation) );
+                    ++index;
                 }
 
-                while( permIter++ != prevDimPerm.end());
             }
         }
     }
@@ -496,8 +506,12 @@ namespace nmr
         {
 
             // Copy from prev to here.
-            SetOfPermutations originalSet(permSet.begin(),
-                                          permSet.end());
+            SetOfPermutations originalSet;
+            BOOST_FOREACH( PermutationCref perm, permSet)
+            {
+                originalSet.insert( perm );
+            }
+
             permSet.clear();
 
             // Create the next tmpSet

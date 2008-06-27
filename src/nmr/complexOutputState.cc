@@ -90,7 +90,7 @@ std::ostream& operator<<(std::ostream& os, const nmr::ComplexOutputState& cos)
       os << "((" << (*iter).first.first << ", " << (*iter).first.second << "), (" << (*iter).second.first << ", " << (*iter).second.second << ")), ";
     }
       
-  os << "\nModifications: \n";
+  os << "\nModifications:\n";
 
   for(std::vector<nmr::ComplexOutputState::ModificationTokenStr>::const_iterator iter = cos.theModificationTokens.begin();
       iter != cos.theModificationTokens.end();
@@ -98,6 +98,8 @@ std::ostream& operator<<(std::ostream& os, const nmr::ComplexOutputState& cos)
     {
       os << "( " << (*iter).first << ", ( " << (*iter).second.first << ", " << (*iter).second.second << ")), ";
     }
+  if (cos.theModificationTokens.size() == 0) os << "*";
+
   os << "\n";
   return os;
 }

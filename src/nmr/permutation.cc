@@ -120,14 +120,17 @@ namespace nmr
         throw( nmr::BadPermutationIndexXcpt, nmr::DuplicateValueXcpt)
     {
         
-        if ( find( thePermutation.begin(),
-                   thePermutation.end(),
-                   val) != thePermutation.end()) 
+        CorePermutationType::const_iterator foundLocation = find( thePermutation.begin(),thePermutation.end(), val);
+        CorePermutationType::const_iterator locationInQuestion = thePermutation.begin() + pos;
+        CorePermutationType::const_iterator PermutationEnd = thePermutation.end();
+
+        if ( foundLocation != PermutationEnd && foundLocation != locationInQuestion ) 
         {
             std::ostringstream oss;
             oss << *this;
             throw nmr::DuplicateValueXcpt( oss.str() , pos, val);
         }
+
 
         try
         {
@@ -489,6 +492,17 @@ namespace nmr
     }
     
 
+
+    Permutation
+    Permutation::generateIdentity( unsigned int dim)
+    {
+        Permutation identity( dim );
+        for (unsigned int index = 0; index != dim; ++index)
+        {
+            identity.setValueAtPosition( index, index);
+        }
+        return identity;
+    }
 
     void
     Permutation::generateAllPermutationsMatchingSignature( SetOfPermutationsRef permSet,

@@ -4,7 +4,7 @@ abs_top_builddir=@abs_top_builddir@
 
 ## This is the order in which the libraries should be built.
 ## (dependencies go from left to right)
-SUBDIRS = fnd utl stoch cpx mol nmr plex dimer ftr python mzr
+SUBDIRS = fnd utl mzr stoch cpx mol nmr plex dimer ftr python 
 
 MOLECULIZER_DIRNAME = @MOLECULIZER_DIRNAME@
 moleculizerheaderdir=${include_dir}/${MOLECULIZER_DIRNAME}

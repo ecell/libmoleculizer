@@ -198,7 +198,7 @@ void permutations_must_be_1to1_check()
     
     try
     {
-        f.setValueAtPosition(0,0);
+        f.setValueAtPosition(1,0);
         BOOST_CHECK( EXPECTED_EXCEPTION );
     }
     catch(...)

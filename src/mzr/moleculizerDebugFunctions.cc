@@ -201,7 +201,9 @@ namespace mzr
       if (liveSpecies.size() == 0) throw utl::xcpt("Error.  Reaction network has no \"live\" species.");
       
       int random_index = rand() % liveSpecies.size();
-      return liveSpecies[random_index]->getName();
+      mzrSpecies* pLiveSpecies = liveSpecies[random_index];
+      std::string name = pLiveSpecies->getName();
+      return name;
   }
   
   

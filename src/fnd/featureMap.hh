@@ -33,6 +33,9 @@
 #include <map>
 #include "utl/xcpt.hh"
 #include "fnd/feature.hh"
+#include <boost/foreach.hpp>
+
+#define foreach BOOST_FOREACH
 
 namespace fnd
 {
@@ -84,9 +87,33 @@ namespace fnd
     void
     respond(const typename featureMap::stimulusType& rStimulus)
     {
-      for_each(this->begin(),
-	       this->end(),
-	       notifyFeature(rStimulus));
+        // Replacing the code below with a BOOST_FOREACH loop, in the hopes that
+        // this may make things more clear.
+
+//       for_each(this->begin(),
+// 	       this->end(),
+// 	       notifyFeature(rStimulus));
+
+
+        typedef std::map<typename contextT::contextSpec, feature<contextT>* > SelfType;
+        typedef typename std::map<typename contextT::contextSpec, feature<contextT>* >::value_type SelfTypeValueType;
+
+        BOOST_FOREACH(SelfTypeValueType rEntry, *this)
+        {
+            const typename contextT::contextSpec& rSpec = rEntry.first;
+
+            feature<contextT>* pFeature = rEntry.second;
+
+            contextT newContext(rStimulus.getSpecies(),
+                                rSpec);
+
+            newContextStimulus<contextT> stim(newContext,
+                                              rStimulus.getNotificationDepth());
+	
+            pFeature->respond(stim);
+        }
+
+        
     }
   };
 }

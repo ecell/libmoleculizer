@@ -46,6 +46,13 @@ namespace nmr
 
     public:
 
+        ComplexSpeciesOutputMinimizer()
+            :
+            allMolsOccurOnce( false ),
+            indexToMolMap(),
+            molToIndexRangeMap()
+        {}
+
         ComplexOutputState 
         getMinimalOutputState(ComplexSpecies aComplexSpecies);
 
@@ -61,11 +68,15 @@ namespace nmr
         DECLARE_TYPE( __BindingSite, BindingSite );
         DECLARE_TYPE( __Binding, Binding);
 
-    protected:
+    private:
+        void clearAllClassDataStructures();
+
         // This function ensures that aComplexSpecies is sorted molwise.  It also 
         // ensures the two pieces of class data, the indexToMolMap and the 
         // molToIndexRangeMap are setup.
         void setupDataStructuresForCalculation(ComplexSpeciesRef aComplexSpecies);
+
+        bool checkIfMoleculesInComplexOccurOnce( ComplexSpeciesCref aComplexSpecies);
 
         // This function returns a permutation such that, when applied to the complex
         // species, leaves it in a mol sorted state.  
@@ -89,6 +100,9 @@ namespace nmr
         // Returns true if aComplexSpecies is sorted molwise.  Ie returns true
         // if for all i, j mol[i].getMolType() < mol[j].getMolType().
         bool checkPlexIsSortedByMol(ComplexSpeciesCref aComplexSpecies) const;
+
+    private:
+        bool allMolsOccurOnce;
 
 
 //         // TODO write brute force function and generally a checker to make sure all this works.

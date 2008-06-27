@@ -153,6 +153,9 @@ namespace nmr
             std::string
             repr() const;
 
+            static Permutation
+            generateIdentity( unsigned int N);
+
 
             static void
             generate_Sn( SetOfPermutationsRef setOfPermutations, unsigned int N);

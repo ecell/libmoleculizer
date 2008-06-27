@@ -41,6 +41,7 @@ namespace nmr
 
         // This ensures that theComplexSpecies is sorted and that the data structures, 
         // indexToMolMap and molToIndexRangeMap, are set up properly.
+
         setupDataStructuresForCalculation( theComplexSpecies );
 
         // This here is the money shot, where all the action occurs.  
@@ -112,10 +113,20 @@ namespace nmr
     Permutation 
     ComplexSpeciesOutputMinimizer::calculateMinimizingPermutationForComplex(ComplexSpeciesCref aComplexSpecies)
     {
+
         if( !checkPlexIsSortedByMol(aComplexSpecies) ) 
             throw nmr::GeneralNmrXcpt("Error in ComplexSpeciesOutputMinimizer::calculateMinimizingPermutationForComplex():\n The precondition that the ComplexSpecies be sorted is not met.");
 
+        // This is the special case, where everything is already sorted, so we don't have to do 
+        // anything complicated at all.
+        if( allMolsOccurOnce )
+        {
+            return Permutation::generateIdentity( aComplexSpecies.getNumberOfMolsInComplex() );
+        }
 
+
+        // So we have copies of the same guy and must actually calculate the minimizing permutation
+        // then.
         std::set<Permutation> setOfPossibleSolutions; // This is a set of partial permutations, which represent, all possible
                                                       // permutations (each incomplete pp represents a particular coset of
                                                       // permutations)
@@ -182,8 +193,13 @@ namespace nmr
                         i!=validIndexes.end();
                         ++i)
                     {
+
+                        // This is the original code and just doesn't make any sense at all to me.
+                        // PermutationName tmpPn;
+                        // Permutation tmpPermutation(*partialPermIter, *i, leastIntNotInPartial);
+
                         PermutationName tmpPn;
-                        Permutation tmpPermutation(*partialPermIter, *i, leastIntNotInPartial);
+                        tmpPn.thePermutation = Permutation(*partialPermIter, *i, leastIntNotInPartial);
 
                         //3.7
                         maximallyExtendPermutation(tmpPn.thePermutation, aComplexSpecies);
@@ -213,19 +229,19 @@ namespace nmr
                 iter->theCorrespondingPartialTokenList = calculatePartialTokenListForPermutation(aComplexSpecies, iter->thePermutation);
             }
 
-            std::cout << "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" << std::endl;
-            std::cout<< "Sorting " << theNextIterationsPartialPermutations.size() << std::endl;
+// //             std::cout << "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" << std::endl;
+// //             std::cout<< "Sorting " << theNextIterationsPartialPermutations.size() << std::endl;
 
 
-             // int i = 0;
-//              BOOST_FOREACH(const PermutationName& pm , theNextIterationsPartialPermutations)
-//              {
-//                  std::cout << i++<< ":" << std::endl;
-//                  pm.print();
-//                  std::cout << pm.theCorrespondingPartialTokenList << std::endl;
+//              // int i = 0;
+// //              BOOST_FOREACH(const PermutationName& pm , theNextIterationsPartialPermutations)
+// //              {
+// //                  std::cout << i++<< ":" << std::endl;
+// //                  pm.print();
+// //                  std::cout << pm.theCorrespondingPartialTokenList << std::endl;
                 
-//              }
-             std::cout << "###################################################################" << std::endl;
+// //              }
+//             std::cout << "###################################################################" << std::endl;
 //           std::cout << "***" << std::endl;
 
 
@@ -252,18 +268,45 @@ namespace nmr
         return *(setOfPossibleSolutions.begin());
     }
 
+    void ComplexSpeciesOutputMinimizer::clearAllClassDataStructures()
+    {
+        allMolsOccurOnce = false;
+        indexToMolMap.clear();
+        molToIndexRangeMap.clear();
+    }
+
+    bool ComplexSpeciesOutputMinimizer::checkIfMoleculesInComplexOccurOnce( ComplexSpeciesCref aComplexSpecies )
+    {
+        std::string last_name("");
+
+        BOOST_FOREACH(MolSharedPtr molPtr, aComplexSpecies.getMolList() )
+        {
+            if (molPtr->getMolType() == last_name) return false;
+            else last_name = molPtr->getMolType();
+        }
+
+        return true;
+    }
+
 
     void ComplexSpeciesOutputMinimizer::setupDataStructuresForCalculation(ComplexSpeciesRef aComplexSpecies)
     {
+
+        clearAllClassDataStructures();
 
         // First sort the UnnamedComplex by mol-types.  
         Permutation aMolSortingPermutation 
             = calculateMolSortingPermutationForComplex(aComplexSpecies);
         aComplexSpecies.applyPermutationToComplex(aMolSortingPermutation);
-
-        // Clear out things.
-        indexToMolMap.clear();
-        molToIndexRangeMap.clear();
+        
+        // This is a specialized check to determine if each moltype that occurs
+        // in the complex only occurs once.  If this is true we set "allMolsOccurOnce"
+        // to true and return.
+        if ( checkIfMoleculesInComplexOccurOnce( aComplexSpecies ) )
+        {
+            allMolsOccurOnce = true;
+            return;
+        }
 
         //Initialize the indexToMolMap.
         std::vector<std::string> sortedMolNames;
@@ -308,7 +351,6 @@ namespace nmr
       
             molToIndexRangeMap.insert( std::make_pair( currentMolType, std::make_pair(first,last)));
         }
-
     }
 
 
@@ -413,7 +455,7 @@ namespace nmr
          }
          
 
-         std::cout << "In maximallyExtendPermutation " << iii << " indexes were extended..." << std::endl;
+//         std::cout << "In maximallyExtendPermutation " << iii << " indexes were extended..." << std::endl;
          
     }
     

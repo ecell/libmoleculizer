@@ -91,7 +91,6 @@ namespace nmr
             {
                 throw BindingSiteAlreadyBoundXcpt( firstMolAlias, firstMolBindingSiteAlias);
             }
-
         }
         catch( NoSuchBindingSiteXcpt xcpt )
         {
@@ -110,16 +109,38 @@ namespace nmr
             throw MissingBindingSiteXcpt( secondMolBindingSiteAlias, secondMolAlias);
         }
 
+        theMols[firstMolNdx]->bindAtBindingSite( firstMolBindingSiteAlias );
+        theMols[secondMolNdx]->bindAtBindingSite( secondMolBindingSiteAlias );
+
         BndNdx firstMolBindingNdx = theMols[firstMolNdx]->getBindingSiteInteger(firstMolBindingSiteAlias);
         BndNdx secondMolBindingNdx = theMols[secondMolNdx]->getBindingSiteInteger(secondMolBindingSiteAlias);
 
         Binding aBinding;
-        aBinding.first.first = firstMolNdx;
-        aBinding.first.second = firstMolBindingNdx;
-        aBinding.second.first = secondMolNdx;
-        aBinding.second.second = secondMolBindingNdx;
+
+        if( firstMolNdx < secondMolNdx)
+        {
+            aBinding.first.first = firstMolNdx;
+            aBinding.first.second = firstMolBindingNdx;
+            aBinding.second.first = secondMolNdx;
+            aBinding.second.second = secondMolBindingNdx;
+        }
+        else
+        {
+            aBinding.first.first = secondMolNdx;
+            aBinding.first.second = secondMolBindingNdx;
+            aBinding.second.first = firstMolNdx;
+            aBinding.second.second = firstMolBindingNdx;
+        }
+
+
+        theBindings.insert( std::lower_bound(theBindings.begin(),
+                                             theBindings.end(),
+                                             aBinding), aBinding);
     
-        theBindings.push_back( aBinding);
+//        theBindings.push_back( aBinding);
+
+        
+
     }
 
 

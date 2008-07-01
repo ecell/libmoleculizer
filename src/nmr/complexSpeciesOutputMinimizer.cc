@@ -184,28 +184,15 @@ namespace nmr
                     {
                         if ( partialPermIter->getValueAtPosition(i) == Permutation::UNDEF )
                         {
-                            validIndexes.push_back(i);
+                            PermutationName tmpPn;
+                            tmpPn.thePermutation = Permutation(*partialPermIter, i, leastIntNotInPartial);
+
+                            //3.7
+                            maximallyExtendPermutation(tmpPn.thePermutation, aComplexSpecies);
+                            theNextIterationsPartialPermutations.push_back(tmpPn);
                         }
                     }
 
-                    //3.5
-                    for(std::vector<int>::iterator i = validIndexes.begin();
-                        i!=validIndexes.end();
-                        ++i)
-                    {
-
-                        // This is the original code and just doesn't make any sense at all to me.
-                        // PermutationName tmpPn;
-                        // Permutation tmpPermutation(*partialPermIter, *i, leastIntNotInPartial);
-
-                        PermutationName tmpPn;
-                        tmpPn.thePermutation = Permutation(*partialPermIter, *i, leastIntNotInPartial);
-
-                        //3.7
-                        maximallyExtendPermutation(tmpPn.thePermutation, aComplexSpecies);
-                        theNextIterationsPartialPermutations.push_back(tmpPn);
-
-                    }
                 }
                 else
                 {

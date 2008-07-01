@@ -33,5 +33,9 @@ check_PROGRAMS += complex_species_test
 complex_species_test_SOURCES = complexSpecies_test.cpp
 complex_species_test_LDADD = $(ALL_MZR_LIBS)
 
+check_PROGRAMS += namer_test
+namer_test_SOURCES =namer_tests.cpp
+namer_test_LDADD = $(ALL_MZR_LIBS)
+
 TESTS=$(check_PROGRAMS)
 

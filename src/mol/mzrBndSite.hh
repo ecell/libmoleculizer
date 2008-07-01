@@ -63,6 +63,7 @@ namespace bnd
     xmlpp::Element*
     insertElt(xmlpp::Element* pMolElt) const
       throw(utl::xcpt);
+
   };
 }
 

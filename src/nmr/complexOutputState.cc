@@ -25,8 +25,11 @@
 /////////////////////////////////////////////////////////////////////////////
 
 
-#include <ostream>
 #include "complexOutputState.hh"
+#include <sstream>
+#include <boost/foreach.hpp>
+
+
 
 namespace nmr
 {
@@ -54,6 +57,7 @@ namespace nmr
     ComplexOutputState::addBindingTokenToOutputState(BindingTokenStrCref aBindingToken)
     {
         theBindingTokens.push_back(aBindingToken);
+
     }
 
     void 
@@ -69,37 +73,72 @@ namespace nmr
         theBindingTokens.clear();
         theModificationTokens.clear();
     }
+
+    std::string 
+    ComplexOutputState::repr() const
+    {
+        std::ostringstream oss;
+        BOOST_FOREACH(ComplexOutputState::MolTokenStrCref molName, theMolTokens)
+        {
+            oss << molName << "-";
+        }
+
+        BOOST_FOREACH(ComplexOutputState::BindingTokenStrCref bindingName, theBindingTokens)
+        {
+            oss << '|' ;
+            oss << bindingName.first.first << "-";
+            oss << bindingName.first.second << "-";
+            oss << bindingName.second.first << "-";
+            oss << bindingName.second.second << '|' << '-';
+        }
+
+        BOOST_FOREACH(ComplexOutputState::ModificationTokenStrCref modificationToken, theModificationTokens)
+        {
+            oss << '|';
+            oss << modificationToken.first 
+                << '-' 
+                << modificationToken.second.first 
+                << '-'
+                << modificationToken.second.second << '|';
+        }
+
+        return oss.str();
+        
+    }
 }
 
 std::ostream& operator<<(std::ostream& os, const nmr::ComplexOutputState& cos)
 {
-  os << "Mols:\n";
-  for(std::vector<nmr::ComplexOutputState::MolTokenStr>::const_iterator iter = cos.theMolTokens.begin();
-      iter != cos.theMolTokens.end();
-      ++iter)
-    {
-      os << *iter << ", ";
+//   os << "Mols:\n";
+//   for(std::vector<nmr::ComplexOutputState::MolTokenStr>::const_iterator iter = cos.theMolTokens.begin();
+//       iter != cos.theMolTokens.end();
+//       ++iter)
+//     {
+//       os << *iter << ", ";
           
-    }
-  os << "\nBindings:\n";
+//     }
+//   os << "\nBindings:\n";
 
-  for(std::vector<nmr::ComplexOutputState::BindingTokenStr>::const_iterator iter = cos.theBindingTokens.begin();
-      iter != cos.theBindingTokens.end();
-      ++iter)
-    {
-      os << "((" << (*iter).first.first << ", " << (*iter).first.second << "), (" << (*iter).second.first << ", " << (*iter).second.second << ")), ";
-    }
+//   for(std::vector<nmr::ComplexOutputState::BindingTokenStr>::const_iterator iter = cos.theBindingTokens.begin();
+//       iter != cos.theBindingTokens.end();
+//       ++iter)
+//     {
+//       os << "((" << (*iter).first.first << ", " << (*iter).first.second << "), (" << (*iter).second.first << ", " << (*iter).second.second << ")), ";
+//     }
       
-  os << "\nModifications:\n";
+//   os << "\nModifications:\n";
 
-  for(std::vector<nmr::ComplexOutputState::ModificationTokenStr>::const_iterator iter = cos.theModificationTokens.begin();
-      iter != cos.theModificationTokens.end();
-      ++iter)
-    {
-      os << "( " << (*iter).first << ", ( " << (*iter).second.first << ", " << (*iter).second.second << ")), ";
-    }
-  if (cos.theModificationTokens.size() == 0) os << "*";
+//   for(std::vector<nmr::ComplexOutputState::ModificationTokenStr>::const_iterator iter = cos.theModificationTokens.begin();
+//       iter != cos.theModificationTokens.end();
+//       ++iter)
+//     {
+//       os << "( " << (*iter).first << ", ( " << (*iter).second.first << ", " << (*iter).second.second << ")), ";
+//     }
+//   if (cos.theModificationTokens.size() == 0) os << "*";
 
-  os << "\n";
-  return os;
+//   os << "\n";
+//   return os;
+
+    os << cos.repr();
+    return os;
 }

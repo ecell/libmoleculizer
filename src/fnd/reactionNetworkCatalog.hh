@@ -283,6 +283,13 @@ namespace fnd
     recordSpecies( SpeciesTypePtr pSpecies)
     {
       std::string* pSpeciesName = new std::string( pSpecies->getName() );
+
+      // This is for debugging.
+      std::cout << *pSpeciesName << std::endl;
+      std::string* npSpeciesName = new std::string( pSpecies->getName() );
+      delete npSpeciesName;
+
+
       if (theSpeciesListCatalog.find( pSpeciesName) == theSpeciesListCatalog.end() )
 	{
                 

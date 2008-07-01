@@ -111,5 +111,4 @@ ReactionNetworkGenerator::checkSpeciesNameLegality(const std::string& speciesOne
     {
       return false;
     }
-        
 }

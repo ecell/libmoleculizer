@@ -56,8 +56,7 @@ namespace nmr
 	  
 	  return newMzrSpecies;
 	}
-
-      // I should separate
+      // I should separate the reasons things went bad here.
       catch(...)
 	{
 	  throw nmr::IllegalNameXcpt(encodedSpeciesName);

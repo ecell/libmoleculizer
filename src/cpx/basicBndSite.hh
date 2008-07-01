@@ -66,7 +66,7 @@ namespace cpx
     }
 
       bool 
-      operator<( const basicBndSite& refBndSite)
+      operator<( const basicBndSite& refBndSite) const
       {
           return getName() < refBndSite.getName();
       }

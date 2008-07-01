@@ -248,8 +248,8 @@ namespace bnd
 
       // TODO: DEBUG_TRY
       // This is just a trial thing here....
-//       std::sort( bindingSites.begin(),
-//                  bindingSites.end());
+//      std::sort( bindingSites.begin(),
+//                 bindingSites.end());
 
       // Process the modification sites.
       xmlpp::Node::NodeList modSiteNodes

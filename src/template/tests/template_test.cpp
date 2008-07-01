@@ -1,5 +1,10 @@
 #include <boost/test/included/unit_test.hpp>
+#include <boost/foreach.hpp>
+#include <iostream>
 using namespace boost::unit_test;
+using std::cout;
+using std::endl;
+
 
 #define declare_test_suite( test_title ) \
     framework::master_test_suite().p_name.value = test_title;

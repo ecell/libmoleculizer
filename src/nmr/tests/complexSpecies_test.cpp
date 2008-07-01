@@ -1,4 +1,5 @@
 #include <boost/test/included/unit_test.hpp>
+#include <iostream>
 #include "nmr/namedMolecule.hh"
 #include "nmr/complexSpecies.hh"
 using namespace boost::unit_test;
@@ -40,7 +41,7 @@ MolSharedPtr makeMolType_A()
 
 MolSharedPtr makeMolType_B()
 {
-    MinimalMolSharedPtr ptrMol( new MinimalMol("A-Type") );
+    MinimalMolSharedPtr ptrMol( new MinimalMol("B-Type") );
     ptrMol->addNewBindingSite("One");
 
     ptrMol->addNewModificationSite("Site-One", "NULL");
@@ -74,10 +75,38 @@ void test_constructors()
     BOOST_CHECK( s.getNumberOfBindingsInComplex() == 2);
 }
 
+void test_repr()
+{
+    ComplexSpecies s;
+
+    MolSharedPtr pMolOne = makeMolType_A();
+    MolSharedPtr pMolTwo = makeMolType_A();
+    MolSharedPtr pMolThree = makeMolType_B();
+
+    pMolThree->updateModificationState("Site-One", "NONNULL");
+
+    s.addMolToComplex(pMolOne, "Mol_1");
+    s.addMolToComplex(pMolTwo, "Mol_2");
+    s.addMolToComplex(pMolThree, "Mol_3");
+    
+    s.addBindingToComplex("Mol_1", "One", 
+                          "Mol_2", "Two");
+
+    s.addBindingToComplex("Mol_2", "One", 
+                          "Mol_3", "One");
+
+    ComplexOutputState aCOS;
+    s.constructOutputState(aCOS);
+
+    std::cout << aCOS.repr() << std::endl;
+    
+}
+
 test_suite*
 init_unit_test_suite( int, char* [] ) {
     declare_test_suite( "Nmr::ComplexSpecies Test Suite");
     add_test(test_constructors);
+    add_test(test_repr);
 
     return 0;
 }

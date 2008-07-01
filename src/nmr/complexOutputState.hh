@@ -61,6 +61,7 @@ namespace nmr
         void addModificationTokenToOutputState(ModificationTokenStrCref aModificationToken);
 
         void clear();
+        std::string repr() const;
     };
 }
 

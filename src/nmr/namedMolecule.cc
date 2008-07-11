@@ -25,6 +25,7 @@
 /////////////////////////////////////////////////////////////////////////////
 
 #include "nmr/namedMolecule.hh"
+#include <boost/foreach.hpp>
 
 #ifdef HAVE_CONFIG_H
 #include "moleculizer_config.hh"
@@ -32,6 +33,33 @@
 
 namespace nmr
 {
+
+    MinimalMol::BindingSiteList
+    MinimalMol::getBindingList() const
+    {
+        std::vector<std::pair<unsigned int, BindingSite> > theBindings;
+        
+        typedef std::pair<BindingSite, unsigned int> LocalPairType;
+        BOOST_FOREACH( const LocalPairType& aPair, bindingSiteNameToNdxMap)
+        {
+            theBindings.push_back( std::make_pair(aPair.second, aPair.first ) );
+        }
+
+        std::sort(theBindings.begin(),
+                  theBindings.end());
+
+        std::vector<BindingSite> finalVector;
+
+        typedef std::pair<unsigned int, BindingSite> RevLocalPairType;
+        BOOST_FOREACH( const RevLocalPairType& aPair, theBindings)
+        {
+            finalVector.push_back( aPair.second);
+        }
+
+        return finalVector;
+    }
+
+
     void 
     MinimalMol::addNewBindingSite( BindingSiteCref aBindingSite)
     {

@@ -188,7 +188,7 @@ namespace nmr
                             tmpPn.thePermutation = Permutation(*partialPermIter, i, leastIntNotInPartial);
 
                             //3.7
-                            maximallyExtendPermutation(tmpPn.thePermutation, aComplexSpecies);
+                            // maximallyExtendPermutation(tmpPn.thePermutation, aComplexSpecies);
                             theNextIterationsPartialPermutations.push_back(tmpPn);
                         }
                     }

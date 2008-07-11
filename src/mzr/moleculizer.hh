@@ -121,6 +121,8 @@ namespace mzr
         void DEBUG_showNumberDeltaSpecies();
         void DEBUG_showNumberDeltaReactions();
 
+        void DEBUG_isPresent() const;
+
         void DEBUG_showAllSpecies();
         void DEBUG_showAllReactions();
 

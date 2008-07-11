@@ -26,7 +26,9 @@
 
 #include "utl/utility.hh"
 #include "complexSpecies.hh"
+#include "namedMolecule.hh"
 #include <boost/foreach.hpp>
+#include <iostream>
 
 namespace nmr
 {
@@ -40,18 +42,34 @@ namespace nmr
 
     ComplexSpecies::ComplexSpecies(ComplexSpeciesCref aComplexSpecies) 
         : 
+        theMols(),
         theMolAliasToNdxMap(aComplexSpecies.theMolAliasToNdxMap.begin(), aComplexSpecies.theMolAliasToNdxMap.end()),
-        theMols(aComplexSpecies.theMols.begin(), aComplexSpecies.theMols.end()),
         theBindings(aComplexSpecies.theBindings.begin(), aComplexSpecies.theBindings.end())
-    {}
+    {
+        // theMols(aComplexSpecies.theMols.begin(), aComplexSpecies.theMols.end()),
+
+        BOOST_FOREACH(MinimalMolSharedPtr ptrMol, aComplexSpecies.theMols )
+        {
+            MinimalMolSharedPtr newMolPtr( new MinimalMol(*ptrMol ) );
+            theMols.push_back( newMolPtr );
+        }
+    }
 
     ComplexSpecies::ComplexSpecies(ComplexOutputStateCref aComplexOutputState)
     {
-        // TODO: Write me, as I am used in nmrUnit::getSpeciesFromName.
+        std::cerr << "Error in ComplexSpecies(ComplexOutputStateCref aComplexOutputState)" << std::endl;
+        throw 10;
     }
 
+    ComplexSpecies& 
+    ComplexSpecies::operator=(const ComplexSpecies& crefComplexSpecies)
+     {
+         std::cerr << "Error in ComplexSpecies(ComplexOutputStateCref aComplexOutputState)" << std::endl;
+         throw 10;
+     }
+
     void 
-    ComplexSpecies::addMolToComplex(MolSharedPtr someMol, AliasCref anAlias) throw(DuplicateMolAliasXcpt)
+    ComplexSpecies::addMolToComplex(MinimalMolSharedPtr someMol, AliasCref anAlias) throw(DuplicateMolAliasXcpt)
     {
         // If the alias already exists throw an Exception.
         if (theMolAliasToNdxMap.find(anAlias) != theMolAliasToNdxMap.end()) throw DuplicateMolAliasXcpt( someMol->getMolType(), anAlias );

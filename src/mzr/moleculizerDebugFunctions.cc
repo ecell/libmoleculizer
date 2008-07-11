@@ -215,6 +215,7 @@ namespace mzr
 
         std::string randomSpeciesName = DEBUG_getRandomLiveSpecies();
         cout << "Expanding '" << randomSpeciesName << "'..." << endl;
+
         incrementNetworkBySpeciesName( randomSpeciesName );
    
         cout << "Following expansion:" << endl;
@@ -417,6 +418,22 @@ moleculizer::DEBUG_getSpeciesFromName()
       }
 }
 
+
+    void
+    moleculizer::DEBUG_isPresent() const
+    {
+        mzr::mzrSpecies* ptrMzr = (mzr::mzrSpecies*) 0xfffffff;
+        BOOST_FOREACH( SpeciesCatalog::value_type type, theSpeciesListCatalog)
+        {
+            if (type.second == ptrMzr)
+            {
+                std::cout << "Present" << endl;
+                return;
+            }
+        }
+        
+        std::cout << "Not present." << endl;
+    }
 
     void 
     moleculizer::DEBUG_clearAll()

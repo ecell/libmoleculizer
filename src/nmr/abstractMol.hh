@@ -76,6 +76,8 @@ namespace nmr
         virtual void addNewBindingSite( BindingSiteCref aBindingSite ) = 0;
         virtual void addNewModificationSite( ModificationSiteCref newModSite, ModificationValueCref modValue) = 0;
 
+        virtual BindingSiteList getBindingList() const = 0;
+
         // To get the structure of the mol.
         virtual bool checkIfBindingSiteExists(BindingSiteCref aBindingSite) const = 0;
         virtual bool checkIfModificationSiteExists(ModificationSiteCref aModificationSite) const =0;

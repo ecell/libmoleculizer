@@ -50,7 +50,7 @@ namespace nmr
 
         MinimalMol( MolTypeCref molType)
             :
-            Mol( molType)
+            Mol(molType)
         {}
 
         bool checkIfBindingSiteExists(BindingSiteCref aBindingSite) const;
@@ -67,6 +67,9 @@ namespace nmr
         ModificationValue 
         getModificationValueAtModificationSite(ModificationSiteCref aModificationSite) 
             const throw(NoSuchModificationSiteXcpt);
+
+        BindingSiteList
+        getBindingList() const;
 
         ModificationList 
         getModificationList() const;

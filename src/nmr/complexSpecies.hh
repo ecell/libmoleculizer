@@ -31,6 +31,7 @@
 #include "partialTokenList.hh"
 #include "permutation.hh"
 #include "abstractMol.hh"
+#include "namedMolecule.hh"
 #include "nmrExceptions.hh"
 
 #include "utl/macros.hh"
@@ -57,10 +58,10 @@ namespace nmr
     public:
         DECLARE_TYPE( std::string, Alias);
         DECLARE_TYPE( int, MolNdx );
-        DECLARE_TYPE( std::vector<MolSharedPtr>, MolList);
+        DECLARE_TYPE( std::vector<MinimalMolSharedPtr>, MolList);
         DECLARE_TYPE( int, BndNdx);
-        DECLARE_TYPE( Mol::BindingSite,  BindingSite);
-        DECLARE_TYPE( Mol::ModificationList, ModificationList)
+        DECLARE_TYPE( MinimalMol::BindingSite,  BindingSite);
+        DECLARE_TYPE( MinimalMol::ModificationList, ModificationList)
         typedef std::pair<MolNdx, BndNdx> __HalfBinding;
         DECLARE_TYPE(__HalfBinding, HalfBinding);
         typedef std::pair<HalfBinding, HalfBinding> __Binding;
@@ -74,9 +75,12 @@ namespace nmr
         ComplexSpecies(ComplexOutputStateCref aComplexOutputState);
 
         ~ComplexSpecies()
-        {}
+        {
+        }
 
-        void addMolToComplex(MolSharedPtr ptrMol, AliasCref anAlias) 
+        ComplexSpecies& operator=(const ComplexSpecies& crefComplexSpecies);
+
+        void addMolToComplex(MinimalMolSharedPtr ptrMol, AliasCref anAlias) 
             throw(DuplicateMolAliasXcpt);
 
         void addBindingToComplex(AliasCref firstMolAlias, 

@@ -43,6 +43,7 @@
 #include <algorithm>
 #include "cpx/modification.hh"
 #include "cpx/modStateMixin.hh"
+#include <boost/foreach.hpp>
 
 namespace cpx
 {
@@ -57,6 +58,12 @@ namespace cpx
     // by name or by index.
     std::map<std::string, int> modSiteNameToNdx;
     std::vector<std::string> modSiteNames;
+    
+    // This may be superfluous and repeated elsewhere, however, I cannot find it.
+    // If there is an easier/better way to get at the default modifications, someone
+    // let me know and remove this.  That said, it really isn't that heavyweight.  
+    // Probably adds 3 bytes per modification.  
+    std::vector<const cpx::modification*> defaultModifications;
 
     // Look up modification site index by name.  Returns true if there
     // is a modification site with the given name, and returns the index
@@ -64,6 +71,20 @@ namespace cpx
     bool
     getModSiteNdx(const std::string& rModSiteName,
 		  int& rSiteNdx) const;
+
+    const cpx::modification*
+    getDefaultModForSite(const std::string& modSiteName) const
+    {
+        int ndx = modSiteNameToNdx.find(modSiteName)->second;
+        return defaultModifications[ ndx ];
+    }
+
+    const std::string&
+    getDefaultModNameForSite(const std::string& modSiteName) const
+    {
+        int ndx = modSiteNameToNdx.find(modSiteName)->second;
+        return defaultModifications[ ndx ]->getName();
+    }
 
     int
     modSiteCount(void) const

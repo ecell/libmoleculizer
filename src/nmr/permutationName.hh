@@ -28,7 +28,6 @@
 #ifndef __PERMUTATIONNAME_HH
 #define __PERMUTATIONNAME_HH
 
-#include <iostream>
 #include "permutation.hh"
 #include "partialTokenList.hh"
 
@@ -52,8 +51,10 @@ namespace nmr
                 ; // do nothing
             }
 
-            void
-            print() const;
+            bool operator==(PermutationNameCref anotherPermutationName)
+            {
+                return (thePermutation == anotherPermutationName.thePermutation);
+            }
 
             
             bool operator<(PermutationNameCref aPermutationName) const;

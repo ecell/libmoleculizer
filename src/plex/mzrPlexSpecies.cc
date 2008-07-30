@@ -50,11 +50,17 @@ namespace plx
   mzrPlexSpecies::
   getName(void) const
   {
-
-
-    // First we get the nmrAssembler from the family's reference to the nmrUnit.
-    const nmr::NameAssembler* pNameAssembler = rFamily.getNamingStrategy();
-    return getCanonicalName(pNameAssembler);
+      if(nameGenerated)
+      {
+          return name;
+      }
+      else
+      {
+          nameGenerated = true;
+          const nmr::NameAssembler* pNameAssembler = rFamily.getNamingStrategy();          
+          name = getCanonicalName(pNameAssembler);
+          return name;
+      }
   }
 
   xmlpp::Element*

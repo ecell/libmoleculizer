@@ -37,6 +37,8 @@ namespace mzr
   {
     mzr::InteractiveModeManager<moleculizer> theInteractiveMode(this);
 
+    theInteractiveMode.addFunction("showLiveSpecies", &moleculizer::DEBUG_showLiveSpecies);
+    theInteractiveMode.addFunction("showDeadSpecies", &moleculizer::DEBUG_showDeadSpecies);
     theInteractiveMode.addFunction("showNumberSpecies", &moleculizer::DEBUG_showTotalNumberSpecies);
     theInteractiveMode.addFunction("showNumberReactions", &moleculizer::DEBUG_showTotalNumberReactions);
     theInteractiveMode.addFunction("showNumberDeltaSpecies", &moleculizer::DEBUG_showNumberDeltaSpecies);
@@ -54,8 +56,16 @@ namespace mzr
     theInteractiveMode.addFunction("Get species from name", &moleculizer::DEBUG_getSpeciesFromName);
     theInteractiveMode.addFunction("Clear all species and reactions", &moleculizer::DEBUG_clearAll);
     theInteractiveMode.addFunction("Find an unary reaction", &moleculizer::DEBUG_showUnaryReaction);
+    theInteractiveMode.addFunction("Do random particle collision", &moleculizer::DEBUG_doRandomParticleCollisionInterval);
 
     theInteractiveMode.runInteractiveMode();
+  }
+
+  void moleculizer::DEBUG_doRandomParticleCollisionInterval()
+  {
+      std::cout << "DEBUG_doRandomParticleCollisionInterval not yet implemented." << endl;
+      return;
+
   }
 
   void moleculizer::RunProfileMode(unsigned int Num_Iterations, bool verbose)
@@ -66,7 +76,7 @@ namespace mzr
       {
         if (i % 10 == 0 )
           {
-            cout << i / static_cast<float>(Num_Iterations)  * 100.0f << "% done..." << endl;
+              cout << i / static_cast<float>(Num_Iterations)  * 100.0f << "% done..." << endl;
           }
 
         resetCurrentState();
@@ -177,9 +187,30 @@ namespace mzr
       }
   }
 
-    
   std::string
-  moleculizer::DEBUG_getRandomLiveSpecies() const 
+  moleculizer::DEBUG_getRandomDeadSpeciesName() const
+  {
+      std::vector<mzrSpecies*> deadSpecies;
+      BOOST_FOREACH( SpeciesCatalog::value_type vt, theSpeciesListCatalog)
+      {
+          if (vt.second->hasNotified())
+          {
+              deadSpecies.push_back( vt.second );
+          }
+      }
+
+      if (deadSpecies.size() == 0) throw utl::xcpt("Error.  Reaction network has no \"live\" species.");
+      
+      int random_index = rand() % deadSpecies.size();
+
+      mzrSpecies* pLiveSpecies = deadSpecies[random_index];
+      std::string name = pLiveSpecies->getName();
+
+      return name;
+  }
+
+  std::string
+  moleculizer::DEBUG_getRandomLiveSpeciesName() const 
   {
 
       // Highly inefficient - this could be rewritten in a much
@@ -213,7 +244,7 @@ namespace mzr
       // Clear the delta lists....
       resetCurrentState();
 
-        std::string randomSpeciesName = DEBUG_getRandomLiveSpecies();
+        std::string randomSpeciesName = DEBUG_getRandomLiveSpeciesName();
         cout << "Expanding '" << randomSpeciesName << "'..." << endl;
 
         incrementNetworkBySpeciesName( randomSpeciesName );
@@ -253,7 +284,7 @@ namespace mzr
 
   void moleculizer::DEBUG_showRandomLiveSpecies()
   {
-    cout << DEBUG_getRandomLiveSpecies() << endl;
+    cout << DEBUG_getRandomLiveSpeciesName() << endl;
   }
 
 
@@ -272,16 +303,21 @@ namespace mzr
            mzr::mzrSpecies* pSpeciesOne = this->getSpeciesWithName( speciesOne );
            mzr::mzrSpecies* pSpeciesTwo = this->getSpeciesWithName( speciesTwo );
 
-           mzrReaction* reactionBetweenSpecies= 
-             this->findReactionWithSubstrates(pSpeciesOne, pSpeciesTwo);
+           std::vector<mzrReaction*> rxnVector;
+           bool reactionBetweenSpecies = this->findReactionWithSubstrates(pSpeciesOne, pSpeciesTwo, rxnVector);
 
          if(reactionBetweenSpecies)
            {
-             std::cout << "Found one." << std::endl;
+               std::cout << "Found " << rxnVector.size() << " reactions between these" << std::endl;
+
+               BOOST_FOREACH(mzrReaction* ptr, rxnVector)
+               {
+                   cout << ptr->getName() << endl;
+               }
            }
          else
            {
-             std::cout << "No reaction between" << std::endl;
+               std::cout << "No reaction between" << std::endl;
            }
 
        }
@@ -293,6 +329,31 @@ namespace mzr
   }
 
 
+
+    void moleculizer::DEBUG_showLiveSpecies()
+    {
+
+      BOOST_FOREACH( SpeciesCatalog::value_type vt, theSpeciesListCatalog)
+      {
+          if (!vt.second->hasNotified())
+          {
+              cout << *vt.first << endl;
+          }
+      }
+    }
+
+    void moleculizer::DEBUG_showDeadSpecies()
+    {
+      BOOST_FOREACH( SpeciesCatalog::value_type vt, theSpeciesListCatalog)
+      {
+          if (vt.second->hasNotified())
+          {
+              cout << *vt.first << endl;
+          }
+      }
+    }
+    
+
   void moleculizer::DEBUG_showUnaryReaction() 
   {
 
@@ -303,24 +364,39 @@ namespace mzr
 
     int count = 0;
 
-     try
-       {
-           mzr::mzrSpecies* pSpeciesOne = pUserUnits->pNmrUnit->constructSpeciesFromName( speciesOne );
-	   pSpeciesOne->expandReactionNetwork();
+    if ( theSpeciesListCatalog.find( &speciesOne) == theSpeciesListCatalog.end())
+    {
+        pUserUnits->pNmrUnit->constructSpeciesFromName( speciesOne );
+        if (theSpeciesListCatalog.find( &speciesOne) == theSpeciesListCatalog.end() )
+        {
+            cerr << "error" << endl;
+            exit(1);
+        }
+    }
+    
+    incrementNetworkBySpeciesName( speciesOne );
+        
+    std::vector<mzrReaction*> aVector;
 
+    mzrSpecies* ptrSpecies = theSpeciesListCatalog[&speciesOne];
+    findReactionWithSubstrates(ptrSpecies , aVector);
 
-	   std::vector<mzrReaction*> aVector;
+    std::sort(aVector.begin(),
+              aVector.end());
 
-	   findReactionWithSubstrates(pSpeciesOne, aVector);
-	   cout << "Found:\t" << aVector.size() << endl;
+    std::vector<mzrReaction*>::iterator newend = std::unique(aVector.begin(),
+                                                             aVector.end());
 
-	   
-       }
-     catch(mzr::illegalSpeciesNameXcpt xcpt)
-     {
-         xcpt.warn();
-         std::cerr << "Continuing." << std::endl;
-     }
+    std::vector<mzrReaction*> bVector(aVector.begin(),
+                                      newend);
+
+    cout << "Found:\t" << aVector.size() << endl;
+
+    BOOST_FOREACH(mzrReaction* ptr, bVector)
+    {
+        cout << ptr->getName() << endl;
+    }
+
   }
 
   void moleculizer::DEBUG_changeNamingStrategy()
@@ -376,6 +452,12 @@ namespace mzr
 
 
   }
+
+void 
+moleculizer::DEBUG_doMultipleRandomParticleCollisions(unsigned int numCollisions)
+{
+      
+}
 
 
 void

@@ -63,24 +63,6 @@ namespace cpx
             return rThisModState < rRightModState;
         }
 
-        virtual 
-        string 
-        getName() const
-        {
-            ostringstream oss;
-            oss << "Mod mol state with weight '" 
-                << this->getMolWeight() 
-                << "' - ";
-            for( unsigned int ii = 0; ii != size(); ++ii)
-            {
-                oss << "( " << (*this)[ii]->getName() << " )";
-            }
-            
-            return oss.str();
-        }
-
-      
-
         virtual
         ~modMolState(void)
         {}

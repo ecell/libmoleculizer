@@ -27,6 +27,7 @@
 #include "mzr/mzrUnit.hh"
 #include "mzr/unitsMgr.hh"
 #include "mzr/moleculizer.hh"
+#include <iostream>
 
 namespace mzr
 {
@@ -39,15 +40,13 @@ namespace mzr
     void 
     mzrSpecies::expandReactionNetwork() 
     {
+        this->expandReactionNetwork(1);
+    }
 
-
-        fnd::sensitivityList<mzrReaction> affectedReactions;
-
-        // NJA -- fix this...
-        update(10,
-               affectedReactions,
-               mzrSpecies::getGenerateDepth());
-
+    void 
+    mzrSpecies::expandReactionNetwork(unsigned int depth)
+    {
+        ensureNotified(depth);
     }
 
 

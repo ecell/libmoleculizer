@@ -551,19 +551,6 @@ namespace nmr
 
     }
 
-    void
-    Permutation::print() const
-    {
-        std::cout << "[";
-        for(unsigned int ii = 0; ii != thePermutation.size() - 1; ++ii)
-        {
-            std::cout << thePermutation[ii] << ", ";
-        }
-        
-        std::cout << *thePermutation.rbegin() << ']' << std::endl;
-
-    }
-
 }
 
 

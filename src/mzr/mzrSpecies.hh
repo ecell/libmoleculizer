@@ -50,6 +50,8 @@ namespace mzr
         virtual void
         expandReactionNetwork();
 
+        void expandReactionNetwork(unsigned int i);
+
         static void
         setGenerateDepth(unsigned int i);
         

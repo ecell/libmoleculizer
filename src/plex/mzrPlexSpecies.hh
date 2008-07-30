@@ -43,6 +43,10 @@ namespace plx
     public mzr::mzrSpecies,
     public cpx::plexSpeciesMixin<mzrPlexFamily>
   {
+  private:
+
+      mutable bool nameGenerated;
+      mutable std::string name;
   public:
 
     typedef mzr::querySpeciesDumpable<mzrPlexSpecies> queryDumpableType;
@@ -55,7 +59,10 @@ namespace plx
       cpx::plexSpeciesMixin<mzrPlexFamily>(rContainingFamily,
 					   rSiteParams,
 					   rMolParams)
-    {}
+    {
+        nameGenerated = false;
+        name = "";
+    }
 
     ~mzrPlexSpecies(void)
       {

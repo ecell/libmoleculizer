@@ -216,29 +216,21 @@ namespace nmr
                 iter->theCorrespondingPartialTokenList = calculatePartialTokenListForPermutation(aComplexSpecies, iter->thePermutation);
             }
 
-// //             std::cout << "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" << std::endl;
-// //             std::cout<< "Sorting " << theNextIterationsPartialPermutations.size() << std::endl;
-
-
-//              // int i = 0;
-// //              BOOST_FOREACH(const PermutationName& pm , theNextIterationsPartialPermutations)
-// //              {
-// //                  std::cout << i++<< ":" << std::endl;
-// //                  pm.print();
-// //                  std::cout << pm.theCorrespondingPartialTokenList << std::endl;
-                
-// //              }
-//             std::cout << "###################################################################" << std::endl;
-//           std::cout << "***" << std::endl;
-
-
+            if (theNextIterationsPartialPermutations.size() > 60000)
+            {
+                throw UnboundNamingAlgorithmXcpt(theNextIterationsPartialPermutations.size(), aComplexSpecies);
+            }
 
             std::sort(theNextIterationsPartialPermutations.begin(),
                       theNextIterationsPartialPermutations.end());
 
+            std::vector<PermutationName>::iterator last = 
+                std::unique(theNextIterationsPartialPermutations.begin(),
+                            theNextIterationsPartialPermutations.end());
+
             PartialTokenList leastPartial = theNextIterationsPartialPermutations.begin()->theCorrespondingPartialTokenList;
             for(std::vector<PermutationName >::iterator i = theNextIterationsPartialPermutations.begin();
-                i != theNextIterationsPartialPermutations.end();
+                i != last;
                 ++i)
             {
                 if (i->theCorrespondingPartialTokenList == leastPartial)
@@ -440,10 +432,6 @@ namespace nmr
                  }
              }
          }
-         
-
-//         std::cout << "In maximallyExtendPermutation " << iii << " indexes were extended..." << std::endl;
-         
     }
     
     

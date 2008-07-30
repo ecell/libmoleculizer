@@ -75,8 +75,7 @@ namespace nmr
         ComplexSpecies(ComplexOutputStateCref aComplexOutputState);
 
         ~ComplexSpecies()
-        {
-        }
+        {}
 
         ComplexSpecies& operator=(const ComplexSpecies& crefComplexSpecies);
 

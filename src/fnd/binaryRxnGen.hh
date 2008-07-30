@@ -120,12 +120,6 @@ namespace fnd
                                           *this,
                                           rStimulus.getNotificationDepth());
 
-        // Because of impropriety, I refuse to write what I actually feel here 
-        // (HOLY FUCKING SHIT -- I AM A FUCKING GOLDEN FUCKING GOD FUCKITY FUCK
-        //  FUCK FUCK FUCK FUCK SHIT GOD DAMN I KICK FUCKING ASS FUCKITY FUCK
-        //  FUCK FUCK FUCK) as I am a gentleman, in spite of the fact that I have 
-        // spent a WEEK tracking down this problem.  
-
         // This does not work as a for_each loop, because of some gcc bug involving
         // templates/inheritance that causes this->end() to be incorrectly interpreted
         // such that the loop is overrun, causing junk to be processed by anotherContext

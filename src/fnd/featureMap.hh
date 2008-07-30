@@ -72,6 +72,14 @@ namespace fnd
     };
 
   public:
+      int 
+      getNum() const
+      {
+          return this->size();
+      }
+
+
+
     typedef newSpeciesStimulus<typename contextT::speciesType> stimulusType;
     
     //! Add a feature to be notified when a new species appears.
@@ -90,32 +98,16 @@ namespace fnd
         // Replacing the code below with a BOOST_FOREACH loop, in the hopes that
         // this may make things more clear.
 
-//       for_each(this->begin(),
-// 	       this->end(),
-// 	       notifyFeature(rStimulus));
+       for_each(this->begin(),
+                this->end(),
+                notifyFeature(rStimulus));
 
 
-        typedef std::map<typename contextT::contextSpec, feature<contextT>* > SelfType;
-        typedef typename std::map<typename contextT::contextSpec, feature<contextT>* >::value_type SelfTypeValueType;
-
-        BOOST_FOREACH(SelfTypeValueType rEntry, *this)
-        {
-            const typename contextT::contextSpec& rSpec = rEntry.first;
-
-            feature<contextT>* pFeature = rEntry.second;
-
-            contextT newContext(rStimulus.getSpecies(),
-                                rSpec);
-
-            newContextStimulus<contextT> stim(newContext,
-                                              rStimulus.getNotificationDepth());
-	
-            pFeature->respond(stim);
-        }
 
         
     }
   };
+
 }
 
 #endif

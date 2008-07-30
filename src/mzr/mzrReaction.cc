@@ -32,6 +32,7 @@
 #include "mzr/dumpUtils.hh"
 #include "mzr/unitsMgr.hh"
 #include "mzr/moleculizer.hh"
+#include <iostream>
 
 namespace mzr
 {
@@ -118,10 +119,39 @@ namespace mzr
         }
     };
 
+    class notifyOneSpecies:
+        public std::unary_function<fnd::basicReaction<mzrSpecies>::multMap::value_type, void>
+    {
+        int depth;
+
+        public:
+        notifyOneSpecies(int generateDepth) :
+            depth(generateDepth)
+        {}
+
+        void
+        operator()(const argument_type& rSpeciesMultPair) const
+        {
+            mzrSpecies* pSpecies = rSpeciesMultPair.first;
+            pSpecies->expandReactionNetwork( depth );
+        }
+    };
+
+
     void
     mzrReaction::expandReactionNetwork()
     {
-        happen();
+        int generateDepth
+            = getGenerateDepth();
+
+        if(generateDepth != 1)
+        {
+            std::cerr << "(WARN) Generate depth is set to " << generateDepth << ".  Is this intentional?" << std::endl;
+        }
+
+        std::for_each( deltas.begin(),
+                       deltas.end(),
+                       notifyOneSpecies(generateDepth));
     }
 
     // What a reaction event does, given what the reaction does.
@@ -182,23 +212,9 @@ namespace mzr
     happen() throw(std::exception)
     {
 
-        fnd::sensitivityList<mzrReaction> affectedReactions;
+       fnd::sensitivityList<mzrReaction> affectedReactions;
 
-        // This is a leftover of the hack for "no reactant" arrows.  Since
-        // they're not sensitive to anything, they have to reschedule
-        // themselves.
-//         respondReaction doRespondReaction(rMolzer);
-//         if(reactants.size() == 0)
-//         {nn
-//             // This is a hacky special case, and that's why I don't like it.
-//             lastPropensity = -1.0;
-//             doRespondReaction(this);
-//         }
-
-
-        // Do the reaction deltas.
-//         int generateDepth
-//             = rMolzer.pUserUnits->pMzrUnit->getGenerateDepth();
+       // Do the reaction deltas.
         int generateDepth 
             = getGenerateDepth();
         std::for_each(deltas.begin(),
@@ -221,15 +237,12 @@ namespace mzr
 //         affectedReactions.forEachSensitive(doRespondReaction);
 
 //         // For the dumpable that gives the total number of reactions so far.
-//         reactionEventCount++;
+         reactionEventCount++;
 
         return fnd::go;
-    }
+   }
         
 
-    
-    
-    
 
     // Following are connected with generating state dump output.
 

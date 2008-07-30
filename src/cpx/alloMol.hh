@@ -68,20 +68,6 @@ namespace cpx
       throw(typename utl::xcpt);
 
   public:
-      virtual void 
-      printAlloMap() const
-      {
-          // DEBUG
-          for(typename alloMapType::const_iterator iter = alloMap.begin();
-              iter != alloMap.end();
-              ++iter)
-          {
-              cout << iter->first.getName() << endl;
-          }
-      }
-
-
-
 
     typedef stateMolT stateMolType;
 

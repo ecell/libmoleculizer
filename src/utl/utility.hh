@@ -42,7 +42,7 @@ namespace utl
         std::istringstream iss(s);
         return !(iss >> t).fail();
     }
-    
+
     template <class ForwardIter,
 	      class OutputIter,
 	      class UnaryPred>

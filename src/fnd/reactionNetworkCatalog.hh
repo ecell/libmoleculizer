@@ -111,7 +111,7 @@ namespace fnd
     }
 
 
-    void
+    bool
     findReactionWithSubstrates(const SpeciesTypePtr A, 
 			       std::vector<ReactionTypePtr>& reactionVector)
     {
@@ -128,123 +128,110 @@ namespace fnd
             ++iter;
         }
 
-        return;
+        return ( !reactionVector.empty() );
     }
       
-      void
+      bool
       findReactionWithSubstrates(const SpeciesTypePtr A, 
                                  const SpeciesTypePtr B,
-                                 std::vector<ReactionTypePtr>& reactionVector) const
+                                 std::vector<ReactionTypePtr>& reactionVector)
       {
 
           reactionVector.clear();
-          const SpeciesTypePtr tmp;
 
-          // This can be optimized by searching off the ptrSpececiesType which is a substrate
-          // of fewer reactions.
-          if (doubleSubstrateRxns.count(A) < doubleSubstrateRxns.count(B) )
+          if (A == B)
           {
-              for(typename ParticipatingSpeciesRxnMap::const_iterator iter = doubleSubstrateRxns.lower_bound(A);
-                  iter != doubleSubstrateRxns.upper_bound(A);
-                  ++iter)
+              BOOST_FOREACH(ReactionTypePtr ptrRxn, theCompleteReactionList)
               {
-                  if ( iter->second->getReactants().find(B) != (iter->second->getReactants().end()) )
+                  if(ptrRxn->getReactantStochiometry(A) == 2)
                   {
-                      reactionVector.push_back( iter->second );
+                      reactionVector.push_back(ptrRxn);
                   }
               }
-                      
           }
           else
           {
-              for(typename ParticipatingSpeciesRxnMap::const_iterator iter = doubleSubstrateRxns.lower_bound(B);
-                  iter != doubleSubstrateRxns.upper_bound(B);
-                  ++iter)
+              BOOST_FOREACH(ReactionTypePtr ptrRxn, theCompleteReactionList)
               {
-                  if (iter->second->getReactants().find(A) != iter->second->getReactants().end())
+                  if (ptrRxn->hasReactant(A) && ptrRxn->hasReactant(B))
                   {
-                      reactionVector.push_back( iter->second);
+                      reactionVector.push_back(ptrRxn);
                   }
-              }
-          } 
-              
+              } 
+          }
 
-          return;
-
+          return (!reactionVector.empty());
       }
 
+//     // The unary reaction case
+//     // This will ONLY return an unary reaction.  
+//     const ReactionTypePtr
+//     findReactionWithSubstrates(const SpeciesTypePtr A) const
+//     {
 
+//       int count = 0;
+//       std::string reactantName = A->getName();
 
+//       ReactionTypePtr thePtr = NULL;
 
-    // The unary reaction case
-    // This will ONLY return an unary reaction.  
-    const ReactionTypePtr
-    findReactionWithSubstrates(const SpeciesTypePtr A) const
-    {
-
-      int count = 0;
-      std::string reactantName = A->getName();
-
-      ReactionTypePtr thePtr = NULL;
-
-      // TODO Finish writing this function.
-      for(ReactionListCIter iter = theCompleteReactionList.begin();
-	  iter != theCompleteReactionList.end();
-	  ++iter)
-	{
-	  if ((*iter)->getReactants().size() != 1) continue;
-	  else 
-	    {
-	      const SpeciesTypePtr B = ((*iter)->getReactants().begin()->first);
+//       // TODO Finish writing this function.
+//       for(ReactionListCIter iter = theCompleteReactionList.begin();
+// 	  iter != theCompleteReactionList.end();
+// 	  ++iter)
+// 	{
+// 	  if ((*iter)->getReactants().size() != 1) continue;
+// 	  else 
+// 	    {
+// 	      const SpeciesTypePtr B = ((*iter)->getReactants().begin()->first);
                         
-	      if (reactantName == B->getName())
-		{
-		  count += 1;
-		  thePtr = *iter;
-		}
-	    }
+// 	      if (reactantName == B->getName())
+// 		{
+// 		  count += 1;
+// 		  thePtr = *iter;
+// 		}
+// 	    }
                 
 
-	}
-      return thePtr;
-    }
+// 	}
+//       return thePtr;
+//     }
 
-    const ReactionTypePtr
-    findReactionWithSubstrates( SpeciesTypePtr A, SpeciesTypePtr B) const
-    {
-      for(ReactionListCIter iter = theCompleteReactionList.begin();
-	  iter != theCompleteReactionList.end();
-	  ++iter)
-	{
-	  ReactionTypePtr pRxn = *iter;
+//     const ReactionTypePtr
+//     findReactionWithSubstrates( SpeciesTypePtr A, SpeciesTypePtr B) const
+//     {
+//       for(ReactionListCIter iter = theCompleteReactionList.begin();
+// 	  iter != theCompleteReactionList.end();
+// 	  ++iter)
+// 	{
+// 	  ReactionTypePtr pRxn = *iter;
 
-	  bool seenA = false;
-	  bool seenB = false;
+// 	  bool seenA = false;
+// 	  bool seenB = false;
                       
-	  for( typename std::map<SpeciesType*, int>::const_iterator jiter = pRxn->getReactants().begin();
-	       jiter != pRxn->getReactants().end();
-	       ++jiter)
-	    {
-	      if( jiter->first == A )
-		{
-		  seenA = true;
-		}
-	      else if (jiter->first == B)
-		{
-		  seenB = true;
-		}
-	    }
+// 	  for( typename std::map<SpeciesType*, int>::const_iterator jiter = pRxn->getReactants().begin();
+// 	       jiter != pRxn->getReactants().end();
+// 	       ++jiter)
+// 	    {
+// 	      if( jiter->first == A )
+// 		{
+// 		  seenA = true;
+// 		}
+// 	      else if (jiter->first == B)
+// 		{
+// 		  seenB = true;
+// 		}
+// 	    }
 
-	  if ( seenA && seenB )
-	    {
-	      return pRxn;
-	    }
+// 	  if ( seenA && seenB )
+// 	    {
+// 	      return pRxn;
+// 	    }
 
-	}
+// 	}
 
-      // Scanned through everything and found nothing.
-      return NULL;
-    }
+//       // Scanned through everything and found nothing.
+//       return NULL;
+//     }
 
     bool
     checkSpeciesIsKnown(const std::string& speciesName) const
@@ -283,16 +270,8 @@ namespace fnd
     recordSpecies( SpeciesTypePtr pSpecies)
     {
       std::string* pSpeciesName = new std::string( pSpecies->getName() );
-
-      // This is for debugging.
-      std::cout << *pSpeciesName << std::endl;
-      std::string* npSpeciesName = new std::string( pSpecies->getName() );
-      delete npSpeciesName;
-
-
       if (theSpeciesListCatalog.find( pSpeciesName) == theSpeciesListCatalog.end() )
 	{
-                
 	  theSpeciesListCatalog.insert( std::make_pair( pSpeciesName, pSpecies) );
 	  theDeltaSpeciesList.push_back( pSpecies );
 	  return true;
@@ -340,38 +319,30 @@ namespace fnd
       theCompleteReactionList.push_back( pRxn );
       theDeltaReactionList.push_back( pRxn );
 
-      switch( pRxn->getReactants().size() )
+      switch( pRxn->getNumberOfReactants() )
       {
           SpeciesTypePtr theSpeciesPtr;
+
       case 0:
           // Register in the map of creation reactions
           zeroSubstrateRxns.push_back( pRxn );
           break;
+
       case 1:
           // Register in a multi map of 1->? reactions
-          
           theSpeciesPtr = pRxn->getReactants().begin()->first;
           singleSubstrateRxns.insert( std::make_pair(theSpeciesPtr, pRxn ) );
           break;
-
       case 2:
-
           BOOST_FOREACH( typename fnd::basicReaction<SpeciesType>::multMap::value_type vt, 
                          pRxn->getReactants() )
           {
               theSpeciesPtr = vt.first;
               doubleSubstrateRxns.insert( std::make_pair( theSpeciesPtr, pRxn) );
           }
-
           break;
-
       default:
-          for(unsigned int i = 0; i != 6000; ++i)
-          {
-              // Spider Jerusalem.
-              std::cerr << "FUCK " << std::endl;
-          }
-
+          std::cerr << __FILE__ << ":" << __LINE__ << std::endl;
           throw 666;
           break;
       }
@@ -459,7 +430,6 @@ namespace fnd
 
     ~ReactionNetworkDescription()
     {
-      // FIXME...
       // We don't memory manage any SpeciesType* or ReactionType*, but we do memory 
       // manage the string* in theSpeciesListCatalog.
 
@@ -469,20 +439,6 @@ namespace fnd
 	  delete i.first;
 	}
     }
-
-    ReactionNetworkDescription(bool reserveMemory = true)
-    {
-      if (reserveMemory)
-	{
-	  // theSpeciesListCatalog.reserve( getPredictedSpeciesNetworkSize() );
-	  // theCompleteReactionList.reserve( getPredictedSpeciesNetworkSize() );
-	  // static_cast<unsigned int>(getPredictedSpeciesReactionRatio() + 1) );
-	}
-    }
-
-      
-      
-
 
     // -- The pointers to the strings in theSpeciesListCatalog ARE memory managed.
     // -- The pointers to the species and reactions ARE NOT memory managed here.

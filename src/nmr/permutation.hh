@@ -148,8 +148,6 @@ namespace nmr
                 return thePermutation;
             }
 
-            void print() const;
-
             std::string
             repr() const;
 

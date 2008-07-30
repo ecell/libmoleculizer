@@ -49,7 +49,8 @@ namespace cpx
 
   modMolMixin::
   modMolMixin(const std::map<std::string, const modification*>& rDefaultModMap)
-    throw(utl::xcpt)
+      throw(utl::xcpt) :
+      defaultModifications( rDefaultModMap.size(), NULL)
   {
     for(std::map<std::string, const modification*>::const_iterator
 	  iModEntry = rDefaultModMap.begin();
@@ -72,6 +73,15 @@ namespace cpx
 	    throw duplicateModSiteNameXcpt(rSiteName);
 	  }
       }
+
+    // Now we construct the defaultModifications vector.
+    typedef std::pair<std::string, const modification*> DefaultModMapPairType;
+    BOOST_FOREACH( const DefaultModMapPairType& nameDefaultModPair, rDefaultModMap)
+    {
+        int index = modSiteNameToNdx[ nameDefaultModPair.first];
+        defaultModifications[index] = nameDefaultModPair.second;
+    }
+
   }
 
   class unknownModSiteXcpt : 

@@ -299,8 +299,8 @@ namespace plx
         rMolzer.recordSpecies( defaultSpecies );
         rMolzer.recordSpecies( createdSpecies );
 
-        defaultSpecies->expandReactionNetwork();
-        createdSpecies->expandReactionNetwork();
+        // defaultSpecies->expandReactionNetwork();
+        // createdSpecies->expandReactionNetwork();
 
         return createdSpecies;
       }

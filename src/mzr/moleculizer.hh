@@ -116,6 +116,8 @@ namespace mzr
         void 
         incrementSpecies(std::string& speciesName);
 
+        void DEBUG_doRandomParticleCollisionInterval();
+
         void DEBUG_showTotalNumberSpecies();
         void DEBUG_showTotalNumberReactions();
         void DEBUG_showNumberDeltaSpecies();
@@ -131,19 +133,31 @@ namespace mzr
 
         void DEBUG_incrementSpecies();
 
-        std::string DEBUG_getRandomLiveSpecies() const;
+        void DEBUG_showLiveSpecies();
+        void DEBUG_showDeadSpecies();
+
+        std::string DEBUG_getRandomLiveSpeciesName() const;
         void DEBUG_incrementRandomSpecies();
         void DEBUG_incrementNRandomLiveSpecies(unsigned int number = 1 );
 
-        void DEBUG_showRandomLiveSpecies();
         void DEBUG_showNumberLiveSpecies();
         void DEBUG_showUnaryReaction();
         void DEBUG_showReactionsBetweenSpecies();
         void DEBUG_changeNamingStrategy();
         void DEBUG_getSpeciesFromName();
 
+        void DEBUG_showRandomLiveSpecies();
+
         void DEBUG_clearAll();
         void DEBUG_findReaction();
+
+        void DEBUG_doMultipleRandomParticleCollisions(unsigned int numCollisions);
+
+        const std::string& getRandomSpeciesName() const;
+
+        std::string DEBUG_getRandomDeadSpeciesName() const;
+
+
         
         public:
         moleculizer(void);

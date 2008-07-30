@@ -44,6 +44,28 @@ namespace nmr
     class ComplexSpeciesOutputMinimizer
     {
 
+    class UnboundNamingAlgorithmXcpt : public GeneralNmrXcpt
+    {
+    public:
+        static 
+        std::string
+        mkMsg( unsigned int numberOfPermutations, ComplexSpeciesCref aCos)
+        {
+            std::ostringstream oss;
+            oss << "Error in ComplexSpeciesOutputMinimizer while trying to "
+                << "minimize object '"
+                << aCos.repr()
+                << "' - possible permutations = "
+                << numberOfPermutations << '\n';
+            return oss.str();
+        }
+
+        UnboundNamingAlgorithmXcpt(unsigned int num, ComplexSpeciesCref aCos)
+            :
+            GeneralNmrXcpt( mkMsg(num, aCos))
+        {}
+    };
+
     public:
 
         ComplexSpeciesOutputMinimizer()

@@ -30,6 +30,7 @@
 #include <string>
 #include <vector>
 #include <sstream>
+#include <boost/foreach.hpp>
 
 namespace fnd
 {
@@ -39,6 +40,29 @@ namespace fnd
     public:
 
         typedef typename std::map<speciesType*, int> multMap;
+
+        bool
+        hasReactant(speciesType* species) 
+        {
+            return (reactants.find(species) != reactants.end() );
+        }
+
+        bool
+        hasProduct(speciesType* species) 
+        {
+            return (products.find(species) != products.end());
+        }
+        
+
+        int 
+        getReactantStochiometry(speciesType* species)
+        {
+            if (!hasReactant(species)) return 0;
+            else 
+            {
+                reactants[species];
+            }
+        }
 
         const multMap&
         getReactants() const
@@ -106,6 +130,20 @@ namespace fnd
         int arity;
 
         double rate;
+
+    public:
+        int getNumberOfReactants() const
+        {
+            int sum = 0;
+
+            BOOST_FOREACH( typename multMap::value_type tt, reactants)
+            {
+                sum += tt.second;
+                
+            }
+
+            return sum;
+        }
 
     public:
         basicReaction(double reactionRate = 0.0) :
@@ -305,9 +343,18 @@ namespace fnd
             ii != theReactants.size();
             ++ii)
         {
-            reactionName << theReactants[ii].second
-                         << " " 
-                         << theReactants[ii].first->getName();
+
+            if (theReactants[ii].second > 1)
+            {
+
+                reactionName << theReactants[ii].second
+                             << " " 
+                             << theReactants[ii].first->getName();
+            }
+            else
+            {
+                reactionName << theReactants[ii].first->getName();
+            }
             
             // I don't like this condition as it seems error-prone.  
             // However
@@ -328,11 +375,18 @@ namespace fnd
             ii != theProducts.size();
             ++ii)
         {
-            reactionName << theProducts[ii].second
-                         << " "
-                         << theProducts[ii].first->getName();
+            if (theProducts[ii].second > 1)
+            {
+                reactionName << theProducts[ii].second
+                             << " "
+                             << theProducts[ii].first->getName();
+            }
+            else
+            {
+                reactionName << theProducts[ii].first->getName();
+            }
             
-            if (ii != theProducts.size())
+            if (ii != (theProducts.size() - 1) )
             {
                 reactionName << " + ";
             }

@@ -24,17 +24,19 @@
 /////////////////////////////////////////////////////////////////////////////
 
 #include <libxml++/libxml++.h>
-#include "utl/noDocumentParsedXcpt.hh"
-#include "utl/modelPreviouslyLoadedXcpt.hh"
+#include <boost/foreach.hpp>
+
 #include "mzr/mzrException.hh"
+
 #include <set>
 #include <algorithm>
 #include <fstream>
 #include <ctime>
+
+#include "utl/noDocumentParsedXcpt.hh"
+#include "utl/modelPreviouslyLoadedXcpt.hh"
 #include "utl/platform.hh"
 #include "utl/linearHash.hh"
-
-// Maybe this can be taken out too....
 #include "utl/dom.hh"
 
 #include "mzr/mzrSpecies.hh"
@@ -151,7 +153,7 @@ namespace mzr
 	theMzrSpecies = findSpecies(speciesName);
 
         // Don't know is this is strictly necessary...
-        theMzrSpecies->expandReactionNetwork(); 
+        // theMzrSpecies->expandReactionNetwork(); 
 
 	return theMzrSpecies;
       }
@@ -172,6 +174,23 @@ namespace mzr
       }
   }
 
+  const std::string&
+  moleculizer::getRandomSpeciesName() const
+  {
+      // I use pointers here, to save space.  
+      // I should make this much more efficient.
+
+      std::vector<mzrSpecies*> allSpecies;
+      BOOST_FOREACH( SpeciesCatalog::value_type vt, theSpeciesListCatalog)
+      {
+          allSpecies.push_back( vt.second );
+      }
+
+      int random_index = rand() % allSpecies.size();
+
+      return allSpecies[random_index]->getName();
+  }
+    
 
     void moleculizer::attachFileName(const std::string& filename)
     {

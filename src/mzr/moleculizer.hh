@@ -153,7 +153,7 @@ namespace mzr
 
         void DEBUG_doMultipleRandomParticleCollisions(unsigned int numCollisions);
 
-        const std::string& getRandomSpeciesName() const;
+        std::string getRandomSpeciesName() const;
 
         std::string DEBUG_getRandomDeadSpeciesName() const;
 

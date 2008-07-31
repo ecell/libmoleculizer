@@ -1,7 +1,7 @@
 /////////////////////////////////////////////////////////////////////////////
 // libComplexSpecies - a library for canonically naming species of protein 
 //                     complexes.
-// Copyright (C) 2007, 2008  Nathan Addy
+// Copyright (C) 2008  Molecular Sciences Institute
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -24,156 +24,64 @@
 //   Berkeley, CA 94704
 /////////////////////////////////////////////////////////////////////////////
 
-#ifndef __CANONICALNMR_HH
-#define __CANONICALNMR_HH
+#ifndef COMPLEXSPECIESOUTPUTMINIMIZER_HPP
+#define COMPLEXSPECIESOUTPUTMINIMIZER_HPP
+
 
 #include "complexSpecies.hh"
 #include "permutation.hh"
-#include "partialTokenList.hh"
-#include "permutationName.hh"
-#include "abstractMol.hh"
-
+#include <vector>
 #include <set>
-#include <map>
-#include <functional>
+
 
 namespace nmr
 {
-    DECLARE_CLASS( BindingSorterByNdx );
-    DECLARE_CLASS(ComplexSpeciesOutputMinimizer);
     class ComplexSpeciesOutputMinimizer
     {
-
-    class UnboundNamingAlgorithmXcpt : public GeneralNmrXcpt
-    {
     public:
-        static 
-        std::string
-        mkMsg( unsigned int numberOfPermutations, ComplexSpeciesCref aCos)
-        {
-            std::ostringstream oss;
-            oss << "Error in ComplexSpeciesOutputMinimizer while trying to "
-                << "minimize object '"
-                << aCos.repr()
-                << "' - possible permutations = "
-                << numberOfPermutations << '\n';
-            return oss.str();
-        }
 
-        UnboundNamingAlgorithmXcpt(unsigned int num, ComplexSpeciesCref aCos)
-            :
-            GeneralNmrXcpt( mkMsg(num, aCos))
-        {}
-    };
-
-    public:
+        typedef std::vector<int> ColoringPartition;
+        typedef std::vector< std::set<int>* > GraphEdgeList;
 
         ComplexSpeciesOutputMinimizer()
-            :
-            allMolsOccurOnce( false ),
-            indexToMolMap(),
-            molToIndexRangeMap()
         {}
 
-        ComplexOutputState 
-        getMinimalOutputState(ComplexSpecies aComplexSpecies);
-
         ComplexOutputState
-        getMinimalOutputStateViaBruteForce( ComplexSpecies aComplexSpecies);
+        getMinimalOutputState(ComplexSpeciesCref aComplexSpecies);
 
-    protected:
-        typedef std::pair<int, int> __Range;
-        typedef std::pair<int, int> __BindingSite;
-        typedef std::pair<__BindingSite, __BindingSite> __Binding;
-
-        DECLARE_TYPE( __Range,  Range);
-        DECLARE_TYPE( __BindingSite, BindingSite );
-        DECLARE_TYPE( __Binding, Binding);
-
-    private:
-        void clearAllClassDataStructures();
-
-        // This function ensures that aComplexSpecies is sorted molwise.  It also 
-        // ensures the two pieces of class data, the indexToMolMap and the 
-        // molToIndexRangeMap are setup.
-        void setupDataStructuresForCalculation(ComplexSpeciesRef aComplexSpecies);
-
-        bool checkIfMoleculesInComplexOccurOnce( ComplexSpeciesCref aComplexSpecies);
-
-        // This function returns a permutation such that, when applied to the complex
-        // species, leaves it in a mol sorted state.  
-        // Ie mol[i].getType() <= mol[j].getType() for all i<=k.
-        Permutation calculateMolSortingPermutationForComplex(ComplexSpeciesCref aComplexSpecies);
-
-        // This is the daddy function of them all.  This function calculates a Permutation such 
-        // that when applied to the complex, will leave the complex in a state such that
-        // the complex output state is minimal amongst all potential complex output states.
-        Permutation calculateMinimizingPermutationForComplex(ComplexSpeciesCref aComplexSpecies);
-
-        // ???
-        void maximallyExtendPermutation(PermutationRef aRefPermutation, ComplexSpeciesCref aComplexSpecies);
-
-        PartialTokenList calculatePartialTokenListForPermutation(ComplexSpeciesCref anAP, PermutationCref aPerm); 
-
-        // Returns true if at least one permutation in the set of permutations is incomplete.
-        // Returns false if every one is a complete and proper permutation/function.
-        bool checkIfSetContainsIncompletePermutations(const std::set<Permutation>& setOfPPs) const;
-
-        // Returns true if aComplexSpecies is sorted molwise.  Ie returns true
-        // if for all i, j mol[i].getMolType() < mol[j].getMolType().
-        bool checkPlexIsSortedByMol(ComplexSpeciesCref aComplexSpecies) const;
+        class NonSimpleGraphXcpt : public GeneralNmrXcpt
+        {
+        public:
+            static 
+            std::string
+            mkMsg(ComplexSpeciesCref aComplexSpecies)
+            {
+                std::ostringstream oss;
+                oss << "Error: the complex species '"
+                    << aComplexSpecies 
+                    << "' does not represent a simple graph.  Please contact "
+                    << "the developer <addy@molsci.org>.";
+                return oss.str();
+            }
+            
+            NonSimpleGraphXcpt(ComplexSpeciesCref aComplexSpecies)
+                :
+                GeneralNmrXcpt(mkMsg(aComplexSpecies))
+            {}
+        };
 
     private:
-        bool allMolsOccurOnce;
-
-
-//         // TODO write brute force function and generally a checker to make sure all this works.
-//         // This function works on molToIndex
-//         void 
-//         produceAllValidPermutations( std::set<Permutation>& setOfPerms);
+        Permutation 
+        calculateMolSortingPermutationForComplex( ComplexSpeciesCref aComplexSpecies);
         
-//         template <typename T>
-//         void 
-//         extend( std::vector<T>& main, const std::vector<T>& sub)
-//         {
-//             for(typename std::vector<T>::const_iterator iter = sub.begin();
-//                 iter != sub.end();
-//                 ++iter)
-//             {
-//                 main.push_back( *iter);
-//             }
-//         }
+        Permutation 
+        calculateCanonicalPermutationForColoredGraph( const GraphEdgeList& refGraphEdgeList,
+                                                      const ColoringPartition& refColPart);
 
-//         template <typename T>
-//         void
-//         offset(std::set< std::vector<T> >& theSet, T aT)
-//         {
-//             for(typename std::set< std::vector<T> >::iterator iter = theSet.begin();
-//                 iter != theSet.end();
-//                 ++iter)
-//             {
-//                 offset( *iter, aT);
-//             }
-//         }
-
-//         template <typename T>
-//         void 
-//         offset(typename std::vector<T>& main, T aT)
-//         {
-//             for(unsigned int i = 0;
-//                 i != main.size();
-//                 ++i)
-//             {
-//                 main[i] += aT;
-//             }
-//         }
-
-//         void 
-//         generate_Sn(std::set< std::vector<int> >& setOfPermutations, unsigned int i);
-        
-
-        std::map<int, std::string> indexToMolMap;
-        std::map<std::string, Range > molToIndexRangeMap;
+        bool checkComplexSpeciesIsSimpleGraph( ComplexSpeciesCref aComplexSpecies);
+        void setupDataStructuresForCalculation( ComplexSpeciesRef aComplexSpecies);
+        void setupComplexEdgeMap( ComplexSpeciesCref aComplexSpecies);
+        void setupComplexColorPartition( ComplexSpeciesCref aComplexSpecies);
 
         struct MolIndexLessThanCmp : public std::binary_function<int, int, bool>
         {
@@ -182,51 +90,20 @@ namespace nmr
             MolIndexLessThanCmp(ComplexSpeciesCref aComplexSpeciesForCmp);
             bool operator()(int ndx1, int ndx2);
 
-        protected:
+        private:
             MolListCref theComparisonMolList;
         };  
 
-        struct namerBindingCmp : public std::binary_function<Binding, Binding, bool>
-        {
-            namerBindingCmp(int theBinding);
-            bool operator()(Binding a, Binding b);
-
-        protected:
-            int bindingNumber;
-        };
-
-    };
-
-
-    class BindingSorterByNdx
-    {
-    public:
-        BindingSorterByNdx( unsigned int i):
-            ndx(i)
-        {}
-        
-        bool
-        operator()(const ComplexSpecies::Binding& bindingTheFirst, const ComplexSpecies::Binding& bindingTheSecond) const
-        {
-            const ComplexSpecies::HalfBinding *firstHalfBinding, *secondHalfBinding;
-
-            bindingTheFirst.first.first == ndx? firstHalfBinding = &bindingTheFirst.second : firstHalfBinding = &bindingTheFirst.first;
-            
-
-            bindingTheSecond.first.first == ndx? secondHalfBinding = &bindingTheSecond.second : secondHalfBinding = &bindingTheSecond.first;
-
-            return *firstHalfBinding < *secondHalfBinding;
-            
-        }
-
     private:
-        int ndx;
+        ColoringPartition partitionSpecification;
+        GraphEdgeList complexGraphEdgeMap;
+        // std::vector<std::set<int>* > complexGraphEdgeMap;
     };
+}
 
 
-} // namespace nmr
 
 
 
-#endif 
 
+#endif

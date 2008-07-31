@@ -33,8 +33,10 @@ GSL_LIBS = @GSL_LIBS@
 AM_CXXFLAGS = $(LIBXML_CFLAGS)
 
 if STATIC_BUILD
-AM_LDFLAGS= -all-static
+AM_LDFLAGS = -all-static
 endif
+
+libmoleculizer_nmr_la_LIBADD = nauty/nautil.o nauty/nautinv.o nauty/nauty.o nauty/gtools.o nauty/naugraph.o
 
 libmoleculizer_nmr_la_SOURCES =\
 basicNameAssembler.cc \

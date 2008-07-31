@@ -309,6 +309,7 @@ namespace nmr
     {
         if ( !aPermutation.getIsComplete() )
         {
+            std::cerr << aPermutation << std::endl;
             throw GeneralNmrXcpt("Permutation is not complete");
         }
         if( aPermutation.getDimension() != this->getNumberOfMolsInComplex() )

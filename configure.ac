@@ -61,7 +61,7 @@ AC_CONFIG_FILES([Makefile
 		])
 
 
-AC_ARG_ENABLE(static-build,
+AC_ARG_ENABLE(enable-static-build,
  [  --enable-static-build  Build the entire project as one monolithic staticly linked program],
  [ static_build=yes
  ])

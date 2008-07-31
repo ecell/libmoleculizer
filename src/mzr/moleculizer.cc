@@ -174,7 +174,7 @@ namespace mzr
       }
   }
 
-  const std::string&
+  std::string
   moleculizer::getRandomSpeciesName() const
   {
       // I use pointers here, to save space.  

@@ -37,6 +37,7 @@ endif
 libmoleculizer_cpx_la_SOURCES =\
 badModMolStateXcpt.cc \
 basicBndSite.cc \
+cpxExceptions.cc \
 modMolMixin.cc \
 modPlexQueryTypeXcpt.cc \
 modStateMixin.cc \
@@ -57,6 +58,7 @@ basicMolImpl.hh \
 basicPlex.hh \
 basicPlexImpl.hh \
 binding.hh \
+cpxExceptions.hh \
 cxBinding.hh \
 cxBindingImpl.hh \
 cxMol.hh \

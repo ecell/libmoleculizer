@@ -45,9 +45,9 @@ namespace cpx
     {}
       
     siteSpec(int moleculeIndex,
-		 int bindingSiteIndex) :
-      std::pair<int, int>(moleculeIndex, 
-			  bindingSiteIndex)
+             int bindingSiteIndex) :
+        std::pair<int, int>(moleculeIndex, 
+                            bindingSiteIndex)
     {}
 
     int molNdx(void) const

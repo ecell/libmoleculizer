@@ -28,6 +28,7 @@
 #include "nauty/nauty.h"
 #include "complexSpeciesOutputMinimizer.hh"
 #include <boost/foreach.hpp>
+#include <iostream>
 
 namespace nmr
 {
@@ -109,18 +110,20 @@ namespace nmr
         ComplexSpecies::MolListCref theMolList = aComplexSpecies.getMolList();
 
         std::string current_name("This cannot possibly be a mol-name");
-        for( int molNdx = 0; molNdx != complexSize; ++molNdx)
+        for( int molNdx = 0; molNdx != (complexSize - 1); ++molNdx)
         {
-            if (theMolList[molNdx]->getMolType() != current_name)
-            {
-                current_name = theMolList[molNdx]->getMolType();
-                partitionSpecification[molNdx] = 1;
-            }
-            else
+            if (theMolList[molNdx]->getMolType() != theMolList[molNdx + 1] ->getMolType())
             {
                 partitionSpecification[molNdx] = 0;
             }
+            else
+            {
+                partitionSpecification[molNdx] = 1;
+            }
         }
+
+        // The last item ALWAYS ends a cell.
+        partitionSpecification[complexSize - 1] = 0;
 
         return;
     }
@@ -174,6 +177,7 @@ namespace nmr
     {
         static DEFAULTOPTIONS_GRAPH(options);
         options.getcanon = TRUE;
+        options.defaultptn = FALSE;
 
         DYNALLSTAT(graph,g,g_sz);
         DYNALLSTAT(int,lab,lab_sz);
@@ -204,7 +208,7 @@ namespace nmr
         {
             gv = GRAPHROW(g,vertexNumber,m);
             EMPTYSET(gv, m);
-            
+
             for(std::set<int>::const_iterator iter = complexGraphEdgeMap[vertexNumber]->begin();
                 iter != complexGraphEdgeMap[vertexNumber]->end();
                 ++iter)
@@ -214,9 +218,9 @@ namespace nmr
         }
 
         // Create the coloring partition here.
-
         for(unsigned int ii = 0; ii != n; ++ii)
         {
+            lab[ii] = ii;
             ptn[ii] = partitionSpecification[ii];
         }
         

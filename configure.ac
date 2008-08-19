@@ -61,16 +61,18 @@ AC_CONFIG_FILES([Makefile
 		])
 
 
-AC_ARG_ENABLE(enable-static-build,
+AC_ARG_ENABLE(static-build,
  [  --enable-static-build  Build the entire project as one monolithic staticly linked program],
  [ static_build=yes
  ])
+
+AM_CONDITIONAL([STATIC_BUILD], [test "$static_build" = yes])
 
 AC_ARG_ENABLE(index-alphabetically,
         [ --enable-alphabetic-indexing Causes binding sites in the naming unit to be indexed alphabetically.]
         [index_alphabetically=yes])
 
-AM_CONDITIONAL([STATIC_BUILD], [test "$static_build" = yes])
+
 
 # Output this header file.
 AC_CONFIG_HEADERS([src/moleculizer_config.hh])

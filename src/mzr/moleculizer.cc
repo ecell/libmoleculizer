@@ -151,9 +151,7 @@ namespace mzr
     try
       {
 	theMzrSpecies = findSpecies(speciesName);
-
-        // Don't know is this is strictly necessary...
-        // theMzrSpecies->expandReactionNetwork(); 
+        theMzrSpecies->expandReactionNetwork(); 
 
 	return theMzrSpecies;
       }

@@ -29,6 +29,7 @@
 #include "cpx/binding.hh"
 #include "cpx/ftrSpec.hh"
 #include "cpx/plexIso.hh"
+#include <boost/foreach.hpp>
 
 namespace cpx
 {
@@ -95,6 +96,18 @@ namespace cpx
     // same hash value.
     int
     hashValue(void) const;
+
+      std::string
+      getName() const
+      {
+          std::string name("");
+          BOOST_FOREACH(molT* pMol, mols)
+          {
+              name += pMol->getName();
+              name += ", ";
+          }
+          return name;
+      }
 
     // Used in the recognition cache.
     //

@@ -18,7 +18,7 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //    
 // Contact information:
-//   Nathan Addy, Research Associate     Voice: 510-981-8748
+//   Nathan Addy, Research Assistant     Voice: 510-981-8748
 //   The Molecular Sciences Institute    Email: addy@molsci.org  
 //   2168 Shattuck Ave.                  
 //   Berkeley, CA 94704

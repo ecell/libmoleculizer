@@ -269,11 +269,16 @@ namespace fnd
     bool 
     recordSpecies( SpeciesTypePtr pSpecies)
     {
+        static int number = 0;
       std::string* pSpeciesName = new std::string( pSpecies->getName() );
       if (theSpeciesListCatalog.find( pSpeciesName) == theSpeciesListCatalog.end() )
 	{
 	  theSpeciesListCatalog.insert( std::make_pair( pSpeciesName, pSpecies) );
 	  theDeltaSpeciesList.push_back( pSpecies );
+
+          std::cout << "NEW: " << *pSpeciesName << "(" << number++ << ")" << std::endl;
+          if (number == 1000) exit(0);
+          if (number % 10 == 0) std::cout << theCompleteReactionList.size() << std::endl;
 	  return true;
 	}
       else

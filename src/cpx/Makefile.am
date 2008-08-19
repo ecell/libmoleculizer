@@ -21,6 +21,7 @@ LIBMOL = ../mol/libmoleculizer_mol.la
 LIBPLEX = ../plex/libmoleculizer_plex.la
 LIBDIMER = ../dimer/libmoleculizer_dimer.la
 LIBFTR = ../ftr/libmoleculizer_ftr.la
+LIBNAUTY = ../nauty/libmoleculizer_nauty.la
 
 LIBXML_CFLAGS = @LIBXML_CFLAGS@
 LIBXML_LIBS = @LIBXML_LIBS@
@@ -33,6 +34,8 @@ AM_CXXFLAGS = @CXXFLAGS@ -Wall $(LIBXML_CFLAGS)
 if STATIC_BUILD
 AM_LDFLAGS= -all-static
 endif
+
+libmoleculizer_cpx_la_LIBADD = $(LIBFND)
 
 libmoleculizer_cpx_la_SOURCES =\
 badModMolStateXcpt.cc \

@@ -1,5 +1,5 @@
 ## Process this file with automake to produce Makefile.in.
-lib_LTLIBRARIES = libmoleculizer_nauty.la
+noinst_LIBRARIES = libmoleculizer_nauty.a
 
 abs_top_builddir=@abs_top_builddir@
 ## SRCDIR = $(abs_top_builddir)/src
@@ -19,16 +19,16 @@ LIBMOL = ../mol/libmoleculizer_mol.la
 LIBPLEX = ../plex/libmoleculizer_plex.la
 LIBDIMER = ../dimer/libmoleculizer_dimer.la
 LIBFTR = ../ftr/libmoleculizer_ftr.la
-LIBNAUTY = ../nauty/libmoleculizer_nauty.la
+LIBNAUTY = ../nauty/libmoleculizer_nauty.a
 ALL_MZR_LIBS = $(LIBFND) $(LIBUTL) $(LIBMZR) $(LIBSTOCH) $(LIBNMR) $(LIBNMR) $(LIBCPX) $(LIBMOL) $(LIBPLEX) $(LIBDIMER) $(LIBFTR)
 
 if STATIC_BUILD
 AM_LDFLAGS= -all-static
 endif
 
-libmoleculizer_nauty_la_SOURCES =\
+libmoleculizer_nauty_a_SOURCES =\
 nauty.c \
-nautyutil.c \
+naututil.c \
 naugraph.c
 
 libmoleculizer_nauty_HEADERS= \

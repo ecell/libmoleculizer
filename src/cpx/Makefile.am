@@ -6,7 +6,6 @@ abs_top_builddir=@abs_top_builddir@
 
 SRCDIR = ..
 
-
 VERSION = @PACKAGE_VERSION@
 MOLECULIZER_DIRNAME = moleculizer-$(VERSION)
 libmoleculizer_cpxdir=$(includedir)/$(MOLECULIZER_DIRNAME)/moleculizer/cpx
@@ -21,7 +20,7 @@ LIBMOL = ../mol/libmoleculizer_mol.la
 LIBPLEX = ../plex/libmoleculizer_plex.la
 LIBDIMER = ../dimer/libmoleculizer_dimer.la
 LIBFTR = ../ftr/libmoleculizer_ftr.la
-LIBNAUTY = ../nauty/libmoleculizer_nauty.la
+LIBNAUTY = ../nauty/libmoleculizer_nauty.a
 
 LIBXML_CFLAGS = @LIBXML_CFLAGS@
 LIBXML_LIBS = @LIBXML_LIBS@

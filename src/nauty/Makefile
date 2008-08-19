@@ -35,8 +35,7 @@ build_triplet = i686-pc-linux-gnu
 host_triplet = i686-pc-linux-gnu
 subdir = src/nauty
 DIST_COMMON = README $(libmoleculizer_nauty_HEADERS) \
-	$(srcdir)/Makefile.am $(srcdir)/Makefile.in config.guess \
-	config.sub install-sh
+	$(srcdir)/Makefile.am $(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
@@ -44,20 +43,13 @@ am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 mkinstalldirs = $(install_sh) -d
 CONFIG_HEADER = $(top_builddir)/src/moleculizer_config.hh
 CONFIG_CLEAN_FILES =
-am__vpath_adj_setup = srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`;
-am__vpath_adj = case $$p in \
-    $(srcdir)/*) f=`echo "$$p" | sed "s|^$$srcdirstrip/||"`;; \
-    *) f=$$p;; \
-  esac;
-am__strip_dir = `echo $$p | sed -e 's|^.*/||'`;
-am__installdirs = "$(DESTDIR)$(libdir)" \
-	"$(DESTDIR)$(libmoleculizer_nautydir)"
-libLTLIBRARIES_INSTALL = $(INSTALL)
-LTLIBRARIES = $(lib_LTLIBRARIES)
-libmoleculizer_nauty_la_LIBADD =
-am_libmoleculizer_nauty_la_OBJECTS = nauty.lo nautyutil.lo naugraph.lo
-libmoleculizer_nauty_la_OBJECTS =  \
-	$(am_libmoleculizer_nauty_la_OBJECTS)
+LIBRARIES = $(noinst_LIBRARIES)
+ARFLAGS = cru
+libmoleculizer_nauty_a_AR = $(AR) $(ARFLAGS)
+libmoleculizer_nauty_a_LIBADD =
+am_libmoleculizer_nauty_a_OBJECTS = nauty.$(OBJEXT) naututil.$(OBJEXT) \
+	naugraph.$(OBJEXT)
+libmoleculizer_nauty_a_OBJECTS = $(am_libmoleculizer_nauty_a_OBJECTS)
 DEFAULT_INCLUDES = -I. -I$(top_builddir)/src
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__depfiles_maybe = depfiles
@@ -70,8 +62,15 @@ CCLD = $(CC)
 LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
 	--mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) \
 	$(LDFLAGS) -o $@
-SOURCES = $(libmoleculizer_nauty_la_SOURCES)
-DIST_SOURCES = $(libmoleculizer_nauty_la_SOURCES)
+SOURCES = $(libmoleculizer_nauty_a_SOURCES)
+DIST_SOURCES = $(libmoleculizer_nauty_a_SOURCES)
+am__vpath_adj_setup = srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`;
+am__vpath_adj = case $$p in \
+    $(srcdir)/*) f=`echo "$$p" | sed "s|^$$srcdirstrip/||"`;; \
+    *) f=$$p;; \
+  esac;
+am__strip_dir = `echo $$p | sed -e 's|^.*/||'`;
+am__installdirs = "$(DESTDIR)$(libmoleculizer_nautydir)"
 libmoleculizer_nautyHEADERS_INSTALL = $(INSTALL_HEADER)
 HEADERS = $(libmoleculizer_nauty_HEADERS)
 ETAGS = etags
@@ -188,7 +187,7 @@ oldincludedir = /usr/include
 pdfdir = ${docdir}
 pkgpyexecdir = ${pyexecdir}/libmoleculizer
 pkgpythondir = ${pythondir}/libmoleculizer
-prefix = /usr/local
+prefix = /home/naddy/usr/
 program_transform_name = s,x,x,
 psdir = ${docdir}
 pyexecdir = ${exec_prefix}/lib/python2.5/site-packages
@@ -200,7 +199,7 @@ sysconfdir = ${prefix}/etc
 target_alias = 
 top_builddir = ../..
 top_srcdir = ../..
-lib_LTLIBRARIES = libmoleculizer_nauty.la
+noinst_LIBRARIES = libmoleculizer_nauty.a
 SRCDIR = ..
 MOLECULIZER_DIRNAME = moleculizer-$(VERSION)
 libmoleculizer_nautydir = $(includedir)/$(MOLECULIZER_DIRNAME)/moleculizer/nauty
@@ -214,12 +213,12 @@ LIBMOL = ../mol/libmoleculizer_mol.la
 LIBPLEX = ../plex/libmoleculizer_plex.la
 LIBDIMER = ../dimer/libmoleculizer_dimer.la
 LIBFTR = ../ftr/libmoleculizer_ftr.la
-LIBNAUTY = ../nauty/libmoleculizer_nauty.la
+LIBNAUTY = ../nauty/libmoleculizer_nauty.a
 ALL_MZR_LIBS = $(LIBFND) $(LIBUTL) $(LIBMZR) $(LIBSTOCH) $(LIBNMR) $(LIBNMR) $(LIBCPX) $(LIBMOL) $(LIBPLEX) $(LIBDIMER) $(LIBFTR)
 #AM_LDFLAGS = -all-static
-libmoleculizer_nauty_la_SOURCES = \
+libmoleculizer_nauty_a_SOURCES = \
 nauty.c \
-nautyutil.c \
+naututil.c \
 naugraph.c
 
 libmoleculizer_nauty_HEADERS = \
@@ -267,35 +266,13 @@ $(top_srcdir)/configure:  $(am__configure_deps)
 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
 $(ACLOCAL_M4):  $(am__aclocal_m4_deps)
 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
-install-libLTLIBRARIES: $(lib_LTLIBRARIES)
-	@$(NORMAL_INSTALL)
-	test -z "$(libdir)" || $(MKDIR_P) "$(DESTDIR)$(libdir)"
-	@list='$(lib_LTLIBRARIES)'; for p in $$list; do \
-	  if test -f $$p; then \
-	    f=$(am__strip_dir) \
-	    echo " $(LIBTOOL) $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=install $(libLTLIBRARIES_INSTALL) $(INSTALL_STRIP_FLAG) '$$p' '$(DESTDIR)$(libdir)/$$f'"; \
-	    $(LIBTOOL) $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=install $(libLTLIBRARIES_INSTALL) $(INSTALL_STRIP_FLAG) "$$p" "$(DESTDIR)$(libdir)/$$f"; \
-	  else :; fi; \
-	done
 
-uninstall-libLTLIBRARIES:
-	@$(NORMAL_UNINSTALL)
-	@list='$(lib_LTLIBRARIES)'; for p in $$list; do \
-	  p=$(am__strip_dir) \
-	  echo " $(LIBTOOL) $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=uninstall rm -f '$(DESTDIR)$(libdir)/$$p'"; \
-	  $(LIBTOOL) $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=uninstall rm -f "$(DESTDIR)$(libdir)/$$p"; \
-	done
-
-clean-libLTLIBRARIES:
-	-test -z "$(lib_LTLIBRARIES)" || rm -f $(lib_LTLIBRARIES)
-	@list='$(lib_LTLIBRARIES)'; for p in $$list; do \
-	  dir="`echo $$p | sed -e 's|/[^/]*$$||'`"; \
-	  test "$$dir" != "$$p" || dir=.; \
-	  echo "rm -f \"$${dir}/so_locations\""; \
-	  rm -f "$${dir}/so_locations"; \
-	done
-libmoleculizer_nauty.la: $(libmoleculizer_nauty_la_OBJECTS) $(libmoleculizer_nauty_la_DEPENDENCIES) 
-	$(LINK) -rpath $(libdir) $(libmoleculizer_nauty_la_OBJECTS) $(libmoleculizer_nauty_la_LIBADD) $(LIBS)
+clean-noinstLIBRARIES:
+	-test -z "$(noinst_LIBRARIES)" || rm -f $(noinst_LIBRARIES)
+libmoleculizer_nauty.a: $(libmoleculizer_nauty_a_OBJECTS) $(libmoleculizer_nauty_a_DEPENDENCIES) 
+	-rm -f libmoleculizer_nauty.a
+	$(libmoleculizer_nauty_a_AR) libmoleculizer_nauty.a $(libmoleculizer_nauty_a_OBJECTS) $(libmoleculizer_nauty_a_LIBADD)
+	$(RANLIB) libmoleculizer_nauty.a
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -303,9 +280,9 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-include ./$(DEPDIR)/naugraph.Plo
-include ./$(DEPDIR)/nauty.Plo
-include ./$(DEPDIR)/nautyutil.Plo
+include ./$(DEPDIR)/naugraph.Po
+include ./$(DEPDIR)/naututil.Po
+include ./$(DEPDIR)/nauty.Po
 
 .c.o:
 	$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
@@ -426,9 +403,9 @@ distdir: $(DISTFILES)
 	done
 check-am: all-am
 check: check-am
-all-am: Makefile $(LTLIBRARIES) $(HEADERS)
+all-am: Makefile $(LIBRARIES) $(HEADERS)
 installdirs:
-	for dir in "$(DESTDIR)$(libdir)" "$(DESTDIR)$(libmoleculizer_nautydir)"; do \
+	for dir in "$(DESTDIR)$(libmoleculizer_nautydir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
 	done
 install: install-am
@@ -457,7 +434,7 @@ maintainer-clean-generic:
 	@echo "it deletes files that may require special tools to rebuild."
 clean: clean-am
 
-clean-am: clean-generic clean-libLTLIBRARIES clean-libtool \
+clean-am: clean-generic clean-libtool clean-noinstLIBRARIES \
 	mostlyclean-am
 
 distclean: distclean-am
@@ -480,7 +457,7 @@ install-data-am: install-libmoleculizer_nautyHEADERS
 
 install-dvi: install-dvi-am
 
-install-exec-am: install-libLTLIBRARIES
+install-exec-am:
 
 install-html: install-html-am
 
@@ -512,25 +489,23 @@ ps: ps-am
 
 ps-am:
 
-uninstall-am: uninstall-libLTLIBRARIES \
-	uninstall-libmoleculizer_nautyHEADERS
+uninstall-am: uninstall-libmoleculizer_nautyHEADERS
 
 .MAKE: install-am install-strip
 
 .PHONY: CTAGS GTAGS all all-am check check-am clean clean-generic \
-	clean-libLTLIBRARIES clean-libtool ctags distclean \
+	clean-libtool clean-noinstLIBRARIES ctags distclean \
 	distclean-compile distclean-generic distclean-libtool \
 	distclean-tags distdir dvi dvi-am html html-am info info-am \
 	install install-am install-data install-data-am install-dvi \
 	install-dvi-am install-exec install-exec-am install-html \
 	install-html-am install-info install-info-am \
-	install-libLTLIBRARIES install-libmoleculizer_nautyHEADERS \
-	install-man install-pdf install-pdf-am install-ps \
-	install-ps-am install-strip installcheck installcheck-am \
-	installdirs maintainer-clean maintainer-clean-generic \
-	mostlyclean mostlyclean-compile mostlyclean-generic \
-	mostlyclean-libtool pdf pdf-am ps ps-am tags uninstall \
-	uninstall-am uninstall-libLTLIBRARIES \
+	install-libmoleculizer_nautyHEADERS install-man install-pdf \
+	install-pdf-am install-ps install-ps-am install-strip \
+	installcheck installcheck-am installdirs maintainer-clean \
+	maintainer-clean-generic mostlyclean mostlyclean-compile \
+	mostlyclean-generic mostlyclean-libtool pdf pdf-am ps ps-am \
+	tags uninstall uninstall-am \
 	uninstall-libmoleculizer_nautyHEADERS
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.

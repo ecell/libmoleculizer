@@ -15,7 +15,6 @@
 
 
 
-
 pkgdatadir = $(datadir)/libmoleculizer
 pkglibdir = $(libdir)/libmoleculizer
 pkgincludedir = $(includedir)/libmoleculizer
@@ -34,8 +33,7 @@ POST_UNINSTALL = :
 build_triplet = i686-pc-linux-gnu
 host_triplet = i686-pc-linux-gnu
 subdir = src/nauty
-DIST_COMMON = README $(libmoleculizer_nauty_HEADERS) \
-	$(srcdir)/Makefile.am $(srcdir)/Makefile.in
+DIST_COMMON = README $(srcdir)/Makefile.am $(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
@@ -47,7 +45,7 @@ LIBRARIES = $(noinst_LIBRARIES)
 ARFLAGS = cru
 libmoleculizer_nauty_a_AR = $(AR) $(ARFLAGS)
 libmoleculizer_nauty_a_LIBADD =
-am_libmoleculizer_nauty_a_OBJECTS = nauty.$(OBJEXT) naututil.$(OBJEXT) \
+am_libmoleculizer_nauty_a_OBJECTS = nauty.$(OBJEXT) nautil.$(OBJEXT) \
 	naugraph.$(OBJEXT)
 libmoleculizer_nauty_a_OBJECTS = $(am_libmoleculizer_nauty_a_OBJECTS)
 DEFAULT_INCLUDES = -I. -I$(top_builddir)/src
@@ -64,24 +62,15 @@ LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
 	$(LDFLAGS) -o $@
 SOURCES = $(libmoleculizer_nauty_a_SOURCES)
 DIST_SOURCES = $(libmoleculizer_nauty_a_SOURCES)
-am__vpath_adj_setup = srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`;
-am__vpath_adj = case $$p in \
-    $(srcdir)/*) f=`echo "$$p" | sed "s|^$$srcdirstrip/||"`;; \
-    *) f=$$p;; \
-  esac;
-am__strip_dir = `echo $$p | sed -e 's|^.*/||'`;
-am__installdirs = "$(DESTDIR)$(libmoleculizer_nautydir)"
-libmoleculizer_nautyHEADERS_INSTALL = $(INSTALL_HEADER)
-HEADERS = $(libmoleculizer_nauty_HEADERS)
 ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 ACLOCAL = aclocal
-AMTAR = ${SHELL} /home/naddy/Sources/libmoleculizer/missing --run tar
+AMTAR = ${SHELL} /home/naddy/Sources/tmp/tmp/missing --run tar
 AR = ar
-AUTOCONF = ${SHELL} /home/naddy/Sources/libmoleculizer/missing --run autoconf
-AUTOHEADER = ${SHELL} /home/naddy/Sources/libmoleculizer/missing --run autoheader
-AUTOMAKE = ${SHELL} /home/naddy/Sources/libmoleculizer/missing --run automake-1.10
+AUTOCONF = ${SHELL} /home/naddy/Sources/tmp/tmp/missing --run autoconf
+AUTOHEADER = ${SHELL} /home/naddy/Sources/tmp/tmp/missing --run autoheader
+AUTOMAKE = ${SHELL} /home/naddy/Sources/tmp/tmp/missing --run automake-1.10
 AWK = mawk
 CC = gcc
 CCDEPMODE = depmode=gcc3
@@ -120,7 +109,7 @@ LIBXML_CFLAGS = -I/usr/include/libxml++-2.6 -I/usr/lib/libxml++-2.6/include -I/u
 LIBXML_LIBS = -lxml++-2.6 -lxml2 -lglibmm-2.4 -lgobject-2.0 -lsigc-2.0 -lglib-2.0  
 LN_S = ln -s
 LTLIBOBJS = 
-MAKEINFO = ${SHELL} /home/naddy/Sources/libmoleculizer/missing --run makeinfo
+MAKEINFO = ${SHELL} /home/naddy/Sources/tmp/tmp/missing --run makeinfo
 MKDIR_P = /bin/mkdir -p
 NMEDIT = 
 OBJEXT = o
@@ -144,10 +133,10 @@ SET_MAKE =
 SHELL = /bin/bash
 STRIP = strip
 VERSION = 1.0
-abs_builddir = /home/naddy/Sources/libmoleculizer/src/nauty
-abs_srcdir = /home/naddy/Sources/libmoleculizer/src/nauty
-abs_top_builddir = /home/naddy/Sources/libmoleculizer
-abs_top_srcdir = /home/naddy/Sources/libmoleculizer
+abs_builddir = /home/naddy/Sources/tmp/tmp/src/nauty
+abs_srcdir = /home/naddy/Sources/tmp/tmp/src/nauty
+abs_top_builddir = /home/naddy/Sources/tmp/tmp
+abs_top_srcdir = /home/naddy/Sources/tmp/tmp
 ac_ct_CC = gcc
 ac_ct_CXX = g++
 ac_ct_F77 = 
@@ -176,7 +165,7 @@ host_vendor = pc
 htmldir = ${docdir}
 includedir = ${prefix}/include
 infodir = ${datarootdir}/info
-install_sh = $(SHELL) /home/naddy/Sources/libmoleculizer/install-sh
+install_sh = $(SHELL) /home/naddy/Sources/tmp/tmp/install-sh
 libdir = ${exec_prefix}/lib
 libexecdir = ${exec_prefix}/libexec
 localedir = ${datarootdir}/locale
@@ -218,20 +207,8 @@ ALL_MZR_LIBS = $(LIBFND) $(LIBUTL) $(LIBMZR) $(LIBSTOCH) $(LIBNMR) $(LIBNMR) $(L
 #AM_LDFLAGS = -all-static
 libmoleculizer_nauty_a_SOURCES = \
 nauty.c \
-naututil.c \
+nautil.c \
 naugraph.c
-
-libmoleculizer_nauty_HEADERS = \
-gtools.h \
-gutils.h \
-naugroup.h \
-nausparse.h \
-nautaux.h \
-nautinv.h \
-naututil.h \
-nauty.h	\
-planarity.h \
-rng.h
 
 all: all-am
 
@@ -281,7 +258,7 @@ distclean-compile:
 	-rm -f *.tab.c
 
 include ./$(DEPDIR)/naugraph.Po
-include ./$(DEPDIR)/naututil.Po
+include ./$(DEPDIR)/nautil.Po
 include ./$(DEPDIR)/nauty.Po
 
 .c.o:
@@ -310,23 +287,6 @@ mostlyclean-libtool:
 
 clean-libtool:
 	-rm -rf .libs _libs
-install-libmoleculizer_nautyHEADERS: $(libmoleculizer_nauty_HEADERS)
-	@$(NORMAL_INSTALL)
-	test -z "$(libmoleculizer_nautydir)" || $(MKDIR_P) "$(DESTDIR)$(libmoleculizer_nautydir)"
-	@list='$(libmoleculizer_nauty_HEADERS)'; for p in $$list; do \
-	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
-	  f=$(am__strip_dir) \
-	  echo " $(libmoleculizer_nautyHEADERS_INSTALL) '$$d$$p' '$(DESTDIR)$(libmoleculizer_nautydir)/$$f'"; \
-	  $(libmoleculizer_nautyHEADERS_INSTALL) "$$d$$p" "$(DESTDIR)$(libmoleculizer_nautydir)/$$f"; \
-	done
-
-uninstall-libmoleculizer_nautyHEADERS:
-	@$(NORMAL_UNINSTALL)
-	@list='$(libmoleculizer_nauty_HEADERS)'; for p in $$list; do \
-	  f=$(am__strip_dir) \
-	  echo " rm -f '$(DESTDIR)$(libmoleculizer_nautydir)/$$f'"; \
-	  rm -f "$(DESTDIR)$(libmoleculizer_nautydir)/$$f"; \
-	done
 
 ID: $(HEADERS) $(SOURCES) $(LISP) $(TAGS_FILES)
 	list='$(SOURCES) $(HEADERS) $(LISP) $(TAGS_FILES)'; \
@@ -403,11 +363,8 @@ distdir: $(DISTFILES)
 	done
 check-am: all-am
 check: check-am
-all-am: Makefile $(LIBRARIES) $(HEADERS)
+all-am: Makefile $(LIBRARIES)
 installdirs:
-	for dir in "$(DESTDIR)$(libmoleculizer_nautydir)"; do \
-	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
-	done
 install: install-am
 install-exec: install-exec-am
 install-data: install-data-am
@@ -453,7 +410,7 @@ info: info-am
 
 info-am:
 
-install-data-am: install-libmoleculizer_nautyHEADERS
+install-data-am:
 
 install-dvi: install-dvi-am
 
@@ -489,7 +446,7 @@ ps: ps-am
 
 ps-am:
 
-uninstall-am: uninstall-libmoleculizer_nautyHEADERS
+uninstall-am:
 
 .MAKE: install-am install-strip
 
@@ -499,14 +456,12 @@ uninstall-am: uninstall-libmoleculizer_nautyHEADERS
 	distclean-tags distdir dvi dvi-am html html-am info info-am \
 	install install-am install-data install-data-am install-dvi \
 	install-dvi-am install-exec install-exec-am install-html \
-	install-html-am install-info install-info-am \
-	install-libmoleculizer_nautyHEADERS install-man install-pdf \
-	install-pdf-am install-ps install-ps-am install-strip \
-	installcheck installcheck-am installdirs maintainer-clean \
-	maintainer-clean-generic mostlyclean mostlyclean-compile \
-	mostlyclean-generic mostlyclean-libtool pdf pdf-am ps ps-am \
-	tags uninstall uninstall-am \
-	uninstall-libmoleculizer_nautyHEADERS
+	install-html-am install-info install-info-am install-man \
+	install-pdf install-pdf-am install-ps install-ps-am \
+	install-strip installcheck installcheck-am installdirs \
+	maintainer-clean maintainer-clean-generic mostlyclean \
+	mostlyclean-compile mostlyclean-generic mostlyclean-libtool \
+	pdf pdf-am ps ps-am tags uninstall uninstall-am
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

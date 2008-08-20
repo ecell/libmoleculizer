@@ -31,14 +31,3 @@ nauty.c \
 nautil.c \
 naugraph.c
 
-libmoleculizer_nauty_HEADERS= \
-gtools.h \
-gutils.h \
-naugroup.h \
-nausparse.h \
-nautaux.h \
-nautinv.h \
-naututil.h \
-nauty.h	\
-planarity.h \
-rng.h

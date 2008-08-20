@@ -28,7 +28,7 @@ endif
 
 libmoleculizer_nauty_a_SOURCES =\
 nauty.c \
-naututil.c \
+nautil.c \
 naugraph.c
 
 libmoleculizer_nauty_HEADERS= \

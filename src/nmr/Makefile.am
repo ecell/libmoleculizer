@@ -36,7 +36,7 @@ if STATIC_BUILD
 AM_LDFLAGS = -all-static
 endif
 
-libmoleculizer_nmr_la_LIBADD =  ../nauty/libmoleculizer_nauty.a
+
 
 libmoleculizer_nmr_la_SOURCES =\
 basicNameAssembler.cc \

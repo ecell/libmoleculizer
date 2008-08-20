@@ -27,8 +27,9 @@ LIBMOL = mol/libmoleculizer_mol.la
 LIBPLEX = plex/libmoleculizer_plex.la
 LIBDIMER = dimer/libmoleculizer_dimer.la
 LIBFTR = ftr/libmoleculizer_ftr.la
+LIBNAUTY = nauty/libmoleculizer_nauty.a
 
-ALL_MZR_LIBS = $(LIBFND) $(LIBUTL) $(LIBMZR) $(LIBSTOCH) $(LIBNMR) $(LIBNMR) $(LIBCPX) $(LIBMOL) $(LIBPLEX) $(LIBDIMER) $(LIBFTR)
+ALL_MZR_LIBS = $(LIBFND) $(LIBUTL) $(LIBMZR) $(LIBSTOCH) $(LIBNMR) $(LIBNMR) $(LIBCPX) $(LIBMOL) $(LIBPLEX) $(LIBDIMER) $(LIBFTR) $(LIBNAUTY)
 
 bin_PROGRAMS = moleculizer
 
@@ -59,7 +60,8 @@ moleculizer_LDADD = \
 	$(LIBMOL) \
 	$(LIBPLEX) \
 	$(LIBDIMER) \
-	$(LIBFTR)
+	$(LIBFTR) \
+	$(LIBNAUTY)
 
 LIBXML_CFLAGS = @LIBXML_CFLAGS@
 LIBXML_LIBS = @LIBXML_LIBS@

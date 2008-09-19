@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"><xsl:param name="original-input"/><xsl:key match="explicit-species-tags/*" name="explicit-species-by-tag" use="@tag"/><xsl:template match="*"><xsl:copy><xsl:copy-of select="@*"/><xsl:apply-templates/></xsl:copy></xsl:template><xsl:template match="tagged-species/*"><xsl:if test="key('explicit-species-by-tag', @tag)"/></xsl:template></xsl:stylesheet>

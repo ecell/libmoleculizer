@@ -179,7 +179,8 @@ namespace mzr
     // The actual input parsing done by this unit.
     virtual void
     parseDomInput(xmlpp::Element* pRootElt,
-		  xmlpp::Element* pModelElt) throw(std::exception) = 0;
+		  xmlpp::Element* pModelElt,
+                  xmlpp::Element* pStreamElt) throw(std::exception) = 0;
 
     // This allows finalization steps after parsing but before running.
     // In this phase, plexUnit runs notifications on parsed (but never created)
@@ -189,30 +190,13 @@ namespace mzr
     // still due to the clunkiness of update.)
     virtual void
     prepareToRun(xmlpp::Element* pRootElt,
-		 xmlpp::Element* pModelElt) throw(std::exception)
+		 xmlpp::Element* pModelElt,
+                 xmlpp::Element* pStreamElt) throw(std::exception)
     {
       // The plex unit does a lot; the mzrUnit does a little.  So far,
       // nobody else does anything.
     }
 
-
-    // This is the after-phase of parsing, analogous in continuator to
-    // prepareToRun's role in moleculizer and that of prepareToDump in
-    // parametrizer.
-    virtual void
-    prepareToContinue(xmlpp::Element* pRootElt,
-		      xmlpp::Element* pModelElt,
-		      xmlpp::Element* pStreamsElt,
-		      std::map<std::string, std::string>& rTagToName,
-		      xmlpp::Element* pTaggedSpeciesElement)
-      throw(std::exception)
-    {
-      // Default implementation is to ignore the tagged-species (which most
-      // units don't have) and to go on as if preparing to do a moleculizer
-      // simulation.
-      prepareToRun(pRootElt,
-		   pModelElt);
-    }
 
     // How a unit contributes its part of a state dump.
     virtual void

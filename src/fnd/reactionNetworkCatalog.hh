@@ -163,76 +163,6 @@ namespace fnd
           return (!reactionVector.empty());
       }
 
-//     // The unary reaction case
-//     // This will ONLY return an unary reaction.  
-//     const ReactionTypePtr
-//     findReactionWithSubstrates(const SpeciesTypePtr A) const
-//     {
-
-//       int count = 0;
-//       std::string reactantName = A->getName();
-
-//       ReactionTypePtr thePtr = NULL;
-
-//       // TODO Finish writing this function.
-//       for(ReactionListCIter iter = theCompleteReactionList.begin();
-// 	  iter != theCompleteReactionList.end();
-// 	  ++iter)
-// 	{
-// 	  if ((*iter)->getReactants().size() != 1) continue;
-// 	  else 
-// 	    {
-// 	      const SpeciesTypePtr B = ((*iter)->getReactants().begin()->first);
-                        
-// 	      if (reactantName == B->getName())
-// 		{
-// 		  count += 1;
-// 		  thePtr = *iter;
-// 		}
-// 	    }
-                
-
-// 	}
-//       return thePtr;
-//     }
-
-//     const ReactionTypePtr
-//     findReactionWithSubstrates( SpeciesTypePtr A, SpeciesTypePtr B) const
-//     {
-//       for(ReactionListCIter iter = theCompleteReactionList.begin();
-// 	  iter != theCompleteReactionList.end();
-// 	  ++iter)
-// 	{
-// 	  ReactionTypePtr pRxn = *iter;
-
-// 	  bool seenA = false;
-// 	  bool seenB = false;
-                      
-// 	  for( typename std::map<SpeciesType*, int>::const_iterator jiter = pRxn->getReactants().begin();
-// 	       jiter != pRxn->getReactants().end();
-// 	       ++jiter)
-// 	    {
-// 	      if( jiter->first == A )
-// 		{
-// 		  seenA = true;
-// 		}
-// 	      else if (jiter->first == B)
-// 		{
-// 		  seenB = true;
-// 		}
-// 	    }
-
-// 	  if ( seenA && seenB )
-// 	    {
-// 	      return pRxn;
-// 	    }
-
-// 	}
-
-//       // Scanned through everything and found nothing.
-//       return NULL;
-//     }
-
     bool
     checkSpeciesIsKnown(const std::string& speciesName) const
     {
@@ -269,17 +199,13 @@ namespace fnd
     bool 
     recordSpecies( SpeciesTypePtr pSpecies)
     {
-        static int number = 0;
-      std::string* pSpeciesName = new std::string( pSpecies->getName() );
-      if (theSpeciesListCatalog.find( pSpeciesName) == theSpeciesListCatalog.end() )
+        std::string* pSpeciesName = new std::string( pSpecies->getName() );
+        if (theSpeciesListCatalog.find( pSpeciesName) == theSpeciesListCatalog.end() )
 	{
-	  theSpeciesListCatalog.insert( std::make_pair( pSpeciesName, pSpecies) );
-	  theDeltaSpeciesList.push_back( pSpecies );
+            theSpeciesListCatalog.insert( std::make_pair( pSpeciesName, pSpecies) );
+            theDeltaSpeciesList.push_back( pSpecies );
 
-          std::cout << "NEW: " << *pSpeciesName << "(" << number++ << ")" << std::endl;
-          if (number == 1000) exit(0);
-          if (number % 10 == 0) std::cout << theCompleteReactionList.size() << std::endl;
-	  return true;
+            return true;
 	}
       else
 	{

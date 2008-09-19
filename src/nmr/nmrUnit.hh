@@ -93,7 +93,8 @@ namespace nmr
 
         void 
         parseDomInput(xmlpp::Element* pRootElt, 
-                      xmlpp::Element* pModelElt) throw(std::exception);
+                      xmlpp::Element* pModelElt,
+                      xmlpp::Element* pStreamElt) throw(std::exception);
 
         void insertStateElts(xmlpp::Element* pRootElt) throw(std::exception);
 

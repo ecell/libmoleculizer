@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsl:stylesheet version="1.0" xmlns="http://relaxng.org/ns/structure/1.0" xmlns:rng="http://relaxng.org/ns/structure/1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"><xsl:output method="xml"/><xsl:template match="node() | @*"><xsl:copy><xsl:apply-templates select="node() | @*"/></xsl:copy></xsl:template><xsl:template match="rng:grammar-doc"><xsl:element name="grammar"><xsl:apply-templates/></xsl:element></xsl:template><xsl:template match="rng:doc"><!--These elements should be excised.--></xsl:template></xsl:stylesheet>

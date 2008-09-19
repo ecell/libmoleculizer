@@ -327,7 +327,8 @@ namespace bnd
 
   void
   molUnit::parseDomInput(xmlpp::Element* pRootElement,
-			 xmlpp::Element* pModelElement) 
+			 xmlpp::Element* pModelElement,
+                         xmlpp::Element* pStreamElt) 
     throw(std::exception)
   {
     // Get the modifications element.

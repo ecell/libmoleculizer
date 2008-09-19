@@ -45,6 +45,7 @@ AC_SUBST(GSL_LIBS)
 # Checks for libraries.
 AC_CONFIG_FILES([Makefile
                 src/Makefile
+		src/doc/Makefile
 		src/nauty/Makefile
                 src/cpx/Makefile
 		src/dimer/Makefile
@@ -59,6 +60,7 @@ AC_CONFIG_FILES([Makefile
 		src/utl/Makefile
                 src/nmr/tests/Makefile
                 src/mzr/tests/Makefile
+                demo/simulators/particle/src/Makefile
 		])
 
 

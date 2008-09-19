@@ -85,85 +85,30 @@ namespace mzr
         public fnd::ReactionNetworkDescription<mzrSpecies, mzrReaction>
     {
     public:
-        void RunInteractiveDebugMode();
-        void RunProfileMode(unsigned int numIters = 100, bool verbose = false);
-
-        void attachFileName(const std::string& aFileName);
-        void attachString(const std::string& documentAsString);
-        void attachDocument(xmlpp::Document* pDoc);
-      
-    public:
-      
-      mzrSpecies*
-      getSpeciesWithName(const std::string& speciesName) throw( mzr::IllegalNameXcpt );
-       
-    public:
+        moleculizer(void);
+        ~moleculizer(void);
 
         void setGenerateDepth(unsigned int generateDepth);
         void setRateExtrapolation( bool rateExtrapolation ){ return; }
         void setToleranceOption( bool tolerenceOption ) { return; }
         void setTolerance(double tolerance);
 
+        void attachFileName(const std::string& aFileName);
+        void attachString(const std::string& documentAsString);
+        void attachDocument(xmlpp::Document* pDoc);
+      
+        mzrSpecies* 
+        getSpeciesWithName(const std::string& speciesName) throw( mzr::IllegalNameXcpt );
+       
     public: 
-        // DEBUG interface.  Most of these should be const,
-        // but since the InteractiveModeManager stores pointers to member 
-        // functions, it gets mad if some are const and others non-const.
-
-        // This is fixable though, with an overloaded addFunction method
-        // in InteractiveModeManager and an extra vector of function ptr 
-        // storage.
-
         void 
         incrementSpecies(std::string& speciesName);
 
-        void DEBUG_doRandomParticleCollisionInterval();
+        std::string 
+        getRandomSpeciesName() const;
 
-        void DEBUG_showTotalNumberSpecies();
-        void DEBUG_showTotalNumberReactions();
-        void DEBUG_showNumberDeltaSpecies();
-        void DEBUG_showNumberDeltaReactions();
-
-        void DEBUG_isPresent() const;
-
-        void DEBUG_showAllSpecies();
-        void DEBUG_showAllReactions();
-
-        void DEBUG_showDeltaSpecies();
-        void DEBUG_showDeltaReactions();
-
-        void DEBUG_incrementSpecies();
-
-        void DEBUG_showLiveSpecies();
-        void DEBUG_showDeadSpecies();
-
-        std::string DEBUG_getRandomLiveSpeciesName() const;
-        void DEBUG_incrementRandomSpecies();
-        void DEBUG_incrementNRandomLiveSpecies(unsigned int number = 1 );
-
-        void DEBUG_showNumberLiveSpecies();
-        void DEBUG_showUnaryReaction();
-        void DEBUG_showReactionsBetweenSpecies();
-        void DEBUG_changeNamingStrategy();
-        void DEBUG_getSpeciesFromName();
-
-        void DEBUG_showRandomLiveSpecies();
-
-        void DEBUG_clearAll();
-        void DEBUG_findReaction();
-
-        void DEBUG_doMultipleRandomParticleCollisions(unsigned int numCollisions);
-
-        std::string getRandomSpeciesName() const;
-
-        std::string DEBUG_getRandomDeadSpeciesName() const;
-
-
-        
         public:
-        moleculizer(void);
-        ~moleculizer(void);
-
-      
+        
         xmlpp::Document*
         makeDomOutput(void) throw(std::exception);
 
@@ -174,12 +119,14 @@ namespace mzr
 
         void 
         verifyInput(const xmlpp::Element* const pRootElt,
-                    const xmlpp::Element* const pModelElt) const 
+                    const xmlpp::Element* const pModelElt,
+                    const xmlpp::Element* const pStreamElt) const 
             throw(std::exception);
     
         void
         constructorCore(xmlpp::Element* pRootElt,
-                        xmlpp::Element* pModelElt)
+                        xmlpp::Element* pModelElt,
+                        xmlpp::Element* pStreamElt)
             throw(std::exception);
 
 

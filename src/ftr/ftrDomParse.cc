@@ -33,7 +33,8 @@ namespace ftr
 {
   void
   ftrUnit::parseDomInput(xmlpp::Element* pRootElement,
-			 xmlpp::Element* pModelElement)
+			 xmlpp::Element* pModelElement,
+                         xmlpp::Element* pStreamElt)
     throw(std::exception)
   {
     // This unit only adds a reaction generator for now.

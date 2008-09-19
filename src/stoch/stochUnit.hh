@@ -92,11 +92,13 @@ namespace stoch
   
     void
     parseDomInput(xmlpp::Element* pRootElement,
-		  xmlpp::Element* pModelElement) throw(std::exception);
+		  xmlpp::Element* pModelElement,
+                  xmlpp::Element* pStreamElt) throw(std::exception);
 
     void
     prepareToRun(xmlpp::Element* pRootElt,
-		 xmlpp::Element* pModelElt) throw(std::exception);
+		 xmlpp::Element* pModelElt,
+                 xmlpp::Element* pStreamElt) throw(std::exception);
 
     void
     prepareToContinue(xmlpp::Element* pRootElt,

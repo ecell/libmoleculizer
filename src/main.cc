@@ -61,15 +61,6 @@ main(int argc, char** argv)
       processCommandLineArgs( argc, argv, theApp, &filename);
       theApp.attachFileName( filename );
 
-      if (INTERACTIVE)
-      {
-          theApp.RunInteractiveDebugMode();
-      }
-      else
-      {
-          theApp.RunProfileMode(DEBUG_NUM, VERBOSITY);
-      }
-  
       return 0;
     }
 

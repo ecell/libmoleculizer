@@ -269,7 +269,8 @@ namespace plx
 
     void
     parseDomInput(xmlpp::Element* pRootElt,
-                  xmlpp::Element* pModelElt)
+                  xmlpp::Element* pModelElt,
+                  xmlpp::Element* pStreamElt)
       throw(utl::xcpt);
   
     void
@@ -281,7 +282,8 @@ namespace plx
     // the existing plex species all at once.
     void
     prepareToRun(xmlpp::Element* pRootElt,
-                 xmlpp::Element* pModelElt)
+                 xmlpp::Element* pModelElt,
+                 xmlpp::Element* pStreamElt)
       throw(utl::xcpt);
 
     void

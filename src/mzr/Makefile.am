@@ -48,7 +48,6 @@ dupSpeciesNameXcpt.cc \
 illegalSpeciesNameXcpt.cc \
 growEvent.cc \
 moleculizer.cc \
-moleculizerDebugFunctions.cc \
 mzrEltName.cc \
 mzrReaction.cc \
 mzrUnit.cc \

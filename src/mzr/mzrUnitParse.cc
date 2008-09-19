@@ -169,7 +169,8 @@ namespace mzr
 
     void
     mzrUnit::parseDomInput(xmlpp::Element* pRootElement,
-                           xmlpp::Element* pModelElement) throw(std::exception)
+                           xmlpp::Element* pModelElement,
+                           xmlpp::Element* pStreamElt) throw(std::exception)
     {
         // Set the volume.  This is peculiar, and interesting, because
         // it's similar to setting the population of a species up front,
@@ -188,7 +189,6 @@ namespace mzr
         getMolarFactor().updateVolume(volume,
                                       affectedReactions);
 
-  
         //////////////////////////////////////////////////////////////////
         // Get the explicit-reactions element.
         //

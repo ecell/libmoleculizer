@@ -57,18 +57,22 @@ namespace mzr
     {
         xmlpp::Element* pRootElt;
         xmlpp::Element* pModelElt;
+        xmlpp::Element* pStreamsElt;
 
     public:
         unitParseDomInput(xmlpp::Element* pRootElement,
-                          xmlpp::Element* pModelElement) :
+                          xmlpp::Element* pModelElement,
+                          xmlpp::Element* pStreamsElement) :
             pRootElt(pRootElement),
-            pModelElt(pModelElement)
+            pModelElt(pModelElement),
+            pStreamsElt( pStreamsElement)
         {}
         void
         operator()(unit* pUnit) const throw(std::exception)
         {
             pUnit->parseDomInput(pRootElt,
-                                 pModelElt);
+                                 pModelElt,
+                                 pStreamsElt);
         }
     };
 
@@ -77,12 +81,15 @@ namespace mzr
     {
         xmlpp::Element* pRootElt;
         xmlpp::Element* pModelElt;
+        xmlpp::Element* pStreamsElt;
 
     public:
         prepareUnitToRun(xmlpp::Element* pRootElement,
-                         xmlpp::Element* pModelElement) :
+                         xmlpp::Element* pModelElement,
+                         xmlpp::Element* pStreamsElement) :
             pRootElt(pRootElement),
-            pModelElt(pModelElement)
+            pModelElt(pModelElement),
+            pStreamsElt(pStreamsElement)
         {
         }
 
@@ -91,7 +98,8 @@ namespace mzr
             throw(std::exception)
         {
             pUnit->prepareToRun(pRootElt,
-                                pModelElt);
+                                pModelElt,
+                                pStreamsElt);
         }
     };
 
@@ -104,7 +112,8 @@ namespace mzr
 
     void
     moleculizer::constructorCore(xmlpp::Element* pRootElement,
-                                 xmlpp::Element* pModelElement)
+                                 xmlpp::Element* pModelElement,
+                                 xmlpp::Element* pStreamsElement)
         throw(std::exception)
     {
         // Verify that the input can all be sucessfully handled by 
@@ -113,7 +122,8 @@ namespace mzr
         try
         {
             verifyInput(pRootElement,
-                        pModelElement);
+                        pModelElement,
+                        pStreamsElement);
         }
         catch(utl::xcpt e)
         {
@@ -123,7 +133,8 @@ namespace mzr
         std::for_each(pUserUnits->begin(),
                       pUserUnits->end(),
                       unitParseDomInput(pRootElement,
-                                        pModelElement));
+                                        pModelElement,
+                                        pStreamsElement));
     }
 
     moleculizer::moleculizer(void)         
@@ -228,15 +239,21 @@ namespace mzr
             = utl::dom::mustGetUniqueChild(pRootElement,
                                            eltName::model);
 
+        xmlpp::Element* pStreamsElement
+            = utl::dom::getOptionalChild(pRootElement, 
+                                         eltName::streams);
+        
         // Extract model info.
         constructorCore(pRootElement,
-                        pModelElement);
+                        pModelElement,
+                        pStreamsElement);
 
         // Have each unit do its prepareToRun thing.
         std::for_each(pUserUnits->begin(),
                       pUserUnits->end(),
                       prepareUnitToRun(pRootElement,
-                                       pModelElement));
+                                       pModelElement,
+                                       pStreamsElement));
 
     }
 
@@ -306,7 +323,8 @@ namespace mzr
 
     void
     moleculizer::verifyInput(xmlpp::Element const * const pRootElement,
-                             xmlpp::Element const * const pModelElement) const
+                             xmlpp::Element const * const pModelElement,
+                             xmlpp::Element const * const pStreamsElement) const
         throw(std::exception)
     {
         // Verify that every element in the model section is handled by some

@@ -65,7 +65,8 @@ namespace plx
 
   void
   plexUnit::parseDomInput(xmlpp::Element* pRootElt,
-			  xmlpp::Element* pModelElt)
+			  xmlpp::Element* pModelElt,
+                          xmlpp::Element* pStreamElt)
     throw(utl::xcpt)
   {
     // First we pick out a number of elements and lists of elements
@@ -239,7 +240,8 @@ namespace plx
 
   void
   plexUnit::prepareToRun(xmlpp::Element* pRootElt,
-			 xmlpp::Element* pModelElt)
+			 xmlpp::Element* pModelElt,
+                         xmlpp::Element* pStreamElt)
     throw(utl::xcpt)
   {
     // Create the initial population of all explicit plex species.

@@ -60,7 +60,7 @@ AC_CONFIG_FILES([Makefile
 		src/utl/Makefile
                 src/nmr/tests/Makefile
                 src/mzr/tests/Makefile
-                demo/simulators/particle/src/Makefile
+                doc/demos/simulators/particle/src/Makefile
 		])
 
 

@@ -4,8 +4,7 @@ abs_top_builddir=@abs_top_builddir@
 
 ## This is the order in which the libraries should be built.
 ## (dependencies go from left to right)
-SUBDIRS = doc \
-	nauty \
+SUBDIRS = nauty \
 	fnd \
 	utl \
 	mzr \

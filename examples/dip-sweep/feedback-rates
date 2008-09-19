@@ -1,8 +1,0 @@
-DIR	FEEDBK_1	FEEDBK_2
-sweep.out/none	0.0	0.0
-sweep.out/lo	1.0e10	1.0e10
-sweep.out/med	1.0e11	1.0e11
-sweep.out/hi	1.0e12	1.0e12
-sweep.out/vhi	1.0e13	1.0e13
-sweep.out/none-hi	0.0	1.0e12
-sweep.out/hi-none	1.0e12	0.0

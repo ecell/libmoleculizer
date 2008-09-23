@@ -1,7 +1,7 @@
 /////////////////////////////////////////////////////////////////////////////
 // libComplexSpecies - a library for canonically naming species of protein 
 //                     complexes.
-// Copyright (C) 2008  Nathan Addy
+// Copyright (C) 2008 The Molecular Sciences Institute
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by

@@ -1,7 +1,7 @@
 ###############################################################################
 # BNGMZRConverter - A utility program for converting bngl input files to mzr
 #		    input files.
-# Copyright (C) 2007 Nathan Addy
+# Copyright (C) 2007, 2008 The Molecular Sciences Institute
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by

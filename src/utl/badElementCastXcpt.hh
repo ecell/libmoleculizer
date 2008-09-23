@@ -13,14 +13,14 @@
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with this program; if not, write to the Free Software
+// along with Moleculizer; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //    
-// Contact information:
-//   Larry Lok, Research Fellow          Voice: 510-981-8740
-//   The Molecular Sciences Institute      Fax: 510-647-0699
-//   2168 Shattuck Ave.                  Email: lok@molsci.org
-//   Berkeley, CA 94704
+// Original Author:
+//   Larry Lok, Research Fellow, Molecular Sciences Institute, 2001
+
+//                     Email: lok@molsci.org
+//   
 /////////////////////////////////////////////////////////////////////////////
 
 #ifndef UTL_BADELEMENTCASTXCPT_H

@@ -16,14 +16,14 @@
 # GNU Lesser General Public License for more details.
 #
 # You should have received a copy of the GNU Lesser General Public License
-# along with this program; if not, write to the Free Software
+# along with Moleculizer; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
-# Contact information:
+# Original Author:
 #   Nathan Addy, Scientific Programmer	Voice: 510-981-8748
 #   The Molecular Sciences Institute    Email: addy@molsci.org  
-#   2168 Shattuck Ave.                  
-#   Berkeley, CA 94704
+#                     
+#   
 ###############################################################################
 
 import getopt, sys, re, pdb
@@ -130,14 +130,14 @@ def version():
     print "GNU Lesser General Public License for more details."
     print
     print "You should have received a copy of the GNU Lesser General Public License"
-    print "along with this program; if not, write to the Free Software"
+    print "along with Moleculizer; if not, write to the Free Software"
     print "Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA"
     print 
-    print "Contact information:"
+    print "Original Author:"
     print "Nathan Addy, Scientific Programmer"
     print "The Molecular Sciences Institute"
-    print "2168 Shattuck Ave.                  Email: addy@molsci.org"
-    print "Berkeley, CA 94704"
+    print "                  Email: addy@molsci.org"
+    print ""
 
 def parseBlockTypesFromBNG(bngFile):
     bngFile = [re.sub("#.*$", "", x) for x in bngFile] # Delete all comments

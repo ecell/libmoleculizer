@@ -27,14 +27,12 @@
 #include <string>
 #include <iostream>
 #include "utl/arg.hh"
-#include "mzr/moleculizer.hh"
-#include "demoparticlesimulator.hpp"
+#include "demostochasticsimulator.hpp"
 
 using namespace std;
 
 void 
 processCommandLineArgs(int argc, char* argv[], std::string& theFileName, std::string& modelFile);
-
 void displayHelpAndExitProgram();
 
 int main(int argc, char* argv[])
@@ -43,7 +41,7 @@ int main(int argc, char* argv[])
     std::string rulesfile;
     processCommandLineArgs(argc, argv, rulesfile, modelfile);
 
-    SimpleParticleSimulator theSim( rulesfile, modelfile);
+    SimpleStochasticSimulator theSim( rulesfile, modelfile);
 
     std::cout << "\n\n#######################################################\nBeginning simulation\n\n";
 
@@ -107,10 +105,10 @@ void processCommandLineArgs(int argc, char* argv[], std::string& rulesFile, std:
 void displayHelpAndExitProgram()
 {
 
-    cout << "Usage: particlesim_demo --model modelfile --rules rulesfile" << endl;
+    cout << "Usage: stoch_demo --model modelfile --rules rulesfile" << endl;
 
     cout << "This is a demonstration program that demonstrates how libmoleculizer can be used as " << endl;
-    cout << "a component in a particle-based simulator." << endl;
+    cout << "a component in a Gillespie-like simulator." << endl;
 
     cout << "This program should have come with associated documentation.  Please read it for more details." << endl;
     cout << "\tNathan Addy <addy@molsci.org>\n\tSeptember 18, 2008." << endl;

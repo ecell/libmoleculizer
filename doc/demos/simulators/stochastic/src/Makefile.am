@@ -1,7 +1,7 @@
 abs_top_builddir=@abs_top_builddir@
 SRC=$(abs_top_builddir)/src
 
-bin_PROGRAMS=particlesim_demo
+bin_PROGRAMS=stochasticsim_demo
 
 LIBFND = $(SRC)/fnd/libmoleculizer_fnd.la
 LIBUTL = $(SRC)/utl/libmoleculizer_utl.la
@@ -25,9 +25,9 @@ GSL_LIBS = @GSL_LIBS@
 
 AM_CXXFLAGS = $(LIBXML_CFLAGS) $(GSL_CFLAGS)
 
-particlesim_demo_SOURCES=main.cpp \
+stochasticsim_demo_SOURCES=main.cpp \
 	demosimulator.cpp \
-	demoparticlesimulator.cpp
+	demostochasticsimulator.cpp
 
-particlesim_demo_LDADD = $(ALL_MZR_LIBS)
+stochasticsim_demo_LDADD = $(ALL_MZR_LIBS)
 

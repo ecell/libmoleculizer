@@ -146,7 +146,16 @@ void SimpleSimulator::executeReaction( mzr::moleculizer::ReactionTypePtr ptrRxn)
         std::cout << '+' << vt.second << ' ' << vt.first->getName() << '\n';
 
         std::string name = vt.first->getName();
-        theModel[ name ] += vt.second;
+
+        if (theModel.find( name ) == theModel.end() )
+        {
+            std::cout << "Creating new species '" << name << "'.";
+            theModel[ name ] = vt.second;
+        }
+        else
+        {
+            theModel[ name ] += vt.second;
+        }
     }
 
     std::cout << std::endl;

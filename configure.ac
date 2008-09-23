@@ -60,6 +60,7 @@ AC_CONFIG_FILES([Makefile
                 src/nmr/tests/Makefile
                 src/mzr/tests/Makefile
                 doc/demos/simulators/particle/src/Makefile
+                doc/demos/simulators/stochastic/src/Makefile
 		])
 
 

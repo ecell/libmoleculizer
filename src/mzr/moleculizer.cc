@@ -221,14 +221,32 @@ namespace mzr
         this->attachDocument( parser.get_document() );
     }
 
+    bool 
+    moleculizer::getModelHasBeenLoaded() const
+    {
+        return modelLoaded;
+    }
+
+    void
+    moleculizer::setModelHasBeenLoaded(bool value)
+    {
+        modelLoaded = value;
+    }
+
     void
     moleculizer::attachDocument(xmlpp::Document* pDoc)
     {
         // Note that this new pattern here will allow old style moleculizer
         // files, ie those that contain events, to be parsed and run.
 
-        if (modelLoaded) throw utl::modelAlreadyLoaded();
-        else modelLoaded = true;
+        if (getModelHasBeenLoaded()) 
+        {
+            throw utl::modelAlreadyLoaded();
+        }
+        else 
+        {
+            setModelHasBeenLoaded(true);
+        }
 
         // Get the basic framework of the document.
         xmlpp::Element* pRootElement

@@ -88,6 +88,9 @@ namespace mzr
         moleculizer(void);
         ~moleculizer(void);
 
+        bool getModelHasBeenLoaded() const;
+        void setModelHasBeenLoaded(bool value);
+
         void setGenerateDepth(unsigned int generateDepth);
         void setRateExtrapolation( bool rateExtrapolation ){ return; }
         void setToleranceOption( bool tolerenceOption ) { return; }

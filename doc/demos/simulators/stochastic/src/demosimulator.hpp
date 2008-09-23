@@ -43,6 +43,7 @@ protected:
     mzr::moleculizer speciesReactionGenerator;
     std::map<std::string, int> theModel;
 
+    void engageModel();
     void executeReaction( mzr::moleculizer::ReactionTypePtr ptrRxn);
         
 private:
@@ -50,7 +51,7 @@ private:
     void attachModelFile(std::string modelfile);
 
     bool assertModelValidity(const std::map<std::string, int>& model);
-    void engageModel();
+
 
     void createModelFromFile(const std::string& modelFile, std::map<std::string, int>& model);
 

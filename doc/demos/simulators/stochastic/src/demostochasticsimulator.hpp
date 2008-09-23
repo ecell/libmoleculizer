@@ -25,37 +25,26 @@
 /////////////////////////////////////////////////////////////////////////////
 
 
-#include "mzr/moleculizer.hh"
-#include <string>
-#include <map>
+#include "demosimulator.hpp"
+#include <vector>
 
-class SimpleSimulator
+class SimpleStochasticSimulator : public SimpleSimulator
 {
 public:
-    SimpleSimulator(std::string rulesfile, std::string modelfile);
-    virtual void singleStep() = 0;
-    void printState() const;
-
-public:
-    typedef std::pair<std::string, int> modelPairType;
-
+    SimpleStochasticSimulator(std::string rulesfile, std::string modelfile);
+    void singleStep();
+    
 protected:
-    mzr::moleculizer speciesReactionGenerator;
-    std::map<std::string, int> theModel;
 
-    void executeReaction( mzr::moleculizer::ReactionTypePtr ptrRxn);
-        
-private:
-    void attachRuleFile(std::string rulesfile);
-    void attachModelFile(std::string modelfile);
+    mzr::mzrReaction* calculateReactionToFire();
+    void getReactionsWithPositivePropensity( std::vector<mzr::mzrReaction*>& okReactions);
+    bool reactionHasPositiveSubstrates(const mzr::mzrReaction* rxnPtr);
+    void recordNewReactions();
 
-    bool assertModelValidity(const std::map<std::string, int>& model);
-    void engageModel();
+    void printRxn(const mzr::mzrReaction* rxnPtr) const
+    {
+        std::cout << rxnPtr->getName() << endl;
+    }
 
-    void createModelFromFile(const std::string& modelFile, std::map<std::string, int>& model);
-
+    std::vector<mzr::mzrReaction*> reactions;
 };
-
-
-
-

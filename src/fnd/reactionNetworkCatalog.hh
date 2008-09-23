@@ -359,6 +359,34 @@ namespace fnd
 	}
     }
 
+    
+
+      void
+      printAll()
+      {
+          print(std::string("All"), theCompleteReactionList);
+          // print(std::string("Zero"), zeroSubstrateRxns);
+//           print(std::string("Single"), singleSubstrateRxns);
+//           print(std::string("Double"), doubleSubstrateRxns);
+      }
+
+      void print(std::string str, const ReactionList& aVector)
+      {
+          BOOST_FOREACH(ReactionTypePtr refT, aVector)
+          {
+              std::cout << "(" << str << ") " << refT->getName() << std::endl;
+          }
+      }
+
+      void print(std::string str, const SpeciesList& aVector)
+      {
+          BOOST_FOREACH(SpeciesTypePtr* refT, aVector)
+          {
+              std::cout << "(" << str << ") " << refT->getName() << std::endl;
+          }
+      }
+
+
     ~ReactionNetworkDescription()
     {
       // We don't memory manage any SpeciesType* or ReactionType*, but we do memory 

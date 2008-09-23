@@ -31,12 +31,9 @@ endif
 LIBXML_CFLAGS = @LIBXML_CFLAGS@
 LIBXML_LIBS = @LIBXML_LIBS@
 
-GSL_CFLAGS = @GSL_CFLAGS@
-GSL_LIBS = @GSL_LIBS@
+AM_CXXFLAGS = $(LIBXML_CFLAGS) 
 
-AM_CXXFLAGS = $(LIBXML_CFLAGS) $(GSL_CFLAGS)
-
-libmoleculizer_utl_la_LIBADD = -lstdc++ $(LIBXML_LIBS) $(GSL_LIBS)
+libmoleculizer_utl_la_LIBADD = -lstdc++ $(LIBXML_LIBS) 
 
 libmoleculizer_utl_la_SOURCES =\
 arg.cc \
@@ -53,7 +50,6 @@ badPosIntArgXcpt.cc \
 badPosIntAttrXcpt.cc \
 dom.cc \
 frexp10.cc \
-gsl.cc \
 insuffArgsXcpt.cc \
 linearHash.cc \
 missingAttrXcpt.cc \
@@ -86,7 +82,6 @@ forBoth.hh \
 forceInsert.hh \
 frexp10.hh \
 funcInsert.hh \
-gsl.hh \
 insuffArgsXcpt.hh \
 linearHash.hh \
 message.hh \

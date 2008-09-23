@@ -38,10 +38,6 @@ PKG_CHECK_MODULES(LIBXML, libxml++-2.6)
 AC_SUBST(LIBXML_CFLAGS)
 AC_SUBST(LIBXML_LIBS)
 
-PKG_CHECK_MODULES(GSL, gsl)
-AC_SUBST(GSL_CFLAGS)
-AC_SUBST(GSL_LIBS)
-
 # Checks for libraries.
 AC_CONFIG_FILES([Makefile
                 src/Makefile

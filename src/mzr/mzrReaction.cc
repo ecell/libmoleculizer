@@ -2,17 +2,17 @@
 // Moleculizer - a stochastic simulator for cellular chemistry.
 // Copyright (C) 2001, 2008 The Molecular Sciences Institute.
 //
-// This program is free software; you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation; either version 2 of the License, or
+// Moleculizer is free software; you can redistribute it and/or modify
+// it under the terms of the GNU Lesser General Public License as published by
+// the Free Software Foundation; either version 3 of the License, or
 // (at your option) any later version.
 //
-// This program is distributed in the hope that it will be useful,
+// Moleculizer is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
+// GNU Lesser General Public License for more details.
 //
-// You should have received a copy of the GNU General Public License
+// You should have received a copy of the GNU Lesser General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //    
@@ -23,7 +23,6 @@
 //   Berkeley, CA 94704
 /////////////////////////////////////////////////////////////////////////////
 
-#include "utl/gsl.hh"
 #include "mzr/mzrSpecies.hh"
 #include "mzr/mzrReaction.hh"
 #include "mzr/respondReaction.hh"
@@ -53,45 +52,7 @@ namespace mzr
         // This reschedules the reaction.  Since all of this seems to be 
         // unnecessary, maybe instead we can just recalculate the propensity here.
 
-
-        //moleculizer& rMzr = rStimulus.rMzr;
-        //       mzrUnit& rMzrUnit = *(rMzr.pUserUnits->pMzrUnit);
-    
-        //       // Now trying to avoid scheduling events at time "never", as it appears
-        //       // that inserting events in the event queue is the single biggest task
-        //       // in this simulator.
-      
-        //       // Now that most things use volume (since other things use compartment
-        //       // volumes, instead of the unique volume, I should probably make the
-        //       // volume directly available in mzrUnit.  An alternative would be for
-        //       // compartments to maintain a molarFactor (i.e. avogadrosNumber * volume).
-        //       double myPropensity = propensity(rMzrUnit.getMolarFactor().getVolume());
-      
-        //       if(0.0 < myPropensity)
-        //       {
-        //           if((lastPropensity <= 0.0)
-        //              || (myPropensity > lastPropensity * highSensitive)
-        //              || (myPropensity < lastPropensity * lowSensitive))
-        //  	  {
-        //               lastPropensity = myPropensity;
-      
-        //               // 	    double nextReactionTime
-        //               // 	      = rQueue.getSimTime()
-        //               // 	      + utl::gsl::exponentialSampler(rRng).sample(1.0 / myPropensity);
-        //               //	    rQueue.scheduleEvent(this, nextReactionTime);
-        //  	  }
-        //       }
-        //       else
-        //       {
-        //           // It would probably be better to make the reinitialization
-        //           // of lastPropensity to -1.0 to be a part of descheduling.
-        //           // For a first try, putting it here and where the reaction executes.
-        //           //
-        //           // Are there any other times that a reaction is descheduled,
-        //           // besides this and when the reaction is executed?
-        //           lastPropensity = -1.0;
-        //           //	rQueue.descheduleEvent(this);
-        //       }
+        // Deleted all this code.  It had recalculated the propensity and then rescheduled the reaction.
     }
 
     class updateOneSpecies :

@@ -74,7 +74,7 @@ it is necessary to check they are correct.
 *   This software is subject to this copyright only, irrespective of         *
 *   any copyright attached to any package of which this is a part.           *
 *                                                                            *
-*   This program is only provided "as is".  No responsibility will be taken  *
+*   Moleculizer is only provided "as is".  No responsibility will be taken  *
 *   by the author, his employer or his pet rabbit* for any misfortune which  *
 *   befalls you because of its use.  I don't think it will delete all your   *
 *   files, burn down your computer room or turn your children against you,   *

@@ -1,10 +1,15 @@
-/////////////////////////////////////////////////////////////////////////////
-// Moleculizer - a stochastic simulator for cellular chemistry.
-// Copyright (C) 2001, 2008 The Molecular Sciences Institute.
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+//                                                                          
+//                                                                          
+//        This file is part of Libmoleculizer
+//
+//        Copyright (C) 2001-2008 The Molecular Sciences Institute.
+//
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 //
 // Moleculizer is free software; you can redistribute it and/or modify
-// it under the terms of the GNU Lesser General Public License as published by
-// the Free Software Foundation; either version 3 of the License, or
+// it under the terms of the GNU Lesser General Public License as published 
+// by the Free Software Foundation; either version 3 of the License, or
 // (at your option) any later version.
 //
 // Moleculizer is distributed in the hope that it will be useful,
@@ -13,15 +18,17 @@
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with Moleculizer; if not, write to the Free Software
-// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+// along with Moleculizer; if not, write to the Free Software Foundation
+// Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307,  USA
 //    
+// END HEADER
+// 
 // Original Author:
 //   Larry Lok, Research Fellow, Molecular Sciences Institute, 2001
-
-//                     Email: lok@molsci.org
-//   
-/////////////////////////////////////////////////////////////////////////////
+//
+// Modifing Authors:
+//              
+//
 
 #include "fnd/speciesNotMassiveXcpt.hh"
 #include "mol/mzrModMol.hh"
@@ -35,224 +42,224 @@
 
 namespace ftr
 {
-  class parseSmallMolExchange :
-    public std::unary_function<xmlpp::Node*, smallMolExchange>
-  {
-    bnd::molUnit& rMolUnit;
-    const plx::parserPlex& rParsedPlex;
-  public:
-    parseSmallMolExchange(bnd::molUnit& refMolUnit,
-			  const plx::parserPlex& refParsedPlex) :
-      rMolUnit(refMolUnit),
-      rParsedPlex(refParsedPlex)
-    {}
+class parseSmallMolExchange :
+public std::unary_function<xmlpp::Node*, smallMolExchange>
+{
+bnd::molUnit& rMolUnit;
+const plx::parserPlex& rParsedPlex;
+public:
+parseSmallMolExchange(bnd::molUnit& refMolUnit,
+const plx::parserPlex& refParsedPlex) :
+rMolUnit(refMolUnit),
+rParsedPlex(refParsedPlex)
+{}
 
-    smallMolExchange
-    operator()(xmlpp::Node* pSmallMolExchangeNode) const
-      throw(utl::xcpt)
-    {
-      xmlpp::Element* pSmallMolExchangeElt
-	= utl::dom::mustBeElementPtr(pSmallMolExchangeNode);
-      
-      xmlpp::Element* pSmallMolInstanceRefElt
-	= utl::dom::mustGetUniqueChild(pSmallMolExchangeElt,
-				       eltName::smallMolInstanceRef);
+smallMolExchange
+operator()(xmlpp::Node* pSmallMolExchangeNode) const
+throw(utl::xcpt)
+{
+xmlpp::Element* pSmallMolExchangeElt
+= utl::dom::mustBeElementPtr(pSmallMolExchangeNode);
 
-      std::string smallMolInstanceName
-	= utl::dom::mustGetAttrString(pSmallMolInstanceRefElt,
-				      eltName::smallMolInstanceRef_nameAttr);
-      cpx::molSpec exchangedMolSpec
-	= rParsedPlex.mustGetMolNdxByName(pSmallMolInstanceRefElt,
-					  smallMolInstanceName);
+xmlpp::Element* pSmallMolInstanceRefElt
+= utl::dom::mustGetUniqueChild(pSmallMolExchangeElt,
+eltName::smallMolInstanceRef);
 
-      xmlpp::Element* pSmallMolRefElt
-	= utl::dom::mustGetUniqueChild(pSmallMolExchangeElt,
-				       eltName::smallMolRef);
+std::string smallMolInstanceName
+= utl::dom::mustGetAttrString(pSmallMolInstanceRefElt,
+eltName::smallMolInstanceRef_nameAttr);
+cpx::molSpec exchangedMolSpec
+= rParsedPlex.mustGetMolNdxByName(pSmallMolInstanceRefElt,
+smallMolInstanceName);
 
-      std::string smallMolName
-	= utl::dom::mustGetAttrString(pSmallMolRefElt,
-				      eltName::smallMolRef_nameAttr);
-      
-      bnd::smallMol* pReplacementMol
-	= rMolUnit.mustFindSmallMol(smallMolName,
-				    pSmallMolInstanceRefElt);
+xmlpp::Element* pSmallMolRefElt
+= utl::dom::mustGetUniqueChild(pSmallMolExchangeElt,
+eltName::smallMolRef);
 
-      return smallMolExchange(exchangedMolSpec,
-			      pReplacementMol);
-    }
-  };
+std::string smallMolName
+= utl::dom::mustGetAttrString(pSmallMolRefElt,
+eltName::smallMolRef_nameAttr);
 
-  class parseModificationExchange :
-    public std::unary_function<xmlpp::Node*, modificationExchange>
-  {
-    bnd::molUnit& rMolUnit;
-    const plx::parserPlex& rParsedPlex;
-  public:
-    parseModificationExchange(bnd::molUnit& refMolUnit,
-			      const plx::parserPlex& refParsedPlex) :
-      rMolUnit(refMolUnit),
-      rParsedPlex(refParsedPlex)
-    {
-    }
+bnd::smallMol* pReplacementMol
+= rMolUnit.mustFindSmallMol(smallMolName,
+pSmallMolInstanceRefElt);
 
-    modificationExchange
-    operator()(xmlpp::Node* pModificationExchangeNode) const
-      throw(utl::xcpt)
-    {
-      xmlpp::Element* pModificationExchangeElt
-	= utl::dom::mustBeElementPtr(pModificationExchangeNode);
+return smallMolExchange(exchangedMolSpec,
+pReplacementMol);
+}
+};
 
-      xmlpp::Element* pModMolInstanceRefElt
-	= utl::dom::mustGetUniqueChild(pModificationExchangeElt,
-				       eltName::modMolInstanceRef);
+class parseModificationExchange :
+public std::unary_function<xmlpp::Node*, modificationExchange>
+{
+bnd::molUnit& rMolUnit;
+const plx::parserPlex& rParsedPlex;
+public:
+parseModificationExchange(bnd::molUnit& refMolUnit,
+const plx::parserPlex& refParsedPlex) :
+rMolUnit(refMolUnit),
+rParsedPlex(refParsedPlex)
+{
+}
 
-      // Get the instance name of the mol instance in which the modification
-      // exchange is to take place, and get the index of the mol in the
-      // complex.
-      std::string modMolInstanceName
-	= utl::dom::mustGetAttrString(pModMolInstanceRefElt,
-				      eltName::modMolInstanceRef_nameAttr);
+modificationExchange
+operator()(xmlpp::Node* pModificationExchangeNode) const
+throw(utl::xcpt)
+{
+xmlpp::Element* pModificationExchangeElt
+= utl::dom::mustBeElementPtr(pModificationExchangeNode);
 
-      cpx::molSpec modMolSpec
-	= rParsedPlex.mustGetMolNdxByName(pModMolInstanceRefElt,
-					  modMolInstanceName);
+xmlpp::Element* pModMolInstanceRefElt
+= utl::dom::mustGetUniqueChild(pModificationExchangeElt,
+eltName::modMolInstanceRef);
 
-      // Get the modification site name.
-      xmlpp::Element* pModSiteRefElt
-	= utl::dom::mustGetUniqueChild(pModMolInstanceRefElt,
-				       eltName::modSiteRef);
+// Get the instance name of the mol instance in which the modification
+// exchange is to take place, and get the index of the mol in the
+// complex.
+std::string modMolInstanceName
+= utl::dom::mustGetAttrString(pModMolInstanceRefElt,
+eltName::modMolInstanceRef_nameAttr);
 
-      std::string modSiteName
-	= utl::dom::mustGetAttrString(pModSiteRefElt,
-				      eltName::modSiteRef_nameAttr);
+cpx::molSpec modMolSpec
+= rParsedPlex.mustGetMolNdxByName(pModMolInstanceRefElt,
+modMolInstanceName);
 
-      // Have to use the mol to translate modification site name to
-      // modification index.
-      const bnd::mzrModMol* pModMol
-	= bnd::mustBeModMol
-	(rParsedPlex.mustGetMolByName(pModMolInstanceRefElt,
-				      modMolInstanceName),
-	 pModMolInstanceRefElt);
+// Get the modification site name.
+xmlpp::Element* pModSiteRefElt
+= utl::dom::mustGetUniqueChild(pModMolInstanceRefElt,
+eltName::modSiteRef);
 
-      int modSiteNdx
-	= pModMol->mustGetModSiteNdx(modSiteName,
-				     pModSiteRefElt);
+std::string modSiteName
+= utl::dom::mustGetAttrString(pModSiteRefElt,
+eltName::modSiteRef_nameAttr);
 
-      // Get the name of the modification that is to replace the modification
-      // currently found at the modification site.
-      xmlpp::Element* pInstalledModRefElt
-	= utl::dom::mustGetUniqueChild(pModificationExchangeElt,
-				       eltName::installedModRef);
-      std::string modificationName
-	= utl::dom::mustGetAttrString(pInstalledModRefElt,
-				      eltName::installedModRef_nameAttr);
+// Have to use the mol to translate modification site name to
+// modification index.
+const bnd::mzrModMol* pModMol
+= bnd::mustBeModMol
+(rParsedPlex.mustGetMolByName(pModMolInstanceRefElt,
+modMolInstanceName),
+pModMolInstanceRefElt);
 
-      // Look up the modification using the molUnit.
-      const cpx::modification* pModification
-	= rMolUnit.mustGetMod(modificationName,
-			      pInstalledModRefElt);
+int modSiteNdx
+= pModMol->mustGetModSiteNdx(modSiteName,
+pModSiteRefElt);
 
-      return modificationExchange(modMolSpec,
-				  modSiteNdx,
-				  pModification);
-    }
-  };
+// Get the name of the modification that is to replace the modification
+// currently found at the modification site.
+xmlpp::Element* pInstalledModRefElt
+= utl::dom::mustGetUniqueChild(pModificationExchangeElt,
+eltName::installedModRef);
+std::string modificationName
+= utl::dom::mustGetAttrString(pInstalledModRefElt,
+eltName::installedModRef_nameAttr);
 
-  void
-  parseOmniGen::
-  operator()(xmlpp::Node* pOmniGenNode) const
-    throw(utl::xcpt)
-  {
-    xmlpp::Element* pOmniGenElt
-      = utl::dom::mustBeElementPtr(pOmniGenNode);
+// Look up the modification using the molUnit.
+const cpx::modification* pModification
+= rMolUnit.mustGetMod(modificationName,
+pInstalledModRefElt);
 
-    // Parse the enabling omniplex.
-    xmlpp::Element* pEnablingOmniElt
-      = utl::dom::mustGetUniqueChild(pOmniGenElt,
-				     eltName::enablingOmniplex);
-    plx::parserPlex parsedPlex;
-    plx::mzrOmniPlex* pOmni
-      = plx::findOmni(pEnablingOmniElt,
-		      rMolUnit,
-		      rPlexUnit,
-		      parsedPlex);
+return modificationExchange(modMolSpec,
+modSiteNdx,
+pModification);
+}
+};
 
-    // Parse the small-mol exchanges.
-    xmlpp::Element* pSmallMolExchangesElt
-      = utl::dom::mustGetUniqueChild(pOmniGenElt,
-				     eltName::smallMolExchanges);
-    xmlpp::Node::NodeList smallMolExchangeNodes
-      = pSmallMolExchangesElt->get_children(eltName::smallMolExchange);
-    std::vector<smallMolExchange> smallMolExchanges
-      = std::vector<smallMolExchange>(smallMolExchangeNodes.size());
-    std::transform(smallMolExchangeNodes.begin(),
-		   smallMolExchangeNodes.end(),
-		   smallMolExchanges.begin(),
-		   parseSmallMolExchange(rMolUnit,
-					 parsedPlex));
+void
+parseOmniGen::
+operator()(xmlpp::Node* pOmniGenNode) const
+throw(utl::xcpt)
+{
+xmlpp::Element* pOmniGenElt
+= utl::dom::mustBeElementPtr(pOmniGenNode);
 
-    // Parse the modification exchanges.
-    xmlpp::Element* pModificationExchangesElt
-      = utl::dom::mustGetUniqueChild(pOmniGenElt,
-				     eltName::modificationExchanges);
-    xmlpp::Node::NodeList modificationExchangeNodes
-      = pModificationExchangesElt->get_children(eltName::modificationExchange);
-    std::vector<modificationExchange> modificationExchanges
-      = std::vector<modificationExchange>(modificationExchangeNodes.size());
-    std::transform(modificationExchangeNodes.begin(),
-		   modificationExchangeNodes.end(),
-		   modificationExchanges.begin(),
-		   parseModificationExchange(rMolUnit,
-					     parsedPlex));
+// Parse the enabling omniplex.
+xmlpp::Element* pEnablingOmniElt
+= utl::dom::mustGetUniqueChild(pOmniGenElt,
+eltName::enablingOmniplex);
+plx::parserPlex parsedPlex;
+plx::mzrOmniPlex* pOmni
+= plx::findOmni(pEnablingOmniElt,
+rMolUnit,
+rPlexUnit,
+parsedPlex);
 
-    // Parse additional reactant.
-    xmlpp::Element* pAdditionalReactantSpeciesElt
-      = utl::dom::getOptionalChild(pOmniGenElt,
-				   eltName::additionalReactantSpecies);
-    mzr::mzrSpecies* pAdditionalReactantSpecies = 0;
-    if(pAdditionalReactantSpeciesElt)
-      {
-	std::string additionalReactantSpeciesName
-	  = utl::dom::mustGetAttrString
-	  (pAdditionalReactantSpeciesElt,
-	   eltName::additionalReactantSpecies_nameAttr);
+// Parse the small-mol exchanges.
+xmlpp::Element* pSmallMolExchangesElt
+= utl::dom::mustGetUniqueChild(pOmniGenElt,
+eltName::smallMolExchanges);
+xmlpp::Node::NodeList smallMolExchangeNodes
+= pSmallMolExchangesElt->get_children(eltName::smallMolExchange);
+std::vector<smallMolExchange> smallMolExchanges
+= std::vector<smallMolExchange>(smallMolExchangeNodes.size());
+std::transform(smallMolExchangeNodes.begin(),
+smallMolExchangeNodes.end(),
+smallMolExchanges.begin(),
+parseSmallMolExchange(rMolUnit,
+parsedPlex));
 
-	pAdditionalReactantSpecies
-	  = rMzrUnit.mustFindSpecies(additionalReactantSpeciesName,
-				     pAdditionalReactantSpeciesElt);
-      }
+// Parse the modification exchanges.
+xmlpp::Element* pModificationExchangesElt
+= utl::dom::mustGetUniqueChild(pOmniGenElt,
+eltName::modificationExchanges);
+xmlpp::Node::NodeList modificationExchangeNodes
+= pModificationExchangesElt->get_children(eltName::modificationExchange);
+std::vector<modificationExchange> modificationExchanges
+= std::vector<modificationExchange>(modificationExchangeNodes.size());
+std::transform(modificationExchangeNodes.begin(),
+modificationExchangeNodes.end(),
+modificationExchanges.begin(),
+parseModificationExchange(rMolUnit,
+parsedPlex));
 
-    // Parse additional product.
-    xmlpp::Element* pAdditionalProductSpeciesElt
-      = utl::dom::getOptionalChild(pOmniGenElt,
-				   eltName::additionalProductSpecies);
-    mzr::mzrSpecies* pAdditionalProductSpecies = 0;
-    if(pAdditionalProductSpeciesElt)
-      {
-	std::string additionalProductSpeciesName
-	  = utl::dom::mustGetAttrString
-	  (pAdditionalProductSpeciesElt,
-	   eltName::additionalProductSpecies_nameAttr);
+// Parse additional reactant.
+xmlpp::Element* pAdditionalReactantSpeciesElt
+= utl::dom::getOptionalChild(pOmniGenElt,
+eltName::additionalReactantSpecies);
+mzr::mzrSpecies* pAdditionalReactantSpecies = 0;
+if(pAdditionalReactantSpeciesElt)
+{
+std::string additionalReactantSpeciesName
+= utl::dom::mustGetAttrString
+(pAdditionalReactantSpeciesElt,
+eltName::additionalReactantSpecies_nameAttr);
 
-	pAdditionalProductSpecies
-	  = rMzrUnit.mustFindSpecies(additionalProductSpeciesName,
-				     pAdditionalProductSpeciesElt);
-      }
+pAdditionalReactantSpecies
+= rMzrUnit.mustFindSpecies(additionalReactantSpeciesName,
+pAdditionalReactantSpeciesElt);
+}
 
-    // Parse the reaction rate, whose units depend on whether an additional
-    // reactant species is given or not.
-    xmlpp::Element* pRateElt
-      = utl::dom::mustGetUniqueChild(pOmniGenElt,
-				     eltName::rate);
-    double rate
-      = utl::dom::mustGetAttrPosDouble(pRateElt,
-				       eltName::rate_valueAttr);
+// Parse additional product.
+xmlpp::Element* pAdditionalProductSpeciesElt
+= utl::dom::getOptionalChild(pOmniGenElt,
+eltName::additionalProductSpecies);
+mzr::mzrSpecies* pAdditionalProductSpecies = 0;
+if(pAdditionalProductSpeciesElt)
+{
+std::string additionalProductSpeciesName
+= utl::dom::mustGetAttrString
+(pAdditionalProductSpeciesElt,
+eltName::additionalProductSpecies_nameAttr);
 
-    // Construct the reaction rate exptrapolator.  The generated reactions
-    // could be either unary or binary, depending on whether an additional
-    // reactant is given, and there is a constructor for each of these cases.
-    omniMassExtrap* pExtrapolator = 0;
-    pExtrapolator = new omniMassExtrap(rate);
+pAdditionalProductSpecies
+= rMzrUnit.mustFindSpecies(additionalProductSpeciesName,
+pAdditionalProductSpeciesElt);
+}
+
+// Parse the reaction rate, whose units depend on whether an additional
+// reactant species is given or not.
+xmlpp::Element* pRateElt
+= utl::dom::mustGetUniqueChild(pOmniGenElt,
+eltName::rate);
+double rate
+= utl::dom::mustGetAttrPosDouble(pRateElt,
+eltName::rate_valueAttr);
+
+// Construct the reaction rate exptrapolator.  The generated reactions
+// could be either unary or binary, depending on whether an additional
+// reactant is given, and there is a constructor for each of these cases.
+omniMassExtrap* pExtrapolator = 0;
+pExtrapolator = new omniMassExtrap(rate);
 
 // TODO IMPORTANT NOTICE -- temporarily eliminating rate extrapolation.
 //     if(pAdditionalReactantSpeciesElt)
@@ -282,19 +289,19 @@ namespace ftr
 // 	pExtrapolator = new omniMassExtrap(rate);
 //       }
 
-    // Construct the reaction family and register it for memory management.
-    omniFam* pFamily
-      = new omniFam(rMzrUnit,
-		    rPlexUnit,
-		    smallMolExchanges,
-		    modificationExchanges,
-		    pAdditionalReactantSpecies,
-		    pAdditionalProductSpecies,
-		    pExtrapolator);
-    rMzrUnit.addReactionFamily(pFamily);
+// Construct the reaction family and register it for memory management.
+omniFam* pFamily
+= new omniFam(rMzrUnit,
+rPlexUnit,
+smallMolExchanges,
+modificationExchanges,
+pAdditionalReactantSpecies,
+pAdditionalProductSpecies,
+pExtrapolator);
+rMzrUnit.addReactionFamily(pFamily);
 
-    // Connect the family's reaction generator to the triggering omniplex's
-    // feature.
-    pOmni->getSubPlexFeature()->insert(pFamily->getRxnGen());
-  }
+// Connect the family's reaction generator to the triggering omniplex's
+// feature.
+pOmni->getSubPlexFeature()->insert(pFamily->getRxnGen());
+}
 }

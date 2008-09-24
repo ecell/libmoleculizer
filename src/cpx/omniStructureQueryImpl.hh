@@ -1,10 +1,15 @@
-/////////////////////////////////////////////////////////////////////////////
-// Moleculizer - a stochastic simulator for cellular chemistry.
-// Copyright (C) 2001, 2008 The Molecular Sciences Institute.
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+//                                                                          
+//                                                                          
+//        This file is part of Libmoleculizer
+//
+//        Copyright (C) 2001-2008 The Molecular Sciences Institute.
+//
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 //
 // Moleculizer is free software; you can redistribute it and/or modify
-// it under the terms of the GNU Lesser General Public License as published by
-// the Free Software Foundation; either version 3 of the License, or
+// it under the terms of the GNU Lesser General Public License as published 
+// by the Free Software Foundation; either version 3 of the License, or
 // (at your option) any later version.
 //
 // Moleculizer is distributed in the hope that it will be useful,
@@ -13,15 +18,17 @@
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with Moleculizer; if not, write to the Free Software
-// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+// along with Moleculizer; if not, write to the Free Software Foundation
+// Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307,  USA
 //    
+// END HEADER
+// 
 // Original Author:
 //   Larry Lok, Research Fellow, Molecular Sciences Institute, 2001
-
-//                     Email: lok@molsci.org
-//   
-/////////////////////////////////////////////////////////////////////////////
+//
+// Modifing Authors:
+//              
+//
 
 #ifndef CPX_OMNISTRUCTUREQUERYIMPL_H
 #define CPX_OMNISTRUCTUREQUERYIMPL_H
@@ -30,50 +37,50 @@
 
 namespace cpx
 {
-  class bindingContainsSite :
-    public std::unary_function<binding, bool>
-  {
-    // The site being searched for among the bindings
-    // AFTER it has been translated by the omni imbedding.
-    const siteSpec& rQuerySiteSpec;
+class bindingContainsSite :
+public std::unary_function<binding, bool>
+{
+// The site being searched for among the bindings
+// AFTER it has been translated by the omni imbedding.
+const siteSpec& rQuerySiteSpec;
 
-  public:
-    bindingContainsSite(const siteSpec& rSiteSpec) :
-      rQuerySiteSpec(rSiteSpec)
-    {}
-    
-    bool
-    operator()(const binding& rBinding) const
-    {
-      return (rBinding.leftSite() == rQuerySiteSpec)
-	|| (rBinding.rightSite() == rQuerySiteSpec);
-    }
-  };
+public:
+bindingContainsSite(const siteSpec& rSiteSpec) :
+rQuerySiteSpec(rSiteSpec)
+{}
 
-  template<class plexT>
-  bool
-  omniFreeSiteQuery<plexT>::
-  operator()(const omniStructureQueryArg<plexT>& rArg) const
-  {
-    const plexT& rPlex = rArg.rPlex;
-    const plexIso& rInjection = rArg.rInjection;
+bool
+operator()(const binding& rBinding) const
+{
+return (rBinding.leftSite() == rQuerySiteSpec)
+|| (rBinding.rightSite() == rQuerySiteSpec);
+}
+};
 
-    // Translate the spec of the site we want to check into the indexing of
-    // the given plex using the injection of the omniplex into the given plex
-    // where it has been recognized.
-    siteSpec translatedSiteSpec
-      = rInjection.forward.applyToSiteSpec(freeSiteSpec);
+template<class plexT>
+bool
+omniFreeSiteQuery<plexT>::
+operator()(const omniStructureQueryArg<plexT>& rArg) const
+{
+const plexT& rPlex = rArg.rPlex;
+const plexIso& rInjection = rArg.rInjection;
 
-    // Return true if no binding in the plex contains the translated site
-    // spec; i.e. if the site specified by freeSiteSpec in the omni
-    // is also free in the plex where the omni is embedded.
-    return
-      (rPlex.bindings.end()
-       == std::find_if(rPlex.bindings.begin(),
-		       rPlex.bindings.end(),
-		       bindingContainsSite(translatedSiteSpec)));
+// Translate the spec of the site we want to check into the indexing of
+// the given plex using the injection of the omniplex into the given plex
+// where it has been recognized.
+siteSpec translatedSiteSpec
+= rInjection.forward.applyToSiteSpec(freeSiteSpec);
 
-  }
+// Return true if no binding in the plex contains the translated site
+// spec; i.e. if the site specified by freeSiteSpec in the omni
+// is also free in the plex where the omni is embedded.
+return
+(rPlex.bindings.end()
+== std::find_if(rPlex.bindings.begin(),
+rPlex.bindings.end(),
+bindingContainsSite(translatedSiteSpec)));
+
+}
 }
 
 #endif // CPX_OMNISTRUCTUREQUERYIMPL_H

@@ -1,10 +1,15 @@
-/////////////////////////////////////////////////////////////////////////////
-// Moleculizer - a stochastic simulator for cellular chemistry.
-// Copyright (C) 2001, 2008 The Molecular Sciences Institute.
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+//                                                                          
+//                                                                          
+//        This file is part of Libmoleculizer
+//
+//        Copyright (C) 2001-2008 The Molecular Sciences Institute.
+//
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 //
 // Moleculizer is free software; you can redistribute it and/or modify
-// it under the terms of the GNU Lesser General Public License as published by
-// the Free Software Foundation; either version 3 of the License, or
+// it under the terms of the GNU Lesser General Public License as published 
+// by the Free Software Foundation; either version 3 of the License, or
 // (at your option) any later version.
 //
 // Moleculizer is distributed in the hope that it will be useful,
@@ -13,15 +18,17 @@
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with Moleculizer; if not, write to the Free Software
-// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+// along with Moleculizer; if not, write to the Free Software Foundation
+// Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307,  USA
 //    
+// END HEADER
+// 
 // Original Author:
 //   Larry Lok, Research Fellow, Molecular Sciences Institute, 2001
-
-//                     Email: lok@molsci.org
-//   
-/////////////////////////////////////////////////////////////////////////////
+//
+// Modifing Authors:
+//              
+//
 
 #include "utl/dom.hh"
 #include "mzr/unit.hh"
@@ -31,111 +38,111 @@
 
 namespace mzr
 {
-  class prepareUnitToDump :
-    public std::unary_function<unit*, void>
-  {
-    xmlpp::Element* pRootElt;
-    xmlpp::Element* pModelElt;
-    xmlpp::Element* pStreamsElt;
-    xmlpp::Element* pEventsElt;
-    xmlpp::Element* pTaggedSpeciesElt;
-    
-  public:
-    prepareUnitToDump(xmlpp::Element* pRootElement,
-		      xmlpp::Element* pModelElement,
-		      xmlpp::Element* pStreamsElement,
-		      xmlpp::Element* pEventsElement,
-		      xmlpp::Element* pTaggedSpeciesElement) :
-      pRootElt(pRootElement),
-      pModelElt(pModelElement),
-      pStreamsElt(pStreamsElement),
-      pEventsElt(pEventsElement),
-      pTaggedSpeciesElt(pTaggedSpeciesElement)
-    {}
+class prepareUnitToDump :
+public std::unary_function<unit*, void>
+{
+xmlpp::Element* pRootElt;
+xmlpp::Element* pModelElt;
+xmlpp::Element* pStreamsElt;
+xmlpp::Element* pEventsElt;
+xmlpp::Element* pTaggedSpeciesElt;
 
-    void
-    operator()(unit* pUnit) const
-      throw(std::exception)
-    {
-      pUnit->prepareToDump(pRootElt,
-			   pModelElt,
-			   pStreamsElt,
-			   pEventsElt,
-			   pTaggedSpeciesElt);
-    }
-  };
-  
-  parametrizer::parametrizer(int argc,
-			     char** argv,
-			     xmlpp::Document* pMoleculizerInput,
-			     xmlpp::Document* pMoleculizerState)
-    throw(std::exception)
-  {
-    // Must invoke; this initializes random seed.
-    // processCommandLineArgs(argc, argv);
-    
-    // Do the "input capabilities" thing.
-    constructorPrelude();
+public:
+prepareUnitToDump(xmlpp::Element* pRootElement,
+xmlpp::Element* pModelElement,
+xmlpp::Element* pStreamsElement,
+xmlpp::Element* pEventsElement,
+xmlpp::Element* pTaggedSpeciesElement) :
+pRootElt(pRootElement),
+pModelElt(pModelElement),
+pStreamsElt(pStreamsElement),
+pEventsElt(pEventsElement),
+pTaggedSpeciesElt(pTaggedSpeciesElement)
+{}
 
-    // Get the basic framework of moleculizer-input.
-    xmlpp::Element* pInputRootElement
-      = pMoleculizerInput->get_root_node();
+void
+operator()(unit* pUnit) const
+throw(std::exception)
+{
+pUnit->prepareToDump(pRootElt,
+pModelElt,
+pStreamsElt,
+pEventsElt,
+pTaggedSpeciesElt);
+}
+};
 
-    xmlpp::Element* pInputModelElement
-      = utl::dom::mustGetUniqueChild(pInputRootElement,
-				     eltName::model);
-    xmlpp::Element* pInputStreamsElement
-      = utl::dom::mustGetUniqueChild(pInputRootElement,
-				     eltName::streams);
-    xmlpp::Element* pInputEventsElement
-      = utl::dom::mustGetUniqueChild(pInputRootElement,
-				     eltName::events);
+parametrizer::parametrizer(int argc,
+char** argv,
+xmlpp::Document* pMoleculizerInput,
+xmlpp::Document* pMoleculizerState)
+throw(std::exception)
+{
+// Must invoke; this initializes random seed.
+// processCommandLineArgs(argc, argv);
 
-    // Extract model info.
-    constructorCore(pInputRootElement,
-		    pInputModelElement,
-		    pInputStreamsElement,
-		    pInputEventsElement);
+// Do the "input capabilities" thing.
+constructorPrelude();
 
-    // Similar digestion of moleculizer-state.
-    xmlpp::Element* pStateRootElement
-      = pMoleculizerState->get_root_node();
+// Get the basic framework of moleculizer-input.
+xmlpp::Element* pInputRootElement
+= pMoleculizerInput->get_root_node();
 
-    xmlpp::Element* pStateModelElement
-      = utl::dom::mustGetUniqueChild(pStateRootElement,
-				     eltName::model);
-    xmlpp::Element* pStateTaggedSpeciesElement
-      = utl::dom::mustGetUniqueChild(pStateModelElement,
-				     eltName::taggedSpecies);
+xmlpp::Element* pInputModelElement
+= utl::dom::mustGetUniqueChild(pInputRootElement,
+eltName::model);
+xmlpp::Element* pInputStreamsElement
+= utl::dom::mustGetUniqueChild(pInputRootElement,
+eltName::streams);
+xmlpp::Element* pInputEventsElement
+= utl::dom::mustGetUniqueChild(pInputRootElement,
+eltName::events);
 
-    // Have each unit do its (rather inapproriately-named) prepareToDump thing,
-    // analogous to prepare-to-run in moleculizer.  The default implementation
-    // is prepare-to-run.
-    std::for_each(pUserUnits->begin(),
-		  pUserUnits->end(),
-		  prepareUnitToDump(pInputRootElement,
-				    pInputModelElement,
-				    pInputStreamsElement,
-				    pInputEventsElement,
-				    pStateTaggedSpeciesElement));
-  }
+// Extract model info.
+constructorCore(pInputRootElement,
+pInputModelElement,
+pInputStreamsElement,
+pInputEventsElement);
 
-  parametrizer::~parametrizer(void)
-  {}
+// Similar digestion of moleculizer-state.
+xmlpp::Element* pStateRootElement
+= pMoleculizerState->get_root_node();
 
-  int
-  parametrizer::run(void) throw(std::exception)
-  {
-    xmlpp::Document* pOutputDoc = makeDomOutput();
+xmlpp::Element* pStateModelElement
+= utl::dom::mustGetUniqueChild(pStateRootElement,
+eltName::model);
+xmlpp::Element* pStateTaggedSpeciesElement
+= utl::dom::mustGetUniqueChild(pStateModelElement,
+eltName::taggedSpecies);
 
-    // This is hideous, but write_to_stream seems not to work; it produces a
-    // huge, bad output file with many copies of the data in it.
-    std::string output = pOutputDoc->write_to_string();
+// Have each unit do its (rather inapproriately-named) prepareToDump thing,
+// analogous to prepare-to-run in moleculizer.  The default implementation
+// is prepare-to-run.
+std::for_each(pUserUnits->begin(),
+pUserUnits->end(),
+prepareUnitToDump(pInputRootElement,
+pInputModelElement,
+pInputStreamsElement,
+pInputEventsElement,
+pStateTaggedSpeciesElement));
+}
 
-    delete pOutputDoc;
+parametrizer::~parametrizer(void)
+{}
 
-    std::cout << output;
+int
+parametrizer::run(void) throw(std::exception)
+{
+xmlpp::Document* pOutputDoc = makeDomOutput();
 
-    return 0;
-  }
+// This is hideous, but write_to_stream seems not to work; it produces a
+// huge, bad output file with many copies of the data in it.
+std::string output = pOutputDoc->write_to_string();
+
+delete pOutputDoc;
+
+std::cout << output;
+
+return 0;
+}
 }

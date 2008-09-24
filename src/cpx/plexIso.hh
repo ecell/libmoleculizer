@@ -1,10 +1,15 @@
-/////////////////////////////////////////////////////////////////////////////
-// Moleculizer - a stochastic simulator for cellular chemistry.
-// Copyright (C) 2001, 2008 The Molecular Sciences Institute.
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+//                                                                          
+//                                                                          
+//        This file is part of Libmoleculizer
+//
+//        Copyright (C) 2001-2008 The Molecular Sciences Institute.
+//
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 //
 // Moleculizer is free software; you can redistribute it and/or modify
-// it under the terms of the GNU Lesser General Public License as published by
-// the Free Software Foundation; either version 3 of the License, or
+// it under the terms of the GNU Lesser General Public License as published 
+// by the Free Software Foundation; either version 3 of the License, or
 // (at your option) any later version.
 //
 // Moleculizer is distributed in the hope that it will be useful,
@@ -13,15 +18,17 @@
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with Moleculizer; if not, write to the Free Software
-// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+// along with Moleculizer; if not, write to the Free Software Foundation
+// Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307,  USA
 //    
+// END HEADER
+// 
 // Original Author:
 //   Larry Lok, Research Fellow, Molecular Sciences Institute, 2001
-
-//                     Email: lok@molsci.org
-//   
-/////////////////////////////////////////////////////////////////////////////
+//
+// Modifing Authors:
+//              
+//
 
 #ifndef CPX_PLEXISO_H
 #define CPX_PLEXISO_H
@@ -30,66 +37,66 @@
 
 namespace cpx
 {
-    class plexIso
-    {
-    public:
-        plexMap forward;
-        plexMap backward;
+class plexIso
+{
+public:
+plexMap forward;
+plexMap backward;
 
-        plexIso(void)
-        {}
+plexIso(void)
+{}
 
-        plexIso(int molCount,
-		int bindingCount) :
-            forward(molCount, bindingCount),
-            backward(molCount, bindingCount)
-        {}
+plexIso(int molCount,
+int bindingCount) :
+forward(molCount, bindingCount),
+backward(molCount, bindingCount)
+{}
 
-        // This is for where plexIso is used to represent an
-        // injection.
-        plexIso(int forwardMolCount,
-		int forwardBindingCount,
-		int backwardMolCount,
-		int backwardBindingCount) :
-            forward(forwardMolCount,
-                    forwardBindingCount),
-            backward(backwardMolCount,
-                     backwardBindingCount)
-        {}
-  
-
-        // Tests if the isomorphism can be extended by the given assignment of
-        // bindings, either with or without the "flip." If the extension is
-        // possible, it is performed on 'this' isomorphism, and true is returned.
-        // Otherwise, false is returned.
-        template<class plexT>
-        bool
-        tryMapBinding(const plexT& rSrcPlex,
-                      int srcBindingNdx,
-                      const plexT& rTgtPlex,
-                      int tgtBindingNdx);
+// This is for where plexIso is used to represent an
+// injection.
+plexIso(int forwardMolCount,
+int forwardBindingCount,
+int backwardMolCount,
+int backwardBindingCount) :
+forward(forwardMolCount,
+forwardBindingCount),
+backward(backwardMolCount,
+backwardBindingCount)
+{}
 
 
-        // Generates the identity isomorphism for a plex with the given
-        // number of mols and bindings.
-        static plexIso
-        makeIdentity(int molCount,
-                     int bindingCount);
+// Tests if the isomorphism can be extended by the given assignment of
+// bindings, either with or without the "flip." If the extension is
+// possible, it is performed on 'this' isomorphism, and true is returned.
+// Otherwise, false is returned.
+template<class plexT>
+bool
+tryMapBinding(const plexT& rSrcPlex,
+int srcBindingNdx,
+const plexT& rTgtPlex,
+int tgtBindingNdx);
 
-        // So that plexIsos can be used as map keys (parameters for
-        // subPlexes.)
-        //
-        // It seems like I should be able to get away with not comparing
-        // one of the maps, since they are supposed to be inverse to one
-        // another.
-        bool
-        operator<(const plexIso& rRightIso) const
-        {
-            return ((forward < rRightIso.forward)
-                    || ((forward == rRightIso.forward)
-                        && backward < rRightIso.backward));
-        }
-    };
+
+// Generates the identity isomorphism for a plex with the given
+// number of mols and bindings.
+static plexIso
+makeIdentity(int molCount,
+int bindingCount);
+
+// So that plexIsos can be used as map keys (parameters for
+// subPlexes.)
+//
+// It seems like I should be able to get away with not comparing
+// one of the maps, since they are supposed to be inverse to one
+// another.
+bool
+operator<(const plexIso& rRightIso) const
+{
+return ((forward < rRightIso.forward)
+|| ((forward == rRightIso.forward)
+&& backward < rRightIso.backward));
+}
+};
 }
 
 #include "cpx/plexIsoImpl.hh"

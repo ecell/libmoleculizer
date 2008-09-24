@@ -1,10 +1,15 @@
-/////////////////////////////////////////////////////////////////////////////
-// Moleculizer - a stochastic simulator for cellular chemistry.
-// Copyright (C) 2001, 2008 The Molecular Sciences Institute.
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+//                                                                          
+//                                                                          
+//        This file is part of Libmoleculizer
+//
+//        Copyright (C) 2001-2008 The Molecular Sciences Institute.
+//
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 //
 // Moleculizer is free software; you can redistribute it and/or modify
-// it under the terms of the GNU Lesser General Public License as published by
-// the Free Software Foundation; either version 3 of the License, or
+// it under the terms of the GNU Lesser General Public License as published 
+// by the Free Software Foundation; either version 3 of the License, or
 // (at your option) any later version.
 //
 // Moleculizer is distributed in the hope that it will be useful,
@@ -13,15 +18,17 @@
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with Moleculizer; if not, write to the Free Software
-// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+// along with Moleculizer; if not, write to the Free Software Foundation
+// Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307,  USA
 //    
+// END HEADER
+// 
 // Original Author:
 //   Larry Lok, Research Fellow, Molecular Sciences Institute, 2001
-
-//                     Email: lok@molsci.org
-//   
-/////////////////////////////////////////////////////////////////////////////
+//
+// Modifing Authors:
+//              
+//
 
 #include "utl/dom.hh"
 #include "mzr/dumpStateEvent.hh"
@@ -29,22 +36,22 @@
 
 namespace mzr
 {
-  dumpStateEvent::
-  dumpStateEvent(const std::string& rOutputFileName) :
-    outputFileName(rOutputFileName)
-  {}
-  
-  fnd::eventResult
-  dumpStateEvent::
-  happen(moleculizer& rMolzer)
-    throw(std::exception)
-  {
-    xmlpp::Document* pOutputDoc = rMolzer.makeDomOutput();
+dumpStateEvent::
+dumpStateEvent(const std::string& rOutputFileName) :
+outputFileName(rOutputFileName)
+{}
 
-    pOutputDoc->write_to_file(outputFileName);
+fnd::eventResult
+dumpStateEvent::
+happen(moleculizer& rMolzer)
+throw(std::exception)
+{
+xmlpp::Document* pOutputDoc = rMolzer.makeDomOutput();
 
-    delete pOutputDoc;
+pOutputDoc->write_to_file(outputFileName);
 
-    return fnd::go;
-  }
+delete pOutputDoc;
+
+return fnd::go;
+}
 }

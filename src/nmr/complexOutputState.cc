@@ -1,11 +1,14 @@
-/////////////////////////////////////////////////////////////////////////////
-// libComplexSpecies - a library for canonically naming species of protein 
-//                     complexes.
-// Copyright (C) 2008 The Molecular Sciences Institute
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+//                                                                          
+//        This file is part of Libmoleculizer
+//
+//        Copyright (C) 2001-2008 The Molecular Sciences Institute.
+//
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 //
 // Moleculizer is free software; you can redistribute it and/or modify
-// it under the terms of the GNU Lesser General Public License as published by
-// the Free Software Foundation; either version 3 of the License, or
+// it under the terms of the GNU Lesser General Public License as published 
+// by the Free Software Foundation; either version 3 of the License, or
 // (at your option) any later version.
 //
 // Moleculizer is distributed in the hope that it will be useful,
@@ -14,15 +17,17 @@
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with Moleculizer; if not, write to the Free Software
-// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+// along with Moleculizer; if not, write to the Free Software Foundation
+// Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307,  USA
 //    
+// END HEADER
+// 
 // Original Author:
-//   Nathan Addy, Research Associate     Voice: 510-981-8748
-//   The Molecular Sciences Institute    Email: addy@molsci.org  
-//                     
-//   
-/////////////////////////////////////////////////////////////////////////////
+//   Nathan Addy, Scientific Programmer, Molecular Sciences Institute, 2001
+//
+// Modifing Authors:
+//              
+//
 
 
 #include "complexOutputState.hh"
@@ -33,78 +38,78 @@
 
 namespace nmr
 {
-    bool 
-    ComplexOutputState::operator==(ComplexOutputStateCref other) const
-    {
-        return (theMolTokens == other.theMolTokens &&
-                theBindingTokens == other.theBindingTokens &&
-                theModificationTokens == other.theModificationTokens);
-    }
+bool
+ComplexOutputState::operator==(ComplexOutputStateCref other) const
+{
+return (theMolTokens == other.theMolTokens &&
+theBindingTokens == other.theBindingTokens &&
+theModificationTokens == other.theModificationTokens);
+}
 
-    bool 
-    ComplexOutputState::operator!=(ComplexOutputStateCref other) const
-    {
-        return !( *this == other );
-    }
-      
-    void 
-    ComplexOutputState::addMolTokenToOutputState(MolTokenStrCref aMolToken)
-    {
-        theMolTokens.push_back(aMolToken);
-    }
+bool
+ComplexOutputState::operator!=(ComplexOutputStateCref other) const
+{
+return !( *this == other );
+}
 
-    void 
-    ComplexOutputState::addBindingTokenToOutputState(BindingTokenStrCref aBindingToken)
-    {
-        theBindingTokens.push_back(aBindingToken);
+void
+ComplexOutputState::addMolTokenToOutputState(MolTokenStrCref aMolToken)
+{
+theMolTokens.push_back(aMolToken);
+}
 
-    }
+void
+ComplexOutputState::addBindingTokenToOutputState(BindingTokenStrCref aBindingToken)
+{
+theBindingTokens.push_back(aBindingToken);
 
-    void 
-    ComplexOutputState::addModificationTokenToOutputState(ModificationTokenStrCref aModificationToken)
-    {
-        theModificationTokens.push_back(aModificationToken);
-    }
+}
 
-    void 
-    ComplexOutputState::clear()
-    {
-        theMolTokens.clear();
-        theBindingTokens.clear();
-        theModificationTokens.clear();
-    }
+void
+ComplexOutputState::addModificationTokenToOutputState(ModificationTokenStrCref aModificationToken)
+{
+theModificationTokens.push_back(aModificationToken);
+}
 
-    std::string 
-    ComplexOutputState::repr() const
-    {
-        std::ostringstream oss;
-        BOOST_FOREACH(ComplexOutputState::MolTokenStrCref molName, theMolTokens)
-        {
-            oss << molName << "-";
-        }
+void
+ComplexOutputState::clear()
+{
+theMolTokens.clear();
+theBindingTokens.clear();
+theModificationTokens.clear();
+}
 
-        BOOST_FOREACH(ComplexOutputState::BindingTokenStrCref bindingName, theBindingTokens)
-        {
-            oss << '|' ;
-            oss << bindingName.first.first << "-";
-            oss << bindingName.first.second << "-";
-            oss << bindingName.second.first << "-";
-            oss << bindingName.second.second << '|' << '-';
-        }
+std::string
+ComplexOutputState::repr() const
+{
+std::ostringstream oss;
+BOOST_FOREACH(ComplexOutputState::MolTokenStrCref molName, theMolTokens)
+{
+oss << molName << "-";
+}
 
-        BOOST_FOREACH(ComplexOutputState::ModificationTokenStrCref modificationToken, theModificationTokens)
-        {
-            oss << '|';
-            oss << modificationToken.first 
-                << '-' 
-                << modificationToken.second.first 
-                << '-'
-                << modificationToken.second.second << '|';
-        }
+BOOST_FOREACH(ComplexOutputState::BindingTokenStrCref bindingName, theBindingTokens)
+{
+oss << '|' ;
+oss << bindingName.first.first << "-";
+oss << bindingName.first.second << "-";
+oss << bindingName.second.first << "-";
+oss << bindingName.second.second << '|' << '-';
+}
 
-        return oss.str();
-        
-    }
+BOOST_FOREACH(ComplexOutputState::ModificationTokenStrCref modificationToken, theModificationTokens)
+{
+oss << '|';
+oss << modificationToken.first
+<< '-'
+<< modificationToken.second.first
+<< '-'
+<< modificationToken.second.second << '|';
+}
+
+return oss.str();
+
+}
 }
 
 std::ostream& operator<<(std::ostream& os, const nmr::ComplexOutputState& cos)
@@ -115,7 +120,7 @@ std::ostream& operator<<(std::ostream& os, const nmr::ComplexOutputState& cos)
 //       ++iter)
 //     {
 //       os << *iter << ", ";
-          
+
 //     }
 //   os << "\nBindings:\n";
 
@@ -125,7 +130,7 @@ std::ostream& operator<<(std::ostream& os, const nmr::ComplexOutputState& cos)
 //     {
 //       os << "((" << (*iter).first.first << ", " << (*iter).first.second << "), (" << (*iter).second.first << ", " << (*iter).second.second << ")), ";
 //     }
-      
+
 //   os << "\nModifications:\n";
 
 //   for(std::vector<nmr::ComplexOutputState::ModificationTokenStr>::const_iterator iter = cos.theModificationTokens.begin();
@@ -139,6 +144,6 @@ std::ostream& operator<<(std::ostream& os, const nmr::ComplexOutputState& cos)
 //   os << "\n";
 //   return os;
 
-    os << cos.repr();
-    return os;
+os << cos.repr();
+return os;
 }

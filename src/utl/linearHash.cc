@@ -1,10 +1,15 @@
-/////////////////////////////////////////////////////////////////////////////
-// Moleculizer - a stochastic simulator for cellular chemistry.
-// Copyright (C) 2001, 2008 The Molecular Sciences Institute.
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+//                                                                          
+//                                                                          
+//        This file is part of Libmoleculizer
+//
+//        Copyright (C) 2001-2008 The Molecular Sciences Institute.
+//
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 //
 // Moleculizer is free software; you can redistribute it and/or modify
-// it under the terms of the GNU Lesser General Public License as published by
-// the Free Software Foundation; either version 3 of the License, or
+// it under the terms of the GNU Lesser General Public License as published 
+// by the Free Software Foundation; either version 3 of the License, or
 // (at your option) any later version.
 //
 // Moleculizer is distributed in the hope that it will be useful,
@@ -13,56 +18,58 @@
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with Moleculizer; if not, write to the Free Software
-// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+// along with Moleculizer; if not, write to the Free Software Foundation
+// Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307,  USA
 //    
+// END HEADER
+// 
 // Original Author:
 //   Larry Lok, Research Fellow, Molecular Sciences Institute, 2001
-
-//                     Email: lok@molsci.org
-//   
-/////////////////////////////////////////////////////////////////////////////
+//
+// Modifing Authors:
+//              
+//
 
 #include "utl/linearHash.hh"
 
 namespace utl
 {
-  size_t
-  linearHash::operator()(const size_t& rData) const
-  {
-    return (rData * multiplier) + summand;
-  }
+size_t
+linearHash::operator()(const size_t& rData) const
+{
+return (rData * multiplier) + summand;
+}
 
-  // These will need to be adjusted, I expect.  Or maybe not.
-  const size_t linearHash::multiplier = 2897564231ul;
-  const size_t linearHash::summand = 3248630751ul;
+// These will need to be adjusted, I expect.  Or maybe not.
+const size_t linearHash::multiplier = 2897564231ul;
+const size_t linearHash::summand = 3248630751ul;
 
-  // This could be somewhat templatized....
-  // It also appears to be defined in tauApp.cc.
-  class charHashAccum : public std::unary_function<char, void>
-  {
-    size_t& rValue;
-    linearHash lh;
-  public:
-    charHashAccum(size_t& rHashValue) :
-      rValue(rHashValue)
-    {
-    }
+// This could be somewhat templatized....
+// It also appears to be defined in tauApp.cc.
+class charHashAccum : public std::unary_function<char, void>
+{
+size_t& rValue;
+linearHash lh;
+public:
+charHashAccum(size_t& rHashValue) :
+rValue(rHashValue)
+{
+}
 
-    void
-    operator()(char c) const
-    {
-      rValue = lh(rValue + lh((size_t) c));
-    }
-  };
+void
+operator()(char c) const
+{
+rValue = lh(rValue + lh((size_t) c));
+}
+};
 
-  size_t
-  linearHash::operator()(const std::string& rString) const
-  {
-    size_t hashValue;
-    std::for_each(rString.begin(),
-		  rString.end(),
-		  charHashAccum(hashValue));
-    return hashValue;
-  }
+size_t
+linearHash::operator()(const std::string& rString) const
+{
+size_t hashValue;
+std::for_each(rString.begin(),
+rString.end(),
+charHashAccum(hashValue));
+return hashValue;
+}
 }

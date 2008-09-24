@@ -1,10 +1,15 @@
-/////////////////////////////////////////////////////////////////////////////
-// Moleculizer - a stochastic simulator for cellular chemistry.
-// Copyright (C) 2001, 2008 The Molecular Sciences Institute.
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+//                                                                          
+//                                                                          
+//        This file is part of Libmoleculizer
+//
+//        Copyright (C) 2001-2008 The Molecular Sciences Institute.
+//
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 //
 // Moleculizer is free software; you can redistribute it and/or modify
-// it under the terms of the GNU Lesser General Public License as published by
-// the Free Software Foundation; either version 3 of the License, or
+// it under the terms of the GNU Lesser General Public License as published 
+// by the Free Software Foundation; either version 3 of the License, or
 // (at your option) any later version.
 //
 // Moleculizer is distributed in the hope that it will be useful,
@@ -13,15 +18,17 @@
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with Moleculizer; if not, write to the Free Software
-// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+// along with Moleculizer; if not, write to the Free Software Foundation
+// Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307,  USA
 //    
+// END HEADER
+// 
 // Original Author:
 //   Larry Lok, Research Fellow, Molecular Sciences Institute, 2001
-
-//                     Email: lok@molsci.org
-//   
-/////////////////////////////////////////////////////////////////////////////
+//
+// Modifing Authors:
+//              
+//
 
 #include "utl/dom.hh"
 #include "mzr/unit.hh"
@@ -31,134 +38,134 @@
 
 namespace mzr
 {
-  class prepareUnitToContinue :
-    public std::unary_function<unit*, void>
-  {
-    xmlpp::Element* pRootElt;
-    xmlpp::Element* pModelElt;
-    xmlpp::Element* pStreamsElt;
-    std::map<std::string, std::string>& rTagToName;
-    xmlpp::Element* pTaggedSpeciesElt;
-    
-  public:
-    prepareUnitToContinue(xmlpp::Element* pRootElement,
-			  xmlpp::Element* pModelElement,
-			  xmlpp::Element* pStreamsElement,
-			  std::map<std::string, std::string>& refTagToName,
-			  xmlpp::Element* pTaggedSpeciesElement) :
-      pRootElt(pRootElement),
-      pModelElt(pModelElement),
-      pStreamsElt(pStreamsElement),
-      rTagToName(refTagToName),
-      pTaggedSpeciesElt(pTaggedSpeciesElement)
-    {}
+class prepareUnitToContinue :
+public std::unary_function<unit*, void>
+{
+xmlpp::Element* pRootElt;
+xmlpp::Element* pModelElt;
+xmlpp::Element* pStreamsElt;
+std::map<std::string, std::string>& rTagToName;
+xmlpp::Element* pTaggedSpeciesElt;
 
-    void
-    operator()(unit* pUnit) const
-      throw(std::exception)
-    {
-      pUnit->prepareToContinue(pRootElt,
-			       pModelElt,
-			       pStreamsElt,
-			       rTagToName,
-			       pTaggedSpeciesElt);
-    }
-  };
-  
-  class getTagName : public
-  std::unary_function<xmlpp::Node*, std::pair<std::string, std::string> >
-  {
-  public:
-    std::pair<std::string, std::string>
-    operator()(xmlpp::Node* pExplicitSpeciesTagNode) const
-      throw(std::exception)
-    {
-      xmlpp::Element* pExplicitSpeciesTagElt
-	= utl::dom::mustBeElementPtr(pExplicitSpeciesTagNode);
+public:
+prepareUnitToContinue(xmlpp::Element* pRootElement,
+xmlpp::Element* pModelElement,
+xmlpp::Element* pStreamsElement,
+std::map<std::string, std::string>& refTagToName,
+xmlpp::Element* pTaggedSpeciesElement) :
+pRootElt(pRootElement),
+pModelElt(pModelElement),
+pStreamsElt(pStreamsElement),
+rTagToName(refTagToName),
+pTaggedSpeciesElt(pTaggedSpeciesElement)
+{}
 
-      std::string speciesName
-	= utl::dom::mustGetAttrString(pExplicitSpeciesTagElt,
-				      eltName::explicitSpeciesTag_nameAttr);
+void
+operator()(unit* pUnit) const
+throw(std::exception)
+{
+pUnit->prepareToContinue(pRootElt,
+pModelElt,
+pStreamsElt,
+rTagToName,
+pTaggedSpeciesElt);
+}
+};
 
-      std::string speciesTag
-	= utl::dom::mustGetAttrString(pExplicitSpeciesTagElt,
-				      eltName::explicitSpeciesTag_tagAttr);
+class getTagName : public
+std::unary_function<xmlpp::Node*, std::pair<std::string, std::string> >
+{
+public:
+std::pair<std::string, std::string>
+operator()(xmlpp::Node* pExplicitSpeciesTagNode) const
+throw(std::exception)
+{
+xmlpp::Element* pExplicitSpeciesTagElt
+= utl::dom::mustBeElementPtr(pExplicitSpeciesTagNode);
 
-      return std::pair<std::string, std::string>(speciesTag, speciesName);
-    }
-  };
-  
-  continuator::continuator(int argc,
-			   char** argv,
-			   xmlpp::Document* pMoleculizerInput,
-			   xmlpp::Document* pMoleculizerState)
-    throw(std::exception)
-  {
-    // This also initializes random seed.
-    // processCommandLineArgs(argc, argv);
-    
-    // Do the "input capabilities" thing.
-    constructorPrelude();
+std::string speciesName
+= utl::dom::mustGetAttrString(pExplicitSpeciesTagElt,
+eltName::explicitSpeciesTag_nameAttr);
 
-    // Get the basic framework of moleculizer-input.
-    xmlpp::Element* pInputRootElement
-      = pMoleculizerInput->get_root_node();
+std::string speciesTag
+= utl::dom::mustGetAttrString(pExplicitSpeciesTagElt,
+eltName::explicitSpeciesTag_tagAttr);
 
-    xmlpp::Element* pInputModelElement
-      = utl::dom::mustGetUniqueChild(pInputRootElement,
-				     eltName::model);
-    xmlpp::Element* pInputStreamsElement
-      = utl::dom::mustGetUniqueChild(pInputRootElement,
-				     eltName::streams);
+return std::pair<std::string, std::string>(speciesTag, speciesName);
+}
+};
 
-    // Similar digestion of moleculizer-state.
-    xmlpp::Element* pStateRootElement
-      = pMoleculizerState->get_root_node();
+continuator::continuator(int argc,
+char** argv,
+xmlpp::Document* pMoleculizerInput,
+xmlpp::Document* pMoleculizerState)
+throw(std::exception)
+{
+// This also initializes random seed.
+// processCommandLineArgs(argc, argv);
 
-    xmlpp::Element* pStateModelElement
-      = utl::dom::mustGetUniqueChild(pStateRootElement,
-				     eltName::model);
-    xmlpp::Element* pStateTaggedSpeciesElement
-      = utl::dom::mustGetUniqueChild(pStateModelElement,
-				     eltName::taggedSpecies);
-    xmlpp::Element* pTimeElement
-      = utl::dom::mustGetUniqueChild(pStateModelElement,
-				     eltName::time);
+// Do the "input capabilities" thing.
+constructorPrelude();
 
-    // Get the time at which the state was dumped.
-    double dumpTime
-      = utl::dom::mustGetAttrDouble(pTimeElement,
-				    eltName::time_secondsAttr);
+// Get the basic framework of moleculizer-input.
+xmlpp::Element* pInputRootElement
+= pMoleculizerInput->get_root_node();
 
-    // Extract model info.  This has to be done after the simulation time is
-    // restored, so that explicit events in the moleculizer-input that have
-    // already happened will not be scheduled.
-    constructorCore(pInputRootElement,
-		    pInputModelElement);
+xmlpp::Element* pInputModelElement
+= utl::dom::mustGetUniqueChild(pInputRootElement,
+eltName::model);
+xmlpp::Element* pInputStreamsElement
+= utl::dom::mustGetUniqueChild(pInputRootElement,
+eltName::streams);
 
-    // Get the map from dump tag to explicit species names.
-    // The stochastirator species are known only by name, so that
-    // to match the dump tag of a stochastirator species up with
-    // the species, we need this correspondence.
-    xmlpp::Element* pExplicitSpeciesTagsElt
-      = utl::dom::mustGetUniqueChild(pStateModelElement,
-				     eltName::explicitSpeciesTags);
-    xmlpp::Node::NodeList explicitSpeciesTagNodes
-      = pExplicitSpeciesTagsElt->get_children(eltName::explicitSpeciesTag);
-    std::map<std::string, std::string> tagToName;
-    std::transform(explicitSpeciesTagNodes.begin(),
-		   explicitSpeciesTagNodes.end(),
-		   std::inserter(tagToName,
-				 tagToName.begin()),
-		   getTagName());
+// Similar digestion of moleculizer-state.
+xmlpp::Element* pStateRootElement
+= pMoleculizerState->get_root_node();
 
-    // Have each unit do its "prepareToContinue" thing.
-    std::for_each(pUserUnits->begin(),
-		  pUserUnits->end(),
-		  prepareUnitToContinue(pInputRootElement,
-					pInputModelElement,
-					pInputStreamsElement,
-					tagToName,
-					pStateTaggedSpeciesElement));
-  }
+xmlpp::Element* pStateModelElement
+= utl::dom::mustGetUniqueChild(pStateRootElement,
+eltName::model);
+xmlpp::Element* pStateTaggedSpeciesElement
+= utl::dom::mustGetUniqueChild(pStateModelElement,
+eltName::taggedSpecies);
+xmlpp::Element* pTimeElement
+= utl::dom::mustGetUniqueChild(pStateModelElement,
+eltName::time);
+
+// Get the time at which the state was dumped.
+double dumpTime
+= utl::dom::mustGetAttrDouble(pTimeElement,
+eltName::time_secondsAttr);
+
+// Extract model info.  This has to be done after the simulation time is
+// restored, so that explicit events in the moleculizer-input that have
+// already happened will not be scheduled.
+constructorCore(pInputRootElement,
+pInputModelElement);
+
+// Get the map from dump tag to explicit species names.
+// The stochastirator species are known only by name, so that
+// to match the dump tag of a stochastirator species up with
+// the species, we need this correspondence.
+xmlpp::Element* pExplicitSpeciesTagsElt
+= utl::dom::mustGetUniqueChild(pStateModelElement,
+eltName::explicitSpeciesTags);
+xmlpp::Node::NodeList explicitSpeciesTagNodes
+= pExplicitSpeciesTagsElt->get_children(eltName::explicitSpeciesTag);
+std::map<std::string, std::string> tagToName;
+std::transform(explicitSpeciesTagNodes.begin(),
+explicitSpeciesTagNodes.end(),
+std::inserter(tagToName,
+tagToName.begin()),
+getTagName());
+
+// Have each unit do its "prepareToContinue" thing.
+std::for_each(pUserUnits->begin(),
+pUserUnits->end(),
+prepareUnitToContinue(pInputRootElement,
+pInputModelElement,
+pInputStreamsElement,
+tagToName,
+pStateTaggedSpeciesElement));
+}
 }

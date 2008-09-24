@@ -1,10 +1,14 @@
-/////////////////////////////////////////////////////////////////////////////
-// libMoleculizer - a species and reaction generator for reaction networks
-// Copyright (C) 2008 The Molecular Sciences Institute
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+//                                                                          
+//        This file is part of Libmoleculizer
+//
+//        Copyright (C) 2001-2008 The Molecular Sciences Institute.
+//
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 //
 // Moleculizer is free software; you can redistribute it and/or modify
-// it under the terms of the GNU Lesser General Public License as published by
-// the Free Software Foundation; either version 3 of the License, or
+// it under the terms of the GNU Lesser General Public License as published 
+// by the Free Software Foundation; either version 3 of the License, or
 // (at your option) any later version.
 //
 // Moleculizer is distributed in the hope that it will be useful,
@@ -13,31 +17,32 @@
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with Moleculizer; if not, write to the Free Software
-// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+// along with Moleculizer; if not, write to the Free Software Foundation
+// Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307,  USA
 //    
-// This file was authored by Nathan Addy <addy@molsci.org> 
+// END HEADER
+// 
 // Original Author:
-//   Nathan Addy, Scientific Programmer     Email: addy@molsci.org
-//   The Molecular Sciences Institute
-//   
-//   
-/////////////////////////////////////////////////////////////////////////////
+//   Nathan Addy, Scientific Programmer, Molecular Sciences Institute, 2001
+//
+// Modifing Authors:
+//              
+//
 
 #include "demosimulator.hpp"
 
 class SimpleParticleSimulator : public SimpleSimulator
 {
 public:
-    SimpleParticleSimulator(std::string rulesfile, std::string modelfile)
-        :
-        SimpleSimulator(rulesfile, modelfile),
-        numReactions(0)
-    {}
+SimpleParticleSimulator(std::string rulesfile, std::string modelfile)
+:
+SimpleSimulator(rulesfile, modelfile),
+numReactions(0)
+{}
 
-    void singleStep();
+void singleStep();
 
 private:
-    void doSingleUnaryReaction();
-    int numReactions;
+void doSingleUnaryReaction();
+int numReactions;
 };

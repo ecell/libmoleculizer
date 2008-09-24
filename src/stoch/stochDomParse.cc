@@ -1,10 +1,15 @@
-/////////////////////////////////////////////////////////////////////////////
-// Moleculizer - a stochastic simulator for cellular chemistry.
-// Copyright (C) 2001, 2008 The Molecular Sciences Institute.
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+//                                                                          
+//                                                                          
+//        This file is part of Libmoleculizer
+//
+//        Copyright (C) 2001-2008 The Molecular Sciences Institute.
+//
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 //
 // Moleculizer is free software; you can redistribute it and/or modify
-// it under the terms of the GNU Lesser General Public License as published by
-// the Free Software Foundation; either version 3 of the License, or
+// it under the terms of the GNU Lesser General Public License as published 
+// by the Free Software Foundation; either version 3 of the License, or
 // (at your option) any later version.
 //
 // Moleculizer is distributed in the hope that it will be useful,
@@ -13,15 +18,17 @@
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with Moleculizer; if not, write to the Free Software
-// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+// along with Moleculizer; if not, write to the Free Software Foundation
+// Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307,  USA
 //    
+// END HEADER
+// 
 // Original Author:
 //   Larry Lok, Research Fellow, Molecular Sciences Institute, 2001
-
-//                     Email: lok@molsci.org
-//   
-/////////////////////////////////////////////////////////////////////////////
+//
+// Modifing Authors:
+//              
+//
 
 #include "mzr/moleculizer.hh"
 #include "mzr/mzrUnit.hh"
@@ -37,224 +44,224 @@
 
 namespace stoch
 {
-  class parseStochSpecies :
-    public std::unary_function<xmlpp::Node*, void>
-  {
-    stochUnit& rStochUnit;
-    
-  public:
-    parseStochSpecies(stochUnit& refStochUnit) :
-      rStochUnit(refStochUnit)
-    {}
-    
-    void
-    operator()(xmlpp::Node* pStochSpeciesNode) const throw(std::exception)
-    {
-      xmlpp::Element* pStochSpeciesElt
-	= utl::dom::mustBeElementPtr(pStochSpeciesNode);
+class parseStochSpecies :
+public std::unary_function<xmlpp::Node*, void>
+{
+stochUnit& rStochUnit;
 
-      // Get the name of the stochastirator species.
-      std::string speciesName
-	= utl::dom::mustGetAttrString
-	(pStochSpeciesElt,
-	 eltName::stochSpecies_nameAttr);
+public:
+parseStochSpecies(stochUnit& refStochUnit) :
+rStochUnit(refStochUnit)
+{}
 
-      // Get the molecular weight of the stochastirator species.
-      xmlpp::Element* pWeightElt
-	= utl::dom::mustGetUniqueChild(pStochSpeciesElt,
-				       bnd::eltName::weight);
-      double molWeight
-	= utl::dom::mustGetAttrPosDouble
-	(pWeightElt,
-	 bnd::eltName::weight_daltonsAttr);
+void
+operator()(xmlpp::Node* pStochSpeciesNode) const throw(std::exception)
+{
+xmlpp::Element* pStochSpeciesElt
+= utl::dom::mustBeElementPtr(pStochSpeciesNode);
 
-      // Construct the stochastirator species.
-      stochSpecies* pSpecies = new stochSpecies(speciesName,
-						molWeight);
+// Get the name of the stochastirator species.
+std::string speciesName
+= utl::dom::mustGetAttrString
+(pStochSpeciesElt,
+eltName::stochSpecies_nameAttr);
 
-      // Add to the catalog of stoch species.
-      rStochUnit.mustAddStochSpecies(speciesName,
-				     pSpecies,
-				     pStochSpeciesElt);
-    }
-  };
+// Get the molecular weight of the stochastirator species.
+xmlpp::Element* pWeightElt
+= utl::dom::mustGetUniqueChild(pStochSpeciesElt,
+bnd::eltName::weight);
+double molWeight
+= utl::dom::mustGetAttrPosDouble
+(pWeightElt,
+bnd::eltName::weight_daltonsAttr);
 
-  void
-  stochUnit::parseDomInput(xmlpp::Element* pRootElement,
-			   xmlpp::Element* pModelElement,
-                           xmlpp::Element* pStreamElt) throw(std::exception)
-  {
-    // Parse all the stoch species as named species.
-    xmlpp::Element* pExplicitSpeciesElt
-      = utl::dom::mustGetUniqueChild(pModelElement,
-				     mzr::eltName::explicitSpecies);
+// Construct the stochastirator species.
+stochSpecies* pSpecies = new stochSpecies(speciesName,
+molWeight);
 
-    xmlpp::Node::NodeList stochSpeciesNodes
-      = pExplicitSpeciesElt->get_children(eltName::stochSpecies);
+// Add to the catalog of stoch species.
+rStochUnit.mustAddStochSpecies(speciesName,
+pSpecies,
+pStochSpeciesElt);
+}
+};
 
-    std::for_each(stochSpeciesNodes.begin(),
-		  stochSpeciesNodes.end(),
-		  parseStochSpecies(*this));
-  }
+void
+stochUnit::parseDomInput(xmlpp::Element* pRootElement,
+xmlpp::Element* pModelElement,
+xmlpp::Element* pStreamElt) throw(std::exception)
+{
+// Parse all the stoch species as named species.
+xmlpp::Element* pExplicitSpeciesElt
+= utl::dom::mustGetUniqueChild(pModelElement,
+mzr::eltName::explicitSpecies);
 
-  class createInitialPop :
-    public std::unary_function<xmlpp::Node*, void>
-  {
-    mzr::moleculizer& rMolzer;
-    mzr::mzrUnit& rMzrUnit;
-  public:
-    createInitialPop(mzr::moleculizer& rMoleculizer,
-		     mzr::mzrUnit& rMzr) :
-      rMolzer(rMoleculizer),
-      rMzrUnit(rMzr)
-    {
-    }
+xmlpp::Node::NodeList stochSpeciesNodes
+= pExplicitSpeciesElt->get_children(eltName::stochSpecies);
 
-    void
-    operator()(xmlpp::Node* pStochSpeciesNode) const
-      throw(std::exception)
-    {
-      xmlpp::Element* pStochSpeciesElt
-	= utl::dom::mustBeElementPtr(pStochSpeciesNode);
+std::for_each(stochSpeciesNodes.begin(),
+stochSpeciesNodes.end(),
+parseStochSpecies(*this));
+}
 
-      std::string speciesName
-	= utl::dom::mustGetAttrString(pStochSpeciesElt,
-				      eltName::stochSpecies_nameAttr);
+class createInitialPop :
+public std::unary_function<xmlpp::Node*, void>
+{
+mzr::moleculizer& rMolzer;
+mzr::mzrUnit& rMzrUnit;
+public:
+createInitialPop(mzr::moleculizer& rMoleculizer,
+mzr::mzrUnit& rMzr) :
+rMolzer(rMoleculizer),
+rMzrUnit(rMzr)
+{
+}
 
-      xmlpp::Element* pPopulationElt
-	= utl::dom::mustGetUniqueChild(pStochSpeciesElt,
-				       mzr::eltName::population);
-      int pop
-	= utl::dom::mustGetAttrInt(pPopulationElt,
-				   mzr::eltName::population_countAttr);
-      mzr::mzrSpecies* pSpecies
-	= rMzrUnit.findSpecies(speciesName);
+void
+operator()(xmlpp::Node* pStochSpeciesNode) const
+throw(std::exception)
+{
+xmlpp::Element* pStochSpeciesElt
+= utl::dom::mustBeElementPtr(pStochSpeciesNode);
 
-      if(0 == pSpecies)
-	throw mzr::unkSpeciesXcpt(speciesName,
-				  pStochSpeciesElt);
+std::string speciesName
+= utl::dom::mustGetAttrString(pStochSpeciesElt,
+eltName::stochSpecies_nameAttr);
 
-      mzr::createEvent creator(pSpecies,
-			       pop,
-			       rMzrUnit);
-      creator.happen(rMolzer);
-    }
-  };
+xmlpp::Element* pPopulationElt
+= utl::dom::mustGetUniqueChild(pStochSpeciesElt,
+mzr::eltName::population);
+int pop
+= utl::dom::mustGetAttrInt(pPopulationElt,
+mzr::eltName::population_countAttr);
+mzr::mzrSpecies* pSpecies
+= rMzrUnit.findSpecies(speciesName);
 
-  void
-  stochUnit::prepareToRun(xmlpp::Element* pRootElt,
-			  xmlpp::Element* pModelElt,
-                          xmlpp::Element* pStreamElt)
-    throw(std::exception)
-  {
-    // Create the initial population of all explicit stochSpecies.
-    //
-    // stoch::prepareToRun is also stochUnit's prepareToDump; this
-    // works because stochSpecies don't participate in automatic
-    // reaction generation (so all stochSpecies are explicit as are
-    // all the reactions in which they participate.)
-    xmlpp::Element* pExplicitSpeciesElt
-      = utl::dom::mustGetUniqueChild(pModelElt,
-				     mzr::eltName::explicitSpecies);
+if(0 == pSpecies)
+throw mzr::unkSpeciesXcpt(speciesName,
+pStochSpeciesElt);
 
-    xmlpp::Node::NodeList stochSpeciesNodes
-      = pExplicitSpeciesElt->get_children(eltName::stochSpecies);
+mzr::createEvent creator(pSpecies,
+pop,
+rMzrUnit);
+creator.happen(rMolzer);
+}
+};
 
-    std::for_each(stochSpeciesNodes.begin(),
-		  stochSpeciesNodes.end(),
-		  createInitialPop(rMolzer,
-				   rMzrUnit));
-  }
+void
+stochUnit::prepareToRun(xmlpp::Element* pRootElt,
+xmlpp::Element* pModelElt,
+xmlpp::Element* pStreamElt)
+throw(std::exception)
+{
+// Create the initial population of all explicit stochSpecies.
+//
+// stoch::prepareToRun is also stochUnit's prepareToDump; this
+// works because stochSpecies don't participate in automatic
+// reaction generation (so all stochSpecies are explicit as are
+// all the reactions in which they participate.)
+xmlpp::Element* pExplicitSpeciesElt
+= utl::dom::mustGetUniqueChild(pModelElt,
+mzr::eltName::explicitSpecies);
 
-  class processTaggedStochSpecies :
-    public std::unary_function<xmlpp::Node*, void>
-  {
-    fnd::sensitivityList<mzr::mzrReaction>& rAffectedReactions;
-    std::map<std::string, std::string>& rTagToName;
-    mzr::mzrUnit& rMzr;
-    
-  public:
-    processTaggedStochSpecies
-    (fnd::sensitivityList<mzr::mzrReaction>& refAffectedReactions,
-     std::map<std::string, std::string>& rTagToNameMap,
-     mzr::mzrUnit& rMzrUnit) :
-      rAffectedReactions(refAffectedReactions),
-      rTagToName(rTagToNameMap),
-      rMzr(rMzrUnit)
-    {}
+xmlpp::Node::NodeList stochSpeciesNodes
+= pExplicitSpeciesElt->get_children(eltName::stochSpecies);
 
-    void
-    operator()(xmlpp::Node* pTaggedStochSpeciesNode) const
-      throw(std::exception)
-    {
-      xmlpp::Element* pTaggedStochSpeciesElt
-	= utl::dom::mustBeElementPtr(pTaggedStochSpeciesNode);
+std::for_each(stochSpeciesNodes.begin(),
+stochSpeciesNodes.end(),
+createInitialPop(rMolzer,
+rMzrUnit));
+}
 
-      std::string tag
-	= utl::dom::mustGetAttrString(pTaggedStochSpeciesElt,
-				      eltName::taggedStochSpecies_tagAttr);
+class processTaggedStochSpecies :
+public std::unary_function<xmlpp::Node*, void>
+{
+fnd::sensitivityList<mzr::mzrReaction>& rAffectedReactions;
+std::map<std::string, std::string>& rTagToName;
+mzr::mzrUnit& rMzr;
 
-      // Look up the species name in the tag to name map.
-      std::map<std::string, std::string>::iterator iEntry
-	= rTagToName.find(tag);
+public:
+processTaggedStochSpecies
+(fnd::sensitivityList<mzr::mzrReaction>& refAffectedReactions,
+std::map<std::string, std::string>& rTagToNameMap,
+mzr::mzrUnit& rMzrUnit) :
+rAffectedReactions(refAffectedReactions),
+rTagToName(rTagToNameMap),
+rMzr(rMzrUnit)
+{}
 
-      if(rTagToName.end() == iEntry)
-	throw badStochSpeciesTagXcpt(pTaggedStochSpeciesElt);
+void
+operator()(xmlpp::Node* pTaggedStochSpeciesNode) const
+throw(std::exception)
+{
+xmlpp::Element* pTaggedStochSpeciesElt
+= utl::dom::mustBeElementPtr(pTaggedStochSpeciesNode);
 
-      std::string speciesName = iEntry->second;
+std::string tag
+= utl::dom::mustGetAttrString(pTaggedStochSpeciesElt,
+eltName::taggedStochSpecies_tagAttr);
 
-      // Look up the species in mzrUnit's catalog.
-      mzr::mzrSpecies* pSpecies = rMzr.findSpecies(speciesName);
-      if(0 == pSpecies)
-	throw mzr::unkSpeciesXcpt(speciesName,
-				  pTaggedStochSpeciesElt);
+// Look up the species name in the tag to name map.
+std::map<std::string, std::string>::iterator iEntry
+= rTagToName.find(tag);
+
+if(rTagToName.end() == iEntry)
+throw badStochSpeciesTagXcpt(pTaggedStochSpeciesElt);
+
+std::string speciesName = iEntry->second;
+
+// Look up the species in mzrUnit's catalog.
+mzr::mzrSpecies* pSpecies = rMzr.findSpecies(speciesName);
+if(0 == pSpecies)
+throw mzr::unkSpeciesXcpt(speciesName,
+pTaggedStochSpeciesElt);
 
 
-      // Get the population of the stoch species when dumped.
-      xmlpp::Element* pPopulationElt
-	= utl::dom::mustGetUniqueChild(pTaggedStochSpeciesElt,
-				       eltName::population);
+// Get the population of the stoch species when dumped.
+xmlpp::Element* pPopulationElt
+= utl::dom::mustGetUniqueChild(pTaggedStochSpeciesElt,
+eltName::population);
 
-      int pop
-	= utl::dom::mustGetAttrInt(pPopulationElt,
-				   eltName::population_countAttr);
+int pop
+= utl::dom::mustGetAttrInt(pPopulationElt,
+eltName::population_countAttr);
 
-      // Update the species.
-      pSpecies->update(pop,
-		       rAffectedReactions,
-		       rMzr.getGenerateDepth());
-    }
-  };
+// Update the species.
+pSpecies->update(pop,
+rAffectedReactions,
+rMzr.getGenerateDepth());
+}
+};
 
-  void
-  stochUnit::prepareToContinue(xmlpp::Element* pRootElt,
-			       xmlpp::Element* pModelElt,
-			       xmlpp::Element* pStreamsElt,
-			       std::map<std::string, std::string>& rTagToName,
-			       xmlpp::Element* pTaggedSpeciesElement)
-    throw(std::exception)
-  {
+void
+stochUnit::prepareToContinue(xmlpp::Element* pRootElt,
+xmlpp::Element* pModelElt,
+xmlpp::Element* pStreamsElt,
+std::map<std::string, std::string>& rTagToName,
+xmlpp::Element* pTaggedSpeciesElement)
+throw(std::exception)
+{
 
-    // Parse the tagged-stoch-species.
-    xmlpp::Node::NodeList taggedStochSpeciesNodes
-      = pTaggedSpeciesElement->get_children(eltName::taggedStochSpecies);
+// Parse the tagged-stoch-species.
+xmlpp::Node::NodeList taggedStochSpeciesNodes
+= pTaggedSpeciesElement->get_children(eltName::taggedStochSpecies);
 
-    // This will also update each stoch species with the population
-    // given in the state dump.
-    fnd::sensitivityList<mzr::mzrReaction> affectedReactions;
-    std::for_each(taggedStochSpeciesNodes.begin(),
-		  taggedStochSpeciesNodes.end(),
-		  processTaggedStochSpecies(affectedReactions,
-					    rTagToName,
-					    rMzrUnit));
+// This will also update each stoch species with the population
+// given in the state dump.
+fnd::sensitivityList<mzr::mzrReaction> affectedReactions;
+std::for_each(taggedStochSpeciesNodes.begin(),
+taggedStochSpeciesNodes.end(),
+processTaggedStochSpecies(affectedReactions,
+rTagToName,
+rMzrUnit));
 
-    // Reschedule the affected reactions.
-    // std::for_each(affectedReactions.begin(),
-    // 		  affectedReactions.end(),
-    // 		  mzr::respondReaction(rMolzer));
+// Reschedule the affected reactions.
+// std::for_each(affectedReactions.begin(),
+// 		  affectedReactions.end(),
+// 		  mzr::respondReaction(rMolzer));
 
-    // In this version, do NOT run prepareToRun, as that sets the
-    // populations of the stochSpecies to that given in the explicit
-    // stoch-species elements of moleculizer-input.
-  }
+// In this version, do NOT run prepareToRun, as that sets the
+// populations of the stochSpecies to that given in the explicit
+// stoch-species elements of moleculizer-input.
+}
 }

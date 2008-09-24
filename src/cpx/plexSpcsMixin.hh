@@ -1,10 +1,15 @@
-/////////////////////////////////////////////////////////////////////////////
-// Moleculizer - a stochastic simulator for cellular chemistry.
-// Copyright (C) 2001, 2008 The Molecular Sciences Institute.
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+//                                                                          
+//                                                                          
+//        This file is part of Libmoleculizer
+//
+//        Copyright (C) 2001-2008 The Molecular Sciences Institute.
+//
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 //
 // Moleculizer is free software; you can redistribute it and/or modify
-// it under the terms of the GNU Lesser General Public License as published by
-// the Free Software Foundation; either version 3 of the License, or
+// it under the terms of the GNU Lesser General Public License as published 
+// by the Free Software Foundation; either version 3 of the License, or
 // (at your option) any later version.
 //
 // Moleculizer is distributed in the hope that it will be useful,
@@ -13,15 +18,17 @@
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with Moleculizer; if not, write to the Free Software
-// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+// along with Moleculizer; if not, write to the Free Software Foundation
+// Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307,  USA
 //    
+// END HEADER
+// 
 // Original Author:
 //   Larry Lok, Research Fellow, Molecular Sciences Institute, 2001
-
-//                     Email: lok@molsci.org
-//   
-/////////////////////////////////////////////////////////////////////////////
+//
+// Modifing Authors:
+//              
+//
 
 #ifndef CPX_PLEXSPECIES_H
 #define CPX_PLEXSPECIES_H
@@ -39,65 +46,65 @@
 
 namespace cpx
 {
-  // For mixing-in with a "base" species type to produce plexSpecies.
-  template<class plexFamilyT>
-  class plexSpeciesMixin
-  {
-  public:
-    // The plexFamily to which this species belongs.
-    plexFamilyT& rFamily;
+// For mixing-in with a "base" species type to produce plexSpecies.
+template<class plexFamilyT>
+class plexSpeciesMixin
+{
+public:
+// The plexFamily to which this species belongs.
+plexFamilyT& rFamily;
 
-    // The shapes of the plexSpecies's binding sites, both free and bound.
-    //
-    // This caches the allostery calculation done when the plexSpecies
-    // is created in plexFamilyT::makeMember.
-    siteToShapeMap siteParams;
+// The shapes of the plexSpecies's binding sites, both free and bound.
+//
+// This caches the allostery calculation done when the plexSpecies
+// is created in plexFamilyT::makeMember.
+siteToShapeMap siteParams;
 
-    // The states of the plexSpecies's mols.
-    std::vector<molParam> molParams;
-    
-    plexSpeciesMixin(plexFamilyT& rContainingFamily,
-                     const siteToShapeMap& rSiteParams,
-                     const std::vector<molParam>& rMolParams) :
-      rFamily(rContainingFamily),
-      siteParams(rSiteParams),
-      molParams(rMolParams)
-    {}
+// The states of the plexSpecies's mols.
+std::vector<molParam> molParams;
 
-    double
-    getWeight(void) const;
+plexSpeciesMixin(plexFamilyT& rContainingFamily,
+const siteToShapeMap& rSiteParams,
+const std::vector<molParam>& rMolParams) :
+rFamily(rContainingFamily),
+siteParams(rSiteParams),
+molParams(rMolParams)
+{}
 
-    // Notification has to be done in the final species.  It should notify
-    // rFamily with a fnd::newSpeciesStimulus<finalSpecies>.
+double
+getWeight(void) const;
+
+// Notification has to be done in the final species.  It should notify
+// rFamily with a fnd::newSpeciesStimulus<finalSpecies>.
 
 
-    // This would be best, but the getCanonicalName() function heavily 
-    // relies on knowing everything about the template parameter, so 
-    // g++ gets mad.
-    // virtual std::string
-    // getName() const
-    // {
-    //   return getCanonicalName();
-    // }
+// This would be best, but the getCanonicalName() function heavily
+// relies on knowing everything about the template parameter, so
+// g++ gets mad.
+// virtual std::string
+// getName() const
+// {
+//   return getCanonicalName();
+// }
 
-    // Generate non-canonical, "informative" name.  Not so sure that this
-    // should go here.
-    std::string
-    getInformativeName(void) const;
+// Generate non-canonical, "informative" name.  Not so sure that this
+// should go here.
+std::string
+getInformativeName(void) const;
 
-    std::string
-    getCanonicalName( void ) const;
+std::string
+getCanonicalName( void ) const;
 
-    std::string
-    getCanonicalName( const nmr::NameAssembler* ptrNameAssembler) const;
+std::string
+getCanonicalName( const nmr::NameAssembler* ptrNameAssembler) const;
 
-  protected:
-    typedef nmr::ComplexSpecies ComplexRepresentation;
-        
-    void
-    createComplexRepresentation( ComplexRepresentation& aComplexRepresentation ) const;
+protected:
+typedef nmr::ComplexSpecies ComplexRepresentation;
 
-  };
+void
+createComplexRepresentation( ComplexRepresentation& aComplexRepresentation ) const;
+
+};
 }
 
 #include "cpx/plexSpcsMixinImpl.hh"

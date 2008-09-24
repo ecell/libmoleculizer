@@ -1,10 +1,15 @@
-/////////////////////////////////////////////////////////////////////////////
-// Moleculizer - a stochastic simulator for cellular chemistry.
-// Copyright (C) 2001, 2008 The Molecular Sciences Institute.
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+//                                                                          
+//                                                                          
+//        This file is part of Libmoleculizer
+//
+//        Copyright (C) 2001-2008 The Molecular Sciences Institute.
+//
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 //
 // Moleculizer is free software; you can redistribute it and/or modify
-// it under the terms of the GNU Lesser General Public License as published by
-// the Free Software Foundation; either version 3 of the License, or
+// it under the terms of the GNU Lesser General Public License as published 
+// by the Free Software Foundation; either version 3 of the License, or
 // (at your option) any later version.
 //
 // Moleculizer is distributed in the hope that it will be useful,
@@ -13,15 +18,17 @@
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with Moleculizer; if not, write to the Free Software
-// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+// along with Moleculizer; if not, write to the Free Software Foundation
+// Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307,  USA
 //    
+// END HEADER
+// 
 // Original Author:
 //   Larry Lok, Research Fellow, Molecular Sciences Institute, 2001
-
-//                     Email: lok@molsci.org
-//   
-/////////////////////////////////////////////////////////////////////////////
+//
+// Modifing Authors:
+//              
+//
 
 #ifndef MOL_UNKMODSITEXCPT_H
 #define MOL_UNKMODSITEXCPT_H
@@ -32,32 +39,32 @@
 
 namespace bnd
 {
-  // Exception thrown when the user refers to a modification site by an
-  // incorrect name.
-  class unkModSiteXcpt : 
-    public utl::xcpt
-  {
-    static std::string
-    mkDomMsg(xmlpp::Node* pOffendingNode,
-	     const std::string& rModSiteName,
-	     const mzrModMol* pModMol);
+// Exception thrown when the user refers to a modification site by an
+// incorrect name.
+class unkModSiteXcpt :
+public utl::xcpt
+{
+static std::string
+mkDomMsg(xmlpp::Node* pOffendingNode,
+const std::string& rModSiteName,
+const mzrModMol* pModMol);
 
-    static std::string
-    mkPlainMsg(const std::string& rModSiteName);
+static std::string
+mkPlainMsg(const std::string& rModSiteName);
 
-  public:
-    unkModSiteXcpt(xmlpp::Node* pOffendingNode,
-		       const std::string& rModSiteName,
-		       const mzrModMol* pModMol) :
-      utl::xcpt(mkDomMsg(pOffendingNode,
-			 rModSiteName,
-			 pModMol))
-    {}
+public:
+unkModSiteXcpt(xmlpp::Node* pOffendingNode,
+const std::string& rModSiteName,
+const mzrModMol* pModMol) :
+utl::xcpt(mkDomMsg(pOffendingNode,
+rModSiteName,
+pModMol))
+{}
 
-    unkModSiteXcpt(const std::string& rModSiteName) :
-      utl::xcpt(mkPlainMsg(rModSiteName))
-    {}
-  };
+unkModSiteXcpt(const std::string& rModSiteName) :
+utl::xcpt(mkPlainMsg(rModSiteName))
+{}
+};
 }
 
 #endif // MOL_UNKMODSITEXCPT_H

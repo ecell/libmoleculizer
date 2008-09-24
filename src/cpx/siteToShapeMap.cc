@@ -1,10 +1,15 @@
-/////////////////////////////////////////////////////////////////////////////
-// Moleculizer - a stochastic simulator for cellular chemistry.
-// Copyright (C) 2001, 2008 The Molecular Sciences Institute.
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+//                                                                          
+//                                                                          
+//        This file is part of Libmoleculizer
+//
+//        Copyright (C) 2001-2008 The Molecular Sciences Institute.
+//
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 //
 // Moleculizer is free software; you can redistribute it and/or modify
-// it under the terms of the GNU Lesser General Public License as published by
-// the Free Software Foundation; either version 3 of the License, or
+// it under the terms of the GNU Lesser General Public License as published 
+// by the Free Software Foundation; either version 3 of the License, or
 // (at your option) any later version.
 //
 // Moleculizer is distributed in the hope that it will be useful,
@@ -13,15 +18,17 @@
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with Moleculizer; if not, write to the Free Software
-// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+// along with Moleculizer; if not, write to the Free Software Foundation
+// Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307,  USA
 //    
+// END HEADER
+// 
 // Original Author:
 //   Larry Lok, Research Fellow, Molecular Sciences Institute, 2001
-
-//                     Email: lok@molsci.org
-//   
-/////////////////////////////////////////////////////////////////////////////
+//
+// Modifing Authors:
+//              
+//
 
 #include "utl/forceInsert.hh"
 #include "cpx/siteToShapeMap.hh"
@@ -30,64 +37,64 @@
 
 namespace cpx
 {
-  const siteShape*
-  siteToShapeMap::
-  getSiteShape(const siteSpec& rPlexSiteSpec) const
-  {
-    const_iterator iEntry 
-      = find(rPlexSiteSpec);
+const siteShape*
+siteToShapeMap::
+getSiteShape(const siteSpec& rPlexSiteSpec) const
+{
+const_iterator iEntry
+= find(rPlexSiteSpec);
 
-    return end() == iEntry
-      ? 0
-      : iEntry->second;
-  }
-  
-  const siteShape*
-  siteToShapeMap::
-  mustGetSiteShape(const siteSpec& rPlexSiteSpec) const
-    throw(utl::xcpt)
-  {
-    const siteShape* pSiteShape
-      = getSiteShape(rPlexSiteSpec);
-    
-    if(! pSiteShape) throw unmappedSiteSpecXcpt();
+return end() == iEntry
+? 0
+: iEntry->second;
+}
 
-    return pSiteShape;
-  }
+const siteShape*
+siteToShapeMap::
+mustGetSiteShape(const siteSpec& rPlexSiteSpec) const
+throw(utl::xcpt)
+{
+const siteShape* pSiteShape
+= getSiteShape(rPlexSiteSpec);
 
-  void
-  siteToShapeMap::
-  setSiteShape(const siteSpec& rPlexSiteSpec,
-	       const siteShape* pSiteShape)
-  {
-    utl::forceInsert(*this,
-		     std::pair<siteSpec, const siteShape*>(rPlexSiteSpec,
-							   pSiteShape));
-  }
+if(! pSiteShape) throw unmappedSiteSpecXcpt();
 
-  class setOneSiteShape :
-    public std::unary_function<siteToShapeMap::value_type, void>
-  {
-    siteToShapeMap& rTargetMap;
-  public:
-    setOneSiteShape(siteToShapeMap& refTargetMap) :
-      rTargetMap(refTargetMap)
-    {}
+return pSiteShape;
+}
 
-    void
-    operator()(const argument_type& rSpecShapePair) const
-    {
-      rTargetMap.setSiteShape(rSpecShapePair.first,
-			      rSpecShapePair.second);
-    }
-  };
+void
+siteToShapeMap::
+setSiteShape(const siteSpec& rPlexSiteSpec,
+const siteShape* pSiteShape)
+{
+utl::forceInsert(*this,
+std::pair<siteSpec, const siteShape*>(rPlexSiteSpec,
+pSiteShape));
+}
 
-  void
-  siteToShapeMap::
-  setSiteShapes(const siteToShapeMap& rSiteToShapeMap)
-  {
-    std::for_each(rSiteToShapeMap.begin(),
-		  rSiteToShapeMap.end(),
-		  setOneSiteShape(*this));
-  }
+class setOneSiteShape :
+public std::unary_function<siteToShapeMap::value_type, void>
+{
+siteToShapeMap& rTargetMap;
+public:
+setOneSiteShape(siteToShapeMap& refTargetMap) :
+rTargetMap(refTargetMap)
+{}
+
+void
+operator()(const argument_type& rSpecShapePair) const
+{
+rTargetMap.setSiteShape(rSpecShapePair.first,
+rSpecShapePair.second);
+}
+};
+
+void
+siteToShapeMap::
+setSiteShapes(const siteToShapeMap& rSiteToShapeMap)
+{
+std::for_each(rSiteToShapeMap.begin(),
+rSiteToShapeMap.end(),
+setOneSiteShape(*this));
+}
 }

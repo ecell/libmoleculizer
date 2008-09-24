@@ -1,10 +1,15 @@
-/////////////////////////////////////////////////////////////////////////////
-// Moleculizer - a stochastic simulator for cellular chemistry.
-// Copyright (C) 2008 The Molecular Sciences Institute
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+//                                                                          
+//                                                                          
+//        This file is part of Libmoleculizer
+//
+//        Copyright (C) 2001-2008 The Molecular Sciences Institute.
+//
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 //
 // Moleculizer is free software; you can redistribute it and/or modify
-// it under the terms of the GNU Lesser General Public License as published by
-// the Free Software Foundation; either version 3 of the License, or
+// it under the terms of the GNU Lesser General Public License as published 
+// by the Free Software Foundation; either version 3 of the License, or
 // (at your option) any later version.
 //
 // Moleculizer is distributed in the hope that it will be useful,
@@ -13,10 +18,17 @@
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with Moleculizer; if not, write to the Free Software
-// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+// along with Moleculizer; if not, write to the Free Software Foundation
+// Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307,  USA
 //    
-/////////////////////////////////////////////////////////////////////////////
+// END HEADER
+// 
+// Original Author:
+//   Nathan Addy, Scientific Programmer, Molecular Sciences Institute, 2001
+//
+// Modifing Authors:
+//              
+//
 
 #ifndef NMRUNIT_HH
 #define NMRUNIT_HH
@@ -31,84 +43,84 @@
 
 namespace plx
 {
-    DECLARE_CLASS( plexUnit);
+DECLARE_CLASS( plexUnit);
 }
 
 namespace mzr
 {
-    DECLARE_CLASS( mzrSpecies );
+DECLARE_CLASS( mzrSpecies );
 }
 
 namespace nmr
 {
-    class nmrUnit : public mzr::unit
-    {
-    public:
-        nmrUnit(mzr::moleculizer& rMoleculizer)
-            :
-            unit("nmr", 
-                 rMoleculizer),
-            pMzrUnit(NULL),
-            pMolUnit(NULL),
-            pPlexUnit(NULL),
-            ptrNameEncoderFactory( new NameEncoderFactory(*this) ),
-            ptrNameAssembler( NULL )
-        {
-            setDefaultNameEncoder( manglernames::compactEncoderName );
-        }
-    
-        ~nmrUnit()
-        {
-            // Don't delete any pointers to Units as they are memory managed elsewhere.
-            delete ptrNameEncoderFactory;
-            delete ptrNameAssembler;
-        }
+class nmrUnit : public mzr::unit
+{
+public:
+nmrUnit(mzr::moleculizer& rMoleculizer)
+:
+unit("nmr",
+rMoleculizer),
+pMzrUnit(NULL),
+pMolUnit(NULL),
+pPlexUnit(NULL),
+ptrNameEncoderFactory( new NameEncoderFactory(*this) ),
+ptrNameAssembler( NULL )
+{
+setDefaultNameEncoder( manglernames::compactEncoderName );
+}
 
-        mzr::mzrSpecies*
-        constructSpeciesFromName( const std::string& speciesName);
+~nmrUnit()
+{
+// Don't delete any pointers to Units as they are memory managed elsewhere.
+delete ptrNameEncoderFactory;
+delete ptrNameAssembler;
+}
 
-    
-        const NameAssembler* 
-        getNameEncoder() const throw( MissingNameEncoderXcpt );
+mzr::mzrSpecies*
+constructSpeciesFromName( const std::string& speciesName);
 
-        void 
-        setDefaultNameEncoder( const std::string& nameEncoderName) throw( NoSuchNameEncoderXcpt  );
 
-        void
-        setMzrUnit(mzr::mzrUnit* ptrMzrUnit)
-        {
-            pMzrUnit = ptrMzrUnit;
-        }
+const NameAssembler*
+getNameEncoder() const throw( MissingNameEncoderXcpt );
 
-        void 
-        setPlexUnit(plx::plexUnit* ptrPlexUnit)
-        {
-            pPlexUnit = ptrPlexUnit;
-        }
+void
+setDefaultNameEncoder( const std::string& nameEncoderName) throw( NoSuchNameEncoderXcpt  );
 
-        void setMolUnit(bnd::molUnit* ptrMolUnit)
-        {
-            pMolUnit = ptrMolUnit;
-        }
+void
+setMzrUnit(mzr::mzrUnit* ptrMzrUnit)
+{
+pMzrUnit = ptrMzrUnit;
+}
 
-        void 
-        parseDomInput(xmlpp::Element* pRootElt, 
-                      xmlpp::Element* pModelElt,
-                      xmlpp::Element* pStreamElt) throw(std::exception);
+void
+setPlexUnit(plx::plexUnit* ptrPlexUnit)
+{
+pPlexUnit = ptrPlexUnit;
+}
 
-        void insertStateElts(xmlpp::Element* pRootElt) throw(std::exception);
+void setMolUnit(bnd::molUnit* ptrMolUnit)
+{
+pMolUnit = ptrMolUnit;
+}
 
-        mzr::mzrUnit* pMzrUnit;
-        bnd::molUnit* pMolUnit;
-        plx::plexUnit* pPlexUnit;
+void
+parseDomInput(xmlpp::Element* pRootElt,
+xmlpp::Element* pModelElt,
+xmlpp::Element* pStreamElt) throw(std::exception);
 
-        // Protect this next function.
-//         plx::mzrPlexSpecies* 
+void insertStateElts(xmlpp::Element* pRootElt) throw(std::exception);
+
+mzr::mzrUnit* pMzrUnit;
+bnd::molUnit* pMolUnit;
+plx::plexUnit* pPlexUnit;
+
+// Protect this next function.
+//         plx::mzrPlexSpecies*
 //         makePlexFromName(const std::string& mangledName) const;
 
-        NameEncoderFactory* ptrNameEncoderFactory;
-        NameAssembler* ptrNameAssembler;
-    };
+NameEncoderFactory* ptrNameEncoderFactory;
+NameAssembler* ptrNameAssembler;
+};
 }
 
 

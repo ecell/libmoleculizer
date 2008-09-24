@@ -1,10 +1,15 @@
-/////////////////////////////////////////////////////////////////////////////
-// Moleculizer - a stochastic simulator for cellular chemistry.
-// Copyright (C) 2001, 2008 The Molecular Sciences Institute.
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+//                                                                          
+//                                                                          
+//        This file is part of Libmoleculizer
+//
+//        Copyright (C) 2001-2008 The Molecular Sciences Institute.
+//
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 //
 // Moleculizer is free software; you can redistribute it and/or modify
-// it under the terms of the GNU Lesser General Public License as published by
-// the Free Software Foundation; either version 3 of the License, or
+// it under the terms of the GNU Lesser General Public License as published 
+// by the Free Software Foundation; either version 3 of the License, or
 // (at your option) any later version.
 //
 // Moleculizer is distributed in the hope that it will be useful,
@@ -13,15 +18,17 @@
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with Moleculizer; if not, write to the Free Software
-// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+// along with Moleculizer; if not, write to the Free Software Foundation
+// Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307,  USA
 //    
+// END HEADER
+// 
 // Original Author:
 //   Larry Lok, Research Fellow, Molecular Sciences Institute, 2001
-
-//                     Email: lok@molsci.org
-//   
-/////////////////////////////////////////////////////////////////////////////
+//
+// Modifing Authors:
+//              
+//
 
 #include <time.h>
 #include <limits>
@@ -33,162 +40,162 @@
 
 namespace mzr
 {
-  class timeLimitExpiredXcpt :
-    public utl::xcpt
-  {
-    static std::string
-    mkMsg(double clockTimeLimit,
-	  double curSimTime)
-    {
-      std::ostringstream msgStream;
-      msgStream << "Clock time limit of "
-		<< clockTimeLimit
-		<< " seconds exceeded at simulation time "
-		<< curSimTime
-		<< ".";
-      return msgStream.str();
-    }
-  public:
-    timeLimitExpiredXcpt(double clockTimeLimit,
-			 double curSimTime) :
-      utl::xcpt(mkMsg(clockTimeLimit,
-		      curSimTime))
-    {}
-  };
+class timeLimitExpiredXcpt :
+public utl::xcpt
+{
+static std::string
+mkMsg(double clockTimeLimit,
+double curSimTime)
+{
+std::ostringstream msgStream;
+msgStream << "Clock time limit of "
+<< clockTimeLimit
+<< " seconds exceeded at simulation time "
+<< curSimTime
+<< ".";
+return msgStream.str();
+}
+public:
+timeLimitExpiredXcpt(double clockTimeLimit,
+double curSimTime) :
+utl::xcpt(mkMsg(clockTimeLimit,
+curSimTime))
+{}
+};
 
-  class eventQueueEmptyXcpt :
-    public utl::xcpt
-  {
-    static std::string
-    mkMsg(double curSimTime)
-    {
-      std::ostringstream msgStream;
-      msgStream << "Event queue empty at simulation time "
-		<< curSimTime
-		<< ".";
-      return msgStream.str();
-    }
-  public:
-    eventQueueEmptyXcpt(double curSimTime) :
-      utl::xcpt(mkMsg(curSimTime))
-    {}
-  };
+class eventQueueEmptyXcpt :
+public utl::xcpt
+{
+static std::string
+mkMsg(double curSimTime)
+{
+std::ostringstream msgStream;
+msgStream << "Event queue empty at simulation time "
+<< curSimTime
+<< ".";
+return msgStream.str();
+}
+public:
+eventQueueEmptyXcpt(double curSimTime) :
+utl::xcpt(mkMsg(curSimTime))
+{}
+};
 
-  class nowIsNeverXcpt :
-    public utl::xcpt
-  {
-  public:
-    nowIsNeverXcpt(void) :
-      utl::xcpt("Earliest event is at 'infinite' simulation time.")
-    {}
-  };
+class nowIsNeverXcpt :
+public utl::xcpt
+{
+public:
+nowIsNeverXcpt(void) :
+utl::xcpt("Earliest event is at 'infinite' simulation time.")
+{}
+};
 
-  class eventInPastXcpt :
-    public utl::xcpt
-  {
-    static std::string
-    mkMsg(double curTime,
-	  double badEventTime)
-    {
-      std::ostringstream msgStream;
-      msgStream << "At simulation time "
-		<< curTime
-		<< ", next event is at past time "
-		<< badEventTime
-		<< ".";
-      return msgStream.str();
-    }
-  public:
-    eventInPastXcpt(double curTime,
-		    double badEventTime) :
-      utl::xcpt(mkMsg(curTime,
-		      badEventTime))
-    {}
-  };
-  
-  // Deschedule an event.
-  void
-  eventQueue::descheduleEvent(mzrEvent* pEvent)
-  {
-    iterator iEvent;
-    if(pEvent->deschedule(iEvent)) erase(iEvent);
-  }
+class eventInPastXcpt :
+public utl::xcpt
+{
+static std::string
+mkMsg(double curTime,
+double badEventTime)
+{
+std::ostringstream msgStream;
+msgStream << "At simulation time "
+<< curTime
+<< ", next event is at past time "
+<< badEventTime
+<< ".";
+return msgStream.str();
+}
+public:
+eventInPastXcpt(double curTime,
+double badEventTime) :
+utl::xcpt(mkMsg(curTime,
+badEventTime))
+{}
+};
 
-  // Schedule or reschedule an event.
-  void
-  eventQueue::scheduleEvent(mzrEvent* pEvent,
-			    double time)
-  {
-    // Deschedule the event if it is scheduled.
-    descheduleEvent(pEvent);
+// Deschedule an event.
+void
+eventQueue::descheduleEvent(mzrEvent* pEvent)
+{
+iterator iEvent;
+if(pEvent->deschedule(iEvent)) erase(iEvent);
+}
 
-    // Insert the event into the schedule, and update the
-    // event's internal queue iterator.
-    pEvent->schedule(insert(std::make_pair(time, pEvent)));
-  }
+// Schedule or reschedule an event.
+void
+eventQueue::scheduleEvent(mzrEvent* pEvent,
+double time)
+{
+// Deschedule the event if it is scheduled.
+descheduleEvent(pEvent);
 
-  void
-  eventQueue::run(moleculizer& rMolzer)
-    throw(utl::xcpt)
-  {
-    mzrUnit& rMzrUnit = *(rMolzer.pUserUnits->pMzrUnit);
-    
-    fnd::eventResult result = fnd::go;
-    while(result == fnd::go)
-      {
-	// Check the elapsed time, if called for, to see if the clock
-	// time limit has expired.
-	if(0 < rMzrUnit.secondsLimit)
-	  {
-	    time_t secondsNow = time(0);
-	    if(rMzrUnit.secondsLimit + rMzrUnit.startSeconds < secondsNow)
-	      {
-		// Write the state (to a test-file for now)
-		xmlpp::Document* pStateDoc = rMolzer.makeDomOutput();
-		pStateDoc->write_to_file_formatted("timeout-state.xml");
-		delete pStateDoc;
+// Insert the event into the schedule, and update the
+// event's internal queue iterator.
+pEvent->schedule(insert(std::make_pair(time, pEvent)));
+}
 
-		// End the simulation.
-		throw timeLimitExpiredXcpt(rMzrUnit.secondsLimit,
-					   now);
-	      }
-	  }
+void
+eventQueue::run(moleculizer& rMolzer)
+throw(utl::xcpt)
+{
+mzrUnit& rMzrUnit = *(rMolzer.pUserUnits->pMzrUnit);
 
-	// Get iterator to first time/event pair in the event
-	// schedule.
-	iterator iTimeEventPair = begin();
+fnd::eventResult result = fnd::go;
+while(result == fnd::go)
+{
+// Check the elapsed time, if called for, to see if the clock
+// time limit has expired.
+if(0 < rMzrUnit.secondsLimit)
+{
+time_t secondsNow = time(0);
+if(rMzrUnit.secondsLimit + rMzrUnit.startSeconds < secondsNow)
+{
+// Write the state (to a test-file for now)
+xmlpp::Document* pStateDoc = rMolzer.makeDomOutput();
+pStateDoc->write_to_file_formatted("timeout-state.xml");
+delete pStateDoc;
 
-	// Is there really an event to execute?
-	if(end() == iTimeEventPair)
-	  throw eventQueueEmptyXcpt(now);
+// End the simulation.
+throw timeLimitExpiredXcpt(rMzrUnit.secondsLimit,
+now);
+}
+}
 
-	double nextNow = iTimeEventPair->first;
+// Get iterator to first time/event pair in the event
+// schedule.
+iterator iTimeEventPair = begin();
 
-	if(nextNow < now)
-	  {
-	    throw eventInPastXcpt(now,
-				  nextNow);
-	  }
-	else
-	  {
-	    // Reset "now" to the time of the next event.
-	    now = iTimeEventPair->first;
+// Is there really an event to execute?
+if(end() == iTimeEventPair)
+throw eventQueueEmptyXcpt(now);
 
-	    // Check that "now" is not never.
-	    if(never == now)
-	      throw nowIsNeverXcpt();
+double nextNow = iTimeEventPair->first;
 
-	    // Remove the event from the event schedule.
-	    // This has to be done before executing the event,
-	    // because some events (dump) reschedule themselves.
-	    mzrEvent* pNextEvent = iTimeEventPair->second;
-	    descheduleEvent(pNextEvent);
+if(nextNow < now)
+{
+throw eventInPastXcpt(now,
+nextNow);
+}
+else
+{
+// Reset "now" to the time of the next event.
+now = iTimeEventPair->first;
 
-	    // Do the next event.
-	    result = pNextEvent->happen(rMolzer);
-	  }
-      }
-  }
+// Check that "now" is not never.
+if(never == now)
+throw nowIsNeverXcpt();
 
-  const double eventQueue::never = std::numeric_limits<double>::max();
+// Remove the event from the event schedule.
+// This has to be done before executing the event,
+// because some events (dump) reschedule themselves.
+mzrEvent* pNextEvent = iTimeEventPair->second;
+descheduleEvent(pNextEvent);
+
+// Do the next event.
+result = pNextEvent->happen(rMolzer);
+}
+}
+}
+
+const double eventQueue::never = std::numeric_limits<double>::max();
 }

@@ -1,11 +1,14 @@
-/////////////////////////////////////////////////////////////////////////////
-// libComplexSpecies - a library for canonically naming species of protein 
-//                     complexes.
-// Copyright (C) 2007, 2008 The Molecular Sciences Institute
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+//                                                                          
+//        This file is part of Libmoleculizer
+//
+//        Copyright (C) 2001-2008 The Molecular Sciences Institute.
+//
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 //
 // Moleculizer is free software; you can redistribute it and/or modify
-// it under the terms of the GNU Lesser General Public License as published by
-// the Free Software Foundation; either version 3 of the License, or
+// it under the terms of the GNU Lesser General Public License as published 
+// by the Free Software Foundation; either version 3 of the License, or
 // (at your option) any later version.
 //
 // Moleculizer is distributed in the hope that it will be useful,
@@ -14,15 +17,17 @@
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with Moleculizer; if not, write to the Free Software
-// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+// along with Moleculizer; if not, write to the Free Software Foundation
+// Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307,  USA
 //    
+// END HEADER
+// 
 // Original Author:
-//   Nathan Addy, Research Associate     Voice: 510-981-8748
-//   The Molecular Sciences Institute    Email: addy@molsci.org  
-//                     
-//   
-/////////////////////////////////////////////////////////////////////////////
+//   Nathan Addy, Scientific Programmer, Molecular Sciences Institute, 2001
+//
+// Modifing Authors:
+//              
+//
 
 #ifndef __NMR_PERMUTATION_HH
 #define __NMR_PERMUTATION_HH
@@ -36,150 +41,150 @@
 
 namespace nmr
 {
-        // The Permutation class represents a "partial permutation" on Z_n = {0, ..., n-1}.
-        // A "partial permutation" is a relation on Z_n X Z_n that can be extended to a 
-        // permutation (which is a bijection from Z_n -> Z_n).
+// The Permutation class represents a "partial permutation" on Z_n = {0, ..., n-1}.
+// A "partial permutation" is a relation on Z_n X Z_n that can be extended to a
+// permutation (which is a bijection from Z_n -> Z_n).
 
-        // In this class, this is represented as a function from Z_n -> Z_n U Permutation::UNDEF, 
-        // where any domain element that conceptually has no partner in the range Z_n yet is 
-        // mapped to Permutation::UNDEF.  The class member function checkPermutationLegality
-        // ensures that the Permutation is pre-bijective -- ie that any element of the range which 
-        // is not equal to Permutation::UNDEF only shows up once.
+// In this class, this is represented as a function from Z_n -> Z_n U Permutation::UNDEF,
+// where any domain element that conceptually has no partner in the range Z_n yet is
+// mapped to Permutation::UNDEF.  The class member function checkPermutationLegality
+// ensures that the Permutation is pre-bijective -- ie that any element of the range which
+// is not equal to Permutation::UNDEF only shows up once.
 
-        DECLARE_CLASS( Permutation );
-        struct Permutation
-        {
-            // NOTES, TODO:
-            // Right now the situation is that the domain is {0, ... , n-1}
-            // and the range is {0, ... , n-1} U Permutation::UNDEF.
-            // Consequently any of the domain elements (the indexes) are 
-            // represented as "unsigned ints" and all the range elements are
-            // represented as "ints".  If I ever get the chance, I'd like to come
-            // up with better types here.  (although it works along perfectly fine
-            // at the moment)
+DECLARE_CLASS( Permutation );
+struct Permutation
+{
+// NOTES, TODO:
+// Right now the situation is that the domain is {0, ... , n-1}
+// and the range is {0, ... , n-1} U Permutation::UNDEF.
+// Consequently any of the domain elements (the indexes) are
+// represented as "unsigned ints" and all the range elements are
+// represented as "ints".  If I ever get the chance, I'd like to come
+// up with better types here.  (although it works along perfectly fine
+// at the moment)
 
-        public:
-            static const int UNDEF;
+public:
+static const int UNDEF;
 
-        public:
-            DECLARE_TYPE( unsigned int, BindingNdx);
-            DECLARE_TYPE( unsigned int, Dimension);
-            DECLARE_TYPE( std::vector<unsigned int>, UnsignedIntegerVector);
-            DECLARE_TYPE( std::vector<int>, IntegerVector);
-            DECLARE_TYPE( IntegerVector, CorePermutationType);
-            DECLARE_TYPE( std::set<Permutation>, SetOfPermutations);
-            
-        public:
+public:
+DECLARE_TYPE( unsigned int, BindingNdx);
+DECLARE_TYPE( unsigned int, Dimension);
+DECLARE_TYPE( std::vector<unsigned int>, UnsignedIntegerVector);
+DECLARE_TYPE( std::vector<int>, IntegerVector);
+DECLARE_TYPE( IntegerVector, CorePermutationType);
+DECLARE_TYPE( std::set<Permutation>, SetOfPermutations);
 
-            // Constructors 
-            //
+public:
 
-            // This makes a completely undefined permutation on n objects.
-            Permutation(Dimension dim = 0);
-            Permutation(PermutationCref aPermutation);
-            Permutation(CorePermutationTypeCref aPermutationVector);
+// Constructors
+//
 
-            // This constructor copies aPermutation, and then adds the point perm(pos)=value to it.
-            Permutation(PermutationCref aPermutation, BindingNdx pos, int value) 
-                throw(nmr::BadPermutationConstructorXcpt);
+// This makes a completely undefined permutation on n objects.
+Permutation(Dimension dim = 0);
+Permutation(PermutationCref aPermutation);
+Permutation(CorePermutationTypeCref aPermutationVector);
 
-            Permutation( PermutationCref aPermutation,
-                         PermutationCref bPermution);
-  
-            // API
-            // 
-            int getValueAtPosition(BindingNdx pos) const 
-                throw( nmr::BadPermutationIndexXcpt );
+// This constructor copies aPermutation, and then adds the point perm(pos)=value to it.
+Permutation(PermutationCref aPermutation, BindingNdx pos, int value)
+throw(nmr::BadPermutationConstructorXcpt);
 
-            void setValueAtPosition(BindingNdx pos, unsigned int val) 
-                throw( nmr::BadPermutationIndexXcpt, nmr::DuplicateValueXcpt) ;
+Permutation( PermutationCref aPermutation,
+PermutationCref bPermution);
 
-            void resetValueAtPosition(BindingNdx pos) 
-                throw(nmr::BadPermutationIndexXcpt);
+// API
+//
+int getValueAtPosition(BindingNdx pos) const
+throw( nmr::BadPermutationIndexXcpt );
 
-            // Returns the Permutation (*this)( compositionPermutation(x) )
-            Permutation 
-            of(PermutationCref compositionPermutation) const
-                throw( nmr::IncompatiblePermutationsXcpt);
+void setValueAtPosition(BindingNdx pos, unsigned int val)
+throw( nmr::BadPermutationIndexXcpt, nmr::DuplicateValueXcpt) ;
 
-            Permutation 
-            invertPermutation() const;
+void resetValueAtPosition(BindingNdx pos)
+throw(nmr::BadPermutationIndexXcpt);
 
-            void
-            getPreimage( const int& rangeElement,
-                         std::set<unsigned int>& refDomainElements) const;
+// Returns the Permutation (*this)( compositionPermutation(x) )
+Permutation
+of(PermutationCref compositionPermutation) const
+throw( nmr::IncompatiblePermutationsXcpt);
 
-            void getUnfixedDomainElements( std::set<unsigned int>& refDomainElements) const;
-  
+Permutation
+invertPermutation() const;
+
+void
+getPreimage( const int& rangeElement,
+std::set<unsigned int>& refDomainElements) const;
+
+void getUnfixedDomainElements( std::set<unsigned int>& refDomainElements) const;
+
 //             bool
 //             getIsBijection() const;
 
-            bool 
-            getIsComplete() const;
+bool
+getIsComplete() const;
 
-            bool 
-            getIsIncomplete() const ;
+bool
+getIsIncomplete() const ;
 
-            Dimension
-            getDimension() const;
-            
-            int& operator[](const BindingNdx& n) 
-                throw(nmr::BadPermutationIndexXcpt);
+Dimension
+getDimension() const;
 
-            const int& operator[](const BindingNdx& n) const
-                throw(nmr::BadPermutationIndexXcpt);
+int& operator[](const BindingNdx& n)
+throw(nmr::BadPermutationIndexXcpt);
 
-            unsigned int 
-            getLeastValueNotInPermutation() const 
-                throw(nmr::GeneralNmrXcpt);
+const int& operator[](const BindingNdx& n) const
+throw(nmr::BadPermutationIndexXcpt);
 
-            bool 
-            checkPermutationLegality() const;
+unsigned int
+getLeastValueNotInPermutation() const
+throw(nmr::GeneralNmrXcpt);
 
-            bool 
-            operator==(PermutationCref pm);
+bool
+checkPermutationLegality() const;
 
-            bool 
-            operator<(PermutationCref pm) const;
+bool
+operator==(PermutationCref pm);
 
-            CorePermutationTypeCref
-            getCorePermutation() const
-            {
-                return thePermutation;
-            }
+bool
+operator<(PermutationCref pm) const;
 
-            std::string
-            repr() const;
+CorePermutationTypeCref
+getCorePermutation() const
+{
+return thePermutation;
+}
 
-            static Permutation
-            generateIdentity( unsigned int N);
+std::string
+repr() const;
 
-
-            static void
-            generate_Sn( SetOfPermutationsRef setOfPermutations, unsigned int N);
+static Permutation
+generateIdentity( unsigned int N);
 
 
-            // Produce from S_{ Sum(signature)} the subgroup isomorphic to 
-            // S_n1 x S_n2 x ... x S_nk, where signature[i] = n_i.
-             static void
-             generateAllPermutationsMatchingSignature( SetOfPermutationsRef permSet, 
-                                                       const std::vector<unsigned int>& signature);
+static void
+generate_Sn( SetOfPermutationsRef setOfPermutations, unsigned int N);
 
-        protected:
-            void maximallyExtend();
-            unsigned int getNumberOfFixedElements() const;
-            unsigned int getNumberOfUndefElements() const;
 
-            CorePermutationType thePermutation;
-            Dimension theDimension;
-        };
+// Produce from S_{ Sum(signature)} the subgroup isomorphic to
+// S_n1 x S_n2 x ... x S_nk, where signature[i] = n_i.
+static void
+generateAllPermutationsMatchingSignature( SetOfPermutationsRef permSet,
+const std::vector<unsigned int>& signature);
+
+protected:
+void maximallyExtend();
+unsigned int getNumberOfFixedElements() const;
+unsigned int getNumberOfUndefElements() const;
+
+CorePermutationType thePermutation;
+Dimension theDimension;
+};
 
 }
 
 std::ostream& operator<<(std::ostream& ostr, const nmr::Permutation& thePerm);
 
 
-    
+
 
 
 

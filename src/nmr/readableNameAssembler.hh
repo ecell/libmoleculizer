@@ -1,11 +1,14 @@
-/////////////////////////////////////////////////////////////////////////////
-// libComplexSpecies - a library for canonically naming species of protein 
-//                     complexes.
-// Copyright (C) 2007, 2008 The Molecular Sciences Institute
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+//                                                                          
+//        This file is part of Libmoleculizer
+//
+//        Copyright (C) 2001-2008 The Molecular Sciences Institute.
+//
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 //
 // Moleculizer is free software; you can redistribute it and/or modify
-// it under the terms of the GNU Lesser General Public License as published by
-// the Free Software Foundation; either version 3 of the License, or
+// it under the terms of the GNU Lesser General Public License as published 
+// by the Free Software Foundation; either version 3 of the License, or
 // (at your option) any later version.
 //
 // Moleculizer is distributed in the hope that it will be useful,
@@ -14,15 +17,17 @@
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with Moleculizer; if not, write to the Free Software
-// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+// along with Moleculizer; if not, write to the Free Software Foundation
+// Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307,  USA
 //    
+// END HEADER
+// 
 // Original Author:
-//   Nathan Addy, Research Associate     Voice: 510-981-8748
-//   The Molecular Sciences Institute    Email: addy@molsci.org  
-//                     
-//   
-/////////////////////////////////////////////////////////////////////////////
+//   Nathan Addy, Scientific Programmer, Molecular Sciences Institute, 2001
+//
+// Modifing Authors:
+//              
+//
 
 #ifndef __READABLENAMEASSEMBLER_HH
 #define __READABLENAMEASSEMBLER_HH
@@ -32,12 +37,12 @@
 
 namespace nmr
 {
-    class readableNameAssembler : public NameAssembler
-    {
-    
-    public:
-        std::string createNameFromOutputState( ComplexOutputStateCref aCOS) const;
-    };
+class readableNameAssembler : public NameAssembler
+{
+
+public:
+std::string createNameFromOutputState( ComplexOutputStateCref aCOS) const;
+};
 
 }
 

@@ -1,10 +1,15 @@
-/////////////////////////////////////////////////////////////////////////////
-// Moleculizer - a stochastic simulator for cellular chemistry.
-// Copyright (C) 2001, 2008 The Molecular Sciences Institute.
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+//                                                                          
+//                                                                          
+//        This file is part of Libmoleculizer
+//
+//        Copyright (C) 2001-2008 The Molecular Sciences Institute.
+//
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 //
 // Moleculizer is free software; you can redistribute it and/or modify
-// it under the terms of the GNU Lesser General Public License as published by
-// the Free Software Foundation; either version 3 of the License, or
+// it under the terms of the GNU Lesser General Public License as published 
+// by the Free Software Foundation; either version 3 of the License, or
 // (at your option) any later version.
 //
 // Moleculizer is distributed in the hope that it will be useful,
@@ -13,15 +18,17 @@
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with Moleculizer; if not, write to the Free Software
-// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+// along with Moleculizer; if not, write to the Free Software Foundation
+// Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307,  USA
 //    
+// END HEADER
+// 
 // Original Author:
 //   Larry Lok, Research Fellow, Molecular Sciences Institute, 2001
-
-//                     Email: lok@molsci.org
-//   
-/////////////////////////////////////////////////////////////////////////////
+//
+// Modifing Authors:
+//              
+//
 
 #include "mzr/mzrSpecies.hh"
 #include "mzr/mzrReaction.hh"
@@ -35,95 +42,95 @@
 
 namespace mzr
 {
-    void
-    mzrReaction::
-    addReactant(mzrSpecies* pSpecies,
-                int multiplicity)
-    {
-        fnd::gillspReaction<mzrSpecies>::addReactant(pSpecies,
-                                                     multiplicity);
-        pSpecies->addSensitive(this);
-    }
+void
+mzrReaction::
+addReactant(mzrSpecies* pSpecies,
+int multiplicity)
+{
+fnd::gillspReaction<mzrSpecies>::addReactant(pSpecies,
+multiplicity);
+pSpecies->addSensitive(this);
+}
 
-    void
-    mzrReaction::
-    respond(const mzrReactionStimulus& rStimulus)
-    {
-        // This reschedules the reaction.  Since all of this seems to be 
-        // unnecessary, maybe instead we can just recalculate the propensity here.
+void
+mzrReaction::
+respond(const mzrReactionStimulus& rStimulus)
+{
+// This reschedules the reaction.  Since all of this seems to be
+// unnecessary, maybe instead we can just recalculate the propensity here.
 
-        // Deleted all this code.  It had recalculated the propensity and then rescheduled the reaction.
-    }
+// Deleted all this code.  It had recalculated the propensity and then rescheduled the reaction.
+}
 
-    class updateOneSpecies :
-        public std::unary_function<fnd::basicReaction<mzrSpecies>::multMap::value_type, void>
-    {
-        fnd::sensitivityList<mzrReaction>& rAffected;
-        int depth;
-    
-    public:
-        updateOneSpecies(fnd::sensitivityList<mzrReaction>& rAffectedReactions,
-                         int generateDepth) :
-            rAffected(rAffectedReactions),
-            depth(generateDepth)
-        {}
+class updateOneSpecies :
+public std::unary_function<fnd::basicReaction<mzrSpecies>::multMap::value_type, void>
+{
+fnd::sensitivityList<mzrReaction>& rAffected;
+int depth;
 
-        void
-        operator()(const argument_type& rSpeciesMultPair) const
-        {
-            mzrSpecies* pSpecies = rSpeciesMultPair.first;
-            int multiplicity = rSpeciesMultPair.second;
+public:
+updateOneSpecies(fnd::sensitivityList<mzrReaction>& rAffectedReactions,
+int generateDepth) :
+rAffected(rAffectedReactions),
+depth(generateDepth)
+{}
 
-            pSpecies->update(multiplicity,
-                             rAffected,
-                             depth);
-        }
-    };
+void
+operator()(const argument_type& rSpeciesMultPair) const
+{
+mzrSpecies* pSpecies = rSpeciesMultPair.first;
+int multiplicity = rSpeciesMultPair.second;
 
-    class notifyOneSpecies:
-        public std::unary_function<fnd::basicReaction<mzrSpecies>::multMap::value_type, void>
-    {
-        int depth;
+pSpecies->update(multiplicity,
+rAffected,
+depth);
+}
+};
 
-        public:
-        notifyOneSpecies(int generateDepth) :
-            depth(generateDepth)
-        {}
+class notifyOneSpecies:
+public std::unary_function<fnd::basicReaction<mzrSpecies>::multMap::value_type, void>
+{
+int depth;
 
-        void
-        operator()(const argument_type& rSpeciesMultPair) const
-        {
-            mzrSpecies* pSpecies = rSpeciesMultPair.first;
-            pSpecies->expandReactionNetwork( depth );
-        }
-    };
+public:
+notifyOneSpecies(int generateDepth) :
+depth(generateDepth)
+{}
+
+void
+operator()(const argument_type& rSpeciesMultPair) const
+{
+mzrSpecies* pSpecies = rSpeciesMultPair.first;
+pSpecies->expandReactionNetwork( depth );
+}
+};
 
 
-    void
-    mzrReaction::expandReactionNetwork()
-    {
-        int generateDepth
-            = getGenerateDepth();
+void
+mzrReaction::expandReactionNetwork()
+{
+int generateDepth
+= getGenerateDepth();
 
-        if(generateDepth != 1)
-        {
-            std::cerr << "(WARN) Generate depth is set to " << generateDepth << ".  Is this intentional?" << std::endl;
-        }
+if(generateDepth != 1)
+{
+std::cerr << "(WARN) Generate depth is set to " << generateDepth << ".  Is this intentional?" << std::endl;
+}
 
-        std::for_each( deltas.begin(),
-                       deltas.end(),
-                       notifyOneSpecies(generateDepth));
-    }
+std::for_each( deltas.begin(),
+deltas.end(),
+notifyOneSpecies(generateDepth));
+}
 
-    // What a reaction event does, given what the reaction does.
-    fnd::eventResult
-    mzrReaction::
-    happen(moleculizer& rMolzer)
-        throw(std::exception)
-    {
-        // Reactions whose reactants are affected by this reaction
-        // are accumulated in this set by doReaction.
-        fnd::sensitivityList<mzrReaction> affectedReactions;
+// What a reaction event does, given what the reaction does.
+fnd::eventResult
+mzrReaction::
+happen(moleculizer& rMolzer)
+throw(std::exception)
+{
+// Reactions whose reactants are affected by this reaction
+// are accumulated in this set by doReaction.
+fnd::sensitivityList<mzrReaction> affectedReactions;
 
 //         // This is a leftover of the hack for "no reactant" arrows.  Since
 //         // they're not sensitive to anything, they have to reschedule
@@ -136,176 +143,176 @@ namespace mzr
 //             doRespondReaction(this);
 //         }
 
-        // Do the reaction deltas.
+// Do the reaction deltas.
 //         int generateDepth
 //             = rMolzer.pUserUnits->pMzrUnit->getGenerateDepth();
 
-        int generateDepth 
-            = getGenerateDepth();
-        std::for_each(deltas.begin(),
-                      deltas.end(),
-                      updateOneSpecies(affectedReactions,
-                                       generateDepth));
+int generateDepth
+= getGenerateDepth();
+std::for_each(deltas.begin(),
+deltas.end(),
+updateOneSpecies(affectedReactions,
+generateDepth));
 
 //         // The reaction event was descheduled before being executed.
 //         // This should probably be a part of descheduling.
 //         //
 //         // This is bad bad bad.  It was connected with the "tolerance"
 //         // acceleration, which has left such spoor all over the place.
-//         // 
+//         //
 //         // Are there any other times that a reaction is descheduled,
 //         // besides this and when the reaction is executed?
 //         // lastPropensity = -1.0;
 
 //         // Reschedule the reactions whose reactants were affected by this
-//         // reaction. 
+//         // reaction.
 //         affectedReactions.forEachSensitive(doRespondReaction);
 
-        // For the dumpable that gives the total number of reactions so far.
-        reactionEventCount++;
+// For the dumpable that gives the total number of reactions so far.
+reactionEventCount++;
 
-        return fnd::go;
-    }
+return fnd::go;
+}
 
 
-    fnd::eventResult
-    mzrReaction::
-    happen() throw(std::exception)
-    {
+fnd::eventResult
+mzrReaction::
+happen() throw(std::exception)
+{
 
-       fnd::sensitivityList<mzrReaction> affectedReactions;
+fnd::sensitivityList<mzrReaction> affectedReactions;
 
-       // Do the reaction deltas.
-        int generateDepth 
-            = getGenerateDepth();
-        std::for_each(deltas.begin(),
-                      deltas.end(),
-                      updateOneSpecies(affectedReactions,
-                                       generateDepth));
+// Do the reaction deltas.
+int generateDepth
+= getGenerateDepth();
+std::for_each(deltas.begin(),
+deltas.end(),
+updateOneSpecies(affectedReactions,
+generateDepth));
 
-        // The reaction event was descheduled before being executed.
-        // This should probably be a part of descheduling.
-        //
-        // This is bad bad bad.  It was connected with the "tolerance"
-        // acceleration, which has left such spoor all over the place.
-        // 
-        // Are there any other times that a reaction is descheduled,
-        // besides this and when the reaction is executed?
+// The reaction event was descheduled before being executed.
+// This should probably be a part of descheduling.
+//
+// This is bad bad bad.  It was connected with the "tolerance"
+// acceleration, which has left such spoor all over the place.
+//
+// Are there any other times that a reaction is descheduled,
+// besides this and when the reaction is executed?
 //         lastPropensity = -1.0;
 
 //         // Reschedule the reactions whose reactants were affected by this
-//         // reaction. 
+//         // reaction.
 //         affectedReactions.forEachSensitive(doRespondReaction);
 
 //         // For the dumpable that gives the total number of reactions so far.
-         reactionEventCount++;
+reactionEventCount++;
 
-        return fnd::go;
-   }
-        
+return fnd::go;
+}
 
 
-    // Following are connected with generating state dump output.
 
-    class insertReactantSpeciesRef :
-        public std::unary_function<std::map<mzrSpecies*, int>::value_type, void>
-    {
-        xmlpp::Element* pReactionElt;
-    public:
-        insertReactantSpeciesRef(xmlpp::Element* pReactionElement) :
-            pReactionElt(pReactionElement)
-        {
-        }
+// Following are connected with generating state dump output.
 
-        void
-        operator()(const argument_type& rSpeciesMultPair) const
-            throw(std::exception)
-        {
-            // Insert element for reaction reactant species.
-            xmlpp::Element* pReactantSpeciesRefElt
-                = pReactionElt->add_child(eltName::taggedSubstrate);
+class insertReactantSpeciesRef :
+public std::unary_function<std::map<mzrSpecies*, int>::value_type, void>
+{
+xmlpp::Element* pReactionElt;
+public:
+insertReactantSpeciesRef(xmlpp::Element* pReactionElement) :
+pReactionElt(pReactionElement)
+{
+}
 
-            // Add the name or tag of the substrate species as attribute.
-            pReactantSpeciesRefElt
-                ->set_attribute(eltName::taggedSubstrate_tagAttr,
-                                rSpeciesMultPair.first->getTag());
+void
+operator()(const argument_type& rSpeciesMultPair) const
+throw(std::exception)
+{
+// Insert element for reaction reactant species.
+xmlpp::Element* pReactantSpeciesRefElt
+= pReactionElt->add_child(eltName::taggedSubstrate);
 
-            // Add multiplicity of substrate as attribute.
-            pReactantSpeciesRefElt
-                ->set_attribute(eltName::taggedSubstrate_multAttr,
-                                utl::stringify<int>(rSpeciesMultPair.second));
-        }
-    };
+// Add the name or tag of the substrate species as attribute.
+pReactantSpeciesRefElt
+->set_attribute(eltName::taggedSubstrate_tagAttr,
+rSpeciesMultPair.first->getTag());
 
-    // It looks like I'm going back to emitting reaction substrates and
-    // products, rather than substrates and deltas.  This is mainly for the
-    // "immovable object," SBML.
-    class insertProductSpeciesRef : public
-    std::unary_function<std::map<mzrSpecies*, int>::value_type, void>
-    {
-        xmlpp::Element* pReactionElt;
-    public:
-        insertProductSpeciesRef(xmlpp::Element* pReactionElement) :
-            pReactionElt(pReactionElement)
-        {}
+// Add multiplicity of substrate as attribute.
+pReactantSpeciesRefElt
+->set_attribute(eltName::taggedSubstrate_multAttr,
+utl::stringify<int>(rSpeciesMultPair.second));
+}
+};
 
-        void
-        operator()(const argument_type& rSpeciesMultPair) const
-            throw(std::exception)
-        {
-            // Insert element for reaction product.
-            xmlpp::Element* pProductSpeciesRefElt
-                = pReactionElt->add_child(eltName::taggedProduct);
+// It looks like I'm going back to emitting reaction substrates and
+// products, rather than substrates and deltas.  This is mainly for the
+// "immovable object," SBML.
+class insertProductSpeciesRef : public
+std::unary_function<std::map<mzrSpecies*, int>::value_type, void>
+{
+xmlpp::Element* pReactionElt;
+public:
+insertProductSpeciesRef(xmlpp::Element* pReactionElement) :
+pReactionElt(pReactionElement)
+{}
 
-            // Add species tag as attribute.
-            pProductSpeciesRefElt
-                ->set_attribute(eltName::taggedProduct_tagAttr,
-                                rSpeciesMultPair.first->getTag());
+void
+operator()(const argument_type& rSpeciesMultPair) const
+throw(std::exception)
+{
+// Insert element for reaction product.
+xmlpp::Element* pProductSpeciesRefElt
+= pReactionElt->add_child(eltName::taggedProduct);
 
-            // Add multiplicity as attribute.
-            pProductSpeciesRefElt
-                ->set_attribute(eltName::taggedProduct_multAttr,
-                                utl::stringify<int>(rSpeciesMultPair.second));
-        }
-    };
+// Add species tag as attribute.
+pProductSpeciesRefElt
+->set_attribute(eltName::taggedProduct_tagAttr,
+rSpeciesMultPair.first->getTag());
 
-    xmlpp::Element*
-    mzrReaction::insertElt(xmlpp::Element* pParentElt) const 
-        throw(std::exception)
-    {
-        xmlpp::Element* pReactionElt
-            = pParentElt->add_child(eltName::tagReaction);
-      
-        std::for_each(reactants.begin(),
-                      reactants.end(),
-                      insertReactantSpeciesRef(pReactionElt));
+// Add multiplicity as attribute.
+pProductSpeciesRefElt
+->set_attribute(eltName::taggedProduct_multAttr,
+utl::stringify<int>(rSpeciesMultPair.second));
+}
+};
 
-        std::for_each(products.begin(),
-                      products.end(),
-                      insertProductSpeciesRef(pReactionElt));
+xmlpp::Element*
+mzrReaction::insertElt(xmlpp::Element* pParentElt) const
+throw(std::exception)
+{
+xmlpp::Element* pReactionElt
+= pParentElt->add_child(eltName::tagReaction);
 
-        // Additional scientific notation here for use by ECell.
-        mzr::addDoubleParamChild(pReactionElt,
-                                 eltName::rate,
-                                 eltName::rate_valueAttr,
-                                 rate);
-        return pReactionElt;
-    }
+std::for_each(reactants.begin(),
+reactants.end(),
+insertReactantSpeciesRef(pReactionElt));
 
-    void 
-    mzrReaction::setGenerateDepth(unsigned int newDepth)
-    {
-        mzrReaction::reactionDepth = newDepth;
-    }
+std::for_each(products.begin(),
+products.end(),
+insertProductSpeciesRef(pReactionElt));
 
-    // Reaction related dumpable globals.
-    int mzrReaction::reactionCount = 0;
-    int mzrReaction::reactionEventCount = 0;
+// Additional scientific notation here for use by ECell.
+mzr::addDoubleParamChild(pReactionElt,
+eltName::rate,
+eltName::rate_valueAttr,
+rate);
+return pReactionElt;
+}
 
-    // Globals connected with the tolerance optimization.
-    double mzrReaction::lowSensitive = 1.0;
-    double mzrReaction::highSensitive = 1.0;
+void
+mzrReaction::setGenerateDepth(unsigned int newDepth)
+{
+mzrReaction::reactionDepth = newDepth;
+}
 
-    // The default reaction depth
-    unsigned int mzrReaction::reactionDepth = 1;
+// Reaction related dumpable globals.
+int mzrReaction::reactionCount = 0;
+int mzrReaction::reactionEventCount = 0;
+
+// Globals connected with the tolerance optimization.
+double mzrReaction::lowSensitive = 1.0;
+double mzrReaction::highSensitive = 1.0;
+
+// The default reaction depth
+unsigned int mzrReaction::reactionDepth = 1;
 }

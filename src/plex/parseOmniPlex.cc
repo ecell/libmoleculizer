@@ -1,10 +1,15 @@
-/////////////////////////////////////////////////////////////////////////////
-// Moleculizer - a stochastic simulator for cellular chemistry.
-// Copyright (C) 2001, 2008 The Molecular Sciences Institute.
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+//                                                                          
+//                                                                          
+//        This file is part of Libmoleculizer
+//
+//        Copyright (C) 2001-2008 The Molecular Sciences Institute.
+//
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 //
 // Moleculizer is free software; you can redistribute it and/or modify
-// it under the terms of the GNU Lesser General Public License as published by
-// the Free Software Foundation; either version 3 of the License, or
+// it under the terms of the GNU Lesser General Public License as published 
+// by the Free Software Foundation; either version 3 of the License, or
 // (at your option) any later version.
 //
 // Moleculizer is distributed in the hope that it will be useful,
@@ -13,15 +18,17 @@
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with Moleculizer; if not, write to the Free Software
-// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+// along with Moleculizer; if not, write to the Free Software Foundation
+// Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307,  USA
 //    
+// END HEADER
+// 
 // Original Author:
 //   Larry Lok, Research Fellow, Molecular Sciences Institute, 2001
-
-//                     Email: lok@molsci.org
-//   
-/////////////////////////////////////////////////////////////////////////////
+//
+// Modifing Authors:
+//              
+//
 
 #include "plex/parseOmniPlex.hh"
 #include "plex/mzrPlexFamily.hh"
@@ -31,223 +38,223 @@
 
 namespace plx
 {
-  class parseUnboundSiteQuery :
-    public std::unary_function<xmlpp::Node*, void>
-  {
-    mzrOmniStructureQueries* pQueries;
-    const parserPlex& rParserPlex;
-    plexUnit& rPlexUnit;
-    
-  public:
-    parseUnboundSiteQuery(mzrOmniStructureQueries* pStructureQueries,
-			  const parserPlex& rParsedPlex,
-			  plexUnit& refPlexUnit) :
-      pQueries(pStructureQueries),
-      rParserPlex(rParsedPlex),
-      rPlexUnit(refPlexUnit)
-    {}
+class parseUnboundSiteQuery :
+public std::unary_function<xmlpp::Node*, void>
+{
+mzrOmniStructureQueries* pQueries;
+const parserPlex& rParserPlex;
+plexUnit& rPlexUnit;
 
-    void
-    operator()(xmlpp::Node* pInstanceRefNode) const
-      throw(utl::xcpt)
-    {
-      xmlpp::Element* pInstanceRefElt
-	= utl::dom::mustBeElementPtr(pInstanceRefNode);
+public:
+parseUnboundSiteQuery(mzrOmniStructureQueries* pStructureQueries,
+const parserPlex& rParsedPlex,
+plexUnit& refPlexUnit) :
+pQueries(pStructureQueries),
+rParserPlex(rParsedPlex),
+rPlexUnit(refPlexUnit)
+{}
 
-      // Parse the instance name.
-      std::string instanceName
-	= utl::dom::mustGetAttrString(pInstanceRefElt,
-				      eltName::instanceRef_nameAttr);
+void
+operator()(xmlpp::Node* pInstanceRefNode) const
+throw(utl::xcpt)
+{
+xmlpp::Element* pInstanceRefElt
+= utl::dom::mustBeElementPtr(pInstanceRefNode);
 
-      // Convert the instance name to a mol index.
-      int molNdx = rParserPlex.mustGetMolNdxByName(pInstanceRefElt,
-						   instanceName);
+// Parse the instance name.
+std::string instanceName
+= utl::dom::mustGetAttrString(pInstanceRefElt,
+eltName::instanceRef_nameAttr);
 
-      xmlpp::Element* pSiteRefElt
-	= utl::dom::mustGetUniqueChild(pInstanceRefElt,
-				       eltName::siteRef);
+// Convert the instance name to a mol index.
+int molNdx = rParserPlex.mustGetMolNdxByName(pInstanceRefElt,
+instanceName);
 
-      // Parse the name of the site that is supposed to be free.
-      std::string siteName
-	= utl::dom::mustGetAttrString(pSiteRefElt,
-				      eltName::siteRef_nameAttr);
+xmlpp::Element* pSiteRefElt
+= utl::dom::mustGetUniqueChild(pInstanceRefElt,
+eltName::siteRef);
 
-      // Ask the mol to convert the site name into a site index.
-      const bnd::mzrMol* pMol = rParserPlex.mols[molNdx];
-      int siteNdx = pMol->mustFindSite(siteName,
-				       pSiteRefElt);
+// Parse the name of the site that is supposed to be free.
+std::string siteName
+= utl::dom::mustGetAttrString(pSiteRefElt,
+eltName::siteRef_nameAttr);
 
-      // Construct the query, and add it to the plexUnit for memory
-      // management.
-      mzrOmniFreeSiteQuery* pFreeSiteQuery
-	= new mzrOmniFreeSiteQuery(cpx::siteSpec(molNdx,
-						 siteNdx));
-      rPlexUnit.addStructureQuery(pFreeSiteQuery);
+// Ask the mol to convert the site name into a site index.
+const bnd::mzrMol* pMol = rParserPlex.mols[molNdx];
+int siteNdx = pMol->mustFindSite(siteName,
+pSiteRefElt);
 
-      // Add the free site query to the overall structural query.
-      pQueries->addQuery(pFreeSiteQuery);
-    }
-  };
-    
-  void
-  parseOmniPlex::
-  operator()(xmlpp::Node* pParentNode) const
-    throw(utl::xcpt)
-  {
-    // Unify the plex; i.e. find its plexFamily in the database, or create it,
-    // but don't initialize the plexFamily (connectToFeatures).  plexFamilies
-    // can't be connected to their features until after all omniPlexes have
-    // been parsed in this way.
-    xmlpp::Element* pPlexElt
-      = utl::dom::mustGetUniqueChild(pParentNode,
-				     eltName::plex);
-    parserPlex parsedPlex;
-    mzrPlexFamily* pFamily
-      = unifyPlexNode(pPlexElt,
-		      rMolUnit,
-		      rPlexUnit,
-		      parsedPlex);
+// Construct the query, and add it to the plexUnit for memory
+// management.
+mzrOmniFreeSiteQuery* pFreeSiteQuery
+= new mzrOmniFreeSiteQuery(cpx::siteSpec(molNdx,
+siteNdx));
+rPlexUnit.addStructureQuery(pFreeSiteQuery);
 
-    // Parse the instance states, getting a query.
-    mzrPlexQueries* pAndPlexQueries
-      = new mzrPlexQueries();
-    
-    xmlpp::Element* pInstanceStatesElt
-      = utl::dom::getOptionalChild(pParentNode,
-				   eltName::instanceStates);
-    if(pInstanceStatesElt)
-      {
-	parseInstanceStateQueries(pInstanceStatesElt,
-				  pAndPlexQueries,
-				  parsedPlex,
-				  rMolUnit,
-				  rMzrUnit);
-      }
+// Add the free site query to the overall structural query.
+pQueries->addQuery(pFreeSiteQuery);
+}
+};
 
-    // Parse optional structure queries.
-    //
-    // The only structure query for the time being is a test if a particular
-    // (free) site on the omni is free in the plex where the omni is found.
-    mzrOmniStructureQueries* pStructureQueries
-      = new mzrOmniStructureQueries();
-    rPlexUnit.addStructureQuery(pStructureQueries);
+void
+parseOmniPlex::
+operator()(xmlpp::Node* pParentNode) const
+throw(utl::xcpt)
+{
+// Unify the plex; i.e. find its plexFamily in the database, or create it,
+// but don't initialize the plexFamily (connectToFeatures).  plexFamilies
+// can't be connected to their features until after all omniPlexes have
+// been parsed in this way.
+xmlpp::Element* pPlexElt
+= utl::dom::mustGetUniqueChild(pParentNode,
+eltName::plex);
+parserPlex parsedPlex;
+mzrPlexFamily* pFamily
+= unifyPlexNode(pPlexElt,
+rMolUnit,
+rPlexUnit,
+parsedPlex);
 
-    xmlpp::Element* pUnboundSitesElt
-      = utl::dom::getOptionalChild(pParentNode,
-				   eltName::unboundSites);
-    if(pUnboundSitesElt)
-      {
-	xmlpp::Node::NodeList instanceRefNodes
-	  = pUnboundSitesElt->get_children(eltName::instanceRef);
+// Parse the instance states, getting a query.
+mzrPlexQueries* pAndPlexQueries
+= new mzrPlexQueries();
 
-	std::for_each(instanceRefNodes.begin(),
-		      instanceRefNodes.end(),
-		      parseUnboundSiteQuery(pStructureQueries,
-					    parsedPlex,
-					    rPlexUnit));
-      }
+xmlpp::Element* pInstanceStatesElt
+= utl::dom::getOptionalChild(pParentNode,
+eltName::instanceStates);
+if(pInstanceStatesElt)
+{
+parseInstanceStateQueries(pInstanceStatesElt,
+pAndPlexQueries,
+parsedPlex,
+rMolUnit,
+rMzrUnit);
+}
 
-    // Construct the mzrOmniPlex (which also adds it to its plexFamily.)
-    //
-    // This is so that new plexFamily's can run down the list
-    // of omniPlexes in each structural class that the recognizer
-    // found in the new plexFamily.  The new plexFamily checks the
-    // structural query of each of these omniPlexes, connecting itself
-    // to those whose tests it passes.
-    mzrOmniPlex* pOmni
-      = new mzrOmniPlex(pFamily,
-			pStructureQueries,
-			pAndPlexQueries);
+// Parse optional structure queries.
+//
+// The only structure query for the time being is a test if a particular
+// (free) site on the omni is free in the plex where the omni is found.
+mzrOmniStructureQueries* pStructureQueries
+= new mzrOmniStructureQueries();
+rPlexUnit.addStructureQuery(pStructureQueries);
 
-    // Register the family has having omniplexes.
-    // 
-    // This is so recognizer will check for its presence in
-    // new plexes.
-    rPlexUnit.addOmniPlex(pOmni,
-			  pParentNode);
-  }
+xmlpp::Element* pUnboundSitesElt
+= utl::dom::getOptionalChild(pParentNode,
+eltName::unboundSites);
+if(pUnboundSitesElt)
+{
+xmlpp::Node::NodeList instanceRefNodes
+= pUnboundSitesElt->get_children(eltName::instanceRef);
 
-  // This could also return the plexFamily with no additional work.
-  mzrOmniPlex*
-  findOmni(xmlpp::Node* pParentNode,
-	   bnd::molUnit& rMolUnit,
-	   plexUnit& rPlexUnit,
-	   parserPlex& rParsedPlex)
-    throw(utl::xcpt)
-  {
-    // Get the plexFamily of the omniPlex under pParentNode.
-    xmlpp::Element* pPlexElt
-      = utl::dom::mustGetUniqueChild(pParentNode,
-				     eltName::plex);
+std::for_each(instanceRefNodes.begin(),
+instanceRefNodes.end(),
+parseUnboundSiteQuery(pStructureQueries,
+parsedPlex,
+rPlexUnit));
+}
 
-    // Here, the mzrPlexFamily is returned, but discarded.
-    unifyPlexNode(pPlexElt,
-		  rMolUnit,
-		  rPlexUnit,
-		  rParsedPlex);
+// Construct the mzrOmniPlex (which also adds it to its plexFamily.)
+//
+// This is so that new plexFamily's can run down the list
+// of omniPlexes in each structural class that the recognizer
+// found in the new plexFamily.  The new plexFamily checks the
+// structural query of each of these omniPlexes, connecting itself
+// to those whose tests it passes.
+mzrOmniPlex* pOmni
+= new mzrOmniPlex(pFamily,
+pStructureQueries,
+pAndPlexQueries);
 
-    // With the reorganization of omniPlexes, this lookup is now separate
-    // from all the above.  Previously, the plexFamily we just found did this.
-    return rPlexUnit.mustGetOmniForNode(pParentNode);
-  }
+// Register the family has having omniplexes.
+//
+// This is so recognizer will check for its presence in
+// new plexes.
+rPlexUnit.addOmniPlex(pOmni,
+pParentNode);
+}
 
-  mzrOmniPlex*
-  parseAllostericOmni::
-  operator()(xmlpp::Node* pParentNode) const
-    throw(utl::xcpt)
-  {
-    // Find omniPlex parsed earlier.
-    parserPlex parsedPlex;
-    mzrOmniPlex* pOmni
-      = findOmni(pParentNode,
-		 rMolUnit,
-		 rPlexUnit,
-		 parsedPlex);
+// This could also return the plexFamily with no additional work.
+mzrOmniPlex*
+findOmni(xmlpp::Node* pParentNode,
+bnd::molUnit& rMolUnit,
+plexUnit& rPlexUnit,
+parserPlex& rParsedPlex)
+throw(utl::xcpt)
+{
+// Get the plexFamily of the omniPlex under pParentNode.
+xmlpp::Element* pPlexElt
+= utl::dom::mustGetUniqueChild(pParentNode,
+eltName::plex);
 
-    // Parse allosteric sites.
-    //
-    // The allosteric modifications are installed in the omni's
-    // siteToShapeMap.
-    parseAllostericSites alloSitesParser(parsedPlex,
-					 pOmni->getSiteToShapeMap());
-    xmlpp::Element* pAlloSitesElt
-      = utl::dom::mustGetUniqueChild(pParentNode,
-				     eltName::allostericSites);
-    alloSitesParser(pAlloSitesElt);
+// Here, the mzrPlexFamily is returned, but discarded.
+unifyPlexNode(pPlexElt,
+rMolUnit,
+rPlexUnit,
+rParsedPlex);
 
-    return pOmni;
-  }
+// With the reorganization of omniPlexes, this lookup is now separate
+// from all the above.  Previously, the plexFamily we just found did this.
+return rPlexUnit.mustGetOmniForNode(pParentNode);
+}
 
-  void
-  parseOmniSpeciesStream::
-  operator()(xmlpp::Node* pOmniSpeciesStreamNode) const
-    throw(utl::xcpt)
-  {
-    xmlpp::Element* pOmniSpeciesStreamElt
-      = utl::dom::mustBeElementPtr(pOmniSpeciesStreamNode);
+mzrOmniPlex*
+parseAllostericOmni::
+operator()(xmlpp::Node* pParentNode) const
+throw(utl::xcpt)
+{
+// Find omniPlex parsed earlier.
+parserPlex parsedPlex;
+mzrOmniPlex* pOmni
+= findOmni(pParentNode,
+rMolUnit,
+rPlexUnit,
+parsedPlex);
 
-    // Get the name of the species stream.
-    std::string streamName
-      = utl::dom::mustGetAttrString
-      (pOmniSpeciesStreamElt,
-       eltName::omniSpeciesStream_nameAttr);
+// Parse allosteric sites.
+//
+// The allosteric modifications are installed in the omni's
+// siteToShapeMap.
+parseAllostericSites alloSitesParser(parsedPlex,
+pOmni->getSiteToShapeMap());
+xmlpp::Element* pAlloSitesElt
+= utl::dom::mustGetUniqueChild(pParentNode,
+eltName::allostericSites);
+alloSitesParser(pAlloSitesElt);
 
-    // Find omniPlex parsed earlier.
-    parserPlex parsedPlex;
-    mzrOmniPlex* pOmni
-      = findOmni(pOmniSpeciesStreamNode,
-		 rMolUnit,
-		 rPlexUnit,
-		 parsedPlex);
+return pOmni;
+}
 
-    // Construct species dumpable to attach to omniplex.
-    // Add it to mzrUnit for memory management and lookup.
-    mzr::multiSpeciesDumpable<mzrPlexSpecies>* pDumpable
-      = new mzr::multiSpeciesDumpable<mzrPlexSpecies>(streamName);
-    rMzrUnit.addSpeciesDumpable(pDumpable);
+void
+parseOmniSpeciesStream::
+operator()(xmlpp::Node* pOmniSpeciesStreamNode) const
+throw(utl::xcpt)
+{
+xmlpp::Element* pOmniSpeciesStreamElt
+= utl::dom::mustBeElementPtr(pOmniSpeciesStreamNode);
 
-    // Attach dumpable to omniplex, where it will be told of all
-    // new species satisfying the omniplex's queries.
-    pOmni->getSubPlexFeature()->setDumpable(pDumpable);
-  }
+// Get the name of the species stream.
+std::string streamName
+= utl::dom::mustGetAttrString
+(pOmniSpeciesStreamElt,
+eltName::omniSpeciesStream_nameAttr);
+
+// Find omniPlex parsed earlier.
+parserPlex parsedPlex;
+mzrOmniPlex* pOmni
+= findOmni(pOmniSpeciesStreamNode,
+rMolUnit,
+rPlexUnit,
+parsedPlex);
+
+// Construct species dumpable to attach to omniplex.
+// Add it to mzrUnit for memory management and lookup.
+mzr::multiSpeciesDumpable<mzrPlexSpecies>* pDumpable
+= new mzr::multiSpeciesDumpable<mzrPlexSpecies>(streamName);
+rMzrUnit.addSpeciesDumpable(pDumpable);
+
+// Attach dumpable to omniplex, where it will be told of all
+// new species satisfying the omniplex's queries.
+pOmni->getSubPlexFeature()->setDumpable(pDumpable);
+}
 }

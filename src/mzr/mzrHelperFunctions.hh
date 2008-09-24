@@ -1,10 +1,15 @@
-/////////////////////////////////////////////////////////////////////////////
-// Moleculizer - a stochastic simulator for cellular chemistry.
-// Copyright (C) 2008 The Molecular Sciences Institute
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+//                                                                          
+//                                                                          
+//        This file is part of Libmoleculizer
+//
+//        Copyright (C) 2001-2008 The Molecular Sciences Institute.
+//
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 //
 // Moleculizer is free software; you can redistribute it and/or modify
-// it under the terms of the GNU Lesser General Public License as published by
-// the Free Software Foundation; either version 3 of the License, or
+// it under the terms of the GNU Lesser General Public License as published 
+// by the Free Software Foundation; either version 3 of the License, or
 // (at your option) any later version.
 //
 // Moleculizer is distributed in the hope that it will be useful,
@@ -13,10 +18,17 @@
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with Moleculizer; if not, write to the Free Software
-// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+// along with Moleculizer; if not, write to the Free Software Foundation
+// Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307,  USA
 //    
-/////////////////////////////////////////////////////////////////////////////
+// END HEADER
+// 
+// Original Author:
+//   Nathan Addy, Scientific Programmer, Molecular Sciences Institute, 2001
+//
+// Modifing Authors:
+//              
+//
 
 
 #ifndef MZRHELPERFUNCTIONS_HH
@@ -27,123 +39,123 @@
 
 namespace mzr
 {
-    namespace aux
-    {
+namespace aux
+{
 
-        class checkIfSpeciesPtrIsLive
-        {
-        public:
-            bool operator()(const mzr::mzrSpecies* pSpecies)
-            {
-                return ( !pSpecies->hasNotified() );
-            }
-        };
+class checkIfSpeciesPtrIsLive
+{
+public:
+bool operator()(const mzr::mzrSpecies* pSpecies)
+{
+return ( !pSpecies->hasNotified() );
+}
+};
 
-        class checkIfSpeciesListCatalogPtrIsLive
-        {
-        public:
-            bool operator()(const std::pair<std::string*, mzr::mzrSpecies*>& theObj)
-            {
-                return ( ! theObj.second->hasNotified() );
-            }
-        };
+class checkIfSpeciesListCatalogPtrIsLive
+{
+public:
+bool operator()(const std::pair<std::string*, mzr::mzrSpecies*>& theObj)
+{
+return ( ! theObj.second->hasNotified() );
+}
+};
 
-        // My first thought is that it seems like templatizing operator() is a better
-        // strategy, as this means users don't have to provide template paramaters.
+// My first thought is that it seems like templatizing operator() is a better
+// strategy, as this means users don't have to provide template paramaters.
 
-        // On the other hand, it means we cannot derive from std::unary_function...
-        // TODO -- the derivation
-        class printPtrWithName
-        {
-        public:
+// On the other hand, it means we cannot derive from std::unary_function...
+// TODO -- the derivation
+class printPtrWithName
+{
+public:
 
-            template <typename T>
-            void
-            operator()(const T* pObjectWithName) const
-            {
-                std::cout << pObjectWithName->getName() << std::endl;
-            }
-        };
+template <typename T>
+void
+operator()(const T* pObjectWithName) const
+{
+std::cout << pObjectWithName->getName() << std::endl;
+}
+};
 
-        class printPtrWithIndexedName
-        {
-        public:
-            
-            template <typename T>
-            void
-            operator()(const T* pObjectWithName)
-            {
-                std::cout << ndx++ << ":\t" << pObjectWithName->getName() << std::endl;
-            }
+class printPtrWithIndexedName
+{
+public:
 
-        private:
-            unsigned int ndx;
-        };
+template <typename T>
+void
+operator()(const T* pObjectWithName)
+{
+std::cout << ndx++ << ":\t" << pObjectWithName->getName() << std::endl;
+}
 
-        class getListOfNodes
-        {
-        public:
-            getListOfNodes( std::vector<std::string*>& theVect)
-                :
-                theStringVector( theVect )
-            {}
+private:
+unsigned int ndx;
+};
 
-            void
-            operator()(mzrReaction* rxn )
-            {
+class getListOfNodes
+{
+public:
+getListOfNodes( std::vector<std::string*>& theVect)
+:
+theStringVector( theVect )
+{}
 
-                // All the following generates a vector of reactants and products.
-                std::vector<std::string> reactants, products;
+void
+operator()(mzrReaction* rxn )
+{
 
-                for (mzrReaction::multMap::const_iterator iter = rxn->getReactants().begin();
-                     iter != rxn->getReactants().end();
-                     ++iter)
-                {
-                    reactants.push_back(iter->first->getName());
-                }
+// All the following generates a vector of reactants and products.
+std::vector<std::string> reactants, products;
 
-                for (mzrReaction::multMap::const_iterator iter = rxn->getProducts().begin();
-                     iter != rxn->getProducts().end();
-                     ++iter)
-                {
-                    products.push_back( iter->first->getName() );
-                }
+for (mzrReaction::multMap::const_iterator iter = rxn->getReactants().begin();
+iter != rxn->getReactants().end();
+++iter)
+{
+reactants.push_back(iter->first->getName());
+}
+
+for (mzrReaction::multMap::const_iterator iter = rxn->getProducts().begin();
+iter != rxn->getProducts().end();
+++iter)
+{
+products.push_back( iter->first->getName() );
+}
 
 
-                std::string theReactant, theProduct;
-                for( unsigned int ii = 0; ii != reactants.size(); ++ii)
-                {
-                    for( unsigned int jj = 0; jj != products.size(); ++jj)
-                    {
-                        theReactant = reactants[ii];
-                        theProduct = products[jj];
+std::string theReactant, theProduct;
+for( unsigned int ii = 0; ii != reactants.size(); ++ii)
+{
+for( unsigned int jj = 0; jj != products.size(); ++jj)
+{
+theReactant = reactants[ii];
+theProduct = products[jj];
 
-                        std::string* ptrOutputString = new std::string;
+std::string* ptrOutputString = new std::string;
 
-                        theStringVector.push_back(ptrOutputString);
+theStringVector.push_back(ptrOutputString);
 
-                        if (theReactant < theProduct) 
-                        {
-                            ptrOutputString->append( theReactant );
-                            ptrOutputString->append( "--" );
-                            ptrOutputString->append( theProduct );
-                        }
-                        else
-                        {
-                            ptrOutputString->append( theProduct );
-                            ptrOutputString->append( "--" );
-                            ptrOutputString->append( theReactant );
-                        }
-                    
-                    }
-                }
-            }
+if (theReactant < theProduct)
+{
+ptrOutputString->append( theReactant );
+ptrOutputString->append( "--" );
+ptrOutputString->append( theProduct );
+}
+else
+{
+ptrOutputString->append( theProduct );
+ptrOutputString->append( "--" );
+ptrOutputString->append( theReactant );
+}
 
-        private:
-            std::vector<std::string*>& theStringVector;
-        };
+}
+}
+}
 
-    }
+private:
+std::vector<std::string*>& theStringVector;
+};
+
+}
 
 }
 

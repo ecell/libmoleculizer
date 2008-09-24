@@ -1,10 +1,15 @@
-/////////////////////////////////////////////////////////////////////////////
-// Moleculizer - a stochastic simulator for cellular chemistry.
-// Copyright (C) 2001, 2008 The Molecular Sciences Institute.
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+//                                                                          
+//                                                                          
+//        This file is part of Libmoleculizer
+//
+//        Copyright (C) 2001-2008 The Molecular Sciences Institute.
+//
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 //
 // Moleculizer is free software; you can redistribute it and/or modify
-// it under the terms of the GNU Lesser General Public License as published by
-// the Free Software Foundation; either version 3 of the License, or
+// it under the terms of the GNU Lesser General Public License as published 
+// by the Free Software Foundation; either version 3 of the License, or
 // (at your option) any later version.
 //
 // Moleculizer is distributed in the hope that it will be useful,
@@ -13,15 +18,17 @@
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with Moleculizer; if not, write to the Free Software
-// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+// along with Moleculizer; if not, write to the Free Software Foundation
+// Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307,  USA
 //    
+// END HEADER
+// 
 // Original Author:
 //   Larry Lok, Research Fellow, Molecular Sciences Institute, 2001
-
-//                     Email: lok@molsci.org
-//   
-/////////////////////////////////////////////////////////////////////////////
+//
+// Modifing Authors:
+//              
+//
 
 #include "utl/dom.hh"
 #include "utl/utility.hh"
@@ -31,97 +38,97 @@
 
 namespace plx
 {
-  double
-  mzrPlexSpecies::
-  getWeight(void) const
-  {
-    return cpx::plexSpeciesMixin<mzrPlexFamily>::getWeight();
-  }
-  
-  void
-  mzrPlexSpecies::
-  notify(int generateDepth)
-  {
-    rFamily.respond(fnd::newSpeciesStimulus<mzrPlexSpecies>(this,
-							    generateDepth));
-  }
+double
+mzrPlexSpecies::
+getWeight(void) const
+{
+return cpx::plexSpeciesMixin<mzrPlexFamily>::getWeight();
+}
 
-  std::string
-  mzrPlexSpecies::
-  getName(void) const
-  {
-      if(nameGenerated)
-      {
-          return name;
-      }
-      else
-      {
-          nameGenerated = true;
-          const nmr::NameAssembler* pNameAssembler = rFamily.getNamingStrategy();          
-          name = getCanonicalName(pNameAssembler);
-          return name;
-      }
-  }
+void
+mzrPlexSpecies::
+notify(int generateDepth)
+{
+rFamily.respond(fnd::newSpeciesStimulus<mzrPlexSpecies>(this,
+generateDepth));
+}
 
-  xmlpp::Element*
-  mzrPlexSpecies::
-  insertElt(xmlpp::Element* pExplicitSpeciesElt,
-	    double molarFactor) const
-    throw(std::exception)
-  {
-    // Insert tagged-plex-species element.
-    xmlpp::Element* pTaggedPlexSpeciesElt
-      = pExplicitSpeciesElt->add_child(eltName::taggedPlexSpecies);
+std::string
+mzrPlexSpecies::
+getName(void) const
+{
+if(nameGenerated)
+{
+return name;
+}
+else
+{
+nameGenerated = true;
+const nmr::NameAssembler* pNameAssembler = rFamily.getNamingStrategy();
+name = getCanonicalName(pNameAssembler);
+return name;
+}
+}
 
-    pTaggedPlexSpeciesElt->set_attribute(eltName::taggedPlexSpecies_tagAttr,
-					 getTag());
+xmlpp::Element*
+mzrPlexSpecies::
+insertElt(xmlpp::Element* pExplicitSpeciesElt,
+double molarFactor) const
+throw(std::exception)
+{
+// Insert tagged-plex-species element.
+xmlpp::Element* pTaggedPlexSpeciesElt
+= pExplicitSpeciesElt->add_child(eltName::taggedPlexSpecies);
 
-    pTaggedPlexSpeciesElt->set_attribute(eltName::taggedPlexSpecies_nameAttr,
-					 getName());
+pTaggedPlexSpeciesElt->set_attribute(eltName::taggedPlexSpecies_tagAttr,
+getTag());
 
-    // Insert the paradigm plex.
-    rFamily.getParadigm().insertElt(pTaggedPlexSpeciesElt);
+pTaggedPlexSpeciesElt->set_attribute(eltName::taggedPlexSpecies_nameAttr,
+getName());
 
-    // Insert the non-default instance states.
-    //
-    // Might be easier and non-harmful to insert all instance states.
-    xmlpp::Element* pInstanceStatesElt
-      = pTaggedPlexSpeciesElt->add_child(eltName::instanceStates);
+// Insert the paradigm plex.
+rFamily.getParadigm().insertElt(pTaggedPlexSpeciesElt);
 
-    // I need molNdx to generate a pseudo instance name.
-    for(int molNdx = 0;
-	molNdx < (int) molParams.size();
-	++molNdx)
-      {
-	bnd::mzrMol* pMol = rFamily.getParadigm().mols[molNdx];
-      
-	pMol->insertInstanceState(pInstanceStatesElt,
-				  molNdx,
-				  molParams[molNdx]);
-      }
+// Insert the non-default instance states.
+//
+// Might be easier and non-harmful to insert all instance states.
+xmlpp::Element* pInstanceStatesElt
+= pTaggedPlexSpeciesElt->add_child(eltName::instanceStates);
 
-    xmlpp::Element* pPopulationElt
-      = pTaggedPlexSpeciesElt->add_child(eltName::population);
+// I need molNdx to generate a pseudo instance name.
+for(int molNdx = 0;
+molNdx < (int) molParams.size();
+++molNdx)
+{
+bnd::mzrMol* pMol = rFamily.getParadigm().mols[molNdx];
 
-    pPopulationElt->set_attribute(eltName::population_countAttr,
-				  utl::stringify<int>(getPop()));
+pMol->insertInstanceState(pInstanceStatesElt,
+molNdx,
+molParams[molNdx]);
+}
 
-    // Adding redundant concentration element for use by ODE solver.  An
-    // alternative would be to convert population to concentration (using
-    // Java?)  during translation of state dump for ODE solver.
-    double concentration = getPop()/molarFactor;
+xmlpp::Element* pPopulationElt
+= pTaggedPlexSpeciesElt->add_child(eltName::population);
 
-    xmlpp::Element* pConcentrationElt
-      = pTaggedPlexSpeciesElt->add_child(eltName::concentration);
-    pConcentrationElt->set_attribute(eltName::concentration_valueAttr,
-				     utl::stringify<double>(concentration));
+pPopulationElt->set_attribute(eltName::population_countAttr,
+utl::stringify<int>(getPop()));
 
-    // Add the updated flag for use by parametrizer.
-    if(hasNotified())
-      {
-	pTaggedPlexSpeciesElt->add_child(eltName::updated);
-      }
+// Adding redundant concentration element for use by ODE solver.  An
+// alternative would be to convert population to concentration (using
+// Java?)  during translation of state dump for ODE solver.
+double concentration = getPop()/molarFactor;
 
-    return pTaggedPlexSpeciesElt;
-  }
+xmlpp::Element* pConcentrationElt
+= pTaggedPlexSpeciesElt->add_child(eltName::concentration);
+pConcentrationElt->set_attribute(eltName::concentration_valueAttr,
+utl::stringify<double>(concentration));
+
+// Add the updated flag for use by parametrizer.
+if(hasNotified())
+{
+pTaggedPlexSpeciesElt->add_child(eltName::updated);
+}
+
+return pTaggedPlexSpeciesElt;
+}
 }

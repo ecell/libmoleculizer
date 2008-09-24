@@ -1,10 +1,15 @@
-/////////////////////////////////////////////////////////////////////////////
-// Moleculizer - a stochastic simulator for cellular chemistry.
-// Copyright (C) 2001, 2008 The Molecular Sciences Institute.
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+//                                                                          
+//                                                                          
+//        This file is part of Libmoleculizer
+//
+//        Copyright (C) 2001-2008 The Molecular Sciences Institute.
+//
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 //
 // Moleculizer is free software; you can redistribute it and/or modify
-// it under the terms of the GNU Lesser General Public License as published by
-// the Free Software Foundation; either version 3 of the License, or
+// it under the terms of the GNU Lesser General Public License as published 
+// by the Free Software Foundation; either version 3 of the License, or
 // (at your option) any later version.
 //
 // Moleculizer is distributed in the hope that it will be useful,
@@ -13,15 +18,17 @@
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with Moleculizer; if not, write to the Free Software
-// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+// along with Moleculizer; if not, write to the Free Software Foundation
+// Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307,  USA
 //    
+// END HEADER
+// 
 // Original Author:
 //   Larry Lok, Research Fellow, Molecular Sciences Institute, 2001
-
-//                     Email: lok@molsci.org
-//   
-/////////////////////////////////////////////////////////////////////////////
+//
+// Modifing Authors:
+//              
+//
 
 #ifndef MZR_STOPEVENT_H
 #define MZR_STOPEVENT_H
@@ -30,19 +37,19 @@
 
 namespace mzr
 {
-  /*! \ingroup eventGroup
-    \brief Event that stops the simulation.
+/*! \ingroup eventGroup
+\brief Event that stops the simulation.
 
-    It doesn't end the program; the simulation may be restarted.
-    with a runCmd.  This event is scheduled by runCmd. */
-  class stopEvent :
-    public mzrEvent
-  {
-  public:
-    fnd::eventResult
-    happen(moleculizer& rMolzer)
-      throw(std::exception);
-  };
+It doesn't end the program; the simulation may be restarted.
+with a runCmd.  This event is scheduled by runCmd. */
+class stopEvent :
+public mzrEvent
+{
+public:
+fnd::eventResult
+happen(moleculizer& rMolzer)
+throw(std::exception);
+};
 }
 
 #endif // MZR_STOPEVENT_H

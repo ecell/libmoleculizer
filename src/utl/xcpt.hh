@@ -1,10 +1,15 @@
-/////////////////////////////////////////////////////////////////////////////
-// Moleculizer - a stochastic simulator for cellular chemistry.
-// Copyright (C) 2001, 2008 The Molecular Sciences Institute.
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+//                                                                          
+//                                                                          
+//        This file is part of Libmoleculizer
+//
+//        Copyright (C) 2001-2008 The Molecular Sciences Institute.
+//
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 //
 // Moleculizer is free software; you can redistribute it and/or modify
-// it under the terms of the GNU Lesser General Public License as published by
-// the Free Software Foundation; either version 3 of the License, or
+// it under the terms of the GNU Lesser General Public License as published 
+// by the Free Software Foundation; either version 3 of the License, or
 // (at your option) any later version.
 //
 // Moleculizer is distributed in the hope that it will be useful,
@@ -13,15 +18,17 @@
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with Moleculizer; if not, write to the Free Software
-// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+// along with Moleculizer; if not, write to the Free Software Foundation
+// Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307,  USA
 //    
+// END HEADER
+// 
 // Original Author:
 //   Larry Lok, Research Fellow, Molecular Sciences Institute, 2001
-
-//                     Email: lok@molsci.org
-//   
-/////////////////////////////////////////////////////////////////////////////
+//
+// Modifing Authors:
+//              
+//
 
 #ifndef UTL_XCPT_H
 #define UTL_XCPT_H
@@ -33,113 +40,113 @@
 #include <stdexcept>
 
 #define DEFINE_MZR_EXCEPTION( xcptName )        \
-    class xcptName : public utl::xcpt           \
-    {                                           \
-    public:                                     \
-        xcptName()                              \
-            :                                           \
-            utl::xcpt("Internal Exception: xcptName.")  \
-        {}                                              \
-    };                                                  \
+class xcptName : public utl::xcpt           \
+{                                           \
+public:                                     \
+xcptName()                              \
+:                                           \
+utl::xcpt("Internal Exception: xcptName.")  \
+{}                                              \
+};                                                  \
 
 
 
 #define DEFINE_STANDARD_MSG_EXCEPTION_CLASS( xcptName, message)    \
-    class xcptName : public utl::xcpt            \
-    {                                            \
-    public:                                      \
-        xcptName()                               \
-            :                                    \
-            utl::xcpt( message )                 \
-        {}                                       \
-    };
+class xcptName : public utl::xcpt            \
+{                                            \
+public:                                      \
+xcptName()                               \
+:                                    \
+utl::xcpt( message )                 \
+{}                                       \
+};
 
 namespace utl
 {
-    class xcpt :
-        public std::exception
-    {
-    protected:
-        std::string message;
+class xcpt :
+public std::exception
+{
+protected:
+std::string message;
 
-    public:
-      xcpt(const std::string& rMessage):
-            message(rMessage)
-        {}
+public:
+xcpt(const std::string& rMessage):
+message(rMessage)
+{}
 
-        xcpt(const char* pMessage) :
-            message(pMessage)
-        {}
+xcpt(const char* pMessage) :
+message(pMessage)
+{}
 
-      ~xcpt(void) throw()
-        {}
+~xcpt(void) throw()
+{}
 
-        const std::string&
-        getMessage(void) const throw()
-        {
-            return message;
-        }
+const std::string&
+getMessage(void) const throw()
+{
+return message;
+}
 
-        // Implementation of std::exception::what.
-        const char*
-        what(void) const throw()
-        {
-            return message.c_str();
-        }
-    
-        void
-        warn(void)
-        {
-            std::cerr << mkWarnMsg()
-                      << getMessage()
-                      << std::endl;
-        }
+// Implementation of std::exception::what.
+const char*
+what(void) const throw()
+{
+return message.c_str();
+}
 
-        void
-        wailAndBail(void)
-        {
-            std::cerr << mkMsg()
-                      << getMessage()
-                      << std::endl;
-            exit(1);
-        }
+void
+warn(void)
+{
+std::cerr << mkWarnMsg()
+<< getMessage()
+<< std::endl;
+}
 
-        // But this doesn't include the application name, and it doesn't
-        // look good for getting it in where this message is called for.
-        //
-        // Most of those cases should be handled with wailAndBail, rather than
-        // throw, since they are all essentially debugging loose-ends.
-        static std::string
-        mkMsg(void)
-        {
-            return std::string("(CRITICAL) ");
-        }
+void
+wailAndBail(void)
+{
+std::cerr << mkMsg()
+<< getMessage()
+<< std::endl;
+exit(1);
+}
 
-        static std::string
-        mkWarnMsg(void)
-        {
-            return std::string("(WARNING) ");
-        }
-    };
+// But this doesn't include the application name, and it doesn't
+// look good for getting it in where this message is called for.
+//
+// Most of those cases should be handled with wailAndBail, rather than
+// throw, since they are all essentially debugging loose-ends.
+static std::string
+mkMsg(void)
+{
+return std::string("(CRITICAL) ");
+}
 
-    class NotImplementedXcpt : public xcpt
-    {
-        static std::string
-        mkMsg( const std::string& functionName)
-        {
-            std::ostringstream oss;
-            oss << "Error: function '"
-                << functionName
-                << "' has not yet been implemented.";
-            return oss.str();
-        }
+static std::string
+mkWarnMsg(void)
+{
+return std::string("(WARNING) ");
+}
+};
 
-    public:
-        NotImplementedXcpt( const std::string& funcName)
-            :
-            xcpt( mkMsg(funcName))
-        {}
-    };
+class NotImplementedXcpt : public xcpt
+{
+static std::string
+mkMsg( const std::string& functionName)
+{
+std::ostringstream oss;
+oss << "Error: function '"
+<< functionName
+<< "' has not yet been implemented.";
+return oss.str();
+}
+
+public:
+NotImplementedXcpt( const std::string& funcName)
+:
+xcpt( mkMsg(funcName))
+{}
+};
 }
 
 #endif // UTL_XCPT_H

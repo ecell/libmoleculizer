@@ -1,10 +1,14 @@
-/////////////////////////////////////////////////////////////////////////////
-// libMoleculizer - a species and reaction generator for reaction networks
-// Copyright (C) 2008 The Molecular Sciences Institute
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+//                                                                          
+//        This file is part of Libmoleculizer
+//
+//        Copyright (C) 2001-2008 The Molecular Sciences Institute.
+//
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 //
 // Moleculizer is free software; you can redistribute it and/or modify
-// it under the terms of the GNU Lesser General Public License as published by
-// the Free Software Foundation; either version 3 of the License, or
+// it under the terms of the GNU Lesser General Public License as published 
+// by the Free Software Foundation; either version 3 of the License, or
 // (at your option) any later version.
 //
 // Moleculizer is distributed in the hope that it will be useful,
@@ -13,16 +17,17 @@
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with Moleculizer; if not, write to the Free Software
-// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+// along with Moleculizer; if not, write to the Free Software Foundation
+// Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307,  USA
 //    
-// This file was authored by Nathan Addy <addy@molsci.org> 
+// END HEADER
+// 
 // Original Author:
-//   Nathan Addy, Scientific Programmer     Email: addy@molsci.org
-//   The Molecular Sciences Institute
-//   
-//   
-/////////////////////////////////////////////////////////////////////////////
+//   Nathan Addy, Scientific Programmer, Molecular Sciences Institute, 2001
+//
+// Modifing Authors:
+//              
+//
 
 
 #include <iostream>
@@ -30,106 +35,106 @@
 #include <algorithm>
 
 SimpleStochasticSimulator::SimpleStochasticSimulator(std::string rulesfile, std::string modelfile)
-    :
-    SimpleSimulator(rulesfile, modelfile)
+:
+SimpleSimulator(rulesfile, modelfile)
 {
 
-    recordNewReactions();
+recordNewReactions();
 
 }
 
-void SimpleStochasticSimulator::recordNewReactions() 
+void SimpleStochasticSimulator::recordNewReactions()
 {
-    std::copy( speciesReactionGenerator.theDeltaReactionList.begin(),
-               speciesReactionGenerator.theDeltaReactionList.end(),
-               std::back_inserter( reactions ) );
+std::copy( speciesReactionGenerator.theDeltaReactionList.begin(),
+speciesReactionGenerator.theDeltaReactionList.end(),
+std::back_inserter( reactions ) );
 
-    std::cout << "Adding: " << std::endl;
-    BOOST_FOREACH(mzr::mzrReaction* rxn, speciesReactionGenerator.theDeltaReactionList)
-    {
-        printRxn( rxn );
-    }
+std::cout << "Adding: " << std::endl;
+BOOST_FOREACH(mzr::mzrReaction* rxn, speciesReactionGenerator.theDeltaReactionList)
+{
+printRxn( rxn );
+}
 
-    assert( reactions.size() == speciesReactionGenerator.theCompleteReactionList.size() );
+assert( reactions.size() == speciesReactionGenerator.theCompleteReactionList.size() );
 
-    speciesReactionGenerator.printAll();
+speciesReactionGenerator.printAll();
 
 
 //     assert( reactions.size() == speciesReactionGenerator.zeroSubstrateRxns.size() + \
 //             speciesReactionGenerator.singleSubstrateRxns.size() +    \
 //             speciesReactionGenerator.doubleSubstrateRxns.size() );
-            
-    speciesReactionGenerator.resetCurrentState();
+
+speciesReactionGenerator.resetCurrentState();
 }
 
 mzr::mzrReaction* SimpleStochasticSimulator::calculateReactionToFire()
 {
 
-    // Get a list of potential reactions, in this case a list of reactions
-    // that have all positive numbers of substrates.
+// Get a list of potential reactions, in this case a list of reactions
+// that have all positive numbers of substrates.
 
-    std::vector<mzr::moleculizer::ReactionTypePtr> potentialReactions;
-    getReactionsWithPositivePropensity( potentialReactions );
+std::vector<mzr::moleculizer::ReactionTypePtr> potentialReactions;
+getReactionsWithPositivePropensity( potentialReactions );
 
-    if (potentialReactions.size() == 0)
-    {
-        std::cout << "There are no reactions with positive propensity..." << std::endl;
-        return NULL;
-    }
+if (potentialReactions.size() == 0)
+{
+std::cout << "There are no reactions with positive propensity..." << std::endl;
+return NULL;
+}
 
 
-    // Pick a random one. 
-    int randomIndex = rand() % potentialReactions.size();
-    mzr::moleculizer::ReactionTypePtr randomReactionPtr = potentialReactions[ randomIndex ];
+// Pick a random one.
+int randomIndex = rand() % potentialReactions.size();
+mzr::moleculizer::ReactionTypePtr randomReactionPtr = potentialReactions[ randomIndex ];
 
-    return randomReactionPtr;
+return randomReactionPtr;
 }
 
 
 void SimpleStochasticSimulator::getReactionsWithPositivePropensity(std::vector<mzr::mzrReaction*>& okReactions)
 {
-    okReactions.clear();
+okReactions.clear();
 
-    BOOST_FOREACH(mzr::mzrReaction* rxnptr, reactions)
-    {
-        if( reactionHasPositiveSubstrates( rxnptr ) )
-        {
-            okReactions.push_back( rxnptr );
-        }
-    }
+BOOST_FOREACH(mzr::mzrReaction* rxnptr, reactions)
+{
+if( reactionHasPositiveSubstrates( rxnptr ) )
+{
+okReactions.push_back( rxnptr );
+}
+}
 }
 
 bool SimpleStochasticSimulator::reactionHasPositiveSubstrates(const mzr::mzrReaction* rxnPtr)
 {
-    typedef std::pair<mzr::mzrSpecies*, int> PairType;
-    BOOST_FOREACH( const PairType& pr, rxnPtr->getReactants() )
-    {
-        std::string substrateName( pr.first->getName() );
+typedef std::pair<mzr::mzrSpecies*, int> PairType;
+BOOST_FOREACH( const PairType& pr, rxnPtr->getReactants() )
+{
+std::string substrateName( pr.first->getName() );
 
-        if (theModel.find( substrateName) == theModel.end() ) 
-        {
-            std::cerr << "Error." << std::endl;
-        }
-
-        if (theModel[ substrateName ] < pr.second ) return false;
-    }
-
-    return true;
-    
+if (theModel.find( substrateName) == theModel.end() )
+{
+std::cerr << "Error." << std::endl;
 }
 
-void SimpleStochasticSimulator::singleStep() 
+if (theModel[ substrateName ] < pr.second ) return false;
+}
+
+return true;
+
+}
+
+void SimpleStochasticSimulator::singleStep()
 {
-    mzr::mzrReaction* reaction = calculateReactionToFire();
+mzr::mzrReaction* reaction = calculateReactionToFire();
 
-    if (reaction)
-    {
-        executeReaction( reaction );
-    }
+if (reaction)
+{
+executeReaction( reaction );
+}
 
-    recordNewReactions();
+recordNewReactions();
 
-    return;
+return;
 }
 
 

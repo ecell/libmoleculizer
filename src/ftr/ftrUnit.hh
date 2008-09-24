@@ -1,10 +1,15 @@
-/////////////////////////////////////////////////////////////////////////////
-// Moleculizer - a stochastic simulator for cellular chemistry.
-// Copyright (C) 2001, 2008 The Molecular Sciences Institute.
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+//                                                                          
+//                                                                          
+//        This file is part of Libmoleculizer
+//
+//        Copyright (C) 2001-2008 The Molecular Sciences Institute.
+//
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 //
 // Moleculizer is free software; you can redistribute it and/or modify
-// it under the terms of the GNU Lesser General Public License as published by
-// the Free Software Foundation; either version 3 of the License, or
+// it under the terms of the GNU Lesser General Public License as published 
+// by the Free Software Foundation; either version 3 of the License, or
 // (at your option) any later version.
 //
 // Moleculizer is distributed in the hope that it will be useful,
@@ -13,15 +18,17 @@
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with Moleculizer; if not, write to the Free Software
-// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+// along with Moleculizer; if not, write to the Free Software Foundation
+// Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307,  USA
 //    
+// END HEADER
+// 
 // Original Author:
 //   Larry Lok, Research Fellow, Molecular Sciences Institute, 2001
-
-//                     Email: lok@molsci.org
-//   
-/////////////////////////////////////////////////////////////////////////////
+//
+// Modifing Authors:
+//              
+//
 
 #ifndef FTRUNIT_H
 #define FTRUNIT_H
@@ -33,60 +40,60 @@
 
 namespace ftr
 {
-  class ftrUnit : public mzr::unit
-  {
-  public:
-    mzr::mzrUnit& rMzrUnit;
-    bnd::molUnit& rMolUnit;
-    plx::plexUnit& rPlexUnit;
+class ftrUnit : public mzr::unit
+{
+public:
+mzr::mzrUnit& rMzrUnit;
+bnd::molUnit& rMolUnit;
+plx::plexUnit& rPlexUnit;
 
-    ftrUnit(mzr::moleculizer& rMoleculizer,
-	    mzr::mzrUnit& refMzrUnit,
-	    bnd::molUnit& refMolUnit,
-	    plx::plexUnit& refPlexUnit) :
-      mzr::unit("ftr",
-		rMoleculizer),
-      rMzrUnit(refMzrUnit),
-      rMolUnit(refMolUnit),
-      rPlexUnit(refPlexUnit)
-    {
-      // Register reaction generator names.  This is used by the parser
-      // to verify that all elements appearing in the input file are "claimed"
-      // by some module.  Why did I think that was a good idea?  Now, "open
-      // schema" i.e. pay no attention to extraneous matter while parsing.
-      // seems more rational to me.
-      inputCap.addReactionGenName(eltName::omniGen);
-      inputCap.addReactionGenName(eltName::uniMolGen);
+ftrUnit(mzr::moleculizer& rMoleculizer,
+mzr::mzrUnit& refMzrUnit,
+bnd::molUnit& refMolUnit,
+plx::plexUnit& refPlexUnit) :
+mzr::unit("ftr",
+rMoleculizer),
+rMzrUnit(refMzrUnit),
+rMolUnit(refMolUnit),
+rPlexUnit(refPlexUnit)
+{
+// Register reaction generator names.  This is used by the parser
+// to verify that all elements appearing in the input file are "claimed"
+// by some module.  Why did I think that was a good idea?  Now, "open
+// schema" i.e. pay no attention to extraneous matter while parsing.
+// seems more rational to me.
+inputCap.addReactionGenName(eltName::omniGen);
+inputCap.addReactionGenName(eltName::uniMolGen);
 
-      // Register the enabling complexes for omniRxnGen generators
-      // as omniplexes, for processing by the plexUnit.
-      const std::string slash("/");
-      std::ostringstream omniGensXpath;
-      omniGensXpath << mzr::eltName::model
-		    << slash
-		    << mzr::eltName::reactionGens
-		    << slash
-		    << eltName::omniGen
-		    << slash
-		    << eltName::enablingOmniplex;
-      rPlexUnit.addOmniXpath(omniGensXpath.str());
-    }
+// Register the enabling complexes for omniRxnGen generators
+// as omniplexes, for processing by the plexUnit.
+const std::string slash("/");
+std::ostringstream omniGensXpath;
+omniGensXpath << mzr::eltName::model
+<< slash
+<< mzr::eltName::reactionGens
+<< slash
+<< eltName::omniGen
+<< slash
+<< eltName::enablingOmniplex;
+rPlexUnit.addOmniXpath(omniGensXpath.str());
+}
 
-    // The input parsing routine for this unit.
-    void
-    parseDomInput(xmlpp::Element* pRootElement,
-		  xmlpp::Element* pModelElement,
-                  xmlpp::Element* pStreamElt)
-      throw(std::exception);
+// The input parsing routine for this unit.
+void
+parseDomInput(xmlpp::Element* pRootElement,
+xmlpp::Element* pModelElement,
+xmlpp::Element* pStreamElt)
+throw(std::exception);
 
-    // The state output routine for this unit.
-    void
-    insertStateElts(xmlpp::Element* pRootElt) throw(std::exception)
-    {
-      // For now, this unit just provides reaction generators, which
-      // for now I'm not dumping in "state dump."
-    }
-  };
+// The state output routine for this unit.
+void
+insertStateElts(xmlpp::Element* pRootElt) throw(std::exception)
+{
+// For now, this unit just provides reaction generators, which
+// for now I'm not dumping in "state dump."
+}
+};
 }
 
 #endif // FTRUNIT_H

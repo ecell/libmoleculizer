@@ -1,10 +1,15 @@
-/////////////////////////////////////////////////////////////////////////////
-// Moleculizer - a stochastic simulator for cellular chemistry.
-// Copyright (C) 2001, 2008 The Molecular Sciences Institute.
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+//                                                                          
+//                                                                          
+//        This file is part of Libmoleculizer
+//
+//        Copyright (C) 2001-2008 The Molecular Sciences Institute.
+//
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 //
 // Moleculizer is free software; you can redistribute it and/or modify
-// it under the terms of the GNU Lesser General Public License as published by
-// the Free Software Foundation; either version 3 of the License, or
+// it under the terms of the GNU Lesser General Public License as published 
+// by the Free Software Foundation; either version 3 of the License, or
 // (at your option) any later version.
 //
 // Moleculizer is distributed in the hope that it will be useful,
@@ -13,26 +18,28 @@
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with Moleculizer; if not, write to the Free Software
-// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+// along with Moleculizer; if not, write to the Free Software Foundation
+// Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307,  USA
 //    
+// END HEADER
+// 
 // Original Author:
 //   Larry Lok, Research Fellow, Molecular Sciences Institute, 2001
-
-//                     Email: lok@molsci.org
-//   
-/////////////////////////////////////////////////////////////////////////////
+//
+// Modifing Authors:
+//              
+//
 
 #ifndef STOCHUNIT_H
 #define STOCHUNIT_H
 
 /*! \defgroup stochGroup The stochastirator unit.
-  \ingroup unitsGroup
-  \brief Small-molecules, stoichiometric reactions. */
+\ingroup unitsGroup
+\brief Small-molecules, stoichiometric reactions. */
 
 /*! \file stochUnit.hh
-  \ingroup stochGroup
-  \brief Defines unit for small molecules and stoichiometric reactions. */
+\ingroup stochGroup
+\brief Defines unit for small molecules and stoichiometric reactions. */
 
 #include "utl/platform.hh"
 #include "mzr/unit.hh"
@@ -42,75 +49,75 @@
 
 namespace stoch
 {
-  /*! \ingroup stochGroup
-    \brief Unit for small molecules and stoichiometric reactions. */
-  class stochUnit :
-    public mzr::unit
-  {
-    utl::autoCatalog<stochSpecies> stochSpeciesByName;
-    std::vector<mzr::mzrReaction*> noSubstrateArrows;
-  
-  public:
+/*! \ingroup stochGroup
+\brief Unit for small molecules and stoichiometric reactions. */
+class stochUnit :
+public mzr::unit
+{
+utl::autoCatalog<stochSpecies> stochSpeciesByName;
+std::vector<mzr::mzrReaction*> noSubstrateArrows;
 
-    bool
-    addStochSpecies(const std::string& rSpeciesName,
-		    stochSpecies* pStochSpecies);
+public:
 
-    void
-    mustAddStochSpecies(const std::string& rSpeciesName,
-			stochSpecies* pStochSpecies,
-			xmlpp::Node* pRequestingNode = 0)
-      throw(utl::xcpt);
-  
-    stochSpecies*
-    findStochSpecies(const std::string& rSpeciesName);
+bool
+addStochSpecies(const std::string& rSpeciesName,
+stochSpecies* pStochSpecies);
 
-    stochSpecies*
-    mustGetStochSpecies(xmlpp::Node* pRequestingNode,
-			const std::string& rSpeciesName)
-      throw(unkStochSpeciesXcpt);
+void
+mustAddStochSpecies(const std::string& rSpeciesName,
+stochSpecies* pStochSpecies,
+xmlpp::Node* pRequestingNode = 0)
+throw(utl::xcpt);
 
-    void
-    addNoSubstrateArrow(mzr::mzrReaction* pArrow);
+stochSpecies*
+findStochSpecies(const std::string& rSpeciesName);
 
-    mzr::mzrUnit& rMzrUnit;
-    
-    stochUnit(mzr::moleculizer& rMoleculizer,
-	      mzr::mzrUnit& refMzrUnit) :
-      mzr::unit("stoch",
-		rMoleculizer),
-      rMzrUnit(refMzrUnit)
-    {
-      // Unit isn't responsible for any model elements or
-      // reaction generators.
+stochSpecies*
+mustGetStochSpecies(xmlpp::Node* pRequestingNode,
+const std::string& rSpeciesName)
+throw(unkStochSpeciesXcpt);
 
-      // Add responsibility for stoch species.
-      inputCap.addExplicitSpeciesContentName(eltName::stochSpecies);
+void
+addNoSubstrateArrow(mzr::mzrReaction* pArrow);
 
-      // Not responsible for any species streams or events.
-    }
-  
-    void
-    parseDomInput(xmlpp::Element* pRootElement,
-		  xmlpp::Element* pModelElement,
-                  xmlpp::Element* pStreamElt) throw(std::exception);
+mzr::mzrUnit& rMzrUnit;
 
-    void
-    prepareToRun(xmlpp::Element* pRootElt,
-		 xmlpp::Element* pModelElt,
-                 xmlpp::Element* pStreamElt) throw(std::exception);
+stochUnit(mzr::moleculizer& rMoleculizer,
+mzr::mzrUnit& refMzrUnit) :
+mzr::unit("stoch",
+rMoleculizer),
+rMzrUnit(refMzrUnit)
+{
+// Unit isn't responsible for any model elements or
+// reaction generators.
 
-    void
-    prepareToContinue(xmlpp::Element* pRootElt,
-		      xmlpp::Element* pModelElt,
-		      xmlpp::Element* pStreamsElt,
-		      std::map<std::string, std::string>& rTagToName,
-		      xmlpp::Element* pTaggedSpeciesElement)
-      throw(std::exception);
+// Add responsibility for stoch species.
+inputCap.addExplicitSpeciesContentName(eltName::stochSpecies);
 
-    void
-    insertStateElts(xmlpp::Element* pRootElt) throw(std::exception);
-  };
+// Not responsible for any species streams or events.
+}
+
+void
+parseDomInput(xmlpp::Element* pRootElement,
+xmlpp::Element* pModelElement,
+xmlpp::Element* pStreamElt) throw(std::exception);
+
+void
+prepareToRun(xmlpp::Element* pRootElt,
+xmlpp::Element* pModelElt,
+xmlpp::Element* pStreamElt) throw(std::exception);
+
+void
+prepareToContinue(xmlpp::Element* pRootElt,
+xmlpp::Element* pModelElt,
+xmlpp::Element* pStreamsElt,
+std::map<std::string, std::string>& rTagToName,
+xmlpp::Element* pTaggedSpeciesElement)
+throw(std::exception);
+
+void
+insertStateElts(xmlpp::Element* pRootElt) throw(std::exception);
+};
 }
 
 #endif // STOCHUNIT_H

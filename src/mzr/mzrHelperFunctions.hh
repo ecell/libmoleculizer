@@ -38,123 +38,123 @@
 
 namespace mzr
 {
-namespace aux
-{
+    namespace aux
+    {
 
-class checkIfSpeciesPtrIsLive
-{
-public:
-bool operator()(const mzr::mzrSpecies* pSpecies)
-{
-return ( !pSpecies->hasNotified() );
-}
-};
+        class checkIfSpeciesPtrIsLive
+        {
+        public:
+            bool operator() (const mzr::mzrSpecies* pSpecies)
+            {
+                return ( !pSpecies->hasNotified() );
+            }
+        };
 
-class checkIfSpeciesListCatalogPtrIsLive
-{
-public:
-bool operator()(const std::pair<std::string*, mzr::mzrSpecies*>& theObj)
-{
-return ( ! theObj.second->hasNotified() );
-}
-};
+        class checkIfSpeciesListCatalogPtrIsLive
+        {
+        public:
+            bool operator() (const std::pair<std::string*, mzr::mzrSpecies*>& theObj)
+            {
+                return ( ! theObj.second->hasNotified() );
+            }
+        };
 
 // My first thought is that it seems like templatizing operator() is a better
 // strategy, as this means users don't have to provide template paramaters.
 
 // On the other hand, it means we cannot derive from std::unary_function...
 // TODO -- the derivation
-class printPtrWithName
-{
-public:
+        class printPtrWithName
+        {
+        public:
 
-template <typename T>
-void
-operator()(const T* pObjectWithName) const
-{
-std::cout << pObjectWithName->getName() << std::endl;
-}
-};
+            template <typename T>
+            void
+            operator() (const T* pObjectWithName) const
+            {
+                std::cout << pObjectWithName->getName() << std::endl;
+            }
+        };
 
-class printPtrWithIndexedName
-{
-public:
+        class printPtrWithIndexedName
+        {
+        public:
 
-template <typename T>
-void
-operator()(const T* pObjectWithName)
-{
-std::cout << ndx++ << ":\t" << pObjectWithName->getName() << std::endl;
-}
+            template <typename T>
+            void
+            operator() (const T* pObjectWithName)
+            {
+                std::cout << ndx++ << ":\t" << pObjectWithName->getName() << std::endl;
+            }
 
-private:
-unsigned int ndx;
-};
+        private:
+            unsigned int ndx;
+        };
 
-class getListOfNodes
-{
-public:
-getListOfNodes( std::vector<std::string*>& theVect)
-:
-theStringVector( theVect )
-{}
+        class getListOfNodes
+        {
+        public:
+            getListOfNodes ( std::vector<std::string*>& theVect)
+                    :
+                    theStringVector ( theVect )
+            {}
 
-void
-operator()(mzrReaction* rxn )
-{
+            void
+            operator() (mzrReaction* rxn )
+            {
 
 // All the following generates a vector of reactants and products.
-std::vector<std::string> reactants, products;
+                std::vector<std::string> reactants, products;
 
-for (mzrReaction::multMap::const_iterator iter = rxn->getReactants().begin();
-iter != rxn->getReactants().end();
-++iter)
-{
-reactants.push_back(iter->first->getName());
-}
+                for (mzrReaction::multMap::const_iterator iter = rxn->getReactants().begin();
+                        iter != rxn->getReactants().end();
+                        ++iter)
+                {
+                    reactants.push_back (iter->first->getName() );
+                }
 
-for (mzrReaction::multMap::const_iterator iter = rxn->getProducts().begin();
-iter != rxn->getProducts().end();
-++iter)
-{
-products.push_back( iter->first->getName() );
-}
+                for (mzrReaction::multMap::const_iterator iter = rxn->getProducts().begin();
+                        iter != rxn->getProducts().end();
+                        ++iter)
+                {
+                    products.push_back ( iter->first->getName() );
+                }
 
 
-std::string theReactant, theProduct;
-for( unsigned int ii = 0; ii != reactants.size(); ++ii)
-{
-for( unsigned int jj = 0; jj != products.size(); ++jj)
-{
-theReactant = reactants[ii];
-theProduct = products[jj];
+                std::string theReactant, theProduct;
+                for ( unsigned int ii = 0; ii != reactants.size(); ++ii)
+                {
+                    for ( unsigned int jj = 0; jj != products.size(); ++jj)
+                    {
+                        theReactant = reactants[ii];
+                        theProduct = products[jj];
 
-std::string* ptrOutputString = new std::string;
+                        std::string* ptrOutputString = new std::string;
 
-theStringVector.push_back(ptrOutputString);
+                        theStringVector.push_back (ptrOutputString);
 
-if (theReactant < theProduct)
-{
-ptrOutputString->append( theReactant );
-ptrOutputString->append( "--" );
-ptrOutputString->append( theProduct );
-}
-else
-{
-ptrOutputString->append( theProduct );
-ptrOutputString->append( "--" );
-ptrOutputString->append( theReactant );
-}
+                        if (theReactant < theProduct)
+                        {
+                            ptrOutputString->append ( theReactant );
+                            ptrOutputString->append ( "--" );
+                            ptrOutputString->append ( theProduct );
+                        }
+                        else
+                        {
+                            ptrOutputString->append ( theProduct );
+                            ptrOutputString->append ( "--" );
+                            ptrOutputString->append ( theReactant );
+                        }
 
-}
-}
-}
+                    }
+                }
+            }
 
-private:
-std::vector<std::string*>& theStringVector;
-};
+        private:
+            std::vector<std::string*>& theStringVector;
+        };
 
-}
+    }
 
 }
 

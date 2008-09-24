@@ -36,30 +36,30 @@
 
 namespace mzr
 {
-void
-addDoubleParamChild(xmlpp::Node* pParentNode,
-const std::string& rChildName,
-const std::string& rParameterName,
-double parameterValue)
-{
-xmlpp::Element* pChildElt
-= pParentNode->add_child(rChildName);
+    void
+    addDoubleParamChild (xmlpp::Node* pParentNode,
+                         const std::string& rChildName,
+                         const std::string& rParameterName,
+                         double parameterValue)
+    {
+        xmlpp::Element* pChildElt
+        = pParentNode->add_child (rChildName);
 
-pChildElt->set_attribute(rParameterName,
-utl::stringify<double>(parameterValue));
+        pChildElt->set_attribute (rParameterName,
+                                  utl::stringify<double> (parameterValue) );
 
-xmlpp::Element* pSciNoteElt
-= pChildElt->add_child(eltName::sciNote);
+        xmlpp::Element* pSciNoteElt
+        = pChildElt->add_child (eltName::sciNote);
 
 // Generate scientific notation for use in generating SBML etc.
-int exponent = 0;
-double fraction = utl::frexp10(parameterValue,
-exponent);
+        int exponent = 0;
+        double fraction = utl::frexp10 (parameterValue,
+                                        exponent);
 
-pSciNoteElt->set_attribute(eltName::sciNote_fractionAttr,
-utl::stringify<double>(fraction));
+        pSciNoteElt->set_attribute (eltName::sciNote_fractionAttr,
+                                    utl::stringify<double> (fraction) );
 
-pSciNoteElt->set_attribute(eltName::sciNote_exponentAttr,
-utl::stringify<int>(exponent));
-}
+        pSciNoteElt->set_attribute (eltName::sciNote_exponentAttr,
+                                    utl::stringify<int> (exponent) );
+    }
 }

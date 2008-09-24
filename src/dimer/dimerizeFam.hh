@@ -37,38 +37,38 @@
 
 namespace dimer
 {
-class dimerizeFam :
-public utl::autoVector<mzr::mzrReaction>
-{
-dimerizeRxnGenPair rxnGens;
+    class dimerizeFam :
+                public utl::autoVector<mzr::mzrReaction>
+    {
+        dimerizeRxnGenPair rxnGens;
 
-public:
+    public:
 
-dimerizeFam(bnd::siteFeature& rLeftSiteFeature,
-bnd::siteFeature& rRightSiteFeature,
-mzr::mzrUnit& rMzrUnit,
-plx::plexUnit& rPlexUnit,
-dimerizeExtrapolator* pExtrap) :
-rxnGens(rLeftSiteFeature,
-rRightSiteFeature,
-this,
-rMzrUnit,
-rPlexUnit,
-pExtrap)
-{}
+        dimerizeFam (bnd::siteFeature& rLeftSiteFeature,
+                     bnd::siteFeature& rRightSiteFeature,
+                     mzr::mzrUnit& rMzrUnit,
+                     plx::plexUnit& rPlexUnit,
+                     dimerizeExtrapolator* pExtrap) :
+                rxnGens (rLeftSiteFeature,
+                         rRightSiteFeature,
+                         this,
+                         rMzrUnit,
+                         rPlexUnit,
+                         pExtrap)
+        {}
 
-fnd::rxnGen<cpx::cxSite<plx::mzrPlexSpecies, plx::mzrPlexFamily> >*
-getLeftRxnGen(void)
-{
-return rxnGens.getLeftRxnGen();
-}
+        fnd::rxnGen<cpx::cxSite<plx::mzrPlexSpecies, plx::mzrPlexFamily> >*
+        getLeftRxnGen (void)
+        {
+            return rxnGens.getLeftRxnGen();
+        }
 
-fnd::rxnGen<cpx::cxSite<plx::mzrPlexSpecies, plx::mzrPlexFamily> >*
-getRightRxnGen(void)
-{
-return rxnGens.getRightRxnGen();
-}
-};
+        fnd::rxnGen<cpx::cxSite<plx::mzrPlexSpecies, plx::mzrPlexFamily> >*
+        getRightRxnGen (void)
+        {
+            return rxnGens.getRightRxnGen();
+        }
+    };
 }
 
 #endif // DIMER_DIMERIZEFAM_H

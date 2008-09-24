@@ -34,30 +34,30 @@
 
 namespace utl
 {
-namespace dom
-{
-std::string
-missingAttrXcpt::
-mkMsg(const xmlpp::Element* pElt,
-const std::string& rAttrName)
-{
-std::ostringstream msgStream;
+    namespace dom
+    {
+        std::string
+        missingAttrXcpt::
+        mkMsg (const xmlpp::Element* pElt,
+               const std::string& rAttrName)
+        {
+            std::ostringstream msgStream;
 
-msgStream << xcpt::mkMsg(pElt)
-<< "'"
-<< pElt->get_name()
-<< "\" element has no \""
-<< rAttrName
-<< "\" attribute.";
-return msgStream.str();
-}
+            msgStream << xcpt::mkMsg (pElt)
+            << "'"
+            << pElt->get_name()
+            << "\" element has no \""
+            << rAttrName
+            << "\" attribute.";
+            return msgStream.str();
+        }
 
-missingAttrXcpt::
-missingAttrXcpt(const xmlpp::Element* pElt,
-const std::string& rAttrName)
-throw() :
-xcpt(mkMsg(pElt,
-rAttrName))
-{}
-}
+        missingAttrXcpt::
+        missingAttrXcpt (const xmlpp::Element* pElt,
+                         const std::string& rAttrName)
+        throw() :
+                xcpt (mkMsg (pElt,
+                             rAttrName) )
+        {}
+    }
 }

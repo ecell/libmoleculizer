@@ -44,11 +44,11 @@ namespace mzr
 // This is basically part of a fix to introduce scientific notation for all
 // parameter values so as to be able, using XSLT, to generate SBML and other
 // formats that have the fraction and exponent in separate XML constructs.
-void
-addDoubleParamChild(xmlpp::Node* pParentNode,
-const std::string& rChildName,
-const std::string& rParameterName,
-double parameterValue);
+    void
+    addDoubleParamChild (xmlpp::Node* pParentNode,
+                         const std::string& rChildName,
+                         const std::string& rParameterName,
+                         double parameterValue);
 }
 
 #endif // DUMPUTILS_H

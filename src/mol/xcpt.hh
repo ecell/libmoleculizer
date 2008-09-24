@@ -37,18 +37,18 @@
 namespace bnd
 {
 // Base class for exceptions thrown in bnd.
-class xcpt :
-public utl::xcpt
-{
-public:
-xcpt(const std::string& rMessage) :
-utl::xcpt(rMessage)
-{}
+    class xcpt :
+                public utl::xcpt
+    {
+    public:
+        xcpt (const std::string& rMessage) :
+                utl::xcpt (rMessage)
+        {}
 
-xcpt(const char* pMessage) :
-utl::xcpt(pMessage)
-{}
-};
+        xcpt (const char* pMessage) :
+                utl::xcpt (pMessage)
+        {}
+    };
 }
 
 #endif // BND_XCPT_H

@@ -39,21 +39,21 @@ namespace mzr
 // This can be used by events to reschedule affected reactions en masse.
 // For example, an event that changes the volume will need to reschedule
 // all reactions.
-class respondReaction :
-public std::unary_function<mzrReaction*, void>
-{
-mzrReactionStimulus stimulus;
-public:
-respondReaction(moleculizer& rMoleculizer) :
-stimulus(rMoleculizer)
-{}
+    class respondReaction :
+                public std::unary_function<mzrReaction*, void>
+    {
+        mzrReactionStimulus stimulus;
+    public:
+        respondReaction (moleculizer& rMoleculizer) :
+                stimulus (rMoleculizer)
+        {}
 
-void
-operator()(mzrReaction* pMzrReaction) const
-{
-pMzrReaction->respond(stimulus);
-}
-};
+        void
+        operator() (mzrReaction* pMzrReaction) const
+        {
+            pMzrReaction->respond (stimulus);
+        }
+    };
 }
 
 #endif // MZR_RESPONDREACTION_H

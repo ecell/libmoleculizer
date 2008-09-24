@@ -29,14 +29,14 @@ used, it is necessary to check they are correct.
 
 /*==================================================================*/
 
-#ifndef MAXN 
+#ifndef MAXN
 #define MAXN  0
 #endif
 
 #define SIZELEN(n) ((n)<=SMALLN?1:((n)<=SMALLISHN?4:8))
-	/* length of size code in bytes */
+/* length of size code in bytes */
 #define G6LEN(n)  (((n)*((n)-1)/2+5)/6+SIZELEN(n))
-	/* exactly graph6 string length excluding \n\0 */
+/* exactly graph6 string length excluding \n\0 */
 
 #include "naututil.h"      /* which includes stdio.h */
 #include "nausparse.h"
@@ -58,10 +58,10 @@ extern int errno;
 #elif SETENV_DEC && HAVE_SETENV
 #define SET_C_COLLATION setenv("LC_COLLATE","C",1)
 #elif HAVE_PUTENV
-int putenv(char*);
+int putenv (char*);
 #define SET_C_COLLATION putenv("LC_COLLATE=C")
 #elif HAVE_SETENV
-int setenv(const char*,const char*,int);
+int setenv (const char*,const char*,int);
 #define SET_C_COLLATION setenv("LC_COLLATE","C",1)
 #else
 #define SET_C_COLLATION
@@ -121,7 +121,7 @@ int setenv(const char*,const char*,int);
 #define SWRANGE(c,sep,bool,val1,val2,id) if (sw==c) \
 	{bool=TRUE;arg_range(&arg,sep,&val1,&val2,id);}
 
-#ifdef HELPTEXT2 
+#ifdef HELPTEXT2
 #define PUTHELPTEXT printf("\nUsage: %s\n\n%s",USAGE,HELPTEXT1);\
 		    printf("%s",HELPTEXT2);
 #else
@@ -150,60 +150,61 @@ fprintf(stderr,"   Use %s -help to see more detailed instructions.\n",argv[0])
 
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
- 
-extern void gtools_check(int,int,int,int);
-extern FILE *opengraphfile(char*,int*,boolean,long);
-extern void writeline(FILE*,char*);
-extern char *getline(FILE*);
-extern int graphsize(char*);
-extern void stringcounts(char*,int*,size_t*);
-extern void stringtograph(char*,graph*,int);
-extern size_t edgecount(char*);
-extern graph *readg(FILE*,graph*,int,int*,int*);
-extern char *ntog6(graph*,int,int);
-extern char *ntos6(graph*,int,int);
-extern char *sgtos6(sparsegraph*);
-extern void writeg6(FILE*,graph*,int,int);
-extern void writes6(FILE*,graph*,int,int);
-extern void writes6_sg(FILE*,sparsegraph*);
-extern void writepc_sg(FILE*,sparsegraph*);
-extern void stringtosparsegraph(char*,sparsegraph*,int*);
-extern sparsegraph *read_sg(FILE*,sparsegraph*);
-extern sparsegraph *read_sg_loops(FILE*,sparsegraph*,int*);
-extern sparsegraph *readpc_sg(FILE*,sparsegraph*);
-extern sparsegraph *readpcle_sg(FILE*,sparsegraph*);
-extern sparsegraph *read_ec(FILE*,sparsegraph*);
-extern void writeec_sg(FILE*,sparsegraph*);
-extern void writelast(FILE*);
-extern int longval(char**,long*);
-extern void arg_int(char**,int*,char*);
-extern void arg_long(char**,long*,char*);
-extern void arg_range(char**,char*,long*,long*,char*);
-extern void writerange(FILE*,int,long,long);
-extern void gt_abort(char*);
-extern char *stringcopy(char*);
-extern boolean strhaschar(char*,int);
 
-extern void fcanonise(graph*,int,int,graph*,char*,boolean);
-extern void fcanonise_inv
-             (graph*,int,int,graph*,char*,void(*)(graph*,int*,int*,int,
-               int,int,permutation*,int,boolean,int,int),int,int,int,boolean);
-extern void fcanonise_inv_sg
-           (sparsegraph*,int,int,sparsegraph*,char*,void(*)(graph*,int*,int*,
-             int,int,int,permutation*,int,boolean,int,int),int,int,int,boolean);
-extern void fgroup(graph*,int,int,char*,int*,int*);
-extern void fgroup_inv
-	     (graph*,int,int,char*,int*,int*,void(*)(graph*,int*,int*,int,
+    extern void gtools_check (int,int,int,int);
+    extern FILE *opengraphfile (char*,int*,boolean,long);
+    extern void writeline (FILE*,char*);
+    extern char *getline (FILE*);
+    extern int graphsize (char*);
+    extern void stringcounts (char*,int*,size_t*);
+    extern void stringtograph (char*,graph*,int);
+    extern size_t edgecount (char*);
+    extern graph *readg (FILE*,graph*,int,int*,int*);
+    extern char *ntog6 (graph*,int,int);
+    extern char *ntos6 (graph*,int,int);
+    extern char *sgtos6 (sparsegraph*);
+    extern void writeg6 (FILE*,graph*,int,int);
+    extern void writes6 (FILE*,graph*,int,int);
+    extern void writes6_sg (FILE*,sparsegraph*);
+    extern void writepc_sg (FILE*,sparsegraph*);
+    extern void stringtosparsegraph (char*,sparsegraph*,int*);
+    extern sparsegraph *read_sg (FILE*,sparsegraph*);
+    extern sparsegraph *read_sg_loops (FILE*,sparsegraph*,int*);
+    extern sparsegraph *readpc_sg (FILE*,sparsegraph*);
+    extern sparsegraph *readpcle_sg (FILE*,sparsegraph*);
+    extern sparsegraph *read_ec (FILE*,sparsegraph*);
+    extern void writeec_sg (FILE*,sparsegraph*);
+    extern void writelast (FILE*);
+    extern int longval (char**,long*);
+    extern void arg_int (char**,int*,char*);
+    extern void arg_long (char**,long*,char*);
+    extern void arg_range (char**,char*,long*,long*,char*);
+    extern void writerange (FILE*,int,long,long);
+    extern void gt_abort (char*);
+    extern char *stringcopy (char*);
+    extern boolean strhaschar (char*,int);
+
+    extern void fcanonise (graph*,int,int,graph*,char*,boolean);
+    extern void fcanonise_inv
+        (graph*,int,int,graph*,char*,void (*) (graph*,int*,int*,int,
+                                               int,int,permutation*,int,boolean,int,int),int,int,int,boolean);
+    extern void fcanonise_inv_sg
+        (sparsegraph*,int,int,sparsegraph*,char*,void (*) (graph*,int*,int*,
+                int,int,int,permutation*,int,boolean,int,int),int,int,int,boolean);
+    extern void fgroup (graph*,int,int,char*,int*,int*);
+    extern void fgroup_inv
+        (graph*,int,int,char*,int*,int*,void (*) (graph*,int*,int*,int,
                 int,int,permutation*,int,boolean,int,int),int,int,int);
-extern int istransitive(graph*,int,int,graph*);
-extern void tg_canonise(graph*,graph*,int,int);
+    extern int istransitive (graph*,int,int,graph*);
+    extern void tg_canonise (graph*,graph*,int,int);
 
-extern int readg_code;
-extern char *readg_line;
-extern size_t ogf_linelen;
-extern boolean is_pipe;
+    extern int readg_code;
+    extern char *readg_line;
+    extern size_t ogf_linelen;
+    extern boolean is_pipe;
 
 #ifdef __cplusplus
 }

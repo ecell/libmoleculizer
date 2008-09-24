@@ -36,21 +36,21 @@
 
 namespace mzr
 {
-class modelNodeNotInCap :
-public std::unary_function<xmlpp::Node*, bool>
-{
-const inputCapabilities& rInputCap;
-public:
-modelNodeNotInCap(const inputCapabilities& rInputCapabilities) :
-rInputCap(rInputCapabilities)
-{}
+    class modelNodeNotInCap :
+                public std::unary_function<xmlpp::Node*, bool>
+    {
+        const inputCapabilities& rInputCap;
+    public:
+        modelNodeNotInCap (const inputCapabilities& rInputCapabilities) :
+                rInputCap (rInputCapabilities)
+        {}
 
-bool
-operator()(xmlpp::Node* pNode) const
-throw(utl::xcpt)
-{
-xmlpp::Element* pElt
-= dynamic_cast<xmlpp::Element*>(pNode);
+        bool
+        operator() (xmlpp::Node* pNode) const
+        throw (utl::xcpt)
+        {
+            xmlpp::Element* pElt
+            = dynamic_cast<xmlpp::Element*> (pNode);
 
 // We want to return false if the node is not an element, for example,
 // if the node is a comment.
@@ -58,97 +58,97 @@ xmlpp::Element* pElt
 // Perhaps other tests might be worthwhile to rule out stray text nodes
 // or whatever else might appear as corrupting matter, but this whole
 // checking process was a little daffy.
-return (pElt && (! rInputCap.handlesModelContentElt(pElt)));
-}
-};
+            return (pElt && (! rInputCap.handlesModelContentElt (pElt) ) );
+        }
+    };
 
-class explicitSpeciesNodeNotInCap :
-public std::unary_function<xmlpp::Node*, bool>
-{
-const inputCapabilities& rInputCap;
-public:
-explicitSpeciesNodeNotInCap(const inputCapabilities& rInputCapabilities) :
-rInputCap(rInputCapabilities)
-{}
+    class explicitSpeciesNodeNotInCap :
+                public std::unary_function<xmlpp::Node*, bool>
+    {
+        const inputCapabilities& rInputCap;
+    public:
+        explicitSpeciesNodeNotInCap (const inputCapabilities& rInputCapabilities) :
+                rInputCap (rInputCapabilities)
+        {}
 
-bool
-operator()(xmlpp::Node* pNode) const
-throw(utl::xcpt)
-{
-xmlpp::Element* pElt
-= dynamic_cast<xmlpp::Element*>(pNode);
-
-// We want to return false if the node is not an element, for example,
-// if the node is a comment.
-return (pElt && (! rInputCap.handlesExplictSpeciesContent(pElt)));
-}
-};
-
-class speciesStreamNodeNotInCap :
-public std::unary_function<xmlpp::Node*, bool>
-{
-const inputCapabilities& rInputCap;
-public:
-speciesStreamNodeNotInCap(const inputCapabilities& rInputCapabilities) :
-rInputCap(rInputCapabilities)
-{}
-
-bool
-operator()(xmlpp::Node* pNode) const
-throw(utl::xcpt)
-{
-xmlpp::Element* pElt
-= dynamic_cast<xmlpp::Element*>(pNode);
+        bool
+        operator() (xmlpp::Node* pNode) const
+        throw (utl::xcpt)
+        {
+            xmlpp::Element* pElt
+            = dynamic_cast<xmlpp::Element*> (pNode);
 
 // We want to return false if the node is not an element, for example,
 // if the node is a comment.
-return (pElt && (! rInputCap.handlesSpeciesStreamsContent(pElt)));
-}
-};
+            return (pElt && (! rInputCap.handlesExplictSpeciesContent (pElt) ) );
+        }
+    };
 
-class eventNodeNotInCap :
-public std::unary_function<xmlpp::Node*, bool>
-{
-const inputCapabilities& rInputCap;
-public:
-eventNodeNotInCap(const inputCapabilities& rInputCapabilities) :
-rInputCap(rInputCapabilities)
-{}
+    class speciesStreamNodeNotInCap :
+                public std::unary_function<xmlpp::Node*, bool>
+    {
+        const inputCapabilities& rInputCap;
+    public:
+        speciesStreamNodeNotInCap (const inputCapabilities& rInputCapabilities) :
+                rInputCap (rInputCapabilities)
+        {}
 
-bool
-operator()(xmlpp::Node* pNode) const
-throw(utl::xcpt)
-{
-xmlpp::Element* pElt
-= dynamic_cast<xmlpp::Element*>(pNode);
-
-// We want to return false if the node is not an element, for example,
-// if the node is a comment.
-return (pElt && (! rInputCap.handlesEventsContent(pElt)));
-}
-};
-
-class reactionGenNotInCap :
-public std::unary_function<xmlpp::Node*, bool>
-{
-const inputCapabilities& rInputCap;
-public:
-reactionGenNotInCap(const inputCapabilities& rInputCapabilities) :
-rInputCap(rInputCapabilities)
-{}
-
-bool
-operator()(xmlpp::Node* pNode) const
-throw(utl::xcpt)
-{
-xmlpp::Element* pElt
-= dynamic_cast<xmlpp::Element*>(pNode);
+        bool
+        operator() (xmlpp::Node* pNode) const
+        throw (utl::xcpt)
+        {
+            xmlpp::Element* pElt
+            = dynamic_cast<xmlpp::Element*> (pNode);
 
 // We want to return false if the node is not an element, for example,
 // if the node is a comment.
-return (pElt && (! rInputCap.handlesReactionGensContent(pElt)));
-}
-};
+            return (pElt && (! rInputCap.handlesSpeciesStreamsContent (pElt) ) );
+        }
+    };
+
+    class eventNodeNotInCap :
+                public std::unary_function<xmlpp::Node*, bool>
+    {
+        const inputCapabilities& rInputCap;
+    public:
+        eventNodeNotInCap (const inputCapabilities& rInputCapabilities) :
+                rInputCap (rInputCapabilities)
+        {}
+
+        bool
+        operator() (xmlpp::Node* pNode) const
+        throw (utl::xcpt)
+        {
+            xmlpp::Element* pElt
+            = dynamic_cast<xmlpp::Element*> (pNode);
+
+// We want to return false if the node is not an element, for example,
+// if the node is a comment.
+            return (pElt && (! rInputCap.handlesEventsContent (pElt) ) );
+        }
+    };
+
+    class reactionGenNotInCap :
+                public std::unary_function<xmlpp::Node*, bool>
+    {
+        const inputCapabilities& rInputCap;
+    public:
+        reactionGenNotInCap (const inputCapabilities& rInputCapabilities) :
+                rInputCap (rInputCapabilities)
+        {}
+
+        bool
+        operator() (xmlpp::Node* pNode) const
+        throw (utl::xcpt)
+        {
+            xmlpp::Element* pElt
+            = dynamic_cast<xmlpp::Element*> (pNode);
+
+// We want to return false if the node is not an element, for example,
+// if the node is a comment.
+            return (pElt && (! rInputCap.handlesReactionGensContent (pElt) ) );
+        }
+    };
 }
 
 #endif // MZR_INPUTCAPTEST_H

@@ -39,50 +39,50 @@
 namespace dimer
 {
 // Base class of rate extrapolators for decomposition reactions.
-class decomposeExtrapolator
-{
-public:
-virtual
-~decomposeExtrapolator(void)
-{}
+    class decomposeExtrapolator
+    {
+    public:
+        virtual
+        ~decomposeExtrapolator (void)
+        {}
 
-virtual void
-setRate(cpx::siteParam leftParam,
-cpx::siteParam rightParam,
-double rate) = 0;
+        virtual void
+        setRate (cpx::siteParam leftParam,
+                 cpx::siteParam rightParam,
+                 double rate) = 0;
 
-virtual double
-getRate(const cpx::cxBinding<plx::mzrPlexSpecies, plx::mzrPlexFamily>& rContext) const
-throw(utl::xcpt) = 0;
-};
+        virtual double
+        getRate (const cpx::cxBinding<plx::mzrPlexSpecies, plx::mzrPlexFamily>& rContext) const
+        throw (utl::xcpt) = 0;
+    };
 
 // Standard decomposition extrapolator, which doesn't really
 // do anything: the same rate applies regardless of the context.
-class decomposeNoExtrap :
-public decomposeExtrapolator
-{
-typedef
-std::map<std::pair<cpx::siteParam, cpx::siteParam>, double>
-rateMapType;
+    class decomposeNoExtrap :
+                public decomposeExtrapolator
+    {
+        typedef
+        std::map<std::pair<cpx::siteParam, cpx::siteParam>, double>
+        rateMapType;
 
-rateMapType rateMap;
+        rateMapType rateMap;
 
-public:
+    public:
 // Both for inserting default rates and for writing allosteric
 // rates over default rates.
 //
 // Storing the rate with the key pair in only one order; this means that
 // search has to look for both orders.
-void
-setRate(cpx::siteParam leftParam,
-cpx::siteParam rightParam,
-double rate);
+        void
+        setRate (cpx::siteParam leftParam,
+                 cpx::siteParam rightParam,
+                 double rate);
 
 // Retrieve decomposition rate for binding in a new complex species.
-double
-getRate(const cpx::cxBinding<plx::mzrPlexSpecies, plx::mzrPlexFamily>& rContext) const
-throw(utl::xcpt);
-};
+        double
+        getRate (const cpx::cxBinding<plx::mzrPlexSpecies, plx::mzrPlexFamily>& rContext) const
+        throw (utl::xcpt);
+    };
 
 }
 

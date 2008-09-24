@@ -42,87 +42,87 @@
 
 namespace nmr
 {
-const NameAssembler*
-nmrUnit::getNameEncoder() const
-throw( MissingNameEncoderXcpt )
-{
-if (!ptrNameAssembler)
-{
-throw MissingNameEncoderXcpt();
-}
+    const NameAssembler*
+    nmrUnit::getNameEncoder() const
+    throw ( MissingNameEncoderXcpt )
+    {
+        if (!ptrNameAssembler)
+        {
+            throw MissingNameEncoderXcpt();
+        }
 
-return ptrNameAssembler;
-}
+        return ptrNameAssembler;
+    }
 
-mzr::mzrSpecies*
-nmrUnit::constructSpeciesFromName( const std::string& encodedSpeciesName)
-{
-try
-{
+    mzr::mzrSpecies*
+    nmrUnit::constructSpeciesFromName ( const std::string& encodedSpeciesName)
+    {
+        try
+        {
 // 1.  The currently set nameEncoder has the responsibility of decoding the thing into a complexOutputState.
-ComplexOutputState aCOS = getNameEncoder()->createOutputStateFromName( encodedSpeciesName );
+            ComplexOutputState aCOS = getNameEncoder()->createOutputStateFromName ( encodedSpeciesName );
 
 // TODO: Ensure that this does  not register the constructed plexSpecies into
-plx::mzrPlexSpecies* newMzrSpecies = pPlexUnit->constructNewPlexSpeciesFromComplexOutputState( aCOS );
+            plx::mzrPlexSpecies* newMzrSpecies = pPlexUnit->constructNewPlexSpeciesFromComplexOutputState ( aCOS );
 
-return newMzrSpecies;
-}
+            return newMzrSpecies;
+        }
 // I should separate the reasons things went bad here.
-catch(...)
-{
-throw nmr::IllegalNameXcpt(encodedSpeciesName);
-}
+        catch (...)
+        {
+            throw nmr::IllegalNameXcpt (encodedSpeciesName);
+        }
 
-}
+    }
 
-void
-nmrUnit::setDefaultNameEncoder( const std::string& nameEncoderName) throw( NoSuchNameEncoderXcpt)
-{
-delete ptrNameAssembler;
-ptrNameAssembler = ptrNameEncoderFactory->create(nameEncoderName);
-}
+    void
+    nmrUnit::setDefaultNameEncoder ( const std::string& nameEncoderName) throw ( NoSuchNameEncoderXcpt)
+    {
+        delete ptrNameAssembler;
+        ptrNameAssembler = ptrNameEncoderFactory->create (nameEncoderName);
+    }
 
 
 
-void
-nmrUnit::parseDomInput(xmlpp::Element* pRootElt,
-xmlpp::Element* pModelElt,
-xmlpp::Element* pStreamElt) throw(std::exception)
-{
+    void
+    nmrUnit::parseDomInput (xmlpp::Element* pRootElt,
+                            xmlpp::Element* pModelElt,
+                            xmlpp::Element* pStreamElt) throw (std::exception)
+    {
 // TODO: Debug nmrUnit::parseDomInput and make sure it all works.
 // For the moment, the one thing (the naming strategy that should be used) is contained
 // in an attribute entitled "naming-convention".  The value of that string should
 // be passed to nmrUnit::setDefaultNameEncoder.
 
 
-try
-{
-std::string strategy = utl::dom::mustGetAttrString(pModelElt, eltName::namingConvention);
-setDefaultNameEncoder(strategy);
-}
-catch(NoSuchNameEncoderXcpt xcpt)
-{
-xcpt.wailAndBail();
-}
-catch(utl::xcpt x)
-{
+        try
+        {
+            std::string strategy = utl::dom::mustGetAttrString (pModelElt, eltName::namingConvention);
+            setDefaultNameEncoder (strategy);
+        }
+        catch (NoSuchNameEncoderXcpt xcpt)
+        {
+            xcpt.wailAndBail();
+        }
+        catch (utl::xcpt x)
+        {
 // This is somewhat bad mojo, but it would be if something is an utl::xcpt
 // but has not already been caught.
 
 // Do nothing because this element is not mandatory.
-x.warn();
-}
+            x.warn();
+        }
 
-}
+    }
 
-void nmrUnit::insertStateElts(xmlpp::Element* pRootElt)
-throw(std::exception)
-{
+    void nmrUnit::insertStateElts (xmlpp::Element* pRootElt)
+    throw (std::exception)
+    {
 // TODO: Debug nmrUnit::insertStateElts and make sure it all works.
-xmlpp::Element* modelElt = utl::dom::mustGetUniqueChild(pRootElt,
-mzr::eltName::model);
+        xmlpp::Element* modelElt = utl::dom::mustGetUniqueChild (pRootElt,
+                                   mzr::eltName::model);
 
-modelElt->set_attribute( eltName::namingConvention,
-getNameEncoder()->getName() );
-}
+        modelElt->set_attribute ( eltName::namingConvention,
+                                  getNameEncoder()->getName() );
+    }
 }

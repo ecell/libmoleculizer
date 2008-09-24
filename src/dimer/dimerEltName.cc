@@ -33,23 +33,23 @@
 
 namespace dimer
 {
-namespace eltName
-{
-const std::string dimerizationGen("dimerization-gen");
-const std::string dimerizationGen_rateExtrapAttr("rate-extrapolator");
-const std::string dimerizationGen_rateExtrap_none("none");
-const std::string dimerizationGen_rateExtrap_mass("mass");
-const std::string siteRef("site-ref");
-const std::string siteRef_nameAttr("name");
-const std::string defaultOnRate("default-on-rate");
-const std::string defaultOnRate_valueAttr("value");
-const std::string defaultOffRate("default-off-rate");
-const std::string defaultOffRate_valueAttr("value");
-const std::string alloRates("allo-rates");
-const std::string onRate("on-rate");
-const std::string onRate_valueAttr("value");
-const std::string offRate("off-rate");
-const std::string offRate_valueAttr("value");
-}
+    namespace eltName
+    {
+        const std::string dimerizationGen ("dimerization-gen");
+        const std::string dimerizationGen_rateExtrapAttr ("rate-extrapolator");
+        const std::string dimerizationGen_rateExtrap_none ("none");
+        const std::string dimerizationGen_rateExtrap_mass ("mass");
+        const std::string siteRef ("site-ref");
+        const std::string siteRef_nameAttr ("name");
+        const std::string defaultOnRate ("default-on-rate");
+        const std::string defaultOnRate_valueAttr ("value");
+        const std::string defaultOffRate ("default-off-rate");
+        const std::string defaultOffRate_valueAttr ("value");
+        const std::string alloRates ("allo-rates");
+        const std::string onRate ("on-rate");
+        const std::string onRate_valueAttr ("value");
+        const std::string offRate ("off-rate");
+        const std::string offRate_valueAttr ("value");
+    }
 }
 

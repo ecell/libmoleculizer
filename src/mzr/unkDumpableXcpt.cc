@@ -34,16 +34,16 @@
 
 namespace mzr
 {
-std::string
-unkDumpableXcpt::
-mkMsg(const std::string& rDumpableName,
-xmlpp::Node* pOffendingNode)
-{
-std::ostringstream msgStream;
-msgStream << utl::dom::xcpt::mkMsg(pOffendingNode)
-<< "Unknown dumpable `"
-<< rDumpableName
-<< "'.";
-return msgStream.str();
-}
+    std::string
+    unkDumpableXcpt::
+    mkMsg (const std::string& rDumpableName,
+           xmlpp::Node* pOffendingNode)
+    {
+        std::ostringstream msgStream;
+        msgStream << utl::dom::xcpt::mkMsg (pOffendingNode)
+        << "Unknown dumpable `"
+        << rDumpableName
+        << "'.";
+        return msgStream.str();
+    }
 }

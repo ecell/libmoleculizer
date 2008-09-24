@@ -34,39 +34,39 @@
 
 namespace ftr
 {
-omniMassExtrap::
-omniMassExtrap(double theRate,
-const fnd::massive* pDefaultTriggeringSpecies,
-const fnd::massive* pMassiveAuxiliarySpecies) :
-pMassive(pMassiveAuxiliarySpecies)
-{
-if(pMassive)
-{
-rateOrInvariant
-= fnd::bindingInvariant(theRate,
-pDefaultTriggeringSpecies->getWeight(),
-pMassive->getWeight());
-}
-else
-{
-rateOrInvariant = theRate;
-}
-}
+    omniMassExtrap::
+    omniMassExtrap (double theRate,
+                    const fnd::massive* pDefaultTriggeringSpecies,
+                    const fnd::massive* pMassiveAuxiliarySpecies) :
+            pMassive (pMassiveAuxiliarySpecies)
+    {
+        if (pMassive)
+        {
+            rateOrInvariant
+            = fnd::bindingInvariant (theRate,
+                                     pDefaultTriggeringSpecies->getWeight(),
+                                     pMassive->getWeight() );
+        }
+        else
+        {
+            rateOrInvariant = theRate;
+        }
+    }
 
-double
-omniMassExtrap::
-getRate(const cpx::cxOmni<bnd::mzrMol, plx::mzrPlexSpecies, plx::mzrPlexFamily, plx::mzrOmniPlex>& rWrappedContext) const
-{
+    double
+    omniMassExtrap::
+    getRate (const cpx::cxOmni<bnd::mzrMol, plx::mzrPlexSpecies, plx::mzrPlexFamily, plx::mzrOmniPlex>& rWrappedContext) const
+    {
 // Are we generating unary or binary reactions?
-if(pMassive)
-{
-return fnd::bindingRate(rateOrInvariant,
-rWrappedContext.getPlexWeight(),
-pMassive->getWeight());
-}
-else
-{
-return rateOrInvariant;
-}
-}
+        if (pMassive)
+        {
+            return fnd::bindingRate (rateOrInvariant,
+                                     rWrappedContext.getPlexWeight(),
+                                     pMassive->getWeight() );
+        }
+        else
+        {
+            return rateOrInvariant;
+        }
+    }
 }

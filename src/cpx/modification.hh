@@ -37,32 +37,32 @@
 
 namespace cpx
 {
-class modification
-{
-std::string name;
+    class modification
+    {
+        std::string name;
 
 // The amount by which the modification changes the molecular weight.
-double weightDelta;
+        double weightDelta;
 
-public:
-modification(const std::string& rName,
-double molWeightDelta) :
-name(rName),
-weightDelta(molWeightDelta)
-{}
+    public:
+        modification (const std::string& rName,
+                      double molWeightDelta) :
+                name (rName),
+                weightDelta (molWeightDelta)
+        {}
 
-const std::string&
-getName(void) const
-{
-return name;
-}
+        const std::string&
+        getName (void) const
+        {
+            return name;
+        }
 
-double
-getWeightDelta(void) const
-{
-return weightDelta;
-}
-};
+        double
+        getWeightDelta (void) const
+        {
+            return weightDelta;
+        }
+    };
 }
 
 #endif // MODIFICATION_H

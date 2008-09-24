@@ -32,18 +32,18 @@
 
 namespace ftr
 {
-class omniMolRateExtrapolatorFactory
-{
-public:
+    class omniMolRateExtrapolatorFactory
+    {
+    public:
 
 
-};
+    };
 
-class uniMolRateExtrapolatorFactory
-{
-public:
-uniMolExtrapolator*
-makeUniMolExtrapolator(const std::string uniMolExtrapolatorType) const;
-};
+    class uniMolRateExtrapolatorFactory
+    {
+    public:
+        uniMolExtrapolator*
+        makeUniMolExtrapolator (const std::string uniMolExtrapolatorType) const;
+    };
 
 }

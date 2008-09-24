@@ -37,10 +37,10 @@
 
 namespace mzr
 {
-class parametrizer :
-public moleculizer
-{
-public:
+    class parametrizer :
+                public moleculizer
+    {
+    public:
 
 // The point of this program is to reparametrize a reaction network, in
 // the form of a moleculizer-state dump, using new rates etc.  substituted
@@ -52,20 +52,20 @@ public:
 // moleculizer-input are treated as usual, so the result is the same
 // simulation as before, but with an expanded set of species and
 // reactions.
-parametrizer(int argc,
-char** argv,
-xmlpp::Document* pMoleculizerInput,
-xmlpp::Document* pMoleculizerState)
-throw(std::exception);
+        parametrizer (int argc,
+                      char** argv,
+                      xmlpp::Document* pMoleculizerInput,
+                      xmlpp::Document* pMoleculizerState)
+        throw (std::exception);
 
-~parametrizer(void);
+        ~parametrizer (void);
 
 // This basically does nothing except "makeDomOutput" to produce the
 // reparametrized version of the input moleculizer-state file.  Does not
 // run the moleculizer event queue.
-int
-run(void) throw(std::exception);
-};
+        int
+        run (void) throw (std::exception);
+    };
 }
 
 #endif

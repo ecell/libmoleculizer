@@ -33,18 +33,18 @@
 
 namespace fnd
 {
-std::string
-speciesNotMassiveXcpt::
-mkMsg(xmlpp::Node* pOffendingNode)
-{
-std::ostringstream msgStream;
-msgStream << utl::dom::xcpt::mkMsg(pOffendingNode)
-<< "Expected massive species.";
-return msgStream.str();
-}
+    std::string
+    speciesNotMassiveXcpt::
+    mkMsg (xmlpp::Node* pOffendingNode)
+    {
+        std::ostringstream msgStream;
+        msgStream << utl::dom::xcpt::mkMsg (pOffendingNode)
+        << "Expected massive species.";
+        return msgStream.str();
+    }
 
-speciesNotMassiveXcpt::
-speciesNotMassiveXcpt(xmlpp::Node* pOffendingNode) :
-utl::xcpt(mkMsg(pOffendingNode))
-{}
+    speciesNotMassiveXcpt::
+    speciesNotMassiveXcpt (xmlpp::Node* pOffendingNode) :
+            utl::xcpt (mkMsg (pOffendingNode) )
+    {}
 }

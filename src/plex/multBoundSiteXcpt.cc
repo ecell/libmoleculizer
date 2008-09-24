@@ -34,28 +34,28 @@
 
 namespace plx
 {
-std::string
-multBoundSiteXcpt::
-mkMsg(const std::string& rBindingSiteName,
-const std::string& rMolInstanceName,
-const xmlpp::Node* pOffendingNode)
-{
-std::ostringstream msgStream;
-msgStream << utl::dom::xcpt::mkMsg(pOffendingNode)
-<< "Binding site "
-<< rBindingSiteName
-<< " on mol instance "
-<< rMolInstanceName
-<< " is in more than one binding.";
-return msgStream.str();
-}
+    std::string
+    multBoundSiteXcpt::
+    mkMsg (const std::string& rBindingSiteName,
+           const std::string& rMolInstanceName,
+           const xmlpp::Node* pOffendingNode)
+    {
+        std::ostringstream msgStream;
+        msgStream << utl::dom::xcpt::mkMsg (pOffendingNode)
+        << "Binding site "
+        << rBindingSiteName
+        << " on mol instance "
+        << rMolInstanceName
+        << " is in more than one binding.";
+        return msgStream.str();
+    }
 
-multBoundSiteXcpt::
-multBoundSiteXcpt(const std::string& rBindingSiteName,
-const std::string& rMolInstanceName,
-const xmlpp::Node* pOffendingNode) :
-utl::xcpt(mkMsg(rBindingSiteName,
-rMolInstanceName,
-pOffendingNode))
-{}
+    multBoundSiteXcpt::
+    multBoundSiteXcpt (const std::string& rBindingSiteName,
+                       const std::string& rMolInstanceName,
+                       const xmlpp::Node* pOffendingNode) :
+            utl::xcpt (mkMsg (rBindingSiteName,
+                              rMolInstanceName,
+                              pOffendingNode) )
+    {}
 }

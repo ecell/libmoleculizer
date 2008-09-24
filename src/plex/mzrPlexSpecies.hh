@@ -43,56 +43,56 @@
 
 namespace plx
 {
-class mzrPlexFamily;
+    class mzrPlexFamily;
 
-class mzrPlexSpecies :
-public mzr::mzrSpecies,
-public cpx::plexSpeciesMixin<mzrPlexFamily>
-{
-private:
+    class mzrPlexSpecies :
+                public mzr::mzrSpecies,
+                public cpx::plexSpeciesMixin<mzrPlexFamily>
+    {
+    private:
 
-mutable bool nameGenerated;
-mutable std::string name;
-public:
+        mutable bool nameGenerated;
+        mutable std::string name;
+    public:
 
-typedef mzr::querySpeciesDumpable<mzrPlexSpecies> queryDumpableType;
+        typedef mzr::querySpeciesDumpable<mzrPlexSpecies> queryDumpableType;
 
-typedef mzr::multiSpeciesDumpable<mzrPlexSpecies> msDumpableType;
+        typedef mzr::multiSpeciesDumpable<mzrPlexSpecies> msDumpableType;
 
-mzrPlexSpecies(mzrPlexFamily& rContainingFamily,
-const cpx::siteToShapeMap& rSiteParams,
-const std::vector<cpx::molParam>& rMolParams) :
-cpx::plexSpeciesMixin<mzrPlexFamily>(rContainingFamily,
-rSiteParams,
-rMolParams)
-{
-nameGenerated = false;
-name = "";
-}
+        mzrPlexSpecies (mzrPlexFamily& rContainingFamily,
+                        const cpx::siteToShapeMap& rSiteParams,
+                        const std::vector<cpx::molParam>& rMolParams) :
+                cpx::plexSpeciesMixin<mzrPlexFamily> (rContainingFamily,
+                                                      rSiteParams,
+                                                      rMolParams)
+        {
+            nameGenerated = false;
+            name = "";
+        }
 
-~mzrPlexSpecies(void)
-{
-}
+        ~mzrPlexSpecies (void)
+        {
+        }
 
 // This fulfils the pure virtual function in the ancestor class
 // fnd::massive.
-double
-getWeight(void) const;
+        double
+        getWeight (void) const;
 
 // This fulfills the pure virtual function in the ancestor class
 // cpx::notifier.
-void
-notify(int generateDepth);
+        void
+        notify (int generateDepth);
 
 // This overrides basicSpecies::getName(), which just returns a tag.
-virtual std::string
-getName(void) const;
+        virtual std::string
+        getName (void) const;
 
-xmlpp::Element*
-insertElt(xmlpp::Element* pExplicitSpeciesElt,
-double molarFactor) const
-throw(std::exception);
-};
+        xmlpp::Element*
+        insertElt (xmlpp::Element* pExplicitSpeciesElt,
+                   double molarFactor) const
+        throw (std::exception);
+    };
 }
 
 #endif

@@ -42,54 +42,54 @@
 
 namespace fnd
 {
-template<class contextT>
-class feature :
-public sensitive<newContextStimulus<contextT> >,
-public sensitivityList<rxnGen<contextT> >
-{
-public:
-typedef contextT contextType;
+    template<class contextT>
+    class feature :
+                public sensitive<newContextStimulus<contextT> >,
+                public sensitivityList<rxnGen<contextT> >
+    {
+    public:
+        typedef contextT contextType;
 
-private:
-class respondRxnGen :
-public std::unary_function<rxnGen<contextT>*, void>
-{
-const featureStimulus<contextT> stim;
-public:
-respondRxnGen(const newContextStimulus<contextT>& rNewContextStim,
-feature& rFeature) :
-stim(rNewContextStim,
-rFeature)
-{}
+    private:
+    class respondRxnGen :
+                    public std::unary_function<rxnGen<contextT>*, void>
+        {
+            const featureStimulus<contextT> stim;
+        public:
+            respondRxnGen (const newContextStimulus<contextT>& rNewContextStim,
+                           feature& rFeature) :
+                    stim (rNewContextStim,
+                          rFeature)
+            {}
 
-void
-operator()(rxnGen<contextT>* pRxnGen) const
-{
-pRxnGen->respond(stim);
-}
-};
+            void
+            operator() (rxnGen<contextT>* pRxnGen) const
+            {
+                pRxnGen->respond (stim);
+            }
+        };
 
-public:
+    public:
 // This is very heavyweight, and not really needed???
 // This really is a service to the dimerization generator,
 // and other possible binary reaction generators, that they
 // could do for themselves.
-std::vector<contextT> contexts;
+        std::vector<contextT> contexts;
 
-virtual
-~feature(void)
-{}
+        virtual
+        ~feature (void)
+        {}
 
 // omniPlexFeatures respond differently, for example.
-virtual
-void
-respond(const newContextStimulus<contextT>& rStimulus)
-{
-contexts.push_back(rStimulus.getContext());
-forEachSensitive(respondRxnGen(rStimulus,
-*this));
-}
-};
+        virtual
+        void
+        respond (const newContextStimulus<contextT>& rStimulus)
+        {
+            contexts.push_back (rStimulus.getContext() );
+            forEachSensitive (respondRxnGen (rStimulus,
+                                             *this) );
+        }
+    };
 }
 
 #endif

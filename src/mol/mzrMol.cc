@@ -35,51 +35,51 @@
 
 namespace bnd
 {
-mzrMol::
-mzrMol(const std::string& rName,
-const std::vector<mzrBndSite>& rSites) :
-cpx::basicMol<bnd::mzrBndSite>(rName,
-rSites)
-{}
+    mzrMol::
+    mzrMol (const std::string& rName,
+            const std::vector<mzrBndSite>& rSites) :
+            cpx::basicMol<bnd::mzrBndSite> (rName,
+                                            rSites)
+    {}
 
-int
-mzrMol::
-mustFindSite(const std::string& rSiteName,
-xmlpp::Node* pRequestingNode) const
-throw(utl::xcpt)
-{
-int siteNdx = -1;
+    int
+    mzrMol::
+    mustFindSite (const std::string& rSiteName,
+                  xmlpp::Node* pRequestingNode) const
+    throw (utl::xcpt)
+    {
+        int siteNdx = -1;
 
-if(! findSite(rSiteName,
-siteNdx))
-throw(unkSiteXcpt(rSiteName,
-pRequestingNode));
+        if (! findSite (rSiteName,
+                        siteNdx) )
+            throw (unkSiteXcpt (rSiteName,
+                                pRequestingNode) );
 
-return siteNdx;
-}
+        return siteNdx;
+    }
 
-mzrBndSite*
-mzrMol::
-mustGetSite(const std::string& rSiteName,
-xmlpp::Node* pRequestingNode)
-throw(utl::xcpt)
-{
-mzrBndSite* pSite = getSite(rSiteName);
+    mzrBndSite*
+    mzrMol::
+    mustGetSite (const std::string& rSiteName,
+                 xmlpp::Node* pRequestingNode)
+    throw (utl::xcpt)
+    {
+        mzrBndSite* pSite = getSite (rSiteName);
 
-if(! pSite)
-throw(unkSiteXcpt(rSiteName,
-pRequestingNode));
+        if (! pSite)
+            throw (unkSiteXcpt (rSiteName,
+                                pRequestingNode) );
 
-return pSite;
-}
+        return pSite;
+    }
 
-std::string
-mzrMol::
-genInstanceName(int molInstanceNdx) const
-{
-std::ostringstream oss;
-oss << "mzr-mol_"
-<< molInstanceNdx;
-return oss.str();
-}
+    std::string
+    mzrMol::
+    genInstanceName (int molInstanceNdx) const
+    {
+        std::ostringstream oss;
+        oss << "mzr-mol_"
+        << molInstanceNdx;
+        return oss.str();
+    }
 }

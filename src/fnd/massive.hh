@@ -36,16 +36,16 @@
 
 namespace fnd
 {
-class massive
-{
-public:
-virtual
-~massive(void)
-{}
+    class massive
+    {
+    public:
+        virtual
+        ~massive (void)
+        {}
 
-virtual double
-getWeight(void) const = 0;
-};
+        virtual double
+        getWeight (void) const = 0;
+    };
 }
 
 #endif // FND_MASSIVE_H

@@ -42,35 +42,35 @@
 namespace bnd
 {
 // Base of mol types used in plain Moleculizer.
-class mzrMol :
-public cpx::basicMol<bnd::mzrBndSite>,
-public fnd::feature<cpx::cxMol<plx::mzrPlexSpecies, plx::mzrPlexFamily> >
-{
-public:
-virtual
-~mzrMol(void)
-{}
+    class mzrMol :
+                public cpx::basicMol<bnd::mzrBndSite>,
+                public fnd::feature<cpx::cxMol<plx::mzrPlexSpecies, plx::mzrPlexFamily> >
+    {
+    public:
+        virtual
+        ~mzrMol (void)
+        {}
 
-mzrMol(const std::string& rName,
-const std::vector<mzrBndSite>& rSites);
+        mzrMol (const std::string& rName,
+                const std::vector<mzrBndSite>& rSites);
 
 // Returns site index corresponding to site name, or throws
 // an execption if there is no site with the given name.
-int
-mustFindSite(const std::string& rSiteName,
-xmlpp::Node* pRequestingNode = 0) const
-throw(utl::xcpt);
+        int
+        mustFindSite (const std::string& rSiteName,
+                      xmlpp::Node* pRequestingNode = 0) const
+        throw (utl::xcpt);
 
 // Returns site with given name, or throws an exception if there is no
 // site with the given name.
-mzrBndSite*
-mustGetSite(const std::string& rSiteName,
-xmlpp::Node* pRequestingNode = 0)
-throw(utl::xcpt);
+        mzrBndSite*
+        mustGetSite (const std::string& rSiteName,
+                     xmlpp::Node* pRequestingNode = 0)
+        throw (utl::xcpt);
 
-virtual
-std::string
-genInstanceName(int molInstanceNdx) const;
+        virtual
+        std::string
+        genInstanceName (int molInstanceNdx) const;
 
 // It's bad that this virtual function does nothing, but this class has to
 // be constructible, so it can't be pure virtual.  This is due to the
@@ -78,13 +78,13 @@ genInstanceName(int molInstanceNdx) const;
 // given as a template argument.  The base class has to be constructible,
 // since it must (?) be accepted as an argument to the constructor for
 // stateMol.
-virtual
-xmlpp::Element*
-insertElt(xmlpp::Element* pMolsElt) const
-throw(std::exception)
-{
-return 0;
-}
+        virtual
+        xmlpp::Element*
+        insertElt (xmlpp::Element* pMolsElt) const
+        throw (std::exception)
+        {
+            return 0;
+        }
 
 
 // Mol classes that have state insert their state in the serialization of
@@ -94,15 +94,15 @@ return 0;
 // Returns pointer to inserted element or null if no element inserted.
 //
 // I suspect this actually throws std::exception from xmlpp.
-virtual
-xmlpp::Element*
-insertInstanceState(xmlpp::Element* pInstanceStatesElt,
-int molInstanceNdx,
-cpx::molParam param) const
-{
-return 0;
-}
-};
+        virtual
+        xmlpp::Element*
+        insertInstanceState (xmlpp::Element* pInstanceStatesElt,
+                             int molInstanceNdx,
+                             cpx::molParam param) const
+        {
+            return 0;
+        }
+    };
 }
 
 #endif // MOL_MZRMOL_H

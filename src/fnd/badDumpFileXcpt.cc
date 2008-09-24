@@ -34,14 +34,14 @@
 
 namespace fnd
 {
-std::string
-badDumpFileXcpt::
-mkMsg(const std::string& rBadFileName)
-{
-std::ostringstream msgStream;
-msgStream << "Could not open dump file `"
-<< rBadFileName
-<< "' for writing.";
-return msgStream.str();
-}
+    std::string
+    badDumpFileXcpt::
+    mkMsg (const std::string& rBadFileName)
+    {
+        std::ostringstream msgStream;
+        msgStream << "Could not open dump file `"
+        << rBadFileName
+        << "' for writing.";
+        return msgStream.str();
+    }
 }

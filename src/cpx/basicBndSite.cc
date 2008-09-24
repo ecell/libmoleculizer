@@ -34,95 +34,95 @@
 
 namespace cpx
 {
-class unknownSiteShapeXcpt :
-public utl::xcpt
-{
-static std::string
-mkMsg(const basicBndSite& rSite,
-const std::string& rBadSiteShapeName)
-{
-std::ostringstream msgStream;
-msgStream << "Binding site "
-<< rSite.getName()
-<< " has no shape named "
-<< rBadSiteShapeName
-<< ".";
-return msgStream.str();
-}
-public:
-unknownSiteShapeXcpt(const basicBndSite& rSite,
-const std::string& rBadSiteShapeName) :
-utl::xcpt(mkMsg(rSite,
-rBadSiteShapeName))
-{}
-};
+    class unknownSiteShapeXcpt :
+                public utl::xcpt
+    {
+        static std::string
+        mkMsg (const basicBndSite& rSite,
+               const std::string& rBadSiteShapeName)
+        {
+            std::ostringstream msgStream;
+            msgStream << "Binding site "
+            << rSite.getName()
+            << " has no shape named "
+            << rBadSiteShapeName
+            << ".";
+            return msgStream.str();
+        }
+    public:
+        unknownSiteShapeXcpt (const basicBndSite& rSite,
+                              const std::string& rBadSiteShapeName) :
+                utl::xcpt (mkMsg (rSite,
+                                  rBadSiteShapeName) )
+        {}
+    };
 
-class insertShape :
-public std::unary_function<std::string, void>
-{
-std::map<std::string, siteShape>& rShapeMap;
+    class insertShape :
+                public std::unary_function<std::string, void>
+    {
+        std::map<std::string, siteShape>& rShapeMap;
 
-public:
-insertShape(std::map<std::string, siteShape>& rShapesByName) :
-rShapeMap(rShapesByName)
-{}
+    public:
+        insertShape (std::map<std::string, siteShape>& rShapesByName) :
+                rShapeMap (rShapesByName)
+        {}
 
-void
-operator()(const std::string& rShapeName)
-{
-rShapeMap.insert
-(std::pair<std::string, siteShape>(rShapeName,
-siteShape(rShapeName)));
-}
-};
+        void
+        operator() (const std::string& rShapeName)
+        {
+            rShapeMap.insert
+            (std::pair<std::string, siteShape> (rShapeName,
+                                                siteShape (rShapeName) ) );
+        }
+    };
 
-basicBndSite::
-basicBndSite(const std::string& rName,
-const std::set<std::string>& rShapeNames,
-const std::string& rDefaultShapeName)
-throw(utl::xcpt) :
-name(rName)
-{
-std::for_each(rShapeNames.begin(),
-rShapeNames.end(),
-insertShape(shapesByName));
+    basicBndSite::
+    basicBndSite (const std::string& rName,
+                  const std::set<std::string>& rShapeNames,
+                  const std::string& rDefaultShapeName)
+    throw (utl::xcpt) :
+            name (rName)
+    {
+        std::for_each (rShapeNames.begin(),
+                       rShapeNames.end(),
+                       insertShape (shapesByName) );
 
-pDefaultShape = mustGetShape(rDefaultShapeName);
-}
+        pDefaultShape = mustGetShape (rDefaultShapeName);
+    }
 
-basicBndSite::
-basicBndSite(const basicBndSite& rOriginal)
-throw(utl::xcpt) :
-name(rOriginal.getName()),
-shapesByName(rOriginal.shapesByName)
-{
-pDefaultShape = mustGetShape(rOriginal.getDefaultShape()->getName());
-}
+    basicBndSite::
+    basicBndSite (const basicBndSite& rOriginal)
+    throw (utl::xcpt) :
+            name (rOriginal.getName() ),
+            shapesByName (rOriginal.shapesByName)
+    {
+        pDefaultShape = mustGetShape (rOriginal.getDefaultShape()->getName() );
+    }
 
-const siteShape*
-basicBndSite::
-getShape(const std::string& rShapeName) const
-{
-std::map<std::string, siteShape>::const_iterator iShapeEntry
-= shapesByName.find(rShapeName);
+    const siteShape*
+    basicBndSite::
+    getShape (const std::string& rShapeName) const
+    {
+        std::map<std::string, siteShape>::const_iterator iShapeEntry
+        = shapesByName.find (rShapeName);
 
-return (shapesByName.end() == iShapeEntry)
-? 0
-: &(iShapeEntry->second);
-}
+        return (shapesByName.end() == iShapeEntry)
+               ? 0
+               : & (iShapeEntry->second);
+    }
 
-const siteShape*
-basicBndSite::
-mustGetShape(const std::string& rShapeName)
-throw(utl::xcpt)
-{
-const siteShape* pShape
-= getShape(rShapeName);
+    const siteShape*
+    basicBndSite::
+    mustGetShape (const std::string& rShapeName)
+    throw (utl::xcpt)
+    {
+        const siteShape* pShape
+        = getShape (rShapeName);
 
-if(! pShape) throw unknownSiteShapeXcpt(*this,
-rShapeName);
-return pShape;
-}
+        if (! pShape) throw unknownSiteShapeXcpt (*this,
+                    rShapeName);
+        return pShape;
+    }
 }
 
 

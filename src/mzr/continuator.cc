@@ -37,134 +37,134 @@
 
 namespace mzr
 {
-class prepareUnitToContinue :
-public std::unary_function<unit*, void>
-{
-xmlpp::Element* pRootElt;
-xmlpp::Element* pModelElt;
-xmlpp::Element* pStreamsElt;
-std::map<std::string, std::string>& rTagToName;
-xmlpp::Element* pTaggedSpeciesElt;
+    class prepareUnitToContinue :
+                public std::unary_function<unit*, void>
+    {
+        xmlpp::Element* pRootElt;
+        xmlpp::Element* pModelElt;
+        xmlpp::Element* pStreamsElt;
+        std::map<std::string, std::string>& rTagToName;
+        xmlpp::Element* pTaggedSpeciesElt;
 
-public:
-prepareUnitToContinue(xmlpp::Element* pRootElement,
-xmlpp::Element* pModelElement,
-xmlpp::Element* pStreamsElement,
-std::map<std::string, std::string>& refTagToName,
-xmlpp::Element* pTaggedSpeciesElement) :
-pRootElt(pRootElement),
-pModelElt(pModelElement),
-pStreamsElt(pStreamsElement),
-rTagToName(refTagToName),
-pTaggedSpeciesElt(pTaggedSpeciesElement)
-{}
+    public:
+        prepareUnitToContinue (xmlpp::Element* pRootElement,
+                               xmlpp::Element* pModelElement,
+                               xmlpp::Element* pStreamsElement,
+                               std::map<std::string, std::string>& refTagToName,
+                               xmlpp::Element* pTaggedSpeciesElement) :
+                pRootElt (pRootElement),
+                pModelElt (pModelElement),
+                pStreamsElt (pStreamsElement),
+                rTagToName (refTagToName),
+                pTaggedSpeciesElt (pTaggedSpeciesElement)
+        {}
 
-void
-operator()(unit* pUnit) const
-throw(std::exception)
-{
-pUnit->prepareToContinue(pRootElt,
-pModelElt,
-pStreamsElt,
-rTagToName,
-pTaggedSpeciesElt);
-}
-};
+        void
+        operator() (unit* pUnit) const
+        throw (std::exception)
+        {
+            pUnit->prepareToContinue (pRootElt,
+                                      pModelElt,
+                                      pStreamsElt,
+                                      rTagToName,
+                                      pTaggedSpeciesElt);
+        }
+    };
 
-class getTagName : public
-std::unary_function<xmlpp::Node*, std::pair<std::string, std::string> >
-{
-public:
-std::pair<std::string, std::string>
-operator()(xmlpp::Node* pExplicitSpeciesTagNode) const
-throw(std::exception)
-{
-xmlpp::Element* pExplicitSpeciesTagElt
-= utl::dom::mustBeElementPtr(pExplicitSpeciesTagNode);
+    class getTagName : public
+                std::unary_function<xmlpp::Node*, std::pair<std::string, std::string> >
+    {
+    public:
+        std::pair<std::string, std::string>
+        operator() (xmlpp::Node* pExplicitSpeciesTagNode) const
+        throw (std::exception)
+        {
+            xmlpp::Element* pExplicitSpeciesTagElt
+            = utl::dom::mustBeElementPtr (pExplicitSpeciesTagNode);
 
-std::string speciesName
-= utl::dom::mustGetAttrString(pExplicitSpeciesTagElt,
-eltName::explicitSpeciesTag_nameAttr);
+            std::string speciesName
+            = utl::dom::mustGetAttrString (pExplicitSpeciesTagElt,
+                                           eltName::explicitSpeciesTag_nameAttr);
 
-std::string speciesTag
-= utl::dom::mustGetAttrString(pExplicitSpeciesTagElt,
-eltName::explicitSpeciesTag_tagAttr);
+            std::string speciesTag
+            = utl::dom::mustGetAttrString (pExplicitSpeciesTagElt,
+                                           eltName::explicitSpeciesTag_tagAttr);
 
-return std::pair<std::string, std::string>(speciesTag, speciesName);
-}
-};
+            return std::pair<std::string, std::string> (speciesTag, speciesName);
+        }
+    };
 
-continuator::continuator(int argc,
-char** argv,
-xmlpp::Document* pMoleculizerInput,
-xmlpp::Document* pMoleculizerState)
-throw(std::exception)
-{
+    continuator::continuator (int argc,
+                              char** argv,
+                              xmlpp::Document* pMoleculizerInput,
+                              xmlpp::Document* pMoleculizerState)
+    throw (std::exception)
+    {
 // This also initializes random seed.
 // processCommandLineArgs(argc, argv);
 
 // Do the "input capabilities" thing.
-constructorPrelude();
+        constructorPrelude();
 
 // Get the basic framework of moleculizer-input.
-xmlpp::Element* pInputRootElement
-= pMoleculizerInput->get_root_node();
+        xmlpp::Element* pInputRootElement
+        = pMoleculizerInput->get_root_node();
 
-xmlpp::Element* pInputModelElement
-= utl::dom::mustGetUniqueChild(pInputRootElement,
-eltName::model);
-xmlpp::Element* pInputStreamsElement
-= utl::dom::mustGetUniqueChild(pInputRootElement,
-eltName::streams);
+        xmlpp::Element* pInputModelElement
+        = utl::dom::mustGetUniqueChild (pInputRootElement,
+                                        eltName::model);
+        xmlpp::Element* pInputStreamsElement
+        = utl::dom::mustGetUniqueChild (pInputRootElement,
+                                        eltName::streams);
 
 // Similar digestion of moleculizer-state.
-xmlpp::Element* pStateRootElement
-= pMoleculizerState->get_root_node();
+        xmlpp::Element* pStateRootElement
+        = pMoleculizerState->get_root_node();
 
-xmlpp::Element* pStateModelElement
-= utl::dom::mustGetUniqueChild(pStateRootElement,
-eltName::model);
-xmlpp::Element* pStateTaggedSpeciesElement
-= utl::dom::mustGetUniqueChild(pStateModelElement,
-eltName::taggedSpecies);
-xmlpp::Element* pTimeElement
-= utl::dom::mustGetUniqueChild(pStateModelElement,
-eltName::time);
+        xmlpp::Element* pStateModelElement
+        = utl::dom::mustGetUniqueChild (pStateRootElement,
+                                        eltName::model);
+        xmlpp::Element* pStateTaggedSpeciesElement
+        = utl::dom::mustGetUniqueChild (pStateModelElement,
+                                        eltName::taggedSpecies);
+        xmlpp::Element* pTimeElement
+        = utl::dom::mustGetUniqueChild (pStateModelElement,
+                                        eltName::time);
 
 // Get the time at which the state was dumped.
-double dumpTime
-= utl::dom::mustGetAttrDouble(pTimeElement,
-eltName::time_secondsAttr);
+        double dumpTime
+        = utl::dom::mustGetAttrDouble (pTimeElement,
+                                       eltName::time_secondsAttr);
 
 // Extract model info.  This has to be done after the simulation time is
 // restored, so that explicit events in the moleculizer-input that have
 // already happened will not be scheduled.
-constructorCore(pInputRootElement,
-pInputModelElement);
+        constructorCore (pInputRootElement,
+                         pInputModelElement);
 
 // Get the map from dump tag to explicit species names.
 // The stochastirator species are known only by name, so that
 // to match the dump tag of a stochastirator species up with
 // the species, we need this correspondence.
-xmlpp::Element* pExplicitSpeciesTagsElt
-= utl::dom::mustGetUniqueChild(pStateModelElement,
-eltName::explicitSpeciesTags);
-xmlpp::Node::NodeList explicitSpeciesTagNodes
-= pExplicitSpeciesTagsElt->get_children(eltName::explicitSpeciesTag);
-std::map<std::string, std::string> tagToName;
-std::transform(explicitSpeciesTagNodes.begin(),
-explicitSpeciesTagNodes.end(),
-std::inserter(tagToName,
-tagToName.begin()),
-getTagName());
+        xmlpp::Element* pExplicitSpeciesTagsElt
+        = utl::dom::mustGetUniqueChild (pStateModelElement,
+                                        eltName::explicitSpeciesTags);
+        xmlpp::Node::NodeList explicitSpeciesTagNodes
+        = pExplicitSpeciesTagsElt->get_children (eltName::explicitSpeciesTag);
+        std::map<std::string, std::string> tagToName;
+        std::transform (explicitSpeciesTagNodes.begin(),
+                        explicitSpeciesTagNodes.end(),
+                        std::inserter (tagToName,
+                                       tagToName.begin() ),
+                        getTagName() );
 
 // Have each unit do its "prepareToContinue" thing.
-std::for_each(pUserUnits->begin(),
-pUserUnits->end(),
-prepareUnitToContinue(pInputRootElement,
-pInputModelElement,
-pInputStreamsElement,
-tagToName,
-pStateTaggedSpeciesElement));
-}
+        std::for_each (pUserUnits->begin(),
+                       pUserUnits->end(),
+                       prepareUnitToContinue (pInputRootElement,
+                                              pInputModelElement,
+                                              pInputStreamsElement,
+                                              tagToName,
+                                              pStateTaggedSpeciesElement) );
+    }
 }

@@ -37,37 +37,37 @@
 
 namespace mzr
 {
-double
-mzrSpecies::getConc(const moleculizer& rMoleculizer) const
-{
-return ((double) getPop()) / rMoleculizer.pUserUnits->pMzrUnit->getMolarFactor().getFactor();
-}
+    double
+    mzrSpecies::getConc (const moleculizer& rMoleculizer) const
+    {
+        return ( (double) getPop() ) / rMoleculizer.pUserUnits->pMzrUnit->getMolarFactor().getFactor();
+    }
 
-void
-mzrSpecies::expandReactionNetwork()
-{
-this->expandReactionNetwork(1);
-}
+    void
+    mzrSpecies::expandReactionNetwork()
+    {
+        this->expandReactionNetwork (1);
+    }
 
-void
-mzrSpecies::expandReactionNetwork(unsigned int depth)
-{
-ensureNotified(depth);
-}
-
-
-void
-mzrSpecies::setGenerateDepth(unsigned int i)
-{
-mzrSpecies::generateDepth = i;
-}
+    void
+    mzrSpecies::expandReactionNetwork (unsigned int depth)
+    {
+        ensureNotified (depth);
+    }
 
 
-unsigned int
-mzrSpecies::getGenerateDepth()
-{
-return mzrSpecies::generateDepth;
-}
+    void
+    mzrSpecies::setGenerateDepth (unsigned int i)
+    {
+        mzrSpecies::generateDepth = i;
+    }
 
-unsigned int mzrSpecies::generateDepth = 1;
+
+    unsigned int
+    mzrSpecies::getGenerateDepth()
+    {
+        return mzrSpecies::generateDepth;
+    }
+
+    unsigned int mzrSpecies::generateDepth = 1;
 }

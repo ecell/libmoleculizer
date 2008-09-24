@@ -1,5 +1,5 @@
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-//                                                                          
+//
 //        This file is part of Libmoleculizer
 //
 //        Copyright (C) 2001-2008 The Molecular Sciences Institute.
@@ -7,7 +7,7 @@
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 //
 // Moleculizer is free software; you can redistribute it and/or modify
-// it under the terms of the GNU Lesser General Public License as published 
+// it under the terms of the GNU Lesser General Public License as published
 // by the Free Software Foundation; either version 3 of the License, or
 // (at your option) any later version.
 //
@@ -19,14 +19,14 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with Moleculizer; if not, write to the Free Software Foundation
 // Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307,  USA
-//    
+//
 // END HEADER
-// 
+//
 // Original Author:
 //   Nathan Addy, Scientific Programmer, Molecular Sciences Institute, 2001
 //
 // Modifing Authors:
-//              
+//
 //
 
 #ifndef __NMR_PERMUTATION_HH
@@ -51,9 +51,9 @@ namespace nmr
 // ensures that the Permutation is pre-bijective -- ie that any element of the range which
 // is not equal to Permutation::UNDEF only shows up once.
 
-DECLARE_CLASS( Permutation );
-struct Permutation
-{
+    DECLARE_CLASS ( Permutation );
+    struct Permutation
+    {
 // NOTES, TODO:
 // Right now the situation is that the domain is {0, ... , n-1}
 // and the range is {0, ... , n-1} U Permutation::UNDEF.
@@ -64,15 +64,15 @@ struct Permutation
 // at the moment)
 
 public:
-static const int UNDEF;
+        static const int UNDEF;
 
 public:
-DECLARE_TYPE( unsigned int, BindingNdx);
-DECLARE_TYPE( unsigned int, Dimension);
-DECLARE_TYPE( std::vector<unsigned int>, UnsignedIntegerVector);
-DECLARE_TYPE( std::vector<int>, IntegerVector);
-DECLARE_TYPE( IntegerVector, CorePermutationType);
-DECLARE_TYPE( std::set<Permutation>, SetOfPermutations);
+        DECLARE_TYPE ( unsigned int, BindingNdx);
+        DECLARE_TYPE ( unsigned int, Dimension);
+        DECLARE_TYPE ( std::vector<unsigned int>, UnsignedIntegerVector);
+        DECLARE_TYPE ( std::vector<int>, IntegerVector);
+        DECLARE_TYPE ( IntegerVector, CorePermutationType);
+        DECLARE_TYPE ( std::set<Permutation>, SetOfPermutations);
 
 public:
 
@@ -80,108 +80,108 @@ public:
 //
 
 // This makes a completely undefined permutation on n objects.
-Permutation(Dimension dim = 0);
-Permutation(PermutationCref aPermutation);
-Permutation(CorePermutationTypeCref aPermutationVector);
+        Permutation (Dimension dim = 0);
+        Permutation (PermutationCref aPermutation);
+        Permutation (CorePermutationTypeCref aPermutationVector);
 
 // This constructor copies aPermutation, and then adds the point perm(pos)=value to it.
-Permutation(PermutationCref aPermutation, BindingNdx pos, int value)
-throw(nmr::BadPermutationConstructorXcpt);
+        Permutation (PermutationCref aPermutation, BindingNdx pos, int value)
+        throw (nmr::BadPermutationConstructorXcpt);
 
-Permutation( PermutationCref aPermutation,
-PermutationCref bPermution);
+        Permutation ( PermutationCref aPermutation,
+                      PermutationCref bPermution);
 
 // API
 //
-int getValueAtPosition(BindingNdx pos) const
-throw( nmr::BadPermutationIndexXcpt );
+        int getValueAtPosition (BindingNdx pos) const
+        throw ( nmr::BadPermutationIndexXcpt );
 
-void setValueAtPosition(BindingNdx pos, unsigned int val)
-throw( nmr::BadPermutationIndexXcpt, nmr::DuplicateValueXcpt) ;
+        void setValueAtPosition (BindingNdx pos, unsigned int val)
+        throw ( nmr::BadPermutationIndexXcpt, nmr::DuplicateValueXcpt) ;
 
-void resetValueAtPosition(BindingNdx pos)
-throw(nmr::BadPermutationIndexXcpt);
+        void resetValueAtPosition (BindingNdx pos)
+        throw (nmr::BadPermutationIndexXcpt);
 
 // Returns the Permutation (*this)( compositionPermutation(x) )
-Permutation
-of(PermutationCref compositionPermutation) const
-throw( nmr::IncompatiblePermutationsXcpt);
+        Permutation
+        of (PermutationCref compositionPermutation) const
+        throw ( nmr::IncompatiblePermutationsXcpt);
 
-Permutation
-invertPermutation() const;
+        Permutation
+        invertPermutation() const;
 
-void
-getPreimage( const int& rangeElement,
-std::set<unsigned int>& refDomainElements) const;
+        void
+        getPreimage ( const int& rangeElement,
+                      std::set<unsigned int>& refDomainElements) const;
 
-void getUnfixedDomainElements( std::set<unsigned int>& refDomainElements) const;
+        void getUnfixedDomainElements ( std::set<unsigned int>& refDomainElements) const;
 
 //             bool
 //             getIsBijection() const;
 
-bool
-getIsComplete() const;
+        bool
+        getIsComplete() const;
 
-bool
-getIsIncomplete() const ;
+        bool
+        getIsIncomplete() const ;
 
-Dimension
-getDimension() const;
+        Dimension
+        getDimension() const;
 
-int& operator[](const BindingNdx& n)
-throw(nmr::BadPermutationIndexXcpt);
+        int& operator[] (const BindingNdx& n)
+        throw (nmr::BadPermutationIndexXcpt);
 
-const int& operator[](const BindingNdx& n) const
-throw(nmr::BadPermutationIndexXcpt);
+        const int& operator[] (const BindingNdx& n) const
+        throw (nmr::BadPermutationIndexXcpt);
 
-unsigned int
-getLeastValueNotInPermutation() const
-throw(nmr::GeneralNmrXcpt);
+        unsigned int
+        getLeastValueNotInPermutation() const
+        throw (nmr::GeneralNmrXcpt);
 
-bool
-checkPermutationLegality() const;
+        bool
+        checkPermutationLegality() const;
 
-bool
-operator==(PermutationCref pm);
+        bool
+        operator== (PermutationCref pm);
 
-bool
-operator<(PermutationCref pm) const;
+        bool
+        operator< (PermutationCref pm) const;
 
-CorePermutationTypeCref
-getCorePermutation() const
-{
-return thePermutation;
-}
+        CorePermutationTypeCref
+        getCorePermutation() const
+        {
+            return thePermutation;
+        }
 
-std::string
-repr() const;
+        std::string
+        repr() const;
 
-static Permutation
-generateIdentity( unsigned int N);
+        static Permutation
+        generateIdentity ( unsigned int N);
 
 
-static void
-generate_Sn( SetOfPermutationsRef setOfPermutations, unsigned int N);
+        static void
+        generate_Sn ( SetOfPermutationsRef setOfPermutations, unsigned int N);
 
 
 // Produce from S_{ Sum(signature)} the subgroup isomorphic to
 // S_n1 x S_n2 x ... x S_nk, where signature[i] = n_i.
-static void
-generateAllPermutationsMatchingSignature( SetOfPermutationsRef permSet,
-const std::vector<unsigned int>& signature);
+        static void
+        generateAllPermutationsMatchingSignature ( SetOfPermutationsRef permSet,
+                const std::vector<unsigned int>& signature);
 
 protected:
-void maximallyExtend();
-unsigned int getNumberOfFixedElements() const;
-unsigned int getNumberOfUndefElements() const;
+        void maximallyExtend();
+        unsigned int getNumberOfFixedElements() const;
+        unsigned int getNumberOfUndefElements() const;
 
-CorePermutationType thePermutation;
-Dimension theDimension;
-};
+        CorePermutationType thePermutation;
+        Dimension theDimension;
+    };
 
 }
 
-std::ostream& operator<<(std::ostream& ostr, const nmr::Permutation& thePerm);
+std::ostream& operator<< (std::ostream& ostr, const nmr::Permutation& thePerm);
 
 
 

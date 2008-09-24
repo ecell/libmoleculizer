@@ -44,9 +44,9 @@ namespace utl
 // right magnitude, but it should be numerically correct anyway.  (The
 // fractional part is derived from the base 2 fractional part without making
 // a detailed correction of its magnitude.)
-double
-frexp10(double num,
-int& rExponent);
+    double
+    frexp10 (double num,
+             int& rExponent);
 }
 
 #endif // UTL_FREXP10_H

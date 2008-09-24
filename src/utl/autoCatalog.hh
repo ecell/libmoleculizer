@@ -37,57 +37,57 @@
 
 namespace utl
 {
-template<class catObject>
-class catalog :
-public std::map<std::string, catObject*>
-{
-public:
-catObject*
-findEntry(const std::string& rObjectName) const
-{
-typename catalog::const_iterator iNamePtrPair;
-iNamePtrPair = this->find(rObjectName);
-return this->end() == iNamePtrPair
-? 0
-: iNamePtrPair->second;
-}
+    template<class catObject>
+    class catalog :
+                public std::map<std::string, catObject*>
+    {
+    public:
+        catObject*
+        findEntry (const std::string& rObjectName) const
+        {
+            typename catalog::const_iterator iNamePtrPair;
+            iNamePtrPair = this->find (rObjectName);
+            return this->end() == iNamePtrPair
+                   ? 0
+                   : iNamePtrPair->second;
+        }
 
-/*!  Returns false if the insert fails because there is already an
-entry with the given name. */
-bool
-addEntry(const std::string& rObjectName,
-catObject* pObject)
-{
-typename std::pair<typename catalog::iterator, bool> insertResult
-= insert(typename catalog::value_type(rObjectName,pObject));
-return insertResult.second;
-}
-};
+        /*!  Returns false if the insert fails because there is already an
+        entry with the given name. */
+        bool
+        addEntry (const std::string& rObjectName,
+                  catObject* pObject)
+        {
+            typename std::pair<typename catalog::iterator, bool> insertResult
+            = insert (typename catalog::value_type (rObjectName,pObject) );
+            return insertResult.second;
+        }
+    };
 
-template<class catObject>
-class autoCatalog
-: public catalog<catObject>
-{
-class doDelete
-: public std::unary_function<typename autoCatalog::value_type, void>
-{
-public:
-void operator()(const
-typename doDelete::argument_type&
-rNamePtrPair) const
-{
-delete rNamePtrPair.second;
-}
-};
+    template<class catObject>
+    class autoCatalog
+                : public catalog<catObject>
+    {
+        class doDelete
+                    : public std::unary_function<typename autoCatalog::value_type, void>
+        {
+        public:
+            void operator() (const
+                             typename doDelete::argument_type&
+                             rNamePtrPair) const
+            {
+                delete rNamePtrPair.second;
+            }
+        };
 
-public:
-~autoCatalog(void)
-{
-for_each(this->begin(),
-this->end(),
-doDelete());
-}
-};
+    public:
+        ~autoCatalog (void)
+        {
+            for_each (this->begin(),
+                      this->end(),
+                      doDelete() );
+        }
+    };
 }
 
 #endif // UTL_AUTOCATALOG_H

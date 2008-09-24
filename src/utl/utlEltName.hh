@@ -36,12 +36,12 @@
 
 namespace utl
 {
-namespace eltName
-{
-extern const std::string sciNote;
-extern const std::string sciNote_fractionAttr;
-extern const std::string sciNote_exponentAttr;
-}
+    namespace eltName
+    {
+        extern const std::string sciNote;
+        extern const std::string sciNote_fractionAttr;
+        extern const std::string sciNote_exponentAttr;
+    }
 }
 
 #endif // UTL_UTLELTNAME_H

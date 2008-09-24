@@ -36,49 +36,49 @@
 
 namespace cpx
 {
-template<class baseMolT>
-modMol<baseMolT>::
-modMol(const baseMolT& rBaseMol,
-double molecularWeight,
-const std::map<std::string, const modification*>& rModMap) :
-alloMol<stateMolType>(stateMolType(rBaseMol)),
-modMolMixin(rModMap)
-{
+    template<class baseMolT>
+    modMol<baseMolT>::
+    modMol (const baseMolT& rBaseMol,
+            double molecularWeight,
+            const std::map<std::string, const modification*>& rModMap) :
+            alloMol<stateMolType> (stateMolType (rBaseMol) ),
+            modMolMixin (rModMap)
+    {
 // Intern the default state in this mol's alloMap.
-molParam defaultParam
-= this->internState(modMolState(molecularWeight,
-indexModMap(rModMap)));
+        molParam defaultParam
+        = this->internState (modMolState (molecularWeight,
+                                          indexModMap (rModMap) ) );
 
 // Save pointer to the default state in the alloMap.
-this->pDefaultState = &(this->externState(defaultParam));
-}
+        this->pDefaultState = & (this->externState (defaultParam) );
+    }
 
-template<class baseMolT>
-const modMolState*
-modMol<baseMolT>::
-internModMap(const std::map<std::string, const modification*>& rModMap)
-{
-const modMolState& rDflt = *(this->getDefaultState());
+    template<class baseMolT>
+    const modMolState*
+    modMol<baseMolT>::
+    internModMap (const std::map<std::string, const modification*>& rModMap)
+    {
+        const modMolState& rDflt = * (this->getDefaultState() );
 
 // This seems like an insane way to get the base molecular weight.
-const molState& rBaseState = rDflt;
-double baseWeight = rBaseState.getMolWeight();
+        const molState& rBaseState = rDflt;
+        double baseWeight = rBaseState.getMolWeight();
 
-return this->internState(modMolState(baseWeight,
-substituteModMap(rModMap,
-rDflt)));
-}
+        return this->internState (modMolState (baseWeight,
+                                               substituteModMap (rModMap,
+                                                                 rDflt) ) );
+    }
 
-template<class baseMolT>
-std::string
-modMol<baseMolT>::
-genInstanceName(int molInstanceNdx) const
-{
-std::ostringstream oss;
-oss << "mod-mol_"
-<< molInstanceNdx;
-return oss.str();
-}
+    template<class baseMolT>
+    std::string
+    modMol<baseMolT>::
+    genInstanceName (int molInstanceNdx) const
+    {
+        std::ostringstream oss;
+        oss << "mod-mol_"
+        << molInstanceNdx;
+        return oss.str();
+    }
 }
 
 #endif // CPX_MODMOLIMPL_H

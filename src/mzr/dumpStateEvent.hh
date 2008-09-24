@@ -38,18 +38,18 @@
 namespace mzr
 {
 // Dump of state for export to other applications or other processing.
-class dumpStateEvent :
-public mzrEvent
-{
-std::string outputFileName;
+    class dumpStateEvent :
+                public mzrEvent
+    {
+        std::string outputFileName;
 
-public:
-dumpStateEvent(const std::string& rOutputFileName);
+    public:
+        dumpStateEvent (const std::string& rOutputFileName);
 
-fnd::eventResult
-happen(moleculizer& rMolzer)
-throw(std::exception);
-};
+        fnd::eventResult
+        happen (moleculizer& rMolzer)
+        throw (std::exception);
+    };
 }
 
 #endif // MZR_DUMPSTATEEVENT_H

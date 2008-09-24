@@ -36,35 +36,35 @@
 
 namespace cpx
 {
-/*! \ingroup omniGroup
-\brief Context specifier for subcomplex. */
-template<class omniPlexT>
-class subPlexSpec :
-public std::pair<omniPlexT*,
-plexIso>
-{
-public:
-typedef omniPlexT omniPlexType;
+    /*! \ingroup omniGroup
+    \brief Context specifier for subcomplex. */
+    template<class omniPlexT>
+    class subPlexSpec :
+                public std::pair<omniPlexT*,
+                plexIso>
+    {
+    public:
+        typedef omniPlexT omniPlexType;
 
-subPlexSpec(omniPlexType* pOmni,
-const plexIso& rInjection) :
-std::pair<omniPlexType*,
-plexIso>(pOmni,
-rInjection)
-{}
+        subPlexSpec (omniPlexType* pOmni,
+                     const plexIso& rInjection) :
+                std::pair<omniPlexType*,
+                plexIso> (pOmni,
+                          rInjection)
+        {}
 
-omniPlexType*
-getOmni(void) const
-{
-return this->first;
-}
+        omniPlexType*
+        getOmni (void) const
+        {
+            return this->first;
+        }
 
-const plexIso&
-getInjection(void) const
-{
-return this->second;
-}
-};
+        const plexIso&
+        getInjection (void) const
+        {
+            return this->second;
+        }
+    };
 }
 
 #endif // CPX_SUBPLEXSPEC_H

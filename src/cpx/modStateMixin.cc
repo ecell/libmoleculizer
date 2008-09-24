@@ -33,32 +33,32 @@
 
 namespace cpx
 {
-class accumWeightDelta :
-public std::unary_function<const modification*, void>
-{
-double& rTotal;
+    class accumWeightDelta :
+                public std::unary_function<const modification*, void>
+    {
+        double& rTotal;
 
-public:
-accumWeightDelta(double& rTotalWeightDelta) :
-rTotal(rTotalWeightDelta)
-{}
+    public:
+        accumWeightDelta (double& rTotalWeightDelta) :
+                rTotal (rTotalWeightDelta)
+        {}
 
-void
-operator()(const modification* pModification) const
-{
-rTotal += pModification->getWeightDelta();
-}
-};
+        void
+        operator() (const modification* pModification) const
+        {
+            rTotal += pModification->getWeightDelta();
+        }
+    };
 
-double
-modStateMixin::totalWeightDelta(void) const
-{
-double totalDelta = 0.0;
+    double
+    modStateMixin::totalWeightDelta (void) const
+    {
+        double totalDelta = 0.0;
 
-std::for_each(begin(),
-end(),
-accumWeightDelta(totalDelta));
+        std::for_each (begin(),
+                       end(),
+                       accumWeightDelta (totalDelta) );
 
-return totalDelta;
-}
+        return totalDelta;
+    }
 }

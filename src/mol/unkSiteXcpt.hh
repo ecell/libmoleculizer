@@ -39,20 +39,20 @@ namespace bnd
 {
 // Exception thrown when the user refers to a binding site by an incorrect
 // name.
-class unkSiteXcpt :
-public utl::xcpt
-{
-static std::string
-mkMsg(const std::string& rBadBindingSiteName,
-const xmlpp::Node* pOffendingNode = 0);
+    class unkSiteXcpt :
+                public utl::xcpt
+    {
+        static std::string
+        mkMsg (const std::string& rBadBindingSiteName,
+               const xmlpp::Node* pOffendingNode = 0);
 
-public:
-unkSiteXcpt(const std::string& rBadBindingSiteName,
-const xmlpp::Node* pOffendingNode = 0) throw() :
-utl::xcpt(mkMsg(rBadBindingSiteName,
-pOffendingNode))
-{}
-};
+    public:
+        unkSiteXcpt (const std::string& rBadBindingSiteName,
+                     const xmlpp::Node* pOffendingNode = 0) throw() :
+                utl::xcpt (mkMsg (rBadBindingSiteName,
+                                  pOffendingNode) )
+        {}
+    };
 }
 
 #endif // MOL_UNKSITEXCPT_H

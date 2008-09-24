@@ -49,52 +49,52 @@
 namespace dimer
 {
 
-/*! \ingroup dimerGroup
-\brief Provides dimerization and decomposition reactions.
+    /*! \ingroup dimerGroup
+    \brief Provides dimerization and decomposition reactions.
 
-This unit provides the basic reactions for binding complexes
-together at free binding sites, and conversely, for breaking complexes
-apart at bindings.
+    This unit provides the basic reactions for binding complexes
+    together at free binding sites, and conversely, for breaking complexes
+    apart at bindings.
 
-This unit also provides databases of rates constants connected
-with bindings and with %pairs of compatible binding sites.  These
-databases are available through static functions.  They are used by
-plexFamily routines in addition to being used in this unit, so
-that for the time being, this is an essentially mandatory unit. */
+    This unit also provides databases of rates constants connected
+    with bindings and with %pairs of compatible binding sites.  These
+    databases are available through static functions.  They are used by
+    plexFamily routines in addition to being used in this unit, so
+    that for the time being, this is an essentially mandatory unit. */
 
-class dimerUnit :
-public mzr::unit
-{
+    class dimerUnit :
+                public mzr::unit
+    {
 
-public:
+    public:
 
-mzr::mzrUnit& rMzrUnit;
-bnd::molUnit& rMolUnit;
-plx::plexUnit& rPlexUnit;
+        mzr::mzrUnit& rMzrUnit;
+        bnd::molUnit& rMolUnit;
+        plx::plexUnit& rPlexUnit;
 
-dimerUnit(mzr::moleculizer& rMoleculizer,
-mzr::mzrUnit& refMzrUnit,
-bnd::molUnit& refMolUnit,
-plx::plexUnit& refPlexUnit) :
-mzr::unit("dimer",
-rMoleculizer),
-rMzrUnit(refMzrUnit),
-rMolUnit(refMolUnit),
-rPlexUnit(refPlexUnit)
-{
+        dimerUnit (mzr::moleculizer& rMoleculizer,
+                   mzr::mzrUnit& refMzrUnit,
+                   bnd::molUnit& refMolUnit,
+                   plx::plexUnit& refPlexUnit) :
+                mzr::unit ("dimer",
+                           rMoleculizer),
+                rMzrUnit (refMzrUnit),
+                rMolUnit (refMolUnit),
+                rPlexUnit (refPlexUnit)
+        {
 // The only thing this unit handles is dimerization/decomposition
 // reactions.
-inputCap.addReactionGenName(eltName::dimerizationGen);
-}
+            inputCap.addReactionGenName (eltName::dimerizationGen);
+        }
 
-void
-parseDomInput(xmlpp::Element* pRootElement,
-xmlpp::Element* pModelElement,
-xmlpp::Element* pStreamElt) throw(std::exception);
+        void
+        parseDomInput (xmlpp::Element* pRootElement,
+                       xmlpp::Element* pModelElement,
+                       xmlpp::Element* pStreamElt) throw (std::exception);
 
-void
-insertStateElts(xmlpp::Element* pRootElt) throw(std::exception);
-};
+        void
+        insertStateElts (xmlpp::Element* pRootElt) throw (std::exception);
+    };
 }
 
 #endif // DIMER_DIMERUNIT_H

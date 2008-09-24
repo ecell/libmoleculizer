@@ -33,8 +33,8 @@
 
 namespace nmr
 {
-namespace eltName
-{
-const std::string namingConvention("naming-convention");
-}
+    namespace eltName
+    {
+        const std::string namingConvention ("naming-convention");
+    }
 }

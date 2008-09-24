@@ -39,44 +39,44 @@
 
 namespace dimer
 {
-class dimerUnit;
+    class dimerUnit;
 
-class dimerizeRxnGenPair :
-public fnd::binaryRxnGenPair<bnd::siteFeature, bnd::siteFeature>
-{
-utl::autoVector<mzr::mzrReaction>* pFamily;
-mzr::mzrUnit& rMzrUnit;
-plx::plexUnit& rPlexUnit;
-dimerizeExtrapolator* pExtrap;
+    class dimerizeRxnGenPair :
+                public fnd::binaryRxnGenPair<bnd::siteFeature, bnd::siteFeature>
+    {
+        utl::autoVector<mzr::mzrReaction>* pFamily;
+        mzr::mzrUnit& rMzrUnit;
+        plx::plexUnit& rPlexUnit;
+        dimerizeExtrapolator* pExtrap;
 
-public:
+    public:
 
 // Note that this reaction generator memory manages the rate extrapolator.
-dimerizeRxnGenPair(bnd::siteFeature& rLeftSiteFeature,
-bnd::siteFeature& rRightSiteFeature,
-utl::autoVector<mzr::mzrReaction>* pDimerizeFamily,
-mzr::mzrUnit& refMzrUnit,
-plx::plexUnit& refPlexUnit,
-dimerizeExtrapolator* pExtrapolator) :
-fnd::binaryRxnGenPair<bnd::siteFeature, bnd::siteFeature>(rLeftSiteFeature,
-rRightSiteFeature),
-pFamily(pDimerizeFamily),
-rMzrUnit(refMzrUnit),
-rPlexUnit(refPlexUnit),
-pExtrap(pExtrapolator)
-{}
+        dimerizeRxnGenPair (bnd::siteFeature& rLeftSiteFeature,
+                            bnd::siteFeature& rRightSiteFeature,
+                            utl::autoVector<mzr::mzrReaction>* pDimerizeFamily,
+                            mzr::mzrUnit& refMzrUnit,
+                            plx::plexUnit& refPlexUnit,
+                            dimerizeExtrapolator* pExtrapolator) :
+                fnd::binaryRxnGenPair<bnd::siteFeature, bnd::siteFeature> (rLeftSiteFeature,
+                        rRightSiteFeature),
+                pFamily (pDimerizeFamily),
+                rMzrUnit (refMzrUnit),
+                rPlexUnit (refPlexUnit),
+                pExtrap (pExtrapolator)
+        {}
 
-~dimerizeRxnGenPair(void)
-{
-delete pExtrap;
-}
+        ~dimerizeRxnGenPair (void)
+        {
+            delete pExtrap;
+        }
 
-void
-makeBinaryReactions
-(const cpx::cxSite<plx::mzrPlexSpecies, plx::mzrPlexFamily>& rLeftContext,
-const cpx::cxSite<plx::mzrPlexSpecies, plx::mzrPlexFamily>& rRightContext,
-int generateDepth) const;
-};
+        void
+        makeBinaryReactions
+        (const cpx::cxSite<plx::mzrPlexSpecies, plx::mzrPlexFamily>& rLeftContext,
+         const cpx::cxSite<plx::mzrPlexSpecies, plx::mzrPlexFamily>& rRightContext,
+         int generateDepth) const;
+    };
 }
 
 #endif // DIMER_DIMERIZERXNGEN_H

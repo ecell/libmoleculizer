@@ -48,75 +48,75 @@
 
 namespace stoch
 {
-/*! \ingroup stochGroup
-\brief Unit for small molecules and stoichiometric reactions. */
-class stochUnit :
-public mzr::unit
-{
-utl::autoCatalog<stochSpecies> stochSpeciesByName;
-std::vector<mzr::mzrReaction*> noSubstrateArrows;
+    /*! \ingroup stochGroup
+    \brief Unit for small molecules and stoichiometric reactions. */
+    class stochUnit :
+                public mzr::unit
+    {
+        utl::autoCatalog<stochSpecies> stochSpeciesByName;
+        std::vector<mzr::mzrReaction*> noSubstrateArrows;
 
-public:
+    public:
 
-bool
-addStochSpecies(const std::string& rSpeciesName,
-stochSpecies* pStochSpecies);
+        bool
+        addStochSpecies (const std::string& rSpeciesName,
+                         stochSpecies* pStochSpecies);
 
-void
-mustAddStochSpecies(const std::string& rSpeciesName,
-stochSpecies* pStochSpecies,
-xmlpp::Node* pRequestingNode = 0)
-throw(utl::xcpt);
+        void
+        mustAddStochSpecies (const std::string& rSpeciesName,
+                             stochSpecies* pStochSpecies,
+                             xmlpp::Node* pRequestingNode = 0)
+        throw (utl::xcpt);
 
-stochSpecies*
-findStochSpecies(const std::string& rSpeciesName);
+        stochSpecies*
+        findStochSpecies (const std::string& rSpeciesName);
 
-stochSpecies*
-mustGetStochSpecies(xmlpp::Node* pRequestingNode,
-const std::string& rSpeciesName)
-throw(unkStochSpeciesXcpt);
+        stochSpecies*
+        mustGetStochSpecies (xmlpp::Node* pRequestingNode,
+                             const std::string& rSpeciesName)
+        throw (unkStochSpeciesXcpt);
 
-void
-addNoSubstrateArrow(mzr::mzrReaction* pArrow);
+        void
+        addNoSubstrateArrow (mzr::mzrReaction* pArrow);
 
-mzr::mzrUnit& rMzrUnit;
+        mzr::mzrUnit& rMzrUnit;
 
-stochUnit(mzr::moleculizer& rMoleculizer,
-mzr::mzrUnit& refMzrUnit) :
-mzr::unit("stoch",
-rMoleculizer),
-rMzrUnit(refMzrUnit)
-{
+        stochUnit (mzr::moleculizer& rMoleculizer,
+                   mzr::mzrUnit& refMzrUnit) :
+                mzr::unit ("stoch",
+                           rMoleculizer),
+                rMzrUnit (refMzrUnit)
+        {
 // Unit isn't responsible for any model elements or
 // reaction generators.
 
 // Add responsibility for stoch species.
-inputCap.addExplicitSpeciesContentName(eltName::stochSpecies);
+            inputCap.addExplicitSpeciesContentName (eltName::stochSpecies);
 
 // Not responsible for any species streams or events.
-}
+        }
 
-void
-parseDomInput(xmlpp::Element* pRootElement,
-xmlpp::Element* pModelElement,
-xmlpp::Element* pStreamElt) throw(std::exception);
+        void
+        parseDomInput (xmlpp::Element* pRootElement,
+                       xmlpp::Element* pModelElement,
+                       xmlpp::Element* pStreamElt) throw (std::exception);
 
-void
-prepareToRun(xmlpp::Element* pRootElt,
-xmlpp::Element* pModelElt,
-xmlpp::Element* pStreamElt) throw(std::exception);
+        void
+        prepareToRun (xmlpp::Element* pRootElt,
+                      xmlpp::Element* pModelElt,
+                      xmlpp::Element* pStreamElt) throw (std::exception);
 
-void
-prepareToContinue(xmlpp::Element* pRootElt,
-xmlpp::Element* pModelElt,
-xmlpp::Element* pStreamsElt,
-std::map<std::string, std::string>& rTagToName,
-xmlpp::Element* pTaggedSpeciesElement)
-throw(std::exception);
+        void
+        prepareToContinue (xmlpp::Element* pRootElt,
+                           xmlpp::Element* pModelElt,
+                           xmlpp::Element* pStreamsElt,
+                           std::map<std::string, std::string>& rTagToName,
+                           xmlpp::Element* pTaggedSpeciesElement)
+        throw (std::exception);
 
-void
-insertStateElts(xmlpp::Element* pRootElt) throw(std::exception);
-};
+        void
+        insertStateElts (xmlpp::Element* pRootElt) throw (std::exception);
+    };
 }
 
 #endif // STOCHUNIT_H

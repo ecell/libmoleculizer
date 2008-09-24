@@ -36,20 +36,20 @@
 
 namespace mzr
 {
-class stopEventInPastXcpt :
-public utl::xcpt
-{
-static std::string
-mkMsg(double now,
-double badEventTime);
+    class stopEventInPastXcpt :
+                public utl::xcpt
+    {
+        static std::string
+        mkMsg (double now,
+               double badEventTime);
 
-public:
-stopEventInPastXcpt(double now,
-double badEventTime) :
-utl::xcpt(mkMsg(now,
-badEventTime))
-{}
-};
+    public:
+        stopEventInPastXcpt (double now,
+                             double badEventTime) :
+                utl::xcpt (mkMsg (now,
+                                  badEventTime) )
+        {}
+    };
 }
 
 #endif // MZR_STOPEVENTINPASTXCPT_H

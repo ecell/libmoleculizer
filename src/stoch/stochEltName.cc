@@ -33,21 +33,21 @@
 
 namespace stoch
 {
-namespace eltName
-{
-const std::string stochSpecies("stoch-species");
-const std::string stochSpecies_nameAttr("name");
+    namespace eltName
+    {
+        const std::string stochSpecies ("stoch-species");
+        const std::string stochSpecies_nameAttr ("name");
 
 // For state output.
 
-const std::string taggedStochSpecies("tagged-stoch-species");
-const std::string taggedStochSpecies_tagAttr("tag");
-const std::string taggedStochSpecies_nameAttr("name");
-const std::string weight("weight");
-const std::string weight_daltonsAttr("daltons");
-const std::string population("population");
-const std::string population_countAttr("count");
-const std::string concentration("concentration");
-const std::string concentration_valueAttr("value");
-}
+        const std::string taggedStochSpecies ("tagged-stoch-species");
+        const std::string taggedStochSpecies_tagAttr ("tag");
+        const std::string taggedStochSpecies_nameAttr ("name");
+        const std::string weight ("weight");
+        const std::string weight_daltonsAttr ("daltons");
+        const std::string population ("population");
+        const std::string population_countAttr ("count");
+        const std::string concentration ("concentration");
+        const std::string concentration_valueAttr ("value");
+    }
 }

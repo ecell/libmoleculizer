@@ -36,17 +36,17 @@
 
 namespace utl
 {
-class badNNIntArgXcpt :
-public utl::xcpt
-{
-static std::string
-mkMsg(const std::string& rTheBadArgument);
+    class badNNIntArgXcpt :
+                public utl::xcpt
+    {
+        static std::string
+        mkMsg (const std::string& rTheBadArgument);
 
-public:
-badNNIntArgXcpt(const std::string& rTheBadArgument) :
-utl::xcpt(mkMsg(rTheBadArgument))
-{}
-};
+    public:
+        badNNIntArgXcpt (const std::string& rTheBadArgument) :
+                utl::xcpt (mkMsg (rTheBadArgument) )
+        {}
+    };
 }
 
 #endif // UTL_BADNNINTARGXCPT_H

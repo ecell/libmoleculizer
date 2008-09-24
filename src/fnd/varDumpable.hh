@@ -38,35 +38,35 @@ namespace fnd
 {
 // Assumes that the value of the state variable can be written
 // directly to the output stream.
-template<class stateVarT,
-class dumpArgT>
-class varDumpable :
-public dumpable<dumpArgT>
-{
-const stateVarT* pVar;
+    template<class stateVarT,
+    class dumpArgT>
+    class varDumpable :
+                public dumpable<dumpArgT>
+    {
+        const stateVarT* pVar;
 
-public:
-varDumpable(const std::string& rName,
-const stateVarT* pStateVariable) :
-dumpable<dumpArgT>(rName),
-pVar(pStateVariable)
-{}
+    public:
+        varDumpable (const std::string& rName,
+                     const stateVarT* pStateVariable) :
+                dumpable<dumpArgT> (rName),
+                pVar (pStateVariable)
+        {}
 
-~varDumpable(void)
-{}
+        ~varDumpable (void)
+        {}
 
-const stateVarT*
-getVar(void) const
-{
-return pVar;
-}
+        const stateVarT*
+        getVar (void) const
+        {
+            return pVar;
+        }
 
-virtual void
-doDump(const dumpArgT& rDumpArg) const
-{
-rDumpArg.getOstream() << getVar()->getValue();
-}
-};
+        virtual void
+        doDump (const dumpArgT& rDumpArg) const
+        {
+            rDumpArg.getOstream() << getVar()->getValue();
+        }
+    };
 }
 
 #endif // FND_VARDUMPABLE_H

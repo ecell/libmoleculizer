@@ -43,81 +43,81 @@ namespace mzr
 // These templates add routines to emit output for dumpables
 // in a simulation state dump.  This keeps xmlpp stuff out of the
 // main templates.
-template<class mzrSpeciesType>
-class singleSpeciesDumpable :
-public fnd::varDumpable<mzrSpeciesType,
-fnd::basicDumpable::dumpArg>,
-public mzrSpeciesStream
-{
-public:
-singleSpeciesDumpable(const std::string& rName,
-const mzrSpeciesType* pSpeciesToDump) :
-fnd::varDumpable<mzrSpeciesType,
-fnd::basicDumpable::dumpArg>(rName,
-pSpeciesToDump)
-{}
+    template<class mzrSpeciesType>
+    class singleSpeciesDumpable :
+                public fnd::varDumpable<mzrSpeciesType,
+                fnd::basicDumpable::dumpArg>,
+                public mzrSpeciesStream
+    {
+    public:
+        singleSpeciesDumpable (const std::string& rName,
+                               const mzrSpeciesType* pSpeciesToDump) :
+                fnd::varDumpable<mzrSpeciesType,
+                fnd::basicDumpable::dumpArg> (rName,
+                                              pSpeciesToDump)
+        {}
 
-~singleSpeciesDumpable(void)
-{}
+        ~singleSpeciesDumpable (void)
+        {}
 
-void
-insertTaggedSpeciesStreamRef(xmlpp::Element* pParent) const
-throw(std::exception);
+        void
+        insertTaggedSpeciesStreamRef (xmlpp::Element* pParent) const
+        throw (std::exception);
 
-void
-insertDumpedSpeciesTags(xmlpp::Element* pParentElt) const
-throw(std::exception);
-};
+        void
+        insertDumpedSpeciesTags (xmlpp::Element* pParentElt) const
+        throw (std::exception);
+    };
 
-template<class mzrSpeciesType>
-class multiSpeciesDumpable :
-public fnd::multiSpeciesDumpable<mzrSpeciesType,
-fnd::basicDumpable::dumpArg>,
-public mzrSpeciesStream
-{
-public:
-multiSpeciesDumpable(const std::string& rName) :
-fnd::multiSpeciesDumpable<mzrSpeciesType,
-fnd::basicDumpable::dumpArg>(rName)
-{}
+    template<class mzrSpeciesType>
+    class multiSpeciesDumpable :
+                public fnd::multiSpeciesDumpable<mzrSpeciesType,
+                fnd::basicDumpable::dumpArg>,
+                public mzrSpeciesStream
+    {
+    public:
+        multiSpeciesDumpable (const std::string& rName) :
+                fnd::multiSpeciesDumpable<mzrSpeciesType,
+                fnd::basicDumpable::dumpArg> (rName)
+        {}
 
-~multiSpeciesDumpable(void)
-{}
+        ~multiSpeciesDumpable (void)
+        {}
 
-void
-insertTaggedSpeciesStreamRef(xmlpp::Element* pParent) const
-throw(std::exception);
+        void
+        insertTaggedSpeciesStreamRef (xmlpp::Element* pParent) const
+        throw (std::exception);
 
-void
-insertDumpedSpeciesTags(xmlpp::Element* pParentElt) const
-throw(std::exception);
-};
+        void
+        insertDumpedSpeciesTags (xmlpp::Element* pParentElt) const
+        throw (std::exception);
+    };
 
-template<class mzrSpeciesType>
-class querySpeciesDumpable :
-public fnd::querySpeciesDumpable<mzrSpeciesType,
-fnd::basicDumpable::dumpArg>,
-public mzrSpeciesStream
-{
-public:
-querySpeciesDumpable(const std::string& rName,
-fnd::query<mzrSpeciesType>& rQuery) :
-fnd::querySpeciesDumpable<mzrSpeciesType,
-fnd::basicDumpable::dumpArg>(rName,
-rQuery)
-{}
+    template<class mzrSpeciesType>
+    class querySpeciesDumpable :
+                public fnd::querySpeciesDumpable<mzrSpeciesType,
+                fnd::basicDumpable::dumpArg>,
+                public mzrSpeciesStream
+    {
+    public:
+        querySpeciesDumpable (const std::string& rName,
+                              fnd::query<mzrSpeciesType>& rQuery) :
+                fnd::querySpeciesDumpable<mzrSpeciesType,
+                fnd::basicDumpable::dumpArg> (rName,
+                                              rQuery)
+        {}
 
-~querySpeciesDumpable(void)
-{}
+        ~querySpeciesDumpable (void)
+        {}
 
-void
-insertTaggedSpeciesStreamRef(xmlpp::Element* pParent) const
-throw(std::exception);
+        void
+        insertTaggedSpeciesStreamRef (xmlpp::Element* pParent) const
+        throw (std::exception);
 
-void
-insertDumpedSpeciesTags(xmlpp::Element* pParentElt) const
-throw(std::exception);
-};
+        void
+        insertDumpedSpeciesTags (xmlpp::Element* pParentElt) const
+        throw (std::exception);
+    };
 }
 
 #include "mzr/mzrSpeciesDumpableImpl.hh"

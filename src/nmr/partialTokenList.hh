@@ -1,5 +1,5 @@
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-//                                                                          
+//
 //        This file is part of Libmoleculizer
 //
 //        Copyright (C) 2001-2008 The Molecular Sciences Institute.
@@ -7,7 +7,7 @@
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 //
 // Moleculizer is free software; you can redistribute it and/or modify
-// it under the terms of the GNU Lesser General Public License as published 
+// it under the terms of the GNU Lesser General Public License as published
 // by the Free Software Foundation; either version 3 of the License, or
 // (at your option) any later version.
 //
@@ -19,14 +19,14 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with Moleculizer; if not, write to the Free Software Foundation
 // Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307,  USA
-//    
+//
 // END HEADER
-// 
+//
 // Original Author:
 //   Nathan Addy, Scientific Programmer, Molecular Sciences Institute, 2001
 //
 // Modifing Authors:
-//              
+//
 //
 
 
@@ -59,56 +59,56 @@ namespace nmr
 // Do not try to compare non-isomorphic PartialTokenList's.  Results will be undefined, and
 // will likely result in a crash.
 
-DECLARE_CLASS( PartialTokenList );
-struct PartialTokenList
-{
-typedef boost::shared_ptr<Mol> spMol; // smart pointer
+    DECLARE_CLASS ( PartialTokenList );
+    struct PartialTokenList
+    {
+        typedef boost::shared_ptr<Mol> spMol; // smart pointer
 
-typedef int MolNdx;
-typedef int MolBindingSite;
-typedef std::pair<MolNdx, MolBindingSite> BindingSite;
-typedef std::pair<BindingSite, BindingSite> Binding;
-typedef Binding BindingToken;
+        typedef int MolNdx;
+        typedef int MolBindingSite;
+        typedef std::pair<MolNdx, MolBindingSite> BindingSite;
+        typedef std::pair<BindingSite, BindingSite> Binding;
+        typedef Binding BindingToken;
 
-typedef std::string ModificationSite;
-typedef std::string ModificationValue;
-typedef std::pair<MolNdx, std::pair<ModificationSite, ModificationValue> > Modification;
-typedef Modification ModificationToken;
+        typedef std::string ModificationSite;
+        typedef std::string ModificationValue;
+        typedef std::pair<MolNdx, std::pair<ModificationSite, ModificationValue> > Modification;
+        typedef Modification ModificationToken;
 
 // TODO: Change these to boost::shared_ptr sometime.
-typedef std::vector<spMol> MolList;
-typedef std::vector<Binding> BindingList;
-typedef BindingList::iterator BindingListIter;
-typedef BindingList::const_iterator ConstBindingListIter;
-typedef std::vector<Modification> ModificationList;
-typedef ModificationList::iterator ModificationListIter;
-typedef ModificationList::const_iterator ConstModificationListIter;
+        typedef std::vector<spMol> MolList;
+        typedef std::vector<Binding> BindingList;
+        typedef BindingList::iterator BindingListIter;
+        typedef BindingList::const_iterator ConstBindingListIter;
+        typedef std::vector<Modification> ModificationList;
+        typedef ModificationList::iterator ModificationListIter;
+        typedef ModificationList::const_iterator ConstModificationListIter;
 
-PartialTokenList();
-PartialTokenList(const PartialTokenList& aPns)
-:
-theMols(aPns.theMols.begin(), aPns.theMols.end()),
-theBindings(aPns.theBindings.begin(), aPns.theBindings.end()),
-theModifications(aPns.theModifications.begin(), aPns.theModifications.end()),
-isComplete(aPns.isComplete)
-{}
+        PartialTokenList();
+        PartialTokenList (const PartialTokenList& aPns)
+                :
+                theMols (aPns.theMols.begin(), aPns.theMols.end() ),
+                theBindings (aPns.theBindings.begin(), aPns.theBindings.end() ),
+                theModifications (aPns.theModifications.begin(), aPns.theModifications.end() ),
+                isComplete (aPns.isComplete)
+        {}
 
-~PartialTokenList()
-{
+        ~PartialTokenList()
+        {
 // PartialTokenLists never memory manages anything it uses.
-}
+        }
 
-void
-print() const;
+        void
+        print() const;
 
-void clear();
+        void clear();
 
 public:
-bool isSubTokenListOf(const PartialTokenList& aPns) const;
-bool isEquivalentTo(const PartialTokenList& aPns) const;
+        bool isSubTokenListOf (const PartialTokenList& aPns) const;
+        bool isEquivalentTo (const PartialTokenList& aPns) const;
 
-bool operator<(const PartialTokenList& aPns) const;
-bool operator==(const PartialTokenList& aPns) const;
+        bool operator< (const PartialTokenList& aPns) const;
+        bool operator== (const PartialTokenList& aPns) const;
 
 
 public:
@@ -116,15 +116,15 @@ public:
 // Data Members
 //
 
-MolList theMols;
-BindingList theBindings;
-ModificationList theModifications;
-bool isComplete;
-};
+        MolList theMols;
+        BindingList theBindings;
+        ModificationList theModifications;
+        bool isComplete;
+    };
 }
 
 std::ostream&
-operator<<(std::ostream& os, const nmr::PartialTokenList& ptl);
+operator<< (std::ostream& os, const nmr::PartialTokenList& ptl);
 
 
 

@@ -35,126 +35,126 @@
 
 namespace mzr
 {
-template<class mzrSpeciesType>
-void
-singleSpeciesDumpable<mzrSpeciesType>::
-insertTaggedSpeciesStreamRef(xmlpp::Element* pParent) const
-throw(std::exception)
-{
-xmlpp::Element* pTaggedSpeciesStreamRefElt
-= pParent->add_child(eltName::taggedSpeciesStreamRef);
+    template<class mzrSpeciesType>
+    void
+    singleSpeciesDumpable<mzrSpeciesType>::
+    insertTaggedSpeciesStreamRef (xmlpp::Element* pParent) const
+    throw (std::exception)
+    {
+        xmlpp::Element* pTaggedSpeciesStreamRefElt
+        = pParent->add_child (eltName::taggedSpeciesStreamRef);
 
-pTaggedSpeciesStreamRefElt
-->set_attribute(eltName::taggedSpeciesStreamRef_nameAttr,
-this->getName());
-}
+        pTaggedSpeciesStreamRefElt
+        ->set_attribute (eltName::taggedSpeciesStreamRef_nameAttr,
+                         this->getName() );
+    }
 
-template<class mzrSpeciesType>
-void
-singleSpeciesDumpable<mzrSpeciesType>::
-insertDumpedSpeciesTags(xmlpp::Element* pParentElt) const
-throw(std::exception)
-{
-xmlpp::Element* pSpeciesRefElt
-= pParentElt->add_child(eltName::taggedSpeciesRef);
+    template<class mzrSpeciesType>
+    void
+    singleSpeciesDumpable<mzrSpeciesType>::
+    insertDumpedSpeciesTags (xmlpp::Element* pParentElt) const
+    throw (std::exception)
+    {
+        xmlpp::Element* pSpeciesRefElt
+        = pParentElt->add_child (eltName::taggedSpeciesRef);
 
-pSpeciesRefElt->set_attribute(eltName::taggedSpeciesRef_tagAttr,
-this->getVar()->getTag());
-}
+        pSpeciesRefElt->set_attribute (eltName::taggedSpeciesRef_tagAttr,
+                                       this->getVar()->getTag() );
+    }
 
-template<class mzrSpeciesType>
-void
-multiSpeciesDumpable<mzrSpeciesType>::
-insertTaggedSpeciesStreamRef(xmlpp::Element* pParent) const
-throw(std::exception)
-{
-xmlpp::Element* pTaggedSpeciesStreamRefElt
-= pParent->add_child(eltName::taggedSpeciesStreamRef);
+    template<class mzrSpeciesType>
+    void
+    multiSpeciesDumpable<mzrSpeciesType>::
+    insertTaggedSpeciesStreamRef (xmlpp::Element* pParent) const
+    throw (std::exception)
+    {
+        xmlpp::Element* pTaggedSpeciesStreamRefElt
+        = pParent->add_child (eltName::taggedSpeciesStreamRef);
 
-pTaggedSpeciesStreamRefElt
-->set_attribute(eltName::taggedSpeciesStreamRef_nameAttr,
-this->getName());
-}
+        pTaggedSpeciesStreamRefElt
+        ->set_attribute (eltName::taggedSpeciesStreamRef_nameAttr,
+                         this->getName() );
+    }
 
-template<class mzrSpeciesType>
-class insertMultiSpeciesDumpableTag :
-public std::unary_function<mzrSpeciesType*, void>
-{
-xmlpp::Element* pParentElt;
+    template<class mzrSpeciesType>
+    class insertMultiSpeciesDumpableTag :
+                public std::unary_function<mzrSpeciesType*, void>
+    {
+        xmlpp::Element* pParentElt;
 
-public:
-insertMultiSpeciesDumpableTag(xmlpp::Element* pParentElement) :
-pParentElt(pParentElement)
-{}
+    public:
+        insertMultiSpeciesDumpableTag (xmlpp::Element* pParentElement) :
+                pParentElt (pParentElement)
+        {}
 
-void
-operator()(const mzrSpeciesType* pSpecies) const
-throw(std::exception)
-{
-xmlpp::Element* pTaggedSpeciesRefElt
-= pParentElt->add_child(eltName::taggedSpeciesRef);
+        void
+        operator() (const mzrSpeciesType* pSpecies) const
+        throw (std::exception)
+        {
+            xmlpp::Element* pTaggedSpeciesRefElt
+            = pParentElt->add_child (eltName::taggedSpeciesRef);
 
-pTaggedSpeciesRefElt->set_attribute(eltName::taggedSpeciesRef_tagAttr,
-pSpecies->getTag());
-}
-};
+            pTaggedSpeciesRefElt->set_attribute (eltName::taggedSpeciesRef_tagAttr,
+                                                 pSpecies->getTag() );
+        }
+    };
 
-template<class mzrSpeciesType>
-void
-multiSpeciesDumpable<mzrSpeciesType>::
-insertDumpedSpeciesTags(xmlpp::Element* pParentElt) const
-throw(std::exception)
-{
-std::for_each(this->dumpedSpecies.begin(),
-this->dumpedSpecies.end(),
-insertMultiSpeciesDumpableTag<mzrSpeciesType>(pParentElt));
-}
+    template<class mzrSpeciesType>
+    void
+    multiSpeciesDumpable<mzrSpeciesType>::
+    insertDumpedSpeciesTags (xmlpp::Element* pParentElt) const
+    throw (std::exception)
+    {
+        std::for_each (this->dumpedSpecies.begin(),
+                       this->dumpedSpecies.end(),
+                       insertMultiSpeciesDumpableTag<mzrSpeciesType> (pParentElt) );
+    }
 
-template<class mzrSpeciesType>
-void
-querySpeciesDumpable<mzrSpeciesType>::
-insertTaggedSpeciesStreamRef(xmlpp::Element* pParent) const
-throw(std::exception)
-{
-xmlpp::Element* pTaggedSpeciesStreamRefElt
-= pParent->add_child(eltName::taggedSpeciesStreamRef);
+    template<class mzrSpeciesType>
+    void
+    querySpeciesDumpable<mzrSpeciesType>::
+    insertTaggedSpeciesStreamRef (xmlpp::Element* pParent) const
+    throw (std::exception)
+    {
+        xmlpp::Element* pTaggedSpeciesStreamRefElt
+        = pParent->add_child (eltName::taggedSpeciesStreamRef);
 
-pTaggedSpeciesStreamRefElt
-->set_attribute(eltName::taggedSpeciesStreamRef_nameAttr,
-this->getName());
-}
+        pTaggedSpeciesStreamRefElt
+        ->set_attribute (eltName::taggedSpeciesStreamRef_nameAttr,
+                         this->getName() );
+    }
 
-template<class mzrSpeciesType>
-class insertQuerySpeciesDumpableTag :
-public std::unary_function<mzrSpeciesType*, void>
-{
-xmlpp::Element* pParentElt;
+    template<class mzrSpeciesType>
+    class insertQuerySpeciesDumpableTag :
+                public std::unary_function<mzrSpeciesType*, void>
+    {
+        xmlpp::Element* pParentElt;
 
-public:
-insertQuerySpeciesDumpableTag(xmlpp::Element* pParentElement) :
-pParentElt(pParentElement)
-{}
+    public:
+        insertQuerySpeciesDumpableTag (xmlpp::Element* pParentElement) :
+                pParentElt (pParentElement)
+        {}
 
-void
-operator()(const mzrSpeciesType* pSpecies) const
-throw(std::exception)
-{
-xmlpp::Element* pTaggedSpeciesRefElt
-= pParentElt->add_child(eltName::taggedSpeciesRef);
+        void
+        operator() (const mzrSpeciesType* pSpecies) const
+        throw (std::exception)
+        {
+            xmlpp::Element* pTaggedSpeciesRefElt
+            = pParentElt->add_child (eltName::taggedSpeciesRef);
 
-pTaggedSpeciesRefElt->set_attribute(eltName::taggedSpeciesRef_tagAttr,
-pSpecies->getTag());
-}
-};
+            pTaggedSpeciesRefElt->set_attribute (eltName::taggedSpeciesRef_tagAttr,
+                                                 pSpecies->getTag() );
+        }
+    };
 
-template<class mzrSpeciesType>
-void
-querySpeciesDumpable<mzrSpeciesType>::
-insertDumpedSpeciesTags(xmlpp::Element* pParentElt) const
-throw(std::exception)
-{
-std::for_each(this->dumpedSpecies.begin(),
-this->dumpedSpecies.end(),
-insertQuerySpeciesDumpableTag<mzrSpeciesType>(pParentElt));
-}
+    template<class mzrSpeciesType>
+    void
+    querySpeciesDumpable<mzrSpeciesType>::
+    insertDumpedSpeciesTags (xmlpp::Element* pParentElt) const
+    throw (std::exception)
+    {
+        std::for_each (this->dumpedSpecies.begin(),
+                       this->dumpedSpecies.end(),
+                       insertQuerySpeciesDumpableTag<mzrSpeciesType> (pParentElt) );
+    }
 }

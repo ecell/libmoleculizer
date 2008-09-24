@@ -36,73 +36,73 @@
 
 namespace utl
 {
-namespace dom
-{
-class badChildCountXcpt :
-public xcpt
-{
-static std::string
-mkGeneralMsg(const xmlpp::Node* pParentNode,
-const std::string& rChildName,
-int requiredCount,
-int actualCount);
+    namespace dom
+    {
+        class badChildCountXcpt :
+                    public xcpt
+        {
+            static std::string
+            mkGeneralMsg (const xmlpp::Node* pParentNode,
+                          const std::string& rChildName,
+                          int requiredCount,
+                          int actualCount);
 
-static std::string
-mkChoiceMsg(const xmlpp::Node* pParentNode,
-int actualCount);
+            static std::string
+            mkChoiceMsg (const xmlpp::Node* pParentNode,
+                         int actualCount);
 
-static std::string
-mkOneOrMoreMsg(const xmlpp::Node* pParentNode);
+            static std::string
+            mkOneOrMoreMsg (const xmlpp::Node* pParentNode);
 
 // In support of RNG's "optional" construct.
-static std::string
-mkZeroOrOneMsg(const xmlpp::Node* pParentNode,
-const std::string& rChildName,
-int actualCount);
+            static std::string
+            mkZeroOrOneMsg (const xmlpp::Node* pParentNode,
+                            const std::string& rChildName,
+                            int actualCount);
 
 // This private constructor arranges for creating messages
 // in different ways, returning the same class of exception,
 // under different circumstances.
-badChildCountXcpt(const std::string& rMsg);
+            badChildCountXcpt (const std::string& rMsg);
 
-public:
+        public:
 
 // For when a definite number of children with a particular name
 // (e.g. 1) is required, but another number appears.
-static
-badChildCountXcpt
-general(const xmlpp::Node* pParentNode,
-const std::string& rChildName,
-int requiredCount,
-int actualCount)
-throw();
+            static
+            badChildCountXcpt
+            general (const xmlpp::Node* pParentNode,
+                     const std::string& rChildName,
+                     int requiredCount,
+                     int actualCount)
+            throw();
 
 // When there are several possibilities for the child element's name, but
 // only one must appear, as in an RNG schema "choice" construct.
-static
-badChildCountXcpt
-choice(const xmlpp::Node* pParentNode,
-int actualCount)
-throw();
+            static
+            badChildCountXcpt
+            choice (const xmlpp::Node* pParentNode,
+                    int actualCount)
+            throw();
 
 // When there are several possibilities for the child element's name, and
 // at least one must appear, as in an RNG schema "oneOrMore" construct.
-static
-badChildCountXcpt
-oneOrMore(const xmlpp::Node* pParentNode)
-throw();
+            static
+            badChildCountXcpt
+            oneOrMore (const xmlpp::Node* pParentNode)
+            throw();
 
 // Using differently named static functions avoids the problem of
 // constructors all needing different signatures.  When it's time to use
 // it, this looks like throw badChildCountXcpt::optional(...).
-static
-badChildCountXcpt
-zeroOrOne(const xmlpp::Node* pParentNode,
-const std::string& rChildName,
-int actualCount)
-throw();
-};
-}
+            static
+            badChildCountXcpt
+            zeroOrOne (const xmlpp::Node* pParentNode,
+                       const std::string& rChildName,
+                       int actualCount)
+            throw();
+        };
+    }
 }
 
 #endif // UTL_BADCHILDCOUNTXCPT_H

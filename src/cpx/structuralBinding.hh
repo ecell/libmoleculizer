@@ -36,53 +36,53 @@
 
 namespace cpx
 {
-template<class molT>
-class structuralSite :
-public std::pair<const molT*, int>
-{
-public:
-structuralSite(const molT* pMol,
-int siteNdx) :
-std::pair<const molT*, int>(pMol,
-siteNdx)
-{}
+    template<class molT>
+    class structuralSite :
+                public std::pair<const molT*, int>
+    {
+    public:
+        structuralSite (const molT* pMol,
+                        int siteNdx) :
+                std::pair<const molT*, int> (pMol,
+                                             siteNdx)
+        {}
 
-const molT*
-getMol(void) const
-{
-return this->first;
-}
+        const molT*
+        getMol (void) const
+        {
+            return this->first;
+        }
 
-int
-getSiteNdx(void) const
-{
-return this->second;
-}
-};
+        int
+        getSiteNdx (void) const
+        {
+            return this->second;
+        }
+    };
 
-template<class molT>
-class structuralBinding :
-public std::pair<structuralSite<molT>, structuralSite<molT> >
-{
-public:
-structuralBinding(const structuralSite<molT>& rLeftStructSite,
-const structuralSite<molT>& rRightStructSite) :
-std::pair<structuralSite<molT>, structuralSite<molT> >(rLeftStructSite,
-rRightStructSite)
-{}
+    template<class molT>
+    class structuralBinding :
+                public std::pair<structuralSite<molT>, structuralSite<molT> >
+    {
+    public:
+        structuralBinding (const structuralSite<molT>& rLeftStructSite,
+                           const structuralSite<molT>& rRightStructSite) :
+                std::pair<structuralSite<molT>, structuralSite<molT> > (rLeftStructSite,
+                        rRightStructSite)
+        {}
 
-const structuralSite<molT>&
-getLeftSite(void) const
-{
-return this->first;
-}
+        const structuralSite<molT>&
+        getLeftSite (void) const
+        {
+            return this->first;
+        }
 
-const structuralSite<molT>&
-getRightSite(void) const
-{
-return this->second;
-}
-};
+        const structuralSite<molT>&
+        getRightSite (void) const
+        {
+            return this->second;
+        }
+    };
 }
 
 #endif // CPX_STRUCTURALBINDING_H

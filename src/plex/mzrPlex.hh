@@ -46,14 +46,14 @@
 
 namespace plx
 {
-class mzrPlex :
-public cpx::basicPlex<bnd::mzrMol>
-{
-public:
-xmlpp::Element*
-insertElt(xmlpp::Element* pParentElt) const
-throw(std::exception);
-};
+    class mzrPlex :
+                public cpx::basicPlex<bnd::mzrMol>
+    {
+    public:
+        xmlpp::Element*
+        insertElt (xmlpp::Element* pParentElt) const
+        throw (std::exception);
+    };
 }
 
 #endif

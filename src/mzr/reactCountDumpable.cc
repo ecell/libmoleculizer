@@ -35,15 +35,15 @@
 
 namespace mzr
 {
-reactCountDumpable::
-reactCountDumpable(void) :
-fnd::dumpable<fnd::basicDumpable::dumpArg>(eltName::statStream_reactionCount)
-{}
+    reactCountDumpable::
+    reactCountDumpable (void) :
+            fnd::dumpable<fnd::basicDumpable::dumpArg> (eltName::statStream_reactionCount)
+    {}
 
-void
-reactCountDumpable::
-doDump(const fnd::basicDumpable::dumpArg& rDumpArg) const
-{
-rDumpArg.getOstream() << mzrReaction::reactionCount;
-}
+    void
+    reactCountDumpable::
+    doDump (const fnd::basicDumpable::dumpArg& rDumpArg) const
+    {
+        rDumpArg.getOstream() << mzrReaction::reactionCount;
+    }
 }

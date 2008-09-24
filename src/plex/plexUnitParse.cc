@@ -38,43 +38,43 @@
 
 namespace plx
 {
-namespace
-{
+    namespace
+    {
 // Class for accumulating list of all plex nodes for omniplexes.
-class addPathNodesToList :
-public std::unary_function<std::string, void>
-{
-xmlpp::Node::NodeList& rNodes;
-xmlpp::Element* pRootElt;
-public:
-addPathNodesToList(xmlpp::Node::NodeList& rNodeList,
-xmlpp::Element* pRootElement) :
-rNodes(rNodeList),
-pRootElt(pRootElement)
-{}
+        class addPathNodesToList :
+                    public std::unary_function<std::string, void>
+        {
+            xmlpp::Node::NodeList& rNodes;
+            xmlpp::Element* pRootElt;
+        public:
+            addPathNodesToList (xmlpp::Node::NodeList& rNodeList,
+                                xmlpp::Element* pRootElement) :
+                    rNodes (rNodeList),
+                    pRootElt (pRootElement)
+            {}
 
-void
-operator()(const std::string& rXpath) const
-throw()
-{
+            void
+            operator() (const std::string& rXpath) const
+            throw()
+            {
 // Get the list satisfying this xPath query.
-xmlpp::NodeSet xpathHits
-= pRootElt->find(rXpath);
+                xmlpp::NodeSet xpathHits
+                = pRootElt->find (rXpath);
 
 // Insert these at the end of the list of all hits.
-rNodes.insert(rNodes.end(),
-xpathHits.begin(),
-xpathHits.end());
-}
-};
-}
+                rNodes.insert (rNodes.end(),
+                               xpathHits.begin(),
+                               xpathHits.end() );
+            }
+        };
+    }
 
-void
-plexUnit::parseDomInput(xmlpp::Element* pRootElt,
-xmlpp::Element* pModelElt,
-xmlpp::Element* pStreamElt)
-throw(utl::xcpt)
-{
+    void
+    plexUnit::parseDomInput (xmlpp::Element* pRootElt,
+                             xmlpp::Element* pModelElt,
+                             xmlpp::Element* pStreamElt)
+    throw (utl::xcpt)
+    {
 // First we pick out a number of elements and lists of elements
 // for tranversal.
 
@@ -92,46 +92,46 @@ throw(utl::xcpt)
 //       ->get_children(eltName::plexSpeciesStream);
 
 // Allosteric omnis.
-xmlpp::Element* pAlloOmnisElt
-= utl::dom::mustGetUniqueChild(pModelElt,
-eltName::allostericOmnis);
-xmlpp::Node::NodeList alloOmniNodes
-= pAlloOmnisElt->get_children(eltName::allostericOmni);
+        xmlpp::Element* pAlloOmnisElt
+        = utl::dom::mustGetUniqueChild (pModelElt,
+                                        eltName::allostericOmnis);
+        xmlpp::Node::NodeList alloOmniNodes
+        = pAlloOmnisElt->get_children (eltName::allostericOmni);
 
 // Allosteric plexes.
-xmlpp::Element* pAlloPlexesElt
-= utl::dom::mustGetUniqueChild(pModelElt,
-eltName::allostericPlexes);
-xmlpp::Node::NodeList alloPlexNodes
-= pAlloPlexesElt->get_children(eltName::allostericPlex);
+        xmlpp::Element* pAlloPlexesElt
+        = utl::dom::mustGetUniqueChild (pModelElt,
+                                        eltName::allostericPlexes);
+        xmlpp::Node::NodeList alloPlexNodes
+        = pAlloPlexesElt->get_children (eltName::allostericPlex);
 
 // Explicit plexSpecies.
-xmlpp::Element* pExplicitSpeciesElt
-= utl::dom::mustGetUniqueChild(pModelElt,
-mzr::eltName::explicitSpecies);
-xmlpp::Node::NodeList plexSpeciesNodes
-= pExplicitSpeciesElt->get_children(eltName::plexSpecies);
+        xmlpp::Element* pExplicitSpeciesElt
+        = utl::dom::mustGetUniqueChild (pModelElt,
+                                        mzr::eltName::explicitSpecies);
+        xmlpp::Node::NodeList plexSpeciesNodes
+        = pExplicitSpeciesElt->get_children (eltName::plexSpecies);
 
 // Use Xpaths to omniplex nodes, registered by other modules,
 // to find all the omniplexes in the file.
 //
 // We have to have all the omniplexes in place before we recognize any
 // complexes in the conventional way, thereby creating plexFamilies.
-xmlpp::Node::NodeList omniPlexNodes;
-std::for_each(omniXpaths.begin(),
-omniXpaths.end(),
-addPathNodesToList(omniPlexNodes,
-pRootElt));
+        xmlpp::Node::NodeList omniPlexNodes;
+        std::for_each (omniXpaths.begin(),
+                       omniXpaths.end(),
+                       addPathNodesToList (omniPlexNodes,
+                                           pRootElt) );
 
 // "Unify" omniplex families (recognize, but without the usual
 // initializations) and put them on the plexUnit's list of omniplexes.
 // After this is done, plexes and omniplexes can be recognized in the usual
 // way.
-std::for_each(omniPlexNodes.begin(),
-omniPlexNodes.end(),
-parseOmniPlex(rMzrUnit,
-rMolUnit,
-*this));
+        std::for_each (omniPlexNodes.begin(),
+                       omniPlexNodes.end(),
+                       parseOmniPlex (rMzrUnit,
+                                      rMolUnit,
+                                      *this) );
 
 // Since the omniplex families have been "unified" in, they won't
 // undergo normal initialization when recognized.  Hence, we
@@ -139,26 +139,26 @@ rMolUnit,
 //
 // After this point, we should be ready to ready to recognize complexes
 // in the usual way, creating plexFamilies.
-std::for_each(omniPlexFamilies.begin(),
-omniPlexFamilies.end(),
-std::mem_fun(&mzrPlexFamily::connectToFeatures));
+        std::for_each (omniPlexFamilies.begin(),
+                       omniPlexFamilies.end(),
+                       std::mem_fun (&mzrPlexFamily::connectToFeatures) );
 
 // Parse allosteric omnis.
 //
 // This must be completed before any species of complexes are generated.
-std::for_each(alloOmniNodes.begin(),
-alloOmniNodes.end(),
-parseAllostericOmni(rMolUnit,
-*this));
+        std::for_each (alloOmniNodes.begin(),
+                       alloOmniNodes.end(),
+                       parseAllostericOmni (rMolUnit,
+                                            *this) );
 
 // Parse allosteric plexes.
 //
 // This must be done before any species of complexes are generated.
-std::for_each(alloPlexNodes.begin(),
-alloPlexNodes.end(),
-parseAllostericPlex(rMolUnit,
-*this,
-rMzrUnit));
+        std::for_each (alloPlexNodes.begin(),
+                       alloPlexNodes.end(),
+                       parseAllostericPlex (rMolUnit,
+                                            *this,
+                                            rMzrUnit) );
 
 
 
@@ -185,184 +185,184 @@ rMzrUnit));
 // Parse explicit plexSpecies, generating species of complexes, but not
 // populating them.  Since this doesn't create the initial population,
 // notification isn't an issue.
-std::for_each(plexSpeciesNodes.begin(),
-plexSpeciesNodes.end(),
-parseExplicitPlexSpecies(rMzrUnit,
-rMolUnit,
-*this));
-}
+        std::for_each (plexSpeciesNodes.begin(),
+                       plexSpeciesNodes.end(),
+                       parseExplicitPlexSpecies (rMzrUnit,
+                                                 rMolUnit,
+                                                 *this) );
+    }
 
-namespace
-{
+    namespace
+    {
 // Class for creating the initial populations of explicit plex species.
 //
 // This is the first time that notification happens, at least for
 // plexSpecies.
-class createInitialPop : public
-std::unary_function<xmlpp::Node*, void>
-{
-mzr::moleculizer& rMolzer;
-mzr::mzrUnit& rMzrUnit;
-public:
-createInitialPop(mzr::moleculizer& rMoleculizer,
-mzr::mzrUnit& rMzr) :
-rMolzer(rMoleculizer),
-rMzrUnit(rMzr)
-{}
+        class createInitialPop : public
+                    std::unary_function<xmlpp::Node*, void>
+        {
+            mzr::moleculizer& rMolzer;
+            mzr::mzrUnit& rMzrUnit;
+        public:
+            createInitialPop (mzr::moleculizer& rMoleculizer,
+                              mzr::mzrUnit& rMzr) :
+                    rMolzer (rMoleculizer),
+                    rMzrUnit (rMzr)
+            {}
 
-void
-operator()(xmlpp::Node* pPlexSpeciesNode) const
-throw(utl::xcpt)
-{
-xmlpp::Element* pPlexSpeciesElt
-= utl::dom::mustBeElementPtr(pPlexSpeciesNode);
+            void
+            operator() (xmlpp::Node* pPlexSpeciesNode) const
+            throw (utl::xcpt)
+            {
+                xmlpp::Element* pPlexSpeciesElt
+                = utl::dom::mustBeElementPtr (pPlexSpeciesNode);
 
-std::string speciesName
-= utl::dom::mustGetAttrString(pPlexSpeciesElt,
-eltName::plexSpecies_nameAttr);
+                std::string speciesName
+                = utl::dom::mustGetAttrString (pPlexSpeciesElt,
+                                               eltName::plexSpecies_nameAttr);
 
-xmlpp::Element* pPopulationElt
-= utl::dom::mustGetUniqueChild(pPlexSpeciesElt,
-mzr::eltName::population);
-int pop
-= utl::dom::mustGetAttrInt(pPopulationElt,
-mzr::eltName::population_countAttr);
-mzr::mzrSpecies* pSpecies
-= rMzrUnit.mustFindSpecies(speciesName,
-pPlexSpeciesElt);
+                xmlpp::Element* pPopulationElt
+                = utl::dom::mustGetUniqueChild (pPlexSpeciesElt,
+                                                mzr::eltName::population);
+                int pop
+                = utl::dom::mustGetAttrInt (pPopulationElt,
+                                            mzr::eltName::population_countAttr);
+                mzr::mzrSpecies* pSpecies
+                = rMzrUnit.mustFindSpecies (speciesName,
+                                            pPlexSpeciesElt);
 
 // Here, we want to do the same thing as a createEvent,
 // but we don't pay any attention to generateDepth.
 
 // Rather than scheduling an event, we effectively do a create event.
-mzr::createEvent creator(pSpecies,
-pop,
-rMzrUnit);
+                mzr::createEvent creator (pSpecies,
+                                          pop,
+                                          rMzrUnit);
 
-creator.happen(rMolzer);
-}
-};
-}
+                creator.happen (rMolzer);
+            }
+        };
+    }
 
-void
-plexUnit::prepareToRun(xmlpp::Element* pRootElt,
-xmlpp::Element* pModelElt,
-xmlpp::Element* pStreamElt)
-throw(utl::xcpt)
-{
+    void
+    plexUnit::prepareToRun (xmlpp::Element* pRootElt,
+                            xmlpp::Element* pModelElt,
+                            xmlpp::Element* pStreamElt)
+    throw (utl::xcpt)
+    {
 // Create the initial population of all explicit plex species.
-xmlpp::Element* pExplicitSpeciesElt
-= utl::dom::mustGetUniqueChild(pModelElt,
-mzr::eltName::explicitSpecies);
-xmlpp::Node::NodeList plexSpeciesNodes
-= pExplicitSpeciesElt->get_children(eltName::plexSpecies);
+        xmlpp::Element* pExplicitSpeciesElt
+        = utl::dom::mustGetUniqueChild (pModelElt,
+                                        mzr::eltName::explicitSpecies);
+        xmlpp::Node::NodeList plexSpeciesNodes
+        = pExplicitSpeciesElt->get_children (eltName::plexSpecies);
 
-std::for_each(plexSpeciesNodes.begin(),
-plexSpeciesNodes.end(),
-createInitialPop(rMolzer,
-rMzrUnit));
-}
+        std::for_each (plexSpeciesNodes.begin(),
+                       plexSpeciesNodes.end(),
+                       createInitialPop (rMolzer,
+                                         rMzrUnit) );
+    }
 
-namespace
-{
-class accumulateSpecies : public
-std::unary_function<std::multimap<int, mzrPlexFamily*>::value_type, void>
-{
-std::vector<mzrPlexSpecies*>& rAllSpecies;
-public:
-accumulateSpecies(std::vector<mzrPlexSpecies*>& rAllSpeciesVector) :
-rAllSpecies(rAllSpeciesVector)
-{}
+    namespace
+    {
+        class accumulateSpecies : public
+                    std::unary_function<std::multimap<int, mzrPlexFamily*>::value_type, void>
+        {
+            std::vector<mzrPlexSpecies*>& rAllSpecies;
+        public:
+            accumulateSpecies (std::vector<mzrPlexSpecies*>& rAllSpeciesVector) :
+                    rAllSpecies (rAllSpeciesVector)
+            {}
 
-void
-operator()(const argument_type& rEntry) const
-{
-mzrPlexFamily* pPlexFamily = rEntry.second;
-pPlexFamily->accumulateSpecies(rAllSpecies);
-}
-};
+            void
+            operator() (const argument_type& rEntry) const
+            {
+                mzrPlexFamily* pPlexFamily = rEntry.second;
+                pPlexFamily->accumulateSpecies (rAllSpecies);
+            }
+        };
 
-class zeroUpdateSpecies : public
-std::unary_function<mzrPlexSpecies*, void>
-{
-fnd::sensitivityList<mzr::mzrReaction>& rAffected;
-int depth;
+        class zeroUpdateSpecies : public
+                    std::unary_function<mzrPlexSpecies*, void>
+        {
+            fnd::sensitivityList<mzr::mzrReaction>& rAffected;
+            int depth;
 
-public:
-zeroUpdateSpecies(fnd::sensitivityList<mzr::mzrReaction>& rAffectedReactions,
-int generateDepth) :
-rAffected(rAffectedReactions),
-depth(generateDepth)
-{}
+        public:
+            zeroUpdateSpecies (fnd::sensitivityList<mzr::mzrReaction>& rAffectedReactions,
+                               int generateDepth) :
+                    rAffected (rAffectedReactions),
+                    depth (generateDepth)
+            {}
 
-void
-operator()(mzrPlexSpecies* pPlexSpecies) const
-{
-pPlexSpecies->update(0,
-rAffected,
-depth);
-}
-};
-}
+            void
+            operator() (mzrPlexSpecies* pPlexSpecies) const
+            {
+                pPlexSpecies->update (0,
+                                      rAffected,
+                                      depth);
+            }
+        };
+    }
 
 
-class parseTaggedPlexSpeciesNpop :
-public std::unary_function<xmlpp::Node*, void>
-{
-mzr::mzrUnit& rMzrUnit;
-bnd::molUnit& rMolUnit;
-plexUnit& rPlexUnit;
-fnd::sensitivityList<mzr::mzrReaction>& rAffected;
+    class parseTaggedPlexSpeciesNpop :
+                public std::unary_function<xmlpp::Node*, void>
+    {
+        mzr::mzrUnit& rMzrUnit;
+        bnd::molUnit& rMolUnit;
+        plexUnit& rPlexUnit;
+        fnd::sensitivityList<mzr::mzrReaction>& rAffected;
 
-public:
-parseTaggedPlexSpeciesNpop
-(mzr::mzrUnit& refMzrUnit,
-bnd::molUnit& refMolUnit,
-plexUnit& refPlexUnit,
-fnd::sensitivityList<mzr::mzrReaction>& rAffectedReactions) :
-rMzrUnit(refMzrUnit),
-rMolUnit(refMolUnit),
-rPlexUnit(refPlexUnit),
-rAffected(rAffectedReactions)
-{}
+    public:
+        parseTaggedPlexSpeciesNpop
+        (mzr::mzrUnit& refMzrUnit,
+         bnd::molUnit& refMolUnit,
+         plexUnit& refPlexUnit,
+         fnd::sensitivityList<mzr::mzrReaction>& rAffectedReactions) :
+                rMzrUnit (refMzrUnit),
+                rMolUnit (refMolUnit),
+                rPlexUnit (refPlexUnit),
+                rAffected (rAffectedReactions)
+        {}
 
-void
-operator()(xmlpp::Node* pTaggedPlexSpeciesNode) const
-throw(utl::xcpt)
-{
-xmlpp::Element* pTaggedPlexSpeciesElt
-= utl::dom::mustBeElementPtr(pTaggedPlexSpeciesNode);
+        void
+        operator() (xmlpp::Node* pTaggedPlexSpeciesNode) const
+        throw (utl::xcpt)
+        {
+            xmlpp::Element* pTaggedPlexSpeciesElt
+            = utl::dom::mustBeElementPtr (pTaggedPlexSpeciesNode);
 
 // In this case, we expect at most one species to appear
 // in updatedSpecies; in the usual application of
 // parseTaggedPlexSpecies, many species are parsed,
 // and the ones that had been updated at the time of dump
 // appear in updatedSpecies.
-std::vector<mzrPlexSpecies*> updatedSpecies;
-parseTaggedPlexSpecies tpsParser(rMzrUnit,
-rMolUnit,
-rPlexUnit,
-updatedSpecies);
-mzrPlexSpecies* pSpecies
-= tpsParser(pTaggedPlexSpeciesElt);
+            std::vector<mzrPlexSpecies*> updatedSpecies;
+            parseTaggedPlexSpecies tpsParser (rMzrUnit,
+                                              rMolUnit,
+                                              rPlexUnit,
+                                              updatedSpecies);
+            mzrPlexSpecies* pSpecies
+            = tpsParser (pTaggedPlexSpeciesElt);
 
 
 // Get the population of the species at dump time.
-xmlpp::Element* pPopulationElt
-= utl::dom::mustGetUniqueChild(pTaggedPlexSpeciesElt,
-eltName::population);
+            xmlpp::Element* pPopulationElt
+            = utl::dom::mustGetUniqueChild (pTaggedPlexSpeciesElt,
+                                            eltName::population);
 
-int dumpedPop
-= utl::dom::mustGetAttrInt(pPopulationElt,
-eltName::population_countAttr);
+            int dumpedPop
+            = utl::dom::mustGetAttrInt (pPopulationElt,
+                                        eltName::population_countAttr);
 
 // Update the species with its dumped population.  This obviates
 // the "zeroUpdate" pass that has to be made in prepareToDump,
 // as well as the usual "prepareToRun" which updates the
 // explicit plex species with the populations provided in
 // moleculizer-input.
-xmlpp::Node::NodeList updatedNodes
-= pTaggedPlexSpeciesElt->get_children(eltName::updated);
+            xmlpp::Node::NodeList updatedNodes
+            = pTaggedPlexSpeciesElt->get_children (eltName::updated);
 
 // Update the species if called for.
 //
@@ -371,26 +371,26 @@ xmlpp::Node::NodeList updatedNodes
 // parseTaggedPlexSpecies. In the usual application of
 // parseTaggedPlexSpecies, many species are parsed, and the ones that
 // had been updated at the time of dump appear in updatedSpecies.
-if(0 < updatedSpecies.size())
-{
-pSpecies->update(dumpedPop,
-rAffected,
-rMzrUnit.getGenerateDepth());
-}
-}
-};
+            if (0 < updatedSpecies.size() )
+            {
+                pSpecies->update (dumpedPop,
+                                  rAffected,
+                                  rMzrUnit.getGenerateDepth() );
+            }
+        }
+    };
 
-void
-plexUnit::prepareToContinue(xmlpp::Element* pRootElt,
-xmlpp::Element* pModelElt,
-xmlpp::Element* pStreamsElt,
-std::map<std::string, std::string>& rTagToName,
-xmlpp::Element* pTaggedSpeciesElement)
-throw(utl::xcpt)
-{
+    void
+    plexUnit::prepareToContinue (xmlpp::Element* pRootElt,
+                                 xmlpp::Element* pModelElt,
+                                 xmlpp::Element* pStreamsElt,
+                                 std::map<std::string, std::string>& rTagToName,
+                                 xmlpp::Element* pTaggedSpeciesElement)
+    throw (utl::xcpt)
+    {
 // Parse the tagged-plex-species.
-xmlpp::Node::NodeList taggedPlexSpeciesNodes
-= pTaggedSpeciesElement->get_children(eltName::taggedPlexSpecies);
+        xmlpp::Node::NodeList taggedPlexSpeciesNodes
+        = pTaggedSpeciesElement->get_children (eltName::taggedPlexSpecies);
 
 // Going along with the now-well-established principle of stupid names.
 // The analogous routine for reading explicit plex-species is
@@ -400,22 +400,22 @@ xmlpp::Node::NodeList taggedPlexSpeciesNodes
 // initial populations of the species.  All the plex species that
 // exist should be updated here, so that the "zeroUpdate" pass
 // is not necessary.
-fnd::sensitivityList<mzr::mzrReaction> affectedReactions;
-std::for_each(taggedPlexSpeciesNodes.begin(),
-taggedPlexSpeciesNodes.end(),
-parseTaggedPlexSpeciesNpop(rMzrUnit,
-rMolUnit,
-*this,
-affectedReactions));
+        fnd::sensitivityList<mzr::mzrReaction> affectedReactions;
+        std::for_each (taggedPlexSpeciesNodes.begin(),
+                       taggedPlexSpeciesNodes.end(),
+                       parseTaggedPlexSpeciesNpop (rMzrUnit,
+                                                   rMolUnit,
+                                                   *this,
+                                                   affectedReactions) );
 
 // Reschedule the affected reactions.  The current simulation time
 // should have been set to the dump time by the mzrUnit.
-std::for_each(affectedReactions.begin(),
-affectedReactions.end(),
-mzr::respondReaction(rMolzer));
+        std::for_each (affectedReactions.begin(),
+                       affectedReactions.end(),
+                       mzr::respondReaction (rMolzer) );
 
 // In this version, do NOT run prepareToRun here, as that
 // sets the populations of the explicit species and reschedules
 // reactions.  May want rearchitecture here.
-}
+    }
 }

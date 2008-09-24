@@ -35,16 +35,16 @@
 
 namespace mzr
 {
-simTimeDumpable::
-simTimeDumpable(mzr::moleculizer& rMoleculizer) :
-fnd::dumpable<fnd::basicDumpable::dumpArg>(eltName::statStream_simTime),
-rMolzer(rMoleculizer)
-{}
+    simTimeDumpable::
+    simTimeDumpable (mzr::moleculizer& rMoleculizer) :
+            fnd::dumpable<fnd::basicDumpable::dumpArg> (eltName::statStream_simTime),
+            rMolzer (rMoleculizer)
+    {}
 
-void
-simTimeDumpable::
-doDump(const fnd::basicDumpable::dumpArg& rDumpArg) const
-{
-rDumpArg.getOstream() << rMolzer.eventQ.getSimTime();
-}
+    void
+    simTimeDumpable::
+    doDump (const fnd::basicDumpable::dumpArg& rDumpArg) const
+    {
+        rDumpArg.getOstream() << rMolzer.eventQ.getSimTime();
+    }
 }

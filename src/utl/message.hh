@@ -37,32 +37,32 @@
 
 namespace utl
 {
-class message
-{
-std::string msg;
-public:
+    class message
+    {
+        std::string msg;
+    public:
 
-message(const std::string& rMessage) throw() :
-msg(rMessage)
-{}
+        message (const std::string& rMessage) throw() :
+                msg (rMessage)
+        {}
 
-message(const char* pMessage) throw() :
-msg(pMessage)
-{}
+        message (const char* pMessage) throw() :
+                msg (pMessage)
+        {}
 
-const std::string&
-getMessage(void) const throw()
-{
-return msg;
-}
+        const std::string&
+        getMessage (void) const throw()
+        {
+            return msg;
+        }
 
-void
-issue(void) const throw()
-{
-std::cerr << getMessage()
-<< std::endl;
-}
-};
+        void
+        issue (void) const throw()
+        {
+            std::cerr << getMessage()
+            << std::endl;
+        }
+    };
 }
 
 #endif // UTL_MESSAGE_H

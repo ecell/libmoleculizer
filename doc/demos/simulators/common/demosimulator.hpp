@@ -1,5 +1,5 @@
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-//                                                                          
+//
 //        This file is part of Libmoleculizer
 //
 //        Copyright (C) 2001-2008 The Molecular Sciences Institute.
@@ -7,7 +7,7 @@
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 //
 // Moleculizer is free software; you can redistribute it and/or modify
-// it under the terms of the GNU Lesser General Public License as published 
+// it under the terms of the GNU Lesser General Public License as published
 // by the Free Software Foundation; either version 3 of the License, or
 // (at your option) any later version.
 //
@@ -19,14 +19,14 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with Moleculizer; if not, write to the Free Software Foundation
 // Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307,  USA
-//    
+//
 // END HEADER
-// 
+//
 // Original Author:
 //   Nathan Addy, Scientific Programmer, Molecular Sciences Institute, 2001
 //
 // Modifing Authors:
-//              
+//
 //
 
 
@@ -37,28 +37,28 @@
 class SimpleSimulator
 {
 public:
-SimpleSimulator(std::string rulesfile, std::string modelfile);
-virtual void singleStep() = 0;
-void printState() const;
+    SimpleSimulator (std::string rulesfile, std::string modelfile);
+    virtual void singleStep() = 0;
+    void printState() const;
 
 public:
-typedef std::pair<std::string, int> modelPairType;
+    typedef std::pair<std::string, int> modelPairType;
 
 protected:
-mzr::moleculizer speciesReactionGenerator;
-std::map<std::string, int> theModel;
+    mzr::moleculizer speciesReactionGenerator;
+    std::map<std::string, int> theModel;
 
-void engageModel();
-void executeReaction( mzr::moleculizer::ReactionTypePtr ptrRxn);
+    void engageModel();
+    void executeReaction ( mzr::moleculizer::ReactionTypePtr ptrRxn);
 
 private:
-void attachRuleFile(std::string rulesfile);
-void attachModelFile(std::string modelfile);
+    void attachRuleFile (std::string rulesfile);
+    void attachModelFile (std::string modelfile);
 
-bool assertModelValidity(const std::map<std::string, int>& model);
+    bool assertModelValidity (const std::map<std::string, int>& model);
 
 
-void createModelFromFile(const std::string& modelFile, std::map<std::string, int>& model);
+    void createModelFromFile (const std::string& modelFile, std::map<std::string, int>& model);
 
 };
 

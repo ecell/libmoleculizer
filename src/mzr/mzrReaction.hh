@@ -51,8 +51,8 @@
 
 namespace mzr
 {
-class mzrSpecies;
-class moleculizer;
+    class mzrSpecies;
+    class moleculizer;
 
 // This "message" is sent to a reaction when the reaction should
 // reschedule itself in the reaction queue.
@@ -61,79 +61,79 @@ class moleculizer;
 // sensitive<stimulusType>::respond(const stimulusType& rStimulus)
 // non-const.  Also, rMoleculizer seems "odd" as a stimulus;
 // it's really like an auxiliary parameter of a void stimulus.
-class mzrReactionStimulus
-{
-public:
-moleculizer& rMzr;
+    class mzrReactionStimulus
+    {
+    public:
+        moleculizer& rMzr;
 
-mzrReactionStimulus(moleculizer& rMoleculizer) :
-rMzr(rMoleculizer)
-{}
-};
+        mzrReactionStimulus (moleculizer& rMoleculizer) :
+                rMzr (rMoleculizer)
+        {}
+    };
 
 
-class mzrReaction :
-public fnd::gillspReaction<mzrSpecies>,
-public fnd::sensitive<mzrReactionStimulus>,
-public mzrEvent,
-public fnd::reactionNetworkComponent
-{
+    class mzrReaction :
+                public fnd::gillspReaction<mzrSpecies>,
+                public fnd::sensitive<mzrReactionStimulus>,
+                public mzrEvent,
+                public fnd::reactionNetworkComponent
+    {
 
 // Support for global state variables: variables to which
 // all reactions are sensitive, such as volume and temperature.
-typedef fnd::sensitivityList<mzrReaction> globalVar;
+        typedef fnd::sensitivityList<mzrReaction> globalVar;
 
-class sensitizeToGlobal :
-public std::unary_function<globalVar*, void>
-{
-mzrReaction* pRxn;
-public:
-sensitizeToGlobal(mzrReaction* pReaction) :
-pRxn(pReaction)
-{}
-void
-operator()(globalVar* pGlobal) const
-{
-pGlobal->addSensitive(pRxn);
-}
-};
+    class sensitizeToGlobal :
+                    public std::unary_function<globalVar*, void>
+        {
+            mzrReaction* pRxn;
+        public:
+            sensitizeToGlobal (mzrReaction* pReaction) :
+                    pRxn (pReaction)
+            {}
+            void
+            operator() (globalVar* pGlobal) const
+            {
+                pGlobal->addSensitive (pRxn);
+            }
+        };
 
 // Support for "tolerance" optimization.
-double lastPropensity;
-static double lowSensitive;
-static double highSensitive;
-static unsigned int reactionDepth;
+        double lastPropensity;
+        static double lowSensitive;
+        static double highSensitive;
+        static unsigned int reactionDepth;
 
-public:
-static void
-setGenerateDepth(unsigned int i);
+    public:
+        static void
+        setGenerateDepth (unsigned int i);
 
-static unsigned int
-getGenerateDepth()
-{
-return reactionDepth;
-}
-
-
-virtual void
-expandReactionNetwork();
+        static unsigned int
+        getGenerateDepth()
+        {
+            return reactionDepth;
+        }
 
 
-/*! \brief Keeps running count of all reaction events.
-This is a dumpable quantity. */
-static int reactionEventCount;
+        virtual void
+        expandReactionNetwork();
 
-/*! \brief The number of reactions that exist.
-This is a dumpable quantity. */
-static int reactionCount;
+
+        /*! \brief Keeps running count of all reaction events.
+        This is a dumpable quantity. */
+        static int reactionEventCount;
+
+        /*! \brief The number of reactions that exist.
+        This is a dumpable quantity. */
+        static int reactionCount;
 
 // Support for tolerance optimization.
-static void
-setTolerance(double tolerance)
-{
-lowSensitive = 1.0 - tolerance;
-highSensitive = 1.0 + tolerance;
-}
+        static void
+        setTolerance (double tolerance)
+        {
+            lowSensitive = 1.0 - tolerance;
+            highSensitive = 1.0 + tolerance;
+        }
 
 // This constructor enforces sensitization to global state variables, for
 // now just volume in Moleculizer, but e.g. temperature might also be
@@ -141,46 +141,46 @@ highSensitive = 1.0 + tolerance;
 //
 // lastPropensity is set to -1 for the first time that the reaction
 // is rescheduled.
-template<class senseListIterator>
-mzrReaction(senseListIterator beginGlobalStateVars,
-senseListIterator endGlobalStateVars,
-double reactionRate = 0.0) :
-fnd::gillspReaction<mzrSpecies>(reactionRate),
-lastPropensity(-1.0)
-{
-std::for_each(beginGlobalStateVars,
-endGlobalStateVars,
-sensitizeToGlobal(this));
+        template<class senseListIterator>
+        mzrReaction (senseListIterator beginGlobalStateVars,
+                     senseListIterator endGlobalStateVars,
+                     double reactionRate = 0.0) :
+                fnd::gillspReaction<mzrSpecies> (reactionRate),
+                lastPropensity (-1.0)
+        {
+            std::for_each (beginGlobalStateVars,
+                           endGlobalStateVars,
+                           sensitizeToGlobal (this) );
 
-++reactionCount;
-}
+            ++reactionCount;
+        }
 
 // Overriding basic_reaction<mzrSpecies>::addReactant, so that
 // the sensitization happens with the right class of reaction,
 // rather than the basic_reaction template base class.
-void
-addReactant(mzrSpecies* pSpecies,
-int multiplicity);
+        void
+        addReactant (mzrSpecies* pSpecies,
+                     int multiplicity);
 
 // Response of this reaction to message that one of its
 // reactants has changed population
-void
-respond(const mzrReactionStimulus& rStimulus);
+        void
+        respond (const mzrReactionStimulus& rStimulus);
 
-/*! \brief What a reaction does. */
-fnd::eventResult
-happen(moleculizer& rMolzer)
-throw(std::exception);
+        /*! \brief What a reaction does. */
+        fnd::eventResult
+        happen (moleculizer& rMolzer)
+        throw (std::exception);
 
-fnd::eventResult
-happen()throw(std::exception);
+        fnd::eventResult
+        happen() throw (std::exception);
 
 // Output generation for state dump.
-xmlpp::Element*
-insertElt(xmlpp::Element* pParentElt) const
-throw(std::exception);
+        xmlpp::Element*
+        insertElt (xmlpp::Element* pParentElt) const
+        throw (std::exception);
 
-};
+    };
 }
 
 #endif

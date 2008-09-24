@@ -40,38 +40,38 @@ namespace mzr
 {
 // This event class is separated out because of its special
 // role in state dump and in mzrUnit.
-class tabDumpEvent :
-public mzrEvent,
-public fnd::dumpStream,
-public mzrDumpStream
-{
+    class tabDumpEvent :
+                public mzrEvent,
+                public fnd::dumpStream,
+                public mzrDumpStream
+    {
 // This is a self-rescheduling, periodic event.  Maybe periodic
 // should be a sub-class of event; it seems to be a recurrent enough
 // theme.
-double period;
+        double period;
 
-public:
-tabDumpEvent(double dumpPeriod,
-const std::string& fileName);
+    public:
+        tabDumpEvent (double dumpPeriod,
+                      const std::string& fileName);
 
 // Now use push_back to add an ordinary dumpable, and use
 // push_back in combination with addSpeciesStream to add a species
 // dumpable.
 
-double
-getPeriod(void)
-{
-return period;
-}
+        double
+        getPeriod (void)
+        {
+            return period;
+        }
 
-fnd::eventResult
-happen(moleculizer& rMolzer)
-throw(std::exception);
+        fnd::eventResult
+        happen (moleculizer& rMolzer)
+        throw (std::exception);
 
-void
-insertTaggedDumpStreamElts(xmlpp::Element* pParent) const
-throw(std::exception);
-};
+        void
+        insertTaggedDumpStreamElts (xmlpp::Element* pParent) const
+        throw (std::exception);
+    };
 }
 
 

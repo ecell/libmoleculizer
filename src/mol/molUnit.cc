@@ -42,138 +42,138 @@
 
 namespace bnd
 {
-molUnit::
-molUnit(mzr::moleculizer& rMoleculizer) :
-mzr::unit("mol",
-rMoleculizer)
-{
+    molUnit::
+    molUnit (mzr::moleculizer& rMoleculizer) :
+            mzr::unit ("mol",
+                       rMoleculizer)
+    {
 // Register the model elements that this unit is
 // responsible for.
-inputCap.addModelContentName(eltName::modifications);
-inputCap.addModelContentName(eltName::mols);
+        inputCap.addModelContentName (eltName::modifications);
+        inputCap.addModelContentName (eltName::mols);
 
 // This unit isn't responsible for any reaction generators,
 // explicit species, species streams, or events.
-}
+    }
 
-void
-molUnit::
-mustAddMol(mzrMol* pMol,
-const xmlpp::Node* pRequestingNode)
-throw(utl::xcpt)
-{
-if(! addMol(pMol))
-throw dupMolNameXcpt(pMol->getName(),
-pRequestingNode);
-}
+    void
+    molUnit::
+    mustAddMol (mzrMol* pMol,
+                const xmlpp::Node* pRequestingNode)
+    throw (utl::xcpt)
+    {
+        if (! addMol (pMol) )
+            throw dupMolNameXcpt (pMol->getName(),
+                                  pRequestingNode);
+    }
 
-mzrMol*
-molUnit::
-mustFindMol(const std::string& rMolName,
-const xmlpp::Node* pRequestingNode) const
-throw(utl::xcpt)
-{
-mzrMol* pMol = findMol(rMolName);
+    mzrMol*
+    molUnit::
+    mustFindMol (const std::string& rMolName,
+                 const xmlpp::Node* pRequestingNode) const
+    throw (utl::xcpt)
+    {
+        mzrMol* pMol = findMol (rMolName);
 
-if(0 == pMol)
-throw unkMolXcpt(rMolName,
-pRequestingNode);
-return pMol;
-}
+        if (0 == pMol)
+            throw unkMolXcpt (rMolName,
+                              pRequestingNode);
+        return pMol;
+    }
 
-mzrModMol*
-molUnit::
-mustFindModMol(const std::string& rModMolName,
-const xmlpp::Node* pRequestingNode) const
-throw(utl::xcpt)
-{
-return mustBeModMol(mustFindMol(rModMolName,
-pRequestingNode),
-pRequestingNode);
-}
+    mzrModMol*
+    molUnit::
+    mustFindModMol (const std::string& rModMolName,
+                    const xmlpp::Node* pRequestingNode) const
+    throw (utl::xcpt)
+    {
+        return mustBeModMol (mustFindMol (rModMolName,
+                                          pRequestingNode),
+                             pRequestingNode);
+    }
 
-smallMol*
-molUnit::
-mustFindSmallMol(const std::string& rSmallMolName,
-const xmlpp::Node* pRequestingNode) const
-throw(utl::xcpt)
-{
-return mustBeSmallMol(mustFindMol(rSmallMolName,
-pRequestingNode),
-pRequestingNode);
-}
+    smallMol*
+    molUnit::
+    mustFindSmallMol (const std::string& rSmallMolName,
+                      const xmlpp::Node* pRequestingNode) const
+    throw (utl::xcpt)
+    {
+        return mustBeSmallMol (mustFindMol (rSmallMolName,
+                                            pRequestingNode),
+                               pRequestingNode);
+    }
 
-void
-molUnit::
-mustAddMod(const cpx::modification* pModification,
-const xmlpp::Node* pRequestingNode)
-throw(utl::xcpt)
-{
-if(! addMod(pModification))
-throw(dupModNameXcpt(pModification->getName(),
-pRequestingNode));
-}
+    void
+    molUnit::
+    mustAddMod (const cpx::modification* pModification,
+                const xmlpp::Node* pRequestingNode)
+    throw (utl::xcpt)
+    {
+        if (! addMod (pModification) )
+            throw (dupModNameXcpt (pModification->getName(),
+                                   pRequestingNode) );
+    }
 
-const cpx::modification*
-molUnit::
-mustGetMod(const std::string& rModificationName,
-xmlpp::Node* pRequestingNode) const
-throw(utl::xcpt)
-{
-const cpx::modification* pMod = getMod(rModificationName);
+    const cpx::modification*
+    molUnit::
+    mustGetMod (const std::string& rModificationName,
+                xmlpp::Node* pRequestingNode) const
+    throw (utl::xcpt)
+    {
+        const cpx::modification* pMod = getMod (rModificationName);
 
-if(! pMod) throw unkModXcpt(rModificationName,
-pRequestingNode);
-return pMod;
-}
+        if (! pMod) throw unkModXcpt (rModificationName,
+                                          pRequestingNode);
+        return pMod;
+    }
 
-class getValueMod :
-public std::unary_function
-<std::pair<std::string, std::string>,
-std::pair<std::string, const cpx::modification*> >
-{
-const molUnit& rMolUnit;
+    class getValueMod :
+                public std::unary_function
+                <std::pair<std::string, std::string>,
+                std::pair<std::string, const cpx::modification*> >
+    {
+        const molUnit& rMolUnit;
 
-public:
-getValueMod(const molUnit& refMolUnit) :
-rMolUnit(refMolUnit)
-{}
+    public:
+        getValueMod (const molUnit& refMolUnit) :
+                rMolUnit (refMolUnit)
+        {}
 
-std::pair<std::string, const cpx::modification*>
-operator()(const std::pair<std::string, std::string>& rEntry) const
-throw(utl::xcpt)
-{
-return std::make_pair(rEntry.first,
-rMolUnit.mustGetMod(rEntry.second));
-}
-};
+        std::pair<std::string, const cpx::modification*>
+        operator() (const std::pair<std::string, std::string>& rEntry) const
+        throw (utl::xcpt)
+        {
+            return std::make_pair (rEntry.first,
+                                   rMolUnit.mustGetMod (rEntry.second) );
+        }
+    };
 
-void
-molUnit::
-getModMap(const std::map<std::string, std::string>& rMapToModNames,
-std::map<std::string, const cpx::modification*>& rMapToMods) const
-throw(utl::xcpt)
-{
-transform(rMapToModNames.begin(),
-rMapToModNames.end(),
-inserter(rMapToMods,
-rMapToMods.begin()),
-getValueMod(*this));
-}
+    void
+    molUnit::
+    getModMap (const std::map<std::string, std::string>& rMapToModNames,
+               std::map<std::string, const cpx::modification*>& rMapToMods) const
+    throw (utl::xcpt)
+    {
+        transform (rMapToModNames.begin(),
+                   rMapToModNames.end(),
+                   inserter (rMapToMods,
+                             rMapToMods.begin() ),
+                   getValueMod (*this) );
+    }
 
-std::vector<std::string>
-molUnit::
-getAllKnownMods() const
-{
-std::vector<std::string> modificationVector;
-modificationVector.reserve( this->knownMods.size() );
-for( utl::autoCatalog<const cpx::modification>::const_iterator iter = knownMods.begin();
-iter != knownMods.end();
-++iter)
-{
-modificationVector.push_back( iter->first );
-}
+    std::vector<std::string>
+    molUnit::
+    getAllKnownMods() const
+    {
+        std::vector<std::string> modificationVector;
+        modificationVector.reserve ( this->knownMods.size() );
+        for ( utl::autoCatalog<const cpx::modification>::const_iterator iter = knownMods.begin();
+                iter != knownMods.end();
+                ++iter)
+        {
+            modificationVector.push_back ( iter->first );
+        }
 
-return modificationVector;
-}
+        return modificationVector;
+    }
 }

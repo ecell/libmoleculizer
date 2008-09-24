@@ -36,48 +36,48 @@
 
 namespace utl
 {
-template<class mapClass, class functionClass>
-class funcInsertOne :
-public std::unary_function<typename mapClass::value_type, void>
-{
-mapClass& rTarget;
-const functionClass keyFunction;
-public:
-funcInsertOne(mapClass& rTargetMap,
-const functionClass& rKeyFunction) :
-rTarget(rTargetMap),
-keyFunction(rKeyFunction)
-{}
+    template<class mapClass, class functionClass>
+    class funcInsertOne :
+                public std::unary_function<typename mapClass::value_type, void>
+    {
+        mapClass& rTarget;
+        const functionClass keyFunction;
+    public:
+        funcInsertOne (mapClass& rTargetMap,
+                       const functionClass& rKeyFunction) :
+                rTarget (rTargetMap),
+                keyFunction (rKeyFunction)
+        {}
 
-void operator()(const typename mapClass::value_type& rKeyValuePair) const
-{
-forceInsert
-(rTarget,
-typename mapClass::value_type(keyFunction(rKeyValuePair.first),
-rKeyValuePair.second));
-}
-};
+        void operator() (const typename mapClass::value_type& rKeyValuePair) const
+        {
+            forceInsert
+            (rTarget,
+             typename mapClass::value_type (keyFunction (rKeyValuePair.first),
+                                            rKeyValuePair.second) );
+        }
+    };
 
-/*! \ingroup mzrGroup
-\brief ForceInsert with remapping of keys.
+    /*! \ingroup mzrGroup
+    \brief ForceInsert with remapping of keys.
 
-Function class that applies a given function to the key
-before force-inserting into a given map.  This is used
-to apply a plexMap to the sitesSpecs in (siteSpec, siteParam)
-pairs, where the plexMap is an injection of an omniplex into
-a plex. */
-template<class mapClass, class functionClass>
-void
-funcInsert(mapClass& rTargetMap,
-const functionClass& rKeyFunction,
-typename mapClass::const_iterator startIter,
-typename mapClass::const_iterator stopIter)
-{
-for_each(startIter,
-stopIter,
-funcInsertOne<mapClass, functionClass>(rTargetMap,
-rKeyFunction));
-}
+    Function class that applies a given function to the key
+    before force-inserting into a given map.  This is used
+    to apply a plexMap to the sitesSpecs in (siteSpec, siteParam)
+    pairs, where the plexMap is an injection of an omniplex into
+    a plex. */
+    template<class mapClass, class functionClass>
+    void
+    funcInsert (mapClass& rTargetMap,
+                const functionClass& rKeyFunction,
+                typename mapClass::const_iterator startIter,
+                typename mapClass::const_iterator stopIter)
+    {
+        for_each (startIter,
+                  stopIter,
+                  funcInsertOne<mapClass, functionClass> (rTargetMap,
+                                                          rKeyFunction) );
+    }
 
 }
 

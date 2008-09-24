@@ -36,56 +36,56 @@
 
 namespace cpx
 {
-/*! \ingroup plexSpeciesGroup
-\ingroup plexFeatureGroup
-\brief Specifier for a site on a complex.
+    /*! \ingroup plexSpeciesGroup
+    \ingroup plexFeatureGroup
+    \brief Specifier for a site on a complex.
 
-The pair (m, n) specifies the nth site on the mth mol in the complex. */
-class siteSpec :
-public std::pair<int, int>
-{
-public:
-siteSpec(void) :
-std::pair<int, int>(-1,
--1)
-{}
+    The pair (m, n) specifies the nth site on the mth mol in the complex. */
+    class siteSpec :
+                public std::pair<int, int>
+    {
+    public:
+        siteSpec (void) :
+                std::pair<int, int> (-1,
+                                     -1)
+        {}
 
-siteSpec(int moleculeIndex,
-int bindingSiteIndex) :
-std::pair<int, int>(moleculeIndex,
-bindingSiteIndex)
-{}
+        siteSpec (int moleculeIndex,
+                  int bindingSiteIndex) :
+                std::pair<int, int> (moleculeIndex,
+                                     bindingSiteIndex)
+        {}
 
-int molNdx(void) const
-{
-return first;
-}
+        int molNdx (void) const
+        {
+            return first;
+        }
 
-void setMolNdx(int moleculeIndex)
-{
-first = moleculeIndex;
-}
+        void setMolNdx (int moleculeIndex)
+        {
+            first = moleculeIndex;
+        }
 
-int siteNdx(void) const
-{
-return second;
-}
+        int siteNdx (void) const
+        {
+            return second;
+        }
 
-void setSiteNdx(int siteIndex)
-{
-second = siteIndex;
-}
-};
+        void setSiteNdx (int siteIndex)
+        {
+            second = siteIndex;
+        }
+    };
 
-/*! \ingroup plexSpeciesGroup
+    /*! \ingroup plexSpeciesGroup
 
-\brief Specifier of a binding in a complex.  Just the binding's index. */
-typedef int bindingSpec;
+    \brief Specifier of a binding in a complex.  Just the binding's index. */
+    typedef int bindingSpec;
 
-/*! \ingroup plexSpeciesGroup
+    /*! \ingroup plexSpeciesGroup
 
-\brief Specifier of a mol in a complex.  Just the mol's index. */
-typedef int molSpec;
+    \brief Specifier of a mol in a complex.  Just the mol's index. */
+    typedef int molSpec;
 
 }
 

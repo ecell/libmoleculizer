@@ -36,21 +36,21 @@
 
 namespace utl
 {
-namespace dom
-{
-class missingAttrXcpt :
-public xcpt
-{
-static std::string
-mkMsg(const xmlpp::Element* pElt,
-const std::string& rAttrName);
+    namespace dom
+    {
+        class missingAttrXcpt :
+                    public xcpt
+        {
+            static std::string
+            mkMsg (const xmlpp::Element* pElt,
+                   const std::string& rAttrName);
 
-public:
-missingAttrXcpt(const xmlpp::Element* pElt,
-const std::string& rAttrName)
-throw();
-};
-}
+        public:
+            missingAttrXcpt (const xmlpp::Element* pElt,
+                             const std::string& rAttrName)
+            throw();
+        };
+    }
 }
 
 #endif // UTL_MISSINGATTRXCPT_H

@@ -43,10 +43,10 @@
 
 
 void
-processCommandLineArgs(int argc,
-char* argv[],
-mzr::moleculizer& theMzrObject,
-std::string* fileName);
+processCommandLineArgs (int argc,
+                        char* argv[],
+                        mzr::moleculizer& theMzrObject,
+                        std::string* fileName);
 
 
 
@@ -56,117 +56,117 @@ bool VERBOSITY = false;
 int DEBUG_NUM = 30;
 
 int
-main(int argc, char** argv)
+main (int argc, char** argv)
 {
 
-try
-{
-std::string filename;
-mzr::moleculizer theApp;
+    try
+    {
+        std::string filename;
+        mzr::moleculizer theApp;
 
-processCommandLineArgs( argc, argv, theApp, &filename);
-theApp.attachFileName( filename );
+        processCommandLineArgs ( argc, argv, theApp, &filename);
+        theApp.attachFileName ( filename );
 
-return 0;
-}
+        return 0;
+    }
 
-catch(const std::exception& rExcept)
-{
-std::cerr << rExcept.what()
-<< std::endl;
-return 1;
-}
+    catch (const std::exception& rExcept)
+    {
+        std::cerr << rExcept.what()
+        << std::endl;
+        return 1;
+    }
 }
 
 
 
 
 void
-processCommandLineArgs(int argc,
-char* argv[],
-mzr::moleculizer& theMzrObject,
-std::string* fileName)
+processCommandLineArgs (int argc,
+                        char* argv[],
+                        mzr::moleculizer& theMzrObject,
+                        std::string* fileName)
 {
 // Set the default operation of the MzrObject
-theMzrObject.setGenerateDepth( 1 );
+    theMzrObject.setGenerateDepth ( 1 );
 
-srand(42);
+    srand (42);
 
-bool filenameWasSeen( false );
+    bool filenameWasSeen ( false );
 
 // Skip the command name.
-argc--;
-argv++;
+    argc--;
+    argv++;
 
 // Peel off arguments one by one.
-while(0 < argc)
-{
-std::string arg(*argv);
-argv++;
-argc--;
+    while (0 < argc)
+    {
+        std::string arg (*argv);
+        argv++;
+        argc--;
 
-if(arg.substr(0,2) == "-g")
-{
-if (arg.size() == 2) continue;
+        if (arg.substr (0,2) == "-g")
+        {
+            if (arg.size() == 2) continue;
 
-std::string strDepth( arg.substr(2, arg.size() ) );
-int depth = utl::argMustBeNNInt(strDepth);
+            std::string strDepth ( arg.substr (2, arg.size() ) );
+            int depth = utl::argMustBeNNInt (strDepth);
 
-theMzrObject.setGenerateDepth( depth );
-}
-else if ( arg == "-n" )
-{
-std::string aNumber = utl::mustGetArg(argc, argv);
-DEBUG_NUM = utl::argMustBeNNInt( aNumber );
-}
-else if (arg == "-v" )
-{
-VERBOSITY = true;
-}
-else if (arg == "-i")
-{
-INTERACTIVE = true;
-}
-else if (arg == "-s")
-{
-std::string argument = utl::mustGetArg(argc, argv);
-utl::linearHash lh;
-srand( lh(argument) );
-}
-else if (arg == "-r" )
-{
-srand(time(NULL));
-}
+            theMzrObject.setGenerateDepth ( depth );
+        }
+        else if ( arg == "-n" )
+        {
+            std::string aNumber = utl::mustGetArg (argc, argv);
+            DEBUG_NUM = utl::argMustBeNNInt ( aNumber );
+        }
+        else if (arg == "-v" )
+        {
+            VERBOSITY = true;
+        }
+        else if (arg == "-i")
+        {
+            INTERACTIVE = true;
+        }
+        else if (arg == "-s")
+        {
+            std::string argument = utl::mustGetArg (argc, argv);
+            utl::linearHash lh;
+            srand ( lh (argument) );
+        }
+        else if (arg == "-r" )
+        {
+            srand (time (NULL) );
+        }
 
 // Sets the tolerance for reaction rescheduling.
-else if (arg == "-T")
-{
-std::string toleranceString
-= utl::mustGetArg(argc,
-argv);
+        else if (arg == "-T")
+        {
+            std::string toleranceString
+            = utl::mustGetArg (argc,
+                               argv);
 
-double tolerance
-= utl::argMustBeNNDouble(toleranceString);
+            double tolerance
+            = utl::argMustBeNNDouble (toleranceString);
 
-theMzrObject.setTolerance(tolerance);
-}
+            theMzrObject.setTolerance (tolerance);
+        }
 
 // This is the filename, although it's useless because
 // this was already taken care of elsewhere.
-else if (arg == "-f")
-{
-filenameWasSeen = true;
-*fileName = utl::mustGetArg(argc,
-argv);
-}
+        else if (arg == "-f")
+        {
+            filenameWasSeen = true;
+            *fileName = utl::mustGetArg (argc,
+                                         argv);
+        }
 
-else throw utl::unkArgXcpt(arg);
-}
+        else throw utl::unkArgXcpt (arg);
+    }
 
-if (!filenameWasSeen)
-{
-throw utl::badFileNameXcpt();
-}
+    if (!filenameWasSeen)
+    {
+        throw utl::badFileNameXcpt();
+    }
 }
 
 

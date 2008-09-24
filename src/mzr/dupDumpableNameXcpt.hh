@@ -36,20 +36,20 @@
 
 namespace mzr
 {
-class dupDumpableNameXcpt :
-public utl::xcpt
-{
-static std::string
-mkMsg(const std::string& rDumpableName,
-xmlpp::Node* pOffendingNode = 0);
+    class dupDumpableNameXcpt :
+                public utl::xcpt
+    {
+        static std::string
+        mkMsg (const std::string& rDumpableName,
+               xmlpp::Node* pOffendingNode = 0);
 
-public:
-dupDumpableNameXcpt(const std::string& rDumpableName,
-xmlpp::Node* pOffendingNode = 0) :
-utl::xcpt(mkMsg(rDumpableName,
-pOffendingNode))
-{}
-};
+    public:
+        dupDumpableNameXcpt (const std::string& rDumpableName,
+                             xmlpp::Node* pOffendingNode = 0) :
+                utl::xcpt (mkMsg (rDumpableName,
+                                  pOffendingNode) )
+        {}
+    };
 }
 
 #endif // MZR_DUPDUMPABLENAMEXCPT_H

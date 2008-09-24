@@ -38,102 +38,102 @@
 
 namespace ftr
 {
-class smallMolExchange
-{
-public:
-cpx::molSpec exchangedMolSpec;
-bnd::smallMol* pReplacementMol;
+    class smallMolExchange
+    {
+    public:
+        cpx::molSpec exchangedMolSpec;
+        bnd::smallMol* pReplacementMol;
 
-smallMolExchange(void) :
-exchangedMolSpec(-1),
-pReplacementMol(0)
-{}
+        smallMolExchange (void) :
+                exchangedMolSpec (-1),
+                pReplacementMol (0)
+        {}
 
-smallMolExchange(cpx::molSpec xchngMolSpec,
-bnd::smallMol* pRplcmntMol) :
-exchangedMolSpec(xchngMolSpec),
-pReplacementMol(pRplcmntMol)
-{}
-};
+        smallMolExchange (cpx::molSpec xchngMolSpec,
+                          bnd::smallMol* pRplcmntMol) :
+                exchangedMolSpec (xchngMolSpec),
+                pReplacementMol (pRplcmntMol)
+        {}
+    };
 
-class modificationExchange
-{
-public:
-cpx::molSpec modMolSpec;
-int modSiteNdx;
-const cpx::modification* pReplacementMod;
+    class modificationExchange
+    {
+    public:
+        cpx::molSpec modMolSpec;
+        int modSiteNdx;
+        const cpx::modification* pReplacementMod;
 
-modificationExchange() :
-modMolSpec(-1),
-modSiteNdx(-1),
-pReplacementMod(0)
-{}
+        modificationExchange() :
+                modMolSpec (-1),
+                modSiteNdx (-1),
+                pReplacementMod (0)
+        {}
 
-modificationExchange(cpx::molSpec molSpec,
-int modSite,
-const cpx::modification* pMod) :
-modMolSpec(molSpec),
-modSiteNdx(modSite),
-pReplacementMod(pMod)
-{}
-};
+        modificationExchange (cpx::molSpec molSpec,
+                              int modSite,
+                              const cpx::modification* pMod) :
+                modMolSpec (molSpec),
+                modSiteNdx (modSite),
+                pReplacementMod (pMod)
+        {}
+    };
 
-class omniRxnGen :
-public fnd::rxnGen<cpx::cxOmni<bnd::mzrMol, plx::mzrPlexSpecies, plx::mzrPlexFamily, plx::mzrOmniPlex> >
-{
+    class omniRxnGen :
+                public fnd::rxnGen<cpx::cxOmni<bnd::mzrMol, plx::mzrPlexSpecies, plx::mzrPlexFamily, plx::mzrOmniPlex> >
+    {
 // To intern reactions for memory management.
-mzr::mzrUnit& rMzrUnit;
+        mzr::mzrUnit& rMzrUnit;
 
 // To recognize the new complex.
-plx::plexUnit& rPlexUnit;
+        plx::plexUnit& rPlexUnit;
 
 // Exchanges of small-mol components.
-const std::vector<smallMolExchange> smallMolExchanges;
+        const std::vector<smallMolExchange> smallMolExchanges;
 
 // Exchanges of modifications.
-const std::vector<modificationExchange> modificationExchanges;
+        const std::vector<modificationExchange> modificationExchanges;
 
 // Additional reactant; null if there is no additional reactant.
-mzr::mzrSpecies* pAdditionalReactant;
+        mzr::mzrSpecies* pAdditionalReactant;
 
 // Additional product; null if there is no additional product.
-mzr::mzrSpecies* pAdditionalProduct;
+        mzr::mzrSpecies* pAdditionalProduct;
 
 // Reaction family to receive generated reactions.
-utl::autoVector<mzr::mzrReaction>* pFamily;
+        utl::autoVector<mzr::mzrReaction>* pFamily;
 
 // Rate extrapolator, which sometimes is unary and sometimes is binary.
 // This omniRxnGen is responsible for memory management of its
 // extrapolator.
-const omniExtrapolator* pExtrapolator;
+        const omniExtrapolator* pExtrapolator;
 
-public:
-omniRxnGen(mzr::mzrUnit& refMzrUnit,
-plx::plexUnit& refPlexUnit,
-const std::vector<smallMolExchange>& rSMExchanges,
-const std::vector<modificationExchange>& rModExchanges,
-mzr::mzrSpecies* pAuxReactant,
-mzr::mzrSpecies* pAuxProduct,
-utl::autoVector<mzr::mzrReaction>* pReactionFamily,
-const omniExtrapolator* pOmniExtrapolator) :
-rMzrUnit(refMzrUnit),
-rPlexUnit(refPlexUnit),
-smallMolExchanges(rSMExchanges),
-modificationExchanges(rModExchanges),
-pAdditionalReactant(pAuxReactant),
-pAdditionalProduct(pAuxProduct),
-pFamily(pReactionFamily),
-pExtrapolator(pOmniExtrapolator)
-{}
+    public:
+        omniRxnGen (mzr::mzrUnit& refMzrUnit,
+                    plx::plexUnit& refPlexUnit,
+                    const std::vector<smallMolExchange>& rSMExchanges,
+                    const std::vector<modificationExchange>& rModExchanges,
+                    mzr::mzrSpecies* pAuxReactant,
+                    mzr::mzrSpecies* pAuxProduct,
+                    utl::autoVector<mzr::mzrReaction>* pReactionFamily,
+                    const omniExtrapolator* pOmniExtrapolator) :
+                rMzrUnit (refMzrUnit),
+                rPlexUnit (refPlexUnit),
+                smallMolExchanges (rSMExchanges),
+                modificationExchanges (rModExchanges),
+                pAdditionalReactant (pAuxReactant),
+                pAdditionalProduct (pAuxProduct),
+                pFamily (pReactionFamily),
+                pExtrapolator (pOmniExtrapolator)
+        {}
 
-~omniRxnGen(void)
-{
-delete pExtrapolator;
-}
+        ~omniRxnGen (void)
+        {
+            delete pExtrapolator;
+        }
 
-void
-respond(const fnd::featureStimulus<cpx::cxOmni<bnd::mzrMol, plx::mzrPlexSpecies, plx::mzrPlexFamily, plx::mzrOmniPlex> >& rStimulus);
-};
+        void
+        respond (const fnd::featureStimulus<cpx::cxOmni<bnd::mzrMol, plx::mzrPlexSpecies, plx::mzrPlexFamily, plx::mzrOmniPlex> >& rStimulus);
+    };
 }
 
 #endif //  OMNIGEN_H

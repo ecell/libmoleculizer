@@ -34,24 +34,24 @@
 
 namespace utl
 {
-namespace dom
-{
-badElementCastXcpt::
-badElementCastXcpt(const xmlpp::Node* pNode)
-throw() :
-xcpt(mkMsg(pNode))
-{}
+    namespace dom
+    {
+        badElementCastXcpt::
+        badElementCastXcpt (const xmlpp::Node* pNode)
+        throw() :
+                xcpt (mkMsg (pNode) )
+        {}
 
-std::string
-badElementCastXcpt::
-mkMsg(const xmlpp::Node* pNode)
-{
-std::ostringstream msgStream;
-msgStream << xcpt::mkMsg(pNode)
-<< "Could not cast "
-<< pNode->get_name()
-<< " node to xmlpp::Element.";
-return msgStream.str();
-}
-}
+        std::string
+        badElementCastXcpt::
+        mkMsg (const xmlpp::Node* pNode)
+        {
+            std::ostringstream msgStream;
+            msgStream << xcpt::mkMsg (pNode)
+            << "Could not cast "
+            << pNode->get_name()
+            << " node to xmlpp::Element.";
+            return msgStream.str();
+        }
+    }
 }

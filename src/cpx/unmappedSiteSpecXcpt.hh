@@ -36,17 +36,17 @@
 
 namespace cpx
 {
-class unmappedSiteSpecXcpt :
-public utl::xcpt
-{
-static std::string
-mkMsg(void);
+    class unmappedSiteSpecXcpt :
+                public utl::xcpt
+    {
+        static std::string
+        mkMsg (void);
 
-public:
-unmappedSiteSpecXcpt(void) :
-utl::xcpt(mkMsg())
-{}
-};
+    public:
+        unmappedSiteSpecXcpt (void) :
+                utl::xcpt (mkMsg() )
+        {}
+    };
 }
 
 #endif // CPX_UNMAPPEDSITESPECXCPT_H

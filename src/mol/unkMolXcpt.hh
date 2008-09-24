@@ -38,20 +38,20 @@
 namespace bnd
 {
 // Exception thrown when the user refers to a mol by an incorrect name.
-class unkMolXcpt :
-public utl::xcpt
-{
-static std::string
-mkMsg(const std::string& rBadMolName,
-const xmlpp::Node* pOffendingNode = 0);
+    class unkMolXcpt :
+                public utl::xcpt
+    {
+        static std::string
+        mkMsg (const std::string& rBadMolName,
+               const xmlpp::Node* pOffendingNode = 0);
 
-public:
-unkMolXcpt(const std::string& rBadMolName,
-const xmlpp::Node* pOffendingNode = 0) :
-utl::xcpt(mkMsg(rBadMolName,
-pOffendingNode))
-{}
-};
+    public:
+        unkMolXcpt (const std::string& rBadMolName,
+                    const xmlpp::Node* pOffendingNode = 0) :
+                utl::xcpt (mkMsg (rBadMolName,
+                                  pOffendingNode) )
+        {}
+    };
 }
 
 #endif // MOL_UNKMOLXCPT_H

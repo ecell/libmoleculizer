@@ -34,32 +34,32 @@
 
 namespace utl
 {
-namespace dom
-{
-std::string
-badPosDoubleAttrXcpt::
-mkMsg(const xmlpp::Element* pOffendingElement,
-const std::string& rAttrName,
-double badDoubleValue)
-{
-std::ostringstream msgStream;
-msgStream << xcpt::mkMsg(pOffendingElement)
-<< "Expected "
-<< rAttrName
-<< " attribute to be positive; got "
-<< badDoubleValue
-<< ".";
-return msgStream.str();
-}
+    namespace dom
+    {
+        std::string
+        badPosDoubleAttrXcpt::
+        mkMsg (const xmlpp::Element* pOffendingElement,
+               const std::string& rAttrName,
+               double badDoubleValue)
+        {
+            std::ostringstream msgStream;
+            msgStream << xcpt::mkMsg (pOffendingElement)
+            << "Expected "
+            << rAttrName
+            << " attribute to be positive; got "
+            << badDoubleValue
+            << ".";
+            return msgStream.str();
+        }
 
-badPosDoubleAttrXcpt::
-badPosDoubleAttrXcpt(const xmlpp::Element* pOffendingElement,
-const std::string& rAttrName,
-double badDoubleValue)
-throw() :
-xcpt(mkMsg(pOffendingElement,
-rAttrName,
-badDoubleValue))
-{}
-}
+        badPosDoubleAttrXcpt::
+        badPosDoubleAttrXcpt (const xmlpp::Element* pOffendingElement,
+                              const std::string& rAttrName,
+                              double badDoubleValue)
+        throw() :
+                xcpt (mkMsg (pOffendingElement,
+                             rAttrName,
+                             badDoubleValue) )
+        {}
+    }
 }

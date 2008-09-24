@@ -36,48 +36,48 @@
 
 namespace mzr
 {
-tabDumpEvent::
-tabDumpEvent(double dumpPeriod,
-const std::string& fileName) :
-fnd::dumpStream(fileName),
-period(dumpPeriod)
-{}
+    tabDumpEvent::
+    tabDumpEvent (double dumpPeriod,
+                  const std::string& fileName) :
+            fnd::dumpStream (fileName),
+            period (dumpPeriod)
+    {}
 
-fnd::eventResult
-tabDumpEvent::happen(moleculizer& rMolzer)
-throw(std::exception)
-{
+    fnd::eventResult
+    tabDumpEvent::happen (moleculizer& rMolzer)
+    throw (std::exception)
+    {
 // Dump to output file.
-doDump();
+        doDump();
 
 // Reschedule the event after time period.
 //     rMolzer.eventQ.scheduleEvent(this,
 // 				 rMolzer.eventQ.getSimTime() + period);
 
-return fnd::go;
-}
+        return fnd::go;
+    }
 
-void
-tabDumpEvent::
-insertTaggedDumpStreamElts(xmlpp::Element* pParent) const
-throw(std::exception)
-{
-xmlpp::Element* pTaggedDumpStreamElt
-= pParent->add_child(eltName::taggedDumpStream);
+    void
+    tabDumpEvent::
+    insertTaggedDumpStreamElts (xmlpp::Element* pParent) const
+    throw (std::exception)
+    {
+        xmlpp::Element* pTaggedDumpStreamElt
+        = pParent->add_child (eltName::taggedDumpStream);
 
-pTaggedDumpStreamElt
-->set_attribute(eltName::taggedDumpStream_fileNameAttr,
-getFileName());
+        pTaggedDumpStreamElt
+        ->set_attribute (eltName::taggedDumpStream_fileNameAttr,
+                         getFileName() );
 
-pTaggedDumpStreamElt
-->set_attribute(eltName::taggedDumpStream_dumpPeriodAttr,
-utl::stringify<double>(period));
+        pTaggedDumpStreamElt
+        ->set_attribute (eltName::taggedDumpStream_dumpPeriodAttr,
+                         utl::stringify<double> (period) );
 
-std::for_each(speciesStreams.begin(),
-speciesStreams.end(),
-std::bind2nd
-(std::mem_fun
-(&mzrSpeciesStream::insertTaggedSpeciesStreamRef),
-pTaggedDumpStreamElt));
-}
+        std::for_each (speciesStreams.begin(),
+                       speciesStreams.end(),
+                       std::bind2nd
+                       (std::mem_fun
+                        (&mzrSpeciesStream::insertTaggedSpeciesStreamRef),
+                        pTaggedDumpStreamElt) );
+    }
 }

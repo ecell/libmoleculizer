@@ -34,11 +34,11 @@
 namespace mzr
 {
 
-std::string
-illegalSpeciesNameXcpt::
-mkMsg( const std::string& rSpeciesName,
-const std::string& rMessage)
-{
-return (rSpeciesName + " is an illegal name");
-}
+    std::string
+    illegalSpeciesNameXcpt::
+    mkMsg ( const std::string& rSpeciesName,
+            const std::string& rMessage)
+    {
+        return (rSpeciesName + " is an illegal name");
+    }
 }

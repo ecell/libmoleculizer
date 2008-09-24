@@ -40,19 +40,19 @@ namespace bnd
 {
 // Exception thrown when the same name is given to two different
 // binding sites on the same mol.
-class dupSiteNameXcpt :
-public utl::xcpt
-{
-static std::string
-mkMsg(const mzrMol& rMol,
-const std::string& rDuplicateName);
-public:
-dupSiteNameXcpt(const mzrMol& rMol,
-const std::string& rDuplicateName) :
-utl::xcpt(mkMsg(rMol,
-rDuplicateName))
-{}
-};
+    class dupSiteNameXcpt :
+                public utl::xcpt
+    {
+        static std::string
+        mkMsg (const mzrMol& rMol,
+               const std::string& rDuplicateName);
+    public:
+        dupSiteNameXcpt (const mzrMol& rMol,
+                         const std::string& rDuplicateName) :
+                utl::xcpt (mkMsg (rMol,
+                                  rDuplicateName) )
+        {}
+    };
 }
 
 #endif // MOL_DUPSITENAMEXCPT_H

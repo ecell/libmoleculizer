@@ -38,100 +38,100 @@
 
 namespace utl
 {
-namespace dom
-{
-template<class batchAppClass>
-int
-domBatchJob<batchAppClass>::
-parseNrun(void)
-{
-try
-{
+    namespace dom
+    {
+        template<class batchAppClass>
+        int
+        domBatchJob<batchAppClass>::
+        parseNrun (void)
+        {
+            try
+            {
 // Create a non-validating parser.
-typename xmlpp::DomParser parser;
-parser.set_validate(false);
+                typename xmlpp::DomParser parser;
+                parser.set_validate (false);
 
-parser.parse_stream(std::cin);
+                parser.parse_stream (std::cin);
 
 // Xmlpp doc says this test is to "see if a document has been
 // parsed."
-if(parser)
-{
+                if (parser)
+                {
 // Create the application from the input document.
-batchAppClass theApp(argCount,
-argVector,
-parser.get_document());
+                    batchAppClass theApp (argCount,
+                                          argVector,
+                                          parser.get_document() );
 
 // Run the application.
-return theApp.run();
-}
-else
-throw noDocumentParsedXcpt();
-}
-catch(const std::exception& rExcept)
-{
-std::cerr << rExcept.what()
-<< std::endl;
-return 1;
-}
-return 0;
-}
+                    return theApp.run();
+                }
+                else
+                    throw noDocumentParsedXcpt();
+            }
+            catch (const std::exception& rExcept)
+            {
+                std::cerr << rExcept.what()
+                << std::endl;
+                return 1;
+            }
+            return 0;
+        }
 
-template<class batchAppClass>
-int
-twoDomJob<batchAppClass>::
-parseNrun(void)
-{
-try
-{
+        template<class batchAppClass>
+        int
+        twoDomJob<batchAppClass>::
+        parseNrun (void)
+        {
+            try
+            {
 // Create a non-validating parser for standard input.
 // I'm not entirely sure that one can't reuse a parser.
 // Or maybe should.
-typename xmlpp::DomParser stdInParser;
+                typename xmlpp::DomParser stdInParser;
 // Looking at the headers, I probably don't need to do
 // this.
-stdInParser.set_validate(false);
+                stdInParser.set_validate (false);
 
 // Parse standard input.
-stdInParser.parse_stream(std::cin);
+                stdInParser.parse_stream (std::cin);
 
 // Create a non-validating parser for the auxiliary file.
-typename xmlpp::DomParser auxFileParser;
-auxFileParser.set_validate(false);
+                typename xmlpp::DomParser auxFileParser;
+                auxFileParser.set_validate (false);
 
 // Get the name of the auxiliary file from the command line.
-if(argCount < 2)
-throw insuffArgsXcpt::counts(argCount,
-2);
+                if (argCount < 2)
+                    throw insuffArgsXcpt::counts (argCount,
+                                                  2);
 
 // Parse the file.
-const typename std::string auxFileName(argVector[1]);
-auxFileParser.parse_file(auxFileName);
+                const typename std::string auxFileName (argVector[1]);
+                auxFileParser.parse_file (auxFileName);
 
-if(stdInParser && auxFileParser)
-{
+                if (stdInParser && auxFileParser)
+                {
 // Create the application from the two input documents.
-batchAppClass theApp(argCount - 1,
-argVector + 1,
-stdInParser.get_document(),
-auxFileParser.get_document());
+                    batchAppClass theApp (argCount - 1,
+                                          argVector + 1,
+                                          stdInParser.get_document(),
+                                          auxFileParser.get_document() );
 
 // Run the application.
-return theApp.run();
-}
-else
-throw noDocumentParsedXcpt();
-}
-catch(const typename std::exception& rExcept)
-{
-std::cerr << rExcept.what()
-<< std::endl;
-return 1;
-}
+                    return theApp.run();
+                }
+                else
+                    throw noDocumentParsedXcpt();
+            }
+            catch (const typename std::exception& rExcept)
+            {
+                std::cerr << rExcept.what()
+                << std::endl;
+                return 1;
+            }
 // Technically, I think this point in the code is not reachable.
-return 0;
-}
-}
+            return 0;
+        }
+    }
 }
 
 #endif // UTL_DOMJOBIMPL_H

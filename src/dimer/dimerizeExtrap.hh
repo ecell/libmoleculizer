@@ -41,105 +41,105 @@
 namespace dimer
 {
 // Base class of rate extrapolators for dimerization reactions.
-class dimerizeExtrapolator
-{
-public:
-virtual
-~dimerizeExtrapolator(void)
-{}
+    class dimerizeExtrapolator
+    {
+    public:
+        virtual
+        ~dimerizeExtrapolator (void)
+        {}
 
-virtual void
-setRate(cpx::siteParam leftParam,
-cpx::siteParam rightParam,
-double rate) = 0;
+        virtual void
+        setRate (cpx::siteParam leftParam,
+                 cpx::siteParam rightParam,
+                 double rate) = 0;
 
-virtual double
-getRate(const cpx::cxSite<plx::mzrPlexSpecies, plx::mzrPlexFamily>& rLeftContext,
-const cpx::cxSite<plx::mzrPlexSpecies, plx::mzrPlexFamily>& rRightContext) const = 0;
-};
+        virtual double
+        getRate (const cpx::cxSite<plx::mzrPlexSpecies, plx::mzrPlexFamily>& rLeftContext,
+                 const cpx::cxSite<plx::mzrPlexSpecies, plx::mzrPlexFamily>& rRightContext) const = 0;
+    };
 
 // Dimerization rate extrapolator that does no extrapolation; uses the same
 // rate of dimerization for a given pair of binding site shapes, regardless
 // of dimerizing species.  Not recommended; included as an example only.
-class dimerizeNoExtrap :
-public dimerizeExtrapolator
-{
-typedef
-std::map<std::pair<cpx::siteParam, cpx::siteParam>, double> rateMapType;
+    class dimerizeNoExtrap :
+                public dimerizeExtrapolator
+    {
+        typedef
+        std::map<std::pair<cpx::siteParam, cpx::siteParam>, double> rateMapType;
 
-rateMapType rateMap;
+        rateMapType rateMap;
 
-public:
+    public:
 // Both for inserting default rates and for writing allosteric
 // rates over default rates.
-void
-setRate(cpx::siteParam leftParam,
-cpx::siteParam rightParam,
-double rate);
+        void
+        setRate (cpx::siteParam leftParam,
+                 cpx::siteParam rightParam,
+                 double rate);
 
-double
-getRate(const cpx::cxSite<plx::mzrPlexSpecies, plx::mzrPlexFamily>& rLeftContext,
-const cpx::cxSite<plx::mzrPlexSpecies, plx::mzrPlexFamily>& rRightContext) const;
-};
+        double
+        getRate (const cpx::cxSite<plx::mzrPlexSpecies, plx::mzrPlexFamily>& rLeftContext,
+                 const cpx::cxSite<plx::mzrPlexSpecies, plx::mzrPlexFamily>& rRightContext) const;
+    };
 
 
-class dimerizeConstantRate :
-public dimerizeExtrapolator
-{
-public:
-void
-setRate(cpx::siteParam leftParam,
-cpx::siteParam rightParam,
-double rate){}
+    class dimerizeConstantRate :
+                public dimerizeExtrapolator
+    {
+    public:
+        void
+        setRate (cpx::siteParam leftParam,
+                 cpx::siteParam rightParam,
+                 double rate) {}
 
 // For retrieving weight-corrected dimerization rates.
-double
-getRate(const cpx::cxSite<plx::mzrPlexSpecies, plx::mzrPlexFamily>& rLeftContext,
-const cpx::cxSite<plx::mzrPlexSpecies, plx::mzrPlexFamily>& rRightContext) const
-{
-return 3.141592653859;
-}
-};
+        double
+        getRate (const cpx::cxSite<plx::mzrPlexSpecies, plx::mzrPlexFamily>& rLeftContext,
+                 const cpx::cxSite<plx::mzrPlexSpecies, plx::mzrPlexFamily>& rRightContext) const
+        {
+            return 3.141592653859;
+        }
+    };
 
 
 // Dimerization rate extrapolator that uses the masses of the
 // dimerizing species.
-class dimerizeMassExtrap :
-public dimerizeExtrapolator
-{
-typedef
-std::map<std::pair<cpx::siteParam, cpx::siteParam>, double>
-invMapType;
+    class dimerizeMassExtrap :
+                public dimerizeExtrapolator
+    {
+        typedef
+        std::map<std::pair<cpx::siteParam, cpx::siteParam>, double>
+        invMapType;
 
-double leftMass;
-double rightMass;
+        double leftMass;
+        double rightMass;
 
-invMapType invariantMap;
+        invMapType invariantMap;
 
-public:
+    public:
 // The masses given to this constructor are used to convert
 // to/from binding invariant to rate and back.
-dimerizeMassExtrap(double leftMolMass,
-double rightMolMass) :
-leftMass(leftMolMass),
-rightMass(rightMolMass)
-{}
+        dimerizeMassExtrap (double leftMolMass,
+                            double rightMolMass) :
+                leftMass (leftMolMass),
+                rightMass (rightMolMass)
+        {}
 
 // Both for inserting default rates and for writing allosteric
 // rates over default rates.
 //
 // Storing the rate (binding invariant) with the key pair in only
 // one order; this means that search has to look for both orders.
-void
-setRate(cpx::siteParam leftParam,
-cpx::siteParam rightParam,
-double rate);
+        void
+        setRate (cpx::siteParam leftParam,
+                 cpx::siteParam rightParam,
+                 double rate);
 
 // For retrieving weight-corrected dimerization rates.
-double
-getRate(const cpx::cxSite<plx::mzrPlexSpecies, plx::mzrPlexFamily>& rLeftContext,
-const cpx::cxSite<plx::mzrPlexSpecies, plx::mzrPlexFamily>& rRightContext) const;
-};
+        double
+        getRate (const cpx::cxSite<plx::mzrPlexSpecies, plx::mzrPlexFamily>& rLeftContext,
+                 const cpx::cxSite<plx::mzrPlexSpecies, plx::mzrPlexFamily>& rRightContext) const;
+    };
 }
 
 #endif // DIMERIZEEXTRAP_H

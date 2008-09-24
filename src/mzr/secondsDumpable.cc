@@ -36,18 +36,18 @@
 
 namespace mzr
 {
-secondsDumpable::
-secondsDumpable(mzrUnit& refMzrUnit) :
-fnd::dumpable<fnd::basicDumpable::dumpArg>(eltName::statStream_clockSeconds),
-rMzrUnit(refMzrUnit)
-{}
+    secondsDumpable::
+    secondsDumpable (mzrUnit& refMzrUnit) :
+            fnd::dumpable<fnd::basicDumpable::dumpArg> (eltName::statStream_clockSeconds),
+            rMzrUnit (refMzrUnit)
+    {}
 
-void
-secondsDumpable::
-doDump(const fnd::basicDumpable::dumpArg& rDumpArg) const
-{
-time_t secondsNow = time(0);
+    void
+    secondsDumpable::
+    doDump (const fnd::basicDumpable::dumpArg& rDumpArg) const
+    {
+        time_t secondsNow = time (0);
 
-rDumpArg.getOstream() << secondsNow - rMzrUnit.startSeconds;
-}
+        rDumpArg.getOstream() << secondsNow - rMzrUnit.startSeconds;
+    }
 }

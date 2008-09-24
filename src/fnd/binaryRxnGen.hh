@@ -67,64 +67,64 @@ namespace fnd
 // implements a complementary pair for use in creating new families of
 // binary reactions.
 
-/*! \ingroup rxnGenGroup
-\brief Support template for the binaryRxnGenPair template.
+    /*! \ingroup rxnGenGroup
+    \brief Support template for the binaryRxnGenPair template.
 
-The full reaction generator for a binary reaction has two mirror-image
-"sub-generators."  Each sees to adding reactions coming from one of
-the features to which the reaction family is sensitive. */
-template<class newContextClass, class otherFeatureClass>
-class binaryRxnGen :
-public fnd::rxnGen<newContextClass>
-{
+    The full reaction generator for a binary reaction has two mirror-image
+    "sub-generators."  Each sees to adding reactions coming from one of
+    the features to which the reaction family is sensitive. */
+    template<class newContextClass, class otherFeatureClass>
+    class binaryRxnGen :
+                public fnd::rxnGen<newContextClass>
+    {
 
-typedef typename otherFeatureClass::contextType otherContextType;
+        typedef typename otherFeatureClass::contextType otherContextType;
 
-otherFeatureClass& rOtherFtr;
+        otherFeatureClass& rOtherFtr;
 
 // Generates the reactions for the new context paired with a single
 // context from the other feature.
-class forOneOtherContext :
-public std::unary_function<otherContextType, void>
-{
-const newContextClass& rNew;
-const binaryRxnGen& rRxnGen;
-int notificationDepth;
+    class forOneOtherContext :
+                    public std::unary_function<otherContextType, void>
+        {
+            const newContextClass& rNew;
+            const binaryRxnGen& rRxnGen;
+            int notificationDepth;
 
-public:
-forOneOtherContext(const newContextClass& rNewContext,
-const binaryRxnGen& rThisRxnGen,
-int generateDepth) :
-rNew(rNewContext),
-rRxnGen(rThisRxnGen),
-notificationDepth(generateDepth)
-{}
+        public:
+            forOneOtherContext (const newContextClass& rNewContext,
+                                const binaryRxnGen& rThisRxnGen,
+                                int generateDepth) :
+                    rNew (rNewContext),
+                    rRxnGen (rThisRxnGen),
+                    notificationDepth (generateDepth)
+            {}
 
 // Make and install the parameters resulting from combining the new
 // context rNew with one context coming from the other rxnGen.
-void operator()(const otherContextType& rOtherContext) const
-{
-rRxnGen.makeBinaryReactions(rNew,
-rOtherContext,
-notificationDepth);
-}
-};
-friend class forOneOtherContext;
+            void operator() (const otherContextType& rOtherContext) const
+            {
+                rRxnGen.makeBinaryReactions (rNew,
+                                             rOtherContext,
+                                             notificationDepth);
+            }
+        };
+        friend class forOneOtherContext;
 
-public:
-binaryRxnGen(otherFeatureClass& rOtherFeature) :
-rOtherFtr(rOtherFeature)
-{}
+    public:
+        binaryRxnGen (otherFeatureClass& rOtherFeature) :
+                rOtherFtr (rOtherFeature)
+        {}
 
-void
-respond(const fnd::featureStimulus<newContextClass>& rStimulus)
-{
+        void
+        respond (const fnd::featureStimulus<newContextClass>& rStimulus)
+        {
 // Note that rStimulus inherits from newContextClass, upon which
 // it is templated.
 
-forOneOtherContext anotherContext(rStimulus.getContext(),
-*this,
-rStimulus.getNotificationDepth());
+            forOneOtherContext anotherContext (rStimulus.getContext(),
+                                               *this,
+                                               rStimulus.getNotificationDepth() );
 
 // This does not work as a for_each loop, because of some gcc bug involving
 // templates/inheritance that causes this->end() to be incorrectly interpreted
@@ -132,127 +132,127 @@ rStimulus.getNotificationDepth());
 // and segfaulting.  On Monday, I shall report this bug to gcc, but for the moment
 // I am a GOLDEN GOD.
 
-for(uint ii = 0; ii != rOtherFtr.contexts.size(); ++ii)
-{
-anotherContext(rOtherFtr.contexts[ii]);
-}
+            for (uint ii = 0; ii != rOtherFtr.contexts.size(); ++ii)
+            {
+                anotherContext (rOtherFtr.contexts[ii]);
+            }
 
 //       for_each(rOtherFtr.contexts.begin(),
 // 	       rOtherFtr.contexts.end(),
 // 	       );
-}
+        }
 
 // Note that the "generateDepth" param here comes straight from
 // the featureStimulus; it has not yet been decremented.
-virtual void
-makeBinaryReactions(const newContextClass& rNewContext,
-const otherContextType& rOtherContext,
-int generateDepth) const = 0;
+        virtual void
+        makeBinaryReactions (const newContextClass& rNewContext,
+                             const otherContextType& rOtherContext,
+                             int generateDepth) const = 0;
 
-};
+    };
 
-/*! \ingroup rxnGenGroup
-\brief Template reaction generator for binary reaction.
+    /*! \ingroup rxnGenGroup
+    \brief Template reaction generator for binary reaction.
 
-Basically, two complementary reaction generators that act in tandem
-are implemented, one for each of the features.  */
-template<class leftFeatureClass, class rightFeatureClass>
-class binaryRxnGenPair
-{
-typedef typename leftFeatureClass::contextType leftContextType;
-typedef typename rightFeatureClass::contextType rightContextType;
+    Basically, two complementary reaction generators that act in tandem
+    are implemented, one for each of the features.  */
+    template<class leftFeatureClass, class rightFeatureClass>
+    class binaryRxnGenPair
+    {
+        typedef typename leftFeatureClass::contextType leftContextType;
+        typedef typename rightFeatureClass::contextType rightContextType;
 
-class leftRxnGenClass :
-public binaryRxnGen<leftContextType, rightFeatureClass>
-{
-binaryRxnGenPair& rPair;
+    class leftRxnGenClass :
+                    public binaryRxnGen<leftContextType, rightFeatureClass>
+        {
+            binaryRxnGenPair& rPair;
 
-void
-makeBinaryReactions(const leftContextType& rNewContext,
-const rightContextType& rOtherContext,
-int generateDepth) const
-{
-rPair.makeBinaryReactions(rNewContext,
-rOtherContext,
-generateDepth);
-}
+            void
+            makeBinaryReactions (const leftContextType& rNewContext,
+                                 const rightContextType& rOtherContext,
+                                 int generateDepth) const
+            {
+                rPair.makeBinaryReactions (rNewContext,
+                                           rOtherContext,
+                                           generateDepth);
+            }
 
-public:
+        public:
 
-leftRxnGenClass(rightFeatureClass& rRightFeature,
-binaryRxnGenPair& rParentPair) :
-binaryRxnGen<leftContextType, rightFeatureClass>(rRightFeature),
-rPair(rParentPair)
-{}
-};
-friend class leftRxnGenClass;
+            leftRxnGenClass (rightFeatureClass& rRightFeature,
+                             binaryRxnGenPair& rParentPair) :
+                    binaryRxnGen<leftContextType, rightFeatureClass> (rRightFeature),
+                    rPair (rParentPair)
+            {}
+        };
+        friend class leftRxnGenClass;
 
-leftRxnGenClass leftRxnGen;
+        leftRxnGenClass leftRxnGen;
 
-class rightRxnGenClass :
-public binaryRxnGen<rightContextType, leftFeatureClass>
-{
-binaryRxnGenPair& rPair;
+    class rightRxnGenClass :
+                    public binaryRxnGen<rightContextType, leftFeatureClass>
+        {
+            binaryRxnGenPair& rPair;
 
-void
-makeBinaryReactions(const rightContextType& rNewContext,
-const leftContextType& rOtherContext,
-int generateDepth) const
-{
-rPair.makeBinaryReactions(rOtherContext,
-rNewContext,
-generateDepth);
-}
+            void
+            makeBinaryReactions (const rightContextType& rNewContext,
+                                 const leftContextType& rOtherContext,
+                                 int generateDepth) const
+            {
+                rPair.makeBinaryReactions (rOtherContext,
+                                           rNewContext,
+                                           generateDepth);
+            }
 
-public:
+        public:
 
-rightRxnGenClass(leftFeatureClass& rLeftFeature,
-binaryRxnGenPair& rParentPair) :
-binaryRxnGen<rightContextType, leftFeatureClass>(rLeftFeature),
-rPair(rParentPair)
-{}
-};
-friend class rightRxnGenClass;
+            rightRxnGenClass (leftFeatureClass& rLeftFeature,
+                              binaryRxnGenPair& rParentPair) :
+                    binaryRxnGen<rightContextType, leftFeatureClass> (rLeftFeature),
+                    rPair (rParentPair)
+            {}
+        };
+        friend class rightRxnGenClass;
 
-rightRxnGenClass rightRxnGen;
+        rightRxnGenClass rightRxnGen;
 
-public:
+    public:
 
-binaryRxnGenPair(leftFeatureClass& rLeftFeature,
-rightFeatureClass& rRightFeature) :
-leftRxnGen(rRightFeature,
-*this),
-rightRxnGen(rLeftFeature,
-*this)
-{}
+        binaryRxnGenPair (leftFeatureClass& rLeftFeature,
+                          rightFeatureClass& rRightFeature) :
+                leftRxnGen (rRightFeature,
+                            *this),
+                rightRxnGen (rLeftFeature,
+                             *this)
+        {}
 
-virtual ~binaryRxnGenPair(void)
-{}
+        virtual ~binaryRxnGenPair (void)
+        {}
 
 // This virtual function must be supplied to tell how to construct
 // a reaction from the new contexts.
-virtual void
-makeBinaryReactions(const leftContextType& rLeftContext,
-const rightContextType& rRightContext,
-int generateDepth) const = 0;
+        virtual void
+        makeBinaryReactions (const leftContextType& rLeftContext,
+                             const rightContextType& rRightContext,
+                             int generateDepth) const = 0;
 
-/*! \brief Sub-generator accessors.
+        /*! \brief Sub-generator accessors.
 
-These two functions allow adding the rxnGens to the features. */
+        These two functions allow adding the rxnGens to the features. */
 //@{
-typename fnd::rxnGen<leftContextType>*
-getLeftRxnGen()
-{
-return &leftRxnGen;
-}
+        typename fnd::rxnGen<leftContextType>*
+        getLeftRxnGen()
+        {
+            return &leftRxnGen;
+        }
 
-typename fnd::rxnGen<rightContextType>*
-getRightRxnGen()
-{
-return &rightRxnGen;
-}
+        typename fnd::rxnGen<rightContextType>*
+        getRightRxnGen()
+        {
+            return &rightRxnGen;
+        }
 //@}
-};
+    };
 }
 
 #endif // BINARYRXNGEN_H

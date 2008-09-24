@@ -39,34 +39,34 @@
 
 namespace cpx
 {
-template<class baseMolT>
-class modMol :
-public alloMol<stateMol<baseMolT, modMolState> >,
-public modMolMixin
-{
-public:
-typedef stateMol<baseMolT, modMolState> stateMolType;
+    template<class baseMolT>
+    class modMol :
+                public alloMol<stateMol<baseMolT, modMolState> >,
+                public modMolMixin
+    {
+    public:
+        typedef stateMol<baseMolT, modMolState> stateMolType;
 
 // Use molUnit::getModMap to convert a
 // map<string, string> into a map<string, const modification*>
 // as a preliminary to using this constructor.
-modMol(const baseMolT& rBaseMolT,
-double molecularWeight,
-const std::map<std::string, const modification*>& rModMap);
+        modMol (const baseMolT& rBaseMolT,
+                double molecularWeight,
+                const std::map<std::string, const modification*>& rModMap);
 
 // Still using the default state to get the molecular weight.
 //
 // Use molUnit::getModMap to convert a
 // map<string, string> into a map<string, const modification*>
 // as a preliminary to using this function.
-const modMolState*
-internModMap(const std::map<std::string, const modification*>& rModMap);
+        const modMolState*
+        internModMap (const std::map<std::string, const modification*>& rModMap);
 
 // Used to generate instance names for mod-mols in complexes in
 // state dump.
-std::string
-genInstanceName(int molInstanceNdx) const;
-};
+        std::string
+        genInstanceName (int molInstanceNdx) const;
+    };
 }
 
 #include "cpx/modMolImpl.hh"

@@ -36,45 +36,45 @@
 
 namespace bnd
 {
-namespace eltName
-{
-extern const std::string modifications;
-extern const std::string modification;
-extern const std::string modification_nameAttr;
-extern const std::string weightDelta;
-extern const std::string weightDelta_daltonsAttr;
+    namespace eltName
+    {
+        extern const std::string modifications;
+        extern const std::string modification;
+        extern const std::string modification_nameAttr;
+        extern const std::string weightDelta;
+        extern const std::string weightDelta_daltonsAttr;
 
-extern const std::string mols;
-extern const std::string modMol;
-extern const std::string modMol_nameAttr;
-extern const std::string weight;
-extern const std::string weight_daltonsAttr;
-extern const std::string bindingSite;
-extern const std::string bindingSite_nameAttr;
-extern const std::string defaultShapeRef;
-extern const std::string defaultShapeRef_nameAttr;
-extern const std::string siteShape;
-extern const std::string siteShape_nameAttr;
-extern const std::string modSite;
-extern const std::string modSite_nameAttr;
-extern const std::string defaultModRef;
-extern const std::string defaultModRef_nameAttr;
+        extern const std::string mols;
+        extern const std::string modMol;
+        extern const std::string modMol_nameAttr;
+        extern const std::string weight;
+        extern const std::string weight_daltonsAttr;
+        extern const std::string bindingSite;
+        extern const std::string bindingSite_nameAttr;
+        extern const std::string defaultShapeRef;
+        extern const std::string defaultShapeRef_nameAttr;
+        extern const std::string siteShape;
+        extern const std::string siteShape_nameAttr;
+        extern const std::string modSite;
+        extern const std::string modSite_nameAttr;
+        extern const std::string defaultModRef;
+        extern const std::string defaultModRef_nameAttr;
 
-extern const std::string smallMol;
-extern const std::string smallMol_nameAttr;
+        extern const std::string smallMol;
+        extern const std::string smallMol_nameAttr;
 
-extern const std::string allostericState;
-extern const std::string modMap;
-extern const std::string modSiteRef;
-extern const std::string modSiteRef_nameAttr;
-extern const std::string modRef;
-extern const std::string modRef_nameAttr;
-extern const std::string siteShapeMap;
-extern const std::string bindingSiteRef;
-extern const std::string bindingSiteRef_nameAttr;
-extern const std::string siteShapeRef;
-extern const std::string siteShapeRef_nameAttr;
-}
+        extern const std::string allostericState;
+        extern const std::string modMap;
+        extern const std::string modSiteRef;
+        extern const std::string modSiteRef_nameAttr;
+        extern const std::string modRef;
+        extern const std::string modRef_nameAttr;
+        extern const std::string siteShapeMap;
+        extern const std::string bindingSiteRef;
+        extern const std::string bindingSiteRef_nameAttr;
+        extern const std::string siteShapeRef;
+        extern const std::string siteShapeRef_nameAttr;
+    }
 }
 
 #endif

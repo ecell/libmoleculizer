@@ -56,27 +56,27 @@ namespace plx
 // features.Subsequent "recognitions" can work in the usual way, in which
 // new plexFamilies are initialized (connected to their features)
 // immediately after being created.
-class parseOmniPlex :
-public std::unary_function<xmlpp::Node*, void>
-{
-mzr::mzrUnit& rMzrUnit;
-bnd::molUnit& rMolUnit;
-plexUnit& rPlexUnit;
+    class parseOmniPlex :
+                public std::unary_function<xmlpp::Node*, void>
+    {
+        mzr::mzrUnit& rMzrUnit;
+        bnd::molUnit& rMolUnit;
+        plexUnit& rPlexUnit;
 
 
-public:
-parseOmniPlex(mzr::mzrUnit& refMzrUnit,
-bnd::molUnit& refMolUnit,
-plexUnit& refPlexUnit) :
-rMzrUnit(refMzrUnit),
-rMolUnit(refMolUnit),
-rPlexUnit(refPlexUnit)
-{}
+    public:
+        parseOmniPlex (mzr::mzrUnit& refMzrUnit,
+                       bnd::molUnit& refMolUnit,
+                       plexUnit& refPlexUnit) :
+                rMzrUnit (refMzrUnit),
+                rMolUnit (refMolUnit),
+                rPlexUnit (refPlexUnit)
+        {}
 
-void
-operator()(xmlpp::Node* pParentNode) const
-throw(utl::xcpt);
-};
+        void
+        operator() (xmlpp::Node* pParentNode) const
+        throw (utl::xcpt);
+    };
 
 // For use by modules to find an omniPlex parsed for them by the plexUnit.
 //
@@ -91,53 +91,53 @@ throw(utl::xcpt);
 //
 // With the changes to omniplex implementation, this routine becomes
 // embarrasingly simple, but leaving it as-is for now.
-mzrOmniPlex*
-findOmni(xmlpp::Node* pParentNode,
-bnd::molUnit& rMolUnit,
-plexUnit& rPlexUnit,
-parserPlex& rParsedPlex)
-throw(utl::xcpt);
+    mzrOmniPlex*
+    findOmni (xmlpp::Node* pParentNode,
+              bnd::molUnit& rMolUnit,
+              plexUnit& rPlexUnit,
+              parserPlex& rParsedPlex)
+    throw (utl::xcpt);
 
 // Parses allosteric-omni element.
-class parseAllostericOmni :
-public std::unary_function<xmlpp::Node*, mzrOmniPlex*>
-{
-bnd::molUnit& rMolUnit;
-plexUnit& rPlexUnit;
+    class parseAllostericOmni :
+                public std::unary_function<xmlpp::Node*, mzrOmniPlex*>
+    {
+        bnd::molUnit& rMolUnit;
+        plexUnit& rPlexUnit;
 
-public:
-parseAllostericOmni(bnd::molUnit& refMolUnit,
-plexUnit& refPlexUnit) :
-rMolUnit(refMolUnit),
-rPlexUnit(refPlexUnit)
-{}
+    public:
+        parseAllostericOmni (bnd::molUnit& refMolUnit,
+                             plexUnit& refPlexUnit) :
+                rMolUnit (refMolUnit),
+                rPlexUnit (refPlexUnit)
+        {}
 
-mzrOmniPlex*
-operator()(xmlpp::Node* pParentNode) const
-throw(utl::xcpt);
-};
+        mzrOmniPlex*
+        operator() (xmlpp::Node* pParentNode) const
+        throw (utl::xcpt);
+    };
 
 // Parses omni-species-stream element.
-class parseOmniSpeciesStream :
-public std::unary_function<xmlpp::Node*, void>
-{
-mzr::mzrUnit& rMzrUnit;
-bnd::molUnit& rMolUnit;
-plexUnit& rPlexUnit;
+    class parseOmniSpeciesStream :
+                public std::unary_function<xmlpp::Node*, void>
+    {
+        mzr::mzrUnit& rMzrUnit;
+        bnd::molUnit& rMolUnit;
+        plexUnit& rPlexUnit;
 
-public:
-parseOmniSpeciesStream(mzr::mzrUnit& refMzrUnit,
-bnd::molUnit& refMolUnit,
-plexUnit& refPlexUnit) :
-rMzrUnit(refMzrUnit),
-rMolUnit(refMolUnit),
-rPlexUnit(refPlexUnit)
-{}
+    public:
+        parseOmniSpeciesStream (mzr::mzrUnit& refMzrUnit,
+                                bnd::molUnit& refMolUnit,
+                                plexUnit& refPlexUnit) :
+                rMzrUnit (refMzrUnit),
+                rMolUnit (refMolUnit),
+                rPlexUnit (refPlexUnit)
+        {}
 
-void
-operator()(xmlpp::Node* pOmniSpeciesStreamNode) const
-throw(utl::xcpt);
-};
+        void
+        operator() (xmlpp::Node* pOmniSpeciesStreamNode) const
+        throw (utl::xcpt);
+    };
 }
 
 #endif // PARSEOMNIPLEX_H

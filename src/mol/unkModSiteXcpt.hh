@@ -40,30 +40,30 @@ namespace bnd
 {
 // Exception thrown when the user refers to a modification site by an
 // incorrect name.
-class unkModSiteXcpt :
-public utl::xcpt
-{
-static std::string
-mkDomMsg(xmlpp::Node* pOffendingNode,
-const std::string& rModSiteName,
-const mzrModMol* pModMol);
+    class unkModSiteXcpt :
+                public utl::xcpt
+    {
+        static std::string
+        mkDomMsg (xmlpp::Node* pOffendingNode,
+                  const std::string& rModSiteName,
+                  const mzrModMol* pModMol);
 
-static std::string
-mkPlainMsg(const std::string& rModSiteName);
+        static std::string
+        mkPlainMsg (const std::string& rModSiteName);
 
-public:
-unkModSiteXcpt(xmlpp::Node* pOffendingNode,
-const std::string& rModSiteName,
-const mzrModMol* pModMol) :
-utl::xcpt(mkDomMsg(pOffendingNode,
-rModSiteName,
-pModMol))
-{}
+    public:
+        unkModSiteXcpt (xmlpp::Node* pOffendingNode,
+                        const std::string& rModSiteName,
+                        const mzrModMol* pModMol) :
+                utl::xcpt (mkDomMsg (pOffendingNode,
+                                     rModSiteName,
+                                     pModMol) )
+        {}
 
-unkModSiteXcpt(const std::string& rModSiteName) :
-utl::xcpt(mkPlainMsg(rModSiteName))
-{}
-};
+        unkModSiteXcpt (const std::string& rModSiteName) :
+                utl::xcpt (mkPlainMsg (rModSiteName) )
+        {}
+    };
 }
 
 #endif // MOL_UNKMODSITEXCPT_H

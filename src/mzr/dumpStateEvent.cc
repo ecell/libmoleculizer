@@ -35,22 +35,22 @@
 
 namespace mzr
 {
-dumpStateEvent::
-dumpStateEvent(const std::string& rOutputFileName) :
-outputFileName(rOutputFileName)
-{}
+    dumpStateEvent::
+    dumpStateEvent (const std::string& rOutputFileName) :
+            outputFileName (rOutputFileName)
+    {}
 
-fnd::eventResult
-dumpStateEvent::
-happen(moleculizer& rMolzer)
-throw(std::exception)
-{
-xmlpp::Document* pOutputDoc = rMolzer.makeDomOutput();
+    fnd::eventResult
+    dumpStateEvent::
+    happen (moleculizer& rMolzer)
+    throw (std::exception)
+    {
+        xmlpp::Document* pOutputDoc = rMolzer.makeDomOutput();
 
-pOutputDoc->write_to_file(outputFileName);
+        pOutputDoc->write_to_file (outputFileName);
 
-delete pOutputDoc;
+        delete pOutputDoc;
 
-return fnd::go;
-}
+        return fnd::go;
+    }
 }

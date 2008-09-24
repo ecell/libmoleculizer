@@ -50,73 +50,79 @@ public:
 //         name(""),
 //         mass(0.0f){}
 
-Species(const mzr::mzrSpecies& aMzrSpecies)
-:
-name( aMzrSpecies.getName() ),
-mass( aMzrSpecies.getWeight() )
-{}
+    Species (const mzr::mzrSpecies& aMzrSpecies)
+            :
+            name ( aMzrSpecies.getName() ),
+            mass ( aMzrSpecies.getWeight() )
+    {}
 
-std::string getName() const { return name;}
-float getMass() const {return mass;}
+    std::string getName() const
+    {
+        return name;
+    }
+    float getMass() const
+    {
+        return mass;
+    }
 
 private:
-std::string name;
-float mass;
+    std::string name;
+    float mass;
 };
 
 class Reaction
 {
 public:
-typedef fnd::basicReaction<mzr::mzrSpecies> CoreRxnType;
+    typedef fnd::basicReaction<mzr::mzrSpecies> CoreRxnType;
 
 //    Reaction(){}
-Reaction(const CoreRxnType& aReaction);
+    Reaction (const CoreRxnType& aReaction);
 
-float getRate() const
-{
-return rate;
-}
+    float getRate() const
+    {
+        return rate;
+    }
 
-std::vector<Species>
-getSubstrates() const
-{
-return substrates;
-}
+    std::vector<Species>
+    getSubstrates() const
+    {
+        return substrates;
+    }
 
-std::vector<Species>
-getProducts() const
-{
-return products;
-}
+    std::vector<Species>
+    getProducts() const
+    {
+        return products;
+    }
 
 protected:
-float rate;
-std::vector<Species> substrates;
-std::vector<Species> products;
+    float rate;
+    std::vector<Species> substrates;
+    std::vector<Species> products;
 };
 
 
 struct BasicComplexRepresentation
 {
-typedef std::pair<int, std::string> HalfBinding;
-typedef std::pair<HalfBinding, HalfBinding> BindingType;
-typedef std::pair< int, std::pair<std::string, std::string> > ModType;
+    typedef std::pair<int, std::string> HalfBinding;
+    typedef std::pair<HalfBinding, HalfBinding> BindingType;
+    typedef std::pair< int, std::pair<std::string, std::string> > ModType;
 
-void
-addMolNameToComplex(const std::string& molName);
+    void
+    addMolNameToComplex (const std::string& molName);
 
-void addModificationToComplex(int molIndex,
-const std::string& modificationSiteName,
-const std::string& modificationValue);
+    void addModificationToComplex (int molIndex,
+                                   const std::string& modificationSiteName,
+                                   const std::string& modificationValue);
 
-void addBindingToComplex( int firstMolNdx,
-const std::string& bindingName1,
-int secondMolNdx,
-const std::string& bindingName2);
+    void addBindingToComplex ( int firstMolNdx,
+                               const std::string& bindingName1,
+                               int secondMolNdx,
+                               const std::string& bindingName2);
 
-std::vector<std::string> mols;
-std::vector<BindingType > bindings;
-std::vector<ModType> modifications;
+    std::vector<std::string> mols;
+    std::vector<BindingType > bindings;
+    std::vector<ModType> modifications;
 
 };
 
@@ -125,131 +131,131 @@ class ReactionNetworkGenerator
 {
 
 public:
-ReactionNetworkGenerator()
-{
-ptrMoleculizer = new mzr::moleculizer;
-}
+    ReactionNetworkGenerator()
+    {
+        ptrMoleculizer = new mzr::moleculizer;
+    }
 
-~ReactionNetworkGenerator()
-{
-delete ptrMoleculizer;
-}
+    ~ReactionNetworkGenerator()
+    {
+        delete ptrMoleculizer;
+    }
 
-void
-runInteractiveMode()
-{
-ptrMoleculizer->RunInteractiveDebugMode();
-return;
-}
+    void
+    runInteractiveMode()
+    {
+        ptrMoleculizer->RunInteractiveDebugMode();
+        return;
+    }
 
-int
-getNumUnary() const
-{
-ptrMoleculizer->unaryReactionList.size();
-}
+    int
+    getNumUnary() const
+    {
+        ptrMoleculizer->unaryReactionList.size();
+    }
 
-int getNumBinary() const
-{
-ptrMoleculizer->binaryReactionList.size();
-}
+    int getNumBinary() const
+    {
+        ptrMoleculizer->binaryReactionList.size();
+    }
 
-void showDeadSpecies() const
-{
-ptrMoleculizer->DEBUG_showDeadSpecies();
-}
+    void showDeadSpecies() const
+    {
+        ptrMoleculizer->DEBUG_showDeadSpecies();
+    }
 
-void showLiveSpecies() const
-{
-ptrMoleculizer->DEBUG_showLiveSpecies();
-}
+    void showLiveSpecies() const
+    {
+        ptrMoleculizer->DEBUG_showLiveSpecies();
+    }
 
-void addRules(const std::string& filename) throw( mzr::BadRulesDefinitionXcpt )
-{
-try
-{
-delete ptrMoleculizer;
-ptrMoleculizer = new mzr::moleculizer;
-ptrMoleculizer->attachFileName( filename );
-}
-catch(mzr::BadRulesDefinitionXcpt e)
-{
-e.warn();
+    void addRules (const std::string& filename) throw ( mzr::BadRulesDefinitionXcpt )
+    {
+        try
+        {
+            delete ptrMoleculizer;
+            ptrMoleculizer = new mzr::moleculizer;
+            ptrMoleculizer->attachFileName ( filename );
+        }
+        catch (mzr::BadRulesDefinitionXcpt e)
+        {
+            e.warn();
 
-if(ptrMoleculizer)
-{
-delete ptrMoleculizer;
-ptrMoleculizer = NULL;
-}
+            if (ptrMoleculizer)
+            {
+                delete ptrMoleculizer;
+                ptrMoleculizer = NULL;
+            }
 
-throw e;
-}
-catch(utl::xcpt x)
-{
-delete ptrMoleculizer;
-x.warn();
-throw mzr::BadRulesDefinitionXcpt();
-}
-catch(...)
-{
-delete ptrMoleculizer;
-utl::xcpt x("Unknown Error while adding rules. (FDLLAE)");
-x.wailAndBail();
-}
-}
+            throw e;
+        }
+        catch (utl::xcpt x)
+        {
+            delete ptrMoleculizer;
+            x.warn();
+            throw mzr::BadRulesDefinitionXcpt();
+        }
+        catch (...)
+        {
+            delete ptrMoleculizer;
+            utl::xcpt x ("Unknown Error while adding rules. (FDLLAE)");
+            x.wailAndBail();
+        }
+    }
 
-std::vector<Reaction>
-getBinaryReactions(const std::string& species1,
-const std::string& species2) throw( mzr::IllegalNameXcpt );
+    std::vector<Reaction>
+    getBinaryReactions (const std::string& species1,
+                        const std::string& species2) throw ( mzr::IllegalNameXcpt );
 
-std::vector<Reaction>
-getUnaryReactions(const std::string& species1) throw (mzr::IllegalNameXcpt );
+    std::vector<Reaction>
+    getUnaryReactions (const std::string& species1) throw (mzr::IllegalNameXcpt );
 
-Species
-getSpecies(const std::string& species)throw (mzr::IllegalNameXcpt );
+    Species
+    getSpecies (const std::string& species) throw (mzr::IllegalNameXcpt );
 
-bool
-checkSpeciesNameLegality( const std::string& species1) throw (mzr::IllegalNameXcpt );
+    bool
+    checkSpeciesNameLegality ( const std::string& species1) throw (mzr::IllegalNameXcpt );
 
 
 // For now I am writing two versions of this function.  This 'stricter' one insists on
 // molecules in the ComplexRepresentation being a priori defined in the moleculizer
 // rules.  This is so that "default" modifications that aren't in the complex representation.
 // But that might just be stupid.
-std::string
-generateNameFromBasicComplexRepresentation(const BasicComplexRepresentation& aBCR);
+    std::string
+    generateNameFromBasicComplexRepresentation (const BasicComplexRepresentation& aBCR);
 
-std::string
-generateNameFromBasicComplexRepresentationStrict(const BasicComplexRepresentation& aBCR);
+    std::string
+    generateNameFromBasicComplexRepresentationStrict (const BasicComplexRepresentation& aBCR);
 
-void showAllReactions();
-void incrementSpecies(const std::string& species);
-int getNumberOfSpecies();
-int getNumberOfReactions();
+    void showAllReactions();
+    void incrementSpecies (const std::string& species);
+    int getNumberOfSpecies();
+    int getNumberOfReactions();
 
-void
-showAllSpecies()
-{
-ptrMoleculizer->DEBUG_showAllSpecies();
-}
+    void
+    showAllSpecies()
+    {
+        ptrMoleculizer->DEBUG_showAllSpecies();
+    }
 
 
 protected:
-mzr::moleculizer* ptrMoleculizer;
+    mzr::moleculizer* ptrMoleculizer;
 };
 
 class modificationNotOfNdx
 {
 public:
-int ndx;
-modificationNotOfNdx( int index)
-:
-ndx( index )
-{}
+    int ndx;
+    modificationNotOfNdx ( int index)
+            :
+            ndx ( index )
+    {}
 
-bool operator()(const BasicComplexRepresentation::ModType& theModType)
-{
-return theModType.first != ndx;
-}
+    bool operator() (const BasicComplexRepresentation::ModType& theModType)
+    {
+        return theModType.first != ndx;
+    }
 };
 
 

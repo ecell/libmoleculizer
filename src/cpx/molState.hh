@@ -36,51 +36,51 @@
 
 namespace cpx
 {
-/*! \ingroup plexSpeciesGroup
-\brief (Concrete) base class for state of molecules. */
-class molState
-{
-protected:
+    /*! \ingroup plexSpeciesGroup
+    \brief (Concrete) base class for state of molecules. */
+    class molState
+    {
+    protected:
 // Other contributions from molecular state may go into the true
 // molecular weight; hence the name.
-double baseWeight;
+        double baseWeight;
 
-public:
-molState(double molWeight) :
-baseWeight(molWeight)
-{}
-virtual ~molState()
-{}
-virtual double
-getMolWeight(void) const
-{
-return baseWeight;
-}
+    public:
+        molState (double molWeight) :
+                baseWeight (molWeight)
+        {}
+        virtual ~molState()
+        {}
+        virtual double
+        getMolWeight (void) const
+        {
+            return baseWeight;
+        }
 
-bool
-operator<(const molState& rRight) const
-{
-return baseWeight < rRight.baseWeight;
-}
+        bool
+        operator< (const molState& rRight) const
+        {
+            return baseWeight < rRight.baseWeight;
+        }
 
 // DEBUG
-virtual
-string
-getName() const
-{
-ostringstream oss;
-oss << "mol state with weight '"
-<< baseWeight
-<< "'";
-return oss.str();
+        virtual
+        string
+        getName() const
+        {
+            ostringstream oss;
+            oss << "mol state with weight '"
+            << baseWeight
+            << "'";
+            return oss.str();
 
-}
+        }
 
 
-};
+    };
 
 // Now not sure if this was such a good idea...
-typedef const molState* molParam;
+    typedef const molState* molParam;
 }
 
 #endif // MOLSTATE_H

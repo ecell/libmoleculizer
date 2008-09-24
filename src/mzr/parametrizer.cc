@@ -37,111 +37,111 @@
 
 namespace mzr
 {
-class prepareUnitToDump :
-public std::unary_function<unit*, void>
-{
-xmlpp::Element* pRootElt;
-xmlpp::Element* pModelElt;
-xmlpp::Element* pStreamsElt;
-xmlpp::Element* pEventsElt;
-xmlpp::Element* pTaggedSpeciesElt;
+    class prepareUnitToDump :
+                public std::unary_function<unit*, void>
+    {
+        xmlpp::Element* pRootElt;
+        xmlpp::Element* pModelElt;
+        xmlpp::Element* pStreamsElt;
+        xmlpp::Element* pEventsElt;
+        xmlpp::Element* pTaggedSpeciesElt;
 
-public:
-prepareUnitToDump(xmlpp::Element* pRootElement,
-xmlpp::Element* pModelElement,
-xmlpp::Element* pStreamsElement,
-xmlpp::Element* pEventsElement,
-xmlpp::Element* pTaggedSpeciesElement) :
-pRootElt(pRootElement),
-pModelElt(pModelElement),
-pStreamsElt(pStreamsElement),
-pEventsElt(pEventsElement),
-pTaggedSpeciesElt(pTaggedSpeciesElement)
-{}
+    public:
+        prepareUnitToDump (xmlpp::Element* pRootElement,
+                           xmlpp::Element* pModelElement,
+                           xmlpp::Element* pStreamsElement,
+                           xmlpp::Element* pEventsElement,
+                           xmlpp::Element* pTaggedSpeciesElement) :
+                pRootElt (pRootElement),
+                pModelElt (pModelElement),
+                pStreamsElt (pStreamsElement),
+                pEventsElt (pEventsElement),
+                pTaggedSpeciesElt (pTaggedSpeciesElement)
+        {}
 
-void
-operator()(unit* pUnit) const
-throw(std::exception)
-{
-pUnit->prepareToDump(pRootElt,
-pModelElt,
-pStreamsElt,
-pEventsElt,
-pTaggedSpeciesElt);
-}
-};
+        void
+        operator() (unit* pUnit) const
+        throw (std::exception)
+        {
+            pUnit->prepareToDump (pRootElt,
+                                  pModelElt,
+                                  pStreamsElt,
+                                  pEventsElt,
+                                  pTaggedSpeciesElt);
+        }
+    };
 
-parametrizer::parametrizer(int argc,
-char** argv,
-xmlpp::Document* pMoleculizerInput,
-xmlpp::Document* pMoleculizerState)
-throw(std::exception)
-{
+    parametrizer::parametrizer (int argc,
+                                char** argv,
+                                xmlpp::Document* pMoleculizerInput,
+                                xmlpp::Document* pMoleculizerState)
+    throw (std::exception)
+    {
 // Must invoke; this initializes random seed.
 // processCommandLineArgs(argc, argv);
 
 // Do the "input capabilities" thing.
-constructorPrelude();
+        constructorPrelude();
 
 // Get the basic framework of moleculizer-input.
-xmlpp::Element* pInputRootElement
-= pMoleculizerInput->get_root_node();
+        xmlpp::Element* pInputRootElement
+        = pMoleculizerInput->get_root_node();
 
-xmlpp::Element* pInputModelElement
-= utl::dom::mustGetUniqueChild(pInputRootElement,
-eltName::model);
-xmlpp::Element* pInputStreamsElement
-= utl::dom::mustGetUniqueChild(pInputRootElement,
-eltName::streams);
-xmlpp::Element* pInputEventsElement
-= utl::dom::mustGetUniqueChild(pInputRootElement,
-eltName::events);
+        xmlpp::Element* pInputModelElement
+        = utl::dom::mustGetUniqueChild (pInputRootElement,
+                                        eltName::model);
+        xmlpp::Element* pInputStreamsElement
+        = utl::dom::mustGetUniqueChild (pInputRootElement,
+                                        eltName::streams);
+        xmlpp::Element* pInputEventsElement
+        = utl::dom::mustGetUniqueChild (pInputRootElement,
+                                        eltName::events);
 
 // Extract model info.
-constructorCore(pInputRootElement,
-pInputModelElement,
-pInputStreamsElement,
-pInputEventsElement);
+        constructorCore (pInputRootElement,
+                         pInputModelElement,
+                         pInputStreamsElement,
+                         pInputEventsElement);
 
 // Similar digestion of moleculizer-state.
-xmlpp::Element* pStateRootElement
-= pMoleculizerState->get_root_node();
+        xmlpp::Element* pStateRootElement
+        = pMoleculizerState->get_root_node();
 
-xmlpp::Element* pStateModelElement
-= utl::dom::mustGetUniqueChild(pStateRootElement,
-eltName::model);
-xmlpp::Element* pStateTaggedSpeciesElement
-= utl::dom::mustGetUniqueChild(pStateModelElement,
-eltName::taggedSpecies);
+        xmlpp::Element* pStateModelElement
+        = utl::dom::mustGetUniqueChild (pStateRootElement,
+                                        eltName::model);
+        xmlpp::Element* pStateTaggedSpeciesElement
+        = utl::dom::mustGetUniqueChild (pStateModelElement,
+                                        eltName::taggedSpecies);
 
 // Have each unit do its (rather inapproriately-named) prepareToDump thing,
 // analogous to prepare-to-run in moleculizer.  The default implementation
 // is prepare-to-run.
-std::for_each(pUserUnits->begin(),
-pUserUnits->end(),
-prepareUnitToDump(pInputRootElement,
-pInputModelElement,
-pInputStreamsElement,
-pInputEventsElement,
-pStateTaggedSpeciesElement));
-}
+        std::for_each (pUserUnits->begin(),
+                       pUserUnits->end(),
+                       prepareUnitToDump (pInputRootElement,
+                                          pInputModelElement,
+                                          pInputStreamsElement,
+                                          pInputEventsElement,
+                                          pStateTaggedSpeciesElement) );
+    }
 
-parametrizer::~parametrizer(void)
-{}
+    parametrizer::~parametrizer (void)
+    {}
 
-int
-parametrizer::run(void) throw(std::exception)
-{
-xmlpp::Document* pOutputDoc = makeDomOutput();
+    int
+    parametrizer::run (void) throw (std::exception)
+    {
+        xmlpp::Document* pOutputDoc = makeDomOutput();
 
 // This is hideous, but write_to_stream seems not to work; it produces a
 // huge, bad output file with many copies of the data in it.
-std::string output = pOutputDoc->write_to_string();
+        std::string output = pOutputDoc->write_to_string();
 
-delete pOutputDoc;
+        delete pOutputDoc;
 
-std::cout << output;
+        std::cout << output;
 
-return 0;
-}
+        return 0;
+    }
 }

@@ -37,38 +37,38 @@
 
 namespace ftr
 {
-void
-ftrUnit::parseDomInput(xmlpp::Element* pRootElement,
-xmlpp::Element* pModelElement,
-xmlpp::Element* pStreamsElement,
-xmlpp::Element* pEventsElement)
-throw(std::exception)
-{
+    void
+    ftrUnit::parseDomInput (xmlpp::Element* pRootElement,
+                            xmlpp::Element* pModelElement,
+                            xmlpp::Element* pStreamsElement,
+                            xmlpp::Element* pEventsElement)
+    throw (std::exception)
+    {
 // This unit only adds a reaction generator for now.
-xmlpp::Element* pReactionGensElt
-= utl::dom::mustGetUniqueChild(pModelElement,
-mzr::eltName::reactionGens);
+        xmlpp::Element* pReactionGensElt
+        = utl::dom::mustGetUniqueChild (pModelElement,
+                                        mzr::eltName::reactionGens);
 
 // Get the omniGen nodes.
-xmlpp::Node::NodeList omniGenNodes
-= pReactionGensElt->get_children(eltName::omniGen);
+        xmlpp::Node::NodeList omniGenNodes
+        = pReactionGensElt->get_children (eltName::omniGen);
 
 // Add omniFam reaction family for each of the generator nodes.
-std::for_each(omniGenNodes.begin(),
-omniGenNodes.end(),
-parseOmniGen(rMzrUnit,
-rMolUnit,
-rPlexUnit));
+        std::for_each (omniGenNodes.begin(),
+                       omniGenNodes.end(),
+                       parseOmniGen (rMzrUnit,
+                                     rMolUnit,
+                                     rPlexUnit) );
 
 // Get the uniMolGen nodes.
-xmlpp::Node::NodeList uniMolGenNodes
-= pReactionGensElt->get_children(eltName::uniMolGen);
+        xmlpp::Node::NodeList uniMolGenNodes
+        = pReactionGensElt->get_children (eltName::uniMolGen);
 
 // Add uniMolFam reaction family for each of the generator nodes.
-std::for_each(uniMolGenNodes.begin(),
-uniMolGenNodes.end(),
-parseUniMolGen(rMzrUnit,
-rMolUnit,
-rPlexUnit));
-}
+        std::for_each (uniMolGenNodes.begin(),
+                       uniMolGenNodes.end(),
+                       parseUniMolGen (rMzrUnit,
+                                       rMolUnit,
+                                       rPlexUnit) );
+    }
 }

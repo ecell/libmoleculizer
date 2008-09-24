@@ -47,7 +47,7 @@ xcptName()                              \
 utl::xcpt("Internal Exception: xcptName.")  \
 {}                                              \
 };                                                  \
-
+ 
 
 
 #define DEFINE_STANDARD_MSG_EXCEPTION_CLASS( xcptName, message)    \
@@ -62,90 +62,90 @@ utl::xcpt( message )                 \
 
 namespace utl
 {
-class xcpt :
-public std::exception
-{
-protected:
-std::string message;
+    class xcpt :
+                public std::exception
+    {
+    protected:
+        std::string message;
 
-public:
-xcpt(const std::string& rMessage):
-message(rMessage)
-{}
+    public:
+        xcpt (const std::string& rMessage) :
+                message (rMessage)
+        {}
 
-xcpt(const char* pMessage) :
-message(pMessage)
-{}
+        xcpt (const char* pMessage) :
+                message (pMessage)
+        {}
 
-~xcpt(void) throw()
-{}
+        ~xcpt (void) throw()
+        {}
 
-const std::string&
-getMessage(void) const throw()
-{
-return message;
-}
+        const std::string&
+        getMessage (void) const throw()
+        {
+            return message;
+        }
 
 // Implementation of std::exception::what.
-const char*
-what(void) const throw()
-{
-return message.c_str();
-}
+        const char*
+        what (void) const throw()
+        {
+            return message.c_str();
+        }
 
-void
-warn(void)
-{
-std::cerr << mkWarnMsg()
-<< getMessage()
-<< std::endl;
-}
+        void
+        warn (void)
+        {
+            std::cerr << mkWarnMsg()
+            << getMessage()
+            << std::endl;
+        }
 
-void
-wailAndBail(void)
-{
-std::cerr << mkMsg()
-<< getMessage()
-<< std::endl;
-exit(1);
-}
+        void
+        wailAndBail (void)
+        {
+            std::cerr << mkMsg()
+            << getMessage()
+            << std::endl;
+            exit (1);
+        }
 
 // But this doesn't include the application name, and it doesn't
 // look good for getting it in where this message is called for.
 //
 // Most of those cases should be handled with wailAndBail, rather than
 // throw, since they are all essentially debugging loose-ends.
-static std::string
-mkMsg(void)
-{
-return std::string("(CRITICAL) ");
-}
+        static std::string
+        mkMsg (void)
+        {
+            return std::string ("(CRITICAL) ");
+        }
 
-static std::string
-mkWarnMsg(void)
-{
-return std::string("(WARNING) ");
-}
-};
+        static std::string
+        mkWarnMsg (void)
+        {
+            return std::string ("(WARNING) ");
+        }
+    };
 
-class NotImplementedXcpt : public xcpt
-{
-static std::string
-mkMsg( const std::string& functionName)
-{
-std::ostringstream oss;
-oss << "Error: function '"
-<< functionName
-<< "' has not yet been implemented.";
-return oss.str();
-}
+    class NotImplementedXcpt : public xcpt
+    {
+        static std::string
+        mkMsg ( const std::string& functionName)
+        {
+            std::ostringstream oss;
+            oss << "Error: function '"
+            << functionName
+            << "' has not yet been implemented.";
+            return oss.str();
+        }
 
-public:
-NotImplementedXcpt( const std::string& funcName)
-:
-xcpt( mkMsg(funcName))
-{}
-};
+    public:
+        NotImplementedXcpt ( const std::string& funcName)
+                :
+                xcpt ( mkMsg (funcName) )
+        {}
+    };
 }
 
 #endif // UTL_XCPT_H

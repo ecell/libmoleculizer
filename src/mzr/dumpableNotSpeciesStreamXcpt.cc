@@ -34,16 +34,16 @@
 
 namespace mzr
 {
-std::string
-dumpableNotSpeciesStreamXcpt::
-mkMsg(const std::string& rDumpableName)
-{
-std::ostringstream msgStream;
-msgStream << utl::xcpt::mkMsg()
-<< "Dumpable '"
-<< rDumpableName
-<< "' is not a species stream, but "
-<< "was registered as such.";
-return msgStream.str();
-}
+    std::string
+    dumpableNotSpeciesStreamXcpt::
+    mkMsg (const std::string& rDumpableName)
+    {
+        std::ostringstream msgStream;
+        msgStream << utl::xcpt::mkMsg()
+        << "Dumpable '"
+        << rDumpableName
+        << "' is not a species stream, but "
+        << "was registered as such.";
+        return msgStream.str();
+    }
 }

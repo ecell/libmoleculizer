@@ -34,14 +34,14 @@
 
 namespace cpx
 {
-std::string
-badModMolStateXcpt::
-mkMsg(void)
-{
-std::ostringstream msgStream;
-msgStream << utl::xcpt::mkMsg()
-<< "modMolStateQuery applied to a molState "
-<< "that was not a modMolState.";
-return msgStream.str();
-}
+    std::string
+    badModMolStateXcpt::
+    mkMsg (void)
+    {
+        std::ostringstream msgStream;
+        msgStream << utl::xcpt::mkMsg()
+        << "modMolStateQuery applied to a molState "
+        << "that was not a modMolState.";
+        return msgStream.str();
+    }
 }

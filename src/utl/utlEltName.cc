@@ -33,10 +33,10 @@
 
 namespace utl
 {
-namespace eltName
-{
-const std::string sciNote("sci-note");
-const std::string sciNote_fractionAttr("fraction");
-const std::string sciNote_exponentAttr("exponent");
-}
+    namespace eltName
+    {
+        const std::string sciNote ("sci-note");
+        const std::string sciNote_fractionAttr ("fraction");
+        const std::string sciNote_exponentAttr ("exponent");
+    }
 }

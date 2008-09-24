@@ -46,13 +46,13 @@ typedef boost::shared_ptr<mytype>  mytype ## SharedPtr;        \
 typedef const mytype * mytype ## Cptr;                        \
 typedef mytype &       mytype ## Ref;                         \
 typedef const mytype & mytype ## Cref;                        \
-
+ 
 
 /**
 Declare class , class pointer ,
 const pointer, class reference
 and const class reference types for classes. For example
-DECLARE_CLASS( Exception );
+DECLARE_CLASS ( Exception );
 @param tag The class being declared
 */
 

@@ -41,36 +41,36 @@
 
 namespace plx
 {
-class mzrPlexSpecies;
-class mzrPlexFamily;
+    class mzrPlexSpecies;
+    class mzrPlexFamily;
 }
 
 namespace bnd
 {
-class mzrMol;
+    class mzrMol;
 
-class mzrBndSite :
-public cpx::basicBndSite,
-public siteFeature
-{
-public:
-mzrBndSite(const std::string& rName,
-const std::set<std::string>& rShapeNames,
-const std::string& rDefaultShapeName);
+    class mzrBndSite :
+                public cpx::basicBndSite,
+                public siteFeature
+    {
+    public:
+        mzrBndSite (const std::string& rName,
+                    const std::set<std::string>& rShapeNames,
+                    const std::string& rDefaultShapeName);
 
 // Version of cpx::basicBndSite::mustGetShape that incorporates
 // element Xpath.
-const cpx::siteShape*
-mustGetShape(const mzrMol* pMol,
-const std::string& rShapeName,
-const xmlpp::Node* pRequestingNode = 0) const
-throw(utl::xcpt);
+        const cpx::siteShape*
+        mustGetShape (const mzrMol* pMol,
+                      const std::string& rShapeName,
+                      const xmlpp::Node* pRequestingNode = 0) const
+        throw (utl::xcpt);
 
-xmlpp::Element*
-insertElt(xmlpp::Element* pMolElt) const
-throw(utl::xcpt);
+        xmlpp::Element*
+        insertElt (xmlpp::Element* pMolElt) const
+        throw (utl::xcpt);
 
-};
+    };
 }
 
 #endif // MZRBNDSITE_H

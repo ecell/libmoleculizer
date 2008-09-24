@@ -47,72 +47,72 @@ namespace fnd
 {
 // It would probably be better to template on the feature type,
 // since the feature is itself templated on the context type.
-template<class contextT>
-class featureMap :
-public std::map<typename contextT::contextSpec, feature<contextT>* >,
-public sensitive<newSpeciesStimulus<typename contextT::speciesType> >
-{
-class notifyFeature :
-std::unary_function<typename featureMap::value_type, void>
-{
-const typename featureMap::stimulusType& rStimulus;
+    template<class contextT>
+    class featureMap :
+                public std::map<typename contextT::contextSpec, feature<contextT>* >,
+                public sensitive<newSpeciesStimulus<typename contextT::speciesType> >
+    {
+    class notifyFeature :
+                    std::unary_function<typename featureMap::value_type, void>
+        {
+            const typename featureMap::stimulusType& rStimulus;
 
-public:
-notifyFeature(const typename featureMap::stimulusType& rNewSpeciesStimulus) :
-rStimulus(rNewSpeciesStimulus)
-{}
+        public:
+            notifyFeature (const typename featureMap::stimulusType& rNewSpeciesStimulus) :
+                    rStimulus (rNewSpeciesStimulus)
+            {}
 
-void operator()(const typename featureMap::value_type& rEntry) const
-{
-const typename contextT::contextSpec& rSpec = rEntry.first;
-feature<contextT>* pFeature = rEntry.second;
+            void operator() (const typename featureMap::value_type& rEntry) const
+            {
+                const typename contextT::contextSpec& rSpec = rEntry.first;
+                feature<contextT>* pFeature = rEntry.second;
 
-contextT newContext(rStimulus.getSpecies(),
-rSpec);
+                contextT newContext (rStimulus.getSpecies(),
+                                     rSpec);
 
-newContextStimulus<contextT> stim(newContext,
-rStimulus.getNotificationDepth());
+                newContextStimulus<contextT> stim (newContext,
+                                                   rStimulus.getNotificationDepth() );
 
-pFeature->respond(stim);
-}
-};
+                pFeature->respond (stim);
+            }
+        };
 
-public:
-int
-getNum() const
-{
-return this->size();
-}
+    public:
+        int
+        getNum() const
+        {
+            return this->size();
+        }
 
 
 
-typedef newSpeciesStimulus<typename contextT::speciesType> stimulusType;
+        typedef newSpeciesStimulus<typename contextT::speciesType> stimulusType;
 
 //! Add a feature to be notified when a new species appears.
-bool
-addFeature(const typename contextT::contextSpec& rSpec,
-feature<contextT>* pFeature)
-throw(utl::xcpt)
-{
-return insert(typename featureMap::value_type(rSpec, pFeature)).second;
-}
+        bool
+        addFeature (const typename contextT::contextSpec& rSpec,
+                    feature<contextT>* pFeature)
+        throw (utl::xcpt)
+        {
+            return insert (typename featureMap::value_type (rSpec, pFeature) ).second;
+        }
 
 //! Notify each feature targeted by the map of the new species.
-void
-respond(const typename featureMap::stimulusType& rStimulus)
-{
+        void
+        respond (const typename featureMap::stimulusType& rStimulus)
+        {
 // Replacing the code below with a BOOST_FOREACH loop, in the hopes that
 // this may make things more clear.
 
-for_each(this->begin(),
-this->end(),
-notifyFeature(rStimulus));
+            for_each (this->begin(),
+                      this->end(),
+                      notifyFeature (rStimulus) );
 
 
 
 
-}
-};
+        }
+    };
 
 }
 

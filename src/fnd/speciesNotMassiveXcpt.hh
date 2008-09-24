@@ -38,27 +38,27 @@
 
 namespace fnd
 {
-class speciesNotMassiveXcpt :
-public utl::xcpt
-{
-std::string
-mkMsg(xmlpp::Node* pOffendingNode = 0);
-public:
-speciesNotMassiveXcpt(xmlpp::Node* pOffendingNode = 0);
-};
+    class speciesNotMassiveXcpt :
+                public utl::xcpt
+    {
+        std::string
+        mkMsg (xmlpp::Node* pOffendingNode = 0);
+    public:
+        speciesNotMassiveXcpt (xmlpp::Node* pOffendingNode = 0);
+    };
 
-template<class speciesT>
-massive*
-mustBeMassiveSpecies(speciesT* pSpecies,
-xmlpp::Node* pRequestingNode = 0)
-throw(utl::xcpt)
-{
-massive* pMassive = dynamic_cast<massive*>(pSpecies);
+    template<class speciesT>
+    massive*
+    mustBeMassiveSpecies (speciesT* pSpecies,
+                          xmlpp::Node* pRequestingNode = 0)
+    throw (utl::xcpt)
+    {
+        massive* pMassive = dynamic_cast<massive*> (pSpecies);
 
-if(0 == pMassive) throw speciesNotMassiveXcpt(pRequestingNode);
+        if (0 == pMassive) throw speciesNotMassiveXcpt (pRequestingNode);
 
-return pMassive;
-}
+        return pMassive;
+    }
 }
 
 #endif // FND_SPECIESNOTMASSIVEXCPT_H

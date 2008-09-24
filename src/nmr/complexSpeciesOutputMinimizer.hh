@@ -1,5 +1,5 @@
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-//                                                                          
+//
 //        This file is part of Libmoleculizer
 //
 //        Copyright (C) 2001-2008 The Molecular Sciences Institute.
@@ -7,7 +7,7 @@
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 //
 // Moleculizer is free software; you can redistribute it and/or modify
-// it under the terms of the GNU Lesser General Public License as published 
+// it under the terms of the GNU Lesser General Public License as published
 // by the Free Software Foundation; either version 3 of the License, or
 // (at your option) any later version.
 //
@@ -19,14 +19,14 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with Moleculizer; if not, write to the Free Software Foundation
 // Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307,  USA
-//    
+//
 // END HEADER
-// 
+//
 // Original Author:
 //   Nathan Addy, Scientific Programmer, Molecular Sciences Institute, 2001
 //
 // Modifing Authors:
-//              
+//
 //
 
 #ifndef COMPLEXSPECIESOUTPUTMINIMIZER_HPP
@@ -41,69 +41,69 @@
 
 namespace nmr
 {
-class ComplexSpeciesOutputMinimizer
-{
-public:
+    class ComplexSpeciesOutputMinimizer
+    {
+    public:
 
-typedef std::vector<int> ColoringPartition;
-typedef std::vector< std::set<int>* > GraphEdgeList;
+        typedef std::vector<int> ColoringPartition;
+        typedef std::vector< std::set<int>* > GraphEdgeList;
 
-ComplexSpeciesOutputMinimizer()
-{}
+        ComplexSpeciesOutputMinimizer()
+        {}
 
-ComplexOutputState
-getMinimalOutputState(ComplexSpeciesCref aComplexSpecies);
+        ComplexOutputState
+        getMinimalOutputState (ComplexSpeciesCref aComplexSpecies);
 
-class NonSimpleGraphXcpt : public GeneralNmrXcpt
-{
-public:
-static
-std::string
-mkMsg(ComplexSpeciesCref aComplexSpecies)
-{
-std::ostringstream oss;
-oss << "Error: the complex species '"
-<< aComplexSpecies
-<< "' does not represent a simple graph.  Please contact "
-<< "the developer <addy@molsci.org>.";
-return oss.str();
-}
+    class NonSimpleGraphXcpt : public GeneralNmrXcpt
+        {
+        public:
+            static
+            std::string
+            mkMsg (ComplexSpeciesCref aComplexSpecies)
+            {
+                std::ostringstream oss;
+                oss << "Error: the complex species '"
+                << aComplexSpecies
+                << "' does not represent a simple graph.  Please contact "
+                << "the developer <addy@molsci.org>.";
+                return oss.str();
+            }
 
-NonSimpleGraphXcpt(ComplexSpeciesCref aComplexSpecies)
-:
-GeneralNmrXcpt(mkMsg(aComplexSpecies))
-{}
-};
+            NonSimpleGraphXcpt (ComplexSpeciesCref aComplexSpecies)
+                    :
+                    GeneralNmrXcpt (mkMsg (aComplexSpecies) )
+            {}
+        };
 
-private:
-Permutation
-calculateMolSortingPermutationForComplex( ComplexSpeciesCref aComplexSpecies);
+    private:
+        Permutation
+        calculateMolSortingPermutationForComplex ( ComplexSpeciesCref aComplexSpecies);
 
-Permutation
-calculateCanonicalPermutationForColoredGraph( const GraphEdgeList& refGraphEdgeList,
-const ColoringPartition& refColPart);
+        Permutation
+        calculateCanonicalPermutationForColoredGraph ( const GraphEdgeList& refGraphEdgeList,
+                const ColoringPartition& refColPart);
 
-bool checkComplexSpeciesIsSimpleGraph( ComplexSpeciesCref aComplexSpecies);
-void setupDataStructuresForCalculation( ComplexSpeciesRef aComplexSpecies);
-void setupComplexEdgeMap( ComplexSpeciesCref aComplexSpecies);
-void setupComplexColorPartition( ComplexSpeciesCref aComplexSpecies);
+        bool checkComplexSpeciesIsSimpleGraph ( ComplexSpeciesCref aComplexSpecies);
+        void setupDataStructuresForCalculation ( ComplexSpeciesRef aComplexSpecies);
+        void setupComplexEdgeMap ( ComplexSpeciesCref aComplexSpecies);
+        void setupComplexColorPartition ( ComplexSpeciesCref aComplexSpecies);
 
-struct MolIndexLessThanCmp : public std::binary_function<int, int, bool>
-{
-DECLARE_TYPE(ComplexSpecies::MolList, MolList);
+    struct MolIndexLessThanCmp : public std::binary_function<int, int, bool>
+        {
+            DECLARE_TYPE (ComplexSpecies::MolList, MolList);
 
-MolIndexLessThanCmp(ComplexSpeciesCref aComplexSpeciesForCmp);
-bool operator()(int ndx1, int ndx2);
-
-private:
-MolListCref theComparisonMolList;
-};
+            MolIndexLessThanCmp (ComplexSpeciesCref aComplexSpeciesForCmp);
+            bool operator() (int ndx1, int ndx2);
 
 private:
-ColoringPartition partitionSpecification;
-GraphEdgeList complexGraphEdgeMap;
+            MolListCref theComparisonMolList;
+        };
+
+    private:
+        ColoringPartition partitionSpecification;
+        GraphEdgeList complexGraphEdgeMap;
 // std::vector<std::set<int>* > complexGraphEdgeMap;
-};
+    };
 }
 
 

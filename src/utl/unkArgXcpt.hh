@@ -36,17 +36,17 @@
 
 namespace utl
 {
-class unkArgXcpt :
-public utl::xcpt
-{
-static std::string
-mkMsg(const std::string& rTheUnrecognizedArg);
+    class unkArgXcpt :
+                public utl::xcpt
+    {
+        static std::string
+        mkMsg (const std::string& rTheUnrecognizedArg);
 
-public:
-unkArgXcpt(const std::string& rTheUnrecognizedArg) :
-utl::xcpt(mkMsg(rTheUnrecognizedArg))
-{}
-};
+    public:
+        unkArgXcpt (const std::string& rTheUnrecognizedArg) :
+                utl::xcpt (mkMsg (rTheUnrecognizedArg) )
+        {}
+    };
 }
 
 #endif // UTL_UNKARGXCPT_H

@@ -13,13 +13,14 @@
 */
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
-extern long *ran_arr_ptr;
-long ran_arr_cycle(void);
-void ran_init(long seed);
-void ran_array(long *aa, int n);
+    extern long *ran_arr_ptr;
+    long ran_arr_cycle (void);
+    void ran_init (long seed);
+    void ran_array (long *aa, int n);
 
 #ifdef __cplusplus
 }

@@ -34,82 +34,82 @@
 
 namespace cpx
 {
-template<class plexSpeciesT, class plexFamilyT>
-cxBinding<plexSpeciesT, plexFamilyT>::
-cxBinding(plexSpeciesType* pPlexSpecies,
-const bindingSpec& rSpec) :
-fnd::featureContext<plexSpeciesType, bindingSpec>(pPlexSpecies,
-rSpec)
-{}
+    template<class plexSpeciesT, class plexFamilyT>
+    cxBinding<plexSpeciesT, plexFamilyT>::
+    cxBinding (plexSpeciesType* pPlexSpecies,
+               const bindingSpec& rSpec) :
+            fnd::featureContext<plexSpeciesType, bindingSpec> (pPlexSpecies,
+                    rSpec)
+    {}
 
-template<class plexSpeciesT, class plexFamilyT>
-bindingSpec
-cxBinding<plexSpeciesT, plexFamilyT>::
-getBindingSpec(void) const
-{
-return this->getSpec();
-}
+    template<class plexSpeciesT, class plexFamilyT>
+    bindingSpec
+    cxBinding<plexSpeciesT, plexFamilyT>::
+    getBindingSpec (void) const
+    {
+        return this->getSpec();
+    }
 
-template<class plexSpeciesT, class plexFamilyT>
-int
-cxBinding<plexSpeciesT, plexFamilyT>::
-getPop(void) const
-{
-return this->getSpecies()->getPop();
-}
+    template<class plexSpeciesT, class plexFamilyT>
+    int
+    cxBinding<plexSpeciesT, plexFamilyT>::
+    getPop (void) const
+    {
+        return this->getSpecies()->getPop();
+    }
 
-template<class plexSpeciesT, class plexFamilyT>
-double
-cxBinding<plexSpeciesT, plexFamilyT>::
-getPlexWeight(void) const
-{
-return this->getSpecies()->getWeight();
-}
+    template<class plexSpeciesT, class plexFamilyT>
+    double
+    cxBinding<plexSpeciesT, plexFamilyT>::
+    getPlexWeight (void) const
+    {
+        return this->getSpecies()->getWeight();
+    }
 
-template<class plexSpeciesT, class plexFamilyT>
-plexFamilyT&
-cxBinding<plexSpeciesT, plexFamilyT>::
-getPlexFamily(void) const
-{
-return this->getSpecies()->rFamily;
-}
+    template<class plexSpeciesT, class plexFamilyT>
+    plexFamilyT&
+    cxBinding<plexSpeciesT, plexFamilyT>::
+    getPlexFamily (void) const
+    {
+        return this->getSpecies()->rFamily;
+    }
 
 
-template<class plexSpeciesT, class plexFamilyT>
-const siteToShapeMap&
-cxBinding<plexSpeciesT, plexFamilyT>::
-getSiteToShapeMap(void) const
-{
-return this->getSpecies()->siteParams;
-}
+    template<class plexSpeciesT, class plexFamilyT>
+    const siteToShapeMap&
+    cxBinding<plexSpeciesT, plexFamilyT>::
+    getSiteToShapeMap (void) const
+    {
+        return this->getSpecies()->siteParams;
+    }
 
-template<class plexSpeciesT, class plexFamilyT>
-const std::vector<molParam>&
-cxBinding<plexSpeciesT, plexFamilyT>::
-getMolParams(void) const
-{
-return this->getSpecies()->molParams;
-}
+    template<class plexSpeciesT, class plexFamilyT>
+    const std::vector<molParam>&
+    cxBinding<plexSpeciesT, plexFamilyT>::
+    getMolParams (void) const
+    {
+        return this->getSpecies()->molParams;
+    }
 
-template<class plexSpeciesT, class plexFamilyT>
-std::pair<siteParam, siteParam>
-cxBinding<plexSpeciesT, plexFamilyT>::
-getSiteParams(void) const
-{
+    template<class plexSpeciesT, class plexFamilyT>
+    std::pair<siteParam, siteParam>
+    cxBinding<plexSpeciesT, plexFamilyT>::
+    getSiteParams (void) const
+    {
 // Get the featured binding.
-binding theBinding
-= getPlexFamily().getParadigm().bindings[getBindingSpec()];
+        binding theBinding
+        = getPlexFamily().getParadigm().bindings[getBindingSpec() ];
 
 // Get the shapes of the sites comprising the featured
 // binding in the featured plex species.
-siteParam leftSiteParam
-= getSiteToShapeMap().mustGetSiteShape(theBinding.leftSite());
-siteParam rightSiteParam
-= getSiteToShapeMap().mustGetSiteShape(theBinding.rightSite());
+        siteParam leftSiteParam
+        = getSiteToShapeMap().mustGetSiteShape (theBinding.leftSite() );
+        siteParam rightSiteParam
+        = getSiteToShapeMap().mustGetSiteShape (theBinding.rightSite() );
 
-return std::make_pair(leftSiteParam,
-rightSiteParam);
-}
+        return std::make_pair (leftSiteParam,
+                               rightSiteParam);
+    }
 }
 
 #endif // CPX_CXBINDINGIMPL_H

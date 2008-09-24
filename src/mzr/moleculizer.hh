@@ -1,5 +1,5 @@
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-//                                                                          
+//
 //        This file is part of Libmoleculizer
 //
 //        Copyright (C) 2001-2008 The Molecular Sciences Institute.
@@ -7,7 +7,7 @@
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 //
 // Moleculizer is free software; you can redistribute it and/or modify
-// it under the terms of the GNU Lesser General Public License as published 
+// it under the terms of the GNU Lesser General Public License as published
 // by the Free Software Foundation; either version 3 of the License, or
 // (at your option) any later version.
 //
@@ -19,14 +19,14 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with Moleculizer; if not, write to the Free Software Foundation
 // Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307,  USA
-//    
+//
 // END HEADER
-// 
+//
 // Original Author:
 //   Larry Lok, Research Fellow, Molecular Sciences Institute, 2001
 //
 // Modifing Authors:
-//              
+//
 //
 
 
@@ -81,80 +81,86 @@ Quick links:
 
 namespace mzr
 {
-class unitsMgr;
+    class unitsMgr;
 
-/*! \ingroup mzrGroup
-\brief The main application object. */
+    /*! \ingroup mzrGroup
+    \brief The main application object. */
 
 
 //  The main bulk of this class can be found in ReactionNetworkDescription.
-class moleculizer :
-public fnd::ReactionNetworkDescription<mzrSpecies, mzrReaction>
-{
-public:
-moleculizer(void);
-~moleculizer(void);
+    class moleculizer :
+                public fnd::ReactionNetworkDescription<mzrSpecies, mzrReaction>
+    {
+    public:
+        moleculizer (void);
+        ~moleculizer (void);
 
-bool getModelHasBeenLoaded() const;
-void setModelHasBeenLoaded(bool value);
+        bool getModelHasBeenLoaded() const;
+        void setModelHasBeenLoaded (bool value);
 
-void setGenerateDepth(unsigned int generateDepth);
-void setRateExtrapolation( bool rateExtrapolation ){ return; }
-void setToleranceOption( bool tolerenceOption ) { return; }
-void setTolerance(double tolerance);
+        void setGenerateDepth (unsigned int generateDepth);
+        void setRateExtrapolation ( bool rateExtrapolation )
+        {
+            return;
+        }
+        void setToleranceOption ( bool tolerenceOption )
+        {
+            return;
+        }
+        void setTolerance (double tolerance);
 
-void attachFileName(const std::string& aFileName);
-void attachString(const std::string& documentAsString);
-void attachDocument(xmlpp::Document* pDoc);
+        void attachFileName (const std::string& aFileName);
+        void attachString (const std::string& documentAsString);
+        void attachDocument (xmlpp::Document* pDoc);
 
-mzrSpecies*
-getSpeciesWithName(const std::string& speciesName) throw( mzr::IllegalNameXcpt );
+        mzrSpecies*
+        getSpeciesWithName (const std::string& speciesName) throw ( mzr::IllegalNameXcpt );
 
-public:
-void
-incrementSpecies(std::string& speciesName);
+    public:
+        void
+        incrementSpecies (std::string& speciesName);
 
-std::string
-getRandomSpeciesName() const;
+        std::string
+        getRandomSpeciesName() const;
 
-public:
+    public:
 
-xmlpp::Document*
-makeDomOutput(void) throw(std::exception);
-
-
-protected:
-void
-constructorPrelude(void);
-
-void
-verifyInput(const xmlpp::Element* const pRootElt,
-const xmlpp::Element* const pModelElt,
-const xmlpp::Element* const pStreamElt) const
-throw(std::exception);
-
-void
-constructorCore(xmlpp::Element* pRootElt,
-xmlpp::Element* pModelElt,
-xmlpp::Element* pStreamElt)
-throw(std::exception);
+        xmlpp::Document*
+        makeDomOutput (void) throw (std::exception);
 
 
-public:
+    protected:
+        void
+        constructorPrelude (void);
+
+        void
+        verifyInput (const xmlpp::Element* const pRootElt,
+                     const xmlpp::Element* const pModelElt,
+                     const xmlpp::Element* const pStreamElt) const
+        throw (std::exception);
+
+        void
+        constructorCore (xmlpp::Element* pRootElt,
+                         xmlpp::Element* pModelElt,
+                         xmlpp::Element* pStreamElt)
+        throw (std::exception);
+
+
+    public:
 // Units loaded by the user, waiting for destruction.
 //
 // This class is the manager for units, and the place that new units
 // can be installed.  It's public because units need to get to
 // each other.
-unitsMgr* pUserUnits;
+        unitsMgr* pUserUnits;
 
 // Codes the input capabilities of moleculizer, including its parsing
 // routine.
-inputCapabilities inputCap;
+        inputCapabilities inputCap;
 
-private:
-bool modelLoaded;
-};
+    private:
+        bool modelLoaded;
+    };
 }
 
 #endif

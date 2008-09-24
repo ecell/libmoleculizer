@@ -36,20 +36,20 @@
 
 namespace ftr
 {
-class badModMolInstanceXcpt :
-public utl::xcpt
-{
-static std::string
-mkMsg(const std::string rMolInstanceName,
-const xmlpp::Node* pOffendingNode = 0);
+    class badModMolInstanceXcpt :
+                public utl::xcpt
+    {
+        static std::string
+        mkMsg (const std::string rMolInstanceName,
+               const xmlpp::Node* pOffendingNode = 0);
 
-public:
-badModMolInstanceXcpt(const std::string rMolInstanceName,
-const xmlpp::Node* pOffendingNode = 0) :
-utl::xcpt(mkMsg(rMolInstanceName,
-pOffendingNode))
-{}
-};
+    public:
+        badModMolInstanceXcpt (const std::string rMolInstanceName,
+                               const xmlpp::Node* pOffendingNode = 0) :
+                utl::xcpt (mkMsg (rMolInstanceName,
+                                  pOffendingNode) )
+        {}
+    };
 }
 
 #endif // FTR_BADMODMOLINSTANCEXCPT_H

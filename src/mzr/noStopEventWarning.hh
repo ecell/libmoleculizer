@@ -38,17 +38,17 @@ namespace mzr
 {
 // Decided not to use the special utl::warning class; rather enhanced
 // utl::xcpt to issue its message as a warning, if desired.
-class noStopEventWarning :
-public utl::xcpt
-{
-static std::string
-mkMsg(xmlpp::Node* pOffendingNode = 0);
+    class noStopEventWarning :
+                public utl::xcpt
+    {
+        static std::string
+        mkMsg (xmlpp::Node* pOffendingNode = 0);
 
-public:
-noStopEventWarning(xmlpp::Node* pEventsElement = 0) :
-utl::xcpt(mkMsg(pEventsElement))
-{}
-};
+    public:
+        noStopEventWarning (xmlpp::Node* pEventsElement = 0) :
+                utl::xcpt (mkMsg (pEventsElement) )
+        {}
+    };
 }
 
 #endif // MZR_NOSTOPEVENTWARNING_H

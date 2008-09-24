@@ -34,13 +34,13 @@
 
 namespace stoch
 {
-std::string
-badStochSpeciesTagXcpt::
-mkMsg(xmlpp::Node* pOffendingNode)
-{
-std::ostringstream msgStream;
-msgStream << utl::dom::xcpt::mkMsg(pOffendingNode)
-<< "Stoch species tag not named in explicit-species-tags.";
-return msgStream.str();
-}
+    std::string
+    badStochSpeciesTagXcpt::
+    mkMsg (xmlpp::Node* pOffendingNode)
+    {
+        std::ostringstream msgStream;
+        msgStream << utl::dom::xcpt::mkMsg (pOffendingNode)
+        << "Stoch species tag not named in explicit-species-tags.";
+        return msgStream.str();
+    }
 }

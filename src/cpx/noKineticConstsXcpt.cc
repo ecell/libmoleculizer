@@ -34,64 +34,64 @@
 
 namespace cpx
 {
-std::string
-noKineticConstsXcpt::
-mkShapesOnlyMsg(const std::string& rLeftSiteShapeName,
-const std::string& rRightSiteShapeName)
-{
-std::ostringstream msgStream;
-msgStream << "Attempt to form binding of site shapes "
-<< rLeftSiteShapeName
-<< " and "
-<< rRightSiteShapeName
-<< " for which no on/off rates have been given.";
-return msgStream.str();
-}
+    std::string
+    noKineticConstsXcpt::
+    mkShapesOnlyMsg (const std::string& rLeftSiteShapeName,
+                     const std::string& rRightSiteShapeName)
+    {
+        std::ostringstream msgStream;
+        msgStream << "Attempt to form binding of site shapes "
+        << rLeftSiteShapeName
+        << " and "
+        << rRightSiteShapeName
+        << " for which no on/off rates have been given.";
+        return msgStream.str();
+    }
 
-std::string
-noKineticConstsXcpt::
-mkMolsAndSitesMsg(const std::string& rLeftMolName,
-const std::string& rLeftSiteName,
-const std::string& rRightMolName,
-const std::string& rRightSiteName)
-{
-std::ostringstream msgStream;
-msgStream << "Plex contains binding between site "
-<< rLeftSiteName
-<< " on mol "
-<< rLeftMolName
-<< " and site "
-<< rRightSiteName
-<< " on mol "
-<< rRightMolName
-<< " for which no on/off rates have been given.";
-return msgStream.str();
-}
+    std::string
+    noKineticConstsXcpt::
+    mkMolsAndSitesMsg (const std::string& rLeftMolName,
+                       const std::string& rLeftSiteName,
+                       const std::string& rRightMolName,
+                       const std::string& rRightSiteName)
+    {
+        std::ostringstream msgStream;
+        msgStream << "Plex contains binding between site "
+        << rLeftSiteName
+        << " on mol "
+        << rLeftMolName
+        << " and site "
+        << rRightSiteName
+        << " on mol "
+        << rRightMolName
+        << " for which no on/off rates have been given.";
+        return msgStream.str();
+    }
 
 // Thrown in dimerizeRxnGen.cc, makeBinaryReactions.
-std::string
-noKineticConstsXcpt::
-mkFullMsg(const std::string& rLeftMolName,
-const std::string& rLeftSiteName,
-const std::string& rLeftSiteShapeName,
-const std::string& rRightMolName,
-const std::string& rRightSiteName,
-const std::string& rRightSiteShapeName)
-{
-std::ostringstream msgStream;
-msgStream << "Attempt to generate binding reaction between site "
-<< rLeftSiteName
-<< " on mol "
-<< rLeftMolName
-<< " (in shape "
-<< rLeftSiteShapeName
-<< ") with site "
-<< rRightSiteName
-<< " on mol "
-<< rRightMolName
-<< " (in shape "
-<< rRightSiteShapeName
-<< ") for which no on/off rates have been given.";
-return msgStream.str();
-}
+    std::string
+    noKineticConstsXcpt::
+    mkFullMsg (const std::string& rLeftMolName,
+               const std::string& rLeftSiteName,
+               const std::string& rLeftSiteShapeName,
+               const std::string& rRightMolName,
+               const std::string& rRightSiteName,
+               const std::string& rRightSiteShapeName)
+    {
+        std::ostringstream msgStream;
+        msgStream << "Attempt to generate binding reaction between site "
+        << rLeftSiteName
+        << " on mol "
+        << rLeftMolName
+        << " (in shape "
+        << rLeftSiteShapeName
+        << ") with site "
+        << rRightSiteName
+        << " on mol "
+        << rRightMolName
+        << " (in shape "
+        << rRightSiteShapeName
+        << ") for which no on/off rates have been given.";
+        return msgStream.str();
+    }
 }

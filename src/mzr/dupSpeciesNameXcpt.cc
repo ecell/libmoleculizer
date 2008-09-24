@@ -34,16 +34,16 @@
 
 namespace mzr
 {
-std::string
-dupSpeciesNameXcpt::
-mkMsg(const std::string& rSpeciesName,
-xmlpp::Node* pRequestingNode)
-{
-std::ostringstream msgStream;
-msgStream << utl::dom::xcpt::mkMsg(pRequestingNode)
-<< "There is already a species named "
-<< rSpeciesName
-<< ".";
-return msgStream.str();
-}
+    std::string
+    dupSpeciesNameXcpt::
+    mkMsg (const std::string& rSpeciesName,
+           xmlpp::Node* pRequestingNode)
+    {
+        std::ostringstream msgStream;
+        msgStream << utl::dom::xcpt::mkMsg (pRequestingNode)
+        << "There is already a species named "
+        << rSpeciesName
+        << ".";
+        return msgStream.str();
+    }
 }

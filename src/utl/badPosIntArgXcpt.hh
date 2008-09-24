@@ -36,17 +36,17 @@
 
 namespace utl
 {
-class badPosIntArgXcpt :
-public utl::xcpt
-{
-static std::string
-mkMsg(const std::string& rTheBadArgument);
+    class badPosIntArgXcpt :
+                public utl::xcpt
+    {
+        static std::string
+        mkMsg (const std::string& rTheBadArgument);
 
-public:
-badPosIntArgXcpt(const std::string& rTheBadArgument) :
-utl::xcpt(mkMsg(rTheBadArgument))
-{}
-};
+    public:
+        badPosIntArgXcpt (const std::string& rTheBadArgument) :
+                utl::xcpt (mkMsg (rTheBadArgument) )
+        {}
+    };
 }
 
 #endif // UTL_BADPOSINTARGXCPT_H

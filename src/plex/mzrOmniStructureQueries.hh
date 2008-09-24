@@ -42,20 +42,20 @@ namespace plx
 // an omniPlex.  Only one type of structural query exists now:
 // is a site that is free on the omniplex actually free in the
 // complex where the omniplex is found. (omniFreeSiteQuery below).
-typedef
-fnd::query<cpx::omniStructureQueryArg<mzrPlex> >
-mzrOmniStructureQuery;
+    typedef
+    fnd::query<cpx::omniStructureQueryArg<mzrPlex> >
+    mzrOmniStructureQuery;
 
 // The only kind of structural query used by omniplexes at this time.
-typedef
-cpx::omniFreeSiteQuery<mzrPlex>
-mzrOmniFreeSiteQuery;
+    typedef
+    cpx::omniFreeSiteQuery<mzrPlex>
+    mzrOmniFreeSiteQuery;
 
 // Conjunction of structural queries.  Each omniPlex has one of these
 // to "gate" putatively matching plexSpecies.
-typedef
-fnd::andQueries<mzrOmniStructureQuery>
-mzrOmniStructureQueries;
+    typedef
+    fnd::andQueries<mzrOmniStructureQuery>
+    mzrOmniStructureQueries;
 }
 
 #endif // PLEX_MZROMNISTRUCTUREQUERIES_H

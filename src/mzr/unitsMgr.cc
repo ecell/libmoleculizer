@@ -41,30 +41,30 @@
 
 namespace mzr
 {
-unitsMgr::
-unitsMgr(moleculizer& rMoleculizer) :
-pNmrUnit(new nmr::nmrUnit(rMoleculizer) ),
-pMzrUnit(new mzr::mzrUnit(rMoleculizer)),
-pMolUnit(new bnd::molUnit(rMoleculizer)),
-pPlexUnit(new plx::plexUnit(rMoleculizer,
-*pMzrUnit,
-*pMolUnit,
-*pNmrUnit)),
-pStochUnit(new stoch::stochUnit(rMoleculizer,
-*pMzrUnit)),
-pDimerUnit(new dimer::dimerUnit(rMoleculizer,
-*pMzrUnit,
-*pMolUnit,
-*pPlexUnit)),
-pFtrUnit(new ftr::ftrUnit(rMoleculizer,
-*pMzrUnit,
-*pMolUnit,
-*pPlexUnit))
-{
+    unitsMgr::
+    unitsMgr (moleculizer& rMoleculizer) :
+            pNmrUnit (new nmr::nmrUnit (rMoleculizer) ),
+            pMzrUnit (new mzr::mzrUnit (rMoleculizer) ),
+            pMolUnit (new bnd::molUnit (rMoleculizer) ),
+            pPlexUnit (new plx::plexUnit (rMoleculizer,
+                                          *pMzrUnit,
+                                          *pMolUnit,
+                                          *pNmrUnit) ),
+            pStochUnit (new stoch::stochUnit (rMoleculizer,
+                                              *pMzrUnit) ),
+            pDimerUnit (new dimer::dimerUnit (rMoleculizer,
+                                              *pMzrUnit,
+                                              *pMolUnit,
+                                              *pPlexUnit) ),
+            pFtrUnit (new ftr::ftrUnit (rMoleculizer,
+                                        *pMzrUnit,
+                                        *pMolUnit,
+                                        *pPlexUnit) )
+    {
 
-pNmrUnit->setMzrUnit(pMzrUnit);
-pNmrUnit->setMolUnit(pMolUnit);
-pNmrUnit->setPlexUnit(pPlexUnit);
+        pNmrUnit->setMzrUnit (pMzrUnit);
+        pNmrUnit->setMolUnit (pMolUnit);
+        pNmrUnit->setPlexUnit (pPlexUnit);
 
 // Note that these need to be in output order, which is slightly
 // different from linkage order: mzrUnit "plays cleanup" by parsing
@@ -75,41 +75,41 @@ pNmrUnit->setPlexUnit(pPlexUnit);
 //
 // ftrUnit has to come after plexUnit, since it uses omniPlexes in its
 // reaction generators.
-addEntry(pNmrUnit);
-addEntry(pStochUnit);
-addEntry(pMolUnit);
-addEntry(pDimerUnit);
-addEntry(pPlexUnit);
-addEntry(pFtrUnit);
-addEntry(pMzrUnit);
+        addEntry (pNmrUnit);
+        addEntry (pStochUnit);
+        addEntry (pMolUnit);
+        addEntry (pDimerUnit);
+        addEntry (pPlexUnit);
+        addEntry (pFtrUnit);
+        addEntry (pMzrUnit);
 
 
-}
+    }
 
 // Class for constructing overall input capabilities of moleculizer
 // from input capabilities of each unit.
-class addCapToUnion :
-public std::unary_function<const unit*, void>
-{
-inputCapabilities& rUnionCaps;
-public:
-addCapToUnion(inputCapabilities& rUnionCapabilities) :
-rUnionCaps(rUnionCapabilities)
-{}
+    class addCapToUnion :
+                public std::unary_function<const unit*, void>
+    {
+        inputCapabilities& rUnionCaps;
+    public:
+        addCapToUnion (inputCapabilities& rUnionCapabilities) :
+                rUnionCaps (rUnionCapabilities)
+        {}
 
-void
-operator()(const unit* pUnit) const
-{
-rUnionCaps.addCap(pUnit->inputCap);
-}
-};
+        void
+        operator() (const unit* pUnit) const
+        {
+            rUnionCaps.addCap (pUnit->inputCap);
+        }
+    };
 
-void
-unitsMgr::
-unionInputCaps(inputCapabilities& rUnion)
-{
-for_each(begin(),
-end(),
-addCapToUnion(rUnion));
-}
+    void
+    unitsMgr::
+    unionInputCaps (inputCapabilities& rUnion)
+    {
+        for_each (begin(),
+                  end(),
+                  addCapToUnion (rUnion) );
+    }
 }

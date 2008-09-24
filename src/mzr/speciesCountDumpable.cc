@@ -35,15 +35,15 @@
 
 namespace mzr
 {
-speciesCountDumpable::
-speciesCountDumpable(void) :
-fnd::dumpable<fnd::basicDumpable::dumpArg>(eltName::statStream_speciesCount)
-{}
+    speciesCountDumpable::
+    speciesCountDumpable (void) :
+            fnd::dumpable<fnd::basicDumpable::dumpArg> (eltName::statStream_speciesCount)
+    {}
 
-void
-speciesCountDumpable::
-doDump(const fnd::basicDumpable::dumpArg& rDumpArg) const
-{
-rDumpArg.getOstream() << mzrSpecies::getSpeciesCount();
-}
+    void
+    speciesCountDumpable::
+    doDump (const fnd::basicDumpable::dumpArg& rDumpArg) const
+    {
+        rDumpArg.getOstream() << mzrSpecies::getSpeciesCount();
+    }
 }

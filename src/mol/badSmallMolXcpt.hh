@@ -43,30 +43,30 @@ namespace bnd
 //
 // This might happen, for instance, if someone tried to do the "nucleotide
 // exchange thing" with a mod-mol.
-class badSmallMolXcpt :
-public utl::xcpt
-{
-static std::string
-mkMsg(const mzrMol* pMol,
-const xmlpp::Node* pOffendingNode = 0);
+    class badSmallMolXcpt :
+                public utl::xcpt
+    {
+        static std::string
+        mkMsg (const mzrMol* pMol,
+               const xmlpp::Node* pOffendingNode = 0);
 
-public:
-badSmallMolXcpt(const mzrMol* pMol,
-const xmlpp::Node* pOffendingNode = 0) :
-utl::xcpt(mkMsg(pMol,
-pOffendingNode))
-{}
-};
+    public:
+        badSmallMolXcpt (const mzrMol* pMol,
+                         const xmlpp::Node* pOffendingNode = 0) :
+                utl::xcpt (mkMsg (pMol,
+                                  pOffendingNode) )
+        {}
+    };
 
-smallMol*
-mustBeSmallMol(bnd::mzrMol* pMol,
-const xmlpp::Node* pRequestingNode = 0)
-throw(utl::xcpt);
+    smallMol*
+    mustBeSmallMol (bnd::mzrMol* pMol,
+                    const xmlpp::Node* pRequestingNode = 0)
+    throw (utl::xcpt);
 
-const smallMol*
-mustBeSmallMol(const bnd::mzrMol* pMol,
-const xmlpp::Node* pRequestingNode = 0)
-throw(utl::xcpt);
+    const smallMol*
+    mustBeSmallMol (const bnd::mzrMol* pMol,
+                    const xmlpp::Node* pRequestingNode = 0)
+    throw (utl::xcpt);
 }
 
 #endif // MOL_BADSMALLMOLXCPT_H

@@ -43,103 +43,103 @@
 
 namespace cpx
 {
-template<class molT,
-class plexSpeciesT,
-class plexFamilyT,
-class omniPlexT>
-class omniPlexFeature :
-public fnd::feature<cxOmni<molT,
-plexSpeciesT,
-plexFamilyT,
-omniPlexT> >
-{
-public:
-typedef plexSpeciesT plexSpeciesType;
-typedef plexFamilyT plexFamilyType;
-typedef omniPlexT omniPlexType;
+    template<class molT,
+    class plexSpeciesT,
+    class plexFamilyT,
+    class omniPlexT>
+    class omniPlexFeature :
+                public fnd::feature<cxOmni<molT,
+                plexSpeciesT,
+                plexFamilyT,
+                omniPlexT> >
+    {
+    public:
+        typedef plexSpeciesT plexSpeciesType;
+        typedef plexFamilyT plexFamilyType;
+        typedef omniPlexT omniPlexType;
 
-typedef typename plexSpeciesT::msDumpableType dumpableType;
+        typedef typename plexSpeciesT::msDumpableType dumpableType;
 
-typedef andPlexQueries<plexSpeciesType,
-omniPlexType> stateQueryType;
+        typedef andPlexQueries<plexSpeciesType,
+        omniPlexType> stateQueryType;
 
-typedef
-typename cpx::cxOmni<molT, plexSpeciesT, plexFamilyT, omniPlexT>
-contextType;
+        typedef
+        typename cpx::cxOmni<molT, plexSpeciesT, plexFamilyT, omniPlexT>
+        contextType;
 
-typedef fnd::newContextStimulus<contextType> stimulusType;
+        typedef fnd::newContextStimulus<contextType> stimulusType;
 
-private:
+    private:
 // If a dumpable is really attached to this feature, then
 // this points to it; otherwise null.
-dumpableType* pDumpable;
+        dumpableType* pDumpable;
 
-public:
-omniPlexFeature(void) :
-pDumpable(0)
-{}
+    public:
+        omniPlexFeature (void) :
+                pDumpable (0)
+        {}
 
 // Generate reactions and add new species to the dumpable,
 // if any.
 //
 // Overrides fnd::feature<cpx::cxOmni>::respond to add new species
 // to possible dumpable.
-virtual
-void
-respond(const typename omniPlexFeature::stimulusType& rNewFeatureContext);
+        virtual
+        void
+        respond (const typename omniPlexFeature::stimulusType& rNewFeatureContext);
 
 // To "turn on" dumping of the species in this omniplex.
 // These aren't query-based dumpables, since the omniplex
 // itself does all the querying.
-void
-setDumpable(typename omniPlexFeature::dumpableType* ptrDumpable)
-{
-pDumpable = ptrDumpable;
-}
-};
+        void
+        setDumpable (typename omniPlexFeature::dumpableType* ptrDumpable)
+        {
+            pDumpable = ptrDumpable;
+        }
+    };
 
-template<class molT,
-class plexSpeciesT,
-class plexFamilyT,
-class omniPlexT>
-void
-omniPlexFeature<molT,
-plexSpeciesT,
-plexFamilyT,
-omniPlexT>::
-respond(const typename omniPlexFeature::stimulusType& rStim)
-{
-const typename omniPlexFeature::contextType& rNewContext
-= rStim.getContext();
+    template<class molT,
+    class plexSpeciesT,
+    class plexFamilyT,
+    class omniPlexT>
+    void
+    omniPlexFeature<molT,
+    plexSpeciesT,
+    plexFamilyT,
+    omniPlexT>::
+    respond (const typename omniPlexFeature::stimulusType& rStim)
+    {
+        const typename omniPlexFeature::contextType& rNewContext
+        = rStim.getContext();
 
 // Does the new species satisfy the omni's state query?
-omniPlexType* pOmni = rNewContext.getOmni();
-const typename omniPlexFeature::stateQueryType& rQuery
-= *(pOmni->getStateQuery());
+        omniPlexType* pOmni = rNewContext.getOmni();
+        const typename omniPlexFeature::stateQueryType& rQuery
+        = * (pOmni->getStateQuery() );
 
-plexSpeciesType* pSpecies
-= rNewContext.getSpecies();
-const subPlexSpec<omniPlexType>& rSpec
-= rNewContext.getSpec();
-if(rQuery.applyTracked(*pSpecies,
-rSpec))
-{
+        plexSpeciesType* pSpecies
+        = rNewContext.getSpecies();
+        const subPlexSpec<omniPlexType>& rSpec
+        = rNewContext.getSpec();
+        if (rQuery.applyTracked (*pSpecies,
+                                 rSpec) )
+        {
 // Notify reaction generators
-fnd::feature<contextType>::respond(rStim);
+            fnd::feature<contextType>::respond (rStim);
 
 // Notify dumpable if any.
-if(pDumpable)
-{
+            if (pDumpable)
+            {
 // Note that this just gets back the newSpeciesStimulus.
 // This really stinks.
-fnd::newSpeciesStimulus<plexSpeciesType>
-dumpStim(pSpecies,
-rStim.getNotificationDepth());
+                fnd::newSpeciesStimulus<plexSpeciesType>
+                dumpStim (pSpecies,
+                          rStim.getNotificationDepth() );
 
-pDumpable->respond(dumpStim);
-}
-}
-}
+                pDumpable->respond (dumpStim);
+            }
+        }
+    }
 }
 
 #endif

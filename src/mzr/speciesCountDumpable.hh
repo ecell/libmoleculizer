@@ -36,17 +36,17 @@
 
 namespace mzr
 {
-/*! \ingroup dumpGroup
-\brief Dumps the number of species that have been encountered. */
-class speciesCountDumpable :
-public fnd::dumpable<fnd::basicDumpable::dumpArg>
-{
-public:
-speciesCountDumpable(void);
+    /*! \ingroup dumpGroup
+    \brief Dumps the number of species that have been encountered. */
+    class speciesCountDumpable :
+                public fnd::dumpable<fnd::basicDumpable::dumpArg>
+    {
+    public:
+        speciesCountDumpable (void);
 
-virtual void
-doDump(const fnd::basicDumpable::dumpArg& rDumpArg) const;
-};
+        virtual void
+        doDump (const fnd::basicDumpable::dumpArg& rDumpArg) const;
+    };
 }
 
 #endif // MZR_SPECIESCOUNTDUMPABLE_H

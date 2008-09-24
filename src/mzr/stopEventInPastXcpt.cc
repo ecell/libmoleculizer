@@ -34,17 +34,17 @@
 
 namespace mzr
 {
-std::string
-stopEventInPastXcpt::
-mkMsg(double now,
-double badEventTime)
-{
-std::ostringstream msgStream;
-msgStream << "Stop scheduled at time "
-<< badEventTime
-<< ", which is in the past at simulation time "
-<< now
-<< ".";
-return msgStream.str();
-}
+    std::string
+    stopEventInPastXcpt::
+    mkMsg (double now,
+           double badEventTime)
+    {
+        std::ostringstream msgStream;
+        msgStream << "Stop scheduled at time "
+        << badEventTime
+        << ", which is in the past at simulation time "
+        << now
+        << ".";
+        return msgStream.str();
+    }
 }

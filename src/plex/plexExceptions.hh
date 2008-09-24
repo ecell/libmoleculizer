@@ -1,5 +1,5 @@
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-//                                                                          
+//
 //        This file is part of Libmoleculizer
 //
 //        Copyright (C) 2001-2008 The Molecular Sciences Institute.
@@ -7,7 +7,7 @@
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 //
 // Moleculizer is free software; you can redistribute it and/or modify
-// it under the terms of the GNU Lesser General Public License as published 
+// it under the terms of the GNU Lesser General Public License as published
 // by the Free Software Foundation; either version 3 of the License, or
 // (at your option) any later version.
 //
@@ -19,14 +19,14 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with Moleculizer; if not, write to the Free Software Foundation
 // Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307,  USA
-//    
+//
 // END HEADER
-// 
+//
 // Original Author:
 //   Nathan Addy, Scientific Programmer, Molecular Sciences Institute, 2001
 //
 // Modifing Authors:
-//              
+//
 //
 
 #ifndef PLEXEXCEPTIONS_HPP
@@ -36,15 +36,15 @@
 
 namespace plx
 {
-  class NonConstructableComplexOutputStateXcpt : public utl::xcpt
-  {
-  public:
-    NonConstructableComplexOutputStateXcpt()
-    :
-      xcpt( "Error: Complex output state could not be constructed by the plexUnit.")
+    class NonConstructableComplexOutputStateXcpt : public utl::xcpt
     {
-    }
-  };
+    public:
+        NonConstructableComplexOutputStateXcpt()
+                :
+                xcpt ( "Error: Complex output state could not be constructed by the plexUnit.")
+        {
+        }
+    };
 }
 
 

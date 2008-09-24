@@ -34,45 +34,45 @@
 
 namespace dimer
 {
-void
-decomposeNoExtrap::
-setRate(cpx::siteParam leftParam,
-cpx::siteParam rightParam,
-double rate)
-{
-std::pair<rateMapType::iterator, bool> insertResult
-= rateMap.insert(std::make_pair(std::make_pair(leftParam,
-rightParam),
-rate));
-if(! insertResult.second)
-{
-insertResult.first->second = rate;
-}
-}
+    void
+    decomposeNoExtrap::
+    setRate (cpx::siteParam leftParam,
+             cpx::siteParam rightParam,
+             double rate)
+    {
+        std::pair<rateMapType::iterator, bool> insertResult
+        = rateMap.insert (std::make_pair (std::make_pair (leftParam,
+                                          rightParam),
+                                          rate) );
+        if (! insertResult.second)
+        {
+            insertResult.first->second = rate;
+        }
+    }
 
-double
-decomposeNoExtrap::
-getRate(const cpx::cxBinding<plx::mzrPlexSpecies, plx::mzrPlexFamily>& rContext) const
-throw(utl::xcpt)
-{
+    double
+    decomposeNoExtrap::
+    getRate (const cpx::cxBinding<plx::mzrPlexSpecies, plx::mzrPlexFamily>& rContext) const
+    throw (utl::xcpt)
+    {
 // Get the shapes (bnd::siteParam) of the sites in the binding.
-std::pair<cpx::siteParam, cpx::siteParam> siteParams
-= rContext.getSiteParams();
+        std::pair<cpx::siteParam, cpx::siteParam> siteParams
+        = rContext.getSiteParams();
 
 // Since the rates were stored with the key pair in only one
 // order, we have to check for both orders when looking it up.
-rateMapType::const_iterator iEntry
-= rateMap.find(siteParams);
+        rateMapType::const_iterator iEntry
+        = rateMap.find (siteParams);
 
-if(iEntry == rateMap.end())
-{
-iEntry = rateMap.find(std::make_pair(siteParams.second,
-siteParams.first));
-if(iEntry == rateMap.end())
-throw missingDecomposeRateXcpt(siteParams.first->getName(),
-siteParams.second->getName());
-}
+        if (iEntry == rateMap.end() )
+        {
+            iEntry = rateMap.find (std::make_pair (siteParams.second,
+                                                   siteParams.first) );
+            if (iEntry == rateMap.end() )
+                throw missingDecomposeRateXcpt (siteParams.first->getName(),
+                                                siteParams.second->getName() );
+        }
 
-return iEntry->second;
-}
+        return iEntry->second;
+    }
 }

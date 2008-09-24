@@ -37,10 +37,10 @@
 
 namespace mzr
 {
-class continuator :
-public moleculizer
-{
-public:
+    class continuator :
+                public moleculizer
+    {
+    public:
 // The point of this program is to continue a moleculizer simulation
 // given the original moleculizer-input and a moleculizer-state dump.
 //
@@ -50,15 +50,15 @@ public:
 // explicit-species.  The initial simulation time is set to the simulation
 // time at which state was dumped.  Thus the simulation picks up where it
 // left off.
-continuator(int argc,
-char** argv,
-xmlpp::Document* pMoleculizerInput,
-xmlpp::Document* pMoleculizerState)
-throw(std::exception);
+        continuator (int argc,
+                     char** argv,
+                     xmlpp::Document* pMoleculizerInput,
+                     xmlpp::Document* pMoleculizerState)
+        throw (std::exception);
 
-~continuator(void)
-{}
-};
+        ~continuator (void)
+        {}
+    };
 }
 
 #endif

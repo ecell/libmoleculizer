@@ -37,25 +37,25 @@
 namespace cpx
 {
 // Function class to hash plexes by "topological sorting."
-template<class molT>
-class hashMolRec
-{
-const basicPlex<molT>& rPlex;
-const typename std::map<siteSpec, int>& rSiteToBindings;
-typename std::set<int>& rMolsSeen;
+    template<class molT>
+    class hashMolRec
+    {
+        const basicPlex<molT>& rPlex;
+        const typename std::map<siteSpec, int>& rSiteToBindings;
+        typename std::set<int>& rMolsSeen;
 
-public:
-hashMolRec(const basicPlex<molT>& refPlex,
-const typename std::map<siteSpec, int>& refSiteToBindings,
-typename std::set<int>& refMolsSeen) :
-rPlex(refPlex),
-rSiteToBindings(refSiteToBindings),
-rMolsSeen(refMolsSeen)
-{}
+    public:
+        hashMolRec (const basicPlex<molT>& refPlex,
+                    const typename std::map<siteSpec, int>& refSiteToBindings,
+                    typename std::set<int>& refMolsSeen) :
+                rPlex (refPlex),
+                rSiteToBindings (refSiteToBindings),
+                rMolsSeen (refMolsSeen)
+        {}
 
-size_t operator()(int molNdx,
-int depth) const;
-};
+        size_t operator() (int molNdx,
+                           int depth) const;
+    };
 }
 
 #include "cpx/hashMolRecImpl.hh"

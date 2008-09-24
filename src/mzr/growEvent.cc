@@ -36,30 +36,30 @@
 
 namespace mzr
 {
-growEvent::
-growEvent(mzrUnit& refMzrUnit,
-double growthFactor,
-double schedulingPeriod) :
-rMzrUnit(refMzrUnit),
-factor(growthFactor),
-period(schedulingPeriod)
-{}
+    growEvent::
+    growEvent (mzrUnit& refMzrUnit,
+               double growthFactor,
+               double schedulingPeriod) :
+            rMzrUnit (refMzrUnit),
+            factor (growthFactor),
+            period (schedulingPeriod)
+    {}
 
-fnd::eventResult
-growEvent::
-happen(moleculizer& rMolzer)
-throw(std::exception)
-{
-double currentVolume = rMzrUnit.getMolarFactor().getVolume();
+    fnd::eventResult
+    growEvent::
+    happen (moleculizer& rMolzer)
+    throw (std::exception)
+    {
+        double currentVolume = rMzrUnit.getMolarFactor().getVolume();
 
-fnd::sensitivityList<mzrReaction> affectedReactions;
-rMzrUnit.getMolarFactor().updateVolume(currentVolume * factor,
-affectedReactions);
+        fnd::sensitivityList<mzrReaction> affectedReactions;
+        rMzrUnit.getMolarFactor().updateVolume (currentVolume * factor,
+                                                affectedReactions);
 
 // for_each(affectedReactions.begin(),
 // 	     affectedReactions.end(),
 // 	     respondReaction(rMolzer));
 
-return fnd::go;
-}
+        return fnd::go;
+    }
 }

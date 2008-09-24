@@ -17,8 +17,8 @@
 #ifdef PLANAR_IN_MAGMA
 #include "defs.h"
 #include "system.h"   /* includes <stdio.h> <signal.h> "system_math.h"
-                         <setjmp.h> <ctype.h> and more
-                      */
+<setjmp.h> <ctype.h> and more
+*/
 #else
 /* not PLANAR_IN_MAGMA */
 #include <stdio.h>
@@ -46,7 +46,7 @@ CPUDEFS
 
 #endif  /* not  PLANAR_IN_MAGMA */
 
-#include "nauty.h" 
+#include "nauty.h"
 
 
 
@@ -87,7 +87,7 @@ CPUDEFS
 #define MARK_X_Y_PATH(n) ((n)+5)
 #define MARK_MINORS(n) ((n)+6)
 #define MIN_EMBED_MARK    0   /* ONLY for the t_embed_sparse_rep str */
-                        
+
 
 typedef enum
 {
@@ -112,7 +112,8 @@ typedef enum
   only used internally in the planarity tester: especially
   where ordering of the vertices is important
 */
-typedef struct dlcl {
+typedef struct dlcl
+{
     int            info;
     /*
       info is:
@@ -135,7 +136,8 @@ typedef struct dlcl {
 /*
   a common structure for both (virtual) vertex & edge
 */
-typedef struct ver_edge {
+typedef struct ver_edge
+{
     /* vertex data */
     int          label;
     int          DFS_parent;
@@ -149,7 +151,7 @@ typedef struct ver_edge {
     /* edge data */
     int          neighbour;
     int          in_adjl;
-    int          twin_in_adjl; 
+    int          twin_in_adjl;
     int          mult;
     int          type;
     int          sign;
@@ -162,7 +164,8 @@ typedef struct ver_edge {
 /*
   data structure for the merge queue
 */
-typedef struct merge_queue {
+typedef struct merge_queue
+{
     int          start, end;
     int          *b;
 } t_merge_queue;
@@ -173,7 +176,8 @@ typedef struct merge_queue {
   data structure for the sparse graph representation:
   the array of vertices
 */
-typedef struct ver_sparse_rep {
+typedef struct ver_sparse_rep
+{
     int          first_edge; /* can be index into an adj. list
                                 or an embedding */
 } t_ver_sparse_rep;
@@ -182,8 +186,9 @@ typedef struct ver_sparse_rep {
   data structure for the sparse graph representation:
   a record in the adjacency list
 */
-typedef struct adjl_sparse_rep {
-    int          end_vertex; 
+typedef struct adjl_sparse_rep
+{
+    int          end_vertex;
     int          next;   /* next in list as an index in the adj. list */
 } t_adjl_sparse_rep;
 
@@ -191,7 +196,8 @@ typedef struct adjl_sparse_rep {
   data structure for the sparse graph representation:
   a record in the embedding
 */
-typedef struct embed_sparse_rep {
+typedef struct embed_sparse_rep
+{
     int          in_adjl;/* index of edge in adj. list */
     int          next;   /* next edge in embedding  */
     int          prev;   /* previous edge in embedding  */
@@ -203,7 +209,8 @@ typedef struct embed_sparse_rep {
   data structure for the sparse graph representation:
   a record an individual edge
 */
-typedef struct edge_sparse_rep {
+typedef struct edge_sparse_rep
+{
     int          ends[2];
 } t_edge_sparse_rep;
 
@@ -211,18 +218,20 @@ typedef struct edge_sparse_rep {
   data structure for the sparse graph representation:
   a record for a component
 */
-typedef struct comp_sparse_rep {
+typedef struct comp_sparse_rep
+{
     int          nbr_v;   /* nbr of vertices */
     int          *v;      /* the actual vertices */
 } t_comp_sparse_rep;
 
-typedef struct graph_sparse_rep {
-        t_ver_sparse_rep    *V;
-	int                 n;
-	t_adjl_sparse_rep   *A;
-	int                 size_A;
-	int                 pos_A;
-	int                 nbr_e;   /* ALWAYS # directed edges */
+typedef struct graph_sparse_rep
+{
+    t_ver_sparse_rep    *V;
+    int                 n;
+    t_adjl_sparse_rep   *A;
+    int                 size_A;
+    int                 pos_A;
+    int                 nbr_e;   /* ALWAYS # directed edges */
 } t_graph_sparse_rep;
 
 /*

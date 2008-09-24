@@ -36,50 +36,50 @@
 
 namespace cpx
 {
-class bindingContainsSite :
-public std::unary_function<binding, bool>
-{
+    class bindingContainsSite :
+                public std::unary_function<binding, bool>
+    {
 // The site being searched for among the bindings
 // AFTER it has been translated by the omni imbedding.
-const siteSpec& rQuerySiteSpec;
+        const siteSpec& rQuerySiteSpec;
 
-public:
-bindingContainsSite(const siteSpec& rSiteSpec) :
-rQuerySiteSpec(rSiteSpec)
-{}
+    public:
+        bindingContainsSite (const siteSpec& rSiteSpec) :
+                rQuerySiteSpec (rSiteSpec)
+        {}
 
-bool
-operator()(const binding& rBinding) const
-{
-return (rBinding.leftSite() == rQuerySiteSpec)
-|| (rBinding.rightSite() == rQuerySiteSpec);
-}
-};
+        bool
+        operator() (const binding& rBinding) const
+        {
+            return (rBinding.leftSite() == rQuerySiteSpec)
+                   || (rBinding.rightSite() == rQuerySiteSpec);
+        }
+    };
 
-template<class plexT>
-bool
-omniFreeSiteQuery<plexT>::
-operator()(const omniStructureQueryArg<plexT>& rArg) const
-{
-const plexT& rPlex = rArg.rPlex;
-const plexIso& rInjection = rArg.rInjection;
+    template<class plexT>
+    bool
+    omniFreeSiteQuery<plexT>::
+    operator() (const omniStructureQueryArg<plexT>& rArg) const
+    {
+        const plexT& rPlex = rArg.rPlex;
+        const plexIso& rInjection = rArg.rInjection;
 
 // Translate the spec of the site we want to check into the indexing of
 // the given plex using the injection of the omniplex into the given plex
 // where it has been recognized.
-siteSpec translatedSiteSpec
-= rInjection.forward.applyToSiteSpec(freeSiteSpec);
+        siteSpec translatedSiteSpec
+        = rInjection.forward.applyToSiteSpec (freeSiteSpec);
 
 // Return true if no binding in the plex contains the translated site
 // spec; i.e. if the site specified by freeSiteSpec in the omni
 // is also free in the plex where the omni is embedded.
-return
-(rPlex.bindings.end()
-== std::find_if(rPlex.bindings.begin(),
-rPlex.bindings.end(),
-bindingContainsSite(translatedSiteSpec)));
+        return
+            (rPlex.bindings.end()
+             == std::find_if (rPlex.bindings.begin(),
+                              rPlex.bindings.end(),
+                              bindingContainsSite (translatedSiteSpec) ) );
 
-}
+    }
 }
 
 #endif // CPX_OMNISTRUCTUREQUERYIMPL_H

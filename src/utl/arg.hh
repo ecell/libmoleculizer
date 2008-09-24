@@ -40,26 +40,26 @@ namespace utl
 // An improvement on these would accept the argument name (e.g. -d) and
 // display it in any error message.
 
-std::string
-mustGetArg(int& rArgc,
-char**& rArgv)
-throw(xcpt);
+    std::string
+    mustGetArg (int& rArgc,
+                char**& rArgv)
+    throw (xcpt);
 
-void
-argsMustRemain(int argc)
-throw(xcpt);
+    void
+    argsMustRemain (int argc)
+    throw (xcpt);
 
-int
-argMustBePosInt(const std::string& rArgString)
-throw(xcpt);
+    int
+    argMustBePosInt (const std::string& rArgString)
+    throw (xcpt);
 
-int
-argMustBeNNInt(const std::string& rArgString)
-throw(xcpt);
+    int
+    argMustBeNNInt (const std::string& rArgString)
+    throw (xcpt);
 
-double
-argMustBeNNDouble(const std::string& rArgString)
-throw(xcpt);
+    double
+    argMustBeNNDouble (const std::string& rArgString)
+    throw (xcpt);
 }
 
 #endif //  UTL_ARG_H

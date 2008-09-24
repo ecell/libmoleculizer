@@ -40,48 +40,48 @@ namespace fnd
 // They also include reaction generators, which respond to the appearance
 // of the first molecule of species by generating reactions and new (but
 // empty) species.
-template<class stimulusT>
-class sensitive
-{
-public:
-typedef stimulusT stimulusType;
+    template<class stimulusT>
+    class sensitive
+    {
+    public:
+        typedef stimulusT stimulusType;
 
-virtual
-~sensitive(void)
-{}
+        virtual
+        ~sensitive (void)
+        {}
 
-virtual
-void
-respond(const stimulusType& rStimulus) = 0;
-};
+        virtual
+        void
+        respond (const stimulusType& rStimulus) = 0;
+    };
 
-template<class stimulusT>
-class sensitive<stimulusT*>
-{
-public:
-typedef stimulusT stimulusType;
+    template<class stimulusT>
+    class sensitive<stimulusT*>
+    {
+    public:
+        typedef stimulusT stimulusType;
 
-virtual
-~sensitive(void)
-{}
+        virtual
+        ~sensitive (void)
+        {}
 
-virtual
-void
-respond(const stimulusType* pStimulus) = 0;
-};
+        virtual
+        void
+        respond (const stimulusType* pStimulus) = 0;
+    };
 
-template<>
-class sensitive<void>
-{
-public:
-virtual
-~sensitive(void)
-{}
+    template<>
+    class sensitive<void>
+    {
+    public:
+        virtual
+        ~sensitive (void)
+        {}
 
-virtual
-void
-respond(void) = 0;
-};
+        virtual
+        void
+        respond (void) = 0;
+    };
 }
 
 #endif // SENSITIVE_H

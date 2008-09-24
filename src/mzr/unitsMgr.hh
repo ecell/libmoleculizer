@@ -38,66 +38,66 @@
 
 namespace mzr
 {
-class mzrUnit;
+    class mzrUnit;
 }
 namespace bnd
 {
-class molUnit;
+    class molUnit;
 }
 namespace plx
 {
-class plexUnit;
+    class plexUnit;
 }
 namespace dimer
 {
-class dimerUnit;
+    class dimerUnit;
 }
 namespace stoch
 {
-class stochUnit;
+    class stochUnit;
 }
 namespace ftr
 {
-class ftrUnit;
+    class ftrUnit;
 }
 
 namespace nmr
 {
-class nmrUnit;
+    class nmrUnit;
 }
 
 namespace mzr
 {
-class moleculizer;
+    class moleculizer;
 
 // As a vector, the units should be ordered in output order, so that if each
 // unit arranges its elements correctly (under various heads in the output
 // document) and the units are ordered thus, then all the elements in the
 // output doc should appear in the order demanded by the schema.
-class unitsMgr :
-public utl::autoVector<unit>
-{
-public:
+    class unitsMgr :
+                public utl::autoVector<unit>
+    {
+    public:
 
-nmr::nmrUnit* pNmrUnit;
-mzr::mzrUnit* pMzrUnit;
-bnd::molUnit* pMolUnit;
-plx::plexUnit* pPlexUnit;
-stoch::stochUnit* pStochUnit;
-dimer::dimerUnit* pDimerUnit;
-ftr::ftrUnit* pFtrUnit;
+        nmr::nmrUnit* pNmrUnit;
+        mzr::mzrUnit* pMzrUnit;
+        bnd::molUnit* pMolUnit;
+        plx::plexUnit* pPlexUnit;
+        stoch::stochUnit* pStochUnit;
+        dimer::dimerUnit* pDimerUnit;
+        ftr::ftrUnit* pFtrUnit;
 
 
 
 // Now the moleculizer unit is also a recorder of species..
 // which is a ReactionNetworkDescription<mzrSpecies, mzrReactions>.
-unitsMgr(moleculizer& rMoleculizer);
+        unitsMgr (moleculizer& rMoleculizer);
 
 // Prepares the overall input capabilities of moleculizer from
 // the several input capabilities of the units.
-void
-unionInputCaps(inputCapabilities& rUnion);
-};
+        void
+        unionInputCaps (inputCapabilities& rUnion);
+    };
 }
 
 #endif // UNITSMGR_H

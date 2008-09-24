@@ -36,27 +36,27 @@
 
 namespace mzr
 {
-class mzrUnit;
-class moleculizer;
+    class mzrUnit;
+    class moleculizer;
 
-/*! \ingroup eventGroup
-\brief Periodic event for growth or shrinkage of volume. */
-class growEvent :
-public mzrEvent
-{
-mzrUnit& rMzrUnit;
-double factor;
-double period;
+    /*! \ingroup eventGroup
+    \brief Periodic event for growth or shrinkage of volume. */
+    class growEvent :
+                public mzrEvent
+    {
+        mzrUnit& rMzrUnit;
+        double factor;
+        double period;
 
-public:
-growEvent(mzrUnit& refMzrUnit,
-double growthFactor,
-double schedulingPeriod);
+    public:
+        growEvent (mzrUnit& refMzrUnit,
+                   double growthFactor,
+                   double schedulingPeriod);
 
-fnd::eventResult
-happen(moleculizer& rMolzer)
-throw(std::exception);
-};
+        fnd::eventResult
+        happen (moleculizer& rMolzer)
+        throw (std::exception);
+    };
 }
 
 #endif // MZR_GROWEVENT_H

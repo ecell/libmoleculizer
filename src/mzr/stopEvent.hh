@@ -36,19 +36,19 @@
 
 namespace mzr
 {
-/*! \ingroup eventGroup
-\brief Event that stops the simulation.
+    /*! \ingroup eventGroup
+    \brief Event that stops the simulation.
 
-It doesn't end the program; the simulation may be restarted.
-with a runCmd.  This event is scheduled by runCmd. */
-class stopEvent :
-public mzrEvent
-{
-public:
-fnd::eventResult
-happen(moleculizer& rMolzer)
-throw(std::exception);
-};
+    It doesn't end the program; the simulation may be restarted.
+    with a runCmd.  This event is scheduled by runCmd. */
+    class stopEvent :
+                public mzrEvent
+    {
+    public:
+        fnd::eventResult
+        happen (moleculizer& rMolzer)
+        throw (std::exception);
+    };
 }
 
 #endif // MZR_STOPEVENT_H

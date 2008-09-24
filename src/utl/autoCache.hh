@@ -38,61 +38,61 @@
 
 namespace utl
 {
-template<class keyType, class objectType>
-class objectCache :
-public std::map<keyType, objectType*>
-{
-public:
-virtual
-~objectCache(void)
-{}
+    template<class keyType, class objectType>
+    class objectCache :
+                public std::map<keyType, objectType*>
+    {
+    public:
+        virtual
+        ~objectCache (void)
+        {}
 
-virtual objectType*
-makeMember(const keyType& rKey) = 0;
+        virtual objectType*
+        makeMember (const keyType& rKey) = 0;
 
 // This assumes that the copy constructor for keys is lightweight.
-objectType*
-getMember(const keyType& rKey)
-{
-typename std::pair<typename objectCache::iterator, bool> insertResult
-= insert(typename objectCache::value_type(rKey,
-(objectType*) 0));
+        objectType*
+        getMember (const keyType& rKey)
+        {
+            typename std::pair<typename objectCache::iterator, bool> insertResult
+            = insert (typename objectCache::value_type (rKey,
+                      (objectType*) 0) );
 
-if(insertResult.second)
-{
-insertResult.first->second = makeMember(rKey);
-}
+            if (insertResult.second)
+            {
+                insertResult.first->second = makeMember (rKey);
+            }
 
-return insertResult.first->second;
-}
-};
+            return insertResult.first->second;
+        }
+    };
 
-template<class keyType, class objectType>
-class autoCache :
-public objectCache<keyType, objectType>
-{
-class doDelete :
-public std::unary_function<typename autoCache::value_type, void>
-{
-public:
-void
-operator()(const
-typename doDelete::argument_type&
-rKeyObjectPtrPair) const
-{
-delete rKeyObjectPtrPair.second;
-}
-};
+    template<class keyType, class objectType>
+    class autoCache :
+                public objectCache<keyType, objectType>
+    {
+    class doDelete :
+                    public std::unary_function<typename autoCache::value_type, void>
+        {
+        public:
+            void
+            operator() (const
+                        typename doDelete::argument_type&
+                        rKeyObjectPtrPair) const
+            {
+                delete rKeyObjectPtrPair.second;
+            }
+        };
 
-public:
-virtual
-~autoCache(void)
-{
-std::for_each(this->begin(),
-this->end(),
-doDelete());
-}
-};
+    public:
+        virtual
+        ~autoCache (void)
+        {
+            std::for_each (this->begin(),
+                           this->end(),
+                           doDelete() );
+        }
+    };
 }
 
 #endif // OBJECTCACHE_H

@@ -44,28 +44,28 @@ namespace fnd
 
 // This is an abstract class that will describe the interfaces for the two
 // ReactionNetworkDescription
-template <typename ENTITY_TYPE, typename ENTITY_KEY>
-class EntityRegistry
-{
-public:
-DECLARE_TYPE( ENTITY_KEY, EntityKey );
-DECLARE_TYPE( ENTITY_TYPE, Entity );
-DECLARE_TYPE( MM_TYPE, MemoryManagementStrategy);
+    template <typename ENTITY_TYPE, typename ENTITY_KEY>
+    class EntityRegistry
+    {
+    public:
+        DECLARE_TYPE ( ENTITY_KEY, EntityKey );
+        DECLARE_TYPE ( ENTITY_TYPE, Entity );
+        DECLARE_TYPE ( MM_TYPE, MemoryManagementStrategy);
 
 //
-virtual ~EntityRegistry()
-{}
+        virtual ~EntityRegistry()
+        {}
 
 // These two should always return successfully, returning true if the functions
 // had to do something to complete them, false otherwise.
-virtual bool RegisterEntity(EntityPtr pEntityType) = 0;
-virtual bool DeregisterEntiy(EntityPtr pEntityType) = 0;
-virtual call_traits<Entity>
+        virtual bool RegisterEntity (EntityPtr pEntityType) = 0;
+        virtual bool DeregisterEntiy (EntityPtr pEntityType) = 0;
+        virtual call_traits<Entity>
 
-protected:
+    protected:
 
-std::map<EntityKey, Entity> theEntityMap;
-};
+        std::map<EntityKey, Entity> theEntityMap;
+    };
 
 }
 

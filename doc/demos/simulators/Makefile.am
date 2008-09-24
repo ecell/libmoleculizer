@@ -1,7 +1,12 @@
 abs_top_builddir=@abs_top_builddir@
-SRC=$(abs_top_builddir)/src
 
-bin_PROGRAMS=particlesim_demo
+SRC=$(abs_top_builddir)/src
+DEMO_SIMULATION_DIR=$(abs_top_builddir)/doc/demos/simulators
+
+STOCHSIMDIR=$(DEMO_SIMULATION_DIR)/stochastic/src
+PARTICLESIMDIR=$(DEMO_SIMULATION_DIR)/particle/src
+
+bin_PROGRAMS=stochasticsim_demo particlesim_demo
 
 LIBFND = $(SRC)/fnd/libmoleculizer_fnd.la
 LIBUTL = $(SRC)/utl/libmoleculizer_utl.la
@@ -20,11 +25,20 @@ ALL_MZR_LIBS = $(LIBFND) $(LIBUTL) $(LIBMZR) $(LIBSTOCH) $(LIBNMR) $(LIBNMR) $(L
 LIBXML_CFLAGS = @LIBXML_CFLAGS@
 LIBXML_LIBS = @LIBXML_LIBS@
 
-AM_CXXFLAGS = $(LIBXML_CFLAGS) 
+AM_CXXFLAGS = $(LIBXML_CFLAGS) $(GSL_CFLAGS) -Icommon
 
-particlesim_demo_SOURCES=main.cpp \
-	demosimulator.cpp \
-	demoparticlesimulator.cpp
+noinst_LIBRARIES = libsimbase.a 
 
-particlesim_demo_LDADD = $(ALL_MZR_LIBS)
+libsimbase_a_SOURCES=common/demosimulator.cpp
 
+stochasticsim_demo_SOURCES=\
+	$(STOCHSIMDIR)/stochasticsim_main.cpp \
+	$(STOCHSIMDIR)/demostochasticsimulator.cpp
+
+stochasticsim_demo_LDADD = $(ALL_MZR_LIBS) libsimbase.a
+
+particlesim_demo_SOURCES=\
+	$(PARTICLESIMDIR)/particlesim_main.cpp \
+	$(PARTICLESIMDIR)/demoparticlesimulator.cpp
+
+particlesim_demo_LDADD = $(ALL_MZR_LIBS) libsimbase.a

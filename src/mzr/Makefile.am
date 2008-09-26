@@ -47,12 +47,12 @@ growEvent.cc \
 moleculizer.cc \
 mzrEltName.cc \
 mzrReaction.cc \
+mzrSpecies.cc \
 mzrUnit.cc \
 mzrUnitInsert.cc \
 mzrUnitParse.cc \
 noReactEvent.cc \
 noStopEventWarning.cc \
-species.cc \
 stopEvent.cc \
 stopEventInPastXcpt.cc \
 tabDumpEvent.cc \

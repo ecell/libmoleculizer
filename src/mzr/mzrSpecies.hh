@@ -48,8 +48,8 @@ namespace mzr
     {
     public:
 
-// Gets the (only) volume from Moleculizer, then
-// does getConcentration.
+        // Gets the (only) volume from Moleculizer, then
+        // does getConcentration.
         double
         getConc (const moleculizer& rMoleculizer) const;
 

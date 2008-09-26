@@ -103,11 +103,6 @@ namespace mzr
         {
             return;
         }
-        void setToleranceOption ( bool tolerenceOption )
-        {
-            return;
-        }
-        void setTolerance (double tolerance);
 
         void attachFileName (const std::string& aFileName);
         void attachString (const std::string& documentAsString);

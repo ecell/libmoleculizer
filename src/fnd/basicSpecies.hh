@@ -94,14 +94,14 @@ namespace fnd
             return speciesCount;
         }
 
-// Gives this address as a hex string.
+        // Gives this address as a hex string.
         typename std::string
         getTag (void) const
         {
             return utl::stringify<const basicSpecies*> (this);
         }
 
-// For possibly getting a more humanly-readable, informative name.
+        // For possibly getting a more humanly-readable, informative name.
         virtual typename std::string
         getName (void) const
         {
@@ -114,9 +114,9 @@ namespace fnd
             return this->getValue();
         }
 
-// Note that this should only be used for initialization, since
-// it doesn't get help keep track of the reactions whose propensities
-// will change because of the change in population of this species.
+        // Note that this should only be used for initialization, since
+        // it doesn't get help keep track of the reactions whose propensities
+        // will change because of the change in population of this species.
         void
         setPop (int newPop)
         {
@@ -127,27 +127,6 @@ namespace fnd
         getConcentration (double volume) const
         {
             return ( (double) getPop() ) / (fnd::avogadrosNumber * volume);
-        }
-
-// For updating the population using a positive or negative
-// delta.  Throws an exception if the population goes negative.
-        void
-        update (int delta,
-                sensitivityList<reactionType>& rAffectedReactions,
-                int notificationDepth)
-        throw (utl::xcpt)
-        {
-// This has to come first, so that the sensitivity list
-// is correct for the update.
-            ensureNotified (notificationDepth);
-
-            int newValue = this->getValue() + delta;
-
-            if (newValue < 0) throw negativePopulationXcpt (this,
-                        delta,
-                        newValue);
-            updateValue (newValue,
-                         rAffectedReactions);
         }
     };
 

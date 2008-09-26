@@ -376,16 +376,13 @@ namespace fnd
         printAll()
         {
             print (std::string ("All"), theCompleteReactionList);
-// print(std::string("Zero"), zeroSubstrateRxns);
-//           print(std::string("Single"), singleSubstrateRxns);
-//           print(std::string("Double"), doubleSubstrateRxns);
         }
 
         void print (std::string str, const ReactionList& aVector)
         {
             BOOST_FOREACH (ReactionTypePtr refT, aVector)
             {
-                std::cout << "(" << str << ") " << refT->getName() << std::endl;
+                std::cout << "(" << str << ") " << " [ " << refT << " ] " << refT->getName() << std::endl;
             }
         }
 

@@ -55,17 +55,7 @@ namespace mzr
         int generateDepth
         = rMzrUnit.getGenerateDepth();
 
-        fnd::sensitivityList<mzrReaction> affectedReactions;
-        pSpeciesToCreate->update (howMany,
-                                  affectedReactions,
-                                  generateDepth);
-
-
-// respondReaction only reschedules reactions so we kill it.
-
-// for_each(affectedReactions.begin(),
-//	     affectedReactions.end(),
-//	     respondReaction(rMolzer));
+        pSpeciesToCreate->expandReactionNetwork();
 
         return fnd::go;
     }

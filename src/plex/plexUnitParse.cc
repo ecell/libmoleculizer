@@ -298,9 +298,7 @@ namespace plx
             void
             operator() (mzrPlexSpecies* pPlexSpecies) const
             {
-                pPlexSpecies->update (0,
-                                      rAffected,
-                                      depth);
+                pPlexSpecies->expandReactionNetwork( depth );
             }
         };
     }
@@ -373,9 +371,7 @@ namespace plx
 // had been updated at the time of dump appear in updatedSpecies.
             if (0 < updatedSpecies.size() )
             {
-                pSpecies->update (dumpedPop,
-                                  rAffected,
-                                  rMzrUnit.getGenerateDepth() );
+                pSpecies->expandReactionNetwork( rMzrUnit.getGenerateDepth() );
             }
         }
     };

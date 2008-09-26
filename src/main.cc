@@ -138,19 +138,6 @@ processCommandLineArgs (int argc,
             srand (time (NULL) );
         }
 
-// Sets the tolerance for reaction rescheduling.
-        else if (arg == "-T")
-        {
-            std::string toleranceString
-            = utl::mustGetArg (argc,
-                               argv);
-
-            double tolerance
-            = utl::argMustBeNNDouble (toleranceString);
-
-            theMzrObject.setTolerance (tolerance);
-        }
-
 // This is the filename, although it's useless because
 // this was already taken care of elsewhere.
         else if (arg == "-f")

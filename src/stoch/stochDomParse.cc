@@ -225,10 +225,8 @@ namespace stoch
             = utl::dom::mustGetAttrInt (pPopulationElt,
                                         eltName::population_countAttr);
 
-// Update the species.
-            pSpecies->update (pop,
-                              rAffectedReactions,
-                              rMzr.getGenerateDepth() );
+            // Update the species.
+            pSpecies->expandReactionNetwork( rMzr.getGenerateDepth() );
         }
     };
 

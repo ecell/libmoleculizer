@@ -54,13 +54,13 @@ namespace mzr
     class mzrSpecies;
     class moleculizer;
 
-// This "message" is sent to a reaction when the reaction should
-// reschedule itself in the reaction queue.
-//
-// An alternative to this is to make the argument in
-// sensitive<stimulusType>::respond(const stimulusType& rStimulus)
-// non-const.  Also, rMoleculizer seems "odd" as a stimulus;
-// it's really like an auxiliary parameter of a void stimulus.
+    // This "message" is sent to a reaction when the reaction should
+    // reschedule itself in the reaction queue.
+    //
+    // An alternative to this is to make the argument in
+    // sensitive<stimulusType>::respond(const stimulusType& rStimulus)
+    // non-const.  Also, rMoleculizer seems "odd" as a stimulus;
+    // it's really like an auxiliary parameter of a void stimulus.
     class mzrReactionStimulus
     {
     public:
@@ -79,8 +79,8 @@ namespace mzr
                 public fnd::reactionNetworkComponent
     {
 
-// Support for global state variables: variables to which
-// all reactions are sensitive, such as volume and temperature.
+        // Support for global state variables: variables to which
+        // all reactions are sensitive, such as volume and temperature.
         typedef fnd::sensitivityList<mzrReaction> globalVar;
 
     class sensitizeToGlobal :
@@ -98,7 +98,7 @@ namespace mzr
             }
         };
 
-// Support for "tolerance" optimization.
+        // Support for "tolerance" optimization.
         double lastPropensity;
         static double lowSensitive;
         static double highSensitive;
@@ -114,33 +114,23 @@ namespace mzr
             return reactionDepth;
         }
 
-
         virtual void
         expandReactionNetwork();
 
-
         /*! \brief Keeps running count of all reaction events.
-        This is a dumpable quantity. */
+          This is a dumpable quantity. */
         static int reactionEventCount;
 
         /*! \brief The number of reactions that exist.
         This is a dumpable quantity. */
         static int reactionCount;
-
-// Support for tolerance optimization.
-        static void
-        setTolerance (double tolerance)
-        {
-            lowSensitive = 1.0 - tolerance;
-            highSensitive = 1.0 + tolerance;
-        }
-
-// This constructor enforces sensitization to global state variables, for
-// now just volume in Moleculizer, but e.g. temperature might also be
-// added.
-//
-// lastPropensity is set to -1 for the first time that the reaction
-// is rescheduled.
+        
+        // This constructor enforces sensitization to global state variables, for
+        // now just volume in Moleculizer, but e.g. temperature might also be
+        // added.
+        //
+        // lastPropensity is set to -1 for the first time that the reaction
+        // is rescheduled.
         template<class senseListIterator>
         mzrReaction (senseListIterator beginGlobalStateVars,
                      senseListIterator endGlobalStateVars,
@@ -155,15 +145,15 @@ namespace mzr
             ++reactionCount;
         }
 
-// Overriding basic_reaction<mzrSpecies>::addReactant, so that
-// the sensitization happens with the right class of reaction,
-// rather than the basic_reaction template base class.
+        // Overriding basic_reaction<mzrSpecies>::addReactant, so that
+        // the sensitization happens with the right class of reaction,
+        // rather than the basic_reaction template base class.
         void
         addReactant (mzrSpecies* pSpecies,
                      int multiplicity);
 
-// Response of this reaction to message that one of its
-// reactants has changed population
+        // Response of this reaction to message that one of its
+        // reactants has changed population
         void
         respond (const mzrReactionStimulus& rStimulus);
 
@@ -175,7 +165,7 @@ namespace mzr
         fnd::eventResult
         happen() throw (std::exception);
 
-// Output generation for state dump.
+        // Output generation for state dump.
         xmlpp::Element*
         insertElt (xmlpp::Element* pParentElt) const
         throw (std::exception);

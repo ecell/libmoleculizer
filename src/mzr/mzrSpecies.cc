@@ -46,13 +46,13 @@ namespace mzr
     void
     mzrSpecies::expandReactionNetwork()
     {
-        this->expandReactionNetwork (1);
+        this->expandReactionNetwork(1);
     }
 
     void
     mzrSpecies::expandReactionNetwork (unsigned int depth)
     {
-        ensureNotified (depth);
+        ensureNotified(depth);
     }
 
 

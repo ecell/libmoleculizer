@@ -43,16 +43,6 @@ namespace mzr
 {
     void
     mzrReaction::
-    addReactant(mzrSpecies* pSpecies,
-                 int multiplicity)
-    {
-        fnd::gillspReaction<mzrSpecies>::addReactant(pSpecies,
-                multiplicity);
-        pSpecies->addSensitive(this);
-    }
-
-    void
-    mzrReaction::
     respond(const mzrReactionStimulus& rStimulus)
     {
         // This reschedules the reaction.  Since all of this seems to be

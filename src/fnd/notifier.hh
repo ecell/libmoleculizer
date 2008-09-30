@@ -101,6 +101,11 @@ namespace fnd
 
                 notify (notifyDepth);
             }
+            else
+            {
+                std::cout << '\n';
+            }
+            
         }
     };
 }

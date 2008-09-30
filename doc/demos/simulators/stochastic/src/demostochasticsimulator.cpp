@@ -38,9 +38,7 @@ SimpleStochasticSimulator::SimpleStochasticSimulator (std::string rulesfile, std
         :
         SimpleSimulator (rulesfile, modelfile)
 {
-
     recordNewReactions();
-
 }
 
 void SimpleStochasticSimulator::recordNewReactions()
@@ -49,16 +47,17 @@ void SimpleStochasticSimulator::recordNewReactions()
                 speciesReactionGenerator.theDeltaReactionList.end(),
                 std::back_inserter ( reactions ) );
 
-    std::cout << "Adding: " << std::endl;
+    if( speciesReactionGenerator.theDeltaReactionList.size() > 0)
+    {
+        std::cout << "Adding to StochasticSimulator: " << std::endl;
+    }
+
     BOOST_FOREACH (mzr::mzrReaction* rxn, speciesReactionGenerator.theDeltaReactionList)
     {
         printRxn ( rxn );
     }
 
     assert ( reactions.size() == speciesReactionGenerator.theCompleteReactionList.size() );
-
-    speciesReactionGenerator.printAll();
-
 
 //     assert( reactions.size() == speciesReactionGenerator.zeroSubstrateRxns.size() + \
 //             speciesReactionGenerator.singleSubstrateRxns.size() +    \
@@ -70,8 +69,8 @@ void SimpleStochasticSimulator::recordNewReactions()
 mzr::mzrReaction* SimpleStochasticSimulator::calculateReactionToFire()
 {
 
-// Get a list of potential reactions, in this case a list of reactions
-// that have all positive numbers of substrates.
+   // Get a list of potential reactions, in this case a list of reactions
+   // that have all positive numbers of substrates.
 
     std::vector<mzr::moleculizer::ReactionTypePtr> potentialReactions;
     getReactionsWithPositivePropensity ( potentialReactions );
@@ -83,7 +82,7 @@ mzr::mzrReaction* SimpleStochasticSimulator::calculateReactionToFire()
     }
 
 
-// Pick a random one.
+    // Pick a random reaction.
     int randomIndex = rand() % potentialReactions.size();
     mzr::moleculizer::ReactionTypePtr randomReactionPtr = potentialReactions[ randomIndex ];
 
@@ -113,7 +112,7 @@ bool SimpleStochasticSimulator::reactionHasPositiveSubstrates (const mzr::mzrRea
 
         if (theModel.find ( substrateName) == theModel.end() )
         {
-            std::cerr << "Error." << std::endl;
+            return false;
         }
 
         if (theModel[ substrateName ] < pr.second ) return false;

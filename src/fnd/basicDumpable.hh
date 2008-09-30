@@ -37,10 +37,11 @@
 
 namespace fnd
 {
-// This will allow common memory management of all dumpable types.
+    // This will allow common memory management of all dumpable types.
     class basicDumpable
     {
-// Used as a column header in the dump file.
+
+        // Used as a column header in the dump file.
         const std::string name;
 
     public:
@@ -58,11 +59,11 @@ namespace fnd
             return name;
         }
 
-// The output stream is now passed in the dumpArg;
-// this basic dumpArg does nothing more.
+        // The output stream is now passed in the dumpArg;
+        // this basic dumpArg does nothing more.
         class dumpArg
         {
-// As a pointer for assignability.
+            // As a pointer for assignability.
             std::ostream* pOs;
 
         public:

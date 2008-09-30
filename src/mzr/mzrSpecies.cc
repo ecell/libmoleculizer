@@ -37,12 +37,6 @@
 
 namespace mzr
 {
-    double
-    mzrSpecies::getConc (const moleculizer& rMoleculizer) const
-    {
-        return ( (double) getPop() ) / rMoleculizer.pUserUnits->pMzrUnit->getMolarFactor().getFactor();
-    }
-
     void
     mzrSpecies::expandReactionNetwork()
     {
@@ -54,7 +48,6 @@ namespace mzr
     {
         ensureNotified(depth);
     }
-
 
     void
     mzrSpecies::setGenerateDepth (unsigned int i)

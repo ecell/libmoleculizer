@@ -38,21 +38,23 @@
 using namespace std;
 
 void
-processCommandLineArgs (int argc, char* argv[], std::string& theFileName, std::string& modelFile);
+processCommandLineArgs (int argc, char* argv[], std::string& theFileName, std::string& modelFile, int& numberIters);
 
 void displayHelpAndExitProgram();
 
 int main (int argc, char* argv[])
 {
+
+    int numberIters = 500;
     std::string modelfile;
     std::string rulesfile;
-    processCommandLineArgs (argc, argv, rulesfile, modelfile);
+    processCommandLineArgs (argc, argv, rulesfile, modelfile, numberIters);
 
     SimpleParticleSimulator theSim ( rulesfile, modelfile);
 
     std::cout << "\n\n#######################################################\nBeginning simulation\n\n";
 
-    for (unsigned int ii = 0; ii != 500; ++ii)
+    for (unsigned int ii = 0; ii != numberIters; ++ii)
     {
         theSim.singleStep();
     }
@@ -63,7 +65,7 @@ int main (int argc, char* argv[])
 
 }
 
-void processCommandLineArgs (int argc, char* argv[], std::string& rulesFile, std::string& modelFile)
+void processCommandLineArgs (int argc, char* argv[], std::string& rulesFile, std::string& modelFile, int& numberIters)
 {
 
     bool rulesFound (false);
@@ -98,6 +100,12 @@ void processCommandLineArgs (int argc, char* argv[], std::string& rulesFile, std
         {
             modelFile = utl::mustGetArg (argc, argv);
             modelFound = true;
+        }
+
+        if (arg == "-n")
+        {
+            std::string numberString = utl::mustGetArg(argc, argv);
+            utl::from_string(numberIters, numberString);
         }
     }
 

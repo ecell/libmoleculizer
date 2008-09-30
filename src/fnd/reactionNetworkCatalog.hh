@@ -210,17 +210,25 @@ namespace fnd
         bool
         recordSpecies ( SpeciesTypePtr pSpecies)
         {
+//             std::cout << "Entering recordSpecies: " << std::endl;
+//             std::cout << "###################\nCurrentSpeciesList:\n";
+//             printSpecies("\t");
+//             std::cout << "###################\n";
+            
             std::string* pSpeciesName = new std::string ( pSpecies->getName() );
+
+//            cout << "Searching for " << *pSpeciesName << " (" << pSpecies << ")" << std::endl;
             if (theSpeciesListCatalog.find ( pSpeciesName) == theSpeciesListCatalog.end() )
             {
+//                std::cout << "Adding " << *pSpeciesName << " (" << pSpecies << ")" << std::endl;
                 theSpeciesListCatalog.insert ( std::make_pair ( pSpeciesName, pSpecies) );
                 theDeltaSpeciesList.push_back ( pSpecies );
-
                 return true;
             }
             else
             {
                 delete pSpeciesName;
+//                std::cout << "\n";
                 return false;
             }
 
@@ -251,6 +259,8 @@ namespace fnd
 
 
 //         }
+            
+//            std::cout << "Recording rxn: " << pRxn->getName() << std::endl;
 
             if (!pRxn->isStandardReaction() )
             {
@@ -373,12 +383,30 @@ namespace fnd
 
 
         void
-        printAll()
+        printAll() const
         {
-            print (std::string ("All"), theCompleteReactionList);
+            printSpecies( "Species: ");
+            print (std::string ("Reactions:"), theCompleteReactionList);
         }
 
-        void print (std::string str, const ReactionList& aVector)
+        void printSpecies(std::string prefix = std::string("")) const
+        {
+            typedef std::pair<const std::string*, SpeciesTypePtr> PairT;
+            BOOST_FOREACH(const PairT& aPair, theSpeciesListCatalog)
+            {
+                std::cout << prefix << *(aPair.first) << '(' << aPair.second << ')';
+                if(aPair.second->hasNotified())
+                {
+                    std::cout << "\t!!! (Notified)\n";
+                }
+                else
+                {
+                    std::cout << std::endl;
+                }
+            }
+        }
+
+        void print (std::string str, const ReactionList& aVector) const
         {
             BOOST_FOREACH (ReactionTypePtr refT, aVector)
             {
@@ -386,7 +414,7 @@ namespace fnd
             }
         }
 
-        void print (std::string str, const SpeciesList& aVector)
+        void print (std::string str, const SpeciesList& aVector) const
         {
             BOOST_FOREACH (SpeciesTypePtr* refT, aVector)
             {

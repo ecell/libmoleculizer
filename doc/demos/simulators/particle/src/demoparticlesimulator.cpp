@@ -70,9 +70,7 @@ void SimpleParticleSimulator::singleStep()
     while (illegalpick);
 
 
-    std::cout << "Collision between: " << '\n'
-    << '\t' << speciesNameOne << '\n'
-    << '\t' << speciesNameTwo << std::endl;
+    std::cout << "Collision between " << speciesNameOne << " and " << speciesNameTwo << std::endl;
 
     // Look up these species in the moleculizer list.
     mzr::moleculizer::SpeciesTypePtr speciesPtrOne = speciesReactionGenerator.getSpeciesWithName ( speciesNameOne );

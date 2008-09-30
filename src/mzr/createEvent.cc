@@ -29,7 +29,6 @@
 //
 //
 
-#include "fnd/sensitivityList.hh"
 #include "mzr/mzrSpecies.hh"
 #include "mzr/createEvent.hh"
 #include "mzr/respondReaction.hh"
@@ -55,7 +54,8 @@ namespace mzr
         int generateDepth
         = rMzrUnit.getGenerateDepth();
 
-        pSpeciesToCreate->expandReactionNetwork();
+        rMzrUnit.rMolzer.recordSpecies( pSpeciesToCreate );
+        rMzrUnit.rMolzer.incrementNetworkBySpeciesName( pSpeciesToCreate->getName() );
 
         return fnd::go;
     }

@@ -41,17 +41,17 @@
 
 namespace stoch
 {
-/// A simple molecule with no binding sites.  This is the class for "small
-/// molecules." The "small-molecule" command defines one of these.  It
-/// actually has slightly more information than a species in Stochastirator
-/// would have, since molecular weight is given.
+    /// A simple molecule with no binding sites.  This is the class for "small
+    /// molecules." The "small-molecule" command defines one of these.  It
+    /// actually has slightly more information than a species in Stochastirator
+    /// would have, since molecular weight is given.
     class stochSpecies :
                 public mzr::mzrSpecies
     {
         const double weight;
 
-// This is to fulfill the need for an "informative," rather than
-// canonical, name associated directly to the species.
+        // This is to fulfill the need for an "informative," rather than
+        // canonical, name associated directly to the species.
         const std::string name;
 
     public:
@@ -61,8 +61,8 @@ namespace stoch
                 name (rName)
         {}
 
-// Stoch species do not participate in automatic species/reaction
-// generation.
+        // Stoch species do not participate in automatic species/reaction
+        // generation.
         void
         notify (int notificationDepth)
         {}

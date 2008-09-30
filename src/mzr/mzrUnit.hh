@@ -42,7 +42,7 @@
 #include "mzr/tabDumpEvent.hh"
 #include "mzr/mzrEltName.hh"
 #include "mzr/mzrSpecies.hh"
-#include "mzr/mzrSpeciesDumpable.hh"
+// #include "mzr/mzrSpeciesDumpable.hh"
 #include "mzr/dumpableNotSpeciesStreamXcpt.hh"
 #include "mzr/mzrReaction.hh"
 
@@ -144,12 +144,11 @@ namespace mzr
                     mzrSpecies* pSpecies)
         {
 
-// I should "record" it but not insist on it being recorded here. NJA
+            // I should "record" it but not insist on it being recorded here. NJA
             rMolzer.recordSpecies ( pSpecies );
 
-            return speciesByName.addEntry (rSpeciesName, (mzrSpecies*) pSpecies)
-                   && dumpables.addEntry (rSpeciesName,
-                                          new singleSpeciesDumpable<mzrSpecies> (rSpeciesName,pSpecies) );
+            return speciesByName.addEntry (rSpeciesName, (mzrSpecies*) pSpecies);
+
         }
 
         void

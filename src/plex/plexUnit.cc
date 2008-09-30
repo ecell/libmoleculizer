@@ -49,23 +49,23 @@ namespace plx
             rNmrUnit (refNmrUnit),
             recognize (*this, rNmrUnit)
     {
-// Model elements for which plex unit is responsible.
+        // Model elements for which plex unit is responsible.
         inputCap.addModelContentName (eltName::allostericPlexes);
         inputCap.addModelContentName (eltName::allostericOmnis);
 
-// Explicit species for which plex unit is responsible.
+        // Explicit species for which plex unit is responsible.
         inputCap.addExplicitSpeciesContentName (eltName::plexSpecies);
 
-// Species streams for which plex unit is responsible.
+        // Species streams for which plex unit is responsible.
         inputCap.addSpeciesStreamsContentName
         (eltName::plexSpeciesStream);
         inputCap.addSpeciesStreamsContentName
         (eltName::omniSpeciesStream);
 
-// Not responsible for any reaction generators.
-// Not responsible for any species.
+        // Not responsible for any reaction generators.
+        // Not responsible for any species.
 
-// The plexUnit may as well register its own omniplex Xpaths.
+        // The plexUnit may as well register its own omniplex Xpaths.
         const std::string slash ("/");
 
         std::ostringstream alloOmnisXpath;
@@ -85,11 +85,11 @@ namespace plx
         addOmniXpath (omniSpeciesStreamXpath.str() );
     }
 
-// Installs a new binding feature for the given pair of structural
-// sites. Any plex that binds the two given structural bindings
-// together will need use the bindingFeature associated to the pair
-// of structural sites to inform the family of decompositions of
-// the structural binding.
+    // Installs a new binding feature for the given pair of structural
+    // sites. Any plex that binds the two given structural bindings
+    // together will need use the bindingFeature associated to the pair
+    // of structural sites to inform the family of decompositions of
+    // the structural binding.
     fnd::feature<cpx::cxBinding<mzrPlexSpecies, mzrPlexFamily> >*
     plexUnit::addBindingFeature (bnd::mzrMol* pLeftMol,
                                  int leftMolSiteSpec,
@@ -108,7 +108,7 @@ namespace plx
         fnd::feature<cpx::cxBinding<mzrPlexSpecies, mzrPlexFamily> >
         bindingFtr;
 
-// I note (13Jul05) that I don't take exception to failure of insertion.
+        // I note (13Jul05) that I don't take exception to failure of insertion.
         cpx::knownBindings<bnd::mzrMol, fnd::feature<cpx::cxBinding<mzrPlexSpecies, mzrPlexFamily> > >::iterator
         iEntry = bindingFeatures.insert (std::make_pair (sBinding,
                                          bindingFtr) ).first;
@@ -116,10 +116,10 @@ namespace plx
         return & (iEntry->second);
     }
 
-// I expect this routine to be used in the constructor for plexFamily,
-// to construct the plexFamily's feature map for bindings.
-//
-// This routine looks for the feature "in both directions."
+    // I expect this routine to be used in the constructor for plexFamily,
+    // to construct the plexFamily's feature map for bindings.
+    //
+    // This routine looks for the feature "in both directions."
     fnd::feature<cpx::cxBinding<mzrPlexSpecies, mzrPlexFamily> >*
     plexUnit::findBindingFeature (bnd::mzrMol* pLeftMol,
                                   int leftMolSiteSpec,
@@ -138,7 +138,7 @@ namespace plx
         cpx::knownBindings<bnd::mzrMol, fnd::feature<cpx::cxBinding<mzrPlexSpecies, mzrPlexFamily> > >::iterator
         iEntry = bindingFeatures.find (sBinding);
 
-// May have to try the sites in the opposite order.
+        // May have to try the sites in the opposite order.
         if (iEntry == bindingFeatures.end() )
         {
             cpx::structuralBinding<bnd::mzrMol> oppBinding (rightSite,
@@ -157,12 +157,12 @@ namespace plx
                  xmlpp::Node* pParentNode)
     throw (utl::xcpt)
     {
-// Many omniplexes may have the same plexFamily, so
-// we should pay no attention if this insertion fails.
+        // Many omniplexes may have the same plexFamily, so
+        // we should pay no attention if this insertion fails.
         omniPlexFamilies.insert (pOmniPlex->getFamily() );
 
-// If there is already an entry for the node, then something
-// is internally exceptional.
+        // If there is already an entry for the node, then something
+        // is internally exceptional.
         if (! (nodeToOmni.insert (std::make_pair (pParentNode,
                                   pOmniPlex) ).second) )
             throw dupNodeOmniXcpt (pParentNode);
@@ -194,23 +194,23 @@ namespace plx
         return pOmni;
     }
 
-// For dumping state in XML.
+    // For dumping state in XML.
     void
     plexUnit::
     insertStateElts (xmlpp::Element* pRootElt)
     throw (std::exception)
     {
-// Get the model element.
+        // Get the model element.
         xmlpp::Element* pModelElt
         = utl::dom::mustGetUniqueChild (pRootElt,
                                         mzr::eltName::model);
 
-// Ensure that the tagged-species element is here.
+        // Ensure that the tagged-species element is here.
         xmlpp::Element* pTaggedSpeciesElt
-        = utl::dom::mustGetUniqueChild (pModelElt,
-                                        mzr::eltName::taggedSpecies);
+            = utl::dom::mustGetUniqueChild (pModelElt,
+                                            mzr::eltName::taggedSpecies);
 
-// Insert tagged-plex-species nodes.
+        // Insert tagged-plex-species nodes.
         recognize.insertSpecies (pTaggedSpeciesElt,
                                  rMzrUnit.getMolarFactor().getFactor() );
     }
@@ -268,22 +268,22 @@ namespace plx
 
             std::vector<cpx::molParam> theParams = pProductFamily->makeDefaultMolParams();
 
-// For each of the modifications we have here...
+            // For each of the modifications we have here...
             for (std::vector<std::pair< std::string, std::pair<std::string, std::string> > >::const_iterator iter = aCOS.theModificationTokens.begin();
                     iter != aCOS.theModificationTokens.end();
                     ++iter)
             {
-// Whenever we read a new modification with a new mol index, it means that mol is a
-// mod-mol and we should prepare to
+                // Whenever we read a new modification with a new mol index, it means that mol is a
+                // mod-mol and we should prepare to
 
                 int molIndex;
                 utl::from_string (molIndex, iter->first);
 
-// DEBUG TODO this is just a trial of something that SHOULD NOT WORK.
-// int mappedMolIndex = originalToResultIsomorphism.forward.applyToMolSpec( molIndex );
+                // DEBUG TODO this is just a trial of something that SHOULD NOT WORK.
+                // int mappedMolIndex = originalToResultIsomorphism.forward.applyToMolSpec( molIndex );
                 int mappedMolIndex = molIndex;
 
-// Get the modMol that must be in that spot (it must be a mod mol because it has a modification...)
+                // Get the modMol that must be in that spot (it must be a mod mol because it has a modification...)
                 bnd::mzrModMol* pMzrMol = dynamic_cast<bnd::mzrModMol*> (pMzrPlex->mols[mappedMolIndex]);
                 if (!pMzrMol) throw 666;
 
@@ -304,9 +304,6 @@ namespace plx
 
             rMolzer.recordSpecies ( defaultSpecies );
             rMolzer.recordSpecies ( createdSpecies );
-
-// defaultSpecies->expandReactionNetwork();
-// createdSpecies->expandReactionNetwork();
 
             return createdSpecies;
         }

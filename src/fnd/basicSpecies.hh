@@ -36,14 +36,12 @@
 #include "fnd/physConst.hh"
 #include "utl/xcpt.hh"
 #include "utl/utility.hh"
-#include "fnd/stateVar.hh"
 #include "fnd/notifier.hh"
 
 namespace fnd
 {
     template<class reactionType>
     class basicSpecies :
-                public stateVar<int, reactionType>,
                 public onceNotifier
     {
     class negativePopulationXcpt :
@@ -78,8 +76,7 @@ namespace fnd
 
     public:
 
-        basicSpecies (int initialPop = 0) :
-                stateVar<int, reactionType> (initialPop)
+        basicSpecies (int initialPop = 0)
         {
             speciesCount++;
         }
@@ -108,26 +105,6 @@ namespace fnd
             return getTag();
         }
 
-        int
-        getPop (void) const
-        {
-            return this->getValue();
-        }
-
-        // Note that this should only be used for initialization, since
-        // it doesn't get help keep track of the reactions whose propensities
-        // will change because of the change in population of this species.
-        void
-        setPop (int newPop)
-        {
-            this->setValue (newPop);
-        }
-
-        double
-        getConcentration (double volume) const
-        {
-            return ( (double) getPop() ) / (fnd::avogadrosNumber * volume);
-        }
     };
 
     template<class reactionType>

@@ -57,23 +57,23 @@ namespace stoch
         pWeightElt->set_attribute (eltName::weight_daltonsAttr,
                                    utl::stringify<double> (getWeight() ) );
 
-        xmlpp::Element* pPopulationElt
-        = pTaggedStochSpeciesElt->add_child (eltName::population);
+//         xmlpp::Element* pPopulationElt
+//         = pTaggedStochSpeciesElt->add_child (eltName::population);
 
-        pPopulationElt->set_attribute (eltName::population_countAttr,
-                                       utl::stringify<int> (getPop() ) );
+//         pPopulationElt->set_attribute (eltName::population_countAttr,
+//                                        utl::stringify<int> (getPop() ) );
 
 // Adding redundant concentration element for use by ODE solver.
 // An alternative would be to convert population to concentration
 // (using Java?) during translation of state dump fro ODE solver.
-        double concentration
-        = getPop() / molarFactor;
+//         double concentration
+//         = getPop() / molarFactor;
 
-        xmlpp::Element* pConcentrationElt
-        = pTaggedStochSpeciesElt->add_child (eltName::concentration);
+//         xmlpp::Element* pConcentrationElt
+//         = pTaggedStochSpeciesElt->add_child (eltName::concentration);
 
-        pConcentrationElt->set_attribute (eltName::concentration_valueAttr,
-                                          utl::stringify<double> (concentration) );
+//         pConcentrationElt->set_attribute (eltName::concentration_valueAttr,
+//                                           utl::stringify<double> (concentration) );
 
         return pTaggedStochSpeciesElt;
     }

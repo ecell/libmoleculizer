@@ -106,21 +106,21 @@ namespace plx
                                        molParams[molNdx]);
         }
 
-        xmlpp::Element* pPopulationElt
-        = pTaggedPlexSpeciesElt->add_child (eltName::population);
+//         xmlpp::Element* pPopulationElt
+//         = pTaggedPlexSpeciesElt->add_child (eltName::population);
 
-        pPopulationElt->set_attribute (eltName::population_countAttr,
-                                       utl::stringify<int> (getPop() ) );
+//         pPopulationElt->set_attribute (eltName::population_countAttr,
+//                                        utl::stringify<int> (getPop() ) );
 
 // Adding redundant concentration element for use by ODE solver.  An
 // alternative would be to convert population to concentration (using
 // Java?)  during translation of state dump for ODE solver.
-        double concentration = getPop() /molarFactor;
+//        double concentration = getPop() /molarFactor;
 
-        xmlpp::Element* pConcentrationElt
-        = pTaggedPlexSpeciesElt->add_child (eltName::concentration);
-        pConcentrationElt->set_attribute (eltName::concentration_valueAttr,
-                                          utl::stringify<double> (concentration) );
+//         xmlpp::Element* pConcentrationElt
+//         = pTaggedPlexSpeciesElt->add_child (eltName::concentration);
+//         pConcentrationElt->set_attribute (eltName::concentration_valueAttr,
+//                                           utl::stringify<double> (concentration) );
 
 // Add the updated flag for use by parametrizer.
         if (hasNotified() )

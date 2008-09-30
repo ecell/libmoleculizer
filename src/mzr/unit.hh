@@ -188,23 +188,23 @@ namespace mzr
                        xmlpp::Element* pModelElt,
                        xmlpp::Element* pStreamElt) throw (std::exception) = 0;
 
-// This allows finalization steps after parsing but before running.
-// In this phase, plexUnit runs notifications on parsed (but never created)
-// plexSpecies
-// after all parsing is complete, so that these already-defined
-// plexSpecies can be safely created just by using update.  (This is
-// still due to the clunkiness of update.)
+        // This allows finalization steps after parsing but before running.
+        // In this phase, plexUnit runs notifications on parsed (but never created)
+        // plexSpecies
+        // after all parsing is complete, so that these already-defined
+        // plexSpecies can be safely created just by using update.  (This is
+        // still due to the clunkiness of update.)
         virtual void
         prepareToRun (xmlpp::Element* pRootElt,
                       xmlpp::Element* pModelElt,
                       xmlpp::Element* pStreamElt) throw (std::exception)
         {
-// The plex unit does a lot; the mzrUnit does a little.  So far,
-// nobody else does anything.
+            // The plex unit does a lot; the mzrUnit does a little.  So far,
+            // nobody else does anything.
         }
 
 
-// How a unit contributes its part of a state dump.
+        // How a unit contributes its part of a state dump.
         virtual void
         insertStateElts (xmlpp::Element* pRootElt) throw (std::exception) = 0;
     };

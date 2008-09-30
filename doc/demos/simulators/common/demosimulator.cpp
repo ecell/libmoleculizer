@@ -45,9 +45,6 @@ void SimpleSimulator::createModelFromFile (const std::string& modelFile, std::ma
     inputfile.open ( modelFile.c_str() );
 
     std::string current_line;
-
-    std::cout << "#######################################################" << "\n"
-    << "Parsing '" << modelFile << "'\n\n" << std::endl;
     while ( std::getline (inputfile, current_line) )
     {
         std::vector<std::string> tokenVector;
@@ -75,8 +72,6 @@ void SimpleSimulator::createModelFromFile (const std::string& modelFile, std::ma
         int population;
 
         utl::from_string (population, numAsString);
-        std::cout << "Parsing: " << name << " -> " << population << std::endl;
-
         model.insert ( std::make_pair ( name, population) );
     }
 }
@@ -86,7 +81,20 @@ SimpleSimulator::SimpleSimulator ( std::string rulesfile,
 {
     srand (time (NULL) );
     attachRuleFile ( rulesfile);
+    
+    std::cout << "SS: State after attaching rules, before attaching Model:" << std::endl;
+    speciesReactionGenerator.printAll();
+
+    std::cout << "---------(END)" << std::endl;
+    
     attachModelFile ( modelfile );
+
+    std::cout << "---------(BEGIN)" << std::endl;
+
+    std::cout << "SS: State after attaching rules, model" << std::endl;
+    speciesReactionGenerator.printAll();
+
+    std::cout << "---------(END)" << std::endl;
 }
 
 void SimpleSimulator::attachRuleFile (std::string rulesfile)
@@ -163,6 +171,7 @@ void SimpleSimulator::engageModel()
 
 void SimpleSimulator::executeReaction ( mzr::moleculizer::ReactionTypePtr ptrRxn)
 {
+    std::cout << "Executing: " << ptrRxn->getName() << std::endl;
 
     BOOST_FOREACH (const mzr::moleculizer::ReactionType::multMap::value_type& vt, ptrRxn->getReactants() )
     {
@@ -196,9 +205,13 @@ void SimpleSimulator::executeReaction ( mzr::moleculizer::ReactionTypePtr ptrRxn
 
 void SimpleSimulator::printState() const
 {
+    std::cout << "SimpleSimulator state:" << std::endl;
     typedef std::pair<std::string, int> entry;
     BOOST_FOREACH (const entry& ent, theModel)
     {
         std::cout << "\t" << ent.first << ":\t" << ent.second << std::endl;
     }
+    std::cout << "Moleculizer State" << std::endl;
+
+    speciesReactionGenerator.printAll();
 }

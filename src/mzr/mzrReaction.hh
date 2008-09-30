@@ -145,13 +145,6 @@ namespace mzr
             ++reactionCount;
         }
 
-        // Overriding basic_reaction<mzrSpecies>::addReactant, so that
-        // the sensitization happens with the right class of reaction,
-        // rather than the basic_reaction template base class.
-        void
-        addReactant (mzrSpecies* pSpecies,
-                     int multiplicity);
-
         // Response of this reaction to message that one of its
         // reactants has changed population
         void

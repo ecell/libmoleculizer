@@ -231,10 +231,10 @@ namespace plx
                 = rMzrUnit.mustFindSpecies (speciesName,
                                             pPlexSpeciesElt);
 
-// Here, we want to do the same thing as a createEvent,
-// but we don't pay any attention to generateDepth.
+                // Here, we want to do the same thing as a createEvent,
+                // but we don't pay any attention to generateDepth.
 
-// Rather than scheduling an event, we effectively do a create event.
+                // Rather than scheduling an event, we effectively do a create event.
                 mzr::createEvent creator (pSpecies,
                                           pop,
                                           rMzrUnit);

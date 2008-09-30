@@ -59,13 +59,13 @@ namespace fnd
         ~multiSpeciesDumpable (void)
         {}
 
-        virtual int
-        getTotalPop (const dumpArgT& rDumpArg) const;
+//         virtual int
+//         getTotalPop (const dumpArgT& rDumpArg) const;
 
         virtual void
         doDump (const dumpArgT& rDumpArg) const
         {
-            rDumpArg.getOstream() << getTotalPop (rDumpArg);
+            // rDumpArg.getOstream() << getTotalPop (rDumpArg);
         }
 
         virtual
@@ -76,39 +76,39 @@ namespace fnd
         }
     };
 
-    template<class speciesT>
-    class addDumpedSpeciesPop :
-                public std::unary_function<const speciesT*, void>
-    {
-        int& rTotalPop;
+//     template<class speciesT>
+//     class addDumpedSpeciesPop :
+//                 public std::unary_function<const speciesT*, void>
+//     {
+//         int& rTotalPop;
 
-    public:
-        addDumpedSpeciesPop (int& refTotalPop) :
-                rTotalPop (refTotalPop)
-        {}
+//     public:
+//         addDumpedSpeciesPop (int& refTotalPop) :
+//                 rTotalPop (refTotalPop)
+//         {}
 
-        void
-        operator() (const speciesT* pSpecies) const
-        {
-            rTotalPop += pSpecies->getPop();
-        }
-    };
+//         void
+//         operator() (const speciesT* pSpecies) const
+//         {
+//             rTotalPop += pSpecies->getPop();
+//         }
+//     };
 
 // The automatically defined version doesn't use the dumpArg
 // in the process of getting the total population of the species.
-    template<class speciesT,
-    class dumpArgT>
-    int
-    multiSpeciesDumpable<speciesT,
-    dumpArgT>::
-    getTotalPop (const dumpArgT& rDumpArg) const
-    {
-        int totalPop = 0;
-        std::for_each (dumpedSpecies.begin(),
-                       dumpedSpecies.end(),
-                       addDumpedSpeciesPop<speciesT> (totalPop) );
-        return totalPop;
-    }
+//     template<class speciesT,
+//     class dumpArgT>
+//     int
+//     multiSpeciesDumpable<speciesT,
+//     dumpArgT>::
+//     getTotalPop (const dumpArgT& rDumpArg) const
+//     {
+//         int totalPop = 0;
+//         std::for_each (dumpedSpecies.begin(),
+//                        dumpedSpecies.end(),
+//                        addDumpedSpeciesPop<speciesT> (totalPop) );
+//         return totalPop;
+//     }
 }
 
 #endif // FND_MULTISPECIESDUMPABLE_H

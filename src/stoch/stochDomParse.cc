@@ -31,10 +31,10 @@
 
 #include "mzr/moleculizer.hh"
 #include "mzr/mzrUnit.hh"
+#include "mzr/createEvent.hh"
 #include "mzr/mzrEltName.hh"
 #include "mzr/respondReaction.hh"
 #include "mzr/unkSpeciesXcpt.hh"
-#include "mzr/createEvent.hh"
 #include "mol/molEltName.hh"
 #include "stoch/stochSpecies.hh"
 #include "stoch/stochUnit.hh"
@@ -140,10 +140,10 @@ namespace stoch
                 throw mzr::unkSpeciesXcpt (speciesName,
                                            pStochSpeciesElt);
 
-            mzr::createEvent creator (pSpecies,
-                                      pop,
-                                      rMzrUnit);
-            creator.happen (rMolzer);
+            mzr::createEvent creator(pSpecies,
+                                     pop,
+                                     rMzrUnit);
+            creator.happen(rMolzer);
         }
     };
 

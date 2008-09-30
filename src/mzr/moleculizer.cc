@@ -168,18 +168,18 @@ namespace mzr
         try
         {
             theMzrSpecies = findSpecies (speciesName);
-            theMzrSpecies->expandReactionNetwork();
+//            theMzrSpecies->expandReactionNetwork();
 
             return theMzrSpecies;
         }
         catch (fnd::NoSuchSpeciesXcpt e)
-            {}
+        {}
 
         try
         {
             theMzrSpecies = pUserUnits->pNmrUnit->constructSpeciesFromName (speciesName);
-// Does mzrSpecies need to be expanded here?
-            theMzrSpecies->expandReactionNetwork();
+            // Does mzrSpecies need to be expanded here?
+            // theMzrSpecies->expandReactionNetwork();
 
             return theMzrSpecies;
         }
@@ -192,8 +192,8 @@ namespace mzr
     std::string
     moleculizer::getRandomSpeciesName() const
     {
-// I use pointers here, to save space.
-// I should make this much more efficient.
+        // I use pointers here, to save space.
+        // I should make this much more efficient.
 
         std::vector<mzrSpecies*> allSpecies;
         BOOST_FOREACH ( SpeciesCatalog::value_type vt, theSpeciesListCatalog)
@@ -215,6 +215,7 @@ namespace mzr
         if (!parser) throw utl::dom::noDocumentParsedXcpt();
 
         this->attachDocument ( parser.get_document() );
+
     }
 
     void moleculizer::attachString ( const std::string& documentAsString )

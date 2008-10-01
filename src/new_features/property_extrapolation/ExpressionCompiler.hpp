@@ -7,30 +7,30 @@
 //
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 //
+// E-Cell is free software; you can redistribute it and/or modify
+// it under the terms of the GNU Lesser General Public License as published
+// by the Free Software Foundation; either version 3 of the License, or
+// (at your option) any later version.
 //
-// E-Cell System is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public
-// License as published by the Free Software Foundation; either
-// version 2 of the License, or (at your option) any later version.
-//
-// E-Cell System is distributed in the hope that it will be useful,
+// E-Cell is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-// See the GNU General Public License for more details.
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU Lesser General Public License for more details.
 //
-// You should have received a copy of the GNU General Public
-// License along with E-Cell System -- see the file COPYING.
-// If not, write to the Free Software Foundation, Inc.,
-// 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+// You should have received a copy of the GNU Lesser General Public License
+// along with Moleculizer; if not, write to the Free Software Foundation
+// Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307,  USA
 //
 //END_HEADER
 //
-// authors:
+// Original Authors:
 //     Koichi Takahashi
 //     Tatsuya Ishida
 //
-// E-Cell Project.
+// Modifying Authors:
+//     Nathan Addy, Molecular Sciences Institute
 //
+
 
 #ifndef __EXPRESSIONCOMPILER_HPP
 #define __EXPRESSIONCOMPILER_HPP
@@ -46,15 +46,15 @@
 #define PARSER_CONTEXT parser_context
 #endif
 
-#include "libecs/libecs.hpp"
-#include "libecs/Process.hpp"
-#include "libecs/MethodProxy.hpp"
+#include "utl/AssocVector.h"
+
+// #include "libecs/libecs.hpp"
+// #include "libecs/Process.hpp"
+// #include "libecs/MethodProxy.hpp"
 
 using namespace boost::spirit;
 
-USE_LIBECS;
-
-
+// Pointers to function that match a string to a real func(real) pointer.
 typedef
 ::Loki::AssocVector < String, Real( * )( Real ), std::less<const String> >
 FunctionMap1;
@@ -69,7 +69,6 @@ typedef
 typedef
 ::Loki::AssocVector< String, Real, std::less<const String> > PropertyMap;
 
-
 class ExpressionCompiler
 {
 public:
@@ -79,14 +78,14 @@ public:
     typedef std::vector<char> CharVector;
 
     // possible operand types:
-    typedef libecs::Real    Real;
-    typedef Real*           RealPtr;
-    typedef libecs::Integer Integer;
-    typedef void*           Pointer;
+    typedef utl::Real Real;
+    typedef Real* RealPtr;
+    typedef utl::Integer Integer;
+    typedef void* Pointer;
 
-    typedef Entity*  ( libecs::VariableReference::* VariableReferenceEntityMethodPtr )() const;
-    typedef Entity*  ( libecs::Process::* ProcessMethodPtr )() const;
-    typedef const Real ( libecs::Entity::* EntityMethodPtr )() const;
+//     typedef Entity*  ( libecs::VariableReference::* VariableReferenceEntityMethodPtr )() const;
+//     typedef Entity*  ( libecs::Process::* ProcessMethodPtr )() const;
+//    typedef const Real ( libecs::Entity::* EntityMethodPtr )() const;
 
     typedef Real ( *RealFunc0 )();
     typedef Real ( *RealFunc1 )( Real );
@@ -103,7 +102,7 @@ public:
     enum Opcode// the order of items is optimized. don't change.
     {
         ADD = 0  // no arg
-              , SUB    // no arg
+        , SUB    // no arg
         , MUL    // no arg
         , DIV    // no arg
         , CALL_FUNC2 // RealFunc2
@@ -122,9 +121,6 @@ public:
         , END = RET
     };
 
-
-
-
     class NoOperand
         {}; // Null type.
 
@@ -132,13 +128,12 @@ public:
     class Opcode2Operand
     {
     public:
-        typedef NoOperand     type;
+        typedef NoOperand type;
     };
 
 
     template <Opcode OPCODE>
     class Opcode2Instruction;
-
 
     class InstructionHead
     {

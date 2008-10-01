@@ -40,7 +40,7 @@
 \ingroup stochGroup
 \brief Defines unit for small molecules and stoichiometric reactions. */
 
-#include "utl/platform.hh"
+#include "utl/defs.hh"
 #include "mzr/unit.hh"
 #include "stoch/unkStochSpeciesXcpt.hh"
 #include "stoch/stochSpecies.hh"

@@ -62,7 +62,7 @@ namespace fnd
         DECLARE_TYPE( String, SpeciesName );
         DECLARE_TYPE( String, SpeciesID );
 
-        typedef boost::shared_ptr<const SpeciesID> SpeciesHandle;
+        typedef const SpeciesID* SpeciesHandle;
 
         typedef std::map<SpeciesHandle, SpeciesTypePtr, aux::compareByPtrValue<SpeciesID> > SpeciesCatalog;
         typedef typename SpeciesCatalog::iterator SpeciesCatalogIter;
@@ -89,8 +89,7 @@ namespace fnd
         SpeciesTypePtr
         findSpecies (const std::string& name) throw (fnd::NoSuchSpeciesXcpt)
         {
-            SpeciesHandle specHandle( new SpeciesID( name ) );
-            SpeciesCatalogIter theIter = theSpeciesListCatalog.find ( specHandle );
+            SpeciesCatalogIter theIter = theSpeciesListCatalog.find ( &name );
             if (theIter != theSpeciesListCatalog.end() )
             {
                 return theIter->second;
@@ -105,9 +104,7 @@ namespace fnd
         SpeciesTypeCptr
         findSpecies (const std::string& name) const throw (fnd::NoSuchSpeciesXcpt)
         {
-            SpeciesHandle specHandle( new SpeciesID( name ) );
-
-            SpeciesCatalogCIter theIter = theSpeciesListCatalog.find (specHandle);
+            SpeciesCatalogCIter theIter = theSpeciesListCatalog.find(&name);
 
             if (theIter != theSpeciesListCatalog.end() )
             {
@@ -207,7 +204,7 @@ namespace fnd
         bool
         recordSpecies ( SpeciesTypePtr pSpecies)
         {
-            SpeciesHandle speciesHandle( new SpeciesID( pSpecies->getName()  ) 
+            SpeciesHandle speciesHandle( new SpeciesID( pSpecies->getName()  ) );
 
             if ( theSpeciesListCatalog.find(speciesHandle) == theSpeciesListCatalog.end() )
             {
@@ -219,7 +216,7 @@ namespace fnd
             {
                 return false;
             }
-
+                                         
         }
 
         bool
@@ -391,7 +388,6 @@ namespace fnd
             // We don't memory manage any SpeciesType* or ReactionType*, but we do memory
             // manage the string* in theSpeciesListCatalog.
 
-
             BOOST_FOREACH ( typename SpeciesCatalog::value_type i, theSpeciesListCatalog)
             {
                 delete i.first;
@@ -400,6 +396,7 @@ namespace fnd
 
         // -- The pointers to the strings in theSpeciesListCatalog ARE memory managed.
         // -- The pointers to the species and reactions ARE NOT memory managed here.
+        
 
         SpeciesCatalog theSpeciesListCatalog;
         ReactionList theCompleteReactionList;

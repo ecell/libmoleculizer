@@ -33,7 +33,7 @@
 #define MOL_PARSEMODSITE_H
 
 #include "utl/dom.hh"
-#include "utl/badElementCastXcpt.hh"
+#include "utl/domXcpt.hh"
 #include "cpx/modification.hh"
 #include "mol/unkModXcpt.hh"
 

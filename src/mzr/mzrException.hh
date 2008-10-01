@@ -34,6 +34,7 @@
 #define __MZREXCEPTION_HH
 
 #include "utl/xcpt.hh"
+#include "utl/dom.hh"
 
 namespace mzr
 {

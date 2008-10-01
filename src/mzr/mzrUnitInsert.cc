@@ -39,9 +39,10 @@ namespace mzr
     class insertFamilyReactions :
                 public std::unary_function<const std::vector<mzrReaction>*, void>
     {
-// This may change to a different element containing just the
-// automatically generated reactions.
+        // This may change to a different element containing just the
+        // automatically generated reactions.
         xmlpp::Element* pTagReactionsElt;
+
     public:
         insertFamilyReactions (xmlpp::Element* pTagReactionsElement) :
                 pTagReactionsElt (pTagReactionsElement)
@@ -87,7 +88,7 @@ namespace mzr
     void
     mzrUnit::insertStateElts (xmlpp::Element* pRootElt) throw (std::exception)
     {
-// Model elements.
+        // Model elements.
         xmlpp::Element* pModelElt
         = utl::dom::mustGetUniqueChild (pRootElt,
                                         eltName::model);
@@ -96,56 +97,25 @@ namespace mzr
         = utl::dom::mustGetUniqueChild (pModelElt,
                                         eltName::explicitSpeciesTags);
 
-// Give tags for named species.
+        // Give tags for named species.
         std::for_each (speciesByName.begin(),
                        speciesByName.end(),
                        insertExplicitSpeciesTag (pExplicitSpeciesTagsElt) );
 
-// Give all the reactions, using tags to refer to species.
+        // Give all the reactions, using tags to refer to species.
         xmlpp::Element* pTagReactionsElt
         = utl::dom::mustGetUniqueChild (pModelElt,
                                         eltName::tagReactions);
 
-// First the reactions that weren't automatically generated.
+        // First the reactions that weren't automatically generated.
         std::for_each (userReactions.begin(),
                        userReactions.end(),
                        std::bind2nd (std::mem_fun (&mzrReaction::insertElt),
                                      pTagReactionsElt) );
 
-// Now the reactions that were automatically generated.
+        // Now the reactions that were automatically generated.
         std::for_each (reactionFamilies.begin(),
                        reactionFamilies.end(),
                        insertFamilyReactions (pTagReactionsElt) );
-
-// Insert the volume.  This has to have separate fraction and exponent
-// for SBML scientific notation.
-        double volume = getMolarFactor().getVolume();
-        addDoubleParamChild (pRootElt,
-                             eltName::volume,
-                             eltName::volume_litersAttr,
-                             volume);
-
-// Streams element.
-        xmlpp::Element* pStreamsElt
-        = utl::dom::mustGetUniqueChild (pRootElt,
-                                        eltName::streams);
-
-// Emit the species dumped by each of the species streams.
-        xmlpp::Element* pTaggedSpeciesStreamsElt
-        = pStreamsElt->add_child (eltName::taggedSpeciesStreams);
-        std::for_each (speciesStreams.begin(),
-                       speciesStreams.end(),
-                       std::bind2nd (std::mem_fun
-                                     (&mzrSpeciesStream::insertDumpedSpeciesTags),
-                                     pTaggedSpeciesStreamsElt) );
-
-// Emit the species streams dumped in each file.
-        xmlpp::Element* pTaggedDumpStreamsElt
-        = pStreamsElt->add_child (eltName::taggedDumpStreams);
-        std::for_each (dumpStreams.begin(),
-                       dumpStreams.end(),
-                       std::bind2nd (std::mem_fun
-                                     (&mzrDumpStream::insertTaggedDumpStreamElts),
-                                     pTaggedDumpStreamsElt) );
     }
 }

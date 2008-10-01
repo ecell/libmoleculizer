@@ -39,7 +39,7 @@ libmoleculizer_mzr_la_SOURCES =\
 dumpUtils.cc \
 moleculizer.cc \
 mzrEltName.cc \
-mzrExceptions.cc \
+mzrException.cc \
 mzrReaction.cc \
 mzrSpecies.cc \
 mzrUnit.cc \

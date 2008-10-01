@@ -39,6 +39,7 @@
 #include "utl/dom.hh"
 #include "fnd/basicDumpable.hh"
 #include "cpx/plexSpcsMixin.hh"
+#include "mzr/mzrSpecies.hh"
 
 namespace plx
 {

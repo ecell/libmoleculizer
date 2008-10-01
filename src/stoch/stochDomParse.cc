@@ -34,7 +34,7 @@
 #include "mzr/createEvent.hh"
 #include "mzr/mzrEltName.hh"
 #include "mzr/respondReaction.hh"
-#include "mzr/unkSpeciesXcpt.hh"
+#include "mzr/mzrException.hh"
 #include "mol/molEltName.hh"
 #include "stoch/stochSpecies.hh"
 #include "stoch/stochUnit.hh"

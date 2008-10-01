@@ -29,11 +29,10 @@
 //
 //
 
-#include "utl/platform.hh"
 #include "mzr/mzrReaction.hh"
 #include "mzr/mzrUnit.hh"
 #include "mzr/mzrEltName.hh"
-#include "mzr/dupSpeciesNameXcpt.hh"
+#include "mzr/mzrException.hh"
 #include "stoch/stochUnit.hh"
 #include "stoch/unkStochSpeciesXcpt.hh"
 

@@ -23,6 +23,7 @@ namespace mzr
         return (rSpeciesName + " is an illegal name");
     }
 
+    std::string
     unkDumpableXcpt::
     mkMsg (const std::string& rDumpableName,
            xmlpp::Node* pOffendingNode)

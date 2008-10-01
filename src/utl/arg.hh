@@ -37,8 +37,8 @@
 
 namespace utl
 {
-// An improvement on these would accept the argument name (e.g. -d) and
-// display it in any error message.
+    // An improvement on these would accept the argument name (e.g. -d) and
+    // display it in any error message.
 
     std::string
     mustGetArg (int& rArgc,

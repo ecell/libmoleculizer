@@ -30,17 +30,9 @@
 //
 
 #include "utl/dom.hh"
-#include "utl/utility.hh"
+#include "utl/domXcpt.hh"
 #include "utl/frexp10.hh"
-#include "utl/badElementCastXcpt.hh"
-#include "utl/badChildCountXcpt.hh"
-#include "utl/missingAttrXcpt.hh"
-#include "utl/badDoubleAttrXcpt.hh"
-#include "utl/badPosDoubleAttrXcpt.hh"
-#include "utl/badNNDoubleAttrXcpt.hh"
-#include "utl/badIntAttrXcpt.hh"
-#include "utl/badPosIntAttrXcpt.hh"
-#include "utl/badNNIntAttrXcpt.hh"
+#include "utl/utility.hh"
 #include "utl/utlEltName.hh"
 
 namespace utl
@@ -55,14 +47,14 @@ namespace utl
             if (pOffendingNode)
             {
                 msgStream << pOffendingNode->get_path()
-                << ": ";
+                          << ": ";
             }
             return msgStream.str();
         }
 
         xmlpp::Element*
         mustBeElementPtr (xmlpp::Node* pNode)
-        throw (xcpt)
+            throw (xcpt)
         {
             xmlpp::Element* pElt = dynamic_cast<xmlpp::Element*> (pNode);
 
@@ -73,10 +65,10 @@ namespace utl
 
         const xmlpp::Element*
         mustBeElementPtr (const xmlpp::Node* pNode)
-        throw (xcpt)
+            throw (xcpt)
         {
             const xmlpp::Element* pElt
-            = dynamic_cast<const xmlpp::Element*> (pNode);
+                = dynamic_cast<const xmlpp::Element*> (pNode);
 
             if (0 == pElt) throw badElementCastXcpt (pNode);
 
@@ -86,10 +78,10 @@ namespace utl
         xmlpp::Element*
         mustGetUniqueChild (const xmlpp::Node* pParentNode,
                             const std::string& rChildName)
-        throw (xcpt)
+            throw (xcpt)
         {
             const xmlpp::Node::NodeList children
-            = pParentNode->get_children (rChildName);
+                = pParentNode->get_children (rChildName);
 
             if (1 != children.size() )
                 throw badChildCountXcpt::general (pParentNode,
@@ -105,49 +97,49 @@ namespace utl
         xmlpp::Element*
         getOptionalChild (const xmlpp::Node* pParentNode,
                           const std::string& rChildName)
-        throw (xcpt)
+            throw (xcpt)
         {
             const xmlpp::Node::NodeList children
-            = pParentNode->get_children (rChildName);
+                = pParentNode->get_children (rChildName);
 
-// Here trying out a better way to arrange different ways
-// of constructing the same exception for use under different
-// circumstances.
+            // Here trying out a better way to arrange different ways
+            // of constructing the same exception for use under different
+            // circumstances.
             int childCount = children.size();
             switch (childCount)
             {
-                case 0 :
-                    return 0;
-                case 1 :
-                    return mustBeElementPtr (children.front() );
-                default :
-                    throw badChildCountXcpt::zeroOrOne (pParentNode,
-                                                        rChildName,
-                                                        childCount);
+            case 0 :
+                return 0;
+            case 1 :
+                return mustBeElementPtr (children.front() );
+            default :
+                throw badChildCountXcpt::zeroOrOne (pParentNode,
+                                                    rChildName,
+                                                    childCount);
             }
         }
 
         std::string
         mustGetAttrString (const xmlpp::Element* pElement,
                            const std::string& rAttrName)
-        throw (xcpt)
+            throw (xcpt)
         {
             xmlpp::Attribute* pAttr
-            = pElement->get_attribute (rAttrName);
+                = pElement->get_attribute (rAttrName);
 
             if (0 == pAttr) throw missingAttrXcpt (pElement,
-                                                       rAttrName);
+                                                   rAttrName);
             return pAttr->get_value();
         }
 
         double
         mustGetAttrDouble (const xmlpp::Element* pElement,
                            const std::string& rAttrName)
-        throw (xcpt)
+            throw (xcpt)
         {
             std::string attrString
-            = mustGetAttrString (pElement,
-                                 rAttrName);
+                = mustGetAttrString (pElement,
+                                     rAttrName);
 
             double attrDouble = 0.0;
             if (! stringIsDouble (attrString,
@@ -162,11 +154,11 @@ namespace utl
         double
         mustGetAttrPosDouble (const xmlpp::Element* pElement,
                               const std::string& rAttrName)
-        throw (xcpt)
+            throw (xcpt)
         {
             double attrDouble
-            = mustGetAttrDouble (pElement,
-                                 rAttrName);
+                = mustGetAttrDouble (pElement,
+                                     rAttrName);
 
             if (attrDouble <= 0.0)
                 throw badPosDoubleAttrXcpt (pElement,
@@ -178,11 +170,11 @@ namespace utl
         double
         mustGetAttrNNDouble (const xmlpp::Element* pElement,
                              const std::string& rAttrName)
-        throw (xcpt)
+            throw (xcpt)
         {
             double attrDouble
-            = mustGetAttrDouble (pElement,
-                                 rAttrName);
+                = mustGetAttrDouble (pElement,
+                                     rAttrName);
 
             if (attrDouble < 0.0)
                 throw badNNDoubleAttrXcpt (pElement,
@@ -194,11 +186,11 @@ namespace utl
         int
         mustGetAttrInt (const xmlpp::Element* pElement,
                         const std::string& rAttrName)
-        throw (xcpt)
+            throw (xcpt)
         {
             std::string attrString
-            = mustGetAttrString (pElement,
-                                 rAttrName);
+                = mustGetAttrString (pElement,
+                                     rAttrName);
 
             int attrInt = -1;
             if (! stringIsInt (attrString,
@@ -212,11 +204,11 @@ namespace utl
         int
         mustGetAttrPosInt (const xmlpp::Element* pElement,
                            const std::string& rAttrName)
-        throw (xcpt)
+            throw (xcpt)
         {
             int attrInt
-            = mustGetAttrInt (pElement,
-                              rAttrName);
+                = mustGetAttrInt (pElement,
+                                  rAttrName);
             if (attrInt <= 0)
                 throw badPosIntAttrXcpt (pElement,
                                          rAttrName,
@@ -227,11 +219,11 @@ namespace utl
         int
         mustGetAttrNNInt (const xmlpp::Element* pElement,
                           const std::string& rAttrName)
-        throw (xcpt)
+            throw (xcpt)
         {
             int attrInt
-            = mustGetAttrInt (pElement,
-                              rAttrName);
+                = mustGetAttrInt (pElement,
+                                  rAttrName);
             if (attrInt < 0)
                 throw badNNIntAttrXcpt (pElement,
                                         rAttrName,
@@ -246,15 +238,15 @@ namespace utl
                              double parameterValue)
         {
             xmlpp::Element* pChildElt
-            = pParentNode->add_child (rChildName);
+                = pParentNode->add_child (rChildName);
 
             pChildElt->set_attribute (rParameterName,
                                       utl::stringify<double> (parameterValue) );
 
             xmlpp::Element* pSciNoteElt
-            = pChildElt->add_child (eltName::sciNote);
+                = pChildElt->add_child (eltName::sciNote);
 
-// Generate scientific notation for use in generating SBML etc.
+            // Generate scientific notation for use in generating SBML etc.
             int exponent = 0;
             double fraction = utl::frexp10 (parameterValue,
                                             exponent);

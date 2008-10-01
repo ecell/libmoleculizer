@@ -37,24 +37,11 @@ libmoleculizer_utl_la_LIBADD = -lstdc++ $(LIBXML_LIBS)
 
 libmoleculizer_utl_la_SOURCES =\
 arg.cc \
-badChildCountXcpt.cc \
-badDoubleAttrXcpt.cc \
-badElementCastXcpt.cc \
-badIntAttrXcpt.cc \
-badNNDoubleArgXcpt.cc \
-badNNDoubleAttrXcpt.cc \
-badNNIntArgXcpt.cc \
-badNNIntAttrXcpt.cc \
-badPosDoubleAttrXcpt.cc \
-badPosIntArgXcpt.cc \
-badPosIntAttrXcpt.cc \
 dom.cc \
+domXcpt.cc \
 frexp10.cc \
-insuffArgsXcpt.cc \
 linearHash.cc \
-missingAttrXcpt.cc \
-string.cc \
-unkArgXcpt.cc \
+utlXcpt.cc \
 utility.cc \
 utlEltName.cc
 
@@ -63,18 +50,6 @@ arg.hh \
 autoCache.hh \
 autoCatalog.hh \
 autoVector.hh \
-badChildCountXcpt.hh \
-badDoubleAttrXcpt.hh \
-badElementCastXcpt.hh \
-badFileNameXcpt.hh \
-badIntAttrXcpt.hh \
-badNNDoubleArgXcpt.hh \
-badNNDoubleAttrXcpt.hh \
-badNNIntArgXcpt.hh \
-badNNIntAttrXcpt.hh \
-badPosDoubleAttrXcpt.hh \
-badPosIntArgXcpt.hh \
-badPosIntAttrXcpt.hh \
 dom.hh \
 domJob.hh \
 domJobImpl.hh \
@@ -82,15 +57,8 @@ forBoth.hh \
 forceInsert.hh \
 frexp10.hh \
 funcInsert.hh \
-insuffArgsXcpt.hh \
 linearHash.hh \
 message.hh \
-missingAttrXcpt.hh \
-modelPreviouslyLoadedXcpt.hh \
-noDocumentParsedXcpt.hh \
-platform.hh \
-stdIncludes.hh \
-string.hh \
 unkArgXcpt.hh \
 utility.hh \
 utlEltName.hh \

@@ -58,6 +58,7 @@ xcptName()                               \
 :                                    \
 utl::xcpt( message )                 \
 {}                                       \
+
 };
 
 namespace utl
@@ -86,7 +87,7 @@ namespace utl
             return message;
         }
 
-// Implementation of std::exception::what.
+        // Implementation of std::exception::what.
         const char*
         what (void) const throw()
         {
@@ -110,11 +111,11 @@ namespace utl
             exit (1);
         }
 
-// But this doesn't include the application name, and it doesn't
-// look good for getting it in where this message is called for.
-//
-// Most of those cases should be handled with wailAndBail, rather than
-// throw, since they are all essentially debugging loose-ends.
+        // But this doesn't include the application name, and it doesn't
+        // look good for getting it in where this message is called for.
+        //
+        // Most of those cases should be handled with wailAndBail, rather than
+        // throw, since they are all essentially debugging loose-ends.
         static std::string
         mkMsg (void)
         {
@@ -146,6 +147,7 @@ namespace utl
                 xcpt ( mkMsg (funcName) )
         {}
     };
+
 }
 
 #endif // UTL_XCPT_H

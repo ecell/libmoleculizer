@@ -56,7 +56,7 @@ namespace utl
                 }
             }
         }
-// Nothing was found, so throw an exception.
+        // Nothing was found, so throw an exception.
         throw badFileNameXcpt();
         return 0;
     }
@@ -70,7 +70,7 @@ namespace utl
 
         std::string::size_type index (0);
 
-// If the string starts with a deliminator, ignore it.
+        // If the string starts with a deliminator, ignore it.
         if ( str.find (deliminator) == 0)
         {
             index += DELIM_SIZE;
@@ -80,13 +80,13 @@ namespace utl
         {
             std::string::size_type nextDelimStart = str.find (deliminator, index);
 
-// Two cases:
-// A deliminator is found
-// A deliminator is not found
+            // Two cases:
+            // A deliminator is found
+            // A deliminator is not found                        
 
             if (nextDelimStart != std::string::npos)
             {
-// everything between index and nextDelimStart should be pushed back
+                // everything between index and nextDelimStart should be pushed back
 
                 if (index == nextDelimStart)
                 {
@@ -113,8 +113,8 @@ namespace utl
     {
         const char* start = rString.c_str();
         char* pEnd;
-// Setting the base to 0 here means that strings with C-style base
-// indicators (e.g. 0xFFF) can be read successfully.
+        // Setting the base to 0 here means that strings with C-style base
+        // indicators (e.g. 0xFFF) can be read successfully.
         rInt = strtol (start, &pEnd, 0);
         return 0 == *pEnd;
     }

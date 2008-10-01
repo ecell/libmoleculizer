@@ -32,21 +32,15 @@
 #ifndef __ABSTRACTMOL_HH
 #define __ABSTRACTMOL_HH
 
-#include "nmrExceptions.hh"
-
-#include "utl/macros.hh"
-
-#include <string>
-#include <vector>
-#include <list>
-#include <utility>
+#include "utl/defs.hh"
+#include "nmr/nmrExceptions.hh"
 
 namespace nmr
 {
-// An abstract class that implements a Molecule with a name.
-// Named molecules have names, binding sites, and modification sites, such that
-// the binding sites can be either "bound" or "unbound", and modification sites
-// can be associated with any kind of modification.
+    // An abstract class that implements a Molecule with a name.
+    // Named molecules have names, binding sites, and modification sites, such that
+    // the binding sites can be either "bound" or "unbound", and modification sites
+    // can be associated with any kind of modification.
 
     DECLARE_CLASS ( Mol );
     class Mol

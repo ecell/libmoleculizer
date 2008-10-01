@@ -75,12 +75,12 @@ queryImpl.hh \
 querySpeciesDumpable.hh \
 reactionNetworkCatalog.hh \
 reactionNetworkComponent.hh \
-rnHelperClasses.hh \
 rxnGen.hh \
 sensitive.hh \
 sensitiveOnce.hh \
 sensitivityList.hh \
 speciesNotMassiveXcpt.hh \
 stateVar.hh \
+utility.hh \
 varDumpable.hh
 

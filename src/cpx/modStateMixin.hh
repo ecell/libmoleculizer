@@ -32,8 +32,9 @@
 #ifndef CPX_MODSTATEMIXIN_H
 #define CPX_MODSTATEMIXIN_H
 
+#include "utl/defs.hh"
 #include "cpx/modification.hh"
-#include "utl/stdIncludes.hh"
+
 
 namespace cpx
 {

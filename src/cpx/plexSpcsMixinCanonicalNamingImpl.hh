@@ -29,7 +29,7 @@
 //
 //
 
-#include "utl/stdIncludes.hh"
+#include "utl/defs.hh"
 #include "utl/utility.hh"
 
 #include "modMol.hh"
@@ -44,17 +44,17 @@ namespace cpx
     plexSpeciesMixin<plexFamilyT>::
     createComplexRepresentation ( ComplexRepresentation& aComplexRepresentation ) const
     {
-// Is there even a way to access this???
-// static std::vector<std::string> allLegalModifications =
+        // Is there even a way to access this???
+        // static std::vector<std::string> allLegalModifications =
 
-// There is probably some way to clear() a ComplexRepresentation, and we should
-// do that here.
-// aComplexRepresentation.clear();
+        // There is probably some way to clear() a ComplexRepresentation, and we should
+        // do that here.
+        // aComplexRepresentation.clear();
 
         const std::vector<typename plexFamilyT::molType*>& rMols = rFamily.getParadigm().mols;
         const std::vector<cpx::binding>& rBindings  = rFamily.getParadigm().bindings;
 
-// Add the mols to the complex representation.
+        // Add the mols to the complex representation.
         for (unsigned int molNdx = 0;
                 molNdx != rMols.size();
                 ++molNdx)
@@ -63,7 +63,7 @@ namespace cpx
 
             nmr::MinimalMolSharedPtr aMol ( new nmr::MinimalMol ( pMol->getName() ) );
 
-// Create all the binding sites to this mol.
+            // Create all the binding sites to this mol.
             for ( typename plexFamilyT::molType::bindingSiteIterator iter = pMol->getBindingSitesBegin();
                     iter != pMol->getBindingSitesEnd();
                     ++iter)
@@ -76,7 +76,7 @@ namespace cpx
 
             if (aModMol)
             {
-// Get the externalized state....
+                // Get the externalized state....
                 const cpx::modMolState& nuMolParam = aModMol->externState ( molParams[molNdx] );
 
                 if ( nuMolParam.size() !=aModMol->modSiteNames.size() )
@@ -100,7 +100,7 @@ namespace cpx
         }
 
 
-// Add the bindings to the complex representation.
+        // Add the bindings to the complex representation.
         for (std::vector<cpx::binding>::const_iterator iter = rBindings.begin();
                 iter != rBindings.end();
                 ++iter)
@@ -130,9 +130,9 @@ namespace cpx
     std::string
     plexSpeciesMixin<plexFamilyT>::getCanonicalName (void) const
     {
-// static nmr::basicNameAssembler defaultNameAssembler;
+        // static nmr::basicNameAssembler defaultNameAssembler;
         static nmr::MangledNameAssembler defaultNameAssembler;
-// nmr::readableNameAssembler defaultNameAssembler;
+        // nmr::readableNameAssembler defaultNameAssembler;
 
         return getCanonicalName ( &defaultNameAssembler );
     }

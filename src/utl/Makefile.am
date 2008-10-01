@@ -59,7 +59,6 @@ frexp10.hh \
 funcInsert.hh \
 linearHash.hh \
 message.hh \
-unkArgXcpt.hh \
 utility.hh \
 utlEltName.hh \
 warn.hh \

@@ -30,10 +30,7 @@
 //
 
 #include "utl/utility.hh"
-#include "utl/insuffArgsXcpt.hh"
-#include "utl/badPosIntArgXcpt.hh"
-#include "utl/badNNIntArgXcpt.hh"
-#include "utl/badNNDoubleArgXcpt.hh"
+#include "utl/utlXcpt.hh"
 #include "utl/arg.hh"
 
 namespace utl

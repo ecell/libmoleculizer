@@ -39,11 +39,12 @@
 #include <fstream>
 #include <ctime>
 
-#include "utl/noDocumentParsedXcpt.hh"
-#include "utl/modelPreviouslyLoadedXcpt.hh"
-#include "utl/platform.hh"
+#include "utl/utlXcpt.hh"
 #include "utl/linearHash.hh"
 #include "utl/dom.hh"
+
+// Does this work?
+// #include "utl/platform.hh"
 
 #include "mzr/mzrSpecies.hh"
 #include "mzr/mzrReaction.hh"

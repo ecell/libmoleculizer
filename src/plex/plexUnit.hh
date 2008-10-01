@@ -50,8 +50,6 @@
 #include "cpx/omniPlex.hh"
 #include "cpx/omniStructureQuery.hh"
 #include "cpx/plexQuery.hh"
-#include "utl/platform.hh"
-#include <algorithm>
 
 
 namespace plx

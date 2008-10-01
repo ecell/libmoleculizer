@@ -32,10 +32,9 @@
 #ifndef __BASICNAMEASSEMBLER_HH
 #define __BASICNAMEASSEMBLER_HH
 
-#include "nmrExceptions.hh"
-#include "nameAssembler.hh"
-
-#include "utl/macros.hh"
+#include "utl/defs.hh"
+#include "nmr/nmrExceptions.hh"
+#include "nmr/nameAssembler.hh"
 
 namespace nmr
 {
@@ -43,7 +42,7 @@ namespace nmr
     DECLARE_CLASS ( basicNameAssembler);
 
 
-// TODO/2 Write a description of the mangling algorithm used by basicNameAssembler::createNameFromOutputState.
+    // TODO/2 Write a description of the mangling algorithm used by basicNameAssembler::createNameFromOutputState.
     class basicNameAssembler : public NameAssembler
     {
     public:

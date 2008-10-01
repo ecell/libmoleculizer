@@ -31,7 +31,6 @@
 
 
 #include "utl/utility.hh"
-#include "utl/badFileNameXcpt.hh"
 
 namespace utl
 {

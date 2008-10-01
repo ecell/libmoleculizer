@@ -33,31 +33,26 @@
 #ifndef __PARTIALTOKENLIST_HH
 #define __PARTIALTOKENLIST_HH
 
-#include "utl/macros.hh"
+#include "utl/defs.hh"
 #include "nmr/abstractMol.hh"
-
-#include <vector>
-#include <utility>
-#include <iterator>
-#include <iostream>
 
 namespace nmr
 {
-// PartialTokenList Notes
+    // PartialTokenList Notes
 
-// PartialTokenLists are designed for comparing partial name sequences, lists
-// produced by isomorphic lists -- ie lists produced by identical complexes.
-
-// Because of this assumption, we conclude that the MolList 'theMol' is completely known,
-// and consists of the same members, between any two PartialTokenLists that are allowed
-// to interact, we conclude that the words produced by any two PartialTokenLists will
-// always be equal.
-
-// Thus, at minimum, PartialTokenList::operator< and operator== use this assumption in their
-// code.
-
-// Do not try to compare non-isomorphic PartialTokenList's.  Results will be undefined, and
-// will likely result in a crash.
+    // PartialTokenLists are designed for comparing partial name sequences, lists
+    // produced by isomorphic lists -- ie lists produced by identical complexes.
+    
+    // Because of this assumption, we conclude that the MolList 'theMol' is completely known,
+    // and consists of the same members, between any two PartialTokenLists that are allowed
+    // to interact, we conclude that the words produced by any two PartialTokenLists will
+    // always be equal.
+    
+    // Thus, at minimum, PartialTokenList::operator< and operator== use this assumption in their
+    // code.
+    
+    // Do not try to compare non-isomorphic PartialTokenList's.  Results will be undefined, and
+    // will likely result in a crash.
 
     DECLARE_CLASS ( PartialTokenList );
     struct PartialTokenList
@@ -75,7 +70,7 @@ namespace nmr
         typedef std::pair<MolNdx, std::pair<ModificationSite, ModificationValue> > Modification;
         typedef Modification ModificationToken;
 
-// TODO: Change these to boost::shared_ptr sometime.
+        // TODO: Change these to boost::shared_ptr sometime.
         typedef std::vector<spMol> MolList;
         typedef std::vector<Binding> BindingList;
         typedef BindingList::iterator BindingListIter;

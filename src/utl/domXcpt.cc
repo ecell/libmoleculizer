@@ -32,6 +32,7 @@
 // 
 
 #include <sstream>
+#include "domXcpt.hh"
 
 namespace utl
 {
@@ -249,18 +250,6 @@ namespace utl
         {}
 
         std::string
-        badNNDoubleArgXcpt::
-        mkMsg (const std::string& rTheBadArg)
-        {
-            std::ostringstream msgStream;
-            msgStream << "Expected non-negative double for command-line argument; "
-                      << "got `"
-                      << rTheBadArg
-                      << "'.";
-            return msgStream.str();
-        }
-
-        std::string
         badPosDoubleAttrXcpt::
         mkMsg (const xmlpp::Element* pOffendingElement,
                const std::string& rAttrName,
@@ -335,6 +324,21 @@ namespace utl
                              badAttrValue) )
         {}
 
+        std::string
+        badPosIntAttrXcpt::
+        mkMsg (const xmlpp::Element* pOffendingElt,
+               const std::string& rAttrName,
+               int badAttrValue)
+        {
+            std::ostringstream msgStream;
+            msgStream << xcpt::mkMsg (pOffendingElt)
+            << "Expected positive integer for value of "
+            << rAttrName
+            << " attribute; got "
+            << badAttrValue
+            << ".";
+            return msgStream.str();
+        }
 
 
     } // Namespace dom

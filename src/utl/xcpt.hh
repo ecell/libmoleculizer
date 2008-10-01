@@ -58,7 +58,6 @@ xcptName()                               \
 :                                    \
 utl::xcpt( message )                 \
 {}                                       \
-
 };
 
 namespace utl

@@ -33,43 +33,38 @@
 #ifndef RXNNETWORKCATALOG_HH
 #define RXNNETWORKCATALOG_HH
 
+#include "utl/defs.hh"
 
-#include "fndExceptions.hh"
-#include "rnHelperClasses.hh"
-#include "utl/autoCatalog.hh"
-#include "utl/macros.hh"
+// Depreciate this file.
+#include "fnd/utility.hh"
+
+#include "fnd/fndExceptions.hh"
 #include "fnd/basicReaction.hh"
-#include "plex/mzrPlexFamily.hh"
-#include "plex/mzrPlexSpecies.hh"
-#include "utl/debug.hh"
-
-#include <boost/foreach.hpp>
-#include <vector>
-#include <list>
-#include <stack>
-#include <sstream>
-#include <iostream>
-#include <string>
+#include "fnd/basicSpecies.hh"
 
 namespace fnd
 {
 
-// I obviously need to add some kind of public API function for expanding by a speciesID.
+    // I obviously need to add some kind of public API function for expanding by a speciesID.
 
-// Both speciesType and reactionType must have a public function
-// void expandReactionNetwork().
-// That is,  derived from fnd::reactionNetworkComponent.
-
+    // Both speciesType and reactionType must have a public function
+    // void expandReactionNetwork().
+    // That is,  derived from fnd::reactionNetworkComponent.
     template <typename speciesT,
-    typename reactionT>
+              typename reactionT>
     class ReactionNetworkDescription
     {
-
     public:
         DECLARE_TYPE ( speciesT, SpeciesType);
         DECLARE_TYPE ( reactionT, ReactionType);
 
-        typedef std::map< const std::string*, SpeciesTypePtr, aux::compareByPtrValue<std::string> > SpeciesCatalog;
+        // Some ReactionNetowrkDescription;
+        DECLARE_TYPE( String, SpeciesName );
+        DECLARE_TYPE( String, SpeciesID );
+
+        typedef boost::shared_ptr<const SpeciesID> SpeciesHandle;
+
+        typedef std::map<SpeciesHandle, SpeciesTypePtr, aux::compareByPtrValue<SpeciesID> > SpeciesCatalog;
         typedef typename SpeciesCatalog::iterator SpeciesCatalogIter;
         typedef typename SpeciesCatalog::const_iterator SpeciesCatalogCIter;
 

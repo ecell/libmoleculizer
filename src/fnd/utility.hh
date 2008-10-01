@@ -33,7 +33,7 @@
 #ifndef RNHELPERCLASSES
 #define RNHELPERCLASSES
 
-#include <iostream>
+#include "utl/defs.hh"
 
 namespace fnd
 {
@@ -47,6 +47,12 @@ namespace fnd
             {
                 return *a < *b;
             }
+
+            bool operator()(const boost::shared_ptr<const T>  a, 
+                            const boost::shared_ptr<const T>  b) const
+            {
+                return *a < *b;
+            } 
         };
 
         template <typename ListCatalogT>

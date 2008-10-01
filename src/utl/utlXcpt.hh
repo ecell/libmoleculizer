@@ -29,6 +29,9 @@
 //   Nathan Addy, Scientific Programmer, Molecular Sciences Institute, 2008
 //   * Accumulating Larry's original exceptions into one file.
 
+#ifndef __UTLXCPT_HH
+#define __UTLXCPT_HH
+
 
 // This file accumulates the general utl::xcpt's that larry wrote.
 
@@ -36,6 +39,19 @@
 
 namespace utl
 {
+
+    class badNNDoubleArgXcpt :
+        public utl::xcpt
+    {
+        static std::string
+        mkMsg (const std::string& rTheBadArg);
+
+    public:
+        badNNDoubleArgXcpt (const std::string& rTheBadArg) :
+            utl::xcpt (mkMsg (rTheBadArg) )
+        {}
+    };
+
     class badNNIntArgXcpt :
                 public utl::xcpt
     {
@@ -95,7 +111,27 @@ namespace utl
         {}
     };
 
-    DEFINE_MZR_EXCEPTION("ModelAlreadyLoadedXcpt", \
-                         "Error, model has already been loaded" );
+    class modelAlreadyLoadedXcpt : public utl::xcpt
+    {
 
+    public:
+        modelAlreadyLoadedXcpt()
+            :
+            utl::xcpt("Model already loaded.")
+        {}
+    };
+
+    class badFileNameXcpt :
+                public xcpt
+    {
+    public:
+        badFileNameXcpt()
+                :
+                xcpt ("Error: No filename specified.  Proper usage is \"-f FILENAME\".")
+        {}
+    };
+    
 }
+
+
+#endif

@@ -40,7 +40,7 @@
 \ingroup plexStructGroup
 \brief Defines plexFamily, a structural family of species of complexes. */
 
-#include "utl/macros.hh"
+#include "utl/defs.hh"
 #include "cpx/plexFamily.hh"
 #include "plex/mzrPlex.hh"
 #include "plex/mzrPlexSpecies.hh"

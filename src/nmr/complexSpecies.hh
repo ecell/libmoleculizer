@@ -32,29 +32,23 @@
 #ifndef __COMPLEXSPECIES_HH
 #define __COMPLEXSPECIES_HH
 
-#include "complexOutputState.hh"
-#include "partialTokenList.hh"
-#include "permutation.hh"
-#include "abstractMol.hh"
-#include "namedMolecule.hh"
-#include "nmrExceptions.hh"
 
-#include "utl/macros.hh"
+#include "utl/defs.hh"
+#include "nmr/nmrExceptions.hh"
 
-#include <iostream>
-#include <sstream>
-#include <string>
-#include <vector>
-#include <utility>
-#include <iterator>
-#include <map>
+#include "nmr/complexOutputState.hh"
+#include "nmr/partialTokenList.hh"
+#include "nmr/permutation.hh"
+#include "nmr/abstractMol.hh"
+#include "nmr/namedMolecule.hh"
+
 
 namespace nmr
 {
 
-// April 20 - I am proceeding to change the Mols that ComplexSpecies have to
-// boost::shared_ptr<Mol> in the hopes of more efficient memory management
-// shoon/eventually.
+    // April 20 - I am proceeding to change the Mols that ComplexSpecies have to
+    // boost::shared_ptr<Mol> in the hopes of more efficient memory management
+    // shoon/eventually.
 
     DECLARE_CLASS ( ComplexSpecies );
     class ComplexSpecies
@@ -113,8 +107,8 @@ namespace nmr
         void
         applyPermutationToComplex (const Permutation& aPermutation);
 
-// This is a partialNameSentence with everything "stringified".  This plexOutputState is
-// the object passed to a particular nameAssembler.
+        // This is a partialNameSentence with everything "stringified".  This plexOutputState is
+        // the object passed to a particular nameAssembler.
         void constructOutputState (ComplexOutputState& rOutputState) const;
 
         std::string repr() const;
@@ -141,7 +135,7 @@ namespace nmr
 
 
 std::ostream&
-operator<< (std::ostream& stream, nmr::ComplexSpeciesCref aComplexSpecies);
+operator<<(std::ostream& stream, nmr::ComplexSpeciesCref aComplexSpecies);
 
 #endif
 

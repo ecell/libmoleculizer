@@ -32,17 +32,13 @@
 #ifndef __COMPLEXOUTPUTSTATE_HH
 #define __COMPLEXOUTPUTSTATE_HH
 
-#include "utl/macros.hh"
-
-#include <vector>
-#include <string>
-#include <iostream>
+#include "utl/defs.hh"
 
 namespace nmr
 {
 
-// A Complex Output State is an intermediate between a complex species and a mangled
-// name
+    // A Complex Output State is an intermediate between a complex species and a mangled
+    // name.
 
     DECLARE_CLASS ( ComplexOutputState );
     struct ComplexOutputState

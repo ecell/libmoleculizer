@@ -32,8 +32,6 @@
 #ifndef MOLSTATE_H
 #define MOLSTATE_H
 
-#include "utl/debug.hh"
-
 namespace cpx
 {
     /*! \ingroup plexSpeciesGroup
@@ -41,16 +39,18 @@ namespace cpx
     class molState
     {
     protected:
-// Other contributions from molecular state may go into the true
-// molecular weight; hence the name.
+        // Other contributions from molecular state may go into the true
+        // molecular weight; hence the name.
         double baseWeight;
 
     public:
         molState (double molWeight) :
                 baseWeight (molWeight)
         {}
+
         virtual ~molState()
         {}
+
         virtual double
         getMolWeight (void) const
         {
@@ -63,23 +63,9 @@ namespace cpx
             return baseWeight < rRight.baseWeight;
         }
 
-// DEBUG
-        virtual
-        string
-        getName() const
-        {
-            ostringstream oss;
-            oss << "mol state with weight '"
-            << baseWeight
-            << "'";
-            return oss.str();
-
-        }
-
-
     };
 
-// Now not sure if this was such a good idea...
+    // Now not sure if this was such a good idea...
     typedef const molState* molParam;
 }
 

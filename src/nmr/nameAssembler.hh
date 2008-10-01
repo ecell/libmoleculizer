@@ -32,17 +32,12 @@
 #ifndef __NAMEASSEMBLER_HH
 #define __NAMEASSEMBLER_HH
 
-#include "utl/macros.hh"
+#include "utl/defs.hh"
+#include "nmr/nmrExceptions.hh"
 
-#include "nmrExceptions.hh"
-#include "complexSpecies.hh"
-#include "complexOutputState.hh"
-#include "complexSpeciesOutputMinimizer.hh"
-
-#include <iterator>
-#include <vector>
-#include <string>
-#include <utility>
+#include "nmr/complexSpecies.hh"
+#include "nmr/complexOutputState.hh"
+#include "nmr/complexSpeciesOutputMinimizer.hh"
 
 namespace nmr
 {
@@ -53,15 +48,15 @@ namespace nmr
     {
     public:
 
-// This is intended as a sanity check function that can be called during constructors of
-// different NameAssemblers.  It will throw an exception if startingComplexOutputState != endingComplexOutputState
+        // This is intended as a sanity check function that can be called during constructors of
+        // different NameAssemblers.  It will throw an exception if startingComplexOutputState != endingComplexOutputState
         static void assertEncodeDecodeAccuracy (NameAssembler* ptrNameAssembler) throw (encodeDecodeInconsistencyXcpt)
         {
-//             // TODO/7: In NameAssembler::assertEncodeDecodeAccuracey, create a much more
-//             // complicated ComplexOutputState for checking encoding/decoding equivelence.
+             // TODO/7: In NameAssembler::assertEncodeDecodeAccuracey, create a much more
+             // complicated ComplexOutputState for checking encoding/decoding equivelence.
 
-//             // Create a sufficiently complicated ComplexOutputState.
-//             ComplexOutputState aComplexOutputState;
+             // Create a sufficiently complicated ComplexOutputState.
+            // ComplexOutputState aComplexOutputState;
 
 //             // Encode the COS into a name, then decode the name back into a COS.
 //             ComplexOutputState decodedEncodingOS = ptrNameAssembler->createOutputStateFromName( ptrNameAssembler->createNameFromOutputState( aComplexOutputState ) );
@@ -97,8 +92,8 @@ namespace nmr
             return assemblerName;
         }
 
-// TODO/5 Depreciate NameAssembler::createName in favor
-// of "generateNameFromComplexSpecies".
+        // TODO/5 Depreciate NameAssembler::createName in favor
+        // of "generateNameFromComplexSpecies".
         std::string
         createName (ComplexSpeciesCref aComplexSpecies) const
         {
@@ -108,8 +103,8 @@ namespace nmr
             return createNameFromOutputState ( anOutputState );
         }
 
-// TODO/5 Depreciate NameAssembler::createCanonicalName in favor
-// of "generateCanonicalNameFromComplexSpecies".
+        // TODO/5 Depreciate NameAssembler::createCanonicalName in favor
+        // of "generateCanonicalNameFromComplexSpecies".
         std::string
         createCanonicalName ( ComplexSpeciesCref aComplexSpecies) const
         {
@@ -154,7 +149,7 @@ namespace nmr
             ComplexOutputState anOutputState;
             aComplexSpecies.constructOutputState ( anOutputState );
 
-// I'm surprised this works....
+            // I'm surprised this works....
             return createNameFromOutputState ( anOutputState );
         }
 
@@ -164,7 +159,7 @@ namespace nmr
             ComplexSpeciesOutputMinimizer canonicalNameGenerator;
             ComplexOutputState minimalOutputState = canonicalNameGenerator.getMinimalOutputState ( aComplexSpecies );
 
-// I'm surprised this works
+            // I'm surprised this works
             return createNameFromOutputState ( minimalOutputState );
         }
 
@@ -172,8 +167,8 @@ namespace nmr
         virtual ComplexOutputState createOutputStateFromName ( const std::string& aMangledName) const
         throw (nmr::UnparsableNameXcpt, utl::NotImplementedXcpt)
         {
-// For the time being, I am trying out making this throw something but be overridable.
-// If it isn't successful, this function should go back to being pure-virtual.
+            // For the time being, I am trying out making this throw something but be overridable.
+            // If it isn't successful, this function should go back to being pure-virtual.
             throw utl::NotImplementedXcpt ( "NameAssembler::createOutputStateFromName" );
         }
 

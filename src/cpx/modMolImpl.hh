@@ -32,7 +32,7 @@
 #ifndef CPX_MODMOLIMPL_H
 #define CPX_MODMOLIMPL_H
 
-#include "utl/stdIncludes.hh"
+#include "utl/defs.hh"
 
 namespace cpx
 {
@@ -44,12 +44,12 @@ namespace cpx
             alloMol<stateMolType> (stateMolType (rBaseMol) ),
             modMolMixin (rModMap)
     {
-// Intern the default state in this mol's alloMap.
+        // Intern the default state in this mol's alloMap.
         molParam defaultParam
         = this->internState (modMolState (molecularWeight,
                                           indexModMap (rModMap) ) );
 
-// Save pointer to the default state in the alloMap.
+        // Save pointer to the default state in the alloMap.
         this->pDefaultState = & (this->externState (defaultParam) );
     }
 
@@ -60,7 +60,7 @@ namespace cpx
     {
         const modMolState& rDflt = * (this->getDefaultState() );
 
-// This seems like an insane way to get the base molecular weight.
+        // This seems like an insane way to get the base molecular weight.
         const molState& rBaseState = rDflt;
         double baseWeight = rBaseState.getMolWeight();
 

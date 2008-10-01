@@ -4,6 +4,8 @@
 // badNNIntArgXcpt
 // badPosIntArgXcpt
 
+#include "utlXcpt.hh"
+
 namespace utl
 {
     std::string
@@ -30,21 +32,7 @@ namespace utl
         return msgStream.str();
     }
 
-        std::string
-        badPosIntAttrXcpt::
-        mkMsg (const xmlpp::Element* pOffendingElt,
-               const std::string& rAttrName,
-               int badAttrValue)
-        {
-            std::ostringstream msgStream;
-            msgStream << xcpt::mkMsg (pOffendingElt)
-            << "Expected positive integer for value of "
-            << rAttrName
-            << " attribute; got "
-            << badAttrValue
-            << ".";
-            return msgStream.str();
-        }
+
 
     std::string
     insuffArgsXcpt::
@@ -87,6 +75,18 @@ namespace utl
     {
         return insuffArgsXcpt (mkCountsMsg (actualArgCount,
                                             minimumArgCount) );
+    }
+
+    std::string
+    badNNDoubleArgXcpt::
+    mkMsg (const std::string& rTheBadArg)
+    {
+        std::ostringstream msgStream;
+        msgStream << "Expected non-negative double for command-line argument; "
+        << "got `"
+        << rTheBadArg
+        << "'.";
+        return msgStream.str();
     }
 
 }

@@ -33,6 +33,8 @@
 #include <vector>
 #include <sstream>
 
+#include "utlXcpt.hh"
+
 #ifndef UTILITY_HH
 #define UTILITY_HH
 

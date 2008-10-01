@@ -33,8 +33,19 @@
 #ifndef __DEFS_HPP
 #define __DEFS_HPP
 
-#include <boost/shared_ptr.hpp>
+#include <vector>
+#include <set>
+#include <list>
+#include <map>
+#include <algorithm>
+#include <iterator>
 #include <string>
+#include <utility>
+#include <iostream>
+#include <sstream>
+
+#include <boost/shared_ptr.hpp>
+#include <boost/foreach.hpp>
 
 #include "xcpt.hh"
 
@@ -73,7 +84,7 @@ typedef tag &       tag ## Ref;      \
 typedef const tag & tag ## Cref;
 
 
-// Some universal types.
+// Some global types.
 typedef int Integer;
 typedef float Real;
 typedef std::string String;

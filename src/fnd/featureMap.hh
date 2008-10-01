@@ -41,8 +41,6 @@
 #include "fnd/feature.hh"
 #include <boost/foreach.hpp>
 
-#define foreach BOOST_FOREACH
-
 namespace fnd
 {
 // It would probably be better to template on the feature type,
@@ -52,11 +50,11 @@ namespace fnd
                 public std::map<typename contextT::contextSpec, feature<contextT>* >,
                 public sensitive<newSpeciesStimulus<typename contextT::speciesType> >
     {
-    class notifyFeature :
-                    std::unary_function<typename featureMap::value_type, void>
+        class notifyFeature :
+            std::unary_function<typename featureMap::value_type, void>
         {
             const typename featureMap::stimulusType& rStimulus;
-
+            
         public:
             notifyFeature (const typename featureMap::stimulusType& rNewSpeciesStimulus) :
                     rStimulus (rNewSpeciesStimulus)
@@ -84,11 +82,9 @@ namespace fnd
             return this->size();
         }
 
-
-
         typedef newSpeciesStimulus<typename contextT::speciesType> stimulusType;
 
-//! Add a feature to be notified when a new species appears.
+        //! Add a feature to be notified when a new species appears.
         bool
         addFeature (const typename contextT::contextSpec& rSpec,
                     feature<contextT>* pFeature)
@@ -97,20 +93,13 @@ namespace fnd
             return insert (typename featureMap::value_type (rSpec, pFeature) ).second;
         }
 
-//! Notify each feature targeted by the map of the new species.
+        //! Notify each feature targeted by the map of the new species.
         void
         respond (const typename featureMap::stimulusType& rStimulus)
         {
-// Replacing the code below with a BOOST_FOREACH loop, in the hopes that
-// this may make things more clear.
-
-            for_each (this->begin(),
-                      this->end(),
-                      notifyFeature (rStimulus) );
-
-
-
-
+            std::for_each(this->begin(),
+                          this->end(),
+                          notifyFeature (rStimulus) );
         }
     };
 

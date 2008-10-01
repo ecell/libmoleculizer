@@ -11,7 +11,6 @@
 // badElementCastXcpt
 // badIntAttrXcpt
 // badNNIntAttrXcpt
-// badNNDoubleArgXcpt
 // badNNDoubleAttrXcpt
 // badPosIntAttrXcpt
 
@@ -32,18 +31,6 @@ namespace utl
             badNNIntAttrXcpt (const xmlpp::Element* pOffendingElt,
                               const std::string& rAttrName,
                               int badAttrValue);
-        };
-
-        class badNNDoubleArgXcpt :
-            public utl::xcpt
-        {
-            static std::string
-            mkMsg (const std::string& rTheBadArg);
-
-        public:
-            badNNDoubleArgXcpt (const std::string& rTheBadArg) :
-                utl::xcpt (mkMsg (rTheBadArg) )
-            {}
         };
 
         class badNNDoubleAttrXcpt :

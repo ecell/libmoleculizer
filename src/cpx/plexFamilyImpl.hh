@@ -38,80 +38,55 @@
 namespace cpx
 {
     template<class molT,
-    class plexT,
-    class plexSpeciesT,
-    class plexFamilyT,
-    class omniPlexT>
+             class plexT,
+             class plexSpeciesT,
+             class plexFamilyT,
+             class omniPlexT>
     plexFamily<molT,
-    plexT,
-    plexSpeciesT,
-    plexFamilyT,
-    omniPlexT>::
+               plexT,
+               plexSpeciesT,
+               plexFamilyT,
+               omniPlexT>::
     plexFamily (const plexType& rParadigm,
                 knownBindings<molType, bindingFeatureType>& refKnownBindings,
                 std::set<plexFamilyType*>& refOmniplexFamilies) :
-            paradigm (rParadigm),
-            rKnownBindings (refKnownBindings),
-            rOmniPlexFamilies (refOmniplexFamilies)
+        paradigm (rParadigm),
+        rKnownBindings (refKnownBindings),
+        rOmniPlexFamilies (refOmniplexFamilies)
     {}
 
-// Once again, due to the stinking "reference to reference" problem with
-// std::bind2nd, I have to write another stinking combinator class.
-    template<class plexSpeciesT,
-    class dumpableT>
-    class respondDumpable :
-                public std::unary_function<dumpableT*, void>
-    {
-        const fnd::newSpeciesStimulus<plexSpeciesT>& rStim;
-
-    public:
-        respondDumpable (const fnd::newSpeciesStimulus<plexSpeciesT>& rStimulus) :
-                rStim (rStimulus)
-        {}
-
-        void
-        operator() (dumpableT* pDumpable) const
-        {
-            pDumpable->respond (rStim);
-        }
-    };
-
     template<class molT,
-    class plexT,
-    class plexSpeciesT,
-    class plexFamilyT,
-    class omniPlexT>
+             class plexT,
+             class plexSpeciesT,
+             class plexFamilyT,
+             class omniPlexT>
     void
     plexFamily<molT,
-    plexT,
-    plexSpeciesT,
-    plexFamilyT,
-    omniPlexT>::
+               plexT,
+               plexSpeciesT,
+               plexFamilyT,
+               omniPlexT>::
     respond (const fnd::newSpeciesStimulus<plexSpeciesType>& rStim)
     {
         freeSiteFeatures.respond (rStim);
         bindingFeatures.respond (rStim);
         molFeatures.respond (rStim);
         omniFeatures.respond (rStim);
-
-        std::for_each (familyDumpables.begin(),
-                       familyDumpables.end(),
-                       respondDumpable<plexSpeciesType, dumpableType> (rStim) );
     }
 
 // For accumulating all the plexSpecies in order to update them
 // by zero when regenerating reaction network.
     template<class plexSpeciesT,
-    class plexFamilyT>
+             class plexFamilyT>
     class accumulateOneSpecies :
-                public std::unary_function<typename plexFamilyT::value_type, void>
+        public std::unary_function<typename plexFamilyT::value_type, void>
     {
     public:
         std::vector<plexSpeciesT*>& rAllSpecies;
 
     public:
         accumulateOneSpecies (std::vector<plexSpeciesT*>& rAllPlexSpecies) :
-                rAllSpecies (rAllPlexSpecies)
+            rAllSpecies (rAllPlexSpecies)
         {}
 
         void
@@ -122,16 +97,16 @@ namespace cpx
     };
 
     template<class molT,
-    class plexT,
-    class plexSpeciesT,
-    class plexFamilyT,
-    class omniPlexT>
+             class plexT,
+             class plexSpeciesT,
+             class plexFamilyT,
+             class omniPlexT>
     void
     plexFamily<molT,
-    plexT,
-    plexSpeciesT,
-    plexFamilyT,
-    omniPlexT>::
+               plexT,
+               plexSpeciesT,
+               plexFamilyT,
+               omniPlexT>::
     accumulateSpecies (std::vector<plexSpeciesType*>& rAllSpecies)
     {
         std::for_each (this->begin(),
@@ -140,17 +115,17 @@ namespace cpx
     }
 
     template<class molT,
-    class plexT,
-    class plexSpeciesT,
-    class plexFamilyT,
-    class omniPlexT>
+             class plexT,
+             class plexSpeciesT,
+             class plexFamilyT,
+             class omniPlexT>
     class plexFamily<molT,
-                plexT,
-                plexSpeciesT,
-                plexFamilyT,
-                omniPlexT>::applyOmniMods :
-                public std::unary_function<typename plexFamily::omniMapType::value_type,
-                void>
+                     plexT,
+                     plexSpeciesT,
+                     plexFamilyT,
+                     omniPlexT>::applyOmniMods :
+        public std::unary_function<typename plexFamily::omniMapType::value_type,
+                                   void>
     {
     public:
         typedef plexSpeciesT plexSpeciesType;
@@ -159,13 +134,13 @@ namespace cpx
         typedef subPlexSpec<omniPlexType> specType;
 
         typedef andPlexQueries<plexSpeciesType,
-        omniPlexType> queryType;
+                               omniPlexType> queryType;
     private:
         plexSpeciesT& rSpecies;
 
     public:
         applyOmniMods (plexSpeciesType& refSpecies) :
-                rSpecies (refSpecies)
+            rSpecies (refSpecies)
         {}
 
         void operator() (const typename applyOmniMods::argument_type& rEntry) const
@@ -176,14 +151,14 @@ namespace cpx
 
 // Does the species pass the omniPlex's state query?
             const queryType* pQuery
-            = pOmni->getStateQuery();
+                = pOmni->getStateQuery();
 
             if (pQuery->applyTracked (rSpecies,
                                       rSpec) )
             {
 // Get the omniplex's site to shape map.
                 const siteToShapeMap& rOmniSiteToShapeMap
-                = pOmni->getSiteToShapeMap();
+                    = pOmni->getSiteToShapeMap();
 
 // Insert the allosteric site shapes.
                 rSpecies.siteParams.setSiteShapes (rOmniSiteToShapeMap,
@@ -197,16 +172,16 @@ namespace cpx
 // the routine that's used routinely; it calls this and installs the
 // new species in the family.
     template<class molT,
-    class plexT,
-    class plexSpeciesT,
-    class plexFamilyT,
-    class omniPlexT>
+             class plexT,
+             class plexSpeciesT,
+             class plexFamilyT,
+             class omniPlexT>
     plexSpeciesT*
     plexFamily<molT,
-    plexT,
-    plexSpeciesT,
-    plexFamilyT,
-    omniPlexT>::
+               plexT,
+               plexSpeciesT,
+               plexFamilyT,
+               omniPlexT>::
     makeMember (const std::vector<molParam>& rMolParams)
     {
         siteToShapeMap siteParams;
@@ -215,32 +190,32 @@ namespace cpx
 // by asking the mols to look up the binding site shapes that they
 // associate to the states in which they are found.
         for (int molNdx = 0;
-                molNdx < (int) paradigm.mols.size();
-                molNdx++)
+             molNdx < (int) paradigm.mols.size();
+             molNdx++)
         {
 // Look up the allosteric forms of the sites on the mol,
 // as determined from the mol's state.
             molType* pMol = paradigm.mols[molNdx];
             const molState* pMolState = rMolParams[molNdx];
             const std::vector<siteParam>& rSiteParams
-            = pMol->allostery (pMolState);
+                = pMol->allostery (pMolState);
 
 // Install the allosteric siteParams into result.siteParams.
             for (int siteNdx = 0;
-                    siteNdx < (int) pMol->getSiteCount();
-                    siteNdx++)
+                 siteNdx < (int) pMol->getSiteCount();
+                 siteNdx++)
             {
                 siteParams.insert
-                (siteToShapeMap::value_type (siteSpec (molNdx, siteNdx),
-                                             rSiteParams[siteNdx]) );
+                    (siteToShapeMap::value_type (siteSpec (molNdx, siteNdx),
+                                                 rSiteParams[siteNdx]) );
             }
         }
 
 // Construct the new plexSpecies.  This invocation likely has to change
 // in descendant types.
         plexSpeciesType* pNewSpecies
-        = constructSpecies (siteParams,
-                            rMolParams);
+            = constructSpecies (siteParams,
+                                rMolParams);
 
 // Modify the siteParams database as indicated by omniPlexes,
 // working "through" the injection.  This can't be done until the
@@ -278,22 +253,22 @@ namespace cpx
 // Connects the plex family to its free site features; i.e. fills in
 // the freeSiteFeatures map.
     template<class molT,
-    class plexT,
-    class plexSpeciesT,
-    class plexFamilyT,
-    class omniPlexT>
+             class plexT,
+             class plexSpeciesT,
+             class plexFamilyT,
+             class omniPlexT>
     class plexFamily<molT,
-                plexT,
-                plexSpeciesT,
-                plexFamilyT,
-                omniPlexT>::doBehaviorizeSite :
-                public std::unary_function<siteSpec, void>
+                     plexT,
+                     plexSpeciesT,
+                     plexFamilyT,
+                     omniPlexT>::doBehaviorizeSite :
+        public std::unary_function<siteSpec, void>
     {
 // Do not use plexFamilyT here!
         plexFamily<molT, plexT, plexSpeciesT, plexFamilyT, omniPlexT>& rFamily;
     public:
         doBehaviorizeSite (plexFamily<molT, plexT, plexSpeciesT, plexFamilyT, omniPlexT>& rPlexFamily) :
-                rFamily (rPlexFamily)
+            rFamily (rPlexFamily)
         {}
 
         void
@@ -303,7 +278,7 @@ namespace cpx
 
 // The mol is also a vector of binding sites.
             typename molType::bindingSiteType& rBindingSite
-            = rMol[rSpec.siteNdx() ];
+                = rMol[rSpec.siteNdx() ];
 
 // Each binding site is also a feature.
             rFamily.freeSiteFeatures[rSpec] = &rBindingSite;
@@ -313,16 +288,16 @@ namespace cpx
 // Install the binding feature for the given binding into the
 // binding feature map.
     template<class molT,
-    class plexT,
-    class plexSpeciesT,
-    class plexFamilyT,
-    class omniPlexT>
+             class plexT,
+             class plexSpeciesT,
+             class plexFamilyT,
+             class omniPlexT>
     void
     plexFamily<molT,
-    plexT,
-    plexSpeciesT,
-    plexFamilyT,
-    omniPlexT>::
+               plexT,
+               plexSpeciesT,
+               plexFamilyT,
+               omniPlexT>::
     behaviorizeBinding (const bindingSpec& rSpec)
     {
         const binding& rbinding = paradigm.bindings[rSpec];
@@ -336,23 +311,23 @@ namespace cpx
 // Try to look up the binding feature in the table.
 // findBindingFeature tries the "edge" in both directions.
         bindingFeatureType* pFeature
-        = rKnownBindings.findFeature (pLeftMol,
-                                      rLeftSpec.siteNdx(),
-                                      pRightMol,
-                                      rRightSpec.siteNdx() );
+            = rKnownBindings.findFeature (pLeftMol,
+                                          rLeftSpec.siteNdx(),
+                                          pRightMol,
+                                          rRightSpec.siteNdx() );
         if (! pFeature)
         {
 // This means that the user specified a complex containing
 // a binding without there being a corresponding dimerization-gen.
             const typename molType::bindingSiteType& rLeftSite
-            = (*pLeftMol) [rLeftSpec.siteNdx() ];
+                = (*pLeftMol) [rLeftSpec.siteNdx() ];
             const typename molType::bindingSiteType& rRightSite
-            = (*pRightMol) [rRightSpec.siteNdx() ];
+                = (*pRightMol) [rRightSpec.siteNdx() ];
 
             throw noKineticConstsXcpt::molsAndSites (pLeftMol->getName(),
-                    rLeftSite.getName(),
-                    pRightMol->getName(),
-                    rRightSite.getName() );
+                                                     rLeftSite.getName(),
+                                                     pRightMol->getName(),
+                                                     rRightSite.getName() );
         }
         else
         {
@@ -362,16 +337,16 @@ namespace cpx
     }
 
     template<class molT,
-    class plexT,
-    class plexSpeciesT,
-    class plexFamilyT,
-    class omniPlexT>
+             class plexT,
+             class plexSpeciesT,
+             class plexFamilyT,
+             class omniPlexT>
     void
     plexFamily<molT,
-    plexT,
-    plexSpeciesT,
-    plexFamilyT,
-    omniPlexT>::
+               plexT,
+               plexSpeciesT,
+               plexFamilyT,
+               omniPlexT>::
     behaviorizeMol (const molSpec& rSpec)
     {
         molType* pMol = paradigm.mols[rSpec];
@@ -381,43 +356,43 @@ namespace cpx
     }
 
     template<class molT,
-    class plexT,
-    class plexSpeciesT,
-    class plexFamilyT,
-    class omniPlexT>
+             class plexT,
+             class plexSpeciesT,
+             class plexFamilyT,
+             class omniPlexT>
     class plexFamily<molT,
-                plexT,
-                plexSpeciesT,
-                plexFamilyT,
-                omniPlexT>::connectFamilyToSatisfiedOmni :
-                public std::unary_function<omniPlexType*,
-                void>
+                     plexT,
+                     plexSpeciesT,
+                     plexFamilyT,
+                     omniPlexT>::connectFamilyToSatisfiedOmni :
+        public std::unary_function<omniPlexType*,
+                                   void>
     {
         plexFamily& rFamily;
         const plexIso& rInjection;
     public:
         connectFamilyToSatisfiedOmni (plexFamily& rPlexFamily,
                                       const plexIso& rIsoPair) :
-                rFamily (rPlexFamily),
-                rInjection (rIsoPair)
+            rFamily (rPlexFamily),
+            rInjection (rIsoPair)
         {}
 
         void
         operator() (omniPlexType* pOmniPlex) const
         {
             const typename omniPlexType::structureQueryType& rQuery
-            = pOmniPlex->getStructureQuery();
+                = pOmniPlex->getStructureQuery();
 
             omniStructureQueryArg<plexType> queryArg (rFamily.getParadigm(),
-                    rInjection);
+                                                      rInjection);
 
             if (rQuery (queryArg) )
             {
 // Add the omniPlex's feature to the featureMap of rFamily.
                 rFamily.omniFeatures.addFeature
-                (subPlexSpec<omniPlexType> (pOmniPlex,
-                                            rInjection),
-                 pOmniPlex->getSubPlexFeature() );
+                    (subPlexSpec<omniPlexType> (pOmniPlex,
+                                                rInjection),
+                     pOmniPlex->getSubPlexFeature() );
             }
         }
     };
@@ -425,21 +400,21 @@ namespace cpx
 // This function both searches for subPlexes in the plexFamily's paradigm
 // and installs the ones that it finds.
     template<class molT,
-    class plexT,
-    class plexSpeciesT,
-    class plexFamilyT,
-    class omniPlexT>
+             class plexT,
+             class plexSpeciesT,
+             class plexFamilyT,
+             class omniPlexT>
     class plexFamily<molT,
-                plexT,
-                plexSpeciesT,
-                plexFamilyT,
-                omniPlexT>::doBehaviorizeOmni
-                : public std::unary_function<plexFamily*, void>
+                     plexT,
+                     plexSpeciesT,
+                     plexFamilyT,
+                     omniPlexT>::doBehaviorizeOmni
+        : public std::unary_function<plexFamily*, void>
     {
         plexFamily& rFamily;
     public:
         doBehaviorizeOmni (plexFamily& rPlexFamily) :
-                rFamily (rPlexFamily)
+            rFamily (rPlexFamily)
         {}
 
         void
@@ -471,16 +446,16 @@ namespace cpx
 // This should be done only after all the omniPlex families have
 // been put through passes 1 and 2.
     template<class molT,
-    class plexT,
-    class plexSpeciesT,
-    class plexFamilyT,
-    class omniPlexT>
+             class plexT,
+             class plexSpeciesT,
+             class plexFamilyT,
+             class omniPlexT>
     void
     plexFamily<molT,
-    plexT,
-    plexSpeciesT,
-    plexFamilyT,
-    omniPlexT>::
+               plexT,
+               plexSpeciesT,
+               plexFamilyT,
+               omniPlexT>::
     connectToFeatures (void)
     {
 // Locate the free structural sites.
@@ -508,16 +483,16 @@ namespace cpx
     }
 
     template<class molT,
-    class plexT,
-    class plexSpeciesT,
-    class plexFamilyT,
-    class omniPlexT>
+             class plexT,
+             class plexSpeciesT,
+             class plexFamilyT,
+             class omniPlexT>
     std::vector<molParam>
     plexFamily<molT,
-    plexT,
-    plexSpeciesT,
-    plexFamilyT,
-    omniPlexT>::
+               plexT,
+               plexSpeciesT,
+               plexFamilyT,
+               omniPlexT>::
     makeDefaultMolParams (void) const
     {
         const std::vector<molType*>& rMolVector = getParadigm().mols;

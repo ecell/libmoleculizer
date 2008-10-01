@@ -46,8 +46,8 @@ namespace mzr
         ~mzrSpeciesStream (void)
         {}
 
-// Alas, uses dumpable::getName, so can't actually
-// do this here.
+        // Alas, uses dumpable::getName, so can't actually
+        // do this here.
         virtual void
         insertTaggedSpeciesStreamRef (xmlpp::Element* pParent) const
         throw (std::exception) = 0;
@@ -57,7 +57,7 @@ namespace mzr
         throw (std::exception) = 0;
     };
 
-// Interface for state output for tabDumpEvent.
+    // Interface for state output for tabDumpEvent.
     class mzrDumpStream
     {
     protected:

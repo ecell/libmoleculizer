@@ -369,27 +369,23 @@ namespace cpx
     isoSearch<plexT>::compareColoringPartitions (const plexT& plex1, const std::vector<int>& labelingMap1, const std::vector<int>& partitionMap1,
             const plexT& plex2, const std::vector<int>& labelingMap2, const std::vector<int>& partitionMap2) const
     {
-// Replace with throw BadGraphSpecificationXcpt("");
+        // Replace with throw BadGraphSpecificationXcpt("");
         if (labelingMap1.size() != partitionMap1.size() ||
                 labelingMap2.size() != partitionMap2.size() ) throw 666;
 
+        // Couple definitions:
+        // molMap - a vector of the mols in the plex.
+        // labelMap - a permutation which sorts mols by color
+        // partition Map -- an array which is 1 on the last entity in the coloring partition and 0 everywhere else
 
-// Couple definitions:
-// molMap - a vector of the mols in the plex.
-// labelMap - a permutation which sorts mols by color
-// partition Map -- an array which is 1 on the last entity in the coloring partition and 0 everywhere else
-
-// Example molMap -- [D, A, B, C, B]
-// labeling map   -- [4, 0, 1, 3, 2]
-// Partition map  -- [1, 0, 1, 1, 1]
-
+        // Example molMap -- [D, A, B, C, B]
+        // labeling map   -- [4, 0, 1, 3, 2]
+        // Partition map  -- [1, 0, 1, 1, 1]
         if ( partitionMap1 != partitionMap2 ) return false;
 
         const std::vector<int>& partitionMap ( partitionMap1 );
 
-
-        std::vector<int>::const_iterator begin_first = labelingMap1.begin();
-        std::vector<int>::const_iterator begin_second = labelingMap2.begin();
+        std::vector<int>::const_iterator begin_first( labelingMap1.begin() ), begin_second( labelingMap2.begin() );
 
         for (unsigned int partNdx = 0; partNdx != partitionMap.size(); ++partNdx)
         {
@@ -398,7 +394,7 @@ namespace cpx
             std::vector<int>::const_iterator indexIter_1 = find (labelingMap1.begin(), labelingMap1.end(), partNdx);
             if (indexIter_1 == labelingMap1.end() )
             {
-                std::cerr << "Error in isoSearchImpl.hh(1)" << endl;
+                std::cerr << "Error in isoSearchImpl.hh(1)" << std::endl;
                 throw 666;
             }
 
@@ -406,7 +402,7 @@ namespace cpx
 
             if (indexIter_2 == labelingMap2.end() )
             {
-                std::cerr << "Error in isoSearchImpl.hh(2)" << endl;
+                std::cerr << "Error in isoSearchImpl.hh(2)" << std::endl;
                 throw 666;
             }
 

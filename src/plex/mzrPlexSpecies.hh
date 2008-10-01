@@ -39,7 +39,6 @@
 #include "utl/dom.hh"
 #include "fnd/basicDumpable.hh"
 #include "cpx/plexSpcsMixin.hh"
-#include "mzr/mzrSpeciesDumpable.hh"
 
 namespace plx
 {
@@ -55,42 +54,38 @@ namespace plx
         mutable std::string name;
     public:
 
-        typedef mzr::querySpeciesDumpable<mzrPlexSpecies> queryDumpableType;
-
-        typedef mzr::multiSpeciesDumpable<mzrPlexSpecies> msDumpableType;
-
-        mzrPlexSpecies (mzrPlexFamily& rContainingFamily,
-                        const cpx::siteToShapeMap& rSiteParams,
-                        const std::vector<cpx::molParam>& rMolParams) :
-                cpx::plexSpeciesMixin<mzrPlexFamily> (rContainingFamily,
-                                                      rSiteParams,
-                                                      rMolParams)
+        mzrPlexSpecies(mzrPlexFamily& rContainingFamily,
+                       const cpx::siteToShapeMap& rSiteParams,
+                       const std::vector<cpx::molParam>& rMolParams) :
+            cpx::plexSpeciesMixin<mzrPlexFamily> (rContainingFamily,
+                                                  rSiteParams,
+                                                  rMolParams)
         {
             nameGenerated = false;
             name = "";
         }
 
-        ~mzrPlexSpecies (void)
+        ~mzrPlexSpecies(void)
         {
         }
 
-// This fulfils the pure virtual function in the ancestor class
-// fnd::massive.
+        // This fulfils the pure virtual function in the ancestor class
+        // fnd::massive.
         double
-        getWeight (void) const;
+        getWeight(void) const;
 
-// This fulfills the pure virtual function in the ancestor class
-// cpx::notifier.
+        // This fulfills the pure virtual function in the ancestor class
+        // cpx::notifier.
         void
-        notify (int generateDepth);
+        notify(int generateDepth);
 
-// This overrides basicSpecies::getName(), which just returns a tag.
+        // This overrides basicSpecies::getName(), which just returns a tag.
         virtual std::string
-        getName (void) const;
+        getName(void) const;
 
         xmlpp::Element*
-        insertElt (xmlpp::Element* pExplicitSpeciesElt,
-                   double molarFactor) const
+        insertEl (xmlpp::Element* pExplicitSpeciesElt,
+                  double molarFactor) const
         throw (std::exception);
     };
 }

@@ -45,7 +45,6 @@
 #include <functional>
 #include "utl/autoCache.hh"
 #include "utl/autoVector.hh"
-#include "fnd/querySpeciesDumpable.hh"
 #include "fnd/featureMap.hh"
 #include "fnd/sensitive.hh"
 #include "fnd/newSpeciesStimulus.hh"
@@ -61,10 +60,11 @@
 namespace cpx
 {
     template<class molT,
-    class plexT,
-    class plexSpeciesT,
-    class plexFamilyT,
-    class omniPlexT> class omniPlex;
+             class plexT,
+             class plexSpeciesT,
+             class plexFamilyT,
+             class omniPlexT> 
+    class omniPlex;
 
     /*! \ingroup plexStructGroup
 
@@ -75,10 +75,10 @@ namespace cpx
     complex are computed from these, together with the allostery
     properties of the structural family. */
     template<class molT,
-    class plexT,
-    class plexSpeciesT,
-    class plexFamilyT,
-    class omniPlexT>
+             class plexT,
+             class plexSpeciesT,
+             class plexFamilyT,
+             class omniPlexT>
     class plexFamily :
                 public utl::autoCache<std::vector<molParam>, plexSpeciesT>,
                 public fnd::sensitive<fnd::newSpeciesStimulus<plexSpeciesT> >
@@ -107,16 +107,12 @@ namespace cpx
         typedef plexFamilyT plexFamilyType;
         typedef omniPlexT omniPlexType;
 
-        typedef typename plexSpeciesT::queryDumpableType dumpableType;
+//        typedef typename plexSpeciesT::queryDumpableType dumpableType;
 
-        typedef fnd::feature<cxBinding<plexSpeciesType,
-        plexFamilyType> > bindingFeatureType;
+        typedef fnd::feature<cxBinding<plexSpeciesType, plexFamilyType> > bindingFeatureType;
+        typedef queryAllosteryList<plexSpeciesType, omniPlexType> queryAlloListType;
 
-        typedef queryAllosteryList<plexSpeciesType,
-        omniPlexType> queryAlloListType;
-
-        typedef andPlexQueries<plexSpeciesType,
-        omniPlexType> queryType;
+        typedef andPlexQueries<plexSpeciesType, omniPlexType> queryType;
     protected:
 
         class doBehaviorizeSite;
@@ -170,10 +166,6 @@ namespace cpx
 // to add allosteric properties connected with this structural family
 // itself to new species created in this family.
         queryAlloListType alloStateList;
-
-// Dumpables that want to see all new species created in this family
-// should add themselves here.
-        std::vector<dumpableType*> familyDumpables;
 
 ///////////////////
 
@@ -288,13 +280,6 @@ namespace cpx
 // point for constructing the molParams of a new species.
         std::vector<molParam>
         makeDefaultMolParams (void) const;
-
-// Add a query-based dumpable.
-        void
-        addDumpable (dumpableType* pDumpable)
-        {
-            familyDumpables.push_back (pDumpable);
-        }
     };
 }
 

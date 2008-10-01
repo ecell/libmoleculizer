@@ -32,21 +32,21 @@
 #ifndef MZRUNIT_H
 #define MZRUNIT_H
 
+#include "utl/defs.hh"
 #include "utl/dom.hh"
-#include "utl/autoCatalog.hh"
-#include "utl/autoVector.hh"
 
+#include "fnd/query.hh"
+#include "fnd/dumpable.hh"
 #include "mzr/unit.hh"
+#include "mzr/mzrException.hh"
+#include "mzr/moleculizer.hh"
+
 #include "mzr/molarFactor.hh"
-#include "mzr/mzrEvent.hh"
-#include "mzr/tabDumpEvent.hh"
-#include "mzr/mzrEltName.hh"
 #include "mzr/mzrSpecies.hh"
-// #include "mzr/mzrSpeciesDumpable.hh"
-#include "mzr/dumpableNotSpeciesStreamXcpt.hh"
 #include "mzr/mzrReaction.hh"
 
-#include "mzr/moleculizer.hh"
+#include "mzr/mzrEltName.hh"
+
 
 namespace mzr
 {
@@ -58,65 +58,50 @@ namespace mzr
                 public unit
     {
 
-// The one (?) built in state variable, essentially the volume.
+        // The one (?) built in state variable, essentially the volume.
         molarFactorGlobal theMolarFactor;
 
-// These are all the species that can be dumped to output.
+        // These are all the species that can be dumped to output.
         utl::catalog<mzrSpecies> speciesByName;
 
-// All the species that are not deleted by the recognizer and
-// therefore need management here.
-//
-// 29May03 I will probably want to farm these species out to
-// their units.  For the time being, these are probably just stochastirator
-// species.  Any chance of just keeping keeping, say stochastirator
-// species in a vector, to automate their deletion more gracefully?
-//
-// Each different kind of species would need its own list, and each
-// different kind of species would have to have a default constructor
-// for this kind of thing to work.
+        // All the species that are not deleted by the recognizer and
+        // therefore need management here.
+        //
+        // 29May03 I will probably want to farm these species out to
+        // their units.  For the time being, these are probably just stochastirator
+        // species.  Any chance of just keeping keeping, say stochastirator
+        // species in a vector, to automate their deletion more gracefully?
+        //
+        // Each different kind of species would need its own list, and each
+        // different kind of species would have to have a default constructor
+        // for this kind of thing to work.
         utl::autoVector<mzrSpecies> userSpecies;
 
-// Memory management of reaction families, which hold all the automatically
-// generated reactions.
+        // Memory management of reaction families, which hold all the automatically
+        // generated reactions.
         utl::autoVector<utl::autoVector<mzrReaction> > reactionFamilies;
 
-
-// I see below that these require special initial scheduling???
-// These are also in userEvents for memory management.
-        std::vector<tabDumpEvent*> tabDumpEvents;
-
-// All dumpables.
+        // All dumpables.
         utl::autoCatalog<fnd::dumpable<fnd::basicDumpable::dumpArg> >dumpables;
 
-// Each entry here should correspond to an entry in the dumpables
-// catalog with the same name.
-        std::vector<mzrSpeciesStream*> speciesStreams;
-
-// Entries here are mainly mixins in tabDumpEvents, and represent .dmp
-// files.  With the speciesStreams this arranges that one can connect
-// .dmp output of populations with species in a state dump.  The keys
-// here are basically output file name strings.
-        std::vector<mzrDumpStream*> dumpStreams;
-
-// Memory management for queries of all kinds.  The basicQuery
-// base class serves no purpose other than memory management here.
+        // Memory management for queries of all kinds.  The basicQuery
+        // base class serves no purpose other than memory management here.
         utl::autoVector<fnd::baseQuery> queries;
 
-// This new command-line option supplants generateOption and generateOk,
-// in that making the depth negative should turn off reaction generation
-// after intial setup.
+        // This new command-line option supplants generateOption and generateOk,
+        // in that making the depth negative should turn off reaction generation
+        // after intial setup.
         int generateDepth;
 
     public:
 
-// Iterators into this are used in constructor of reaction to ensure that
-// each reaction is sensitized to each global state variable.
+        // Iterators into this are used in constructor of reaction to ensure that
+        // each reaction is sensitized to each global state variable.
         std::vector<fnd::sensitivityList<mzrReaction>*> globalVars;
 
         mzrUnit (moleculizer& rMoleculizer);
 
-// Accessors for generation depth command-line argument.
+        // Accessors for generation depth command-line argument.
         void
         setGenerateDepth (int depth)
         {
@@ -137,8 +122,8 @@ namespace mzr
             return theMolarFactor;
         }
 
-// This doesn't register the species for deletion, so it can be used
-// for explicit plexSpecies, which are deleted by their plexFamilies.
+        // This doesn't register the species for deletion, so it can be used
+        // for explicit plexSpecies, which are deleted by their plexFamilies.
         bool
         addSpecies (const std::string& rSpeciesName,
                     mzrSpecies* pSpecies)
@@ -162,9 +147,9 @@ namespace mzr
 /////////////////////////////////////////////////////////
 
 
-// For adding a species that will be memory-managed by mzrUnit.
-// (An example would be an explicit stochSpecies, but that's from
-// another module.)
+        // For adding a species that will be memory-managed by mzrUnit.
+        // (An example would be an explicit stochSpecies, but that's from
+        // another module.)
         bool
         addUserSpecies (const std::string& rSpeciesName,
                         mzrSpecies* pSpecies)
@@ -189,8 +174,8 @@ namespace mzr
         throw (utl::xcpt);
 
 
-// Memory management and traversal of reactions that are not automatically
-// generated.
+        // Memory management and traversal of reactions that are not automatically
+        // generated.
         utl::autoVector<mzrReaction> userReactions;
 
         void
@@ -200,27 +185,18 @@ namespace mzr
             rMolzer.recordReaction ( pReaction );
         }
 
-// Memory management and traversal of reactions that are automatically
-// generated.
-//
-// It occurs to me that the only reason for these to exist is that the
-// reactions in a family are generated by a particular reaction generator.
-// It might therefore make sense to include in reactionFamily a reference
-// back to its generator.  One could even link generators back to user
-// input for diagnostics, etc.
+        // Memory management and traversal of reactions that are automatically
+        // generated.
+        //
+        // It occurs to me that the only reason for these to exist is that the
+        // reactions in a family are generated by a particular reaction generator.
+        // It might therefore make sense to include in reactionFamily a reference
+        // back to its generator.  One could even link generators back to user
+        // input for diagnostics, etc.
         void
         addReactionFamily (utl::autoVector<mzrReaction>* pReactionFamily)
         {
             reactionFamilies.addEntry (pReactionFamily);
-        }
-
-// Memory management of events created by the user.
-        utl::autoVector<mzrEvent> userEvents;
-
-        void
-        addUserEvent (mzrEvent* pEvent)
-        {
-            userEvents.push_back (pEvent);
         }
 
         bool
@@ -230,30 +206,12 @@ namespace mzr
                                        pDumpable);
         }
 
-// Throws an exception if there is already a dumpable
-// whose name duplicates that of the given dumpable.
+        // Throws an exception if there is already a dumpable
+        // whose name duplicates that of the given dumpable.
         void
         mustAddDumpable (fnd::dumpable<fnd::basicDumpable::dumpArg>* pDumpable,
                          xmlpp::Node* pRequestingNode = 0)
         throw (utl::xcpt);
-
-// The dumpables that print species populations (speciesStreams) are
-// tracked, so that when state is dumped, those species can be enumerated.
-        template<class dumpableType>
-        bool
-        addSpeciesDumpable (dumpableType* pDumpable)
-        {
-            mzrSpeciesStream* pSpeciesStream
-            = dynamic_cast<mzrSpeciesStream*> (pDumpable);
-
-            if (! pSpeciesStream)
-                throw dumpableNotSpeciesStreamXcpt (pDumpable->getName() );
-
-            bool nameOk = addDumpable (pDumpable);
-            if (nameOk) addSpeciesStream (pSpeciesStream);
-
-            return nameOk;
-        }
 
         fnd::dumpable<fnd::basicDumpable::dumpArg>*
         findDumpable (const std::string& rDumpableName) const
@@ -267,56 +225,6 @@ namespace mzr
         throw (utl::xcpt);
 
         void
-        addSpeciesStream (mzrSpeciesStream* pStream)
-        {
-            speciesStreams.push_back (pStream);
-        }
-
-//     void
-//     mustAddSpeciesStream(xmlpp::Node* pRequestingNode,
-// 			 const std::string& rStreamName,
-// 			 mzrSpeciesStream* pStream)
-//       throw(utl::xcpt);
-
-//     mzrSpeciesStream*
-//     findSpeciesStream(const std::string& rStreamName)
-//     {
-//       return speciesStreams.findEntry(rStreamName);
-//     }
-
-//     mzrSpeciesStream*
-//     mustFindSpeciesStream(xmlpp::Node* pRequestingNode,
-// 			  const std::string& rStreamName)
-//       throw(utl::xcpt);
-
-// A dumpStream represents a .dmp output file.
-// Here the "streamName" is the file name, +, or -.
-        void
-        addDumpStream (mzrDumpStream* pStream)
-        {
-            dumpStreams.push_back (pStream);
-        }
-
-//     void
-//     mustAddDumpStream(const std::string& rStreamName,
-// 		      mzrDumpStream* pStream,
-// 		      xmlpp::Node* pRequestingNode = 0)
-//       throw(utl::xcpt);
-
-//     mzrDumpStream*
-//     findDumpStream(const std::string& rStreamName)
-//     {
-//       return dumpStreams.findEntry(rStreamName);
-//     }
-
-//     mzrDumpStream*
-//     mustFindDumpStream(const std::string& rStreamName,
-// 		       xmlpp::Node* pRequestingNode = 0)
-//       throw(utl::xcpt);
-
-//     mzrUnit(moleculizer& rMoleculizer);
-
-        void
         addQuery (fnd::baseQuery* pQuery)
         {
             queries.push_back (pQuery);
@@ -327,16 +235,16 @@ namespace mzr
                        xmlpp::Element* pModelElt,
                        xmlpp::Element* pStreamElt) throw (std::exception);
 
-// Just emits header lines in all the dumpables, schedules tabDumpEvents
-// for the first time, after which they schedule themselves.
+        // Just emits header lines in all the dumpables, schedules tabDumpEvents
+        // for the first time, after which they schedule themselves.
         void
         prepareToRun (xmlpp::Element* pRootElt,
                       xmlpp::Element* pModelElt,
                       xmlpp::Element* pStreamElt) throw (std::exception);
 
 
-// In addition to the above, sets the current (i.e. initial)
-// simulation time to the time at which state was dumped.
+        // In addition to the above, sets the current (i.e. initial)
+        // simulation time to the time at which state was dumped.
         void
         prepareToContinue (xmlpp::Element* pRootElt,
                            xmlpp::Element* pModelElt,

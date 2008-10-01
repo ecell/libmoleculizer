@@ -37,6 +37,7 @@
 #include <libxml++/libxml++.h>
 
 #include "utl/xcpt.hh"
+#include "utl/domXcpt.hh"
 
 namespace utl
 {

@@ -36,74 +36,39 @@ endif
 libmoleculizer_mzr_la_LIBADD = -lstdc++ $(LIBUTL)
 
 libmoleculizer_mzr_la_SOURCES =\
-dumpStateEvent.cc \
 dumpUtils.cc \
-dumpableNotSpeciesStreamXcpt.cc \
-dupDumpableNameXcpt.cc \
-dupSpeciesNameXcpt.cc \
-illegalSpeciesNameXcpt.cc \
 moleculizer.cc \
 mzrEltName.cc \
+mzrExceptions.cc \
 mzrReaction.cc \
 mzrSpecies.cc \
 mzrUnit.cc \
 mzrUnitInsert.cc \
 mzrUnitParse.cc \
-noReactEvent.cc \
-noStopEventWarning.cc \
-stopEvent.cc \
-stopEventInPastXcpt.cc \
-tabDumpEvent.cc \
-unitsMgr.cc \
-unkDumpableXcpt.cc \
-unkSpeciesXcpt.cc \
-unkStatStreamXcpt.cc \
-volumeEvent.cc \
-createEvent.cc
+unitsMgr.cc
 
 # growEvent.cc 
-# continuator.cc
-
-
 
 libmoleculizer_mzr_HEADERS=\
-debug.hh \
-continuator.hh \
 createEvent.hh \
-dumpStateEvent.hh \
 dumpUtils.hh \
-dumpableNotSpeciesStreamXcpt.hh \
-dupDumpableNameXcpt.hh \
-dupSpeciesNameXcpt.hh \
-eventQueue.hh \
-growEvent.hh \
-illegalSpeciesNameXcpt.hh \
 inputCapTest.hh \
-inputCapXcpt.hh \
 molarFactor.hh \
 moleculizer.hh \
 mzrEltName.hh \
-mzrHelperFunctions.hh \
 mzrEvent.hh \
+mzrException.hh \
+mzrHelperFunctions.hh \
 mzrReaction.hh \
 mzrSpecies.hh \
-mzrSpeciesDumpable.hh \
-mzrSpeciesDumpableImpl.hh \
 mzrStream.hh \
 mzrUnit.hh \
-noReactEvent.hh \
-noStopEventWarning.hh \
-reactCountDumpable.hh \
 respondReaction.hh \
 rxnDescriptionInterface.hh \
-simTimeDumpable.hh \
-stopEvent.hh \
-stopEventInPastXcpt.hh \
-tabDumpEvent.hh \
 unit.hh \
-unitsMgr.hh \
-unkDumpableXcpt.hh \
-unkSpeciesXcpt.hh \
-unkStatStreamXcpt.hh \
-volumeEvent.hh
+unitsMgr.hh
+
+
+
+
 

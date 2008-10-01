@@ -89,7 +89,8 @@ namespace fnd
         SpeciesTypePtr
         findSpecies (const std::string& name) throw (fnd::NoSuchSpeciesXcpt)
         {
-            SpeciesCatalogIter theIter = theSpeciesListCatalog.find (&name);
+            SpeciesHandle specHandle( new SpeciesID( name ) );
+            SpeciesCatalogIter theIter = theSpeciesListCatalog.find ( specHandle );
             if (theIter != theSpeciesListCatalog.end() )
             {
                 return theIter->second;
@@ -104,7 +105,9 @@ namespace fnd
         SpeciesTypeCptr
         findSpecies (const std::string& name) const throw (fnd::NoSuchSpeciesXcpt)
         {
-            SpeciesCatalogCIter theIter = theSpeciesListCatalog.find (&name);
+            SpeciesHandle specHandle( new SpeciesID( name ) );
+
+            SpeciesCatalogCIter theIter = theSpeciesListCatalog.find (specHandle);
 
             if (theIter != theSpeciesListCatalog.end() )
             {
@@ -195,68 +198,33 @@ namespace fnd
             return theCompleteReactionList;
         }
 
-// These two functions are the interface that reaction generators use
-// to record their species.  They add the (speciesName, speciesPtr)
-// and (reactionName, reactionPtr) entries to the catalog respectively.
-// If the object being recorded is new, we also record it as a hit in the
-// total number of species/reactions as well as the delta number of species/
-// reactions.
-
+        // These two functions are the interface that reaction generators use
+        // to record their species.  They add the (speciesName, speciesPtr)
+        // and (reactionName, reactionPtr) entries to the catalog respectively.
+        // If the object being recorded is new, we also record it as a hit in the
+        // total number of species/reactions as well as the delta number of species/
+        // reactions.
         bool
         recordSpecies ( SpeciesTypePtr pSpecies)
         {
-//             std::cout << "Entering recordSpecies: " << std::endl;
-//             std::cout << "###################\nCurrentSpeciesList:\n";
-//             printSpecies("\t");
-//             std::cout << "###################\n";
-            
-            std::string* pSpeciesName = new std::string ( pSpecies->getName() );
+            SpeciesHandle speciesHandle( new SpeciesID( pSpecies->getName()  ) 
 
-//            cout << "Searching for " << *pSpeciesName << " (" << pSpecies << ")" << std::endl;
-            if (theSpeciesListCatalog.find ( pSpeciesName) == theSpeciesListCatalog.end() )
+            if ( theSpeciesListCatalog.find(speciesHandle) == theSpeciesListCatalog.end() )
             {
-//                std::cout << "Adding " << *pSpeciesName << " (" << pSpecies << ")" << std::endl;
-                theSpeciesListCatalog.insert ( std::make_pair ( pSpeciesName, pSpecies) );
+                theSpeciesListCatalog.insert ( std::make_pair ( speciesHandle, pSpecies) );
                 theDeltaSpeciesList.push_back ( pSpecies );
                 return true;
             }
             else
             {
-                delete pSpeciesName;
-//                std::cout << "\n";
                 return false;
             }
-
-        }
-
-
-
-// You don't own this.  Don't delete it.
-        ReactionTypePtr
-        calculateReactionBetweenSpecies ( const speciesT& firstSpecies,
-                                          const speciesT& secondSpecies)
-        {
-// If there is no reaction
 
         }
 
         bool
         recordReaction ( ReactionTypePtr pRxn )
         {
-// In the current form of the application, this check is not necessary, as any reaction
-// is created at most once.
-
-//         if (theCompleteReactionList.end() != std::find(theCompleteReactionList.begin(),
-//                                                        theCompleteReactionList.end(),
-//                                                        pRxn))
-//         {
-//             return false;
-
-
-//         }
-            
-//            std::cout << "Recording rxn: " << pRxn->getName() << std::endl;
-
             if (!pRxn->isStandardReaction() )
             {
                 std::cerr<< "A reaction is nonstandard." << std::endl;
@@ -271,12 +239,12 @@ namespace fnd
                     SpeciesTypePtr theSpeciesPtr;
 
                 case 0:
-// Register in the map of creation reactions
+                    // Register in the map of creation reactions
                     zeroSubstrateRxns.push_back ( pRxn );
                     break;
 
                 case 1:
-// Register in a multi map of 1->? reactions
+                    // Register in a multi map of 1->? reactions
                     theSpeciesPtr = pRxn->getReactants().begin()->first;
                     singleSubstrateRxns.insert ( std::make_pair (theSpeciesPtr, pRxn ) );
                     break;
@@ -304,8 +272,8 @@ namespace fnd
             return findSpecies (rName).getPop();
         }
 
-// These are not used by anyone at the moment.  It might be better to use them instead
-// of the plain old recordSpecies/recordReaction functions, but who knows.
+        // These are not used by anyone at the moment.  It might be better to use them instead
+        // of the plain old recordSpecies/recordReaction functions, but who knows.
         void mustRecordSpecies ( SpeciesTypePtr pSpecies ) throw (utl::xcpt)
         {
             if ( !recordSpecies ( pSpecies ) )
@@ -340,9 +308,9 @@ namespace fnd
             return theCompleteReactionList.size();
         }
 
-// The getDeltaNumber(Species|Reactions) functions return the number
-// of those objects created since the last time the recordCurrentState
-// funsource ction was source called.
+        // The getDeltaNumber(Species|Reactions) functions return the number
+        // of those objects created since the last time the recordCurrentState
+        // funsource ction was source called.
         unsigned int
         getNumberDeltaReactions() const
         {
@@ -420,8 +388,8 @@ namespace fnd
 
         ~ReactionNetworkDescription()
         {
-// We don't memory manage any SpeciesType* or ReactionType*, but we do memory
-// manage the string* in theSpeciesListCatalog.
+            // We don't memory manage any SpeciesType* or ReactionType*, but we do memory
+            // manage the string* in theSpeciesListCatalog.
 
 
             BOOST_FOREACH ( typename SpeciesCatalog::value_type i, theSpeciesListCatalog)
@@ -430,11 +398,10 @@ namespace fnd
             }
         }
 
-// -- The pointers to the strings in theSpeciesListCatalog ARE memory managed.
-// -- The pointers to the species and reactions ARE NOT memory managed here.
+        // -- The pointers to the strings in theSpeciesListCatalog ARE memory managed.
+        // -- The pointers to the species and reactions ARE NOT memory managed here.
 
         SpeciesCatalog theSpeciesListCatalog;
-// SpeciesListCatalog theSpeciesListCatalog;
         ReactionList theCompleteReactionList;
         ReactionList unaryReactionList;
         ReactionList binaryReactionList;
@@ -442,8 +409,7 @@ namespace fnd
         SpeciesList    theDeltaSpeciesList;
         ReactionList    theDeltaReactionList;
 
-// 0->1, 1->0, 1->1, 1->2, 2->1
-
+        // 0->1, 1->0, 1->1, 1->2, 2->1
         ReactionList zeroSubstrateRxns;
         ParticipatingSpeciesRxnMap singleSubstrateRxns;
         ParticipatingSpeciesRxnMap doubleSubstrateRxns;

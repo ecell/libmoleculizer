@@ -71,13 +71,12 @@ Quick links:
 - \link unitsGroup Moleculizer units. \endlink
 */
 
+#include "utl/defs.hh"
 #include "fnd/reactionNetworkCatalog.hh"
-#include "utl/autoCatalog.hh"
+#include "mzr/mzrException.hh"
 #include "mzr/unit.hh"
 #include "mzr/mzrSpecies.hh"
 #include "mzr/mzrReaction.hh"
-#include "mzr/illegalSpeciesNameXcpt.hh"
-#include "mzr/mzrException.hh"
 
 namespace mzr
 {

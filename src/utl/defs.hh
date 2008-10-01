@@ -51,7 +51,9 @@
 
 #include "AssocVector.h"
 #include "autoCache.hh"
+#include "autoCatalog.hh"
 #include "autoVector.hh"
+
 
 // Acknowledgements:
 // The "DECLARE_XXX" macros (everything but the

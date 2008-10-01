@@ -32,33 +32,25 @@
 #include <libxml++/libxml++.h>
 #include <boost/foreach.hpp>
 
+#include "utl/defs.hh"
+#include "utl/utlXcpt.hh"
+#include "utl/dom.hh"
+#include "utl/linearHash.hh"
+
+#include "mzr/moleculizer.hh"
 #include "mzr/mzrException.hh"
 
-#include <set>
-#include <algorithm>
-#include <fstream>
-#include <ctime>
 
-#include "utl/utlXcpt.hh"
-#include "utl/linearHash.hh"
-#include "utl/dom.hh"
-
-// Does this work?
-// #include "utl/platform.hh"
-
-#include "mzr/mzrSpecies.hh"
-#include "mzr/mzrReaction.hh"
 #include "mzr/mzrUnit.hh"
-#include "mzr/moleculizer.hh"
+
 #include "mzr/unitsMgr.hh"
 #include "mzr/mzrEltName.hh"
 #include "mzr/inputCapTest.hh"
-#include "mzr/inputCapXcpt.hh"
 
 
 namespace mzr
 {
-// For getting each unit to do its part of parsing input.
+    // For getting each unit to do its part of parsing input.
     class unitParseDomInput :
                 public std::unary_function<unit*, void>
     {
@@ -113,7 +105,7 @@ namespace mzr
     void
     moleculizer::constructorPrelude (void)
     {
-// Add up the input capabilities of the units.
+        // Add up the input capabilities of the units.
         pUserUnits->unionInputCaps (inputCap);
     }
 
@@ -123,8 +115,8 @@ namespace mzr
                                   xmlpp::Element* pStreamsElement)
     throw (std::exception)
     {
-// Verify that the input can all be sucessfully handled by
-// various units.
+        // Verify that the input can all be sucessfully handled by
+        // various units.
 
         try
         {
@@ -151,7 +143,7 @@ namespace mzr
 
         pUserUnits = new unitsMgr (*this);
 
-// Now just does the "input capabilities" thing.
+        // Now just does the "input capabilities" thing.
         constructorPrelude();
     }
 
@@ -244,23 +236,23 @@ namespace mzr
     void
     moleculizer::attachDocument (xmlpp::Document* pDoc)
     {
-// Note that this new pattern here will allow old style moleculizer
-// files, ie those that contain events, to be parsed and run.
+        // Note that this new pattern here will allow old style moleculizer
+        // files, ie those that contain events, to be parsed and run.
 
         if (getModelHasBeenLoaded() )
         {
-            throw utl::modelAlreadyLoaded();
+            throw utl::modelAlreadyLoadedXcpt();
         }
         else
         {
             setModelHasBeenLoaded (true);
         }
 
-// Get the basic framework of the document.
+        // Get the basic framework of the document.
         xmlpp::Element* pRootElement
         = pDoc->get_root_node();
 
-// Get the unique model element.
+        // Get the unique model element.
         xmlpp::Element* pModelElement
         = utl::dom::mustGetUniqueChild (pRootElement,
                                         eltName::model);
@@ -269,12 +261,12 @@ namespace mzr
         = utl::dom::getOptionalChild (pRootElement,
                                       eltName::streams);
 
-// Extract model info.
+        // Extract model info.
         constructorCore (pRootElement,
                          pModelElement,
                          pStreamsElement);
 
-// Have each unit do its prepareToRun thing.
+        // Have each unit do its prepareToRun thing.
         std::for_each (pUserUnits->begin(),
                        pUserUnits->end(),
                        prepareUnitToRun (pRootElement,
@@ -307,17 +299,17 @@ namespace mzr
         }
     };
 
-// State dump, invoked in a dump-state event.
+    // State dump, invoked in a dump-state event.
     xmlpp::Document*
     moleculizer::makeDomOutput (void) throw (std::exception)
     {
         xmlpp::Document* pDoc = new xmlpp::Document();
 
-// Create the moleculizer-state node.
+        // Create the moleculizer-state node.
         xmlpp::Element* pRootElt
         = pDoc->create_root_node (eltName::moleculizerState);
 
-// Add some mandatory elements.
+        // Add some mandatory elements.
         xmlpp::Element* pModelElt
         = pRootElt->add_child (eltName::model);
         pModelElt->add_child (eltName::unitsStates);
@@ -325,14 +317,14 @@ namespace mzr
         pModelElt->add_child (eltName::taggedSpecies);
         pModelElt->add_child (eltName::tagReactions);
 
-// The only reason for inserting these elements here seems
-// to have been (thought to be?) that various modules would insert
-// elements under them.
+        // The only reason for inserting these elements here seems
+        // to have been (thought to be?) that various modules would insert
+        // elements under them.
         pModelElt->add_child (eltName::time);
         pRootElt->add_child (eltName::streams);
 
-// Run through the units, letting each make its complete state
-// contribution, for now.
+        // Run through the units, letting each make its complete state
+        // contribution, for now.
         std::for_each (pUserUnits->begin(),
                        pUserUnits->end(),
                        unitInsertStateElements (pRootElt) );
@@ -346,11 +338,11 @@ namespace mzr
                               xmlpp::Element const * const pStreamsElement) const
     throw (std::exception)
     {
-// Verify that every element in the model section is handled by some
-// unit or another.
-//
-// I discover very late in the game that this code incorrectly tries
-// to convert comments to elements.
+        // Verify that every element in the model section is handled by some
+        // unit or another.
+        //
+        // I discover very late in the game that this code incorrectly tries
+        // to convert comments to elements.
         xmlpp::Node::NodeList modelContentNodes
         = pModelElement->get_children();
         xmlpp::Node::NodeList::iterator iUnhandledModelContent
@@ -360,14 +352,14 @@ namespace mzr
         if (modelContentNodes.end() != iUnhandledModelContent)
             throw unhandledModelContentXcpt (*iUnhandledModelContent);
 
-// Get the reaction-gens node, which contains kinds of reaction generators
-// introduced by units.
+        // Get the reaction-gens node, which contains kinds of reaction generators
+        // introduced by units.
         xmlpp::Element* pReactionGensElt
         = utl::dom::mustGetUniqueChild (pModelElement,
                                         eltName::reactionGens);
 
-// Verify that every kind of reaction generator is handled by some
-// unit or another.
+        // Verify that every kind of reaction generator is handled by some
+        // unit or another.
         xmlpp::Node::NodeList reactionGensContentNodes
         = pReactionGensElt->get_children();
         xmlpp::Node::NodeList::iterator iUnhandledReactionGenContent
@@ -378,14 +370,14 @@ namespace mzr
                 iUnhandledReactionGenContent)
             throw unhandledReactionGenXcpt (*iUnhandledReactionGenContent);
 
-// Get the explicit species model node, which can contain kinds of explicit
-// species introduced by units.
+        // Get the explicit species model node, which can contain kinds of explicit
+        // species introduced by units.
         xmlpp::Element* pExplicitSpeciesElt
         = utl::dom::mustGetUniqueChild (pModelElement,
                                         eltName::explicitSpecies);
 
-// Verify that every kind of explicit species is handled by some
-// unit or another.
+        // Verify that every kind of explicit species is handled by some
+        // unit or another.
         xmlpp::Node::NodeList explicitSpeciesContentNodes
         = pExplicitSpeciesElt->get_children();
         xmlpp::Node::NodeList::iterator iUnhandledExplicitSpeciesContent

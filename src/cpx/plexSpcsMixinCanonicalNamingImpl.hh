@@ -144,7 +144,7 @@ namespace cpx
     {
         nmr::ComplexSpecies aComplexSpecies;
         createComplexRepresentation (aComplexSpecies);
-        string theName ( ptrNameAssembler->createCanonicalName (aComplexSpecies) );
+        std::string theName ( ptrNameAssembler->createCanonicalName (aComplexSpecies) );
 
         return theName;
     }

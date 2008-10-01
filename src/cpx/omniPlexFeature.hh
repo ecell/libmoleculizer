@@ -33,8 +33,8 @@
 #define OMNIPLEXFEATURE_H
 
 /*! \file omniPlexFeature.hh
-\ingroup omniGroup
-\brief Defines subcomplex feature. */
+  \ingroup omniGroup
+  \brief Defines subcomplex feature. */
 
 #include "fnd/feature.hh"
 #include "fnd/multiSpeciesDumpable.hh"
@@ -44,24 +44,22 @@
 namespace cpx
 {
     template<class molT,
-    class plexSpeciesT,
-    class plexFamilyT,
-    class omniPlexT>
+             class plexSpeciesT,
+             class plexFamilyT,
+             class omniPlexT>
     class omniPlexFeature :
-                public fnd::feature<cxOmni<molT,
-                plexSpeciesT,
-                plexFamilyT,
-                omniPlexT> >
+        public fnd::feature<cxOmni<molT,
+                                   plexSpeciesT,
+                                   plexFamilyT,
+                                   omniPlexT> >
     {
     public:
         typedef plexSpeciesT plexSpeciesType;
         typedef plexFamilyT plexFamilyType;
         typedef omniPlexT omniPlexType;
 
-        typedef typename plexSpeciesT::msDumpableType dumpableType;
-
         typedef andPlexQueries<plexSpeciesType,
-        omniPlexType> stateQueryType;
+                               omniPlexType> stateQueryType;
 
         typedef
         typename cpx::cxOmni<molT, plexSpeciesT, plexFamilyT, omniPlexT>
@@ -70,74 +68,48 @@ namespace cpx
         typedef fnd::newContextStimulus<contextType> stimulusType;
 
     private:
-// If a dumpable is really attached to this feature, then
-// this points to it; otherwise null.
-        dumpableType* pDumpable;
 
     public:
-        omniPlexFeature (void) :
-                pDumpable (0)
+        omniPlexFeature (void)
         {}
 
-// Generate reactions and add new species to the dumpable,
-// if any.
-//
-// Overrides fnd::feature<cpx::cxOmni>::respond to add new species
-// to possible dumpable.
+        // Generate reactions
+        //
+        // Overrides fnd::feature<cpx::cxOmni>::respond to add new species
+        // to possible dumpable.
         virtual
         void
         respond (const typename omniPlexFeature::stimulusType& rNewFeatureContext);
-
-// To "turn on" dumping of the species in this omniplex.
-// These aren't query-based dumpables, since the omniplex
-// itself does all the querying.
-        void
-        setDumpable (typename omniPlexFeature::dumpableType* ptrDumpable)
-        {
-            pDumpable = ptrDumpable;
-        }
     };
 
     template<class molT,
-    class plexSpeciesT,
-    class plexFamilyT,
-    class omniPlexT>
+             class plexSpeciesT,
+             class plexFamilyT,
+             class omniPlexT>
     void
     omniPlexFeature<molT,
-    plexSpeciesT,
-    plexFamilyT,
-    omniPlexT>::
+                    plexSpeciesT,
+                    plexFamilyT,
+                    omniPlexT>::
     respond (const typename omniPlexFeature::stimulusType& rStim)
     {
         const typename omniPlexFeature::contextType& rNewContext
-        = rStim.getContext();
+            = rStim.getContext();
 
-// Does the new species satisfy the omni's state query?
+        // Does the new species satisfy the omni's state query?
         omniPlexType* pOmni = rNewContext.getOmni();
         const typename omniPlexFeature::stateQueryType& rQuery
-        = * (pOmni->getStateQuery() );
+            = * (pOmni->getStateQuery() );
 
         plexSpeciesType* pSpecies
-        = rNewContext.getSpecies();
+            = rNewContext.getSpecies();
         const subPlexSpec<omniPlexType>& rSpec
-        = rNewContext.getSpec();
+            = rNewContext.getSpec();
         if (rQuery.applyTracked (*pSpecies,
                                  rSpec) )
         {
-// Notify reaction generators
+            // Notify reaction generators
             fnd::feature<contextType>::respond (rStim);
-
-// Notify dumpable if any.
-            if (pDumpable)
-            {
-// Note that this just gets back the newSpeciesStimulus.
-// This really stinks.
-                fnd::newSpeciesStimulus<plexSpeciesType>
-                dumpStim (pSpecies,
-                          rStim.getNotificationDepth() );
-
-                pDumpable->respond (dumpStim);
-            }
         }
     }
 }

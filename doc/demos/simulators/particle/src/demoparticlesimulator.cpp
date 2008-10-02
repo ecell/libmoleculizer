@@ -108,7 +108,7 @@ void SimpleParticleSimulator::doSingleUnaryReaction()
     std::string particleName = stringPtrVector[rand() % stringPtrVector.size() ];
 
     std::cout << "Possible unary reaction: " << '\n'
-    << '\t' << particleName << endl;
+              << '\t' << particleName << std::endl;
 
     mzr::moleculizer::SpeciesTypePtr particlePtr = speciesReactionGenerator.getSpeciesWithName ( particleName );
 

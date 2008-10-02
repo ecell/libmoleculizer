@@ -45,23 +45,31 @@ void displayHelpAndExitProgram();
 int main (int argc, char* argv[])
 {
 
-    int numberIters = 500;
-    std::string modelfile;
-    std::string rulesfile;
-    processCommandLineArgs (argc, argv, rulesfile, modelfile, numberIters);
-
-    SimpleParticleSimulator theSim ( rulesfile, modelfile);
-
-    std::cout << "\n\n#######################################################\nBeginning simulation\n\n";
-
-    for (unsigned int ii = 0; ii != numberIters; ++ii)
+    try
     {
-        theSim.singleStep();
-    }
+        int numberIters = 500;
+        std::string modelfile;
+        std::string rulesfile;
+        processCommandLineArgs (argc, argv, rulesfile, modelfile, numberIters);
 
-    std::cout << "\n\n#######################################################\nRun Completed.\n\nFinal State:\n";
-    theSim.printState();
-    return 0;
+        SimpleParticleSimulator theSim ( rulesfile, modelfile);
+
+        std::cout << "\n\n#######################################################\nBeginning simulation\n\n";
+
+        for (unsigned int ii = 0; ii != numberIters; ++ii)
+        {
+            theSim.singleStep();
+        }
+
+        std::cout << "\n\n#######################################################\nRun Completed.\n\nFinal State:\n";
+        theSim.printState();
+        return 0;
+    }
+    catch(const std::exception& e)
+    {
+        std::cerr << e.what() << std::endl;
+        return 1;
+    }
 
 }
 

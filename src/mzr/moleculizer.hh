@@ -152,6 +152,8 @@ namespace mzr
 // routine.
         inputCapabilities inputCap;
 
+        static int DEFAULT_GENERATION_DEPTH;
+
     private:
         bool modelLoaded;
     };

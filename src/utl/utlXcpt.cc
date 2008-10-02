@@ -89,4 +89,15 @@ namespace utl
         return msgStream.str();
     }
 
+    std::string
+    unkArgXcpt::
+    mkMsg (const std::string& rTheUnrecognizedArg)
+    {
+        std::ostringstream msgStream;
+        msgStream << "Unknown command-line argument `"
+        << rTheUnrecognizedArg
+        << "'.";
+        return msgStream.str();
+    }
+
 }

@@ -324,6 +324,15 @@ namespace utl
                              badAttrValue) )
         {}
 
+        badPosIntAttrXcpt::badPosIntAttrXcpt(const xmlpp::Element* pOffendingElt,
+                                             const std::string& rAttrName,
+                                             int badAttrValue)
+            :
+            xcpt( mkMsg( pOffendingElt, 
+                         rAttrName,
+                         badAttrValue))
+        {}
+
         std::string
         badPosIntAttrXcpt::
         mkMsg (const xmlpp::Element* pOffendingElt,

@@ -31,7 +31,6 @@
 
 #include "mzr/moleculizer.hh"
 #include "mzr/respondReaction.hh"
-#include "mzr/createEvent.hh"
 #include "plex/mzrPlexFamily.hh"
 #include "plex/parsePlex.hh"
 #include "plex/parseOmniPlex.hh"
@@ -234,12 +233,9 @@ namespace plx
                 // Here, we want to do the same thing as a createEvent,
                 // but we don't pay any attention to generateDepth.
 
-                // Rather than scheduling an event, we effectively do a create event.
-                mzr::createEvent creator (pSpecies,
-                                          pop,
-                                          rMzrUnit);
-
-                creator.happen (rMolzer);
+                mzr::moleculizer::SpeciesID newSpecID;
+                rMolzer.recordSpecies( pSpecies, newSpecID );
+                rMolzer.incrementNetworkBySpeciesName( newSpecID );
             }
         };
     }

@@ -107,6 +107,9 @@ namespace mzr
     {
         // Add up the input capabilities of the units.
         pUserUnits->unionInputCaps (inputCap);
+
+        // Set the default generation depth.
+        setGenerateDepth( moleculizer::DEFAULT_GENERATION_DEPTH );
     }
 
     void
@@ -138,9 +141,8 @@ namespace mzr
 
     moleculizer::moleculizer (void)
             :
-            modelLoaded ( false )
+        modelLoaded ( false )
     {
-
         pUserUnits = new unitsMgr (*this);
 
         // Now just does the "input capabilities" thing.
@@ -389,5 +391,7 @@ namespace mzr
             throw unhandledExplicitSpeciesContentXcpt (*iUnhandledExplicitSpeciesContent);
 
     }
+
+    int moleculizer::DEFAULT_GENERATION_DEPTH = 1;
 
 }

@@ -29,18 +29,12 @@
 //
 //
 
-#include "utl/insuffArgsXcpt.hh"
-#include "utl/unkArgXcpt.hh"
+#include "utl/defs.hh"
+#include "utl/utlXcpt.hh"
 #include "utl/arg.hh"
-#include "mzr/moleculizer.hh"
-#include "utl/badFileNameXcpt.hh"
 #include "utl/utility.hh"
 #include "utl/linearHash.hh"
-
-#include "utl/stdIncludes.hh"
-#include <stdlib.h>
-#include <time.h>
-
+#include "mzr/moleculizer.hh"
 
 void
 processCommandLineArgs (int argc,
@@ -48,12 +42,8 @@ processCommandLineArgs (int argc,
                         mzr::moleculizer& theMzrObject,
                         std::string* fileName);
 
+void displayHelpMessage();
 
-
-// This is a global that is used in processCommandLineArgs
-bool INTERACTIVE = false;
-bool VERBOSITY = false;
-int DEBUG_NUM = 30;
 
 int
 main (int argc, char** argv)
@@ -66,20 +56,25 @@ main (int argc, char** argv)
 
         processCommandLineArgs ( argc, argv, theApp, &filename);
         theApp.attachFileName ( filename );
+        
+        // Do nothing.
 
         return 0;
     }
-
+    catch (const utl::xcpt& rException)
+    {
+        // If a moleculizer exception is thrown report it and crash.
+        std::cerr << rException.what() << std::endl;
+        return 1;
+    }
     catch (const std::exception& rExcept)
     {
+        // If an exception is thrown, report it and crash.
         std::cerr << rExcept.what()
         << std::endl;
         return 1;
     }
 }
-
-
-
 
 void
 processCommandLineArgs (int argc,
@@ -87,66 +82,39 @@ processCommandLineArgs (int argc,
                         mzr::moleculizer& theMzrObject,
                         std::string* fileName)
 {
-// Set the default operation of the MzrObject
-    theMzrObject.setGenerateDepth ( 1 );
+    // The arguments we look for/accept are
+    // '-g NUMBER'       Sets the generation depth to NUMBER
+    // '-f FILENAME'     Loads the inputfile FILENAME
 
-    srand (42);
+
+    // Skip the command name.
+    --argc; ++argv;
 
     bool filenameWasSeen ( false );
 
-// Skip the command name.
-    argc--;
-    argv++;
-
-// Peel off arguments one by one.
+    //  Grab the arguments one by one.
     while (0 < argc)
     {
         std::string arg (*argv);
         argv++;
         argc--;
 
-        if (arg.substr (0,2) == "-g")
+        if (arg == "-g" || arg == "--generation-depth")
         {
-            if (arg.size() == 2) continue;
-
-            std::string strDepth ( arg.substr (2, arg.size() ) );
+            std::string strDepth = utl::mustGetArg(argc, argv);
             int depth = utl::argMustBeNNInt (strDepth);
-
             theMzrObject.setGenerateDepth ( depth );
         }
-        else if ( arg == "-n" )
-        {
-            std::string aNumber = utl::mustGetArg (argc, argv);
-            DEBUG_NUM = utl::argMustBeNNInt ( aNumber );
-        }
-        else if (arg == "-v" )
-        {
-            VERBOSITY = true;
-        }
-        else if (arg == "-i")
-        {
-            INTERACTIVE = true;
-        }
-        else if (arg == "-s")
-        {
-            std::string argument = utl::mustGetArg (argc, argv);
-            utl::linearHash lh;
-            srand ( lh (argument) );
-        }
-        else if (arg == "-r" )
-        {
-            srand (time (NULL) );
-        }
-
-// This is the filename, although it's useless because
-// this was already taken care of elsewhere.
-        else if (arg == "-f")
+        else if (arg == "-f" || arg == "--file")
         {
             filenameWasSeen = true;
-            *fileName = utl::mustGetArg (argc,
-                                         argv);
+            *fileName = utl::mustGetArg (argc, argv);
         }
-
+        else if (arg == "-h" || arg == "--help")
+        {
+            displayHelpMessage();
+            exit(0);
+        }
         else throw utl::unkArgXcpt (arg);
     }
 
@@ -157,3 +125,11 @@ processCommandLineArgs (int argc,
 }
 
 
+void displayHelpMessage()
+{
+    using std::cout;
+    using std::endl;
+    
+    cout << "This is a wrapper that loads a libmoleculizer object, attaches a file and quits." << std::endl;
+
+}

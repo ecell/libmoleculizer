@@ -220,6 +220,27 @@ namespace fnd
         }
 
         bool
+        recordSpecies ( SpeciesTypePtr pSpecies, SpeciesID& name)
+        {
+            SpeciesHandle speciesHandle( new SpeciesID( pSpecies->getName()  ) );
+
+            // Put the speciesID into the name.
+            name = *speciesHandle;
+            
+            if ( theSpeciesListCatalog.find(speciesHandle) == theSpeciesListCatalog.end() )
+            {
+                theSpeciesListCatalog.insert ( std::make_pair ( speciesHandle, pSpecies) );
+                theDeltaSpeciesList.push_back ( pSpecies );
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+                                         
+        }
+
+        bool
         recordReaction ( ReactionTypePtr pRxn )
         {
             if (!pRxn->isStandardReaction() )
@@ -326,7 +347,7 @@ namespace fnd
             theDeltaReactionList.clear();
         }
 
-        void incrementNetworkBySpeciesName (const std::string& rName) throw (utl::xcpt)
+        void incrementNetworkBySpeciesName (const SpeciesID& rName) throw (utl::xcpt)
         {
             SpeciesCatalogCIter iter = theSpeciesListCatalog.find ( &rName );
 

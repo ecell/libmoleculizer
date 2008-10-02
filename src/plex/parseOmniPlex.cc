@@ -224,36 +224,36 @@ namespace plx
         return pOmni;
     }
 
-    void
-    parseOmniSpeciesStream::
-    operator() (xmlpp::Node* pOmniSpeciesStreamNode) const
-    throw (utl::xcpt)
-    {
-        xmlpp::Element* pOmniSpeciesStreamElt
-        = utl::dom::mustBeElementPtr (pOmniSpeciesStreamNode);
+//     void
+//     parseOmniSpeciesStream::
+//     operator() (xmlpp::Node* pOmniSpeciesStreamNode) const
+//     throw (utl::xcpt)
+//     {
+//         xmlpp::Element* pOmniSpeciesStreamElt
+//         = utl::dom::mustBeElementPtr (pOmniSpeciesStreamNode);
 
-        // Get the name of the species stream.
-        std::string streamName
-        = utl::dom::mustGetAttrString
-          (pOmniSpeciesStreamElt,
-           eltName::omniSpeciesStream_nameAttr);
+//         // Get the name of the species stream.
+//         std::string streamName
+//         = utl::dom::mustGetAttrString
+//           (pOmniSpeciesStreamElt,
+//            eltName::omniSpeciesStream_nameAttr);
 
-        // Find omniPlex parsed earlier.
-        parserPlex parsedPlex;
-        mzrOmniPlex* pOmni
-        = findOmni (pOmniSpeciesStreamNode,
-                    rMolUnit,
-                    rPlexUnit,
-                    parsedPlex);
+//         // Find omniPlex parsed earlier.
+//         parserPlex parsedPlex;
+//         mzrOmniPlex* pOmni
+//         = findOmni (pOmniSpeciesStreamNode,
+//                     rMolUnit,
+//                     rPlexUnit,
+//                     parsedPlex);
 
-        // Construct species dumpable to attach to omniplex.
-        // Add it to mzrUnit for memory management and lookup.
-        mzr::multiSpeciesDumpable<mzrPlexSpecies>* pDumpable
-        = new mzr::multiSpeciesDumpable<mzrPlexSpecies> (streamName);
-        rMzrUnit.addSpeciesDumpable (pDumpable);
+//         // Construct species dumpable to attach to omniplex.
+//         // Add it to mzrUnit for memory management and lookup.
+//         mzr::multiSpeciesDumpable<mzrPlexSpecies>* pDumpable
+//         = new mzr::multiSpeciesDumpable<mzrPlexSpecies> (streamName);
+//         rMzrUnit.addSpeciesDumpable (pDumpable);
 
-        // Attach dumpable to omniplex, where it will be told of all
-        // new species satisfying the omniplex's queries.
-        pOmni->getSubPlexFeature()->setDumpable (pDumpable);
-    }
+//         // Attach dumpable to omniplex, where it will be told of all
+//         // new species satisfying the omniplex's queries.
+//         pOmni->getSubPlexFeature()->setDumpable (pDumpable);
+//     }
 }

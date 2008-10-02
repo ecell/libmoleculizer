@@ -30,7 +30,7 @@
 //
 
 #include <vector>
-#include "utl/badChildCountXcpt.hh"
+#include "utl/domXcpt.hh"
 #include "fnd/pchem.hh"
 #include "mzr/moleculizer.hh"
 #include "mzr/mzrUnit.hh"

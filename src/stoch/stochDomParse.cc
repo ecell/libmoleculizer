@@ -31,7 +31,6 @@
 
 #include "mzr/moleculizer.hh"
 #include "mzr/mzrUnit.hh"
-#include "mzr/createEvent.hh"
 #include "mzr/mzrEltName.hh"
 #include "mzr/respondReaction.hh"
 #include "mzr/mzrException.hh"
@@ -140,10 +139,12 @@ namespace stoch
                 throw mzr::unkSpeciesXcpt (speciesName,
                                            pStochSpeciesElt);
 
-            mzr::createEvent creator(pSpecies,
-                                     pop,
-                                     rMzrUnit);
-            creator.happen(rMolzer);
+
+            mzr::moleculizer::SpeciesID newSpecID;
+            rMolzer.recordSpecies( pSpecies, newSpecID );
+            rMolzer.incrementNetworkBySpeciesName( newSpecID );
+
+
         }
     };
 

@@ -118,26 +118,26 @@ namespace plx
     };
 
 // Parses omni-species-stream element.
-    class parseOmniSpeciesStream :
-                public std::unary_function<xmlpp::Node*, void>
-    {
-        mzr::mzrUnit& rMzrUnit;
-        bnd::molUnit& rMolUnit;
-        plexUnit& rPlexUnit;
+//     class parseOmniSpeciesStream :
+//                 public std::unary_function<xmlpp::Node*, void>
+//     {
+//         mzr::mzrUnit& rMzrUnit;
+//         bnd::molUnit& rMolUnit;
+//         plexUnit& rPlexUnit;
 
-    public:
-        parseOmniSpeciesStream (mzr::mzrUnit& refMzrUnit,
-                                bnd::molUnit& refMolUnit,
-                                plexUnit& refPlexUnit) :
-                rMzrUnit (refMzrUnit),
-                rMolUnit (refMolUnit),
-                rPlexUnit (refPlexUnit)
-        {}
+//     public:
+//         parseOmniSpeciesStream (mzr::mzrUnit& refMzrUnit,
+//                                 bnd::molUnit& refMolUnit,
+//                                 plexUnit& refPlexUnit) :
+//                 rMzrUnit (refMzrUnit),
+//                 rMolUnit (refMolUnit),
+//                 rPlexUnit (refPlexUnit)
+//         {}
 
-        void
-        operator() (xmlpp::Node* pOmniSpeciesStreamNode) const
-        throw (utl::xcpt);
-    };
+//         void
+//         operator() (xmlpp::Node* pOmniSpeciesStreamNode) const
+//         throw (utl::xcpt);
+//     };
 }
 
 #endif // PARSEOMNIPLEX_H

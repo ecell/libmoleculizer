@@ -85,7 +85,7 @@ namespace plx
         getName(void) const;
 
         xmlpp::Element*
-        insertEl (xmlpp::Element* pExplicitSpeciesElt,
+        insertElt(xmlpp::Element* pExplicitSpeciesElt,
                   double molarFactor) const
         throw (std::exception);
     };

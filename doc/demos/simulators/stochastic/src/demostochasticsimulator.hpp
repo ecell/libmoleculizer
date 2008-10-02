@@ -48,7 +48,7 @@ protected:
 
     void printRxn (const mzr::mzrReaction* rxnPtr) const
     {
-        std::cout << rxnPtr->getName() << endl;
+        std::cout << rxnPtr->getName() << std::endl;
     }
 
     std::vector<mzr::mzrReaction*> reactions;

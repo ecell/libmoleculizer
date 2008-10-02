@@ -30,12 +30,16 @@
 //
 
 #include "demosimulator.hpp"
+#include  "utl/defs.hh"
 #include "utl/utility.hh"
 #include <fstream>
-#include <boost/tokenizer.hpp>
 #include <stdio.h>
 #include <time.h>
 #include <stdlib.h>
+using std::cout;
+using std::cerr;
+using std::endl;
+
 
 void SimpleSimulator::createModelFromFile (const std::string& modelFile, std::map<std::string, int>& model)
 {

@@ -34,7 +34,7 @@
 
 #include "cpx/molStateQuery.hh"
 #include "cpx/modStateMixin.hh"
-#include "cpx/badModMolStateXcpt.hh"
+#include "cpx/cpxXcpt.hh"
 
 namespace cpx
 {

@@ -59,8 +59,7 @@ namespace utl
         void
         issue (void) const throw()
         {
-            std::cerr << getMessage()
-            << std::endl;
+            std::cerr << getMessage() << std::endl;
         }
     };
 }

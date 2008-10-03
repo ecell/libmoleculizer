@@ -29,7 +29,7 @@
 //
 //
 
-#include "fnd/speciesNotMassiveXcpt.hh"
+#include "fnd/fndXcpt.hh"
 #include "mol/mzrModMol.hh"
 #include "mol/badModMolXcpt.hh"
 #include "plex/parserPlex.hh"

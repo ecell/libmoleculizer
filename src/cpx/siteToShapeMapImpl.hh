@@ -29,7 +29,7 @@
 //
 //
 
-#include "cpx/unmappedSiteSpecXcpt.hh"
+#include "cpx/cpxXcpt.hh"
 
 namespace cpx
 {

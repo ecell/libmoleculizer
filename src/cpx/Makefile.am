@@ -37,30 +37,24 @@ endif
 libmoleculizer_cpx_la_LIBADD = $(LIBFND)
 
 libmoleculizer_cpx_la_SOURCES =\
-badModMolStateXcpt.cc \
 basicBndSite.cc \
-cpxExceptions.cc \
+cpxXcpt.cc \
 modMolMixin.cc \
-modPlexQueryTypeXcpt.cc \
 modStateMixin.cc \
-noKineticConstsXcpt.cc \
 plexIso.cc \
 plexMap.cc \
-plexNotConnectedXcpt.cc \
-siteToShapeMap.cc \
-unmappedSiteSpecXcpt.cc
+siteToShapeMap.cc
 
 libmoleculizer_cpx_HEADERS=\
 alloMol.hh \
 alloMolImpl.hh \
-badModMolStateXcpt.hh \
 basicBndSite.hh \
 basicMol.hh \
 basicMolImpl.hh \
 basicPlex.hh \
 basicPlexImpl.hh \
 binding.hh \
-cpxExceptions.hh \
+cpxXcpt.hh \
 cxBinding.hh \
 cxBindingImpl.hh \
 cxMol.hh \
@@ -81,12 +75,10 @@ modMolImpl.hh \
 modMolMixin.hh \
 modMolState.hh \
 modMolStateQuery.hh \
-modPlexQueryTypeXcpt.hh \
 modStateMixin.hh \
 modification.hh \
 molState.hh \
 molStateQuery.hh \
-noKineticConstsXcpt.hh \
 omniPlex.hh \
 omniPlexFeature.hh \
 omniStructureQuery.hh \
@@ -97,7 +89,6 @@ plexIso.hh \
 plexIsoImpl.hh \
 plexMap.hh \
 plexMapImpl.hh \
-plexNotConnectedXcpt.hh \
 plexQuery.hh \
 plexQueryImpl.hh \
 plexSpcsMixin.hh \
@@ -115,6 +106,5 @@ siteToShapeMapImpl.hh \
 smallMol.hh \
 stateMol.hh \
 structuralBinding.hh \
-subPlexSpec.hh \
-unmappedSiteSpecXcpt.hh
+subPlexSpec.hh
 

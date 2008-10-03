@@ -33,7 +33,6 @@
 #ifndef CPX_ISOSEARCHIMPL_H
 #define CPX_ISOSEARCHIMPL_H
 
-#include "cpx/plexNotConnectedXcpt.hh"
 #include "nauty/nauty.h"
 
 namespace cpx

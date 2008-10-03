@@ -32,12 +32,14 @@
 #ifndef FND_MASSIVE_H
 #define FND_MASSIVE_H
 
+#include "utl/defs.hh"
 #include "utl/dom.hh"
+#include "fnd/fndXcpt.hh"
 
 namespace fnd
 {
     class massive
-    {
+     {
     public:
         virtual
         ~massive (void)
@@ -46,6 +48,22 @@ namespace fnd
         virtual double
         getWeight (void) const = 0;
     };
+
+    template<class speciesT>
+    massive*
+    mustBeMassiveSpecies (speciesT* pSpecies,
+                          xmlpp::Node* pRequestingNode = 0)
+    throw (utl::xcpt)
+    {
+        massive* pMassive = dynamic_cast<massive*> (pSpecies);
+
+        if (0 == pMassive) throw speciesNotMassiveXcpt (pRequestingNode);
+
+        return pMassive;
+    }
+
+
+
 }
 
 #endif // FND_MASSIVE_H

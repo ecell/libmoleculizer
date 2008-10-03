@@ -32,7 +32,7 @@
 #ifndef CPX_PLEXFAMILYIMPL_H
 #define CPX_PLEXFAMILYIMPL_H
 
-#include "cpx/noKineticConstsXcpt.hh"
+#include "cpx/cpxXcpt.hh"
 #include "cpx/reportIsoSearch.hh"
 
 namespace cpx

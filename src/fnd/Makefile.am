@@ -40,14 +40,12 @@ endif
 libmoleculizer_fnd_la_LIBADD = -lstdc++ 
 
 libmoleculizer_fnd_la_SOURCES =\
-badDumpFileXcpt.cc \
 dumpStream.cc \
+fndXcpt.cc \
 pchem.cc \
-physConst.cc \
-speciesNotMassiveXcpt.cc
+physConst.cc
 
 libmoleculizer_fnd_HEADERS=\
-badDumpFileXcpt.hh \
 basicDmpColumn.hh \
 basicDumpable.hh \
 basicReaction.hh \
@@ -61,7 +59,7 @@ feature.hh \
 featureContext.hh \
 featureMap.hh \
 featureStimulus.hh \
-fndExceptions.hh \
+fndXcpt.hh \
 gillspReaction.hh \
 massive.hh \
 multiSpeciesDumpable.hh \
@@ -79,7 +77,6 @@ rxnGen.hh \
 sensitive.hh \
 sensitiveOnce.hh \
 sensitivityList.hh \
-speciesNotMassiveXcpt.hh \
 stateVar.hh \
 utility.hh \
 varDumpable.hh

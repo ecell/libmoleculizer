@@ -30,7 +30,7 @@
 //
 
 #include "dimer/decomposeExtrap.hh"
-#include "dimer/missingDecomposeRateXcpt.hh"
+#include "dimer/dimerXcpt.hh"
 
 namespace dimer
 {

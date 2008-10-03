@@ -42,11 +42,10 @@ decomposeExtrap.cc \
 dimerDomParse.cc \
 dimerEltName.cc \
 dimerUnit.cc \
+dimerXcpt.cc \
 dimerizeExtrap.cc \
-dimerizeRxnGen.cc \
-missingDecomposeRateXcpt.cc \
-missingDimerizeInvariantXcpt.cc \
-missingDimerizeRateXcpt.cc
+dimerizeRxnGen.cc
+
 
 libmoleculizer_dimer_HEADERS=\
 decompFam.hh \
@@ -54,12 +53,10 @@ decompRxnGen.hh \
 decomposeExtrap.hh \
 dimerEltName.hh \
 dimerUnit.hh \
+dimerXcpt.hh \
 dimerizeExtrap.hh \
 dimerizeFam.hh \
-dimerizeRxnGen.hh \
-missingDecomposeRateXcpt.hh \
-missingDimerizeInvariantXcpt.hh \
-missingDimerizeRateXcpt.hh 
+dimerizeRxnGen.hh
 
 
 

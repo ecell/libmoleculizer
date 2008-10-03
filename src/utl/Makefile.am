@@ -50,6 +50,7 @@ arg.hh \
 autoCache.hh \
 autoCatalog.hh \
 autoVector.hh \
+defs.hh \
 dom.hh \
 domJob.hh \
 domJobImpl.hh \

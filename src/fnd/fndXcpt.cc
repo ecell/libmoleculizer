@@ -29,18 +29,41 @@
 //
 //
 
+#include "utl/defs.hh"
+#include "fndXcpt.hh"
 
-#include "cpxExceptions.hh"
-
-namespace cpx
+namespace fnd
 {
-    std::string plexIsNotSimpleGraphXcpt::mkMsg()
+
+    std::string
+    badDumpFileXcpt::
+    mkMsg (const std::string& rBadFileName)
     {
-        std::ostringstream oss;
-        oss << "Error: Isomorphism checking on plexes require plexes be simple graphs "
-        << "(No intra-molecule bindings, at most one binding between different "
-        << "molecules).  This condition was not met.";
-        return oss.str();
+        std::ostringstream msgStream;
+        msgStream << "Could not open dump file `"
+        << rBadFileName
+        << "' for writing.";
+        return msgStream.str();
     }
+
+    std::string
+    speciesNotMassiveXcpt::
+    mkMsg (xmlpp::Node* pOffendingNode)
+    {
+        std::ostringstream msgStream;
+        msgStream << utl::dom::xcpt::mkMsg (pOffendingNode)
+        << "Expected massive species.";
+        return msgStream.str();
+    }
+
+    speciesNotMassiveXcpt::
+    speciesNotMassiveXcpt (xmlpp::Node* pOffendingNode) :
+            utl::xcpt (mkMsg (pOffendingNode) )
+    {}
+
+
+
+
+
 
 }

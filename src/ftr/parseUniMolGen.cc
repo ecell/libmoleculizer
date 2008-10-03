@@ -29,7 +29,7 @@
 //
 //
 
-#include "fnd/speciesNotMassiveXcpt.hh"
+#include "fnd/fndXcpt.hh"
 #include "cpx/modMolStateQuery.hh"
 #include "mol/mzrModMol.hh"
 #include "ftr/ftrEltName.hh"

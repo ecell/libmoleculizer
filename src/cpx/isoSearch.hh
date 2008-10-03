@@ -35,7 +35,7 @@
 
 #include <iostream>
 #include "cpx/plexIso.hh"
-#include "cpx/cpxExceptions.hh"
+#include "cpx/cpxXcpt.hh"
 #include "nauty/nauty.h"
 
 namespace cpx

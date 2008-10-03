@@ -38,7 +38,7 @@
 // Depreciate this file.
 #include "fnd/utility.hh"
 
-#include "fnd/fndExceptions.hh"
+#include "fnd/fndXcpt.hh"
 #include "fnd/basicReaction.hh"
 #include "fnd/basicSpecies.hh"
 

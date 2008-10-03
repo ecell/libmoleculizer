@@ -29,9 +29,9 @@
 //
 //
 
+#include "dimer/dimerXcpt.hh"
 #include "dimer/dimerizeExtrap.hh"
-#include "dimer/missingDimerizeRateXcpt.hh"
-#include "dimer/missingDimerizeInvariantXcpt.hh"
+
 
 namespace dimer
 {

@@ -33,7 +33,7 @@
 #define CPX_PLEXQUERYIMPL_H
 
 #include "cpx/molState.hh"
-#include "cpx/modPlexQueryTypeXcpt.hh"
+#include "cpx/cpxXcpt.hh"
 
 namespace cpx
 {

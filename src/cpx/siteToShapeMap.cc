@@ -32,7 +32,7 @@
 #include "utl/forceInsert.hh"
 #include "cpx/siteToShapeMap.hh"
 #include "cpx/subPlexSpec.hh"
-#include "cpx/unmappedSiteSpecXcpt.hh"
+#include "cpx/cpxXcpt.hh"
 
 namespace cpx
 {

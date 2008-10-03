@@ -32,12 +32,9 @@
 #ifndef FNDEXCEPTIONS_HH
 #define FNDEXCEPTIONS_HH
 
-#include <iostream>
-#include <string>
-#include <sstream>
-#include <exception>
-
+#include "utl/defs.hh"
 #include "utl/xcpt.hh"
+#include "utl/dom.hh"
 
 namespace fnd
 {
@@ -109,6 +106,28 @@ namespace fnd
 
     private:
         std::string theReactionName;
+    };
+
+
+    class badDumpFileXcpt :
+                public utl::xcpt
+    {
+        static std::string
+        mkMsg (const std::string& rBadFileName);
+
+    public:
+        badDumpFileXcpt (const std::string& rBadFileName) :
+                utl::xcpt (mkMsg (rBadFileName) )
+        {}
+    };
+
+    class speciesNotMassiveXcpt :
+                public utl::xcpt
+    {
+        std::string
+        mkMsg (xmlpp::Node* pOffendingNode = 0);
+    public:
+        speciesNotMassiveXcpt (xmlpp::Node* pOffendingNode = 0);
     };
 
 

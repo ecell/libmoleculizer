@@ -29,16 +29,17 @@
 //
 //
 
-#include "plex/mzrPlex.hh"
-#include "mzr/mzrSpecies.hh"
-#include "plex/mzrPlexSpecies.hh"
-#include "nmrUnit.hh"
-#include "nmr/nmrEltName.hh"
-#include "plex/plexUnit.hh"
-#include "nmrExceptions.hh"
+#include "utl/defs.hh"
+#include "utl/domXcpt.hh"
 #include "mol/mzrMol.hh"
+#include "plex/plexUnit.hh"
+#include "plex/mzrPlex.hh"
+#include "plex/mzrPlexSpecies.hh"
+#include "mzr/mzrSpecies.hh"
+#include "nmr/nmrExceptions.hh"
+#include "nmr/nmrEltName.hh"
+#include "nmr/nmrUnit.hh"
 
-#include <string>
 
 namespace nmr
 {
@@ -59,15 +60,18 @@ namespace nmr
     {
         try
         {
-// 1.  The currently set nameEncoder has the responsibility of decoding the thing into a complexOutputState.
-            ComplexOutputState aCOS = getNameEncoder()->createOutputStateFromName ( encodedSpeciesName );
+            // 1.  The currently set nameEncoder has the responsibility of decoding the thing into a complexOutputState.
+            ComplexOutputState aCOS = getNameEncoder()->createOutputStateFromName( encodedSpeciesName );
 
-// TODO: Ensure that this does  not register the constructed plexSpecies into
-            plx::mzrPlexSpecies* newMzrSpecies = pPlexUnit->constructNewPlexSpeciesFromComplexOutputState ( aCOS );
+            // TODO: Ensure that this does  not register the constructed plexSpecies into the reactionCatalog.
+
+            // Is this what we want to do?  Would it be better to install but not expand the newly 
+            // created species?
+            plx::mzrPlexSpecies* newMzrSpecies = pPlexUnit->constructNewPlexSpeciesFromComplexOutputState( aCOS );
 
             return newMzrSpecies;
         }
-// I should separate the reasons things went bad here.
+        // I should separate the reasons things went bad here.
         catch (...)
         {
             throw nmr::IllegalNameXcpt (encodedSpeciesName);
@@ -89,36 +93,29 @@ namespace nmr
                             xmlpp::Element* pModelElt,
                             xmlpp::Element* pStreamElt) throw (std::exception)
     {
-// TODO: Debug nmrUnit::parseDomInput and make sure it all works.
-// For the moment, the one thing (the naming strategy that should be used) is contained
-// in an attribute entitled "naming-convention".  The value of that string should
-// be passed to nmrUnit::setDefaultNameEncoder.
-
-
-        try
-        {
-            std::string strategy = utl::dom::mustGetAttrString (pModelElt, eltName::namingConvention);
-            setDefaultNameEncoder (strategy);
-        }
-        catch (NoSuchNameEncoderXcpt xcpt)
-        {
-            xcpt.wailAndBail();
-        }
-        catch (utl::xcpt x)
-        {
-// This is somewhat bad mojo, but it would be if something is an utl::xcpt
-// but has not already been caught.
-
-// Do nothing because this element is not mandatory.
-            x.warn();
-        }
-
+//         // TODO: Debug nmrUnit::parseDomInput and make sure it all works.
+//         // For the moment, the one thing (the naming strategy that should be used) is contained
+//         // in an attribute entitled "naming-convention".  The value of that string should
+//         // be passed to nmrUnit::setDefaultNameEncoder.
+//         try
+//         {
+//             std::string strategy = utl::dom::mustGetAttrString (pModelElt, eltName::namingConvention);
+//             setDefaultNameEncoder (strategy);
+//         }
+//         catch (NoSuchNameEncoderXcpt xcpt)
+//         {
+//             xcpt.wailAndBail();
+//         }
+//         catch( utl::dom::missingAttrXcpt x)
+//         {
+//             x.warn();
+//         }
     }
 
     void nmrUnit::insertStateElts (xmlpp::Element* pRootElt)
     throw (std::exception)
     {
-// TODO: Debug nmrUnit::insertStateElts and make sure it all works.
+        // TODO: Debug nmrUnit::insertStateElts and make sure it all works.
         xmlpp::Element* modelElt = utl::dom::mustGetUniqueChild (pRootElt,
                                    mzr::eltName::model);
 

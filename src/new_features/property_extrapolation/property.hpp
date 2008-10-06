@@ -32,21 +32,41 @@
 #ifndef __PROPERTY_HPP
 #define __PROPERTY_HPP
 
-#include "propertyvalue.hpp"
+#include "propertyValue.hpp"
 
 class Property
 {
 public:
-    Property(String propName);
+    Property(const String& propName);
+    Property(const String& propName, PropertiedClass* propClassPtr);
     ~Property();
     
     const String& getName() const;
-
     Value getValue();
     void setValue( const Value& value);
+
+    bool hasOwner() const 
+    {
+        return hasParent;
+    }
+    
+    void
+    setOwner( PropertiedClass* ptrOwner) 
+    {
+        if (hasParent)
+        {
+            throw utl::xcpt( "Cannot reassign property.");
+        }
+        
+        propClassPtr = ptrOwner;
+        hasParent = true;
+    }
+
 protected:
 
-    String propertyName;
+    boost::shared_ptr<String> propertyName;
+    PropertiedClass* propClassPtr;
+    bool hasParent;
     Value propertyValue;
 };
 

@@ -29,52 +29,49 @@
 //
 //
 
+#include "property.cpp"
 
-template <typename CoreValueT>
-Value<CoreValueT>::Value()
+Property::Property( const String& propName)
     :
-    underlyingData( shared_ptr<BasicValue>(new CoreValueType) )
+    propertyName( new String( propName ) ),
+    propClassPtr( NULL ),
+    hasParent( false )
 {}
 
-template <typename CoreValueT>
-Value<CoreValueT>::Volue(const CoreValueT& value)
+Property::Property( const String& propName, PropertiedClass* ptrOwner)
     :
-    underlyingData( 
-{
-}
-
-Value::~Value()
-{
-    // I doubt there is a way to explicitly delete the shared_ptr 
-    // underlyingData...
-}
-
-void Value::setValue(const Value& value)
-{
-}
-
-void Value::setValue(String strValue)
-{
-}
-
-void Value::setValue(Integer intValue)
+    propertyName( new String( propName ) ),
+    propClassPtr( ptrOwner ),
+    hasParent( true )
 {}
 
-void Value::setValue(Real realValue)
-{}
-
-
-String valueAsString()
-{}
-
-Integer Value::valueAsInteger()
-{}
-
-Real Value::valueAsReal()
-{}
-
-Value Value::clone() const
+Property::~Property()
 {
-    return Value(*this);
+    ; // Don't need to delete propertyName, as it is a shared_ptr.
 }
-xo
+
+const String&
+Property::getName() const
+{
+    return *propertyName;
+}
+
+Value
+Property::getValue()
+{
+    return propertyValue;
+}
+
+const Value
+Property::getValue() const
+{
+    return propertyValue;
+}
+
+void
+Property::setValue( const Value& value )
+{
+    propertyValue.setValue( value );
+}
+
+

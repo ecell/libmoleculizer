@@ -29,50 +29,33 @@
 //
 //
 
-#ifndef __VALUE_HPP
-#define __VALUE_HPP
+#ifndef __PROPXCPT_HPP
+#define __PROPXCPT_HPP
 
-#include "utl/defs.hh" 
+#include "utl/defs.hh"
+#include "utl/xcpt.hh"
 
+class PropertiedClass;
 
-using namespace boost;
-
-// This class represents a polymorphic value, something that can be used
-// to hold a real, integer, or string.  That is, ultimately it will be that.
-// For now, values must be Reals.
-
-class Value
+class PropertyDoesNotExistXcpt : public utl::xcpt
 {
 public:
-    Value();
+    static std::string mkMsg( const std::string& propName );
+    static std::string mkMsg( const std::string& propName,
+                              const PropertiedClass* ptrPropClass);
 
-    template <typename T>
-    Value(const T& valueType)
-    {
-        this->setValue( valueType );
-    }
+    PropertyDoesNotExistXcpt( const::std::string& propName )
+        :
+        utl::xcpt( mkMsg(propName) )
+    {}
 
-    Value(const Value& value);
-    ~Value();
+    PropertyDoesNotExistXcpt( const std::string& propName,
+                              const PropertiedClass* ptrPropClass)
+        :
+        utl::xcpt( mkMsg( propName ) )
+    {}
 
-    const Value& operator=(const Value& value);
-
-    // Initially, I am planning to have the different Value types do 
-    // template overriding, and so I am not making these virtual.  Should I?
-    void setValue(const Value& value);
-    void setValue(String strValue) throw( utl::NotImplementedXcpt );
-    void setValue(Integer intValue);
-    void setValue(Real realValue);
-
-    String valueAsString() const;
-    Integer valueAsInteger() const;
-    Real valueAsReal() const;
-    
-    Value* clone() const;
-
-protected:
-    typedef shared_ptr<Real> UnderlyingValuePtr;
-    UnderlyingValuePtr  underlingValue;
 };
+
 
 #endif

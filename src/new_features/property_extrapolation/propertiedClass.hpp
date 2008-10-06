@@ -32,6 +32,12 @@
 #ifndef __PROPERTIEDCLASS_HPP
 #define  __PROPERTIEDCLASS_HPP
 
+#include "fnd/utility.hh"
+#include "propXcpt.hpp"
+#include "propertyValue.hpp"
+#include "property.hpp"
+
+
 class PropertiedClass
 {
 public:
@@ -39,14 +45,20 @@ public:
     PropertiedClass( const PropertiedClass& propertiedClass);
     ~PropertiedClass();
 
-    Value operator[]( const String& propertyName);
-    Value getPropertyValue( const String& propertyName);
+    void
+    addProperty(String propertyName);
+    
+    void
+    createProperty(String propertyName);
 
-    const Property& getPropertyug(const String& propertyName);
-    Property& getProperty(const String& propertyName);
+    Value& operator[]( const String& propertyName) throw(PropertyDoesNotExistXcpt );
+    Value& getPropertyValue( const String& propertyName) throw(PropertyDoesNotExistXcpt );
+
+    Property getProperty(const String& propertyName);
+    const Property getProperty(const String& propertyName) const;
 
 protected:
+
+    std::map<String*, Property, fnd::aux::compareByPtrValue<String> > thePropertyMap;
 };
-
-
 #endif

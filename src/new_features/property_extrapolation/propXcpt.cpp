@@ -9,6 +9,7 @@ PropertyDoesNotExistXcpt::mkMsg( const std::string& propName)
     oss << "Property '" 
         << propName 
         << "' does not exist.";
+    return oss.str();
 }
 
 std::string
@@ -19,4 +20,5 @@ PropertyDoesNotExistXcpt::mkMsg( const std::string& propName,
     oss << "Property '" 
         << propName 
         << "' does not exist.";
+    return oss.str();
 }

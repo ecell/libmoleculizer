@@ -129,10 +129,10 @@ namespace stoch
                                         mzr::eltName::taggedSpecies);
 
 // Insert stoch-species nodes.
-        std::for_each (stochSpeciesByName.begin(),
-                       stochSpeciesByName.end(),
-                       insertStochSpeciesElt (pTaggedSpeciesElt,
-                                              rMzrUnit.getMolarFactor().getFactor() ) );
+//         std::for_each (stochSpeciesByName.begin(),
+//                        stochSpeciesByName.end(),
+//                        insertStochSpeciesElt (pTaggedSpeciesElt,
+//                                               rMzrUnit.getMolarFactor().getFactor() ) );
 
 // Leaving out the "no-substrate reactions" for now.  Don't know
 // why I put them in this unit to begin with anyway...

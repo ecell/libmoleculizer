@@ -76,8 +76,13 @@ namespace dimer
         // Construct the (only) new reaction and install it in the family
         // of dimerization reactions.
         mzr::mzrReaction* pReaction
-        = new mzr::mzrReaction (rMzrUnit.globalVars.begin(),
-                                rMzrUnit.globalVars.end() );
+            = new mzr::mzrReaction (rMzrUnit.globalVars.begin(),
+                                    rMzrUnit.globalVars.end() );
+
+        // Record within the reaction that 'this' is its creator.  This is used for the 
+        // reaction to globally look up paramater information associated with the rxnGen.
+        pReaction->setOriginatingRxnGen( (fnd::coreRxnGen*) this );
+
         pFamily->addEntry (pReaction);
 
         // Add the reactants.

@@ -172,6 +172,10 @@ namespace ftr
         = new mzr::mzrReaction (rMzrUnit.globalVars.begin(),
                                 rMzrUnit.globalVars.end() );
 
+        // Record within the reaction that 'this' is its creator.  This is used for the 
+        // reaction to globally look up paramater information associated with the rxnGen.
+        pReaction->setOriginatingRxnGen( this );
+
         pFamily->addEntry (pReaction);
 
 // Add the triggering complex as a reactant of multiplicity 1.

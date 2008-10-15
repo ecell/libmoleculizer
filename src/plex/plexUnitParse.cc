@@ -39,7 +39,7 @@ namespace plx
 {
     namespace
     {
-// Class for accumulating list of all plex nodes for omniplexes.
+        // Class for accumulating list of all plex nodes for omniplexes.
         class addPathNodesToList :
                     public std::unary_function<std::string, void>
         {
@@ -56,11 +56,11 @@ namespace plx
             operator() (const std::string& rXpath) const
             throw()
             {
-// Get the list satisfying this xPath query.
+                // Get the list satisfying this xPath query.
                 xmlpp::NodeSet xpathHits
                 = pRootElt->find (rXpath);
 
-// Insert these at the end of the list of all hits.
+                // Insert these at the end of the list of all hits.
                 rNodes.insert (rNodes.end(),
                                xpathHits.begin(),
                                xpathHits.end() );
@@ -74,8 +74,8 @@ namespace plx
                              xmlpp::Element* pStreamElt)
     throw (utl::xcpt)
     {
-// First we pick out a number of elements and lists of elements
-// for tranversal.
+        // First we pick out a number of elements and lists of elements
+        // for tranversal.
 
 //     // Species streams.
 //     xmlpp::Element* pSpeciesStreamsElt
@@ -159,11 +159,6 @@ namespace plx
                                             *this,
                                             rMzrUnit) );
 
-
-
-// TODO -- Redo this, we may want to hack omnistuff back in there sometime, although for the
-// time being I'm not 100% positive how.
-
 // Attach dumpables to families of complexes.  This must be done before
 // any species of complexes are generated.
 
@@ -181,9 +176,9 @@ namespace plx
 // 					 rMolUnit,
 // 					 *this));
 
-// Parse explicit plexSpecies, generating species of complexes, but not
-// populating them.  Since this doesn't create the initial population,
-// notification isn't an issue.
+        // Parse explicit plexSpecies, generating species of complexes, but not
+        // populating them.  Since this doesn't create the initial population,
+        // notification isn't an issue.
         std::for_each (plexSpeciesNodes.begin(),
                        plexSpeciesNodes.end(),
                        parseExplicitPlexSpecies (rMzrUnit,
@@ -193,10 +188,10 @@ namespace plx
 
     namespace
     {
-// Class for creating the initial populations of explicit plex species.
-//
-// This is the first time that notification happens, at least for
-// plexSpecies.
+        // Class for creating the initial populations of explicit plex species.
+        //
+        // This is the first time that notification happens, at least for
+        // plexSpecies.
         class createInitialPop : public
                     std::unary_function<xmlpp::Node*, void>
         {
@@ -220,12 +215,6 @@ namespace plx
                 = utl::dom::mustGetAttrString (pPlexSpeciesElt,
                                                eltName::plexSpecies_nameAttr);
 
-                xmlpp::Element* pPopulationElt
-                = utl::dom::mustGetUniqueChild (pPlexSpeciesElt,
-                                                mzr::eltName::population);
-                int pop
-                = utl::dom::mustGetAttrInt (pPopulationElt,
-                                            mzr::eltName::population_countAttr);
                 mzr::mzrSpecies* pSpecies
                 = rMzrUnit.mustFindSpecies (speciesName,
                                             pPlexSpeciesElt);
@@ -246,7 +235,7 @@ namespace plx
                             xmlpp::Element* pStreamElt)
     throw (utl::xcpt)
     {
-// Create the initial population of all explicit plex species.
+        // Create the initial population of all explicit plex species.
         xmlpp::Element* pExplicitSpeciesElt
         = utl::dom::mustGetUniqueChild (pModelElt,
                                         mzr::eltName::explicitSpecies);

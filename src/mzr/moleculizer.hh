@@ -77,6 +77,7 @@ Quick links:
 #include "mzr/unit.hh"
 #include "mzr/mzrSpecies.hh"
 #include "mzr/mzrReaction.hh"
+#include <boost/foreach.hpp>
 
 namespace mzr
 {
@@ -86,10 +87,14 @@ namespace mzr
     \brief The main application object. */
 
 
-//  The main bulk of this class can be found in ReactionNetworkDescription.
+    // The main bulk of this class can be found in ReactionNetworkDescription.
     class moleculizer :
                 public fnd::ReactionNetworkDescription<mzrSpecies, mzrReaction>
     {
+    public:
+        void enableSpatialExtrapolation();
+        void enableNonspatialExtrapolation();
+
     public:
         moleculizer (void);
         ~moleculizer (void);
@@ -118,10 +123,8 @@ namespace mzr
         getRandomSpeciesName() const;
 
     public:
-
         xmlpp::Document*
         makeDomOutput (void) throw (std::exception);
-
 
     protected:
         void
@@ -131,25 +134,89 @@ namespace mzr
         verifyInput (const xmlpp::Element* const pRootElt,
                      const xmlpp::Element* const pModelElt,
                      const xmlpp::Element* const pStreamElt) const
-        throw (std::exception);
+            throw (std::exception);
 
         void
         constructorCore (xmlpp::Element* pRootElt,
                          xmlpp::Element* pModelElt,
                          xmlpp::Element* pStreamElt)
-        throw (std::exception);
+            throw (std::exception);
 
 
+
+        // NEW STUFF --------------
+
+        std::map<std::string, std::string> userNameToSpeciesIDChart;
+
+    public: 
+
+        void recordPlexParameter( const std::string& plexName, 
+                                  const std::string& parameterName, 
+                                  const double& parameterValue);
+
+        void recordUserNameToGeneratedNamePair( const std::string& userName,
+                                                const std::string& genName) 
+        {
+            userNameToSpeciesIDChart.insert( std::make_pair( userName, genName ) );
+        }
+        
+    protected:
+        std::string getGeneratedNameFromUserName(const std::string& userName)
+        {
+            return userNameToSpeciesIDChart[ userName ];
+        }
+
+        std::map<SpeciesID, Real> radiusChart; // These are in meters. 
+        std::map<SpeciesID, Real> k_DChart;
+
+        std::map<const mzrReaction*, Real> reactionRateChart;
+        std::map<const mzrReaction*, Real> binaryActivationEnergyChart;
+
+        std::map<const fnd::coreRxnGen*, double> binaryActivationEnergiesParameterLookup;
+        std::map<const fnd::coreRxnGen*, double> unaryReactionRatesParameterLookup;
+        std::map<const fnd::coreRxnGen*, double> binaryReactionRatesParameterLookup;
+
+        void installKForNewUnaryReaction( const mzrReaction* mzrReaction);
+        void installKForNewBinaryReaction( const mzrReaction* mzrReaction);
+        void installKaForNewBinaryReaction( const mzrReaction* mzrReaction);
+        void installRadiusForNewSpecies( const mzrReaction* mzrRxn );
+        void installKdForNewSpecies( const mzrReaction* mzrRxn );
+        double calculateNewRadiusForSpecies( const mzrSpecies* ptrSpecies );
+
+        bool isDecompositionRxn( const mzrReaction* ptrRxn) const
+        {
+            if (ptrRxn->getNumberOfReactants() == 1 && ptrRxn->getNumberOfProducts() == 2)
+                return true;
+            else return false;
+        }
+
+        bool isDimerizationRxn( const mzrReaction* ptrRxn) const
+        {
+            if (ptrRxn->getNumberOfReactants() == 2 && ptrRxn->getNumberOfProducts() == 1)
+                return true;
+            else return false;
+        }
+
+        bool isOneToOneRxn( const mzrReaction* ptrRxn) const
+        {
+            if (ptrRxn->getNumberOfReactants() == 1 && ptrRxn->getNumberOfProducts() == 1)
+                return true;
+            else 
+                return false;
+        }
+
+        ////////////////////////////////////////////////
+        
     public:
-// Units loaded by the user, waiting for destruction.
-//
-// This class is the manager for units, and the place that new units
-// can be installed.  It's public because units need to get to
-// each other.
+        // Units loaded by the user, waiting for destruction.
+        //
+        // This class is the manager for units, and the place that new units
+        // can be installed.  It's public because units need to get to
+        // each other.
         unitsMgr* pUserUnits;
 
-// Codes the input capabilities of moleculizer, including its parsing
-// routine.
+        // Codes the input capabilities of moleculizer, including its parsing
+        // routine.
         inputCapabilities inputCap;
 
         static int DEFAULT_GENERATION_DEPTH;

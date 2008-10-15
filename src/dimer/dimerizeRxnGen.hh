@@ -51,7 +51,7 @@ namespace dimer
 
     public:
 
-// Note that this reaction generator memory manages the rate extrapolator.
+        // Note that this reaction generator memory manages the rate extrapolator.
         dimerizeRxnGenPair (bnd::siteFeature& rLeftSiteFeature,
                             bnd::siteFeature& rRightSiteFeature,
                             utl::autoVector<mzr::mzrReaction>* pDimerizeFamily,

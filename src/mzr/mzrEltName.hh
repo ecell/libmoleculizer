@@ -80,12 +80,12 @@ namespace mzr
         extern const std::string rate;
         extern const std::string rate_valueAttr;
 
-        extern const std::string volume;
-        extern const std::string volume_litersAttr;
+//         extern const std::string volume;
+//         extern const std::string volume_litersAttr;
 
         extern const std::string createEvent;
         extern const std::string createEvent_timeAttr;
-        extern const std::string population;
+//         extern const std::string population;
         extern const std::string population_countAttr;
         extern const std::string dumpStreamRef;
         extern const std::string dumpStreamRef_nameAttr;

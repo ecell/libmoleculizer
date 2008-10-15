@@ -48,7 +48,7 @@ namespace dimer
         decomposeExtrapolator* pExtrap;
 
     public:
-// Note that this reaction generator memory manages the rate extrapolator.
+        // Note that this reaction generator memory manages the rate extrapolator.
         decompRxnGen (utl::autoVector<mzr::mzrReaction>* pDecompFamily,
                       mzr::mzrUnit& refMzrUnit,
                       plx::plexUnit& refPlexUnit,

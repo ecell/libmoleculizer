@@ -32,15 +32,17 @@
 #ifndef FND_RXNGEN_H
 #define FND_RXNGEN_H
 
+#include "fnd/coreRxnGen.hh"
 #include "fnd/sensitive.hh"
 #include "fnd/featureStimulus.hh"
 
 namespace fnd
 {
-// Base class for reaction generators.
+    // Base class for reaction generators.
     template<class contextType>
-    class rxnGen :
-                public sensitive<featureStimulus<contextType> >
+    class rxnGen 
+        :
+        public coreRxnGen, public sensitive<featureStimulus<contextType> >
     {
     public:
         virtual

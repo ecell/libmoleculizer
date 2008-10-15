@@ -1,6 +1,6 @@
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 //
-//        This file is part of Libmoleculizer
+//        this file is part of Libmoleculizer
 //
 //        Copyright (C) 2001-2008 The Molecular Sciences Institute.
 //
@@ -38,8 +38,12 @@
 #include <sstream>
 #include <boost/foreach.hpp>
 
+
 namespace fnd
 {
+
+    class coreRxnGen; 
+
     template<class speciesType>
     class basicReaction
     {
@@ -112,21 +116,6 @@ namespace fnd
             }
         }
 
-//         bool
-//         isDecompositionReaction() const
-//         {
-//             return (getReactants().size() == 1 &&
-//                     getProducts().size() == 2);
-//         }
-
-//         bool
-//         isDimerizationReaction() const
-//         {
-//             return (getReactants().size() == 2 &&
-//                     getProducts().size() == 1);
-//         }
-
-
     protected:
 
         multMap reactants;
@@ -136,6 +125,8 @@ namespace fnd
         int arity;
 
         double rate;
+
+        const coreRxnGen* ptrParentGen;
 
     public:
         int getNumberOfReactants() const
@@ -151,16 +142,41 @@ namespace fnd
             return sum;
         }
 
+        int getNumberOfProducts() const
+        {
+            int sum = 0;
+
+            BOOST_FOREACH ( typename multMap::value_type tt, products)
+            {
+                sum += tt.second;
+
+            }
+
+            return sum;
+            
+        }
+
     public:
         basicReaction (double reactionRate = 0.0) :
                 arity (0),
                 rate (reactionRate),
                 nameUnclean ( true ),
+                ptrParentGen( NULL ),
                 theName ( "" )
         {}
 
         virtual ~basicReaction()
         {}
+
+        void setOriginatingRxnGen( const coreRxnGen* parentGen)
+        {
+            ptrParentGen = parentGen;
+        }
+
+        const coreRxnGen* getOriginatingRxnGen(void) const
+        {
+            return ptrParentGen;
+        }
 
         void
         addReactant (speciesType* pSpecies,

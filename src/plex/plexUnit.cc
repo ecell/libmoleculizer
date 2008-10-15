@@ -200,22 +200,22 @@ namespace plx
     insertStateElts (xmlpp::Element* pRootElt)
     throw (std::exception)
     {
-        // Get the model element.
-        xmlpp::Element* pModelElt
-        = utl::dom::mustGetUniqueChild (pRootElt,
-                                        mzr::eltName::model);
-
-        // Ensure that the tagged-species element is here.
-        xmlpp::Element* pTaggedSpeciesElt
-            = utl::dom::mustGetUniqueChild (pModelElt,
-                                            mzr::eltName::taggedSpecies);
-
-        // Insert tagged-plex-species nodes.
-        recognize.insertSpecies (pTaggedSpeciesElt,
-                                 rMzrUnit.getMolarFactor().getFactor() );
+        //         // Get the model element.
+        //         xmlpp::Element* pModelElt
+        //         = utl::dom::mustGetUniqueChild (pRootElt,
+        //                                         mzr::eltName::model);
+        
+        //         // Ensure that the tagged-species element is here.
+        //         xmlpp::Element* pTaggedSpeciesElt
+        //             = utl::dom::mustGetUniqueChild (pModelElt,
+        //                                             mzr::eltName::taggedSpecies);
+        
+        //         // Insert tagged-plex-species nodes.
+        //          recognize.insertSpecies (pTaggedSpeciesElt,
+        //                                   rMzrUnit.getMolarFactor().getFactor() );
     }
-
-
+    
+    
     mzrPlexSpecies*
     plexUnit::constructNewPlexSpeciesFromComplexOutputState (nmr::ComplexOutputStateCref aCOS) throw (NonConstructableComplexOutputStateXcpt)
     {

@@ -23,7 +23,7 @@
 // END HEADER
 //
 // Original Author:
-//   Nathan Addy, Scientific Programmer, Molecular Sciences Institute, 2001
+//   Nathan Addy, Scientific Programmer, Molecular Sciences Institute, 2008
 //
 // Modifing Authors:
 //
@@ -41,6 +41,7 @@
 #include "fnd/fndXcpt.hh"
 #include "fnd/basicReaction.hh"
 #include "fnd/basicSpecies.hh"
+#include <boost/function.hpp>
 
 namespace fnd
 {
@@ -280,6 +281,12 @@ namespace fnd
                     break;
             }
 
+            // Call each of the registered callbacks on the newly installed reaction.
+            BOOST_FOREACH( Callback cb, reactionCallbacks)
+            {
+                cb(pRxn);
+            }
+
             return true;
         }
 
@@ -432,6 +439,19 @@ namespace fnd
         ParticipatingSpeciesRxnMap singleSubstrateRxns;
         ParticipatingSpeciesRxnMap doubleSubstrateRxns;
 
+        /////////////////////////
+        // NEWCODE
+        //
+        typedef boost::function<void (const ReactionType*)> Callback;
+        std::vector<Callback> reactionCallbacks;
+
+    public: 
+        void addCallback( Callback cb) 
+        {
+            reactionCallbacks.push_back(cb);
+        }
+        // 
+        /////////////////////////
 
     };
 

@@ -42,7 +42,8 @@ processCommandLineArgs (int argc,
                         mzr::moleculizer& theMzrObject,
                         std::string* fileName);
 
-void displayHelpMessage();
+void 
+displayHelpMessage();
 
 
 int
@@ -71,7 +72,7 @@ main (int argc, char** argv)
     {
         // If an exception is thrown, report it and crash.
         std::cerr << rExcept.what()
-        << std::endl;
+                  << std::endl;
         return 1;
     }
 }
@@ -86,6 +87,13 @@ processCommandLineArgs (int argc,
     // '-g NUMBER'       Sets the generation depth to NUMBER
     // '-f FILENAME'     Loads the inputfile FILENAME
 
+    // mandatory --spatial or --non-spatial
+    // if --spatial: 
+    //     extrap diffusion coefficient, max, min, constant
+    //     extrap radius default
+    //     extrap activation energy noextrap
+    // if --non-spatial
+    //     extrap reaction rate, no-extrap
 
     // Skip the command name.
     --argc; ++argv;

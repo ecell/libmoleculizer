@@ -77,12 +77,12 @@ namespace mzr
         const std::string rate ("rate");
         const std::string rate_valueAttr ("value");
 
-        const std::string volume ("volume");
-        const std::string volume_litersAttr ("liters");
+//         const std::string volume ("volume");
+//         const std::string volume_litersAttr ("liters");
 
         const std::string createEvent ("create-event");
         const std::string createEvent_timeAttr ("time");
-        const std::string population ("population");
+//        const std::string population ("population");
         const std::string population_countAttr ("count");
         const std::string dumpStreamRef ("dump-stream-ref");
         const std::string dumpStreamRef_nameAttr ("name");

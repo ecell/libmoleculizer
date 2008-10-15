@@ -7,4 +7,8 @@ AM_CXXFLAGS = @CXXFLAGS@ -Wall $(LIBXML_CFLAGS)
 
 bin_PROGRAMS = trial
 
-trial_SOURCES = main.cpp
+trial_SOURCES = main.cpp \
+propertiedClass.cpp \
+property.cpp \
+propertyValue.cpp \
+propXcpt.cpp

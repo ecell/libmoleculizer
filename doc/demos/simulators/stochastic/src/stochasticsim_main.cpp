@@ -38,7 +38,9 @@ using namespace std;
 
 void
 processCommandLineArgs (int argc, char* argv[], std::string& theFileName, std::string& modelFile);
-void displayHelpAndExitProgram();
+
+void 
+displayHelpAndExitProgram();
 
 int main (int argc, char* argv[])
 {
@@ -66,7 +68,8 @@ void processCommandLineArgs (int argc, char* argv[], std::string& rulesFile, std
 
     bool rulesFound (false);
     bool modelFound (false);
-// Skip the command name
+
+    // Skip the command name
     argc--;
     argv++;
 

@@ -45,13 +45,13 @@ PropertiedClass::~PropertiedClass()
 {
 }
 
-Value& 
+Value
 PropertiedClass::operator[](const String& propertiedName) throw(PropertyDoesNotExistXcpt )
 {
-    this->getPropertyValue( propertiedName );
+    return this->getPropertyValue( propertiedName );
 }
 
-Value&
+Value
 PropertiedClass::getPropertyValue( const String& propertyName) throw(PropertyDoesNotExistXcpt )
 {
     return getProperty( propertyName ).getValue();
@@ -60,12 +60,12 @@ PropertiedClass::getPropertyValue( const String& propertyName) throw(PropertyDoe
 Property&
 PropertiedClass::getProperty(const String& propertyName)
 {
-    return thePropertyMap[ &propertyName ];
+    return thePropertyMap.find( &propertyName )->second;
 }
 
 
 
-void PropertiedClass::addProperty( Property& propertyToAdd )
+void PropertiedClass::addProperty( Property propertyToAdd )
 {
 
     if (propertyToAdd.hasOwner())
@@ -73,17 +73,18 @@ void PropertiedClass::addProperty( Property& propertyToAdd )
         throw utl::xcpt("property '" + propertyToAdd.getName() + "' already has an owner.");
     }
 
-    const String* ptrString = &propertyName.getName();
+    const String* ptrString = &propertyToAdd.getName();
 
     if (thePropertyMap.find( ptrString ) == thePropertyMap.end() )
     {
         propertyToAdd.setOwner( this );
-        thePropertyMap.insert( std::make_pair( ptrString, newProw ) );
+        thePropertyMap.insert( std::make_pair( ptrString, propertyToAdd ) );
     }
     else
     {
+        String badPropertyName( *ptrString );
         // throw PropertyAlreadyExistsXcpt( propertyName )
-        throw utl::xcpt("Property '" + propertyName + "' already exists in this PropertiedClass.");
+        throw utl::xcpt("Property '" + badPropertyName + "' already exists in this PropertiedClass.");
     }
 }
 
@@ -92,11 +93,11 @@ void PropertiedClass::createProperty( String propertyName )
     
     Property newProp(propertyName, this);
 
-    const String* ptrString = &propertyName.getName();
+    const String* ptrString = &newProp.getName();
     
     if (thePropertyMap.find( ptrString ) == thePropertyMap.end() )
     {
-        thePropertyMap.insert( std::make_pair( ptrString, newProw ) );
+        thePropertyMap.insert( std::make_pair( ptrString, newProp ) );
     }
     else
     {

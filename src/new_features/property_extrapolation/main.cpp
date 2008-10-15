@@ -1,5 +1,6 @@
 #include "utl/defs.hh"
 #include "propertiedClass.hpp"
+#include "propertyValue.hpp"
 #include <iostream>
 #include <string>
 using namespace std;
@@ -42,6 +43,10 @@ int main()
     object["Height"] = Value(72.0f);
     
     cout << object.getName() << endl;
+    Value val = object["Weight"];
+    cout << val << endl;
+    object["Weight"] = object["Weight"].valueAsReal() + 10.0f;
+    cout << object["Weight"] << endl;
     return 0;
 
 }

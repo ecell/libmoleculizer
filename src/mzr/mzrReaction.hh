@@ -148,7 +148,7 @@ namespace mzr
         // Response of this reaction to message that one of its
         // reactants has changed population
         void
-        respond (const mzrReactionStimulus& rStimulus);
+        respond(const mzrReactionStimulus& rStimulus);
 
         /*! \brief What a reaction does. */
         fnd::eventResult

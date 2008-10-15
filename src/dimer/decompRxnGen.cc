@@ -44,32 +44,37 @@ namespace dimer
     respond (const fnd::featureStimulus<cpx::cxBinding<plx::mzrPlexSpecies, plx::mzrPlexFamily> >& rStimulus)
     {
         const cpx::cxBinding<plx::mzrPlexSpecies, plx::mzrPlexFamily>& rNewContext
-        = rStimulus.getContext();
+            = rStimulus.getContext();
 
-// Create the new reaction, and install it in the family of
-// decomposition reactions for memory management.
+        // Create the new reaction, and install it in the family of
+        // decomposition reactions for memory management.
         mzr::mzrReaction* pReaction
-        = new mzr::mzrReaction (rMzrUnit.globalVars.begin(),
-                                rMzrUnit.globalVars.end() );
+            = new mzr::mzrReaction (rMzrUnit.globalVars.begin(),
+                                    rMzrUnit.globalVars.end() );
+
+        // Record within the reaction that 'this' is its creator.  This is used for the 
+        // reaction to globally look up paramater information associated with the rxnGen.
+        pReaction->setOriginatingRxnGen( this );
+
         pFamily->addEntry (pReaction);
 
-// Add the substrate and sensitize to it.
+        // Add the substrate and sensitize to it.
         pReaction->addReactant (rNewContext.getSpecies(),
                                 1);
 
-// Extrapolate the rate of the reaction.
+        // Extrapolate the rate of the reaction.
         pReaction->setRate (pExtrap->getRate (rNewContext) );
 
-// Ingredients for the mandatory result species.
+        // Ingredients for the mandatory result species.
         std::vector<cpx::molParam> mndtryResultParams;
         plx::mzrPlexFamily* pMndtryResultFamily;
 
         const plx::mzrPlex& rWholePlex
-        = rNewContext.getPlexFamily().getParadigm();
+            = rNewContext.getPlexFamily().getParadigm();
 
-// The index of the binding that is decomposing.
+        // The index of the binding that is decomposing.
         cpx::bindingSpec breakingBindingNdx
-        = rNewContext.getBindingSpec();
+            = rNewContext.getBindingSpec();
 
 // Make a copy of the chosen plexSpecies's paradigm, but omitting
 // the binding that is to be broken.  At the same time, we'll get
@@ -84,11 +89,11 @@ namespace dimer
         int rightMolNdx = -1;
 // Copy over all except the specified binding.
         for (int bindingNdx = 0;
-                bindingNdx < (int) rWholePlex.bindings.size();
-                bindingNdx++)
+             bindingNdx < (int) rWholePlex.bindings.size();
+             bindingNdx++)
         {
             const cpx::binding& rBinding
-            = rWholePlex.bindings[bindingNdx];
+                = rWholePlex.bindings[bindingNdx];
 
             if (bindingNdx == breakingBindingNdx)
             {
@@ -116,26 +121,26 @@ namespace dimer
 // to the species's paradigm.
         cpx::plexIso toLeftParadigm;
         pMndtryResultFamily = rPlexUnit.recognize (leftComponent,
-                              toLeftParadigm);
+                                                   toLeftParadigm);
 
 // Construct the parameters for the left component.
 //
 // First, construct the vector of molParams by permuting the
 // molParams from the original plex.
         for (int leftParaMolNdx = 0;
-                leftParaMolNdx < (int) leftComponent.mols.size();
-                leftParaMolNdx++)
+             leftParaMolNdx < (int) leftComponent.mols.size();
+             leftParaMolNdx++)
         {
 // Bring along the old mol params, using the two tracking maps.
             int molNdx = toLeftParadigm.backward.molMap[leftParaMolNdx];
             int preImgNdx = leftIso.backward.molMap[molNdx];
             mndtryResultParams.push_back
-            (rNewContext.getMolParams() [preImgNdx]);
+                (rNewContext.getMolParams() [preImgNdx]);
         }
 
 // Construct the mandatory result species.
         plx::mzrPlexSpecies* pMndtryResult
-        = pMndtryResultFamily->getMember (mndtryResultParams);
+            = pMndtryResultFamily->getMember (mndtryResultParams);
 
 // Add it as a product of multiplicity one.
         pReaction->addProduct (pMndtryResult,
@@ -143,7 +148,7 @@ namespace dimer
 
 // Continue reaction generation at one depth lower.
         int notificationDepth
-        = rStimulus.getNotificationDepth() - 1;
+            = rStimulus.getNotificationDepth() - 1;
         if (0 <= notificationDepth)
         {
             pMndtryResult->ensureNotified (notificationDepth);
@@ -151,7 +156,7 @@ namespace dimer
 
 // Now start looking at the other result component, if any.
         bool resultIsConnected
-        = (leftComponent.mols.size() == brokenPlex.mols.size() );
+            = (leftComponent.mols.size() == brokenPlex.mols.size() );
         if (! resultIsConnected)
         {
 // Ingredients for the optional result species, which only is
@@ -178,20 +183,20 @@ namespace dimer
 // First, construct the vector of molParams by permuting the
 // molParams from the original plex.
             for (int rightParaMolNdx = 0;
-                    rightParaMolNdx < (int) rightComponent.mols.size();
-                    rightParaMolNdx++)
+                 rightParaMolNdx < (int) rightComponent.mols.size();
+                 rightParaMolNdx++)
             {
 // Bring along the old mol params, using the two tracking maps.
                 int molNdx = toRightParadigm.backward.molMap[rightParaMolNdx];
                 int preImgNdx = rightIso.backward.molMap[molNdx];
 
                 optResultParams.push_back
-                (rNewContext.getMolParams() [preImgNdx]);
+                    (rNewContext.getMolParams() [preImgNdx]);
             }
 
 // Construct the optional result species.
             plx::mzrPlexSpecies* pOptResult
-            = pOptResultFamily->getMember (optResultParams);
+                = pOptResultFamily->getMember (optResultParams);
 
 // Add it as a product of multiplicity 1.
             pReaction->addProduct (pOptResult,

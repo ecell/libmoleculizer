@@ -40,14 +40,14 @@
 
 namespace mzr
 {
-// This is how a unit indicates what it can parse and parses what it can
-// from a moleculizer-input document.
+    // This is how a unit indicates what it can parse and parses what it can
+    // from a moleculizer-input document.
     class inputCapabilities
     {
-// Names of elements in input files that are handled by a unit.
-//
-// These are connected with the places in the input file where elements may
-// appear that depend on the presence of a particular unit.
+        // Names of elements in input files that are handled by a unit.
+        //
+        // These are connected with the places in the input file where elements may
+        // appear that depend on the presence of a particular unit.
         std::set<std::string> modelContentNames;
         std::set<std::string> reactionGenNames;
         std::set<std::string> explicitSpeciesContentNames;
@@ -56,36 +56,31 @@ namespace mzr
 
     public:
 
-// This allows the parser to just add up the inputCapabilities's of the
-// modules, to form its own inputCapabilities.
+        // This allows the parser to just add up the inputCapabilities's of the
+        // modules, to form its own inputCapabilities.
         void
         addCap (const inputCapabilities& rCapToAdd)
         {
-            modelContentNames.insert
-            (rCapToAdd.modelContentNames.begin(),
-             rCapToAdd.modelContentNames.end() );
+            modelContentNames.insert(rCapToAdd.modelContentNames.begin(),
+                                     rCapToAdd.modelContentNames.end() );
 
-            reactionGenNames.insert
-            (rCapToAdd.reactionGenNames.begin(),
-             rCapToAdd.reactionGenNames.end() );
+            reactionGenNames.insert(rCapToAdd.reactionGenNames.begin(),
+                                    rCapToAdd.reactionGenNames.end() );
 
-            explicitSpeciesContentNames.insert
-            (rCapToAdd.explicitSpeciesContentNames.begin(),
-             rCapToAdd.explicitSpeciesContentNames.end() );
+            explicitSpeciesContentNames.insert(rCapToAdd.explicitSpeciesContentNames.begin(),
+                                               rCapToAdd.explicitSpeciesContentNames.end() );
 
-            speciesStreamsContentNames.insert
-            (rCapToAdd.speciesStreamsContentNames.begin(),
-             rCapToAdd.speciesStreamsContentNames.end() );
+            speciesStreamsContentNames.insert(rCapToAdd.speciesStreamsContentNames.begin(),
+                                              rCapToAdd.speciesStreamsContentNames.end() );
 
-            eventsContentNames.insert
-            (rCapToAdd.eventsContentNames.begin(),
-             rCapToAdd.eventsContentNames.end() );
+            eventsContentNames.insert(rCapToAdd.eventsContentNames.begin(),
+                                      rCapToAdd.eventsContentNames.end() );
         }
 
-// To build the above sets in unit constructors.
-//
-// Each is connected with a place in the input file schema where elements
-// may appear that depend on the presence of a particular unit.
+        // To build the above sets in unit constructors.
+        //
+        // Each is connected with a place in the input file schema where elements
+        // may appear that depend on the presence of a particular unit.
         void
         addModelContentName (const std::string& rEltName)
         {
@@ -124,7 +119,7 @@ namespace mzr
         }
 
 
-// To test if this unit handles a particular reaction generator element.
+        // To test if this unit handles a particular reaction generator element.
         bool
         handlesReactionGensContent (xmlpp::Element* pElt) const
         {
@@ -132,7 +127,7 @@ namespace mzr
                     != reactionGenNames.find (pElt->get_name() ) );
         }
 
-// To test if this unit handles a particular explictSpecies content element.
+        // To test if this unit handles a particular explictSpecies content element.
         bool
         handlesExplictSpeciesContent (xmlpp::Element* pElt) const
         {
@@ -140,7 +135,7 @@ namespace mzr
                     != explicitSpeciesContentNames.find (pElt->get_name() ) );
         }
 
-// To test if this unit handles a particular speciesStreams content element.
+        // To test if this unit handles a particular speciesStreams content element.
         bool
         handlesSpeciesStreamsContent (xmlpp::Element* pElt) const
         {
@@ -148,7 +143,7 @@ namespace mzr
                     != speciesStreamsContentNames.find (pElt->get_name() ) );
         }
 
-// To test if this unit handles a particular events content element.
+        // To test if this unit handles a particular events content element.
         bool
         handlesEventsContent (xmlpp::Element* pElt) const
         {
@@ -163,26 +158,26 @@ namespace mzr
     {
     public:
 
-// For debugging only, at present.  Possibly useful for other things?
+        // For debugging only, at present.  Possibly useful for other things?
         std::string name;
 
         moleculizer& rMolzer;
 
         unit (const std::string& rName,
-              moleculizer& rMoleculizer) :
-                name (rName),
-                rMolzer (rMoleculizer)
+              moleculizer& rMoleculizer) 
+            :
+            name (rName),
+            rMolzer (rMoleculizer)
         {}
 
         virtual ~unit (void)
-        {
-        }
+        {}
 
-// Keeps track of the elements that are handled by this unit,
-// so that elements don't "fall through the cracks."
+        // Keeps track of the elements that are handled by this unit,
+        // so that elements don't "fall through the cracks."
         inputCapabilities inputCap;
 
-// The actual input parsing done by this unit.
+        // The actual input parsing done by this unit.
         virtual void
         parseDomInput (xmlpp::Element* pRootElt,
                        xmlpp::Element* pModelElt,
@@ -202,7 +197,6 @@ namespace mzr
             // The plex unit does a lot; the mzrUnit does a little.  So far,
             // nobody else does anything.
         }
-
 
         // How a unit contributes its part of a state dump.
         virtual void

@@ -100,24 +100,18 @@ namespace mzr
     mzrUnit (moleculizer& rMoleculizer) :
             unit ("mzr",
                   rMoleculizer),
-            generateDepth (0)
+            generateDepth(0)
     {
-// Initialize the vector of global state variables, with which each
-// reaction is initialized.  At this point, there is only one
-// global state variable, the volume.
-        globalVars.push_back (&theMolarFactor);
-
-// Model elements whose contents are parsed by some unit
-// or another, as determined by moleculizer::parseDomInput.
+        // Model elements whose contents are parsed by some unit
+        // or another, as determined by moleculizer::parseDomInput.
         inputCap.addModelContentName (eltName::reactionGens);
         inputCap.addModelContentName (eltName::explicitSpecies);
 
-// Model elements that this unit actually processes.
+        // Model elements that this unit actually processes.
         inputCap.addModelContentName (eltName::explicitReactions);
-        inputCap.addModelContentName (eltName::volume);
 
-// This unit is not responsible for any reaction generators
-// or species streams.
+        // This unit is not responsible for any reaction generators
+        // or species streams.
     }
 
 

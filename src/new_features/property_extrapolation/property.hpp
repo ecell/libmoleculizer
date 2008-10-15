@@ -34,6 +34,8 @@
 
 #include "propertyValue.hpp"
 
+class PropertiedClass;
+
 class Property
 {
 public:
@@ -42,7 +44,9 @@ public:
     ~Property();
     
     const String& getName() const;
+
     Value getValue();
+
     void setValue( const Value& value);
 
     bool hasOwner() const 

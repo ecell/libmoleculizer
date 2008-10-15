@@ -41,8 +41,8 @@ namespace dimer
              cpx::siteParam rightParam,
              double rate)
     {
-// For the time being, I'm storing the pair in only one order,
-// then searching for both orders when the pair is looked up.
+        // For the time being, I'm storing the pair in only one order,
+        // then searching for both orders when the pair is looked up.
         std::pair<rateMapType::iterator, bool> insertResult
         = rateMap.insert (std::make_pair (std::make_pair (leftParam,
                                           rightParam),
@@ -59,8 +59,8 @@ namespace dimer
     getRate (const cpx::cxSite<plx::mzrPlexSpecies, plx::mzrPlexFamily>& rLeftContext,
              const cpx::cxSite<plx::mzrPlexSpecies, plx::mzrPlexFamily>& rRightContext) const
     {
-// Now we have to check for both orders in the pair of site shape
-// pointers.
+        // Now we have to check for both orders in the pair of site shape
+        // pointers.
         rateMapType::const_iterator iEntry
         = rateMap.find (std::make_pair (rLeftContext.getSiteParam(),
                                         rRightContext.getSiteParam() ) );
@@ -101,8 +101,8 @@ namespace dimer
     getRate (const cpx::cxSite<plx::mzrPlexSpecies, plx::mzrPlexFamily>& rLeftContext,
              const cpx::cxSite<plx::mzrPlexSpecies, plx::mzrPlexFamily>& rRightContext) const
     {
-// Since the rates were stored with the key pair in only one
-// order, we have to check for both orders when looking it up.
+        // Since the rates were stored with the key pair in only one
+        // order, we have to check for both orders when looking it up.
         invMapType::const_iterator iEntry
         = invariantMap.find (std::make_pair (rLeftContext.getSiteParam(),
                                              rRightContext.getSiteParam() ) );

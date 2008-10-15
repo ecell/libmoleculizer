@@ -50,16 +50,13 @@
 
 namespace mzr
 {
-// This unit is vaguely special in that, as a shared object, it contains
-// the code for the application class, moleculizer.  As a parser,
-// it "cleans up" general stuff that is basic to moleculizer's operation,
-// rather than added in other units.
+    // This unit is vaguely special in that, as a shared object, it contains
+    // the code for the application class, moleculizer.  As a parser,
+    // it "cleans up" general stuff that is basic to moleculizer's operation,
+    // rather than added in other units.
     class mzrUnit :
                 public unit
     {
-
-        // The one (?) built in state variable, essentially the volume.
-        molarFactorGlobal theMolarFactor;
 
         // These are all the species that can be dumped to output.
         utl::catalog<mzrSpecies> speciesByName;
@@ -116,11 +113,11 @@ namespace mzr
             return generateDepth;
         }
 
-        molarFactorGlobal&
-        getMolarFactor (void)
-        {
-            return theMolarFactor;
-        }
+//         molarFactorGlobal&
+//         getMolarFactor (void)
+//         {
+//             return theMolarFactor;
+//         }
 
         // This doesn't register the species for deletion, so it can be used
         // for explicit plexSpecies, which are deleted by their plexFamilies.
@@ -131,6 +128,9 @@ namespace mzr
 
             // I should "record" it but not insist on it being recorded here. NJA
             rMolzer.recordSpecies ( pSpecies );
+
+            // We also add into moleculizer a map of user-names to their generated names.
+            rMolzer.recordUserNameToGeneratedNamePair( rSpeciesName, pSpecies->getName() );
 
             return speciesByName.addEntry (rSpeciesName, (mzrSpecies*) pSpecies);
 
@@ -144,9 +144,7 @@ namespace mzr
 
 
 
-/////////////////////////////////////////////////////////
-
-
+        /////////////////////////////////////////////////////////
         // For adding a species that will be memory-managed by mzrUnit.
         // (An example would be an explicit stochSpecies, but that's from
         // another module.)

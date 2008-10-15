@@ -37,6 +37,7 @@ libmoleculizer_mzr_la_LIBADD = -lstdc++ $(LIBUTL)
 
 libmoleculizer_mzr_la_SOURCES =\
 dumpUtils.cc \
+extrapolationFormula.cc \
 moleculizer.cc \
 mzrEltName.cc \
 mzrException.cc \

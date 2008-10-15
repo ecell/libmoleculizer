@@ -58,9 +58,9 @@ namespace dimer
                  const cpx::cxSite<plx::mzrPlexSpecies, plx::mzrPlexFamily>& rRightContext) const = 0;
     };
 
-// Dimerization rate extrapolator that does no extrapolation; uses the same
-// rate of dimerization for a given pair of binding site shapes, regardless
-// of dimerizing species.  Not recommended; included as an example only.
+    // Dimerization rate extrapolator that does no extrapolation; uses the same
+    // rate of dimerization for a given pair of binding site shapes, regardless
+    // of dimerizing species.  Not recommended; included as an example only.
     class dimerizeNoExtrap :
                 public dimerizeExtrapolator
     {
@@ -70,8 +70,8 @@ namespace dimer
         rateMapType rateMap;
 
     public:
-// Both for inserting default rates and for writing allosteric
-// rates over default rates.
+        // Both for inserting default rates and for writing allosteric
+        // rates over default rates.
         void
         setRate (cpx::siteParam leftParam,
                  cpx::siteParam rightParam,
@@ -92,7 +92,7 @@ namespace dimer
                  cpx::siteParam rightParam,
                  double rate) {}
 
-// For retrieving weight-corrected dimerization rates.
+        // For retrieving weight-corrected dimerization rates.
         double
         getRate (const cpx::cxSite<plx::mzrPlexSpecies, plx::mzrPlexFamily>& rLeftContext,
                  const cpx::cxSite<plx::mzrPlexSpecies, plx::mzrPlexFamily>& rRightContext) const
@@ -102,8 +102,8 @@ namespace dimer
     };
 
 
-// Dimerization rate extrapolator that uses the masses of the
-// dimerizing species.
+    // Dimerization rate extrapolator that uses the masses of the
+    // dimerizing species.
     class dimerizeMassExtrap :
                 public dimerizeExtrapolator
     {
@@ -117,25 +117,25 @@ namespace dimer
         invMapType invariantMap;
 
     public:
-// The masses given to this constructor are used to convert
-// to/from binding invariant to rate and back.
+        // The masses given to this constructor are used to convert
+        // to/from binding invariant to rate and back.
         dimerizeMassExtrap (double leftMolMass,
                             double rightMolMass) :
                 leftMass (leftMolMass),
                 rightMass (rightMolMass)
         {}
 
-// Both for inserting default rates and for writing allosteric
-// rates over default rates.
-//
-// Storing the rate (binding invariant) with the key pair in only
-// one order; this means that search has to look for both orders.
+        // Both for inserting default rates and for writing allosteric
+        // rates over default rates.
+        //
+        // Storing the rate (binding invariant) with the key pair in only
+        // one order; this means that search has to look for both orders.
         void
         setRate (cpx::siteParam leftParam,
                  cpx::siteParam rightParam,
                  double rate);
 
-// For retrieving weight-corrected dimerization rates.
+        // For retrieving weight-corrected dimerization rates.
         double
         getRate (const cpx::cxSite<plx::mzrPlexSpecies, plx::mzrPlexFamily>& rLeftContext,
                  const cpx::cxSite<plx::mzrPlexSpecies, plx::mzrPlexFamily>& rRightContext) const;

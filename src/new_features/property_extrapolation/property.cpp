@@ -29,7 +29,8 @@
 //
 //
 
-#include "property.cpp"
+#include "propertiedClass.hpp"
+#include "property.hpp"
 
 Property::Property( const String& propName)
     :
@@ -58,12 +59,6 @@ Property::getName() const
 
 Value
 Property::getValue()
-{
-    return propertyValue;
-}
-
-const Value
-Property::getValue() const
 {
     return propertyValue;
 }

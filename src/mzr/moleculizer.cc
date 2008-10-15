@@ -31,6 +31,7 @@
 
 #include <libxml++/libxml++.h>
 #include <boost/foreach.hpp>
+#include <functional>
 
 #include "utl/defs.hh"
 #include "utl/utlXcpt.hh"
@@ -139,11 +140,12 @@ namespace mzr
                                           pStreamsElement) );
     }
 
-    moleculizer::moleculizer (void)
-            :
-        modelLoaded ( false )
+    moleculizer::moleculizer(void)
+        :
+        modelLoaded( false )
     {
-        pUserUnits = new unitsMgr (*this);
+        
+        pUserUnits = new unitsMgr(*this);
 
         // Now just does the "input capabilities" thing.
         constructorPrelude();
@@ -390,6 +392,54 @@ namespace mzr
         if (explicitSpeciesContentNodes.end() != iUnhandledExplicitSpeciesContent)
             throw unhandledExplicitSpeciesContentXcpt (*iUnhandledExplicitSpeciesContent);
 
+    }
+
+    void 
+    moleculizer::recordPlexParameter( const std::string& plexName,
+                                      const std::string& paramName,
+                                      const double& paramValue)
+    {
+        if (paramName == "kD")
+        {
+            k_DChart.insert( std::make_pair( plexName, paramValue) );
+        }
+        else if (paramName == "radius")
+        {
+            radiusChart.insert( std::make_pair( plexName, paramValue ) );
+        }
+         
+        else throw 666;
+    }
+
+    void 
+    moleculizer::enableSpatialExtrapolation()
+    {
+        boost::function<void (const mzrReaction*)> cb1, cb2, cb3, cb4;
+
+        cb1 = std::bind1st(std::mem_fun(&moleculizer::installRadiusForNewSpecies), this);
+        cb2 = std::bind1st(std::mem_fun(&moleculizer::installKdForNewSpecies), this);
+        cb3 = std::bind1st(std::mem_fun(&moleculizer::installKaForNewBinaryReaction), this);
+        cb4 = std::bind1st(std::mem_fun(&moleculizer::installKForNewUnaryReaction), this);
+
+        // Note that the order of these may matter. 
+        addCallback( cb1 );
+        addCallback( cb2 );
+        addCallback( cb3 );
+        addCallback( cb4 );
+    }
+    
+
+    void 
+    moleculizer::enableNonspatialExtrapolation() 
+    {
+        boost::function<void (const mzrReaction*)> cb1, cb2;
+
+        cb1 = std::bind1st(std::mem_fun(&moleculizer::installKForNewBinaryReaction), this);
+        cb2 = std::bind1st(std::mem_fun(&moleculizer::installKForNewUnaryReaction), this);
+
+        // Note that the order of these may matter. 
+        addCallback( cb1 );
+        addCallback( cb2 );
     }
 
     int moleculizer::DEFAULT_GENERATION_DEPTH = 1;

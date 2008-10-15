@@ -34,7 +34,6 @@
 
 #include "utl/defs.hh" 
 
-
 using namespace boost;
 
 // This class represents a polymorphic value, something that can be used
@@ -48,6 +47,8 @@ public:
 
     template <typename T>
     Value(const T& valueType)
+        :
+        underlyingValue( new Real(0.0f) )
     {
         this->setValue( valueType );
     }
@@ -68,11 +69,14 @@ public:
     Integer valueAsInteger() const;
     Real valueAsReal() const;
     
-    Value* clone() const;
+    Value clone() const;
 
 protected:
     typedef shared_ptr<Real> UnderlyingValuePtr;
-    UnderlyingValuePtr  underlingValue;
+    UnderlyingValuePtr  underlyingValue;
 };
+
+std::ostream& operator<<(std::ostream& str, const Value& val);
+
 
 #endif

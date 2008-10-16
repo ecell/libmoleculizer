@@ -36,6 +36,21 @@ namespace mzr
     namespace eltName
     {
         const std::string moleculizerInput ("moleculizer-input");
+
+
+        const std::string configurationSwitches ("configuration");
+        const std::string generationMethod("generation-method");
+        const std::string extrapolationMethod("extrapolation-method");
+        const std::string modeKeyword("mode");
+        const std::string spatialMode("spatial");
+        const std::string nonspatialMode("non-spatial");
+        const std::string noExtrapolationMode("no-extrapolate-reaction-rates");
+        const std::string yesExtrapolationMode(";
+
+
+
+
+
         const std::string model ("model");
         const std::string streams ("streams");
         const std::string events ("events");

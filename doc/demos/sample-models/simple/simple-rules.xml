@@ -1,5 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <moleculizer-input>
+
+  <runtime-info>
+    <generation-method mode="non-spatial">
+      <extrapolation-method mode="extrapolate-reaction-rates">
+      <extrapolation-method mode="no-extrapolate-reaction-rates">
+    </generation-method>
+    <generation-method mode="spatial">
+      <extrapolation-method mode="Foo">
+    </generation-method>
+  </runtime-info>
+
+
   <model>
     <modifications>
     </modifications>

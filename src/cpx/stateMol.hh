@@ -34,43 +34,43 @@
 
 namespace cpx
 {
-    template<class baseMolT, class stateT>
-    class stateMol :
-                public baseMolT
-    {
-    protected:
+template<class baseMolT, class stateT>
+class stateMol :
+            public baseMolT
+{
+protected:
 // The default state of the mol.  This is used as a starting point
 // for constructing other states of the mol.
 //
 // Note that this isn't set in the constructor; descendant classes
 // must set this.
-        const stateT* pDefaultState;
+    const stateT* pDefaultState;
 
-    public:
-        typedef baseMolT baseMolType;
-        typedef stateT stateType;
+public:
+    typedef baseMolT baseMolType;
+    typedef stateT stateType;
 
-        stateMol (const baseMolT& rBaseMol) :
-                baseMolT (rBaseMol),
-                pDefaultState (0)
-        {}
+    stateMol( const baseMolT& rBaseMol ) :
+            baseMolT( rBaseMol ),
+            pDefaultState( 0 )
+    {}
 
 // Returns the default state as a reference to the actual state class.
 // One can can then use the default state as the starting point
 // for making other states of the mol.
-        const stateT*
-        getDefaultState (void) const
-        {
-            return pDefaultState;
-        }
+    const stateT*
+    getDefaultState( void ) const
+    {
+        return pDefaultState;
+    }
 
 // Note that this is/should be virtual in baseMolT, as in basicMol.
-        molParam
-        getDefaultParam (void) const
-        {
-            return pDefaultState;
-        }
-    };
+    molParam
+    getDefaultParam( void ) const
+    {
+        return pDefaultState;
+    }
+};
 }
 
 #endif // CPX_STATEMOL_H

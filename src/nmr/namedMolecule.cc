@@ -39,209 +39,209 @@
 namespace nmr
 {
 
-    MinimalMol::BindingSiteList
-    MinimalMol::getBindingList() const
+MinimalMol::BindingSiteList
+MinimalMol::getBindingList() const
+{
+    std::vector<std::pair<unsigned int, BindingSite> > theBindings;
+
+    typedef std::pair<BindingSite, unsigned int> LocalPairType;
+    BOOST_FOREACH( const LocalPairType& aPair, bindingSiteNameToNdxMap )
     {
-        std::vector<std::pair<unsigned int, BindingSite> > theBindings;
-
-        typedef std::pair<BindingSite, unsigned int> LocalPairType;
-        BOOST_FOREACH ( const LocalPairType& aPair, bindingSiteNameToNdxMap)
-        {
-            theBindings.push_back ( std::make_pair (aPair.second, aPair.first ) );
-        }
-
-        std::sort (theBindings.begin(),
-                   theBindings.end() );
-
-        std::vector<BindingSite> finalVector;
-
-        typedef std::pair<unsigned int, BindingSite> RevLocalPairType;
-        BOOST_FOREACH ( const RevLocalPairType& aPair, theBindings)
-        {
-            finalVector.push_back ( aPair.second);
-        }
-
-        return finalVector;
+        theBindings.push_back( std::make_pair( aPair.second, aPair.first ) );
     }
 
+    std::sort( theBindings.begin(),
+               theBindings.end() );
 
-    void
-    MinimalMol::addNewBindingSite ( BindingSiteCref aBindingSite)
+    std::vector<BindingSite> finalVector;
+
+    typedef std::pair<unsigned int, BindingSite> RevLocalPairType;
+    BOOST_FOREACH( const RevLocalPairType& aPair, theBindings )
     {
-
-        if (bindingSiteNameToNdxMap.find ( aBindingSite) != bindingSiteNameToNdxMap.end() )
-        {
-            throw GeneralNmrXcpt ( "Binding Site already has been added in MinimalMol::addNewBindingSite. (key: lfjdkas)");
-        }
-
-        bindingSiteNameToNdxMap.insert ( std::make_pair ( aBindingSite, bindingSiteIsBound.size() ) );
-        bindingSiteIsBound.push_back ( false );
+        finalVector.push_back( aPair.second );
     }
 
-    bool
-    MinimalMol::checkIfBindingSiteExists ( BindingSiteCref aBindingSite) const
+    return finalVector;
+}
+
+
+void
+MinimalMol::addNewBindingSite( BindingSiteCref aBindingSite )
+{
+
+    if ( bindingSiteNameToNdxMap.find( aBindingSite ) != bindingSiteNameToNdxMap.end() )
     {
-        return (bindingSiteNameToNdxMap.find (aBindingSite) != bindingSiteNameToNdxMap.end() );
+        throw GeneralNmrXcpt( "Binding Site already has been added in MinimalMol::addNewBindingSite. (key: lfjdkas)" );
     }
 
-    bool
-    MinimalMol::checkIfModificationSiteExists ( ModificationSiteCref aModificationSite) const
-    {
-        return (theModificationStates.find ( aModificationSite) != theModificationStates.end() );
-    }
+    bindingSiteNameToNdxMap.insert( std::make_pair( aBindingSite, bindingSiteIsBound.size() ) );
+    bindingSiteIsBound.push_back( false );
+}
 
-    bool
-    MinimalMol::checkIfBindingSiteIsBound (BindingSiteCref aBindingSite)
-    const throw (NoSuchBindingSiteXcpt)
-    {
-        std::map<BindingSite, unsigned int>::const_iterator aBindingSiteLocation = bindingSiteNameToNdxMap.find (aBindingSite);
-        if (aBindingSiteLocation == bindingSiteNameToNdxMap.end() )
-        {
-            throw NoSuchBindingSiteXcpt ( getMolType(),
-                                          aBindingSite);
-        }
-        else
-        {
-            return bindingSiteIsBound[ aBindingSiteLocation->second ];
-        }
-    }
+bool
+MinimalMol::checkIfBindingSiteExists( BindingSiteCref aBindingSite ) const
+{
+    return ( bindingSiteNameToNdxMap.find( aBindingSite ) != bindingSiteNameToNdxMap.end() );
+}
 
-    MinimalMol::ModificationValue
-    MinimalMol::getModificationValueAtModificationSite (ModificationSiteCref aModificationSite)
-    const throw (NoSuchModificationSiteXcpt)
+bool
+MinimalMol::checkIfModificationSiteExists( ModificationSiteCref aModificationSite ) const
+{
+    return ( theModificationStates.find( aModificationSite ) != theModificationStates.end() );
+}
+
+bool
+MinimalMol::checkIfBindingSiteIsBound( BindingSiteCref aBindingSite )
+const throw( NoSuchBindingSiteXcpt )
+{
+    std::map<BindingSite, unsigned int>::const_iterator aBindingSiteLocation = bindingSiteNameToNdxMap.find( aBindingSite );
+    if ( aBindingSiteLocation == bindingSiteNameToNdxMap.end() )
     {
-        std::map<ModificationSite, ModificationValue>::const_iterator aModificationSiteLocation = theModificationStates.find (aModificationSite);
-        if (aModificationSiteLocation == theModificationStates.end() )
-        {
+        throw NoSuchBindingSiteXcpt( getMolType(),
+                                     aBindingSite );
+    }
+    else
+    {
+        return bindingSiteIsBound[ aBindingSiteLocation->second ];
+    }
+}
+
+MinimalMol::ModificationValue
+MinimalMol::getModificationValueAtModificationSite( ModificationSiteCref aModificationSite )
+const throw( NoSuchModificationSiteXcpt )
+{
+    std::map<ModificationSite, ModificationValue>::const_iterator aModificationSiteLocation = theModificationStates.find( aModificationSite );
+    if ( aModificationSiteLocation == theModificationStates.end() )
+    {
 // This apparently violates the T&C of MinimalMol, but I can't think of anyway to
 // handle this.  Of course, any subsequent call to
 // updateModificationValueAtModificationSite(aModificationSite, foo) would be successful.
-            throw NoSuchModificationSiteXcpt ( getMolType(), aModificationSite );
-        }
-
-        return aModificationSiteLocation->second;
+        throw NoSuchModificationSiteXcpt( getMolType(), aModificationSite );
     }
 
-    MinimalMol::ModificationList
-    MinimalMol::getModificationList() const
+    return aModificationSiteLocation->second;
+}
+
+MinimalMol::ModificationList
+MinimalMol::getModificationList() const
+{
+    return ModificationList( theModificationStates.begin(), theModificationStates.end() );
+}
+
+void
+MinimalMol::bindAtBindingSite( BindingSiteCref aBindingSite )
+throw( NoSuchBindingSiteXcpt )
+{
+
+    std::map<BindingSite, unsigned int>::const_iterator iter = bindingSiteNameToNdxMap.find( aBindingSite );
+
+    if ( iter == bindingSiteNameToNdxMap.end() )
     {
-        return ModificationList ( theModificationStates.begin(), theModificationStates.end() );
+        throw NoSuchBindingSiteXcpt( getMolType(), aBindingSite );
     }
-
-    void
-    MinimalMol::bindAtBindingSite (BindingSiteCref aBindingSite)
-    throw (NoSuchBindingSiteXcpt)
+    else if ( bindingSiteIsBound[iter->second] )
     {
-
-        std::map<BindingSite, unsigned int>::const_iterator iter = bindingSiteNameToNdxMap.find (aBindingSite);
-
-        if ( iter == bindingSiteNameToNdxMap.end() )
-        {
-            throw NoSuchBindingSiteXcpt ( getMolType(), aBindingSite);
-        }
-        else if ( bindingSiteIsBound[iter->second] )
-        {
 // The only way this can fail is if the bindingSite is already bound.
-            throw BindingSiteAlreadyBoundXcpt ( getMolType(), aBindingSite );
-        }
-        else
-        {
-            bindingSiteIsBound[iter->second] = true;
-        }
-
+        throw BindingSiteAlreadyBoundXcpt( getMolType(), aBindingSite );
+    }
+    else
+    {
+        bindingSiteIsBound[iter->second] = true;
     }
 
-    void
-    MinimalMol::unbindAtBindingSite (BindingSiteCref aBindingSite)
-    throw (NoSuchBindingSiteXcpt)
-    {
+}
+
+void
+MinimalMol::unbindAtBindingSite( BindingSiteCref aBindingSite )
+throw( NoSuchBindingSiteXcpt )
+{
 // Make sure the site exists.
-        std::map<BindingSite, unsigned int>::const_iterator aBindingSiteLocation = bindingSiteNameToNdxMap.find (aBindingSite);
+    std::map<BindingSite, unsigned int>::const_iterator aBindingSiteLocation = bindingSiteNameToNdxMap.find( aBindingSite );
 
-        if (aBindingSiteLocation == bindingSiteNameToNdxMap.end() )
-        {
-            throw NoSuchBindingSiteXcpt ( getMolType(), aBindingSite);
-        }
-        else if (bindingSiteIsBound[aBindingSiteLocation->second] == false)
-        {
-            throw BindingSiteAlreadyUnboundXcpt ( getMolType(), aBindingSite);
-        }
-        else
-        {
-            bindingSiteIsBound[aBindingSiteLocation->second] = false;
-        }
-
+    if ( aBindingSiteLocation == bindingSiteNameToNdxMap.end() )
+    {
+        throw NoSuchBindingSiteXcpt( getMolType(), aBindingSite );
+    }
+    else if ( bindingSiteIsBound[aBindingSiteLocation->second] == false )
+    {
+        throw BindingSiteAlreadyUnboundXcpt( getMolType(), aBindingSite );
+    }
+    else
+    {
+        bindingSiteIsBound[aBindingSiteLocation->second] = false;
     }
 
-    void
-    MinimalMol::updateModificationState (ModificationSiteCref aModificationSite,
-                                         ModificationValueCref aModificationValue)
-    throw (NoSuchModificationSiteXcpt)
-    {
-        std::map<ModificationSite, ModificationValue>::iterator aModificationSiteLocation = theModificationStates.find (aModificationSite);
-        if (aModificationSiteLocation == theModificationStates.end() )
-        {
-            theModificationStates.insert ( std::make_pair ( aModificationSite,
-                                           aModificationValue ) );
-        }
-        else
-        {
-            theModificationStates[ aModificationSite ] = aModificationValue;
-        }
+}
 
+void
+MinimalMol::updateModificationState( ModificationSiteCref aModificationSite,
+                                     ModificationValueCref aModificationValue )
+throw( NoSuchModificationSiteXcpt )
+{
+    std::map<ModificationSite, ModificationValue>::iterator aModificationSiteLocation = theModificationStates.find( aModificationSite );
+    if ( aModificationSiteLocation == theModificationStates.end() )
+    {
+        theModificationStates.insert( std::make_pair( aModificationSite,
+                                      aModificationValue ) );
+    }
+    else
+    {
+        theModificationStates[ aModificationSite ] = aModificationValue;
     }
 
-    int
-    MinimalMol::getBindingSiteInteger (BindingSiteCref aBindingSite)
-    const throw (NoSuchBindingSiteXcpt)
-    {
+}
+
+int
+MinimalMol::getBindingSiteInteger( BindingSiteCref aBindingSite )
+const throw( NoSuchBindingSiteXcpt )
+{
 // Make sure the site exists.
-        std::map<BindingSite, unsigned int>::const_iterator aBindingSiteLocation =
-            bindingSiteNameToNdxMap.find (aBindingSite);
+    std::map<BindingSite, unsigned int>::const_iterator aBindingSiteLocation =
+        bindingSiteNameToNdxMap.find( aBindingSite );
 
-        if ( aBindingSiteLocation == bindingSiteNameToNdxMap.end() )
-        {
-            throw NoSuchBindingSiteXcpt ( getMolType(), aBindingSite);
-        }
-
-        return aBindingSiteLocation->second;
-    }
-
-    int
-    MinimalMol::getModificationSiteInteger (ModificationSiteCref aModificationSite)
-    const throw (NoSuchModificationSiteXcpt)
+    if ( aBindingSiteLocation == bindingSiteNameToNdxMap.end() )
     {
-        std::map<ModificationSite, ModificationValue>::const_iterator aModSiteLoc = theModificationStates.find (aModificationSite);
-        if (aModSiteLoc == theModificationStates.end() )
-        {
-            throw NoSuchModificationSiteXcpt ( getMolType(), aModificationSite);
-        }
-
-        int index = 0;
-        for (std::map<ModificationSite, ModificationValue>::const_iterator aModificationSiteLocationIter = theModificationStates.begin();
-                aModificationSiteLocationIter != theModificationStates.end();
-                ++aModificationSiteLocationIter, ++index)
-        {
-            if (aModificationSiteLocationIter->first == aModificationSite) return index;
-
-        }
-
-        throw utl::xcpt ( "Unexpected Error in MinimalMol::getModificationSiteInteger. Please contact the maintainer of this code.");
+        throw NoSuchBindingSiteXcpt( getMolType(), aBindingSite );
     }
 
+    return aBindingSiteLocation->second;
+}
 
-    void
-    MinimalMol::addNewModificationSite ( ModificationSiteCref newModSite,
-                                         ModificationValueCref modValue)
+int
+MinimalMol::getModificationSiteInteger( ModificationSiteCref aModificationSite )
+const throw( NoSuchModificationSiteXcpt )
+{
+    std::map<ModificationSite, ModificationValue>::const_iterator aModSiteLoc = theModificationStates.find( aModificationSite );
+    if ( aModSiteLoc == theModificationStates.end() )
     {
-        if (theModificationStates.find ( newModSite ) != theModificationStates.end() )
-        {
-            throw GeneralNmrXcpt ( "Error, modification site already exists and so cannot be added anew in MinimalMol::addNewModificationSite.  (key: kjdfha)");
-        }
-
-        theModificationStates.insert ( std::make_pair ( newModSite,
-                                       modValue ) );
+        throw NoSuchModificationSiteXcpt( getMolType(), aModificationSite );
     }
+
+    int index = 0;
+    for ( std::map<ModificationSite, ModificationValue>::const_iterator aModificationSiteLocationIter = theModificationStates.begin();
+            aModificationSiteLocationIter != theModificationStates.end();
+            ++aModificationSiteLocationIter, ++index )
+    {
+        if ( aModificationSiteLocationIter->first == aModificationSite ) return index;
+
+    }
+
+    throw utl::xcpt( "Unexpected Error in MinimalMol::getModificationSiteInteger. Please contact the maintainer of this code." );
+}
+
+
+void
+MinimalMol::addNewModificationSite( ModificationSiteCref newModSite,
+                                    ModificationValueCref modValue )
+{
+    if ( theModificationStates.find( newModSite ) != theModificationStates.end() )
+    {
+        throw GeneralNmrXcpt( "Error, modification site already exists and so cannot be added anew in MinimalMol::addNewModificationSite.  (key: kjdfha)" );
+    }
+
+    theModificationStates.insert( std::make_pair( newModSite,
+                                  modValue ) );
+}
 
 
 

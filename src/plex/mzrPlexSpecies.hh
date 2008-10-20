@@ -43,52 +43,52 @@
 
 namespace plx
 {
-    class mzrPlexFamily;
+class mzrPlexFamily;
 
-    class mzrPlexSpecies :
-                public mzr::mzrSpecies,
-                public cpx::plexSpeciesMixin<mzrPlexFamily>
+class mzrPlexSpecies :
+            public mzr::mzrSpecies,
+            public cpx::plexSpeciesMixin<mzrPlexFamily>
+{
+private:
+
+    mutable bool nameGenerated;
+    mutable std::string name;
+public:
+
+    mzrPlexSpecies( mzrPlexFamily& rContainingFamily,
+                    const cpx::siteToShapeMap& rSiteParams,
+                    const std::vector<cpx::molParam>& rMolParams ) :
+            cpx::plexSpeciesMixin<mzrPlexFamily> ( rContainingFamily,
+                                                   rSiteParams,
+                                                   rMolParams )
     {
-    private:
+        nameGenerated = false;
+        name = "";
+    }
 
-        mutable bool nameGenerated;
-        mutable std::string name;
-    public:
+    ~mzrPlexSpecies( void )
+    {
+    }
 
-        mzrPlexSpecies(mzrPlexFamily& rContainingFamily,
-                       const cpx::siteToShapeMap& rSiteParams,
-                       const std::vector<cpx::molParam>& rMolParams) :
-            cpx::plexSpeciesMixin<mzrPlexFamily> (rContainingFamily,
-                                                  rSiteParams,
-                                                  rMolParams)
-        {
-            nameGenerated = false;
-            name = "";
-        }
+    // This fulfils the pure virtual function in the ancestor class
+    // fnd::massive.
+    double
+    getWeight( void ) const;
 
-        ~mzrPlexSpecies(void)
-        {
-        }
+    // This fulfills the pure virtual function in the ancestor class
+    // cpx::notifier.
+    void
+    notify( int generateDepth );
 
-        // This fulfils the pure virtual function in the ancestor class
-        // fnd::massive.
-        double
-        getWeight(void) const;
+    // This overrides basicSpecies::getName(), which just returns a tag.
+    virtual std::string
+    getName( void ) const;
 
-        // This fulfills the pure virtual function in the ancestor class
-        // cpx::notifier.
-        void
-        notify(int generateDepth);
-
-        // This overrides basicSpecies::getName(), which just returns a tag.
-        virtual std::string
-        getName(void) const;
-
-        xmlpp::Element*
-        insertElt(xmlpp::Element* pExplicitSpeciesElt,
-                  double molarFactor) const
-        throw (std::exception);
-    };
+    xmlpp::Element*
+    insertElt( xmlpp::Element* pExplicitSpeciesElt,
+               double molarFactor ) const
+    throw( std::exception );
+};
 }
 
 #endif

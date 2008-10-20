@@ -35,47 +35,47 @@
 
 namespace plx
 {
-    mzrPlexFamily*
-    mzrRecognizer::
-    makePlexFamily (const mzrPlex& rPlex) const
-    {
-        return new mzrPlexFamily (rPlex,
-                                  rPlexUnit.bindingFeatures,
-                                  rPlexUnit.omniPlexFamilies,
-                                  rNmrUnit);
-    }
+mzrPlexFamily*
+mzrRecognizer::
+makePlexFamily( const mzrPlex& rPlex ) const
+{
+    return new mzrPlexFamily( rPlex,
+                              rPlexUnit.bindingFeatures,
+                              rPlexUnit.omniPlexFamilies,
+                              rNmrUnit );
+}
 
-    class insertFamilySpecies :
-                public std::unary_function<std::map<int, mzrPlexFamily*>::value_type, void>
-    {
-        xmlpp::Element* pExplicitSpeciesElt;
-        double molFact;
-    public:
-        insertFamilySpecies (xmlpp::Element* pExplicitSpeciesElement,
-                             double molarFactor) :
-                pExplicitSpeciesElt (pExplicitSpeciesElement),
-                molFact (molarFactor)
-        {}
-
-        void
-        operator() (const argument_type& rHasherEntry) const
-        throw (std::exception)
-        {
-            const mzrPlexFamily* pFamily = rHasherEntry.second;
-            pFamily->insertSpecies (pExplicitSpeciesElt,
-                                    molFact);
-        }
-    };
+class insertFamilySpecies :
+            public std::unary_function<std::map<int, mzrPlexFamily*>::value_type, void>
+{
+    xmlpp::Element* pExplicitSpeciesElt;
+    double molFact;
+public:
+    insertFamilySpecies( xmlpp::Element* pExplicitSpeciesElement,
+                         double molarFactor ) :
+            pExplicitSpeciesElt( pExplicitSpeciesElement ),
+            molFact( molarFactor )
+    {}
 
     void
-    mzrRecognizer::
-    insertSpecies (xmlpp::Element* pExplicitSpeciesElt,
-                   double molarFactor) const
-    throw (std::exception)
+    operator()( const argument_type& rHasherEntry ) const
+    throw( std::exception )
     {
-        std::for_each (plexHasher.begin(),
-                       plexHasher.end(),
-                       insertFamilySpecies (pExplicitSpeciesElt,
-                                            molarFactor) );
+        const mzrPlexFamily* pFamily = rHasherEntry.second;
+        pFamily->insertSpecies( pExplicitSpeciesElt,
+                                molFact );
     }
+};
+
+void
+mzrRecognizer::
+insertSpecies( xmlpp::Element* pExplicitSpeciesElt,
+               double molarFactor ) const
+throw( std::exception )
+{
+    std::for_each( plexHasher.begin(),
+                   plexHasher.end(),
+                   insertFamilySpecies( pExplicitSpeciesElt,
+                                        molarFactor ) );
+}
 }

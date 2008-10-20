@@ -38,20 +38,20 @@ namespace bnd
 {
 // Exception thrown when the same name is given to more than one
 // modification.
-    class dupModNameXcpt :
-                public utl::xcpt
-    {
-        static std::string
-        mkMsg (const std::string& rBadModName,
-               const xmlpp::Node* pOffendingNode = 0);
+class dupModNameXcpt :
+            public utl::xcpt
+{
+    static std::string
+    mkMsg( const std::string& rBadModName,
+           const xmlpp::Node* pOffendingNode = 0 );
 
-    public:
-        dupModNameXcpt (const std::string& rBadModName,
-                        const xmlpp::Node* pOffendingNode = 0) :
-                utl::xcpt (mkMsg (rBadModName,
-                                  pOffendingNode) )
-        {}
-    };
+public:
+    dupModNameXcpt( const std::string& rBadModName,
+                    const xmlpp::Node* pOffendingNode = 0 ) :
+            utl::xcpt( mkMsg( rBadModName,
+                              pOffendingNode ) )
+    {}
+};
 }
 
 #endif // MOL_DUPMODNAMEXCPT_H

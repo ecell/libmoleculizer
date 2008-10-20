@@ -34,16 +34,16 @@
 
 namespace mzr
 {
-    std::string
-    unkStatStreamXcpt::
-    mkMsg (const std::string& rBadStreamName,
-           xmlpp::Node* pOffendingNode)
-    {
-        std::ostringstream msgStream;
-        msgStream << utl::dom::xcpt::mkMsg (pOffendingNode)
-        << "Unknown stat-stream `"
-        << rBadStreamName
-        << "'.";
-        return msgStream.str();
-    }
+std::string
+unkStatStreamXcpt::
+mkMsg( const std::string& rBadStreamName,
+       xmlpp::Node* pOffendingNode )
+{
+    std::ostringstream msgStream;
+    msgStream << utl::dom::xcpt::mkMsg( pOffendingNode )
+    << "Unknown stat-stream `"
+    << rBadStreamName
+    << "'.";
+    return msgStream.str();
+}
 }

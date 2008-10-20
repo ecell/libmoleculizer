@@ -37,7 +37,7 @@
 class SimpleSimulator
 {
 public:
-    SimpleSimulator (std::string rulesfile, std::string modelfile);
+    SimpleSimulator( std::string rulesfile, std::string modelfile );
     virtual void singleStep() = 0;
     void printState() const;
 
@@ -49,16 +49,16 @@ protected:
     std::map<std::string, int> theModel;
 
     void engageModel();
-    void executeReaction ( mzr::moleculizer::ReactionTypePtr ptrRxn);
+    void executeReaction( mzr::moleculizer::ReactionTypePtr ptrRxn );
 
 private:
-    void attachRuleFile (std::string rulesfile);
-    void attachModelFile (std::string modelfile);
+    void attachRuleFile( std::string rulesfile );
+    void attachModelFile( std::string modelfile );
 
-    bool assertModelValidity (const std::map<std::string, int>& model);
+    bool assertModelValidity( const std::map<std::string, int>& model );
 
 
-    void createModelFromFile (const std::string& modelFile, std::map<std::string, int>& model);
+    void createModelFromFile( const std::string& modelFile, std::map<std::string, int>& model );
 
 };
 

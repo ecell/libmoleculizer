@@ -41,53 +41,53 @@
 
 namespace fnd
 {
-    class dumpStream :
-                public utl::autoVector<basicDmpColumn>
-    {
+class dumpStream :
+            public utl::autoVector<basicDmpColumn>
+{
 // Now that the output stream and everything else is passed to
 // the dumpables through a dumpArg, these are here mainly to
 // memory-manage the stream, to emphasize that this class is what
 // corresponds to a .dmp file, and to facilitate the construction
 // of dumpArg's through getOstream(), in particular.
 
-        std::string fileName;
-        std::ostream* pOs;
-        std::ofstream* pFileStream;
+    std::string fileName;
+    std::ostream* pOs;
+    std::ofstream* pFileStream;
 
-    public:
+public:
 // Use a genuine file path, "-" for std::cout, "+" for std::cerr.
-        dumpStream (const std::string& rFileName)
-        throw (utl::xcpt);
+    dumpStream( const std::string& rFileName )
+    throw( utl::xcpt );
 
-        ~dumpStream (void)
-        {
+    ~dumpStream( void )
+    {
 // This is null if the output stream not actually a file.
-            delete pFileStream;
-        }
+        delete pFileStream;
+    }
 
-        std::ostream&
-        getOstream (void) const
-        {
-            return *pOs;
-        }
+    std::ostream&
+    getOstream( void ) const
+    {
+        return *pOs;
+    }
 
 // Returns the file name given at construction time, including
 // the special cases.
-        const std::string&
-        getFileName (void) const
-        {
-            return fileName;
-        }
+    const std::string&
+    getFileName( void ) const
+    {
+        return fileName;
+    }
 
 // Initializes output stream and writes column headers.
-        void
-        init (void)
-        throw (utl::xcpt);
+    void
+    init( void )
+    throw( utl::xcpt );
 
 // Writes a line in the output file.
-        void
-        doDump (void);
-    };
+    void
+    doDump( void );
+};
 }
 
 #endif // FND_DUMPSTREAM_H

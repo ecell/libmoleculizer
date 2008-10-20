@@ -34,15 +34,15 @@
 
 namespace utl
 {
-    std::string
-    badNNDoubleArgXcpt::
-    mkMsg (const std::string& rTheBadArg)
-    {
-        std::ostringstream msgStream;
-        msgStream << "Expected non-negative double for command-line argument; "
-        << "got `"
-        << rTheBadArg
-        << "'.";
-        return msgStream.str();
-    }
+std::string
+badNNDoubleArgXcpt::
+mkMsg( const std::string& rTheBadArg )
+{
+    std::ostringstream msgStream;
+    msgStream << "Expected non-negative double for command-line argument; "
+    << "got `"
+    << rTheBadArg
+    << "'.";
+    return msgStream.str();
+}
 }

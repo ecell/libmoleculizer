@@ -71,11 +71,11 @@ typedef const mytype & mytype ## Cref;                        \
 
 /**
 Declare class , class pointer ,
-const pointer, class reference
-and const class reference types for classes. For example
-DECLARE_CLASS ( Exception );
+                const pointer, class reference
+                    and const class reference types for classes. For example
+                        DECLARE_CLASS( Exception );
 @param tag The class being declared
-*/
+            */
 
 #define DECLARE_CLASS( tag )           \
 class   tag;                         \
@@ -87,7 +87,7 @@ typedef const tag & tag ## Cref;
 
 
 // Some global types.
-typedef int Integer;
+            typedef int Integer;
 typedef float Real;
 typedef std::string String;
 

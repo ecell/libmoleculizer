@@ -36,27 +36,27 @@
 
 namespace fnd
 {
-    template<class contextType> class feature;
+template<class contextType> class feature;
 
-    template<class contextType>
-    class featureStimulus :
-                public newContextStimulus<contextType>
+template<class contextType>
+class featureStimulus :
+            public newContextStimulus<contextType>
+{
+    feature<contextType>& rFtr;
+
+public:
+    featureStimulus( const newContextStimulus<contextType>& rNewContextStim,
+                     feature<contextType>& rFeature ) :
+            newContextStimulus<contextType> ( rNewContextStim ),
+            rFtr( rFeature )
+    {}
+
+    feature<contextType>&
+    getFeature( void )
     {
-        feature<contextType>& rFtr;
-
-    public:
-        featureStimulus (const newContextStimulus<contextType>& rNewContextStim,
-                         feature<contextType>& rFeature) :
-                newContextStimulus<contextType> (rNewContextStim),
-                rFtr (rFeature)
-        {}
-
-        feature<contextType>&
-        getFeature (void)
-        {
-            return rFtr;
-        }
-    };
+        return rFtr;
+    }
+};
 }
 
 #endif // FND_FEATURESTIMULUS_H

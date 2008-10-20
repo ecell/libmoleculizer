@@ -38,31 +38,31 @@
 namespace fnd
 {
 // contextSpec is assumed to be copyable.
-    template<class speciesT, class contextSpecT>
-    class featureContext :
-                public std::pair<speciesT*, contextSpecT>
+template<class speciesT, class contextSpecT>
+class featureContext :
+            public std::pair<speciesT*, contextSpecT>
+{
+public:
+    typedef speciesT speciesType;
+    typedef contextSpecT contextSpec;
+
+    featureContext( speciesType* pSpecies,
+                    const contextSpec& rSpec ) :
+            std::pair<speciesType*, contextSpec> ( pSpecies, rSpec )
+    {}
+
+    speciesType*
+    getSpecies( void ) const
     {
-    public:
-        typedef speciesT speciesType;
-        typedef contextSpecT contextSpec;
+        return this->first;
+    }
 
-        featureContext (speciesType* pSpecies,
-                        const contextSpec& rSpec) :
-                std::pair<speciesType*, contextSpec> (pSpecies, rSpec)
-        {}
-
-        speciesType*
-        getSpecies (void) const
-        {
-            return this->first;
-        }
-
-        const contextSpec&
-        getSpec (void) const
-        {
-            return this->second;
-        }
-    };
+    const contextSpec&
+    getSpec( void ) const
+    {
+        return this->second;
+    }
+};
 }
 
 #endif

@@ -43,56 +43,56 @@
 
 namespace nmr
 {
-    const NameAssembler*
-    nmrUnit::getNameEncoder() const
-    throw ( MissingNameEncoderXcpt )
+const NameAssembler*
+nmrUnit::getNameEncoder() const
+throw( MissingNameEncoderXcpt )
+{
+    if ( !ptrNameAssembler )
     {
-        if (!ptrNameAssembler)
-        {
-            throw MissingNameEncoderXcpt();
-        }
-
-        return ptrNameAssembler;
+        throw MissingNameEncoderXcpt();
     }
 
-    mzr::mzrSpecies*
-    nmrUnit::constructSpeciesFromName ( const std::string& encodedSpeciesName)
+    return ptrNameAssembler;
+}
+
+mzr::mzrSpecies*
+nmrUnit::constructSpeciesFromName( const std::string& encodedSpeciesName )
+{
+    try
     {
-        try
-        {
-            // 1.  The currently set nameEncoder has the responsibility of decoding the thing into a complexOutputState.
-            ComplexOutputState aCOS = getNameEncoder()->createOutputStateFromName( encodedSpeciesName );
+        // 1.  The currently set nameEncoder has the responsibility of decoding the thing into a complexOutputState.
+        ComplexOutputState aCOS = getNameEncoder()->createOutputStateFromName( encodedSpeciesName );
 
-            // TODO: Ensure that this does  not register the constructed plexSpecies into the reactionCatalog.
+        // TODO: Ensure that this does  not register the constructed plexSpecies into the reactionCatalog.
 
-            // Is this what we want to do?  Would it be better to install but not expand the newly 
-            // created species?
-            plx::mzrPlexSpecies* newMzrSpecies = pPlexUnit->constructNewPlexSpeciesFromComplexOutputState( aCOS );
+        // Is this what we want to do?  Would it be better to install but not expand the newly
+        // created species?
+        plx::mzrPlexSpecies* newMzrSpecies = pPlexUnit->constructNewPlexSpeciesFromComplexOutputState( aCOS );
 
-            return newMzrSpecies;
-        }
-        // I should separate the reasons things went bad here.
-        catch (...)
-        {
-            throw nmr::IllegalNameXcpt (encodedSpeciesName);
-        }
-
+        return newMzrSpecies;
+    }
+    // I should separate the reasons things went bad here.
+    catch ( ... )
+    {
+        throw nmr::IllegalNameXcpt( encodedSpeciesName );
     }
 
-    void
-    nmrUnit::setDefaultNameEncoder ( const std::string& nameEncoderName) throw ( NoSuchNameEncoderXcpt)
-    {
-        delete ptrNameAssembler;
-        ptrNameAssembler = ptrNameEncoderFactory->create (nameEncoderName);
-    }
+}
+
+void
+nmrUnit::setDefaultNameEncoder( const std::string& nameEncoderName ) throw( NoSuchNameEncoderXcpt )
+{
+    delete ptrNameAssembler;
+    ptrNameAssembler = ptrNameEncoderFactory->create( nameEncoderName );
+}
 
 
 
-    void
-    nmrUnit::parseDomInput (xmlpp::Element* pRootElt,
-                            xmlpp::Element* pModelElt,
-                            xmlpp::Element* pStreamElt) throw (std::exception)
-    {
+void
+nmrUnit::parseDomInput( xmlpp::Element* pRootElt,
+                        xmlpp::Element* pModelElt,
+                        xmlpp::Element* pStreamElt ) throw( std::exception )
+{
 //         // TODO: Debug nmrUnit::parseDomInput and make sure it all works.
 //         // For the moment, the one thing (the naming strategy that should be used) is contained
 //         // in an attribute entitled "naming-convention".  The value of that string should
@@ -110,16 +110,16 @@ namespace nmr
 //         {
 //             x.warn();
 //         }
-    }
+}
 
-    void nmrUnit::insertStateElts (xmlpp::Element* pRootElt)
-    throw (std::exception)
-    {
-        // TODO: Debug nmrUnit::insertStateElts and make sure it all works.
-        xmlpp::Element* modelElt = utl::dom::mustGetUniqueChild (pRootElt,
-                                   mzr::eltName::model);
+void nmrUnit::insertStateElts( xmlpp::Element* pRootElt )
+throw( std::exception )
+{
+    // TODO: Debug nmrUnit::insertStateElts and make sure it all works.
+    xmlpp::Element* modelElt = utl::dom::mustGetUniqueChild( pRootElt,
+                               mzr::eltName::model );
 
-        modelElt->set_attribute ( eltName::namingConvention,
-                                  getNameEncoder()->getName() );
-    }
+    modelElt->set_attribute( eltName::namingConvention,
+                             getNameEncoder()->getName() );
+}
 }

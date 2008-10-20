@@ -36,35 +36,35 @@
 
 namespace cpx
 {
-    template<class baseMolT>
-    class smallMol :
-                public stateMol<baseMolT, molState>
-    {
-        molState theState;
+template<class baseMolT>
+class smallMol :
+            public stateMol<baseMolT, molState>
+{
+    molState theState;
 
-    public:
-        typedef baseMolT baseMolType;
-        typedef typename baseMolT::bindingSiteType bindingSiteType;
+public:
+    typedef baseMolT baseMolType;
+    typedef typename baseMolT::bindingSiteType bindingSiteType;
 
 // Rather than construct the binding site (whose exact type isn't known
 // here) for the mol, now we make the mol from the binding site.
 //
 // The binding site should have the same name as the mol, and it should
 // have one shape, also with the same name as the mol.
-        smallMol (const baseMolType& rBaseMol,
-                  double molecularWeight) :
-                stateMol<baseMolT, molState> (rBaseMol),
-                theState (molecularWeight)
-        {
-            this->pDefaultState = &theState;
-        }
+    smallMol( const baseMolType& rBaseMol,
+              double molecularWeight ) :
+            stateMol<baseMolT, molState> ( rBaseMol ),
+            theState( molecularWeight )
+    {
+        this->pDefaultState = &theState;
+    }
 
-        bindingSiteType*
-        getUniqueSite (void)
-        {
-            return & (this->sites[0]);
-        }
-    };
+    bindingSiteType*
+    getUniqueSite( void )
+    {
+        return & ( this->sites[0] );
+    }
+};
 }
 
 #endif // CPX_SMALLMOL_H

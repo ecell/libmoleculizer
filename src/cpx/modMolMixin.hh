@@ -57,46 +57,46 @@ namespace cpx
 //
 // An elaboration here would be for each modification site to have a list of
 // acceptable modifications.
-    class modMolMixin
-    {
-    public:
+class modMolMixin
+{
+public:
 // These mappings allow the modification sites of the mol to be accessed
 // by name or by index.
-        std::map<std::string, int> modSiteNameToNdx;
-        std::vector<std::string> modSiteNames;
+    std::map<std::string, int> modSiteNameToNdx;
+    std::vector<std::string> modSiteNames;
 
 // This may be superfluous and repeated elsewhere, however, I cannot find it.
 // If there is an easier/better way to get at the default modifications, someone
 // let me know and remove this.  That said, it really isn't that heavyweight.
 // Probably adds 3 bytes per modification.
-        std::vector<const cpx::modification*> defaultModifications;
+    std::vector<const cpx::modification*> defaultModifications;
 
 // Look up modification site index by name.  Returns true if there
 // is a modification site with the given name, and returns the index
 // at the given reference. Otherwise, returns false.
-        bool
-        getModSiteNdx (const std::string& rModSiteName,
-                       int& rSiteNdx) const;
+    bool
+    getModSiteNdx( const std::string& rModSiteName,
+                   int& rSiteNdx ) const;
 
-        const cpx::modification*
-        getDefaultModForSite (const std::string& modSiteName) const
-        {
-            int ndx = modSiteNameToNdx.find (modSiteName)->second;
-            return defaultModifications[ ndx ];
-        }
+    const cpx::modification*
+    getDefaultModForSite( const std::string& modSiteName ) const
+    {
+        int ndx = modSiteNameToNdx.find( modSiteName )->second;
+        return defaultModifications[ ndx ];
+    }
 
-        const std::string&
-        getDefaultModNameForSite (const std::string& modSiteName) const
-        {
-            int ndx = modSiteNameToNdx.find (modSiteName)->second;
-            return defaultModifications[ ndx ]->getName();
-        }
+    const std::string&
+    getDefaultModNameForSite( const std::string& modSiteName ) const
+    {
+        int ndx = modSiteNameToNdx.find( modSiteName )->second;
+        return defaultModifications[ ndx ]->getName();
+    }
 
-        int
-        modSiteCount (void) const
-        {
-            return modSiteNames.size();
-        }
+    int
+    modSiteCount( void ) const
+    {
+        return modSiteNames.size();
+    }
 
 // I will use a map (encoded into XML) from modification site names
 // to modification names in the following circumstances:
@@ -117,19 +117,19 @@ namespace cpx
 // Constructs the mol's map from modification site names to modification
 // site indices.  This accomplishes part of goal 1 above; the rest
 // of goal 1 comes from also using indexModMap below.
-        modMolMixin
-        (const std::map<std::string, const modification*>& rDefaultModMap)
-        throw (utl::xcpt);
+    modMolMixin
+    ( const std::map<std::string, const modification*>& rDefaultModMap )
+    throw( utl::xcpt );
 
 // Constructs a modStateMixin by doing substitutions on a provided
 // modStateMixin.  This would be used to construct a state from
 // a map and the default state.  This accomplishes goal 2 above.
-        modStateMixin
-        substituteModMap
-        (const std::map<
-         std::string, const modification*>& rModMap,
-         const modStateMixin& rSourceStateMixin)
-        throw (utl::xcpt);
+    modStateMixin
+    substituteModMap
+    ( const std::map<
+      std::string, const modification*>& rModMap,
+      const modStateMixin& rSourceStateMixin )
+    throw( utl::xcpt );
 
 // Uses the map from modification site names to modification
 // site indices to convert a map from modification site names
@@ -142,9 +142,9 @@ namespace cpx
 //
 // Another use is in the construction of the modStateMixin
 // part of the default state.
-        modStateMixin
-        indexModMap (const std::map<std::string, const modification*>& rModMap)
-        throw (utl::xcpt);
+    modStateMixin
+    indexModMap( const std::map<std::string, const modification*>& rModMap )
+    throw( utl::xcpt );
 
 // This predicate can be used to test modStateMixin's against a
 // "regexp" modStateMixin.  If a null pointer occurs as an entry in
@@ -155,19 +155,19 @@ namespace cpx
 // these "regexps", since null pointers will naturally appear at
 // unmapped indices.  Together with indexModMap above, this
 // accomplishes goal 3.
-    class modStateMatch :
-                    public std::unary_function<modStateMixin, bool>
-        {
-            const modStateMixin& rMatch;
-        public:
-            modStateMatch (const modStateMixin& rMatchStateMixin) :
-                    rMatch (rMatchStateMixin)
-            {}
+class modStateMatch :
+                public std::unary_function<modStateMixin, bool>
+    {
+        const modStateMixin& rMatch;
+    public:
+        modStateMatch( const modStateMixin& rMatchStateMixin ) :
+                rMatch( rMatchStateMixin )
+        {}
 
-            bool
-            operator() (const modStateMixin& rMixinToTest) const;
-        };
+        bool
+        operator()( const modStateMixin& rMixinToTest ) const;
     };
+};
 }
 
 #endif // MODMOLMIXIN_H

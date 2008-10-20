@@ -41,79 +41,79 @@
 namespace plx
 {
 // Parses a mol-instance, adding it to the plex currently being parsed.
-    class parseMolInstance :
-                public std::unary_function<xmlpp::Node*, void>
-    {
-        bnd::molUnit& rMolUnit;
-        parserPlex& rParsedPlex;
-    public:
-        parseMolInstance (bnd::molUnit& refMolUnit,
-                          parserPlex& refParsedPlex) :
-                rMolUnit (refMolUnit),
-                rParsedPlex (refParsedPlex)
-        {}
+class parseMolInstance :
+            public std::unary_function<xmlpp::Node*, void>
+{
+    bnd::molUnit& rMolUnit;
+    parserPlex& rParsedPlex;
+public:
+    parseMolInstance( bnd::molUnit& refMolUnit,
+                      parserPlex& refParsedPlex ) :
+            rMolUnit( refMolUnit ),
+            rParsedPlex( refParsedPlex )
+    {}
 
-        void
-        operator() (xmlpp::Node* pMolInstNode) const
-        throw (utl::xcpt);
-    };
+    void
+    operator()( xmlpp::Node* pMolInstNode ) const
+    throw( utl::xcpt );
+};
 
 // Parses a mol-instance-ref node, two of which with the same function
 // appear in a plex binding.
-    class parseBindingPartner :
-                public std::unary_function<xmlpp::Node*, cpx::siteSpec>
-    {
-        parserPlex& rParsedPlex;
-        std::set<cpx::siteSpec>& rBoundSites;
-    public:
-        parseBindingPartner (parserPlex& refParsedPlex,
-                             std::set<cpx::siteSpec>& refBoundSites) :
-                rParsedPlex (refParsedPlex),
-                rBoundSites (refBoundSites)
-        {}
+class parseBindingPartner :
+            public std::unary_function<xmlpp::Node*, cpx::siteSpec>
+{
+    parserPlex& rParsedPlex;
+    std::set<cpx::siteSpec>& rBoundSites;
+public:
+    parseBindingPartner( parserPlex& refParsedPlex,
+                         std::set<cpx::siteSpec>& refBoundSites ) :
+                rParsedPlex( refParsedPlex ),
+                rBoundSites( refBoundSites )
+    {}
 
-        cpx::siteSpec
-        operator() (xmlpp::Node* pMolInstRefNode) const
-        throw (utl::xcpt);
-    };
+    cpx::siteSpec
+    operator()( xmlpp::Node* pMolInstRefNode ) const
+    throw( utl::xcpt );
+};
 
 
 // Parses a plex binding, adding it to the plex currently being parsed.
-    class parseBinding :
-                public std::unary_function<xmlpp::Node*, void>
-    {
-        parserPlex& rParsedPlex;
-        std::set<cpx::siteSpec>& rBoundSites;
-    public:
-        parseBinding (parserPlex& refParsedPlex,
-                      std::set<cpx::siteSpec>& refBoundSites) :
-                rParsedPlex (refParsedPlex),
-                rBoundSites (refBoundSites)
-        {}
+class parseBinding :
+            public std::unary_function<xmlpp::Node*, void>
+{
+    parserPlex& rParsedPlex;
+    std::set<cpx::siteSpec>& rBoundSites;
+public:
+    parseBinding( parserPlex& refParsedPlex,
+                  std::set<cpx::siteSpec>& refBoundSites ) :
+                rParsedPlex( refParsedPlex ),
+                rBoundSites( refBoundSites )
+    {}
 
-        void
-        operator() (xmlpp::Node* pBindingNode) const
-        throw (utl::xcpt);
-    };
+    void
+    operator()( xmlpp::Node* pBindingNode ) const
+    throw( utl::xcpt );
+};
 
 // Parses a plexElement, producing a parserPlex. Note that this does not
 // recognize the plex (locate its isomorphism class.)
-    class parsePlex :
-                public std::unary_function<xmlpp::Element*, void>
-    {
-        bnd::molUnit& rMolUnit;
-        parserPlex& rParsedPlex;
-    public:
-        parsePlex (bnd::molUnit& refMolUnit,
-                   parserPlex& refParsedPlex) :
-                rMolUnit (refMolUnit),
-                rParsedPlex (refParsedPlex)
-        {}
+class parsePlex :
+            public std::unary_function<xmlpp::Element*, void>
+{
+    bnd::molUnit& rMolUnit;
+    parserPlex& rParsedPlex;
+public:
+    parsePlex( bnd::molUnit& refMolUnit,
+               parserPlex& refParsedPlex ) :
+            rMolUnit( refMolUnit ),
+            rParsedPlex( refParsedPlex )
+    {}
 
-        void
-        operator() (xmlpp::Element* pPlexElt) const
-        throw (utl::xcpt);
-    };
+    void
+    operator()( xmlpp::Element* pPlexElt ) const
+    throw( utl::xcpt );
+};
 
 // Parses a plex and recognizes it, returning the plexFamily (isomorphism
 // class) to which it belongs. The recognized plexFamily is not initialized
@@ -121,12 +121,12 @@ namespace plx
 // mol indexes is not constructed.
 //
 // This is for preliminary scan of omniplexes.
-    mzrPlexFamily*
-    unifyPlexNode (xmlpp::Node* pPlexNode,
-                   bnd::molUnit& rMolUnit,
-                   plexUnit& rPlexUnit,
-                   parserPlex& rParsedPlex)
-    throw (utl::xcpt);
+mzrPlexFamily*
+unifyPlexNode( xmlpp::Node* pPlexNode,
+               bnd::molUnit& rMolUnit,
+               plexUnit& rPlexUnit,
+               parserPlex& rParsedPlex )
+throw( utl::xcpt );
 
 // Parses a plex and recognizes it, returning the plexFamily (isomorphism
 // class) to which it belongs.  Also constructs
@@ -135,11 +135,11 @@ namespace plx
 //
 // Recognition is done in the usual way, so this is intended for routine
 // parsing of plexes.
-    mzrPlexFamily*
-    recognizePlexElt (xmlpp::Element* pPlexElt,
-                      parserPlex& rParserPlex,
-                      bnd::molUnit& rMolUnit,
-                      plexUnit& rPlexUnit);
+mzrPlexFamily*
+recognizePlexElt( xmlpp::Element* pPlexElt,
+                  parserPlex& rParserPlex,
+                  bnd::molUnit& rMolUnit,
+                  plexUnit& rPlexUnit );
 
 // Parses an instance-states node, such as might occur in an allosteric-plex
 // or allosteric-omni construction, into a given overall state query.
@@ -147,13 +147,13 @@ namespace plx
 // This routine is the point at which new parsers for new kinds of mol state
 // queries for new kinds of mols should be installed.  For now, we have only
 // mod-mols.
-    void
-    parseInstanceStateQueries (xmlpp::Node* pInstanceStatesNode,
-                               mzrPlexQueries* pQuery,
-                               const parserPlex& rParserPlex,
-                               bnd::molUnit& rMolUnit,
-                               mzr::mzrUnit& rMzrUnit)
-    throw (utl::xcpt);
+void
+parseInstanceStateQueries( xmlpp::Node* pInstanceStatesNode,
+                           mzrPlexQueries* pQuery,
+                           const parserPlex& rParserPlex,
+                           bnd::molUnit& rMolUnit,
+                           mzr::mzrUnit& rMzrUnit )
+throw( utl::xcpt );
 
 //   void
 //   parseInstanceStateQueries(xmlpp::Node* pInstanceStatesNode,
@@ -179,45 +179,45 @@ namespace plx
 // This routine is the point at which new parsers for new kinds of mol
 // states for new kinds of mols should be installed, similar to the above
 // code for mol state queries; again, there are only mod-mols at this time.
-    void
-    parseInstanceStates (xmlpp::Node* pInstanceStatesNode,
-                         std::vector<cpx::molParam>& rMolParams,
-                         const parserPlex& rParserPlex,
-                         const mzrPlexFamily* pPlexFamily,
-                         bnd::molUnit& rMolUnit)
-    throw (utl::xcpt);
+void
+parseInstanceStates( xmlpp::Node* pInstanceStatesNode,
+                     std::vector<cpx::molParam>& rMolParams,
+                     const parserPlex& rParserPlex,
+                     const mzrPlexFamily* pPlexFamily,
+                     bnd::molUnit& rMolUnit )
+throw( utl::xcpt );
 
 // Parses a plex and instance states for that plex, generating a parserPlex
 // and a query.
-    class parsePlexClass :
-                public std::unary_function<xmlpp::Node*, mzrPlexFamily*>
-    {
-        mzr::mzrUnit& rMzrUnit;
-        bnd::molUnit& rMolUnit;
-        plexUnit& rPlexUnit;
+class parsePlexClass :
+            public std::unary_function<xmlpp::Node*, mzrPlexFamily*>
+{
+    mzr::mzrUnit& rMzrUnit;
+    bnd::molUnit& rMolUnit;
+    plexUnit& rPlexUnit;
 
 // Output variables.
-        parserPlex& rPlex;
-        cpx::andPlexQueries<mzrPlexSpecies,
-        mzrOmniPlex>* pQuery;
+    parserPlex& rPlex;
+    cpx::andPlexQueries<mzrPlexSpecies,
+    mzrOmniPlex>* pQuery;
 
-    public:
-        parsePlexClass (mzr::mzrUnit& refMzrUnit,
-                        bnd::molUnit& refMolUnit,
-                        plexUnit& refPlexUnit,
-                        parserPlex& refParsedPlex,
-                        cpx::andPlexQueries<mzrPlexSpecies, mzrOmniPlex>* pParsedQueries) :
-                rMzrUnit (refMzrUnit),
-                rMolUnit (refMolUnit),
-                rPlexUnit (refPlexUnit),
-                rPlex (refParsedPlex),
-                pQuery (pParsedQueries)
-        {}
+public:
+    parsePlexClass( mzr::mzrUnit& refMzrUnit,
+                    bnd::molUnit& refMolUnit,
+                    plexUnit& refPlexUnit,
+                    parserPlex& refParsedPlex,
+                    cpx::andPlexQueries<mzrPlexSpecies, mzrOmniPlex>* pParsedQueries ) :
+            rMzrUnit( refMzrUnit ),
+            rMolUnit( refMolUnit ),
+            rPlexUnit( refPlexUnit ),
+            rPlex( refParsedPlex ),
+            pQuery( pParsedQueries )
+    {}
 
-        mzrPlexFamily*
-        operator() (xmlpp::Node* pParentNode) const
-        throw (utl::xcpt);
-    };
+    mzrPlexFamily*
+    operator()( xmlpp::Node* pParentNode ) const
+    throw( utl::xcpt );
+};
 
 // Parses a plex species, installing it in its plexFamily.
 //
@@ -225,12 +225,12 @@ namespace plx
 // the species, and parseTaggedPlexSpecies, which adds parsing of elements
 // that tell whether the species had been updated at the time of the state
 // dump.
-    mzrPlexSpecies*
-    parsePlexSpecies (xmlpp::Element* pParentElement,
-                      mzr::mzrUnit& rMzrUnit,
-                      bnd::molUnit& rMolUnit,
-                      plexUnit& rPlexUnit)
-    throw (utl::xcpt);
+mzrPlexSpecies*
+parsePlexSpecies( xmlpp::Element* pParentElement,
+                  mzr::mzrUnit& rMzrUnit,
+                  bnd::molUnit& rMolUnit,
+                  plexUnit& rPlexUnit )
+throw( utl::xcpt );
 
 
 // Parses an explicit plex species, adding it to mzrUnit's catalog
@@ -239,51 +239,51 @@ namespace plx
 // This has to happen after all the omniplexes have been recognized, all the
 // allosteric modifications associated with plexes and omniplexes installed,
 // and all the plexes have been connected to their features.
-    class parseExplicitPlexSpecies :
-                public std::unary_function<xmlpp::Node*, void>
-    {
-        mzr::mzrUnit& rMzrUnit;
-        bnd::molUnit& rMolUnit;
-        plexUnit& rPlexUnit;
+class parseExplicitPlexSpecies :
+            public std::unary_function<xmlpp::Node*, void>
+{
+    mzr::mzrUnit& rMzrUnit;
+    bnd::molUnit& rMolUnit;
+    plexUnit& rPlexUnit;
 
-    public:
-        parseExplicitPlexSpecies (mzr::mzrUnit& refMzrUnit,
-                                  bnd::molUnit& refMolUnit,
-                                  plexUnit& refPlexUnit) :
-                rMzrUnit (refMzrUnit),
-                rMolUnit (refMolUnit),
-                rPlexUnit (refPlexUnit)
-        {}
+public:
+    parseExplicitPlexSpecies( mzr::mzrUnit& refMzrUnit,
+                              bnd::molUnit& refMolUnit,
+                              plexUnit& refPlexUnit ) :
+            rMzrUnit( refMzrUnit ),
+            rMolUnit( refMolUnit ),
+            rPlexUnit( refPlexUnit )
+    {}
 
-        mzrPlexSpecies*
-        operator() (xmlpp::Node* pPlexSpeciesNode) const
-        throw (utl::xcpt);
-    };
+    mzrPlexSpecies*
+    operator()( xmlpp::Node* pPlexSpeciesNode ) const
+    throw( utl::xcpt );
+};
 
 // Parses a tagged plex species, as appears in state dumps.
-    class parseTaggedPlexSpecies :
-                public std::unary_function<xmlpp::Node*, void>
-    {
-        mzr::mzrUnit& rMzrUnit;
-        bnd::molUnit& rMolUnit;
-        plexUnit& rPlexUnit;
-        std::vector<mzrPlexSpecies*>& rUpdated;
+class parseTaggedPlexSpecies :
+            public std::unary_function<xmlpp::Node*, void>
+{
+    mzr::mzrUnit& rMzrUnit;
+    bnd::molUnit& rMolUnit;
+    plexUnit& rPlexUnit;
+    std::vector<mzrPlexSpecies*>& rUpdated;
 
-    public:
-        parseTaggedPlexSpecies (mzr::mzrUnit& refMzrUnit,
-                                bnd::molUnit& refMolUnit,
-                                plexUnit& refPlexUnit,
-                                std::vector<mzrPlexSpecies*>& rUpdatedSpecies) :
-                rMzrUnit (refMzrUnit),
-                rMolUnit (refMolUnit),
-                rPlexUnit (refPlexUnit),
-                rUpdated (rUpdatedSpecies)
-        {}
+public:
+    parseTaggedPlexSpecies( mzr::mzrUnit& refMzrUnit,
+                            bnd::molUnit& refMolUnit,
+                            plexUnit& refPlexUnit,
+                            std::vector<mzrPlexSpecies*>& rUpdatedSpecies ) :
+            rMzrUnit( refMzrUnit ),
+            rMolUnit( refMolUnit ),
+            rPlexUnit( refPlexUnit ),
+            rUpdated( rUpdatedSpecies )
+    {}
 
-        mzrPlexSpecies*
-        operator() (xmlpp::Node* pPlexSpeciesNode) const
-        throw (utl::xcpt);
-    };
+    mzrPlexSpecies*
+    operator()( xmlpp::Node* pPlexSpeciesNode ) const
+    throw( utl::xcpt );
+};
 
 // Parses an allosteric-sites element, making insertions
 // into a siteToShapeMap.  This map could be the one in
@@ -292,45 +292,45 @@ namespace plx
 //
 // Should this be an ordinary function (do I ever use it in
 // a template algo)?
-    class parseAllostericSites :
-                public std::unary_function<xmlpp::Node*, void>
-    {
-        const parserPlex& rParserPlex;
-        cpx::siteToShapeMap& rSiteToShapeMap;
+class parseAllostericSites :
+            public std::unary_function<xmlpp::Node*, void>
+{
+    const parserPlex& rParserPlex;
+    cpx::siteToShapeMap& rSiteToShapeMap;
 
-    public:
-        parseAllostericSites (const parserPlex& refParserPlex,
-                              cpx::siteToShapeMap& refSiteToShapeMap) :
-                rParserPlex (refParserPlex),
-                rSiteToShapeMap (refSiteToShapeMap)
-        {}
+public:
+    parseAllostericSites( const parserPlex& refParserPlex,
+                          cpx::siteToShapeMap& refSiteToShapeMap ) :
+            rParserPlex( refParserPlex ),
+            rSiteToShapeMap( refSiteToShapeMap )
+    {}
 
-        void
-        operator() (xmlpp::Element* pAlloSitesElt) const
-        throw (utl::xcpt);
-    };
+    void
+    operator()( xmlpp::Element* pAlloSitesElt ) const
+    throw( utl::xcpt );
+};
 
 // Parses an allosteric-plex element, as appears in input.
-    class parseAllostericPlex :
-                public std::unary_function<xmlpp::Node*, void>
-    {
-        bnd::molUnit& rMolUnit;
-        plexUnit& rPlexUnit;
-        mzr::mzrUnit& rMzrUnit;
+class parseAllostericPlex :
+            public std::unary_function<xmlpp::Node*, void>
+{
+    bnd::molUnit& rMolUnit;
+    plexUnit& rPlexUnit;
+    mzr::mzrUnit& rMzrUnit;
 
-    public:
-        parseAllostericPlex (bnd::molUnit& refMolUnit,
-                             plexUnit& refPlexUnit,
-                             mzr::mzrUnit& refMzrUnit) :
-                rMolUnit (refMolUnit),
-                rPlexUnit (refPlexUnit),
-                rMzrUnit (refMzrUnit)
-        {}
+public:
+    parseAllostericPlex( bnd::molUnit& refMolUnit,
+                         plexUnit& refPlexUnit,
+                         mzr::mzrUnit& refMzrUnit ) :
+            rMolUnit( refMolUnit ),
+            rPlexUnit( refPlexUnit ),
+            rMzrUnit( refMzrUnit )
+    {}
 
-        void
-        operator() (xmlpp::Node* pAlloPlexNode) const
-        throw (utl::xcpt);
-    };
+    void
+    operator()( xmlpp::Node* pAlloPlexNode ) const
+    throw( utl::xcpt );
+};
 
 // Parses a plex-species-stream, as appears in input.
 //
@@ -338,26 +338,26 @@ namespace plx
 // the query parsed from the contained plexClass.  It also has a name, and
 // it's installed in a catalog in mzrUnit, so it can be found for inclusion
 // into dump files ("dump-stream" elements).
-    class parsePlexSpeciesStream :
-                public std::unary_function<xmlpp::Node*, void>
-    {
-        mzr::mzrUnit& rMzrUnit;
-        bnd::molUnit& rMolUnit;
-        plexUnit& rPlexUnit;
+class parsePlexSpeciesStream :
+            public std::unary_function<xmlpp::Node*, void>
+{
+    mzr::mzrUnit& rMzrUnit;
+    bnd::molUnit& rMolUnit;
+    plexUnit& rPlexUnit;
 
-    public:
-        parsePlexSpeciesStream (mzr::mzrUnit& refMzrUnit,
-                                bnd::molUnit& refMolUnit,
-                                plexUnit& refPlexUnit) :
-                rMzrUnit (refMzrUnit),
-                rMolUnit (refMolUnit),
-                rPlexUnit (refPlexUnit)
-        {}
+public:
+    parsePlexSpeciesStream( mzr::mzrUnit& refMzrUnit,
+                            bnd::molUnit& refMolUnit,
+                            plexUnit& refPlexUnit ) :
+            rMzrUnit( refMzrUnit ),
+            rMolUnit( refMolUnit ),
+            rPlexUnit( refPlexUnit )
+    {}
 
-        void
-        operator() (xmlpp::Node* pPlexSpeciesStreamNode) const
-        throw (utl::xcpt);
-    };
+    void
+    operator()( xmlpp::Node* pPlexSpeciesStreamNode ) const
+    throw( utl::xcpt );
+};
 }
 
 #endif // PARSEPLEX_H

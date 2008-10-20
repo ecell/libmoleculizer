@@ -41,30 +41,30 @@
 namespace cpx
 {
 
-    template <class plexT>
-    class isoSearch
+template <class plexT>
+class isoSearch
+{
+
+public:
+    isoSearch( const plexT& rLeftPlex,
+               const plexT& rRightPlex ) :
+            rLeft( rLeftPlex ),
+            rRight( rRightPlex )
     {
-
-    public:
-        isoSearch (const plexT& rLeftPlex,
-                   const plexT& rRightPlex) :
-                rLeft (rLeftPlex),
-                rRight (rRightPlex)
-        {
-            enforcePlexIsSimpleGraph (rLeft);
-            enforcePlexIsSimpleGraph (rRight);
-        }
+        enforcePlexIsSimpleGraph( rLeft );
+        enforcePlexIsSimpleGraph( rRight );
+    }
 
 
-        virtual
-        ~isoSearch()
+    virtual
+    ~isoSearch()
+    {}
+
+    virtual void
+    onSuccess( const plexIso& rIso ) const
         {}
 
-        virtual void
-        onSuccess (const plexIso& rIso) const
-        {}
-
-        bool findIso (void) const;
+    bool findIso( void ) const;
 
 
 // This should be rewritten in a more-better way.  It is all
@@ -73,91 +73,91 @@ namespace cpx
 // types of complexes (typically highly symmetrical graphs).
 // Nevertheless it is used by the omni code in the ftr unit,
 
-        bool
-        findInjection (void) const;
+    bool
+    findInjection( void ) const;
 
-    private:
+private:
 
-        typedef typename plexT::molType molType;
+    typedef typename plexT::molType molType;
 
-        const plexT& rLeft;
-        const plexT& rRight;
+    const plexT& rLeft;
+    const plexT& rRight;
 
-        bool
-        nautyIsomorphismCheck (const plexT& rLeftPlex,
-                               const plexT& rRightPlex) const;
+    bool
+    nautyIsomorphismCheck( const plexT& rLeftPlex,
+                           const plexT& rRightPlex ) const;
 
-        void createGraphFromPlex (const plexT& aPlex,
-                                  graph* theGraph,
-                                  std::vector<int>& labelingMap,
-                                  std::vector<int>& ptnMap,
-                                  int m) const;
+    void createGraphFromPlex( const plexT& aPlex,
+                              graph* theGraph,
+                              std::vector<int>& labelingMap,
+                              std::vector<int>& ptnMap,
+                              int m ) const;
 
-        void
-        createMappingBetweenIsomorphicPlexes (plexIso& isoMapping,
-                                              const plexT& leftPlex,  std::vector<int>& leftCanonicalLabeling,
-                                              const plexT& rightPlex, std::vector<int>& rightCanonicalLabeling) const;
+    void
+    createMappingBetweenIsomorphicPlexes( plexIso& isoMapping,
+                                          const plexT& leftPlex,  std::vector<int>& leftCanonicalLabeling,
+                                          const plexT& rightPlex, std::vector<int>& rightCanonicalLabeling ) const;
 
-        void enforcePlexIsSimpleGraph (const plexT& plex) const
-        throw (plexIsNotSimpleGraphXcpt);
+    void enforcePlexIsSimpleGraph( const plexT& plex ) const
+    throw( plexIsNotSimpleGraphXcpt );
 
-        bool
-        compareColoringPartitions (const plexT& plex1, const std::vector<int>& labelingMap1, const std::vector<int>& partitionMap1,
-                                   const plexT& plex2, const std::vector<int>& labelingMap2, const std::vector<int>& partitionMap2) const;
+    bool
+    compareColoringPartitions( const plexT& plex1, const std::vector<int>& labelingMap1, const std::vector<int>& partitionMap1,
+                               const plexT& plex2, const std::vector<int>& labelingMap2, const std::vector<int>& partitionMap2 ) const;
 
-        void
-        invertMapping ( const std::vector<int>& mapToInvert, std::vector<int>& invertedMapping) const;
+    void
+    invertMapping( const std::vector<int>& mapToInvert, std::vector<int>& invertedMapping ) const;
 
 // This is used in the findInjection routine.
 // Determines if rCurrentIso can be extended over all the bindings
 // starting at leftBindingIndex in the left plex.  This is the basic
 // recursive step in the process of finding an injection or isomorphism.
-        bool
-        mapRestBindings (int leftBindingIndex,
-                         const plexIso& rCurrentIso) const;
+    bool
+    mapRestBindings( int leftBindingIndex,
+                     const plexIso& rCurrentIso ) const;
 
-        void
-        createPermutationFromRelabeling (const std::vector<int>& labelingMap,
-                                         std::vector<int>& permutationMap) const;
+    void
+    createPermutationFromRelabeling( const std::vector<int>& labelingMap,
+                                     std::vector<int>& permutationMap ) const;
 
-        class IndexArraySorter
+    class IndexArraySorter
+    {
+        const plexT& thePlex;
+    public:
+        IndexArraySorter( const plexT& plex )
+                :
+                thePlex( plex )
+        {}
+
+        bool operator()( int i, int j )
         {
-            const plexT& thePlex;
-        public:
-            IndexArraySorter ( const plexT& plex)
-                    :
-                    thePlex (plex)
-            {}
+            return thePlex.mols[i]->getName() < thePlex.mols[j]->getName();
+        }
+    };
 
-            bool operator() (int i, int j)
-            {
-                return thePlex.mols[i]->getName() < thePlex.mols[j]->getName();
-            }
-        };
+    class bindingIsEqual
+    {
+        binding firstBinding;
+        binding secondBinding;
 
-        class bindingIsEqual
+    public:
+        bindingIsEqual( const binding& bnd )
+                :
+                firstBinding( bnd.first, bnd.second ),
+                secondBinding( bnd.second, bnd.first )
+        {}
+
+        bool operator()( const binding& bnd )
         {
-            binding firstBinding;
-            binding secondBinding;
+            return ( firstBinding == bnd ||
+                     secondBinding == bnd );
+        }
 
-        public:
-            bindingIsEqual ( const binding& bnd)
-                    :
-                    firstBinding (bnd.first, bnd.second),
-                    secondBinding ( bnd.second, bnd.first)
-            {}
-
-            bool operator() (const binding& bnd)
-            {
-                return (firstBinding == bnd ||
-                        secondBinding == bnd);
-            }
-
-        private:
-
-        };
+    private:
 
     };
+
+};
 }
 
 #include "isoSearchImpl.hh"

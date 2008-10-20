@@ -40,52 +40,52 @@ namespace cpx
 {
 // This class adds functionality to a mol in the context of a complex
 // species.
-    template<class plexSpeciesT, class plexFamilyT>
-    class cxMol :
-                public fnd::featureContext<plexSpeciesT, molSpec>
-    {
-    public:
-        typedef plexSpeciesT plexSpeciesType;
-        typedef plexFamilyT plexFamilyType;
+template<class plexSpeciesT, class plexFamilyT>
+class cxMol :
+            public fnd::featureContext<plexSpeciesT, molSpec>
+{
+public:
+    typedef plexSpeciesT plexSpeciesType;
+    typedef plexFamilyT plexFamilyType;
 
-        cxMol (plexSpeciesType* pPlexSpecies,
-               const molSpec& rSpec);
+    cxMol( plexSpeciesType* pPlexSpecies,
+           const molSpec& rSpec );
 
 // Get the index of the mol (molSpec) in the plexFamily.
-        molSpec
-        getMolSpec (void) const;
+    molSpec
+    getMolSpec( void ) const;
 
 // Gets the population of the complex in which the mol occurs.
 // Used in most propensity calculations.
-        int
-        getPop (void) const;
+    int
+    getPop( void ) const;
 
 // Used in almost all propensity calculations.
-        double
-        getPlexWeight (void) const;
+    double
+    getPlexWeight( void ) const;
 
 // Get the plex family in which the mol occurs.
-        plexFamilyT&
-        getPlexFamily (void) const;
+    plexFamilyT&
+    getPlexFamily( void ) const;
 
 // Extracts the site shapes from the plexSpecies.
-        const siteToShapeMap&
-        getSiteToShapeMap (void) const;
+    const siteToShapeMap&
+    getSiteToShapeMap( void ) const;
 
 // Extracts the vector of molParams from the plexParam retrieved
 // above.  This typically used as the beginning of the construction
 // of the plexParam of a product complex by means of allostery.
-        const std::vector<molParam>&
-        getMolParams (void) const;
+    const std::vector<molParam>&
+    getMolParams( void ) const;
 
 // Gets the mol param of the "focus" mol by extracting it from the
 // above vector.  Use this when the reaction needs to know the state
 // of the mol.  The mol is capable of converting a corresponding
 // molParam into a vector of siteParams describing allosteric
 // binding when the molecule is in the specified state.
-        molParam
-        getMolParam (void) const;
-    };
+    molParam
+    getMolParam( void ) const;
+};
 }
 
 #include "cpx/cxMolImpl.hh"

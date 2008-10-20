@@ -36,32 +36,32 @@ namespace fnd
 {
 // Base class for messages sent out the first time that a generated species
 // is updated.
-    template<class contextType>
-    class newContextStimulus
+template<class contextType>
+class newContextStimulus
+{
+    contextType theContext;
+
+    int notifyDepth;
+
+public:
+    newContextStimulus( const contextType& rNewContext,
+                        int notificationDepth ) :
+            theContext( rNewContext ),
+            notifyDepth( notificationDepth )
+    {}
+
+    const contextType&
+    getContext( void ) const
     {
-        contextType theContext;
+        return theContext;
+    }
 
-        int notifyDepth;
-
-    public:
-        newContextStimulus (const contextType& rNewContext,
-                            int notificationDepth) :
-                theContext (rNewContext),
-                notifyDepth (notificationDepth)
-        {}
-
-        const contextType&
-        getContext (void) const
-        {
-            return theContext;
-        }
-
-        int
-        getNotificationDepth (void) const
-        {
-            return notifyDepth;
-        }
-    };
+    int
+    getNotificationDepth( void ) const
+    {
+        return notifyDepth;
+    }
+};
 }
 
 #endif // FND_NEWCONTEXTSTIMULUS_H

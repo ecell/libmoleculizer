@@ -35,49 +35,49 @@
 namespace dimer
 {
 
-    // I think tons of useful information is actually available through
-    // the binding context, but not emitted here.
-    std::string
-    missingDecomposeRateXcpt::
-    mkMsg (const std::string& rFirstSiteShapeName,
-           const std::string& rSecondSiteShapeName)
-    {
-        std::ostringstream msgStream;
-        msgStream << "decomposeNoExtrap extrapolator encountered "
-        << "site shapes '"
-        << rFirstSiteShapeName
-        << "' and '"
-        << rSecondSiteShapeName
-        << "' for which no nominal rate has been given.";
-        return msgStream.str();
-    }
+// I think tons of useful information is actually available through
+// the binding context, but not emitted here.
+std::string
+missingDecomposeRateXcpt::
+mkMsg( const std::string& rFirstSiteShapeName,
+       const std::string& rSecondSiteShapeName )
+{
+    std::ostringstream msgStream;
+    msgStream << "decomposeNoExtrap extrapolator encountered "
+    << "site shapes '"
+    << rFirstSiteShapeName
+    << "' and '"
+    << rSecondSiteShapeName
+    << "' for which no nominal rate has been given.";
+    return msgStream.str();
+}
 
 
-    // There is lots of useful information in the cxSite's that could be emitted
-    // for the user; e.g. the mols, sites, and site shapes involved.
-    std::string
-    missingDimerizeInvariantXcpt::
-    mkMsg (const cpx::cxSite<plx::mzrPlexSpecies, plx::mzrPlexFamily>& cxLeft,
-           const cpx::cxSite<plx::mzrPlexSpecies, plx::mzrPlexFamily>& cxRight)
-    {
-        std::ostringstream msgStream;
-        msgStream << "dimerizeMassExtrap extrapolator encountered "
-        << "site shapes for which no nominal rate has been given.";
-        return msgStream.str();
-    }
+// There is lots of useful information in the cxSite's that could be emitted
+// for the user; e.g. the mols, sites, and site shapes involved.
+std::string
+missingDimerizeInvariantXcpt::
+mkMsg( const cpx::cxSite<plx::mzrPlexSpecies, plx::mzrPlexFamily>& cxLeft,
+       const cpx::cxSite<plx::mzrPlexSpecies, plx::mzrPlexFamily>& cxRight )
+{
+    std::ostringstream msgStream;
+    msgStream << "dimerizeMassExtrap extrapolator encountered "
+    << "site shapes for which no nominal rate has been given.";
+    return msgStream.str();
+}
 
 
-    // There is lots more useful information in the sites that could be emitted
-    // here; e.g. the names of the sites and shapes.
-    std::string
-    missingDimerizeRateXcpt::
-    mkMsg (const cpx::cxSite<plx::mzrPlexSpecies, plx::mzrPlexFamily>& cxLeft,
-           const cpx::cxSite<plx::mzrPlexSpecies, plx::mzrPlexFamily>& cxRight)
-    {
-        std::ostringstream msgStream;
-        msgStream << "dimerizeNoExtrap extrapolator encountered "
-        << "site shapes for which no nominal rate has been given.";
-        return msgStream.str();
-    }
+// There is lots more useful information in the sites that could be emitted
+// here; e.g. the names of the sites and shapes.
+std::string
+missingDimerizeRateXcpt::
+mkMsg( const cpx::cxSite<plx::mzrPlexSpecies, plx::mzrPlexFamily>& cxLeft,
+       const cpx::cxSite<plx::mzrPlexSpecies, plx::mzrPlexFamily>& cxRight )
+{
+    std::ostringstream msgStream;
+    msgStream << "dimerizeNoExtrap extrapolator encountered "
+    << "site shapes for which no nominal rate has been given.";
+    return msgStream.str();
+}
 
 }

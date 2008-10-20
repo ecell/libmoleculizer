@@ -1,9 +1,9 @@
-#include 
+#include
 
 typedef flaot Real;
 
 // This class is generic, like the Expression Evaluator.
-// This class is meant to represent 
+// This class is meant to represent
 
 class Extrapolatable : public ExpressionEvaluator
 {
@@ -13,7 +13,7 @@ public:
 
     virtual Real getValue()
     {
-        ExpressionCompiler compiler(this, propertyMap);
+        ExpressionCompiler compiler( this, propertyMap );
 
         Code compiledCode;
         compiledCode = compiler.compileExpression( this->expression );
@@ -24,7 +24,7 @@ public:
     }
 
 protected:
-    
+
     typedef ExpressionCompiler::Code Code;
 
     typedef void* Pointer;
@@ -48,7 +48,7 @@ protected:
     };
 
     VirtualMachine virtualMachine;
-    ExpressionEvaluator 
+    ExpressionEvaluator
 
     bool recompileFlag;
 
@@ -66,7 +66,7 @@ const Real ExpressionProcessBase::VirtualMachine::execute( const Code& code )
       Opcode2Instruction<ExpressionCompiler::OPCODE>::type CurrentInstruction;\
     const CurrentInstruction* const instruction\
       ( reinterpret_cast<const CurrentInstruction* const>( pC ) )
- 
+
 
 #define INCREMENT_PC( OPCODE )\
     pC += sizeof( ExpressionCompiler::\
@@ -135,8 +135,8 @@ const Real ExpressionProcessBase::VirtualMachine::execute( const Code& code )
             DECODE_INSTRUCTION( CALL_FUNC2 );
 
             ( stackPtr - 1 )->real
-            = ( instruction->getOperand() )( ( stackPtr - 1 )->real,
-                                             stackPtr->real );
+            = ( instruction->getOperand() )(( stackPtr - 1 )->real,
+                                            stackPtr->real );
             --stackPtr;
 
             INCREMENT_PC( CALL_FUNC2 );
@@ -222,7 +222,7 @@ const Real ExpressionProcessBase::VirtualMachine::execute( const Code& code )
         {
             DECODE_INSTRUCTION( OBJECT_METHOD_INTEGER );
 
-            bypass = static_cast<Real>( ( instruction->getOperand() )() );
+            bypass = static_cast<Real>(( instruction->getOperand() )() );
 
             INCREMENT_PC( OBJECT_METHOD_INTEGER );
             goto bypass_real;

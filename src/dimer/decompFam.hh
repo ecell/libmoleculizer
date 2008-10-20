@@ -38,27 +38,27 @@
 
 namespace dimer
 {
-    class decompFam :
-                public utl::autoVector<mzr::mzrReaction>
+class decompFam :
+            public utl::autoVector<mzr::mzrReaction>
+{
+    decompRxnGen decompGen;
+
+public:
+    decompFam( mzr::mzrUnit& rMzrUnit,
+               plx::plexUnit& rPlexUnit,
+               decomposeExtrapolator* pExtrap ) :
+            decompGen( this,
+                       rMzrUnit,
+                       rPlexUnit,
+                       pExtrap )
+    {}
+
+    decompRxnGen*
+    getRxnGen( void )
     {
-        decompRxnGen decompGen;
-
-    public:
-        decompFam (mzr::mzrUnit& rMzrUnit,
-                   plx::plexUnit& rPlexUnit,
-                   decomposeExtrapolator* pExtrap) :
-                decompGen (this,
-                           rMzrUnit,
-                           rPlexUnit,
-                           pExtrap)
-        {}
-
-        decompRxnGen*
-        getRxnGen (void)
-        {
-            return &decompGen;
-        }
-    };
+        return &decompGen;
+    }
+};
 }
 
 #endif // DIMER_DECOMPFAM_H

@@ -40,95 +40,95 @@ namespace mzr
 {
 
 
-    void
-    mzrUnit::
-    mustAddSpecies (const std::string& rSpeciesName,
-                    mzrSpecies* pSpecies,
-                    xmlpp::Node* pRequestingNode)
-    throw (utl::xcpt)
-    {
-        if (! addSpecies (rSpeciesName,
-                          pSpecies) )
-            throw dupSpeciesNameXcpt (rSpeciesName,
-                                      pRequestingNode);
-    }
+void
+mzrUnit::
+mustAddSpecies( const std::string& rSpeciesName,
+                mzrSpecies* pSpecies,
+                xmlpp::Node* pRequestingNode )
+throw( utl::xcpt )
+{
+    if ( ! addSpecies( rSpeciesName,
+                       pSpecies ) )
+        throw dupSpeciesNameXcpt( rSpeciesName,
+                                  pRequestingNode );
+}
 
-    mzrSpecies*
-    mzrUnit::
-    mustFindSpecies (const std::string& rSpeciesName,
-                     xmlpp::Node* pRequestingNode) const
-    throw (utl::xcpt)
-    {
-        mzrSpecies* pSpecies = findSpecies (rSpeciesName);
+mzrSpecies*
+mzrUnit::
+mustFindSpecies( const std::string& rSpeciesName,
+                 xmlpp::Node* pRequestingNode ) const
+throw( utl::xcpt )
+{
+    mzrSpecies* pSpecies = findSpecies( rSpeciesName );
 
-        if (! pSpecies)
-            throw unkSpeciesXcpt (rSpeciesName,
-                                  pRequestingNode);
-        return pSpecies;
-    }
+    if ( ! pSpecies )
+        throw unkSpeciesXcpt( rSpeciesName,
+                              pRequestingNode );
+    return pSpecies;
+}
 
-    void
-    mzrUnit::
-    mustAddDumpable (fnd::dumpable<fnd::basicDumpable::dumpArg>* pDumpable,
-                     xmlpp::Node* pRequestingNode)
-    throw (utl::xcpt)
-    {
-        if (! addDumpable (pDumpable) )
-            throw dupDumpableNameXcpt (pDumpable->getName(),
-                                       pRequestingNode);
-    }
+void
+mzrUnit::
+mustAddDumpable( fnd::dumpable<fnd::basicDumpable::dumpArg>* pDumpable,
+                 xmlpp::Node* pRequestingNode )
+throw( utl::xcpt )
+{
+    if ( ! addDumpable( pDumpable ) )
+        throw dupDumpableNameXcpt( pDumpable->getName(),
+                                   pRequestingNode );
+}
 
-    fnd::dumpable<fnd::basicDumpable::dumpArg>*
-    mzrUnit::
-    mustFindDumpable (const std::string& rDumpableName,
-                      xmlpp::Node* pRequestingNode) const
-    throw (utl::xcpt)
-    {
-        fnd::dumpable<fnd::basicDumpable::dumpArg>* pDumpable
-        = findDumpable (rDumpableName);
+fnd::dumpable<fnd::basicDumpable::dumpArg>*
+mzrUnit::
+mustFindDumpable( const std::string& rDumpableName,
+                  xmlpp::Node* pRequestingNode ) const
+throw( utl::xcpt )
+{
+    fnd::dumpable<fnd::basicDumpable::dumpArg>* pDumpable
+    = findDumpable( rDumpableName );
 
-        if (! pDumpable)
-            throw unkDumpableXcpt (rDumpableName,
-                                   pRequestingNode);
+    if ( ! pDumpable )
+        throw unkDumpableXcpt( rDumpableName,
+                               pRequestingNode );
 
-        return pDumpable;
-    }
-
-
-
-    mzrUnit::
-    mzrUnit (moleculizer& rMoleculizer) :
-            unit ("mzr",
-                  rMoleculizer),
-            generateDepth(0)
-    {
-        // Model elements whose contents are parsed by some unit
-        // or another, as determined by moleculizer::parseDomInput.
-        inputCap.addModelContentName (eltName::reactionGens);
-        inputCap.addModelContentName (eltName::explicitSpecies);
-
-        // Model elements that this unit actually processes.
-        inputCap.addModelContentName (eltName::explicitReactions);
-
-        // This unit is not responsible for any reaction generators
-        // or species streams.
-    }
+    return pDumpable;
+}
 
 
-    void
-    mzrUnit::prepareToRun (xmlpp::Element* pRootElt,
-                           xmlpp::Element* pModelElt,
-                           xmlpp::Element* pStreamElt) throw (std::exception)
-    {}
 
-    void
-    mzrUnit::prepareToContinue (xmlpp::Element* pRootElt,
-                                xmlpp::Element* pModelElt,
-                                xmlpp::Element* pStreamsElt,
-                                std::map<std::string, std::string>& rTagToName,
-                                xmlpp::Element* pTaggedSpeciesElement)
-    throw (std::exception)
-    {}
+mzrUnit::
+mzrUnit( moleculizer& rMoleculizer ) :
+        unit( "mzr",
+              rMoleculizer ),
+        generateDepth( 0 )
+{
+    // Model elements whose contents are parsed by some unit
+    // or another, as determined by moleculizer::parseDomInput.
+    inputCap.addModelContentName( eltName::reactionGens );
+    inputCap.addModelContentName( eltName::explicitSpecies );
+
+    // Model elements that this unit actually processes.
+    inputCap.addModelContentName( eltName::explicitReactions );
+
+    // This unit is not responsible for any reaction generators
+    // or species streams.
+}
+
+
+void
+mzrUnit::prepareToRun( xmlpp::Element* pRootElt,
+                       xmlpp::Element* pModelElt,
+                       xmlpp::Element* pStreamElt ) throw( std::exception )
+{}
+
+void
+mzrUnit::prepareToContinue( xmlpp::Element* pRootElt,
+                            xmlpp::Element* pModelElt,
+                            xmlpp::Element* pStreamsElt,
+                            std::map<std::string, std::string>& rTagToName,
+                            xmlpp::Element* pTaggedSpeciesElement )
+throw( std::exception )
+{}
 
 
 }

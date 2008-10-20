@@ -42,17 +42,17 @@ class PropertyDoesNotExistXcpt : public utl::xcpt
 public:
     static std::string mkMsg( const std::string& propName );
     static std::string mkMsg( const std::string& propName,
-                              const PropertiedClass* ptrPropClass);
+                              const PropertiedClass* ptrPropClass );
 
     PropertyDoesNotExistXcpt( const::std::string& propName )
-        :
-        utl::xcpt( mkMsg(propName) )
+            :
+            utl::xcpt( mkMsg( propName ) )
     {}
 
     PropertyDoesNotExistXcpt( const std::string& propName,
-                              const PropertiedClass* ptrPropClass)
-        :
-        utl::xcpt( mkMsg( propName ) )
+                              const PropertiedClass* ptrPropClass )
+            :
+            utl::xcpt( mkMsg( propName ) )
     {}
 
 };

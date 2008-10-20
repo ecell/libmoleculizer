@@ -36,17 +36,17 @@
 
 namespace fnd
 {
-    class badDumpFileXcpt :
-                public utl::xcpt
-    {
-        static std::string
-        mkMsg (const std::string& rBadFileName);
+class badDumpFileXcpt :
+            public utl::xcpt
+{
+    static std::string
+    mkMsg( const std::string& rBadFileName );
 
-    public:
-        badDumpFileXcpt (const std::string& rBadFileName) :
-                utl::xcpt (mkMsg (rBadFileName) )
-        {}
-    };
+public:
+    badDumpFileXcpt( const std::string& rBadFileName ) :
+            utl::xcpt( mkMsg( rBadFileName ) )
+    {}
+};
 }
 
 #endif // FND_BADDUMPFILEXCPT_H

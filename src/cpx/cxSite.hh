@@ -42,48 +42,48 @@ namespace cpx
 // This class describes a binding site in the context  of a plexSpecies by
 // giving the index of the mol and the index of the binding site on the mol,
 // i.e. a siteSpec.
-    template<class plexSpeciesT, class plexFamilyT>
-    class cxSite :
-                public fnd::featureContext<plexSpeciesT, siteSpec>
-    {
-    public:
-        typedef plexSpeciesT plexSpeciesType;
-        typedef plexFamilyT plexFamilyType;
+template<class plexSpeciesT, class plexFamilyT>
+class cxSite :
+            public fnd::featureContext<plexSpeciesT, siteSpec>
+{
+public:
+    typedef plexSpeciesT plexSpeciesType;
+    typedef plexFamilyT plexFamilyType;
 
-        cxSite (typename cxSite::plexSpeciesType* pPlexSpecies,
-                const siteSpec& rSpec);
+    cxSite( typename cxSite::plexSpeciesType* pPlexSpecies,
+            const siteSpec& rSpec );
 
 // Get the site spec of the (free) site.
-        siteSpec
-        getSiteSpec (void) const;
+    siteSpec
+    getSiteSpec( void ) const;
 
 // Used in almost all propensity calculations.
-        int
-        getPop (void) const;
+    int
+    getPop( void ) const;
 
 // Used in almost all propensity calculations.
-        double
-        getPlexWeight (void) const;
+    double
+    getPlexWeight( void ) const;
 
 // Get the plex family on whose members the site appears.
-        plexFamilyT&
-        getPlexFamily (void) const;
+    plexFamilyT&
+    getPlexFamily( void ) const;
 
 // Extracts the site shapes from the plexSpecies.
-        const siteToShapeMap&
-        getSiteToShapeMap (void) const;
+    const siteToShapeMap&
+    getSiteToShapeMap( void ) const;
 
 // Extracts the vector of molParams from the plexParam retrieved
 // above.  This typically used as the beginning of the construction
 // of the plexParam of a product complex by means of allostery.
-        const std::vector<molParam>&
-        getMolParams (void) const;
+    const std::vector<molParam>&
+    getMolParams( void ) const;
 
 // Get the complex's siteParam for the site.  What is the shape
 // of the site in the current context?
-        siteParam
-        getSiteParam (void) const;
-    };
+    siteParam
+    getSiteParam( void ) const;
+};
 }
 
 #include "cpx/cxSiteImpl.hh"

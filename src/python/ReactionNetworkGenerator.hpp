@@ -50,10 +50,10 @@ public:
 //         name(""),
 //         mass(0.0f){}
 
-    Species (const mzr::mzrSpecies& aMzrSpecies)
+    Species( const mzr::mzrSpecies& aMzrSpecies )
             :
-            name ( aMzrSpecies.getName() ),
-            mass ( aMzrSpecies.getWeight() )
+            name( aMzrSpecies.getName() ),
+            mass( aMzrSpecies.getWeight() )
     {}
 
     std::string getName() const
@@ -76,7 +76,7 @@ public:
     typedef fnd::basicReaction<mzr::mzrSpecies> CoreRxnType;
 
 //    Reaction(){}
-    Reaction (const CoreRxnType& aReaction);
+    Reaction( const CoreRxnType& aReaction );
 
     float getRate() const
     {
@@ -109,16 +109,16 @@ struct BasicComplexRepresentation
     typedef std::pair< int, std::pair<std::string, std::string> > ModType;
 
     void
-    addMolNameToComplex (const std::string& molName);
+    addMolNameToComplex( const std::string& molName );
 
-    void addModificationToComplex (int molIndex,
+    void addModificationToComplex( int molIndex,
                                    const std::string& modificationSiteName,
-                                   const std::string& modificationValue);
+                                   const std::string& modificationValue );
 
-    void addBindingToComplex ( int firstMolNdx,
-                               const std::string& bindingName1,
-                               int secondMolNdx,
-                               const std::string& bindingName2);
+    void addBindingToComplex( int firstMolNdx,
+                              const std::string& bindingName1,
+                              int secondMolNdx,
+                              const std::string& bindingName2 );
 
     std::vector<std::string> mols;
     std::vector<BindingType > bindings;
@@ -169,19 +169,19 @@ public:
         ptrMoleculizer->DEBUG_showLiveSpecies();
     }
 
-    void addRules (const std::string& filename) throw ( mzr::BadRulesDefinitionXcpt )
+    void addRules( const std::string& filename ) throw( mzr::BadRulesDefinitionXcpt )
     {
         try
         {
             delete ptrMoleculizer;
             ptrMoleculizer = new mzr::moleculizer;
-            ptrMoleculizer->attachFileName ( filename );
+            ptrMoleculizer->attachFileName( filename );
         }
-        catch (mzr::BadRulesDefinitionXcpt e)
+        catch ( mzr::BadRulesDefinitionXcpt e )
         {
             e.warn();
 
-            if (ptrMoleculizer)
+            if ( ptrMoleculizer )
             {
                 delete ptrMoleculizer;
                 ptrMoleculizer = NULL;
@@ -189,32 +189,32 @@ public:
 
             throw e;
         }
-        catch (utl::xcpt x)
+        catch ( utl::xcpt x )
         {
             delete ptrMoleculizer;
             x.warn();
             throw mzr::BadRulesDefinitionXcpt();
         }
-        catch (...)
+        catch ( ... )
         {
             delete ptrMoleculizer;
-            utl::xcpt x ("Unknown Error while adding rules. (FDLLAE)");
+            utl::xcpt x( "Unknown Error while adding rules. (FDLLAE)" );
             x.wailAndBail();
         }
     }
 
     std::vector<Reaction>
-    getBinaryReactions (const std::string& species1,
-                        const std::string& species2) throw ( mzr::IllegalNameXcpt );
+    getBinaryReactions( const std::string& species1,
+                        const std::string& species2 ) throw( mzr::IllegalNameXcpt );
 
     std::vector<Reaction>
-    getUnaryReactions (const std::string& species1) throw (mzr::IllegalNameXcpt );
+    getUnaryReactions( const std::string& species1 ) throw( mzr::IllegalNameXcpt );
 
     Species
-    getSpecies (const std::string& species) throw (mzr::IllegalNameXcpt );
+    getSpecies( const std::string& species ) throw( mzr::IllegalNameXcpt );
 
     bool
-    checkSpeciesNameLegality ( const std::string& species1) throw (mzr::IllegalNameXcpt );
+    checkSpeciesNameLegality( const std::string& species1 ) throw( mzr::IllegalNameXcpt );
 
 
 // For now I am writing two versions of this function.  This 'stricter' one insists on
@@ -222,13 +222,13 @@ public:
 // rules.  This is so that "default" modifications that aren't in the complex representation.
 // But that might just be stupid.
     std::string
-    generateNameFromBasicComplexRepresentation (const BasicComplexRepresentation& aBCR);
+    generateNameFromBasicComplexRepresentation( const BasicComplexRepresentation& aBCR );
 
     std::string
-    generateNameFromBasicComplexRepresentationStrict (const BasicComplexRepresentation& aBCR);
+    generateNameFromBasicComplexRepresentationStrict( const BasicComplexRepresentation& aBCR );
 
     void showAllReactions();
-    void incrementSpecies (const std::string& species);
+    void incrementSpecies( const std::string& species );
     int getNumberOfSpecies();
     int getNumberOfReactions();
 
@@ -247,12 +247,12 @@ class modificationNotOfNdx
 {
 public:
     int ndx;
-    modificationNotOfNdx ( int index)
+    modificationNotOfNdx( int index )
             :
-            ndx ( index )
+            ndx( index )
     {}
 
-    bool operator() (const BasicComplexRepresentation::ModType& theModType)
+    bool operator()( const BasicComplexRepresentation::ModType& theModType )
     {
         return theModType.first != ndx;
     }

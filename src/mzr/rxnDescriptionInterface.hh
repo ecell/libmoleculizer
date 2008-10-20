@@ -38,8 +38,8 @@
 
 namespace mzr
 {
-    class mzrReaction;
-    class mzsSpecies;
+class mzrReaction;
+class mzsSpecies;
 }
 
 struct ReactionNetworkDescription
@@ -47,14 +47,14 @@ struct ReactionNetworkDescription
     // Doesn't memory manage anything
 
     bool
-    recordSpecies ( mzrSpecies* pSpecies)
+    recordSpecies( mzrSpecies* pSpecies )
     {}
 
     bool
-    recordReaction ( mzrReaction* pReaction)
+    recordReaction( mzrReaction* pReaction )
     {
         std::string reactionName = pReaction->getCanoncalName();
-        return reactionCatalog->addEntry ( reactionName, pReaction );
+        return reactionCatalog->addEntry( reactionName, pReaction );
     }
 
     utl::catalog<mzr::mzrSpecies>* pSpeciesCatalog;
@@ -62,15 +62,15 @@ struct ReactionNetworkDescription
     utl::catalog<mzr::mzrReaction>* pReactionCatalog;
     std::list<mzr::mzrReaction*>* pReactionList;
 
-    ReactionNetowrkDescription ( utl::catalog<mzr::mzrSpecies>* aSpeciesCatalog,
-                                 std::list<mzr::mzrSpecies*>* aSpeciesList,
-                                 utl::catalog<mzr::mzrReaction>* aReactionCatalog,
-                                 std::list<mzr::mzrReaction*>* aReactionList)
+    ReactionNetowrkDescription( utl::catalog<mzr::mzrSpecies>* aSpeciesCatalog,
+                                std::list<mzr::mzrSpecies*>* aSpeciesList,
+                                utl::catalog<mzr::mzrReaction>* aReactionCatalog,
+                                std::list<mzr::mzrReaction*>* aReactionList )
             :
-            pSpeciesCatalog ( aSpeciesCatalog ),
-            pSpeciesList ( aSpeciesList ),
-            pReactionCatalog ( aReactionCatalog ),
-            pReactionList ( aReactionList )
+            pSpeciesCatalog( aSpeciesCatalog ),
+            pSpeciesList( aSpeciesList ),
+            pReactionCatalog( aReactionCatalog ),
+            pReactionList( aReactionList )
     {}
 
 };

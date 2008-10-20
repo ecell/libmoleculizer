@@ -36,21 +36,21 @@
 
 namespace mzr
 {
-    class mzrUnit;
+class mzrUnit;
 
-    /*! \ingroup dumpGroup
-    \brief Dumps the current simulation volume. */
-    class volumeDumpable :
-                public fnd::dumpable<fnd::basicDumpable::dumpArg>
-    {
-        mzrUnit& rMzrUnit;
+/*! \ingroup dumpGroup
+\brief Dumps the current simulation volume. */
+class volumeDumpable :
+            public fnd::dumpable<fnd::basicDumpable::dumpArg>
+{
+    mzrUnit& rMzrUnit;
 
-    public:
-        volumeDumpable (mzrUnit& refMzrUnit);
+public:
+    volumeDumpable( mzrUnit& refMzrUnit );
 
-        virtual void
-        doDump (const fnd::basicDumpable::dumpArg& rDumpArg) const;
-    };
+    virtual void
+    doDump( const fnd::basicDumpable::dumpArg& rDumpArg ) const;
+};
 }
 
 #endif // MZR_VOLUMEDUMPABLE_H

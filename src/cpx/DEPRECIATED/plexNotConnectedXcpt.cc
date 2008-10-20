@@ -34,13 +34,13 @@
 
 namespace cpx
 {
-    std::string
-    plexNotConnectedXcpt::
-    mkMsg (void)
-    {
-        std::ostringstream msgStream;
-        msgStream << utl::xcpt::mkMsg()
-        <<"Left plex not connected in plex isomorphism search.";
-        return msgStream.str();
-    }
+std::string
+plexNotConnectedXcpt::
+mkMsg( void )
+{
+    std::ostringstream msgStream;
+    msgStream << utl::xcpt::mkMsg()
+    <<"Left plex not connected in plex isomorphism search.";
+    return msgStream.str();
+}
 }

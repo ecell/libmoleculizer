@@ -37,22 +37,22 @@
 using namespace std;
 
 void
-processCommandLineArgs (int argc, char* argv[], std::string& theFileName, std::string& modelFile);
+processCommandLineArgs( int argc, char* argv[], std::string& theFileName, std::string& modelFile );
 
-void 
+void
 displayHelpAndExitProgram();
 
-int main (int argc, char* argv[])
+int main( int argc, char* argv[] )
 {
     std::string modelfile;
     std::string rulesfile;
-    processCommandLineArgs (argc, argv, rulesfile, modelfile);
+    processCommandLineArgs( argc, argv, rulesfile, modelfile );
 
-    SimpleStochasticSimulator theSim ( rulesfile, modelfile);
+    SimpleStochasticSimulator theSim( rulesfile, modelfile );
 
     std::cout << "\n\n#######################################################\nBeginning simulation\n\n";
 
-    for (unsigned int ii = 0; ii != 500; ++ii)
+    for ( unsigned int ii = 0; ii != 500; ++ii )
     {
         theSim.singleStep();
     }
@@ -63,49 +63,49 @@ int main (int argc, char* argv[])
 
 }
 
-void processCommandLineArgs (int argc, char* argv[], std::string& rulesFile, std::string& modelFile)
+void processCommandLineArgs( int argc, char* argv[], std::string& rulesFile, std::string& modelFile )
 {
 
-    bool rulesFound (false);
-    bool modelFound (false);
+    bool rulesFound( false );
+    bool modelFound( false );
 
     // Skip the command name
     argc--;
     argv++;
 
-    if (argc == 0)
+    if ( argc == 0 )
     {
         displayHelpAndExitProgram();
     }
 
-    while (0 < argc)
+    while ( 0 < argc )
     {
-        std::string arg (*argv);
+        std::string arg( *argv );
         argv++;
         argc--;
 
-        if (arg == "--help")
+        if ( arg == "--help" )
         {
             displayHelpAndExitProgram();
         }
 
-        if (arg == "--rules")
+        if ( arg == "--rules" )
         {
-            rulesFile = utl::mustGetArg (argc, argv);
+            rulesFile = utl::mustGetArg( argc, argv );
             rulesFound = true;
         }
 
-        if (arg == "--model")
+        if ( arg == "--model" )
         {
-            modelFile = utl::mustGetArg (argc, argv);
+            modelFile = utl::mustGetArg( argc, argv );
             modelFound = true;
         }
     }
 
-    if (!modelFound || !rulesFound)
+    if ( !modelFound || !rulesFound )
     {
         std::cerr << "Error, both a --rules and a --model parameter must be provided." << endl;
-        exit (1);
+        exit( 1 );
     }
 
 }
@@ -121,5 +121,5 @@ void displayHelpAndExitProgram()
     cout << "Moleculizer should have come with associated documentation.  Please read it for more details." << endl;
     cout << "\tNathan Addy <addy@molsci.org>\n\tSeptember 18, 2008." << endl;
 
-    exit (0);
+    exit( 0 );
 }

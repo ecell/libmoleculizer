@@ -34,10 +34,10 @@
 class SimpleParticleSimulator : public SimpleSimulator
 {
 public:
-    SimpleParticleSimulator (std::string rulesfile, std::string modelfile)
+    SimpleParticleSimulator( std::string rulesfile, std::string modelfile )
             :
-            SimpleSimulator (rulesfile, modelfile),
-            numReactions (0)
+            SimpleSimulator( rulesfile, modelfile ),
+            numReactions( 0 )
     {}
 
     void singleStep();

@@ -34,13 +34,13 @@
 
 namespace cpx
 {
-    std::string
-    unmappedSiteSpecXcpt::
-    mkMsg (void)
-    {
-        std::ostringstream msgStream;
-        msgStream << utl::xcpt::mkMsg()
-        << "There is no binding site with the given specification.";
-        return msgStream.str();
-    }
+std::string
+unmappedSiteSpecXcpt::
+mkMsg( void )
+{
+    std::ostringstream msgStream;
+    msgStream << utl::xcpt::mkMsg()
+    << "There is no binding site with the given specification.";
+    return msgStream.str();
+}
 }

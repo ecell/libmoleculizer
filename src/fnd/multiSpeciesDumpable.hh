@@ -41,40 +41,40 @@ namespace fnd
 // This doeesn't include any output (state dump) functionality.  Decided to
 // keep xml parsing and output out of template components like this.
 
-    template<class speciesT,
-    class dumpArgT>
-    class multiSpeciesDumpable :
-                public dumpable<dumpArgT>,
-                public fnd::sensitive<fnd::newSpeciesStimulus<speciesT> >
-    {
-    protected:
-        std::vector<const speciesT*> dumpedSpecies;
+template<class speciesT,
+class dumpArgT>
+class multiSpeciesDumpable :
+            public dumpable<dumpArgT>,
+            public fnd::sensitive<fnd::newSpeciesStimulus<speciesT> >
+{
+protected:
+    std::vector<const speciesT*> dumpedSpecies;
 
-    public:
-        multiSpeciesDumpable (const std::string& rName) :
-                dumpable<dumpArgT> (rName)
-        {}
+public:
+    multiSpeciesDumpable( const std::string& rName ) :
+            dumpable<dumpArgT> ( rName )
+    {}
 
-        virtual
-        ~multiSpeciesDumpable (void)
-        {}
+    virtual
+    ~multiSpeciesDumpable( void )
+    {}
 
 //         virtual int
 //         getTotalPop (const dumpArgT& rDumpArg) const;
 
-        virtual void
-        doDump (const dumpArgT& rDumpArg) const
-        {
-            // rDumpArg.getOstream() << getTotalPop (rDumpArg);
-        }
+    virtual void
+    doDump( const dumpArgT& rDumpArg ) const
+    {
+        // rDumpArg.getOstream() << getTotalPop (rDumpArg);
+    }
 
-        virtual
-        void
-        respond (const fnd::newSpeciesStimulus<speciesT>& rStimulus)
-        {
-            dumpedSpecies.push_back (rStimulus.getSpecies() );
-        }
-    };
+    virtual
+    void
+    respond( const fnd::newSpeciesStimulus<speciesT>& rStimulus )
+    {
+        dumpedSpecies.push_back( rStimulus.getSpecies() );
+    }
+};
 
 //     template<class speciesT>
 //     class addDumpedSpeciesPop :

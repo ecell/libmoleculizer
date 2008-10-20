@@ -87,22 +87,22 @@ public:
 //     typedef Entity*  ( libecs::Process::* ProcessMethodPtr )() const;
 //    typedef const Real ( libecs::Entity::* EntityMethodPtr )() const;
 
-    typedef Real ( *RealFunc0 )();
-    typedef Real ( *RealFunc1 )( Real );
-    typedef Real ( *RealFunc2 )( Real, Real );
+    typedef Real( *RealFunc0 )();
+    typedef Real( *RealFunc1 )( Real );
+    typedef Real( *RealFunc2 )( Real, Real );
 
 
     typedef ObjectMethodProxy<Real> RealObjectMethodProxy;
     typedef ObjectMethodProxy<Integer> IntegerObjectMethodProxy;
     //  VariableReferenceMethodProxy;
 
-    typedef void ( *InstructionAppender )( Code& );
+    typedef void( *InstructionAppender )( Code& );
 
 
     enum Opcode// the order of items is optimized. don't change.
     {
         ADD = 0  // no arg
-        , SUB    // no arg
+              , SUB    // no arg
         , MUL    // no arg
         , DIV    // no arg
         , CALL_FUNC2 // RealFunc2
@@ -222,7 +222,7 @@ public:
     struct ObjectMethodOperand
     {
         //typedef boost::mem_fn< RESULT, CLASS > MethodType;
-        typedef RESULT ( CLASS::* MethodPtr )( void ) const;
+        typedef RESULT( CLASS::* MethodPtr )( void ) const;
 
         const CLASS* operand1;
         MethodPtr operand2;
@@ -269,11 +269,11 @@ private:
                 integer     =   leafNode( + digit_p );
                 floating    =   leafNode( + digit_p >> ch_p( '.' ) >> + digit_p );
 
-                exponent    =   ( floating | integer ) >>
-                                rootNode( ch_p( 'e' ) | ch_p( 'E' ) ) >>
-                                ( ch_p( '-' ) >> integer |
-                                  discard_node_d[ ch_p( '+' ) ] >> integer |
-                                  integer );
+                exponent    = ( floating | integer ) >>
+                              rootNode( ch_p( 'e' ) | ch_p( 'E' ) ) >>
+                              ( ch_p( '-' ) >> integer |
+                                discard_node_d[ ch_p( '+' )] >> integer |
+                                integer );
 
                 negative    = rootNode( ch_p( '-' ) ) >> factor;
 
@@ -285,8 +285,8 @@ private:
 
                 entity_property = + ( rootNode( ch_p( '.' ) ) >>
                                       leafNode( + ( alpha_p | ch_p( '_' ) ) ) >>
-                                      discard_node_d[ ch_p( '(' ) ] >>
-                                      discard_node_d[ ch_p( ')' ) ] );
+                                      discard_node_d[ ch_p( '(' )] >>
+                                      discard_node_d[ ch_p( ')' )] );
 
 
                 ///////////////////////////////////////////////////
@@ -298,55 +298,55 @@ private:
 
                 //call_func = rootNode( +alpha_p ) >>
 
-                call_func = (   rootNode( str_p( "eq" ) )
-                                | rootNode( str_p( "neq" ) )
-                                | rootNode( str_p( "gt" ) )
-                                | rootNode( str_p( "lt" ) )
-                                | rootNode( str_p( "geq" ) )
-                                | rootNode( str_p( "leq" ) )
-                                | rootNode( str_p( "and" ) )
-                                | rootNode( str_p( "or" ) )
-                                | rootNode( str_p( "xor" ) )
-                                | rootNode( str_p( "not" ) )
-                                | rootNode( str_p( "abs" ) )
-                                | rootNode( str_p( "sqrt" ) )
-                                | rootNode( str_p( "pow" ) )
-                                | rootNode( str_p( "exp" ) )
-                                | rootNode( str_p( "log10" ) )
-                                | rootNode( str_p( "log" ) )
-                                | rootNode( str_p( "floor" ) )
-                                | rootNode( str_p( "ceil" ) )
-                                | rootNode( str_p( "sin" ) )
-                                | rootNode( str_p( "cos" ) )
-                                | rootNode( str_p( "tan" ) )
-                                | rootNode( str_p( "sinh" ) )
-                                | rootNode( str_p( "cosh" ) )
-                                | rootNode( str_p( "tanh" ) )
-                                | rootNode( str_p( "asin" ) )
-                                | rootNode( str_p( "acos" ) )
-                                | rootNode( str_p( "atan" ) )
-                                | rootNode( str_p( "fact" ) )
-                                | rootNode( str_p( "asinh" ) )
-                                | rootNode( str_p( "acosh" ) )
-                                | rootNode( str_p( "atanh" ) )
-                                | rootNode( str_p( "asech" ) )
-                                | rootNode( str_p( "acsch" ) )
-                                | rootNode( str_p( "acoth" ) )
-                                | rootNode( str_p( "sech" ) )
-                                | rootNode( str_p( "csch" ) )
-                                | rootNode( str_p( "coth" ) )
-                                | rootNode( str_p( "asec" ) )
-                                | rootNode( str_p( "acsc" ) )
-                                | rootNode( str_p( "acot" ) )
-                                | rootNode( str_p( "sec" ) )
-                                | rootNode( str_p( "csc" ) )
-                                | rootNode( str_p( "cot" ) )
+                call_func = ( rootNode( str_p( "eq" ) )
+                              | rootNode( str_p( "neq" ) )
+                              | rootNode( str_p( "gt" ) )
+                              | rootNode( str_p( "lt" ) )
+                              | rootNode( str_p( "geq" ) )
+                              | rootNode( str_p( "leq" ) )
+                              | rootNode( str_p( "and" ) )
+                              | rootNode( str_p( "or" ) )
+                              | rootNode( str_p( "xor" ) )
+                              | rootNode( str_p( "not" ) )
+                              | rootNode( str_p( "abs" ) )
+                              | rootNode( str_p( "sqrt" ) )
+                              | rootNode( str_p( "pow" ) )
+                              | rootNode( str_p( "exp" ) )
+                              | rootNode( str_p( "log10" ) )
+                              | rootNode( str_p( "log" ) )
+                              | rootNode( str_p( "floor" ) )
+                              | rootNode( str_p( "ceil" ) )
+                              | rootNode( str_p( "sin" ) )
+                              | rootNode( str_p( "cos" ) )
+                              | rootNode( str_p( "tan" ) )
+                              | rootNode( str_p( "sinh" ) )
+                              | rootNode( str_p( "cosh" ) )
+                              | rootNode( str_p( "tanh" ) )
+                              | rootNode( str_p( "asin" ) )
+                              | rootNode( str_p( "acos" ) )
+                              | rootNode( str_p( "atan" ) )
+                              | rootNode( str_p( "fact" ) )
+                              | rootNode( str_p( "asinh" ) )
+                              | rootNode( str_p( "acosh" ) )
+                              | rootNode( str_p( "atanh" ) )
+                              | rootNode( str_p( "asech" ) )
+                              | rootNode( str_p( "acsch" ) )
+                              | rootNode( str_p( "acoth" ) )
+                              | rootNode( str_p( "sech" ) )
+                              | rootNode( str_p( "csch" ) )
+                              | rootNode( str_p( "coth" ) )
+                              | rootNode( str_p( "asec" ) )
+                              | rootNode( str_p( "acsc" ) )
+                              | rootNode( str_p( "acot" ) )
+                              | rootNode( str_p( "sec" ) )
+                              | rootNode( str_p( "csc" ) )
+                              | rootNode( str_p( "cot" ) )
                             ) >>
                             inner_node_d[ ch_p( '(' ) >>
                                           ( expression >>
-                                            *( discard_node_d[ ch_p( ',' ) ] >>
+                                            *( discard_node_d[ ch_p( ',' )] >>
                                                expression ) ) >>
-                                          ch_p( ')' ) ];
+                                          ch_p( ')' )];
 
 
                 group       =   inner_node_d[ ch_p( '(' ) >> expression >> ch_p( ')' )];
@@ -364,14 +364,14 @@ private:
                 power = factor >> *( rootNode( ch_p( '^' ) ) >> factor );
 
                 term        =  power >>
-                               *( ( rootNode( ch_p( '*' ) ) >> power )
-                                  |  ( rootNode( ch_p( '/' ) ) >> power ) );
+                               *(( rootNode( ch_p( '*' ) ) >> power )
+                                 | ( rootNode( ch_p( '/' ) ) >> power ) );
                 //|  ( rootNode( ch_p('^') ) >> power ) );
 
 
                 expression  =  term >>
-                               *( ( rootNode( ch_p( '+' ) ) >> term )
-                                  |  ( rootNode( ch_p( '-' ) ) >> term ) );
+                               *(( rootNode( ch_p( '+' ) ) >> term )
+                                 | ( rootNode( ch_p( '-' ) ) >> term ) );
             }
 
             rule<ScannerT, PARSER_CONTEXT, parser_tag<VARIABLE> >     variable;
@@ -437,7 +437,7 @@ protected:
     {
         Code::size_type codeSize( code.size() );
         code.resize( codeSize + sizeof( INSTRUCTION ) );
-        new ( &code[codeSize] ) INSTRUCTION( instruction );
+        new( &code[codeSize] ) INSTRUCTION( instruction );
     }
 
     /**template < Opcode OPCODE >
@@ -721,11 +721,11 @@ appendEntityMethodInstruction( Code& code,
                                Entity* entityPtr,
                                const String& methodName )
 {
-    
+
     THROW_EXCEPTION
-        ( NotFound,
-          "Entity attribute [" +
-          methodName + "] not found." );
+    ( NotFound,
+      "Entity attribute [" +
+      methodName + "] not found." );
 
 
 }
@@ -824,8 +824,8 @@ void ExpressionCompiler::compileTree( TreeIterator const& treeIterator,
                                  childTreeIterator->value.end() );
 
         const String
-        exponentString( ( childTreeIterator + 1 )->value.begin(),
-                        ( childTreeIterator + 1 )->value.end() );
+        exponentString(( childTreeIterator + 1 )->value.begin(),
+                       ( childTreeIterator + 1 )->value.end() );
 
         const Real baseValue = stringCast<Real>( baseString );
 
@@ -841,8 +841,8 @@ void ExpressionCompiler::compileTree( TreeIterator const& treeIterator,
         else
         {
             const String
-            exponentString1( ( childTreeIterator + 2 )->value.begin(),
-                             ( childTreeIterator + 2 )->value.end() );
+            exponentString1(( childTreeIterator + 2 )->value.begin(),
+                            ( childTreeIterator + 2 )->value.end() );
 
             const Real
             exponentValue = stringCast<Real>( exponentString1 );
@@ -899,8 +899,8 @@ void ExpressionCompiler::compileTree( TreeIterator const& treeIterator,
                 {
                     appendInstruction
                     ( code, Instruction<PUSH_REAL>
-                      ( ( *functionMap1Iterator->second )
-                        ( argumentValue ) ) );
+                      (( *functionMap1Iterator->second )
+                       ( argumentValue ) ) );
                 }
                 else
                 {
@@ -1037,8 +1037,8 @@ void ExpressionCompiler::compileTree( TreeIterator const& treeIterator,
             Entity* entityPtr( this->processPtr->getSuperEntity() );
 
             const String methodName
-            ( ( childTreeIterator + childTreeSize - 1 )->value.begin(),
-              ( childTreeIterator + childTreeSize - 1 )->value.end() );
+            (( childTreeIterator + childTreeSize - 1 )->value.begin(),
+             ( childTreeIterator + childTreeSize - 1 )->value.end() );
 
             compileEntityProperty( childTreeIterator + 1,
                                    code,
@@ -1054,8 +1054,8 @@ void ExpressionCompiler::compileTree( TreeIterator const& treeIterator,
             Entity* const entityPtr( variableReference.getSuperEntity() );
 
             const String methodName
-            ( ( childTreeIterator + childTreeSize - 1 )->value.begin(),
-              ( childTreeIterator + childTreeSize - 1 )->value.end() );
+            (( childTreeIterator + childTreeSize - 1 )->value.begin(),
+             ( childTreeIterator + childTreeSize - 1 )->value.end() );
 
             compileEntityProperty( childTreeIterator + 1,
                                    code,
@@ -1083,8 +1083,8 @@ void ExpressionCompiler::compileTree( TreeIterator const& treeIterator,
 
         const String
         variableReferenceMethodString
-        ( ( childTreeIterator + 1 )->value.begin(),
-          ( childTreeIterator + 1 )->value.end() );
+        (( childTreeIterator + 1 )->value.begin(),
+         ( childTreeIterator + 1 )->value.end() );
 
         const VariableReference&          variableReference
         ( this->processPtr->
@@ -1198,10 +1198,10 @@ void ExpressionCompiler::compileTree( TreeIterator const& treeIterator,
         childTreeIterator( treeIterator->children.begin() );
 
 
-        if ( ( childTreeIterator->value.id() == CompileGrammar::INTEGER ||
+        if (( childTreeIterator->value.id() == CompileGrammar::INTEGER ||
                 childTreeIterator->value.id() == CompileGrammar::FLOAT ) &&
-                ( ( childTreeIterator + 1 )->value.id() == CompileGrammar::INTEGER ||
-                  ( childTreeIterator + 1 )->value.id() == CompileGrammar::FLOAT ) )
+                (( childTreeIterator + 1 )->value.id() == CompileGrammar::INTEGER ||
+                 ( childTreeIterator + 1 )->value.id() == CompileGrammar::FLOAT ) )
         {
 
             const String
@@ -1209,8 +1209,8 @@ void ExpressionCompiler::compileTree( TreeIterator const& treeIterator,
                              childTreeIterator->value.end() );
 
             const String
-            argumentString2( ( childTreeIterator + 1 )->value.begin(),
-                             ( childTreeIterator + 1 )->value.end() );
+            argumentString2(( childTreeIterator + 1 )->value.begin(),
+                            ( childTreeIterator + 1 )->value.end() );
 
             const Real
             argumentValue1 = stringCast<Real>( argumentString1 );
@@ -1278,18 +1278,18 @@ void ExpressionCompiler::compileTree( TreeIterator const& treeIterator,
         childTreeIterator( treeIterator->children.begin() );
 
 
-        if ( ( childTreeIterator->value.id() == CompileGrammar::INTEGER ||
+        if (( childTreeIterator->value.id() == CompileGrammar::INTEGER ||
                 childTreeIterator->value.id() == CompileGrammar::FLOAT ) &&
-                ( ( childTreeIterator + 1 )->value.id() == CompileGrammar::INTEGER ||
-                  ( childTreeIterator + 1 )->value.id() == CompileGrammar::FLOAT ) )
+                (( childTreeIterator + 1 )->value.id() == CompileGrammar::INTEGER ||
+                 ( childTreeIterator + 1 )->value.id() == CompileGrammar::FLOAT ) )
         {
 
             const String term1String( childTreeIterator->value.begin(),
                                       childTreeIterator->value.end() );
 
             const String
-            term2String( ( childTreeIterator + 1 )->value.begin(),
-                         ( childTreeIterator + 1 )->value.end() );
+            term2String(( childTreeIterator + 1 )->value.begin(),
+                        ( childTreeIterator + 1 )->value.end() );
 
             const Real term1Value = stringCast<Real>( term1String );
             const Real term2Value = stringCast<Real>( term2String );
@@ -1364,17 +1364,17 @@ void ExpressionCompiler::compileTree( TreeIterator const& treeIterator,
         childTreeIterator( treeIterator->children.begin() );
 
 
-        if ( ( childTreeIterator->value.id() == CompileGrammar::INTEGER ||
+        if (( childTreeIterator->value.id() == CompileGrammar::INTEGER ||
                 childTreeIterator->value.id() == CompileGrammar::FLOAT ) &&
-                ( ( childTreeIterator + 1 )->value.id() == CompileGrammar::INTEGER ||
-                  ( childTreeIterator + 1 )->value.id() == CompileGrammar::FLOAT ) )
+                (( childTreeIterator + 1 )->value.id() == CompileGrammar::INTEGER ||
+                 ( childTreeIterator + 1 )->value.id() == CompileGrammar::FLOAT ) )
         {
             const String term1String( childTreeIterator->value.begin(),
                                       childTreeIterator->value.end() );
 
             const String
-            term2String( ( childTreeIterator + 1 )->value.begin(),
-                         ( childTreeIterator + 1 )->value.end() );
+            term2String(( childTreeIterator + 1 )->value.begin(),
+                        ( childTreeIterator + 1 )->value.end() );
 
             const Real term1Value = stringCast<Real>( term1String );
             const Real term2Value = stringCast<Real>( term2String );

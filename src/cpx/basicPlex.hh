@@ -39,40 +39,40 @@
 
 namespace cpx
 {
-    template<class molT>
-    class basicPlex
-    {
-    public:
-        typename std::vector<molT*> mols;
-        typename std::vector<binding> bindings;
+template<class molT>
+class basicPlex
+{
+public:
+    typename std::vector<molT*> mols;
+    typename std::vector<binding> bindings;
 
-        typedef molT molType;
+    typedef molT molType;
 
 // Used in finding the free sites on a plex.
-        void
-        makeSiteToBindings (typename std::map<siteSpec, bindingSpec>&
-                            rSiteToBindings) const;
+    void
+    makeSiteToBindings( typename std::map<siteSpec, bindingSpec>&
+                        rSiteToBindings ) const;
 
 // Finds the free sites on a plex.
-        void
-        makeFreeSiteVector (typename std::vector<siteSpec>& rFreeSiteVector) const;
+    void
+    makeFreeSiteVector( typename std::vector<siteSpec>& rFreeSiteVector ) const;
 
 // Used in finding connected components of a plex.
-        void
-        makeMolToBindings (typename std::multimap<int, int>& rMolToBindings) const;
+    void
+    makeMolToBindings( typename std::multimap<int, int>& rMolToBindings ) const;
 
 // Used in finding connected components of a plex.
-        void
-        pushConnectedBindings (int molNdx,
-                               const typename std::multimap<int, int>& rMolToBindings,
-                               plexIso& rIso,
-                               basicPlex& component) const;
+    void
+    pushConnectedBindings( int molNdx,
+                           const typename std::multimap<int, int>& rMolToBindings,
+                           plexIso& rIso,
+                           basicPlex& component ) const;
 
 // Used in finding connected components of a plex.
-        int
-        pushConnectedMol (int molNdx,
-                          plexIso& rIso,
-                          basicPlex& component) const;
+    int
+    pushConnectedMol( int molNdx,
+                      plexIso& rIso,
+                      basicPlex& component ) const;
 
 // Loads the connected component of molNdx into component, which should
 // be empty when the routine is called.  An partial isomoprhism from the
@@ -81,53 +81,53 @@ namespace cpx
 // this plex is connected.  Create this isomorphism as is done in
 // makeConnectedComponent:
 // plexIso iso(mols.size(), bindings.size());
-        void
-        makeTrackedComponent (int molNdx,
-                              basicPlex& component,
-                              plexIso& rIso) const;
+    void
+    makeTrackedComponent( int molNdx,
+                          basicPlex& component,
+                          plexIso& rIso ) const;
 
 // This does the same as above, but creates and disposes of an appropriate
 // sized isomorphism.
-        void
-        makeConnectedComponent (int molNdx,
-                                basicPlex& component) const;
+    void
+    makeConnectedComponent( int molNdx,
+                            basicPlex& component ) const;
 
 // Uses the above to determine if this plex is connected.
-        bool
-        plexIsConnected (void) const;
+    bool
+    plexIsConnected( void ) const;
 
 // Computation of the "representation-invariant" hash value of 'this'
 // plex.  Two plexes that represent the same complex, but for example
 // have their mols or bindings in a different order, should return the
 // same hash value.
-        int
-        hashValue (void) const;
+    int
+    hashValue( void ) const;
 
-        std::string
-        getName() const
+    std::string
+    getName() const
+    {
+        std::string name( "" );
+        BOOST_FOREACH( molT* pMol, mols )
         {
-            std::string name ("");
-            BOOST_FOREACH (molT* pMol, mols)
-            {
-                name += pMol->getName();
-                name += ", ";
-            }
-            return name;
+            name += pMol->getName();
+            name += ", ";
         }
+        return name;
+    }
 
 // Used in the recognition cache.
 //
 // This seems to be the same as
 // std::pair<std::vector<molT*>, std::vector<binding> >::operator<
 // though written differently.
-        bool
-        operator< (const basicPlex& rRightPlex) const
-        {
-            if (mols < rRightPlex.mols) return true;
-            if (rRightPlex.mols < mols) return false;
-            return bindings < rRightPlex.bindings;
-        }
-    };
+    bool
+    operator< ( const basicPlex& rRightPlex ) const
+    {
+        if ( mols < rRightPlex.mols ) return true;
+        if ( rRightPlex.mols < mols ) return false;
+        return bindings < rRightPlex.bindings;
+    }
+};
 }
 
 #include "cpx/basicPlexImpl.hh"

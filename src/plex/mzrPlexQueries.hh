@@ -40,8 +40,8 @@
 
 namespace plx
 {
-    typedef cpx::andPlexQueries<mzrPlexSpecies,
-    mzrOmniPlex> mzrPlexQueries;
+typedef cpx::andPlexQueries<mzrPlexSpecies,
+mzrOmniPlex> mzrPlexQueries;
 }
 
 #endif // PLEX_MZRPLEXQUERIES_H

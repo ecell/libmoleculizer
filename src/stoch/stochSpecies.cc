@@ -37,25 +37,25 @@
 
 namespace stoch
 {
-    xmlpp::Element*
-    stochSpecies::insertElt (xmlpp::Element* pTaggedSpeciesElt,
-                             double molarFactor) const
-    throw (std::exception)
-    {
-        xmlpp::Element* pTaggedStochSpeciesElt
-        = pTaggedSpeciesElt->add_child (eltName::taggedStochSpecies);
+xmlpp::Element*
+stochSpecies::insertElt( xmlpp::Element* pTaggedSpeciesElt,
+                         double molarFactor ) const
+throw( std::exception )
+{
+    xmlpp::Element* pTaggedStochSpeciesElt
+    = pTaggedSpeciesElt->add_child( eltName::taggedStochSpecies );
 
-        pTaggedStochSpeciesElt->set_attribute (eltName::taggedStochSpecies_tagAttr,
-                                               getTag() );
+    pTaggedStochSpeciesElt->set_attribute( eltName::taggedStochSpecies_tagAttr,
+                                           getTag() );
 
-        pTaggedStochSpeciesElt->set_attribute (eltName::taggedStochSpecies_nameAttr,
-                                               getName() );
+    pTaggedStochSpeciesElt->set_attribute( eltName::taggedStochSpecies_nameAttr,
+                                           getName() );
 
-        xmlpp::Element* pWeightElt
-        = pTaggedStochSpeciesElt->add_child (eltName::weight);
+    xmlpp::Element* pWeightElt
+    = pTaggedStochSpeciesElt->add_child( eltName::weight );
 
-        pWeightElt->set_attribute (eltName::weight_daltonsAttr,
-                                   utl::stringify<double> (getWeight() ) );
+    pWeightElt->set_attribute( eltName::weight_daltonsAttr,
+                               utl::stringify<double> ( getWeight() ) );
 
 //         xmlpp::Element* pPopulationElt
 //         = pTaggedStochSpeciesElt->add_child (eltName::population);
@@ -75,6 +75,6 @@ namespace stoch
 //         pConcentrationElt->set_attribute (eltName::concentration_valueAttr,
 //                                           utl::stringify<double> (concentration) );
 
-        return pTaggedStochSpeciesElt;
-    }
+    return pTaggedStochSpeciesElt;
+}
 }

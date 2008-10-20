@@ -35,22 +35,22 @@
 namespace utl
 {
 // A binary version of std::for_each.
-    template<class inputIter1, class inputIter2, class binaryOp>
-    binaryOp
-    for_both (inputIter1 first1,
-              inputIter1 last1,
-              inputIter2 first2,
-              binaryOp op)
+template<class inputIter1, class inputIter2, class binaryOp>
+binaryOp
+for_both( inputIter1 first1,
+          inputIter1 last1,
+          inputIter2 first2,
+          binaryOp op )
+{
+    while ( first1 != last1 )
     {
-        while (first1 != last1)
-        {
-            op (*first1, *first2);
+        op( *first1, *first2 );
 // Postincrement is costly for some iterators.
-            ++first1;
-            ++first2;
-        }
-        return op;
+        ++first1;
+        ++first2;
     }
+    return op;
+}
 }
 
 #endif // UTL_FORBOTH_H

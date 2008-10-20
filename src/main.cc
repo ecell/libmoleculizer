@@ -37,17 +37,17 @@
 #include "mzr/moleculizer.hh"
 
 void
-processCommandLineArgs (int argc,
+processCommandLineArgs( int argc,
                         char* argv[],
                         mzr::moleculizer& theMzrObject,
-                        std::string* fileName);
+                        std::string* fileName );
 
-void 
+void
 displayHelpMessage();
 
 
 int
-main (int argc, char** argv)
+main( int argc, char** argv )
 {
 
     try
@@ -55,40 +55,40 @@ main (int argc, char** argv)
         std::string filename;
         mzr::moleculizer theApp;
 
-        processCommandLineArgs ( argc, argv, theApp, &filename);
-        theApp.attachFileName ( filename );
-        
+        processCommandLineArgs( argc, argv, theApp, &filename );
+        theApp.attachFileName( filename );
+
         // Do nothing.
 
         return 0;
     }
-    catch (const utl::xcpt& rException)
+    catch ( const utl::xcpt& rException )
     {
         // If a moleculizer exception is thrown report it and crash.
         std::cerr << rException.what() << std::endl;
         return 1;
     }
-    catch (const std::exception& rExcept)
+    catch ( const std::exception& rExcept )
     {
         // If an exception is thrown, report it and crash.
         std::cerr << rExcept.what()
-                  << std::endl;
+        << std::endl;
         return 1;
     }
 }
 
 void
-processCommandLineArgs (int argc,
+processCommandLineArgs( int argc,
                         char* argv[],
                         mzr::moleculizer& theMzrObject,
-                        std::string* fileName)
+                        std::string* fileName )
 {
     // The arguments we look for/accept are
     // '-g NUMBER'       Sets the generation depth to NUMBER
     // '-f FILENAME'     Loads the inputfile FILENAME
 
     // mandatory --spatial or --non-spatial
-    // if --spatial: 
+    // if --spatial:
     //     extrap diffusion coefficient, max, min, constant
     //     extrap radius default
     //     extrap activation energy noextrap
@@ -98,35 +98,35 @@ processCommandLineArgs (int argc,
     // Skip the command name.
     --argc; ++argv;
 
-    bool filenameWasSeen ( false );
+    bool filenameWasSeen( false );
 
     //  Grab the arguments one by one.
-    while (0 < argc)
+    while ( 0 < argc )
     {
-        std::string arg (*argv);
+        std::string arg( *argv );
         argv++;
         argc--;
 
-        if (arg == "-g" || arg == "--generation-depth")
+        if ( arg == "-g" || arg == "--generation-depth" )
         {
-            std::string strDepth = utl::mustGetArg(argc, argv);
-            int depth = utl::argMustBeNNInt (strDepth);
-            theMzrObject.setGenerateDepth ( depth );
+            std::string strDepth = utl::mustGetArg( argc, argv );
+            int depth = utl::argMustBeNNInt( strDepth );
+            theMzrObject.setGenerateDepth( depth );
         }
-        else if (arg == "-f" || arg == "--file")
+        else if ( arg == "-f" || arg == "--file" )
         {
             filenameWasSeen = true;
-            *fileName = utl::mustGetArg (argc, argv);
+            *fileName = utl::mustGetArg( argc, argv );
         }
-        else if (arg == "-h" || arg == "--help")
+        else if ( arg == "-h" || arg == "--help" )
         {
             displayHelpMessage();
-            exit(0);
+            exit( 0 );
         }
-        else throw utl::unkArgXcpt (arg);
+        else throw utl::unkArgXcpt( arg );
     }
 
-    if (!filenameWasSeen)
+    if ( !filenameWasSeen )
     {
         throw utl::badFileNameXcpt();
     }
@@ -137,7 +137,7 @@ void displayHelpMessage()
 {
     using std::cout;
     using std::endl;
-    
+
     cout << "This is a wrapper that loads a libmoleculizer object, attaches a file and quits." << std::endl;
 
 }

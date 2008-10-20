@@ -37,19 +37,19 @@
 
 namespace plx
 {
-    class multBoundSiteXcpt :
-                public utl::xcpt
-    {
-        static std::string
-        mkMsg (const std::string& rBindingSiteName,
-               const std::string& rMolInstanceName,
-               const xmlpp::Node* pOffendingNode = 0);
+class multBoundSiteXcpt :
+            public utl::xcpt
+{
+    static std::string
+    mkMsg( const std::string& rBindingSiteName,
+           const std::string& rMolInstanceName,
+           const xmlpp::Node* pOffendingNode = 0 );
 
-    public:
-        multBoundSiteXcpt (const std::string& rBindingSiteName,
-                           const std::string& rMolInstanceName,
-                           const xmlpp::Node* pOffendingNode = 0);
-    };
+public:
+    multBoundSiteXcpt( const std::string& rBindingSiteName,
+                       const std::string& rMolInstanceName,
+                       const xmlpp::Node* pOffendingNode = 0 );
+};
 }
 
 #endif // PLEX_MULTBOUNDSITEXCPT_H

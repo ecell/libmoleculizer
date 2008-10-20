@@ -37,17 +37,17 @@
 
 namespace ftr
 {
-    class exchangedModXcpt :
-                public utl::xcpt
-    {
-        static std::string
-        mkMsg (bnd::mzrMol* pOffendingMol);
+class exchangedModXcpt :
+            public utl::xcpt
+{
+    static std::string
+    mkMsg( bnd::mzrMol* pOffendingMol );
 
-    public:
-        exchangedModXcpt (bnd::mzrMol* pOffendingMol) :
-                utl::xcpt (mkMsg (pOffendingMol) )
-        {}
-    };
+public:
+    exchangedModXcpt( bnd::mzrMol* pOffendingMol ) :
+            utl::xcpt( mkMsg( pOffendingMol ) )
+    {}
+};
 }
 
 #endif // FTR_EXCHANGEDMODXCPT_H

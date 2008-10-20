@@ -34,16 +34,16 @@
 
 namespace bnd
 {
-    std::string
-    dupModNameXcpt::
-    mkMsg (const std::string& rBadModName,
-           const xmlpp::Node* pOffendingNode)
-    {
-        std::ostringstream msgStream;
-        msgStream << utl::dom::xcpt::mkMsg (pOffendingNode)
-        << "Name `"
-        << rBadModName
-        << "' given to more than one modification.";
-        return msgStream.str();
-    }
+std::string
+dupModNameXcpt::
+mkMsg( const std::string& rBadModName,
+       const xmlpp::Node* pOffendingNode )
+{
+    std::ostringstream msgStream;
+    msgStream << utl::dom::xcpt::mkMsg( pOffendingNode )
+    << "Name `"
+    << rBadModName
+    << "' given to more than one modification.";
+    return msgStream.str();
+}
 }

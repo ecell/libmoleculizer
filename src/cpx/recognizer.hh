@@ -37,45 +37,45 @@
 
 namespace cpx
 {
-    template<class plexT,
-    class plexFamilyT>
-    class recognizer
-    {
-    public:
-        typedef plexT plexType;
-        typedef plexFamilyT plexFamilyType;
+template<class plexT,
+class plexFamilyT>
+class recognizer
+{
+public:
+    typedef plexT plexType;
+    typedef plexFamilyT plexFamilyType;
 
-    private:
+private:
 // In some cases, we have to know the isomorphism between
 // the recognized plex and the paradigm of its family.  This
 // is computed when the plex is first recognized, and saved
 // in the cache.
-        class recognition
-        {
-        public:
-            plexFamilyType* pPlexFamily;
-            plexIso iso;
-        };
+    class recognition
+    {
+    public:
+        plexFamilyType* pPlexFamily;
+        plexIso iso;
+    };
 
 // Cache for immediate recognition of previously encountered plexes.
-        std::map<plexType, recognition> recognizedCache;
+    std::map<plexType, recognition> recognizedCache;
 
-    public:
+public:
 // Publicized in order to traverse all the plexFamilies.
 //
 // In particular, for plexUnit::prepareToRun().
-        std::multimap<int, plexFamilyType*> plexHasher;
+    std::multimap<int, plexFamilyType*> plexHasher;
 
-        virtual
-        ~recognizer (void);
+    virtual
+    ~recognizer( void );
 
-        virtual plexFamilyType*
-        makePlexFamily (const plexType& rPlex) const = 0;
+    virtual plexFamilyType*
+    makePlexFamily( const plexType& rPlex ) const = 0;
 
-        int familyCount (void) const
-        {
-            return plexHasher.size();
-        }
+    int familyCount( void ) const
+    {
+        return plexHasher.size();
+    }
 
 // Finds the plexFamily of a plex, and gives the isomorphism of the
 // given plex with the plexFamily's paradigm.  This just runs the
@@ -92,31 +92,31 @@ namespace cpx
 
 // This is a replacement function for the above.  It has an unpleasant
 // interface, but it thereby avoids some replication of code.
-        bool
-        unify (const plexType& rPlex,
-               plexFamilyType*& rpFamily,
-               plexIso* pIso = 0);
+    bool
+    unify( const plexType& rPlex,
+           plexFamilyType*& rpFamily,
+           plexIso* pIso = 0 );
 
 // Recognizes an ordinary plex, and produces a fully initialized
 // plexFamily.  I expect this to be used at runtime.
-        plexFamilyType*
-        operator() (const plexType& aPlex);
+    plexFamilyType*
+    operator()( const plexType& aPlex );
 
 // Recongizes an ordinary plex, and produces a fully initialized
 // plexFamily, as the above, but also reports the isomorphism from
 // the given plex to the plexFamily's paradigm.
 //
 // This is used in the decomposition reaction.
-        plexFamilyType*
-        operator() (const plexType& aPlex,
-                    plexIso& rIso);
+    plexFamilyType*
+    operator()( const plexType& aPlex,
+                plexIso& rIso );
 
 // Output routine.
-        void
-        insertSpecies (xmlpp::Element* pExplicitSpeciesElt,
-                       double molarFactor) const
-        throw (std::exception);
-    };
+    void
+    insertSpecies( xmlpp::Element* pExplicitSpeciesElt,
+                   double molarFactor ) const
+    throw( std::exception );
+};
 }
 
 #include "cpx/recognizerImpl.hh"

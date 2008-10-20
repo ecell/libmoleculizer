@@ -34,15 +34,15 @@
 
 namespace bnd
 {
-    std::string
-    unkSiteXcpt::mkMsg (const std::string& rBadBindingSiteName,
-                        const xmlpp::Node* pOffendingNode)
-    {
-        std::ostringstream msgStream;
-        msgStream << utl::dom::xcpt::mkMsg (pOffendingNode)
-        << "Unknown binding site `"
-        << rBadBindingSiteName
-        << "'.";
-        return msgStream.str();
-    }
+std::string
+unkSiteXcpt::mkMsg( const std::string& rBadBindingSiteName,
+                    const xmlpp::Node* pOffendingNode )
+{
+    std::ostringstream msgStream;
+    msgStream << utl::dom::xcpt::mkMsg( pOffendingNode )
+    << "Unknown binding site `"
+    << rBadBindingSiteName
+    << "'.";
+    return msgStream.str();
+}
 }

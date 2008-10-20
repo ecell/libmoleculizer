@@ -43,17 +43,17 @@ namespace fnd
 //
 // Also note that notify is non-const: once-notifiers modify themselves when
 // they notify, so that they can remember not to notify again.
-    class notifier
-    {
-    public:
-        virtual
-        ~notifier (void)
-        {}
+class notifier
+{
+public:
+    virtual
+    ~notifier( void )
+    {}
 
-        virtual
-        void
-        notify (int notifyDepth) = 0;
-    };
+    virtual
+    void
+    notify( int notifyDepth ) = 0;
+};
 
 // This is used in the population update routine of species that participate
 // in automatic species generation. The species wants to notify the reaction
@@ -67,47 +67,47 @@ namespace fnd
 // particular free binding site, that is essential to the kind of reaction
 // genereted, such as a particular kind of dimerization reaction.
 
-    class onceNotifier :
-                public notifier
+class onceNotifier :
+            public notifier
+{
+    bool notified;
+
+public:
+    onceNotifier( void ) :
+            notified( false )
+    {}
+
+    bool
+    hasNotified( void ) const
     {
-        bool notified;
+        return notified;
+    }
 
-    public:
-        onceNotifier (void) :
-                notified (false)
-        {}
-
-        bool
-        hasNotified (void) const
-        {
-            return notified;
-        }
-
-        void
-        ensureNotified (int notifyDepth)
-        {
+    void
+    ensureNotified( int notifyDepth )
+    {
 // Here I'm checking the notifyDepth because of a trick I'm trying in
 // the compartmental version to keep new species/reaction from being
 // created just because of diffusion.
-            if ( (! notified) && (0 <= notifyDepth) )
-            {
+        if (( ! notified ) && ( 0 <= notifyDepth ) )
+        {
 // Must set notified to true because notification could
 // recurse back to this notifier.
 //
 // When a species notifies, it is likely to bring about the creation
 // of reactions that have that very species as a product, causing
 // notification of this species when the reaction occurs.
-                notified = true;
+            notified = true;
 
-                notify (notifyDepth);
-            }
-            else
-            {
-                std::cout << '\n';
-            }
-            
+            notify( notifyDepth );
         }
-    };
+        else
+        {
+            std::cout << '\n';
+        }
+
+    }
+};
 }
 
 #endif // CPT_NOTIFIER_H

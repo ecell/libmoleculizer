@@ -36,56 +36,56 @@
 
 namespace cpx
 {
-    /*! \ingroup plexSpeciesGroup
-    \ingroup plexFeatureGroup
-    \brief Specifier for a site on a complex.
+/*! \ingroup plexSpeciesGroup
+\ingroup plexFeatureGroup
+\brief Specifier for a site on a complex.
 
-    The pair (m, n) specifies the nth site on the mth mol in the complex. */
-    class siteSpec :
-                public std::pair<int, int>
+The pair (m, n) specifies the nth site on the mth mol in the complex. */
+class siteSpec :
+            public std::pair<int, int>
+{
+public:
+    siteSpec( void ) :
+            std::pair<int, int> ( -1,
+                                  -1 )
+    {}
+
+    siteSpec( int moleculeIndex,
+              int bindingSiteIndex ) :
+            std::pair<int, int> ( moleculeIndex,
+                                  bindingSiteIndex )
+    {}
+
+    int molNdx( void ) const
     {
-    public:
-        siteSpec (void) :
-                std::pair<int, int> (-1,
-                                     -1)
-        {}
+        return first;
+    }
 
-        siteSpec (int moleculeIndex,
-                  int bindingSiteIndex) :
-                std::pair<int, int> (moleculeIndex,
-                                     bindingSiteIndex)
-        {}
+    void setMolNdx( int moleculeIndex )
+    {
+        first = moleculeIndex;
+    }
 
-        int molNdx (void) const
-        {
-            return first;
-        }
+    int siteNdx( void ) const
+    {
+        return second;
+    }
 
-        void setMolNdx (int moleculeIndex)
-        {
-            first = moleculeIndex;
-        }
+    void setSiteNdx( int siteIndex )
+    {
+        second = siteIndex;
+    }
+};
 
-        int siteNdx (void) const
-        {
-            return second;
-        }
+/*! \ingroup plexSpeciesGroup
 
-        void setSiteNdx (int siteIndex)
-        {
-            second = siteIndex;
-        }
-    };
+\brief Specifier of a binding in a complex.  Just the binding's index. */
+typedef int bindingSpec;
 
-    /*! \ingroup plexSpeciesGroup
+/*! \ingroup plexSpeciesGroup
 
-    \brief Specifier of a binding in a complex.  Just the binding's index. */
-    typedef int bindingSpec;
-
-    /*! \ingroup plexSpeciesGroup
-
-    \brief Specifier of a mol in a complex.  Just the mol's index. */
-    typedef int molSpec;
+\brief Specifier of a mol in a complex.  Just the mol's index. */
+typedef int molSpec;
 
 }
 

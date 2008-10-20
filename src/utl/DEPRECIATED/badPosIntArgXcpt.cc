@@ -34,14 +34,14 @@
 
 namespace utl
 {
-    std::string
-    badPosIntArgXcpt::
-    mkMsg (const std::string& rTheBadArgument)
-    {
-        std::ostringstream msgStream;
-        msgStream << "Expected positive integer for command-line argument; got `"
-        << rTheBadArgument
-        << "'.";
-        return msgStream.str();
-    }
+std::string
+badPosIntArgXcpt::
+mkMsg( const std::string& rTheBadArgument )
+{
+    std::ostringstream msgStream;
+    msgStream << "Expected positive integer for command-line argument; got `"
+    << rTheBadArgument
+    << "'.";
+    return msgStream.str();
+}
 }

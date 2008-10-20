@@ -32,18 +32,18 @@
 #include "propertiedClass.hpp"
 #include "property.hpp"
 
-Property::Property( const String& propName)
-    :
-    propertyName( new String( propName ) ),
-    propClassPtr( NULL ),
-    hasParent( false )
+Property::Property( const String& propName )
+        :
+        propertyName( new String( propName ) ),
+        propClassPtr( NULL ),
+        hasParent( false )
 {}
 
-Property::Property( const String& propName, PropertiedClass* ptrOwner)
-    :
-    propertyName( new String( propName ) ),
-    propClassPtr( ptrOwner ),
-    hasParent( true )
+Property::Property( const String& propName, PropertiedClass* ptrOwner )
+        :
+        propertyName( new String( propName ) ),
+        propClassPtr( ptrOwner ),
+        hasParent( true )
 {}
 
 Property::~Property()

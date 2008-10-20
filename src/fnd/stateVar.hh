@@ -36,41 +36,41 @@
 
 namespace fnd
 {
-    template<class valueT, class eventT>
-    class stateVar :
-                public sensitivityList<eventT>
+template<class valueT, class eventT>
+class stateVar :
+            public sensitivityList<eventT>
+{
+    valueT theValue;
+
+public:
+
+    typedef eventT sensitiveEventType;
+    typedef valueT valueType;
+
+    stateVar( const valueType& rInitialValue ) :
+            theValue( rInitialValue )
+    {}
+
+    const valueType&
+    getValue( void ) const
     {
-        valueT theValue;
+        return theValue;
+    }
 
-    public:
+    void
+    setValue( const valueType& rNewValue )
+    {
+        theValue = rNewValue;
+    }
 
-        typedef eventT sensitiveEventType;
-        typedef valueT valueType;
-
-        stateVar (const valueType& rInitialValue) :
-                theValue (rInitialValue)
-        {}
-
-        const valueType&
-        getValue (void) const
-        {
-            return theValue;
-        }
-
-        void
-        setValue (const valueType& rNewValue)
-        {
-            theValue = rNewValue;
-        }
-
-        void
-        updateValue (const valueType& rNewValue,
-                     sensitivityList<eventT>& rAffectedEvents)
-        {
-            setValue (rNewValue);
-            getSensitives (rAffectedEvents);
-        }
-    };
+    void
+    updateValue( const valueType& rNewValue,
+                 sensitivityList<eventT>& rAffectedEvents )
+    {
+        setValue( rNewValue );
+        getSensitives( rAffectedEvents );
+    }
+};
 }
 
 #endif // CPTSTATEVAR_H

@@ -38,17 +38,17 @@
 
 namespace fnd
 {
-    // Base class for reaction generators.
-    template<class contextType>
-    class rxnGen 
-        :
-        public coreRxnGen, public sensitive<featureStimulus<contextType> >
-    {
-    public:
-        virtual
-        ~rxnGen (void)
-        {}
-    };
+// Base class for reaction generators.
+template<class contextType>
+class rxnGen
+            :
+            public coreRxnGen, public sensitive<featureStimulus<contextType> >
+{
+public:
+    virtual
+    ~rxnGen( void )
+    {}
+};
 }
 
 #endif // FND_RXNGEN_H

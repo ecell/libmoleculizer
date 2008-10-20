@@ -39,44 +39,44 @@
 
 namespace bnd
 {
-    class parseMzrBndSite :
-                public std::unary_function<xmlpp::Node*, mzrBndSite>
+class parseMzrBndSite :
+            public std::unary_function<xmlpp::Node*, mzrBndSite>
+{
+public:
+    mzrBndSite
+    operator()( xmlpp::Node* pBindingSiteNode ) const
+    throw( utl::xcpt )
     {
-    public:
-        mzrBndSite
-        operator() (xmlpp::Node* pBindingSiteNode) const
-        throw (utl::xcpt)
-        {
-            xmlpp::Element* pBindingSiteElt
-            = utl::dom::mustBeElementPtr (pBindingSiteNode);
+        xmlpp::Element* pBindingSiteElt
+        = utl::dom::mustBeElementPtr( pBindingSiteNode );
 
-            std::string name
-            = utl::dom::mustGetAttrString (pBindingSiteElt,
-                                           eltName::bindingSite_nameAttr);
+        std::string name
+        = utl::dom::mustGetAttrString( pBindingSiteElt,
+                                       eltName::bindingSite_nameAttr );
 
 
-            std::set<std::string> siteShapeNames;
-            xmlpp::Node::NodeList siteShapeNodes
-            = pBindingSiteElt->get_children (eltName::siteShape);
-            std::transform (siteShapeNodes.begin(),
-                            siteShapeNodes.end(),
-                            std::inserter (siteShapeNames,
-                                           siteShapeNames.begin() ),
-                            parseSiteShapeName() );
+        std::set<std::string> siteShapeNames;
+        xmlpp::Node::NodeList siteShapeNodes
+        = pBindingSiteElt->get_children( eltName::siteShape );
+        std::transform( siteShapeNodes.begin(),
+                        siteShapeNodes.end(),
+                        std::inserter( siteShapeNames,
+                                       siteShapeNames.begin() ),
+                        parseSiteShapeName() );
 
-            xmlpp::Element* pDefaultShapeRefElt
-            = utl::dom::mustGetUniqueChild (pBindingSiteElt,
-                                            eltName::defaultShapeRef);
+        xmlpp::Element* pDefaultShapeRefElt
+        = utl::dom::mustGetUniqueChild( pBindingSiteElt,
+                                        eltName::defaultShapeRef );
 
-            std::string defaultShapeName
-            = utl::dom::mustGetAttrString (pDefaultShapeRefElt,
-                                           eltName::defaultShapeRef_nameAttr);
+        std::string defaultShapeName
+        = utl::dom::mustGetAttrString( pDefaultShapeRefElt,
+                                       eltName::defaultShapeRef_nameAttr );
 
-            return mzrBndSite (name,
-                               siteShapeNames,
-                               defaultShapeName);
-        }
-    };
+        return mzrBndSite( name,
+                           siteShapeNames,
+                           defaultShapeName );
+    }
+};
 }
 
 #endif // MOL_PARSEBNDSITE_H

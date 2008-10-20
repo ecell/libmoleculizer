@@ -38,59 +38,59 @@
 
 namespace mzr
 {
-    class moleculizer;
+class moleculizer;
 
-    class eventQueue :
-                public std::multimap<double, mzrEvent*>
-    {
-        double now;
+class eventQueue :
+            public std::multimap<double, mzrEvent*>
+{
+    double now;
 
-    public:
+public:
 //! Time for an event that never happens.
-        static const double never;
+    static const double never;
 
-        eventQueue (void) :
-                now (0.0)
-        {}
+    eventQueue( void ) :
+            now( 0.0 )
+    {}
 
 // To set the initial simulation time.
-        void
-        setSimTime (double simTime)
-        {
-            now = simTime;
-        }
+    void
+    setSimTime( double simTime )
+    {
+        now = simTime;
+    }
 
 //! Gets the current simulation time.
-        double getSimTime (void)
-        {
-            return now;
-        }
+    double getSimTime( void )
+    {
+        return now;
+    }
 
 //! Deschedules an event, if it is scheduled.
-        void
-        descheduleEvent (mzrEvent* pEvent);
+    void
+    descheduleEvent( mzrEvent* pEvent );
 
 //! Schedule or reschedule an event.
-        void
-        scheduleEvent (mzrEvent* pEvent,
-                       double time);
+    void
+    scheduleEvent( mzrEvent* pEvent,
+                   double time );
 
-        /*! \brief The main simulation loop.
+    /*! \brief The main simulation loop.
 
-        The next event is picked off the end of the queue, and the current
-        simulation time is set to the event's time.  Then the event's
-        doEvent method is called.
+    The next event is picked off the end of the queue, and the current
+    simulation time is set to the event's time.  Then the event's
+    doEvent method is called.
 
-        If doEvent returns event::eventResult::go, then eventQueue::run
-        continues processing the next event in the queue.
+    If doEvent returns event::eventResult::go, then eventQueue::run
+    continues processing the next event in the queue.
 
-        If doEvent returns event::eventResult::stop, then the simulation
-        is stopped and the simulation moves on to next command (following
-        the runCmd) if any.  If there are no more commands, moleculizer is
-        done.  */
-        void run (moleculizer& rMolzer)
-        throw (utl::xcpt);
-    };
+    If doEvent returns event::eventResult::stop, then the simulation
+    is stopped and the simulation moves on to next command (following
+    the runCmd) if any.  If there are no more commands, moleculizer is
+    done.  */
+    void run( moleculizer& rMolzer )
+    throw( utl::xcpt );
+};
 }
 
 #endif

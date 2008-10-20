@@ -36,21 +36,21 @@
 
 namespace mzr
 {
-    class mzrUnit;
+class mzrUnit;
 
 // Event that stops reaction generation.
-    class noReactEvent :
-                public mzrEvent
-    {
-        mzrUnit& rMzrUnit;
+class noReactEvent :
+            public mzrEvent
+{
+    mzrUnit& rMzrUnit;
 
-    public:
-        noReactEvent (mzrUnit& refMzrUnit);
+public:
+    noReactEvent( mzrUnit& refMzrUnit );
 
-        fnd::eventResult
-        happen (moleculizer& rMolzer)
-        throw (std::exception);
-    };
+    fnd::eventResult
+    happen( moleculizer& rMolzer )
+    throw( std::exception );
+};
 }
 
 #endif // MZR_NOREACTEVENT_H

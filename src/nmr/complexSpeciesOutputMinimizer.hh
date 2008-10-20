@@ -41,69 +41,69 @@
 
 namespace nmr
 {
-    class ComplexSpeciesOutputMinimizer
+class ComplexSpeciesOutputMinimizer
+{
+public:
+
+    typedef std::vector<int> ColoringPartition;
+    typedef std::vector< std::set<int>* > GraphEdgeList;
+
+    ComplexSpeciesOutputMinimizer()
+{}
+
+    ComplexOutputState
+    getMinimalOutputState( ComplexSpeciesCref aComplexSpecies );
+
+class NonSimpleGraphXcpt : public GeneralNmrXcpt
     {
     public:
+        static
+        std::string
+        mkMsg( ComplexSpeciesCref aComplexSpecies )
+        {
+            std::ostringstream oss;
+            oss << "Error: the complex species '"
+            << aComplexSpecies
+            << "' does not represent a simple graph.  Please contact "
+            << "the developer <addy@molsci.org>.";
+            return oss.str();
+        }
 
-        typedef std::vector<int> ColoringPartition;
-        typedef std::vector< std::set<int>* > GraphEdgeList;
-
-        ComplexSpeciesOutputMinimizer()
+        NonSimpleGraphXcpt( ComplexSpeciesCref aComplexSpecies )
+                :
+                GeneralNmrXcpt( mkMsg( aComplexSpecies ) )
         {}
-
-        ComplexOutputState
-        getMinimalOutputState (ComplexSpeciesCref aComplexSpecies);
-
-    class NonSimpleGraphXcpt : public GeneralNmrXcpt
-        {
-        public:
-            static
-            std::string
-            mkMsg (ComplexSpeciesCref aComplexSpecies)
-            {
-                std::ostringstream oss;
-                oss << "Error: the complex species '"
-                << aComplexSpecies
-                << "' does not represent a simple graph.  Please contact "
-                << "the developer <addy@molsci.org>.";
-                return oss.str();
-            }
-
-            NonSimpleGraphXcpt (ComplexSpeciesCref aComplexSpecies)
-                    :
-                    GeneralNmrXcpt (mkMsg (aComplexSpecies) )
-            {}
-        };
-
-    private:
-        Permutation
-        calculateMolSortingPermutationForComplex ( ComplexSpeciesCref aComplexSpecies);
-
-        Permutation
-        calculateCanonicalPermutationForColoredGraph ( const GraphEdgeList& refGraphEdgeList,
-                const ColoringPartition& refColPart);
-
-        bool checkComplexSpeciesIsSimpleGraph ( ComplexSpeciesCref aComplexSpecies);
-        void setupDataStructuresForCalculation ( ComplexSpeciesRef aComplexSpecies);
-        void setupComplexEdgeMap ( ComplexSpeciesCref aComplexSpecies);
-        void setupComplexColorPartition ( ComplexSpeciesCref aComplexSpecies);
-
-    struct MolIndexLessThanCmp : public std::binary_function<int, int, bool>
-        {
-            DECLARE_TYPE (ComplexSpecies::MolList, MolList);
-
-            MolIndexLessThanCmp (ComplexSpeciesCref aComplexSpeciesForCmp);
-            bool operator() (int ndx1, int ndx2);
+    };
 
 private:
-            MolListCref theComparisonMolList;
-        };
+    Permutation
+    calculateMolSortingPermutationForComplex( ComplexSpeciesCref aComplexSpecies );
 
-    private:
-        ColoringPartition partitionSpecification;
-        GraphEdgeList complexGraphEdgeMap;
-// std::vector<std::set<int>* > complexGraphEdgeMap;
+    Permutation
+    calculateCanonicalPermutationForColoredGraph( const GraphEdgeList& refGraphEdgeList,
+            const ColoringPartition& refColPart );
+
+    bool checkComplexSpeciesIsSimpleGraph( ComplexSpeciesCref aComplexSpecies );
+    void setupDataStructuresForCalculation( ComplexSpeciesRef aComplexSpecies );
+    void setupComplexEdgeMap( ComplexSpeciesCref aComplexSpecies );
+    void setupComplexColorPartition( ComplexSpeciesCref aComplexSpecies );
+
+struct MolIndexLessThanCmp : public std::binary_function<int, int, bool>
+    {
+        DECLARE_TYPE( ComplexSpecies::MolList, MolList );
+
+        MolIndexLessThanCmp( ComplexSpeciesCref aComplexSpeciesForCmp );
+        bool operator()( int ndx1, int ndx2 );
+
+private:
+        MolListCref theComparisonMolList;
     };
+
+private:
+    ColoringPartition partitionSpecification;
+    GraphEdgeList complexGraphEdgeMap;
+// std::vector<std::set<int>* > complexGraphEdgeMap;
+};
 }
 
 

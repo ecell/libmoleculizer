@@ -42,20 +42,20 @@ class PropertiedClass
 {
 public:
     PropertiedClass();
-    PropertiedClass( const PropertiedClass& propertiedClass);
+    PropertiedClass( const PropertiedClass& propertiedClass );
     ~PropertiedClass();
 
     void
-    addProperty(Property propertyName);
-    
+    addProperty( Property propertyName );
+
     void
-    createProperty(String propertyName);
+    createProperty( String propertyName );
 
-    Value operator[]( const String& propertyName) throw(PropertyDoesNotExistXcpt );
-    Value getPropertyValue( const String& propertyName) throw(PropertyDoesNotExistXcpt );
+    Value operator[]( const String& propertyName ) throw( PropertyDoesNotExistXcpt );
+    Value getPropertyValue( const String& propertyName ) throw( PropertyDoesNotExistXcpt );
 
-    Property& getProperty(const String& propertyName);
-    const Property getProperty(const String& propertyName) const;
+    Property& getProperty( const String& propertyName );
+    const Property getProperty( const String& propertyName ) const;
 
 protected:
 

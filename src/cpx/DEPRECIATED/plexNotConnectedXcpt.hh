@@ -38,18 +38,18 @@ namespace cpx
 {
 // This is thrown from the recognizer only; it has its own peculiar
 // error message.
-    class plexNotConnectedXcpt :
-                public utl::xcpt
-    {
+class plexNotConnectedXcpt :
+            public utl::xcpt
+{
 // This makes a message about isomorphism search.
-        static std::string
-        mkMsg (void);
+    static std::string
+    mkMsg( void );
 
-    public:
-        plexNotConnectedXcpt (void) :
-                utl::xcpt (mkMsg() )
-        {}
-    };
+public:
+    plexNotConnectedXcpt( void ) :
+            utl::xcpt( mkMsg() )
+    {}
+};
 }
 
 #endif // PLEX_PLEXNOTCONNECTEDXCPT_H

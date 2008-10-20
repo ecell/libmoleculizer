@@ -43,75 +43,75 @@
 
 namespace cpx
 {
-    template<class molT,
-             class plexSpeciesT,
-             class plexFamilyT,
-             class omniPlexT>
-    class omniPlexFeature :
-        public fnd::feature<cxOmni<molT,
-                                   plexSpeciesT,
-                                   plexFamilyT,
-                                   omniPlexT> >
-    {
-    public:
-        typedef plexSpeciesT plexSpeciesType;
-        typedef plexFamilyT plexFamilyType;
-        typedef omniPlexT omniPlexType;
+template<class molT,
+class plexSpeciesT,
+class plexFamilyT,
+class omniPlexT>
+class omniPlexFeature :
+            public fnd::feature<cxOmni<molT,
+            plexSpeciesT,
+            plexFamilyT,
+            omniPlexT> >
+{
+public:
+    typedef plexSpeciesT plexSpeciesType;
+    typedef plexFamilyT plexFamilyType;
+    typedef omniPlexT omniPlexType;
 
-        typedef andPlexQueries<plexSpeciesType,
-                               omniPlexType> stateQueryType;
+    typedef andPlexQueries<plexSpeciesType,
+    omniPlexType> stateQueryType;
 
-        typedef
-        typename cpx::cxOmni<molT, plexSpeciesT, plexFamilyT, omniPlexT>
-        contextType;
+    typedef
+    typename cpx::cxOmni<molT, plexSpeciesT, plexFamilyT, omniPlexT>
+    contextType;
 
-        typedef fnd::newContextStimulus<contextType> stimulusType;
+    typedef fnd::newContextStimulus<contextType> stimulusType;
 
-    private:
+private:
 
-    public:
-        omniPlexFeature (void)
-        {}
+public:
+    omniPlexFeature( void )
+    {}
 
-        // Generate reactions
-        //
-        // Overrides fnd::feature<cpx::cxOmni>::respond to add new species
-        // to possible dumpable.
-        virtual
-        void
-        respond (const typename omniPlexFeature::stimulusType& rNewFeatureContext);
-    };
-
-    template<class molT,
-             class plexSpeciesT,
-             class plexFamilyT,
-             class omniPlexT>
+    // Generate reactions
+    //
+    // Overrides fnd::feature<cpx::cxOmni>::respond to add new species
+    // to possible dumpable.
+    virtual
     void
-    omniPlexFeature<molT,
-                    plexSpeciesT,
-                    plexFamilyT,
-                    omniPlexT>::
-    respond (const typename omniPlexFeature::stimulusType& rStim)
+    respond( const typename omniPlexFeature::stimulusType& rNewFeatureContext );
+};
+
+template<class molT,
+class plexSpeciesT,
+class plexFamilyT,
+class omniPlexT>
+void
+omniPlexFeature<molT,
+plexSpeciesT,
+plexFamilyT,
+omniPlexT>::
+respond( const typename omniPlexFeature::stimulusType& rStim )
+{
+    const typename omniPlexFeature::contextType& rNewContext
+    = rStim.getContext();
+
+    // Does the new species satisfy the omni's state query?
+    omniPlexType* pOmni = rNewContext.getOmni();
+    const typename omniPlexFeature::stateQueryType& rQuery
+    = * ( pOmni->getStateQuery() );
+
+    plexSpeciesType* pSpecies
+    = rNewContext.getSpecies();
+    const subPlexSpec<omniPlexType>& rSpec
+    = rNewContext.getSpec();
+    if ( rQuery.applyTracked( *pSpecies,
+                              rSpec ) )
     {
-        const typename omniPlexFeature::contextType& rNewContext
-            = rStim.getContext();
-
-        // Does the new species satisfy the omni's state query?
-        omniPlexType* pOmni = rNewContext.getOmni();
-        const typename omniPlexFeature::stateQueryType& rQuery
-            = * (pOmni->getStateQuery() );
-
-        plexSpeciesType* pSpecies
-            = rNewContext.getSpecies();
-        const subPlexSpec<omniPlexType>& rSpec
-            = rNewContext.getSpec();
-        if (rQuery.applyTracked (*pSpecies,
-                                 rSpec) )
-        {
-            // Notify reaction generators
-            fnd::feature<contextType>::respond (rStim);
-        }
+        // Notify reaction generators
+        fnd::feature<contextType>::respond( rStim );
     }
+}
 }
 
 #endif

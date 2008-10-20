@@ -37,19 +37,19 @@
 
 namespace mzr
 {
-    class illegalSpeciesNameXcpt
-                : public utl::xcpt
-    {
-        static std::string
-        mkMsg ( const std::string& rSpeciesName,
-                const std::string& rMessage = "" );
+class illegalSpeciesNameXcpt
+            : public utl::xcpt
+{
+    static std::string
+    mkMsg( const std::string& rSpeciesName,
+           const std::string& rMessage = "" );
 
-    public:
-        illegalSpeciesNameXcpt ( const std::string& rSpeciesName, const std::string& rMessage) :
-                utl::xcpt ( mkMsg (rSpeciesName,
-                                   rMessage) )
-        {}
-    };
+public:
+    illegalSpeciesNameXcpt( const std::string& rSpeciesName, const std::string& rMessage ) :
+            utl::xcpt( mkMsg( rSpeciesName,
+                              rMessage ) )
+    {}
+};
 
 
 }

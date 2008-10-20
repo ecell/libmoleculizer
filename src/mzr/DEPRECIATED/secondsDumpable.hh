@@ -36,25 +36,25 @@
 
 namespace mzr
 {
-    class mzrUnit;
+class mzrUnit;
 
-    /*! \ingroup dumpGroup
-    \brief Dumps dumps clock time since program start in whole seconds.
+/*! \ingroup dumpGroup
+\brief Dumps dumps clock time since program start in whole seconds.
 
-    This is for monitoring program performance.
+This is for monitoring program performance.
 
-    This avoids the "rollover" in clockDumpable, but is less precise. */
-    class secondsDumpable :
-                public fnd::dumpable<fnd::basicDumpable::dumpArg>
-    {
-        mzrUnit& rMzrUnit;
+This avoids the "rollover" in clockDumpable, but is less precise. */
+class secondsDumpable :
+            public fnd::dumpable<fnd::basicDumpable::dumpArg>
+{
+    mzrUnit& rMzrUnit;
 
-    public:
-        secondsDumpable (mzrUnit& refMzrUnit);
+public:
+    secondsDumpable( mzrUnit& refMzrUnit );
 
-        virtual void
-        doDump (const fnd::basicDumpable::dumpArg& rDumpArg) const;
-    };
+    virtual void
+    doDump( const fnd::basicDumpable::dumpArg& rDumpArg ) const;
+};
 }
 
 #endif // MZR_SECONDSDUMPABLE_H

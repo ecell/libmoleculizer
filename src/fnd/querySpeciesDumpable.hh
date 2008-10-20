@@ -40,41 +40,41 @@ namespace fnd
 // This doeesn't include any output (state dump) functionality.  Decided to
 // keep xml parsing and output out of template components like this.
 
-    template<class speciesT,
-    class dumpArgT>
-    class querySpeciesDumpable :
-                public multiSpeciesDumpable<speciesT,
-                dumpArgT>
-    {
-    protected:
-        query<speciesT>& rQuery;
+template<class speciesT,
+class dumpArgT>
+class querySpeciesDumpable :
+            public multiSpeciesDumpable<speciesT,
+            dumpArgT>
+{
+protected:
+    query<speciesT>& rQuery;
 
-    public:
+public:
 // Note that the query is not copied; it's assumed to remain where it is.
-        querySpeciesDumpable (const std::string& rName,
-                              query<speciesT>& rSpeciesQuery) :
-                multiSpeciesDumpable<speciesT,
-                dumpArgT> (rName),
-                rQuery (rSpeciesQuery)
-        {}
+    querySpeciesDumpable( const std::string& rName,
+                          query<speciesT>& rSpeciesQuery ) :
+            multiSpeciesDumpable<speciesT,
+            dumpArgT> ( rName ),
+            rQuery( rSpeciesQuery )
+    {}
 
-        ~querySpeciesDumpable (void)
-        {}
+    ~querySpeciesDumpable( void )
+    {}
 
 // Overrides multiSpeciesDumpable::respond so that only species
 // that pass the test get onto the dump list.
-        void
-        respond (const newSpeciesStimulus<speciesT>& rStimulus)
-        {
-            const speciesT* pNewSpecies
-            = rStimulus.getSpecies();
+    void
+    respond( const newSpeciesStimulus<speciesT>& rStimulus )
+    {
+        const speciesT* pNewSpecies
+        = rStimulus.getSpecies();
 
-            if (rQuery (*pNewSpecies) )
-            {
-                this->dumpedSpecies.push_back (pNewSpecies);
-            }
+        if ( rQuery( *pNewSpecies ) )
+        {
+            this->dumpedSpecies.push_back( pNewSpecies );
         }
-    };
+    }
+};
 }
 
 #endif // FND_QUERYSPECIESDUMPABLE_H

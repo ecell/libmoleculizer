@@ -36,20 +36,20 @@
 
 namespace mzr
 {
-    class unkStatStreamXcpt :
-                public utl::xcpt
-    {
-        static std::string
-        mkMsg (const std::string& rBadStreamName,
-               xmlpp::Node* pOffendingNode = 0);
+class unkStatStreamXcpt :
+            public utl::xcpt
+{
+    static std::string
+    mkMsg( const std::string& rBadStreamName,
+           xmlpp::Node* pOffendingNode = 0 );
 
-    public:
-        unkStatStreamXcpt (const std::string& rBadStreamName,
-                           xmlpp::Node* pOffendingNode = 0) :
-                utl::xcpt (mkMsg (rBadStreamName,
-                                  pOffendingNode) )
-        {}
-    };
+public:
+    unkStatStreamXcpt( const std::string& rBadStreamName,
+                       xmlpp::Node* pOffendingNode = 0 ) :
+            utl::xcpt( mkMsg( rBadStreamName,
+                              pOffendingNode ) )
+    {}
+};
 }
 
 #endif // MZR_UNKSTATSTREAMXCPT_H

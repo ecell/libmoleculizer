@@ -46,414 +46,414 @@
 namespace fnd
 {
 
-    // I obviously need to add some kind of public API function for expanding by a speciesID.
+// I obviously need to add some kind of public API function for expanding by a speciesID.
 
-    // Both speciesType and reactionType must have a public function
-    // void expandReactionNetwork().
-    // That is,  derived from fnd::reactionNetworkComponent.
-    template <typename speciesT,
-              typename reactionT>
-    class ReactionNetworkDescription
+// Both speciesType and reactionType must have a public function
+// void expandReactionNetwork().
+// That is,  derived from fnd::reactionNetworkComponent.
+template <typename speciesT,
+typename reactionT>
+class ReactionNetworkDescription
+{
+public:
+    DECLARE_TYPE( speciesT, SpeciesType );
+    DECLARE_TYPE( reactionT, ReactionType );
+
+    // Some ReactionNetowrkDescription;
+    DECLARE_TYPE( String, SpeciesName );
+    DECLARE_TYPE( String, SpeciesID );
+
+    typedef const SpeciesID* SpeciesHandle;
+
+    typedef std::map<SpeciesHandle, SpeciesTypePtr, aux::compareByPtrValue<SpeciesID> > SpeciesCatalog;
+    typedef typename SpeciesCatalog::iterator SpeciesCatalogIter;
+    typedef typename SpeciesCatalog::const_iterator SpeciesCatalogCIter;
+
+    typedef std::list<SpeciesTypePtr> SpeciesList;
+    typedef std::list<ReactionTypePtr> ReactionList;
+
+    typedef std::multimap<SpeciesTypePtr, ReactionTypePtr> ParticipatingSpeciesRxnMap;
+
+    typedef std::list< std::pair<std::string*, SpeciesTypePtr> > SpeciesListCatalog;
+
+    typedef typename SpeciesListCatalog::iterator SpeciesListCatalogIter;
+    typedef typename SpeciesListCatalog::const_iterator SpeciesListCatalogCIter;
+
+    typedef typename SpeciesList::iterator SpeciesListIter;
+    typedef typename SpeciesList::const_iterator SpeciesListCIter;
+
+    typedef typename ReactionList::iterator ReactionListIter;
+    typedef typename ReactionList::const_iterator ReactionListCIter;
+
+public:
+
+    SpeciesTypePtr
+    findSpecies( const std::string& name ) throw( fnd::NoSuchSpeciesXcpt )
     {
-    public:
-        DECLARE_TYPE ( speciesT, SpeciesType);
-        DECLARE_TYPE ( reactionT, ReactionType);
-
-        // Some ReactionNetowrkDescription;
-        DECLARE_TYPE( String, SpeciesName );
-        DECLARE_TYPE( String, SpeciesID );
-
-        typedef const SpeciesID* SpeciesHandle;
-
-        typedef std::map<SpeciesHandle, SpeciesTypePtr, aux::compareByPtrValue<SpeciesID> > SpeciesCatalog;
-        typedef typename SpeciesCatalog::iterator SpeciesCatalogIter;
-        typedef typename SpeciesCatalog::const_iterator SpeciesCatalogCIter;
-
-        typedef std::list<SpeciesTypePtr> SpeciesList;
-        typedef std::list<ReactionTypePtr> ReactionList;
-
-        typedef std::multimap<SpeciesTypePtr, ReactionTypePtr> ParticipatingSpeciesRxnMap;
-
-        typedef std::list< std::pair<std::string*, SpeciesTypePtr> > SpeciesListCatalog;
-
-        typedef typename SpeciesListCatalog::iterator SpeciesListCatalogIter;
-        typedef typename SpeciesListCatalog::const_iterator SpeciesListCatalogCIter;
-
-        typedef typename SpeciesList::iterator SpeciesListIter;
-        typedef typename SpeciesList::const_iterator SpeciesListCIter;
-
-        typedef typename ReactionList::iterator ReactionListIter;
-        typedef typename ReactionList::const_iterator ReactionListCIter;
-
-    public:
-
-        SpeciesTypePtr
-        findSpecies (const std::string& name) throw (fnd::NoSuchSpeciesXcpt)
+        SpeciesCatalogIter theIter = theSpeciesListCatalog.find( &name );
+        if ( theIter != theSpeciesListCatalog.end() )
         {
-            SpeciesCatalogIter theIter = theSpeciesListCatalog.find ( &name );
-            if (theIter != theSpeciesListCatalog.end() )
-            {
-                return theIter->second;
-            }
-            else
-            {
-                throw fnd::NoSuchSpeciesXcpt (name);
-            }
-
+            return theIter->second;
+        }
+        else
+        {
+            throw fnd::NoSuchSpeciesXcpt( name );
         }
 
-        SpeciesTypeCptr
-        findSpecies (const std::string& name) const throw (fnd::NoSuchSpeciesXcpt)
-        {
-            SpeciesCatalogCIter theIter = theSpeciesListCatalog.find(&name);
+    }
 
-            if (theIter != theSpeciesListCatalog.end() )
-            {
-                return theIter->second;
-            }
-            else
-            {
-                throw fnd::NoSuchSpeciesXcpt (name);
-            }
+    SpeciesTypeCptr
+    findSpecies( const std::string& name ) const throw( fnd::NoSuchSpeciesXcpt )
+    {
+        SpeciesCatalogCIter theIter = theSpeciesListCatalog.find( &name );
+
+        if ( theIter != theSpeciesListCatalog.end() )
+        {
+            return theIter->second;
+        }
+        else
+        {
+            throw fnd::NoSuchSpeciesXcpt( name );
+        }
+    }
+
+
+    bool
+    findReactionWithSubstrates( const SpeciesTypePtr A,
+                                std::vector<ReactionTypePtr>& reactionVector )
+    {
+
+        reactionVector.clear();
+
+        typename ParticipatingSpeciesRxnMap::const_iterator iter = singleSubstrateRxns.find( A );
+
+
+        while ( iter->first == A )
+
+        {
+            reactionVector.push_back( iter->second );
+            ++iter;
         }
 
+        return ( !reactionVector.empty() );
+    }
 
-        bool
-        findReactionWithSubstrates (const SpeciesTypePtr A,
-                                    std::vector<ReactionTypePtr>& reactionVector)
+    bool
+    findReactionWithSubstrates( const SpeciesTypePtr A,
+                                const SpeciesTypePtr B,
+                                std::vector<ReactionTypePtr>& reactionVector )
+    {
+
+        reactionVector.clear();
+
+        if ( A == B )
         {
-
-            reactionVector.clear();
-
-            typename ParticipatingSpeciesRxnMap::const_iterator iter = singleSubstrateRxns.find (A);
-
-
-            while ( iter->first == A)
-
+            BOOST_FOREACH( ReactionTypePtr ptrRxn, theCompleteReactionList )
             {
-                reactionVector.push_back (iter->second);
-                ++iter;
-            }
-
-            return ( !reactionVector.empty() );
-        }
-
-        bool
-        findReactionWithSubstrates (const SpeciesTypePtr A,
-                                    const SpeciesTypePtr B,
-                                    std::vector<ReactionTypePtr>& reactionVector)
-        {
-
-            reactionVector.clear();
-
-            if (A == B)
-            {
-                BOOST_FOREACH (ReactionTypePtr ptrRxn, theCompleteReactionList)
+                if ( ptrRxn->getReactantStochiometry( A ) == 2 )
                 {
-                    if (ptrRxn->getReactantStochiometry (A) == 2)
-                    {
-                        reactionVector.push_back (ptrRxn);
-                    }
+                    reactionVector.push_back( ptrRxn );
                 }
             }
-            else
+        }
+        else
+        {
+            BOOST_FOREACH( ReactionTypePtr ptrRxn, theCompleteReactionList )
             {
-                BOOST_FOREACH (ReactionTypePtr ptrRxn, theCompleteReactionList)
+                if ( ptrRxn->hasReactant( A ) && ptrRxn->hasReactant( B ) )
                 {
-                    if (ptrRxn->hasReactant (A) && ptrRxn->hasReactant (B) )
-                    {
-                        reactionVector.push_back (ptrRxn);
-                    }
+                    reactionVector.push_back( ptrRxn );
                 }
             }
-
-            return (!reactionVector.empty() );
         }
 
-        bool
-        checkSpeciesIsKnown (const std::string& speciesName) const
+        return ( !reactionVector.empty() );
+    }
+
+    bool
+    checkSpeciesIsKnown( const std::string& speciesName ) const
+    {
+        return !( theSpeciesListCatalog.find( &speciesName ) == theSpeciesListCatalog.end() );
+
+    }
+
+    SpeciesListCatalog&
+    getSpeciesCatalog()
+    {
+        return theSpeciesListCatalog;
+    }
+
+
+    const SpeciesListCatalog&
+    getSpeciesCatalog() const
+    {
+        return theSpeciesListCatalog;
+    }
+
+    const ReactionList&
+    getReactionList() const
+    {
+        return theCompleteReactionList;
+    }
+
+    // These two functions are the interface that reaction generators use
+    // to record their species.  They add the (speciesName, speciesPtr)
+    // and (reactionName, reactionPtr) entries to the catalog respectively.
+    // If the object being recorded is new, we also record it as a hit in the
+    // total number of species/reactions as well as the delta number of species/
+    // reactions.
+    bool
+    recordSpecies( SpeciesTypePtr pSpecies )
+    {
+        SpeciesHandle speciesHandle( new SpeciesID( pSpecies->getName() ) );
+
+        if ( theSpeciesListCatalog.find( speciesHandle ) == theSpeciesListCatalog.end() )
         {
-            return ! (theSpeciesListCatalog.find ( &speciesName ) == theSpeciesListCatalog.end() );
-
-        }
-
-        SpeciesListCatalog&
-        getSpeciesCatalog()
-        {
-            return theSpeciesListCatalog;
-        }
-
-
-        const SpeciesListCatalog&
-        getSpeciesCatalog() const
-        {
-            return theSpeciesListCatalog;
-        }
-
-        const ReactionList&
-        getReactionList() const
-        {
-            return theCompleteReactionList;
-        }
-
-        // These two functions are the interface that reaction generators use
-        // to record their species.  They add the (speciesName, speciesPtr)
-        // and (reactionName, reactionPtr) entries to the catalog respectively.
-        // If the object being recorded is new, we also record it as a hit in the
-        // total number of species/reactions as well as the delta number of species/
-        // reactions.
-        bool
-        recordSpecies ( SpeciesTypePtr pSpecies)
-        {
-            SpeciesHandle speciesHandle( new SpeciesID( pSpecies->getName()  ) );
-
-            if ( theSpeciesListCatalog.find(speciesHandle) == theSpeciesListCatalog.end() )
-            {
-                theSpeciesListCatalog.insert ( std::make_pair ( speciesHandle, pSpecies) );
-                theDeltaSpeciesList.push_back ( pSpecies );
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-                                         
-        }
-
-        bool
-        recordSpecies ( SpeciesTypePtr pSpecies, SpeciesID& name)
-        {
-            SpeciesHandle speciesHandle( new SpeciesID( pSpecies->getName()  ) );
-
-            // Put the speciesID into the name.
-            name = *speciesHandle;
-            
-            if ( theSpeciesListCatalog.find(speciesHandle) == theSpeciesListCatalog.end() )
-            {
-                theSpeciesListCatalog.insert ( std::make_pair ( speciesHandle, pSpecies) );
-                theDeltaSpeciesList.push_back ( pSpecies );
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-                                         
-        }
-
-        bool
-        recordReaction ( ReactionTypePtr pRxn )
-        {
-            if (!pRxn->isStandardReaction() )
-            {
-                std::cerr<< "A reaction is nonstandard." << std::endl;
-                throw 666;
-            }
-
-            theCompleteReactionList.push_back ( pRxn );
-            theDeltaReactionList.push_back ( pRxn );
-
-            switch ( pRxn->getNumberOfReactants() )
-            {
-                    SpeciesTypePtr theSpeciesPtr;
-
-                case 0:
-                    // Register in the map of creation reactions
-                    zeroSubstrateRxns.push_back ( pRxn );
-                    break;
-
-                case 1:
-                    // Register in a multi map of 1->? reactions
-                    theSpeciesPtr = pRxn->getReactants().begin()->first;
-                    singleSubstrateRxns.insert ( std::make_pair (theSpeciesPtr, pRxn ) );
-                    break;
-                case 2:
-                    BOOST_FOREACH ( typename fnd::basicReaction<SpeciesType>::multMap::value_type vt,
-                                    pRxn->getReactants() )
-                    {
-                        theSpeciesPtr = vt.first;
-                        doubleSubstrateRxns.insert ( std::make_pair ( theSpeciesPtr, pRxn) );
-                    }
-                    break;
-                default:
-                    std::cerr << __FILE__ << ":" << __LINE__ << std::endl;
-                    throw 666;
-                    break;
-            }
-
-            // Call each of the registered callbacks on the newly installed reaction.
-            BOOST_FOREACH( Callback cb, reactionCallbacks)
-            {
-                cb(pRxn);
-            }
-
+            theSpeciesListCatalog.insert( std::make_pair( speciesHandle, pSpecies ) );
+            theDeltaSpeciesList.push_back( pSpecies );
             return true;
         }
-
-
-        int
-        getPopulation ( const std::string& rName) const
+        else
         {
-            return findSpecies (rName).getPop();
+            return false;
         }
 
-        // These are not used by anyone at the moment.  It might be better to use them instead
-        // of the plain old recordSpecies/recordReaction functions, but who knows.
-        void mustRecordSpecies ( SpeciesTypePtr pSpecies ) throw (utl::xcpt)
+    }
+
+    bool
+    recordSpecies( SpeciesTypePtr pSpecies, SpeciesID& name )
+    {
+        SpeciesHandle speciesHandle( new SpeciesID( pSpecies->getName() ) );
+
+        // Put the speciesID into the name.
+        name = *speciesHandle;
+
+        if ( theSpeciesListCatalog.find( speciesHandle ) == theSpeciesListCatalog.end() )
         {
-            if ( !recordSpecies ( pSpecies ) )
+            theSpeciesListCatalog.insert( std::make_pair( speciesHandle, pSpecies ) );
+            theDeltaSpeciesList.push_back( pSpecies );
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+
+    }
+
+    bool
+    recordReaction( ReactionTypePtr pRxn )
+    {
+        if ( !pRxn->isStandardReaction() )
+        {
+            std::cerr<< "A reaction is nonstandard." << std::endl;
+            throw 666;
+        }
+
+        theCompleteReactionList.push_back( pRxn );
+        theDeltaReactionList.push_back( pRxn );
+
+        switch ( pRxn->getNumberOfReactants() )
+        {
+            SpeciesTypePtr theSpeciesPtr;
+
+        case 0:
+            // Register in the map of creation reactions
+            zeroSubstrateRxns.push_back( pRxn );
+            break;
+
+        case 1:
+            // Register in a multi map of 1->? reactions
+            theSpeciesPtr = pRxn->getReactants().begin()->first;
+            singleSubstrateRxns.insert( std::make_pair( theSpeciesPtr, pRxn ) );
+            break;
+        case 2:
+            BOOST_FOREACH( typename fnd::basicReaction<SpeciesType>::multMap::value_type vt,
+                           pRxn->getReactants() )
             {
-                throw DuplicatedCatalogEntryXcpt ( pSpecies->getName() );
+                theSpeciesPtr = vt.first;
+                doubleSubstrateRxns.insert( std::make_pair( theSpeciesPtr, pRxn ) );
             }
+            break;
+        default:
+            std::cerr << __FILE__ << ":" << __LINE__ << std::endl;
+            throw 666;
+            break;
         }
 
-        void
-        mustRecordReaction ( ReactionTypePtr pRxn) throw (utl::xcpt)
+        // Call each of the registered callbacks on the newly installed reaction.
+        BOOST_FOREACH( Callback cb, reactionCallbacks )
         {
-            if ( recordReactions ( pRxn ) )
+            cb( pRxn );
+        }
+
+        return true;
+    }
+
+
+    int
+    getPopulation( const std::string& rName ) const
+    {
+        return findSpecies( rName ).getPop();
+    }
+
+    // These are not used by anyone at the moment.  It might be better to use them instead
+    // of the plain old recordSpecies/recordReaction functions, but who knows.
+    void mustRecordSpecies( SpeciesTypePtr pSpecies ) throw( utl::xcpt )
+    {
+        if ( !recordSpecies( pSpecies ) )
+        {
+            throw DuplicatedCatalogEntryXcpt( pSpecies->getName() );
+        }
+    }
+
+    void
+    mustRecordReaction( ReactionTypePtr pRxn ) throw( utl::xcpt )
+    {
+        if ( recordReactions( pRxn ) )
+        {
+            return;
+        }
+        else
+        {
+            throw DuplicatedCatalogEntryXcpt( pRxn->getName() );
+        }
+
+    }
+
+    unsigned int
+    getTotalNumberSpecies() const
+    {
+        return theSpeciesListCatalog.size();
+    }
+
+    unsigned int
+    getTotalNumberReactions() const
+    {
+        return theCompleteReactionList.size();
+    }
+
+    // The getDeltaNumber(Species|Reactions) functions return the number
+    // of those objects created since the last time the recordCurrentState
+    // funsource ction was source called.
+    unsigned int
+    getNumberDeltaReactions() const
+    {
+        return theDeltaReactionList.size();
+    }
+
+    unsigned int
+    getNumberDeltaSpecies() const
+    {
+        return theDeltaSpeciesList.size();
+    }
+
+    void resetCurrentState()
+    {
+        theDeltaSpeciesList.clear();
+        theDeltaReactionList.clear();
+    }
+
+    void incrementNetworkBySpeciesName( const SpeciesID& rName ) throw( utl::xcpt )
+    {
+        SpeciesCatalogCIter iter = theSpeciesListCatalog.find( &rName );
+
+        if ( iter != theSpeciesListCatalog.end() )
+        {
+            iter->second->expandReactionNetwork();
+        }
+        else
+        {
+            throw NoSuchSpeciesXcpt( rName );
+        }
+    }
+
+
+
+    void
+    printAll() const
+    {
+        printSpecies( "Species: " );
+        print( std::string( "Reactions:" ), theCompleteReactionList );
+    }
+
+    void printSpecies( std::string prefix = std::string( "" ) ) const
+    {
+        typedef std::pair<const std::string*, SpeciesTypePtr> PairT;
+        BOOST_FOREACH( const PairT& aPair, theSpeciesListCatalog )
+        {
+            std::cout << prefix << *( aPair.first ) << '(' << aPair.second << ')';
+            if ( aPair.second->hasNotified() )
             {
-                return;
+                std::cout << "\t!!! (Notified)\n";
             }
             else
             {
-                throw DuplicatedCatalogEntryXcpt ( pRxn->getName() );
-            }
-
-        }
-
-        unsigned int
-        getTotalNumberSpecies() const
-        {
-            return theSpeciesListCatalog.size();
-        }
-
-        unsigned int
-        getTotalNumberReactions() const
-        {
-            return theCompleteReactionList.size();
-        }
-
-        // The getDeltaNumber(Species|Reactions) functions return the number
-        // of those objects created since the last time the recordCurrentState
-        // funsource ction was source called.
-        unsigned int
-        getNumberDeltaReactions() const
-        {
-            return theDeltaReactionList.size();
-        }
-
-        unsigned int
-        getNumberDeltaSpecies() const
-        {
-            return theDeltaSpeciesList.size();
-        }
-
-        void resetCurrentState()
-        {
-            theDeltaSpeciesList.clear();
-            theDeltaReactionList.clear();
-        }
-
-        void incrementNetworkBySpeciesName (const SpeciesID& rName) throw (utl::xcpt)
-        {
-            SpeciesCatalogCIter iter = theSpeciesListCatalog.find ( &rName );
-
-            if (iter != theSpeciesListCatalog.end() )
-            {
-                iter->second->expandReactionNetwork();
-            }
-            else
-            {
-                throw NoSuchSpeciesXcpt ( rName );
+                std::cout << std::endl;
             }
         }
+    }
 
-
-
-        void
-        printAll() const
+    void print( std::string str, const ReactionList& aVector ) const
+    {
+        BOOST_FOREACH( ReactionTypePtr refT, aVector )
         {
-            printSpecies( "Species: ");
-            print (std::string ("Reactions:"), theCompleteReactionList);
+            std::cout << "(" << str << ") " << " [ " << refT << " ] " << refT->getName() << std::endl;
         }
+    }
 
-        void printSpecies(std::string prefix = std::string("")) const
+    void print( std::string str, const SpeciesList& aVector ) const
+    {
+        BOOST_FOREACH( SpeciesTypePtr* refT, aVector )
         {
-            typedef std::pair<const std::string*, SpeciesTypePtr> PairT;
-            BOOST_FOREACH(const PairT& aPair, theSpeciesListCatalog)
-            {
-                std::cout << prefix << *(aPair.first) << '(' << aPair.second << ')';
-                if(aPair.second->hasNotified())
-                {
-                    std::cout << "\t!!! (Notified)\n";
-                }
-                else
-                {
-                    std::cout << std::endl;
-                }
-            }
+            std::cout << "(" << str << ") " << refT->getName() << std::endl;
         }
+    }
 
-        void print (std::string str, const ReactionList& aVector) const
+
+    ~ReactionNetworkDescription()
+    {
+        // We don't memory manage any SpeciesType* or ReactionType*, but we do memory
+        // manage the string* in theSpeciesListCatalog.
+
+        BOOST_FOREACH( typename SpeciesCatalog::value_type i, theSpeciesListCatalog )
         {
-            BOOST_FOREACH (ReactionTypePtr refT, aVector)
-            {
-                std::cout << "(" << str << ") " << " [ " << refT << " ] " << refT->getName() << std::endl;
-            }
+            delete i.first;
         }
+    }
 
-        void print (std::string str, const SpeciesList& aVector) const
-        {
-            BOOST_FOREACH (SpeciesTypePtr* refT, aVector)
-            {
-                std::cout << "(" << str << ") " << refT->getName() << std::endl;
-            }
-        }
+    // -- The pointers to the strings in theSpeciesListCatalog ARE memory managed.
+    // -- The pointers to the species and reactions ARE NOT memory managed here.
 
 
-        ~ReactionNetworkDescription()
-        {
-            // We don't memory manage any SpeciesType* or ReactionType*, but we do memory
-            // manage the string* in theSpeciesListCatalog.
+    SpeciesCatalog theSpeciesListCatalog;
+    ReactionList theCompleteReactionList;
+    ReactionList unaryReactionList;
+    ReactionList binaryReactionList;
 
-            BOOST_FOREACH ( typename SpeciesCatalog::value_type i, theSpeciesListCatalog)
-            {
-                delete i.first;
-            }
-        }
+    SpeciesList    theDeltaSpeciesList;
+    ReactionList    theDeltaReactionList;
 
-        // -- The pointers to the strings in theSpeciesListCatalog ARE memory managed.
-        // -- The pointers to the species and reactions ARE NOT memory managed here.
-        
+    // 0->1, 1->0, 1->1, 1->2, 2->1
+    ReactionList zeroSubstrateRxns;
+    ParticipatingSpeciesRxnMap singleSubstrateRxns;
+    ParticipatingSpeciesRxnMap doubleSubstrateRxns;
 
-        SpeciesCatalog theSpeciesListCatalog;
-        ReactionList theCompleteReactionList;
-        ReactionList unaryReactionList;
-        ReactionList binaryReactionList;
+    /////////////////////////
+    // NEWCODE
+    //
+    typedef boost::function<void( const ReactionType* )> Callback;
+    std::vector<Callback> reactionCallbacks;
 
-        SpeciesList    theDeltaSpeciesList;
-        ReactionList    theDeltaReactionList;
+public:
+    void addCallback( Callback cb )
+    {
+        reactionCallbacks.push_back( cb );
+    }
+    //
+    /////////////////////////
 
-        // 0->1, 1->0, 1->1, 1->2, 2->1
-        ReactionList zeroSubstrateRxns;
-        ParticipatingSpeciesRxnMap singleSubstrateRxns;
-        ParticipatingSpeciesRxnMap doubleSubstrateRxns;
-
-        /////////////////////////
-        // NEWCODE
-        //
-        typedef boost::function<void (const ReactionType*)> Callback;
-        std::vector<Callback> reactionCallbacks;
-
-    public: 
-        void addCallback( Callback cb) 
-        {
-            reactionCallbacks.push_back(cb);
-        }
-        // 
-        /////////////////////////
-
-    };
+};
 
 
 

@@ -38,32 +38,32 @@
 
 namespace bnd
 {
-    class parseModification :
-                public std::unary_function<xmlpp::Node*, cpx::modification*>
+class parseModification :
+            public std::unary_function<xmlpp::Node*, cpx::modification*>
+{
+public:
+    cpx::modification*
+    operator()( xmlpp::Node* pModificationNode ) const
     {
-    public:
-        cpx::modification*
-        operator() (xmlpp::Node* pModificationNode) const
-        {
-            xmlpp::Element* pModElt
-            = utl::dom::mustBeElementPtr (pModificationNode);
+        xmlpp::Element* pModElt
+        = utl::dom::mustBeElementPtr( pModificationNode );
 
-            std::string name
-            = utl::dom::mustGetAttrString (pModElt,
-                                           eltName::modification_nameAttr);
+        std::string name
+        = utl::dom::mustGetAttrString( pModElt,
+                                       eltName::modification_nameAttr );
 
-            xmlpp::Element* pWeightDeltaElt
-            = utl::dom::mustGetUniqueChild (pModElt,
-                                            eltName::weightDelta);
+        xmlpp::Element* pWeightDeltaElt
+        = utl::dom::mustGetUniqueChild( pModElt,
+                                        eltName::weightDelta );
 
-            double weightDelta = utl::dom::mustGetAttrDouble
-                                 (pWeightDeltaElt,
-                                  eltName::weightDelta_daltonsAttr);
+        double weightDelta = utl::dom::mustGetAttrDouble
+                             ( pWeightDeltaElt,
+                               eltName::weightDelta_daltonsAttr );
 
-            return new cpx::modification (name,
-                                          weightDelta);
-        }
-    };
+        return new cpx::modification( name,
+                                      weightDelta );
+    }
+};
 }
 
 #endif // MOL_PARSEMOD_H

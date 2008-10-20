@@ -81,149 +81,167 @@ Quick links:
 
 namespace mzr
 {
-    class unitsMgr;
+class unitsMgr;
 
-    /*! \ingroup mzrGroup
-    \brief The main application object. */
+/*! \ingroup mzrGroup
+\brief The main application object. */
 
 
-    // The main bulk of this class can be found in ReactionNetworkDescription.
-    class moleculizer :
-                public fnd::ReactionNetworkDescription<mzrSpecies, mzrReaction>
+// The main bulk of this class can be found in ReactionNetworkDescription.
+class moleculizer :
+            public fnd::ReactionNetworkDescription<mzrSpecies, mzrReaction>
+{
+public:
+    void enableSpatialReactionNetworkGeneration( bool extrapolation = false );
+    void enableNonspatialReactionNetworkGeneration( bool extrapolation = false );
+
+public:
+    moleculizer( void );
+    ~moleculizer( void );
+
+    bool getModelHasBeenLoaded() const;
+    void setModelHasBeenLoaded( bool value );
+
+    void setGenerateDepth( unsigned int generateDepth );
+    void setRateExtrapolation( bool rateExtrapolation )
     {
-    public:
-        void enableSpatialExtrapolation();
-        void enableNonspatialExtrapolation();
+        extrapolationEnabled = rateExtrapolation;
+    }
 
-    public:
-        moleculizer (void);
-        ~moleculizer (void);
+    bool getRateExtrapolation() const
+    {
+        return extrapolationEnabled;
+    }
 
-        bool getModelHasBeenLoaded() const;
-        void setModelHasBeenLoaded (bool value);
+    void attachFileName( const std::string& aFileName );
+    void attachString( const std::string& documentAsString );
+    void attachDocument( xmlpp::Document* pDoc );
 
-        void setGenerateDepth (unsigned int generateDepth);
-        void setRateExtrapolation ( bool rateExtrapolation )
-        {
-            return;
-        }
+    mzrSpecies*
+    getSpeciesWithName( const std::string& speciesName ) throw( mzr::IllegalNameXcpt );
 
-        void attachFileName (const std::string& aFileName);
-        void attachString (const std::string& documentAsString);
-        void attachDocument (xmlpp::Document* pDoc);
+public:
+    void
+    incrementSpecies( std::string& speciesName );
 
-        mzrSpecies*
-        getSpeciesWithName (const std::string& speciesName) throw ( mzr::IllegalNameXcpt );
+    std::string
+    getRandomSpeciesName() const;
 
-    public:
-        void
-        incrementSpecies (std::string& speciesName);
+public:
+    xmlpp::Document*
+    makeDomOutput( void ) throw( std::exception );
 
-        std::string
-        getRandomSpeciesName() const;
+protected:
+    void
+    constructorPrelude( void );
 
-    public:
-        xmlpp::Document*
-        makeDomOutput (void) throw (std::exception);
+    void
+    verifyInput( const xmlpp::Element* const pRootElt,
+                 const xmlpp::Element* const pModelElt,
+                 const xmlpp::Element* const pStreamElt ) const
+    throw( std::exception );
 
-    protected:
-        void
-        constructorPrelude (void);
+    void
+    constructorCore( xmlpp::Element* pRootElt,
+                     xmlpp::Element* pModelElt,
+                     xmlpp::Element* pStreamElt )
+    throw( std::exception );
 
-        void
-        verifyInput (const xmlpp::Element* const pRootElt,
-                     const xmlpp::Element* const pModelElt,
-                     const xmlpp::Element* const pStreamElt) const
-            throw (std::exception);
+    void
+    moleculizerParseDomInput( xmlpp::Element* pRootElt,
+                              xmlpp::Element* pModelElt,
+                              xmlpp::Element* pStreamElt )
+    throw( std::exception );
 
-        void
-        constructorCore (xmlpp::Element* pRootElt,
-                         xmlpp::Element* pModelElt,
-                         xmlpp::Element* pStreamElt)
-            throw (std::exception);
+    void
+    configureRuntime( xmlpp::Element* pExecutionParameters ) throw( std::exception );
+
+    void configureSpatialGenerationMode( xmlpp::Element* pSpatialGenerationModeElement );
+    void configureNonSpatialGenerationMode( xmlpp::Element* pSpatialGenerationModeElement );
 
 
 
-        // NEW STUFF --------------
+    // NEW STUFF --------------
 
-        std::map<std::string, std::string> userNameToSpeciesIDChart;
+    std::map<std::string, std::string> userNameToSpeciesIDChart;
 
-    public: 
+public:
 
-        void recordPlexParameter( const std::string& plexName, 
-                                  const std::string& parameterName, 
-                                  const double& parameterValue);
+    void recordPlexParameter( const std::string& plexName,
+                              const std::string& parameterName,
+                              const double& parameterValue );
 
-        void recordUserNameToGeneratedNamePair( const std::string& userName,
-                                                const std::string& genName) 
-        {
-            userNameToSpeciesIDChart.insert( std::make_pair( userName, genName ) );
-        }
-        
-    protected:
-        std::string getGeneratedNameFromUserName(const std::string& userName)
-        {
-            return userNameToSpeciesIDChart[ userName ];
-        }
+    void recordUserNameToGeneratedNamePair( const std::string& userName,
+                                            const std::string& genName )
+    {
+        userNameToSpeciesIDChart.insert( std::make_pair( userName, genName ) );
+    }
 
-        std::map<SpeciesID, Real> radiusChart; // These are in meters. 
-        std::map<SpeciesID, Real> k_DChart;
+protected:
+    std::string getGeneratedNameFromUserName( const std::string& userName )
+    {
+        return userNameToSpeciesIDChart[ userName ];
+    }
 
-        std::map<const mzrReaction*, Real> reactionRateChart;
-        std::map<const mzrReaction*, Real> binaryActivationEnergyChart;
+    std::map<SpeciesID, Real> radiusChart; // These are in meters.
+    std::map<SpeciesID, Real> k_DChart;
 
-        std::map<const fnd::coreRxnGen*, double> binaryActivationEnergiesParameterLookup;
-        std::map<const fnd::coreRxnGen*, double> unaryReactionRatesParameterLookup;
-        std::map<const fnd::coreRxnGen*, double> binaryReactionRatesParameterLookup;
+    std::map<const mzrReaction*, Real> reactionRateChart;
+    std::map<const mzrReaction*, Real> binaryActivationEnergyChart;
 
-        void installKForNewUnaryReaction( const mzrReaction* mzrReaction);
-        void installKForNewBinaryReaction( const mzrReaction* mzrReaction);
-        void installKaForNewBinaryReaction( const mzrReaction* mzrReaction);
-        void installRadiusForNewSpecies( const mzrReaction* mzrRxn );
-        void installKdForNewSpecies( const mzrReaction* mzrRxn );
-        double calculateNewRadiusForSpecies( const mzrSpecies* ptrSpecies );
+    std::map<const fnd::coreRxnGen*, double> binaryActivationEnergiesParameterLookup;
+    std::map<const fnd::coreRxnGen*, double> unaryReactionRatesParameterLookup;
+    std::map<const fnd::coreRxnGen*, double> binaryReactionRatesParameterLookup;
 
-        bool isDecompositionRxn( const mzrReaction* ptrRxn) const
-        {
-            if (ptrRxn->getNumberOfReactants() == 1 && ptrRxn->getNumberOfProducts() == 2)
-                return true;
-            else return false;
-        }
+    void installKForNewUnaryReaction( const mzrReaction* mzrReaction );
+    void installKForNewBinaryReaction( const mzrReaction* mzrReaction );
+    void installKaForNewBinaryReaction( const mzrReaction* mzrReaction );
+    void installRadiusForNewSpecies( const mzrReaction* mzrRxn );
+    void installKdForNewSpecies( const mzrReaction* mzrRxn );
+    double calculateNewRadiusForSpecies( const mzrSpecies* ptrSpecies );
 
-        bool isDimerizationRxn( const mzrReaction* ptrRxn) const
-        {
-            if (ptrRxn->getNumberOfReactants() == 2 && ptrRxn->getNumberOfProducts() == 1)
-                return true;
-            else return false;
-        }
+    bool isDecompositionRxn( const mzrReaction* ptrRxn ) const
+    {
+        if ( ptrRxn->getNumberOfReactants() == 1 && ptrRxn->getNumberOfProducts() == 2 )
+            return true;
+        else return false;
+    }
 
-        bool isOneToOneRxn( const mzrReaction* ptrRxn) const
-        {
-            if (ptrRxn->getNumberOfReactants() == 1 && ptrRxn->getNumberOfProducts() == 1)
-                return true;
-            else 
-                return false;
-        }
+    bool isDimerizationRxn( const mzrReaction* ptrRxn ) const
+    {
+        if ( ptrRxn->getNumberOfReactants() == 2 && ptrRxn->getNumberOfProducts() == 1 )
+            return true;
+        else return false;
+    }
 
-        ////////////////////////////////////////////////
-        
-    public:
-        // Units loaded by the user, waiting for destruction.
-        //
-        // This class is the manager for units, and the place that new units
-        // can be installed.  It's public because units need to get to
-        // each other.
-        unitsMgr* pUserUnits;
+    bool isOneToOneRxn( const mzrReaction* ptrRxn ) const
+    {
+        if ( ptrRxn->getNumberOfReactants() == 1 && ptrRxn->getNumberOfProducts() == 1 )
+            return true;
+        else
+            return false;
+    }
 
-        // Codes the input capabilities of moleculizer, including its parsing
-        // routine.
-        inputCapabilities inputCap;
+    ////////////////////////////////////////////////
 
-        static int DEFAULT_GENERATION_DEPTH;
+public:
+    // Units loaded by the user, waiting for destruction.
+    //
+    // This class is the manager for units, and the place that new units
+    // can be installed.  It's public because units need to get to
+    // each other.
+    unitsMgr* pUserUnits;
 
-    private:
-        bool modelLoaded;
-    };
+    // Codes the input capabilities of moleculizer, including its parsing
+    // routine.
+    inputCapabilities inputCap;
+
+    static int DEFAULT_GENERATION_DEPTH;
+
+private:
+    bool modelLoaded;
+    bool extrapolationEnabled;
+};
 }
 
 #endif

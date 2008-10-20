@@ -46,26 +46,26 @@ come out multiples of 4.  */
 
 namespace utl
 {
-    /*! \ingroup mzrGroup
-    \brief Linear-congruential hash function class.
+/*! \ingroup mzrGroup
+\brief Linear-congruential hash function class.
 
-    This really could just as well, maybe better, have been a global
-    function.
+This really could just as well, maybe better, have been a global
+function.
 
-    \todo Use overloading to handle common types transparently.
-    Make provision (another class?) to do accumulation of hash values.
-    This provision could be used in the "common types" code.
+\todo Use overloading to handle common types transparently.
+Make provision (another class?) to do accumulation of hash values.
+This provision could be used in the "common types" code.
 
-    */
-    class linearHash
-    {
+*/
+class linearHash
+{
 // These will need to be adjusted, I expect.  Or maybe not.
-        static const size_t multiplier;
-        static const size_t summand;
-    public:
-        size_t operator() (const size_t& rData) const;
-        size_t operator() (const std::string& rString) const;
-    };
+    static const size_t multiplier;
+    static const size_t summand;
+public:
+    size_t operator()( const size_t& rData ) const;
+    size_t operator()( const std::string& rString ) const;
+};
 }
 
 #endif

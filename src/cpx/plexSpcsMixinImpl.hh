@@ -36,42 +36,42 @@
 
 namespace cpx
 {
-    class addMolWeight :
-                public std::unary_function<molParam, void>
+class addMolWeight :
+            public std::unary_function<molParam, void>
+{
+    double& rTotal;
+public:
+    addMolWeight( double& refTotalMolWeight ) :
+            rTotal( refTotalMolWeight )
     {
-        double& rTotal;
-    public:
-        addMolWeight (double& refTotalMolWeight) :
-                rTotal (refTotalMolWeight)
-        {
-        }
-
-        void
-        operator() (molParam pState) const
-        {
-            rTotal += pState->getMolWeight();
-        }
-    };
-
-    template<class plexFamilyT>
-    double
-    plexSpeciesMixin<plexFamilyT>::
-    getWeight (void) const
-    {
-        double totalMolWeight = 0.0;
-
-        std::for_each (molParams.begin(),
-                       molParams.end(),
-                       addMolWeight (totalMolWeight) );
-
-        return totalMolWeight;
     }
 
-    template<class plexFamilyT>
-    std::string
-    plexSpeciesMixin<plexFamilyT>::
-    getInformativeName (void) const
+    void
+    operator()( molParam pState ) const
     {
+        rTotal += pState->getMolWeight();
+    }
+};
+
+template<class plexFamilyT>
+double
+plexSpeciesMixin<plexFamilyT>::
+getWeight( void ) const
+{
+    double totalMolWeight = 0.0;
+
+    std::for_each( molParams.begin(),
+                   molParams.end(),
+                   addMolWeight( totalMolWeight ) );
+
+    return totalMolWeight;
+}
+
+template<class plexFamilyT>
+std::string
+plexSpeciesMixin<plexFamilyT>::
+getInformativeName( void ) const
+{
 // Let's start with the names of the mols in the order that
 // they appear in the pardigm, separated by colons.
 //
@@ -80,68 +80,68 @@ namespace cpx
 
 // Bad that the type "gets out" like this; could be avoided, of course,
 // by using lots more typedefs.
-        typedef typename std::vector<typename plexFamilyT::molType*> molVectorType;
+    typedef typename std::vector<typename plexFamilyT::molType*> molVectorType;
 
-        const molVectorType& rMols
-        = rFamily.getParadigm().mols;
+    const molVectorType& rMols
+    = rFamily.getParadigm().mols;
 
-        const std::vector<binding>& rBindings = rFamily.getParadigm().bindings;
+    const std::vector<binding>& rBindings = rFamily.getParadigm().bindings;
 
-        std::string theName;
+    std::string theName;
 
-        typename molVectorType::const_iterator iMol = rMols.begin();
-        if (rMols.end() != iMol)
-        {
-            typename plexFamilyT::molType* pMol = *iMol++;
-            theName = pMol->getName();
-
-//             bnd::mzrModMol* pModMol = dynamic_cast<bnd::mzrModMol*>(pMol);
-//             if ( pMol )
-//             {
-//                 theName += '(' + pModMol->getInformativeModificationName() + ')';
-//             }
-        }
-
-        while (rMols.end() != iMol)
-        {
-            typename plexFamilyT::molType* pMol = *iMol++;
-            theName += "_";
-            theName += pMol->getName();
+    typename molVectorType::const_iterator iMol = rMols.begin();
+    if ( rMols.end() != iMol )
+    {
+        typename plexFamilyT::molType* pMol = *iMol++;
+        theName = pMol->getName();
 
 //             bnd::mzrModMol* pModMol = dynamic_cast<bnd::mzrModMol*>(pMol);
 //             if ( pMol )
 //             {
 //                 theName += '(' + pModMol->getInformativeModificationName() + ')';
 //             }
-        }
-
-        theName += "::";
-
-        for (std::vector<binding>::const_iterator iter = rBindings.begin();
-                iter != rBindings.end();
-                ++iter)
-        {
-            const binding& theBinding = *iter;
-            theName += "( ";
-
-            const typename plexFamilyT::molType& firstMol = *rMols[theBinding.first.first];
-            const typename plexFamilyT::molType& secondMol = *rMols[theBinding.second.first];
-
-            theName += firstMol.getName();
-            theName += "//";
-            theName += firstMol[theBinding.first.second].getName();
-
-            theName += " -> ";
-
-            theName += secondMol.getName();
-            theName += "//";
-            theName += secondMol[theBinding.second.second].getName();
-
-            theName += ") ";
-        }
-
-        return theName;
     }
+
+    while ( rMols.end() != iMol )
+    {
+        typename plexFamilyT::molType* pMol = *iMol++;
+        theName += "_";
+        theName += pMol->getName();
+
+//             bnd::mzrModMol* pModMol = dynamic_cast<bnd::mzrModMol*>(pMol);
+//             if ( pMol )
+//             {
+//                 theName += '(' + pModMol->getInformativeModificationName() + ')';
+//             }
+    }
+
+    theName += "::";
+
+    for ( std::vector<binding>::const_iterator iter = rBindings.begin();
+            iter != rBindings.end();
+            ++iter )
+    {
+        const binding& theBinding = *iter;
+        theName += "( ";
+
+        const typename plexFamilyT::molType& firstMol = *rMols[theBinding.first.first];
+        const typename plexFamilyT::molType& secondMol = *rMols[theBinding.second.first];
+
+        theName += firstMol.getName();
+        theName += "//";
+        theName += firstMol[theBinding.first.second].getName();
+
+        theName += " -> ";
+
+        theName += secondMol.getName();
+        theName += "//";
+        theName += secondMol[theBinding.second.second].getName();
+
+        theName += ") ";
+    }
+
+    return theName;
+}
 
 }
 

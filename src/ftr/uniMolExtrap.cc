@@ -36,42 +36,42 @@
 
 namespace ftr
 {
-    uniMolMassExtrap::
-    uniMolMassExtrap (double theRate,
-                      const bnd::mzrModMol* pEnablingMol,
-                      const fnd::massive* pMassiveAuxiliarySpecies) :
-            pMassive (pMassiveAuxiliarySpecies)
+uniMolMassExtrap::
+uniMolMassExtrap( double theRate,
+                  const bnd::mzrModMol* pEnablingMol,
+                  const fnd::massive* pMassiveAuxiliarySpecies ) :
+        pMassive( pMassiveAuxiliarySpecies )
+{
+    if ( pMassive )
     {
-        if (pMassive)
-        {
-            cpx::molParam pEnablingMolDefaultState
-            = pEnablingMol->getDefaultState();
+        cpx::molParam pEnablingMolDefaultState
+        = pEnablingMol->getDefaultState();
 
-            rateOrInvariant
-            = fnd::bindingInvariant (theRate,
-                                     pEnablingMolDefaultState->getMolWeight(),
-                                     pMassive->getWeight() );
-        }
-        else
-        {
-            rateOrInvariant = theRate;
-        }
+        rateOrInvariant
+        = fnd::bindingInvariant( theRate,
+                                 pEnablingMolDefaultState->getMolWeight(),
+                                 pMassive->getWeight() );
     }
-
-    double
-    uniMolMassExtrap::
-    getRate (const cpx::cxMol<plx::mzrPlexSpecies, plx::mzrPlexFamily>& rWrappedContext) const
+    else
     {
+        rateOrInvariant = theRate;
+    }
+}
+
+double
+uniMolMassExtrap::
+getRate( const cpx::cxMol<plx::mzrPlexSpecies, plx::mzrPlexFamily>& rWrappedContext ) const
+{
 // Are we generating unary or binary reactions?
-        if (pMassive)
-        {
-            return fnd::bindingRate (rateOrInvariant,
-                                     rWrappedContext.getPlexWeight(),
-                                     pMassive->getWeight() );
-        }
-        else
-        {
-            return rateOrInvariant;
-        }
+    if ( pMassive )
+    {
+        return fnd::bindingRate( rateOrInvariant,
+                                 rWrappedContext.getPlexWeight(),
+                                 pMassive->getWeight() );
     }
+    else
+    {
+        return rateOrInvariant;
+    }
+}
 }

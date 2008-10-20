@@ -34,16 +34,16 @@
 
 namespace ftr
 {
-    std::string
-    badModMolInstanceXcpt::
-    mkMsg (const std::string rMolInstanceName,
-           const xmlpp::Node* pOffendingNode)
-    {
-        std::ostringstream msgStream;
-        msgStream << utl::dom::xcpt::mkMsg (pOffendingNode)
-        << "expected mol instance "
-        << rMolInstanceName
-        << " to be a mod-mol, but it was not.";
-        return msgStream.str();
-    }
+std::string
+badModMolInstanceXcpt::
+mkMsg( const std::string rMolInstanceName,
+       const xmlpp::Node* pOffendingNode )
+{
+    std::ostringstream msgStream;
+    msgStream << utl::dom::xcpt::mkMsg( pOffendingNode )
+    << "expected mol instance "
+    << rMolInstanceName
+    << " to be a mod-mol, but it was not.";
+    return msgStream.str();
+}
 }

@@ -39,24 +39,24 @@ namespace mzr
 // This kind of event is for initializing the simulation;
 // it just instantly creates the given number of the given
 // species.
-    createEvent::createEvent (mzrSpecies* pSpecies,
-                              int count,
-                              mzrUnit& refMzrUnit) :
-            pSpeciesToCreate (pSpecies),
-            howMany (count),
-            rMzrUnit (refMzrUnit)
-    {}
+createEvent::createEvent( mzrSpecies* pSpecies,
+                          int count,
+                          mzrUnit& refMzrUnit ) :
+        pSpeciesToCreate( pSpecies ),
+        howMany( count ),
+        rMzrUnit( refMzrUnit )
+{}
 
-    fnd::eventResult
-    createEvent::happen (moleculizer& rMolzer)
-    throw (std::exception)
-    {
-        int generateDepth
-        = rMzrUnit.getGenerateDepth();
+fnd::eventResult
+createEvent::happen( moleculizer& rMolzer )
+throw( std::exception )
+{
+    int generateDepth
+    = rMzrUnit.getGenerateDepth();
 
-        rMzrUnit.rMolzer.recordSpecies( pSpeciesToCreate );
-        rMzrUnit.rMolzer.incrementNetworkBySpeciesName( pSpeciesToCreate->getName() );
+    rMzrUnit.rMolzer.recordSpecies( pSpeciesToCreate );
+    rMzrUnit.rMolzer.incrementNetworkBySpeciesName( pSpeciesToCreate->getName() );
 
-        return fnd::go;
-    }
+    return fnd::go;
+}
 }

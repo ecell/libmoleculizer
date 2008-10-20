@@ -35,16 +35,16 @@
 
 namespace mzr
 {
-    volumeDumpable::
-    volumeDumpable (mzrUnit& refMzrUnit) :
-            fnd::dumpable<fnd::basicDumpable::dumpArg> (eltName::statStream_volume),
-            rMzrUnit (refMzrUnit)
-    {}
+volumeDumpable::
+volumeDumpable( mzrUnit& refMzrUnit ) :
+        fnd::dumpable<fnd::basicDumpable::dumpArg> ( eltName::statStream_volume ),
+        rMzrUnit( refMzrUnit )
+{}
 
-    void
-    volumeDumpable::
-    doDump (const fnd::basicDumpable::dumpArg& rDumpArg) const
-    {
-        rDumpArg.getOstream() << rMzrUnit.getMolarFactor().getVolume();
-    }
+void
+volumeDumpable::
+doDump( const fnd::basicDumpable::dumpArg& rDumpArg ) const
+{
+    rDumpArg.getOstream() << rMzrUnit.getMolarFactor().getVolume();
+}
 }

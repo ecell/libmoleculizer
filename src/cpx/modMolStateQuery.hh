@@ -40,30 +40,30 @@ namespace cpx
 {
 // Query to test if a modMol has a particular modification at a particular
 // modification site.
-    class modMolStateQuery :
-                public molStateQuery
+class modMolStateQuery :
+            public molStateQuery
+{
+    int modNdx;
+    const modification* pMod;
+
+public:
+    modMolStateQuery( int modificationIndex,
+                      const modification* pModToSee ) :
+            modNdx( modificationIndex ),
+            pMod( pModToSee )
+    {}
+
+    bool
+    operator()( const molParam& rParam ) const
     {
-        int modNdx;
-        const modification* pMod;
+        const modStateMixin* pModStateMixin
+        = dynamic_cast<const modStateMixin*>( rParam );
 
-    public:
-        modMolStateQuery (int modificationIndex,
-                          const modification* pModToSee) :
-                modNdx (modificationIndex),
-                pMod (pModToSee)
-        {}
+        if ( ! pModStateMixin ) throw badModMolStateXcpt();
 
-        bool
-        operator() (const molParam& rParam) const
-        {
-            const modStateMixin* pModStateMixin
-            = dynamic_cast<const modStateMixin*> (rParam);
-
-            if (! pModStateMixin) throw badModMolStateXcpt();
-
-            return (*pModStateMixin) [modNdx] == pMod;
-        }
-    };
+        return ( *pModStateMixin )[modNdx] == pMod;
+    }
+};
 }
 
 #endif // CPX_MODMOLQUERY_H

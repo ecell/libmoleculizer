@@ -36,25 +36,25 @@
 
 namespace mzr
 {
-    class mzrUnit;
-    class moleculizer;
+class mzrUnit;
+class moleculizer;
 
-    /*! \ingroup eventGroup
-    \brief Event to change the volume once. */
-    class volumeEvent :
-                public mzrEvent
-    {
-        mzrUnit& rMzrUnit;
-        double vol;
+/*! \ingroup eventGroup
+\brief Event to change the volume once. */
+class volumeEvent :
+            public mzrEvent
+{
+    mzrUnit& rMzrUnit;
+    double vol;
 
-    public:
-        volumeEvent (mzrUnit& refMzrUnit,
-                     double targetVolume);
+public:
+    volumeEvent( mzrUnit& refMzrUnit,
+                 double targetVolume );
 
-        fnd::eventResult
-        happen (moleculizer& rMolzer)
-        throw (std::exception);
-    };
+    fnd::eventResult
+    happen( moleculizer& rMolzer )
+    throw( std::exception );
+};
 }
 
 #endif // MZR_VOLUMEEVENT_H

@@ -39,29 +39,29 @@ class PropertiedClass;
 class Property
 {
 public:
-    Property(const String& propName);
-    Property(const String& propName, PropertiedClass* propClassPtr);
+    Property( const String& propName );
+    Property( const String& propName, PropertiedClass* propClassPtr );
     ~Property();
-    
+
     const String& getName() const;
 
     Value getValue();
 
-    void setValue( const Value& value);
+    void setValue( const Value& value );
 
-    bool hasOwner() const 
+    bool hasOwner() const
     {
         return hasParent;
     }
-    
+
     void
-    setOwner( PropertiedClass* ptrOwner) 
+    setOwner( PropertiedClass* ptrOwner )
     {
-        if (hasParent)
+        if ( hasParent )
         {
-            throw utl::xcpt( "Cannot reassign property.");
+            throw utl::xcpt( "Cannot reassign property." );
         }
-        
+
         propClassPtr = ptrOwner;
         hasParent = true;
     }

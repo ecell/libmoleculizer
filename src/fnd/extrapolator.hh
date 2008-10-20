@@ -1,8 +1,8 @@
-class extrapolator 
+class extrapolator
 {
 
 
-    
+
 
 
 

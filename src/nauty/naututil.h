@@ -107,41 +107,41 @@ extern "C"
 {
 #endif
 
-    extern void complement (graph*,int,int);
-    extern void converse (graph*,int,int);
-    extern void copycomment (FILE*,FILE*,int);
-    extern void flushline (FILE*);
-    extern void fixit (int*,int*,int*,int,int);
-    extern int getint (FILE*);
-    extern long hash (set*,long,int);
-    extern void mathon (graph*,int,int,graph*,int,int);
-    extern void naututil_check (int,int,int,int);
-    extern void putcanon (FILE*,int*,graph*,int,int,int);
-    extern void putdegs (FILE*,graph*,int,int,int);
-    extern void putgraph (FILE*,graph*,int,int,int);
-    extern void putmapping (FILE*,int*,int,int*,int,int,int);
-    extern void putorbits (FILE*,int*,int,int);
-    extern void putptn (FILE*,int*,int*,int,int,int);
-    extern void putquotient (FILE*,graph*,int*,int*,int,int,int,int);
-    extern void putset (FILE*,set*,int*,int,int,boolean);
-    extern long ran_arr_cycle (void);
-    extern void ran_array (long*,int);
-    extern void ran_init (long);
-    extern void rangraph (graph*,boolean,int,int,int);
-    extern void rangraph2 (graph*,boolean,int,int,int,int);
-    extern void ranperm (permutation*,int);
-    extern void readgraph (FILE*,graph*,boolean,boolean,boolean,int,int,int);
-    extern boolean readinteger (FILE*,int*);
-    extern void readperm (FILE*,permutation*,boolean,int);
-    extern void readptn (FILE*,int*,int*,int*,boolean,int);
-    extern void readvperm (FILE*,permutation*,boolean,int,int*);
-    extern boolean readstring (FILE*,char*,int);
-    extern void relabel (graph*,int*,permutation*,graph*,int,int);
-    extern long sethash (set*,int,long,int);
-    extern int setinter (set*,set*,int);
-    extern int setsize (set*,int);
-    extern void sublabel (graph*,permutation*,int,graph*,int,int);
-    extern void unitptn (int*,int*,int*,int);
+    extern void complement( graph*,int,int );
+    extern void converse( graph*,int,int );
+    extern void copycomment( FILE*,FILE*,int );
+    extern void flushline( FILE* );
+    extern void fixit( int*,int*,int*,int,int );
+    extern int getint( FILE* );
+    extern long hash( set*,long,int );
+    extern void mathon( graph*,int,int,graph*,int,int );
+    extern void naututil_check( int,int,int,int );
+    extern void putcanon( FILE*,int*,graph*,int,int,int );
+    extern void putdegs( FILE*,graph*,int,int,int );
+    extern void putgraph( FILE*,graph*,int,int,int );
+    extern void putmapping( FILE*,int*,int,int*,int,int,int );
+    extern void putorbits( FILE*,int*,int,int );
+    extern void putptn( FILE*,int*,int*,int,int,int );
+    extern void putquotient( FILE*,graph*,int*,int*,int,int,int,int );
+    extern void putset( FILE*,set*,int*,int,int,boolean );
+    extern long ran_arr_cycle( void );
+    extern void ran_array( long*,int );
+    extern void ran_init( long );
+    extern void rangraph( graph*,boolean,int,int,int );
+    extern void rangraph2( graph*,boolean,int,int,int,int );
+    extern void ranperm( permutation*,int );
+    extern void readgraph( FILE*,graph*,boolean,boolean,boolean,int,int,int );
+    extern boolean readinteger( FILE*,int* );
+    extern void readperm( FILE*,permutation*,boolean,int );
+    extern void readptn( FILE*,int*,int*,int*,boolean,int );
+    extern void readvperm( FILE*,permutation*,boolean,int,int* );
+    extern boolean readstring( FILE*,char*,int );
+    extern void relabel( graph*,int*,permutation*,graph*,int,int );
+    extern long sethash( set*,int,long,int );
+    extern int setinter( set*,set*,int );
+    extern int setsize( set*,int );
+    extern void sublabel( graph*,permutation*,int,graph*,int,int );
+    extern void unitptn( int*,int*,int*,int );
 
 #ifdef __cplusplus
 }

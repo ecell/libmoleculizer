@@ -2,7 +2,7 @@ class ExpressionEvaluator
 {
 protected:
     typedef ExpressionCompiler::Code Code;
-    
+
     typedef void* Pointer;
 
     class VirtualMachine
@@ -26,8 +26,8 @@ protected:
     VirtualMachine virtualMachine;
 
     bool recompileFlag;
-    
-    
+
+
 
 
 };

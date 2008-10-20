@@ -34,135 +34,135 @@
 
 namespace cpx
 {
-    template<class plexT>
-    bool
-    plexMap::
-    canMapMol (const plexT& rSrcPlex,
-               int srcMolNdx,
+template<class plexT>
+bool
+plexMap::
+canMapMol( const plexT& rSrcPlex,
+           int srcMolNdx,
+           const plexT& rTgtPlex,
+           int tgtMolNdx ) const
+{
+    return
+        ( molMap[srcMolNdx] == tgtMolNdx )
+        || ( molUnmapped( srcMolNdx )
+             && ( rSrcPlex.mols[srcMolNdx] == rTgtPlex.mols[tgtMolNdx] ) );
+}
+
+template<class plexT>
+bool
+plexMap::
+canMapSite( const plexT& rSrcPlex,
+            const siteSpec& rSrcSite,
+            const plexT& rTgtPlex,
+            const siteSpec& rTgtSite ) const
+{
+    return
+        canMapMol( rSrcPlex,
+                   rSrcSite.molNdx(),
+                   rTgtPlex,
+                   rTgtSite.molNdx() )
+        &&
+        rSrcSite.siteNdx() == rTgtSite.siteNdx();
+}
+
+template<class plexT>
+bool
+plexMap::
+canMapBinding( const plexT& rSrcPlex,
+               int fromBindingNdx,
                const plexT& rTgtPlex,
-               int tgtMolNdx) const
-    {
-        return
-            (molMap[srcMolNdx] == tgtMolNdx)
-            || (molUnmapped (srcMolNdx)
-                && (rSrcPlex.mols[srcMolNdx] == rTgtPlex.mols[tgtMolNdx]) );
-    }
-
-    template<class plexT>
-    bool
-    plexMap::
-    canMapSite (const plexT& rSrcPlex,
-                const siteSpec& rSrcSite,
-                const plexT& rTgtPlex,
-                const siteSpec& rTgtSite) const
-    {
-        return
-            canMapMol (rSrcPlex,
-                       rSrcSite.molNdx(),
-                       rTgtPlex,
-                       rTgtSite.molNdx() )
-            &&
-            rSrcSite.siteNdx() == rTgtSite.siteNdx();
-    }
-
-    template<class plexT>
-    bool
-    plexMap::
-    canMapBinding (const plexT& rSrcPlex,
-                   int fromBindingNdx,
-                   const plexT& rTgtPlex,
-                   int toBindingNdx,
-                   bool& rMustFlip) const
-    {
+               int toBindingNdx,
+               bool& rMustFlip ) const
+{
 // First check the binding map to see if there is already
 // a conflicting mapping of the binding.
-        if (bindingUnmapped (fromBindingNdx)
-                || bindingMap[fromBindingNdx] == toBindingNdx)
-        {
+    if ( bindingUnmapped( fromBindingNdx )
+            || bindingMap[fromBindingNdx] == toBindingNdx )
+    {
 // Since the binding can be mapped, or is already mapped,
 // we check whether the mols can be mapped consistently,
 // noting whether the binding has to be "flipped" to get
 // the consistent mapping of mols.
 
-            const siteSpec& rLeftSrcSite
-            = rSrcPlex.bindings[fromBindingNdx].leftSite();
-            const siteSpec& rRightSrcSite
-            = rSrcPlex.bindings[fromBindingNdx].rightSite();
-            const siteSpec& rLeftTgtSite
-            = rTgtPlex.bindings[toBindingNdx].leftSite();
-            const siteSpec& rRightTgtSite
-            = rTgtPlex.bindings[toBindingNdx].rightSite();
+        const siteSpec& rLeftSrcSite
+        = rSrcPlex.bindings[fromBindingNdx].leftSite();
+        const siteSpec& rRightSrcSite
+        = rSrcPlex.bindings[fromBindingNdx].rightSite();
+        const siteSpec& rLeftTgtSite
+        = rTgtPlex.bindings[toBindingNdx].leftSite();
+        const siteSpec& rRightTgtSite
+        = rTgtPlex.bindings[toBindingNdx].rightSite();
 
 // Try to match up the mols in the unflipped order.
-            if (canMapSite (rSrcPlex,
-                            rLeftSrcSite,
+        if ( canMapSite( rSrcPlex,
+                         rLeftSrcSite,
+                         rTgtPlex,
+                         rLeftTgtSite )
+                &&
+                canMapSite( rSrcPlex,
+                            rRightSrcSite,
                             rTgtPlex,
-                            rLeftTgtSite)
-                    &&
-                    canMapSite (rSrcPlex,
-                                rRightSrcSite,
-                                rTgtPlex,
-                                rRightTgtSite) )
-            {
+                            rRightTgtSite ) )
+        {
 // Unflipped mapping of the mols is consistent.
-                rMustFlip = false;
-                return true;
-            }
+            rMustFlip = false;
+            return true;
+        }
 // Try to match up the mols in the flipped order.
-            else if (canMapSite (rSrcPlex,
-                                 rRightSrcSite,
-                                 rTgtPlex,
-                                 rLeftTgtSite)
-                     &&
-                     canMapSite (rSrcPlex,
-                                 rLeftSrcSite,
-                                 rTgtPlex,
-                                 rRightTgtSite) )
-            {
+        else if ( canMapSite( rSrcPlex,
+                              rRightSrcSite,
+                              rTgtPlex,
+                              rLeftTgtSite )
+                  &&
+                  canMapSite( rSrcPlex,
+                              rLeftSrcSite,
+                              rTgtPlex,
+                              rRightTgtSite ) )
+        {
 // Flipped mapping of the mols is consistent.
-                rMustFlip = true;
-                return true;
-            }
+            rMustFlip = true;
+            return true;
+        }
 // Although the binding map is okay, there is no consistent
 // way to map the mols.
-            else return false;
-        }
-// The binding map conflicts with the proposed mapping of the
-// binding.
         else return false;
     }
+// The binding map conflicts with the proposed mapping of the
+// binding.
+    else return false;
+}
 
-    template<class plexT>
-    void
-    plexMap::
-    doMapBinding (const plexT& rSrcPlex,
-                  int srcBindingNdx,
-                  const plexT& rTgtPlex,
-                  int tgtBindingNdx,
-                  bool flipBinding)
+template<class plexT>
+void
+plexMap::
+doMapBinding( const plexT& rSrcPlex,
+              int srcBindingNdx,
+              const plexT& rTgtPlex,
+              int tgtBindingNdx,
+              bool flipBinding )
+{
+    int leftSrcMolNdx
+    = rSrcPlex.bindings[srcBindingNdx].leftSite().molNdx();
+    int rightSrcMolNdx
+    = rSrcPlex.bindings[srcBindingNdx].rightSite().molNdx();
+    int leftTgtMolNdx
+    = rTgtPlex.bindings[tgtBindingNdx].leftSite().molNdx();
+    int rightTgtMolNdx
+    = rTgtPlex.bindings[tgtBindingNdx].rightSite().molNdx();
+
+    if ( flipBinding )
     {
-        int leftSrcMolNdx
-        = rSrcPlex.bindings[srcBindingNdx].leftSite().molNdx();
-        int rightSrcMolNdx
-        = rSrcPlex.bindings[srcBindingNdx].rightSite().molNdx();
-        int leftTgtMolNdx
-        = rTgtPlex.bindings[tgtBindingNdx].leftSite().molNdx();
-        int rightTgtMolNdx
-        = rTgtPlex.bindings[tgtBindingNdx].rightSite().molNdx();
-
-        if (flipBinding)
-        {
-            molMap[leftSrcMolNdx] = rightTgtMolNdx;
-            molMap[rightSrcMolNdx] = leftTgtMolNdx;
-        }
-        else
-        {
-            molMap[leftSrcMolNdx] = leftTgtMolNdx;
-            molMap[rightSrcMolNdx] = rightTgtMolNdx;
-        }
-
-        bindingMap[srcBindingNdx] = tgtBindingNdx;
+        molMap[leftSrcMolNdx] = rightTgtMolNdx;
+        molMap[rightSrcMolNdx] = leftTgtMolNdx;
     }
+    else
+    {
+        molMap[leftSrcMolNdx] = leftTgtMolNdx;
+        molMap[rightSrcMolNdx] = rightTgtMolNdx;
+    }
+
+    bindingMap[srcBindingNdx] = tgtBindingNdx;
+}
 }
 
 #endif // CPX_PLEXMAPIMPL_H

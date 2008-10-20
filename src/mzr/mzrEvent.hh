@@ -36,10 +36,10 @@
 
 namespace mzr
 {
-    class moleculizer;
+class moleculizer;
 
 // Note that continuator and parametrizer inherit from moleculizer.
-    typedef fnd::event<moleculizer> mzrEvent;
+typedef fnd::event<moleculizer> mzrEvent;
 }
 
 #endif // MZR_MZREVENT_H

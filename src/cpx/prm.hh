@@ -46,64 +46,64 @@
 
 namespace cpx
 {
-    class plex;
+class plex;
 
-    /*! \ingroup plexSpeciesGroup
+/*! \ingroup plexSpeciesGroup
 
-    \brief Parameter giving the strength of a binding in a complex. */
-    typedef double bindingParam;
+\brief Parameter giving the strength of a binding in a complex. */
+typedef double bindingParam;
 
-    /*! \ingroup plexSpeciesGroup
-    \brief Parameter for plexSpecies.
+/*! \ingroup plexSpeciesGroup
+\brief Parameter for plexSpecies.
 
-    This parameter is what distinguishes structurally identical species
-    of complexes from one another.  It is constructed from one of its
-    parts, the vector of molParams, together with the allosteric
-    properties specified by the user for the structure. */
-    class plexParam
-    {
-    public:
+This parameter is what distinguishes structurally identical species
+of complexes from one another.  It is constructed from one of its
+parts, the vector of molParams, together with the allosteric
+properties specified by the user for the structure. */
+class plexParam
+{
+public:
 // Tue Sep 14 12:11:22 PDT 2004 Eliminating bindingParams
 // and changing so that siteParams contains all binding
 // site shapes, instead of just those of free binding
 // sites.
-        siteToShapeMap siteParams;
-        std::vector<molParam> molParams;
+    siteToShapeMap siteParams;
+    std::vector<molParam> molParams;
 
 // When we intall the various parts of the default parameter,
 // we have to make sure that the mol and binding indices
 // will be valid.
-        plexParam (const plex& rParadigm);
+    plexParam( const plex& rParadigm );
 
 // This is for inserting the molParams using push_back.
-        plexParam (void)
-        {}
+    plexParam( void )
+    {}
 
 // Using the ordinary index operator [] on a map is essentially
 // non-const, since it may cause the creation of entries in the
 // map.  This is safely const. No good reason to return a reference,
 // though.
-        const siteParam&
-        getSiteParam (const siteSpec& rSpec) const
-        throw (utl::xcpt);
+    const siteParam&
+    getSiteParam( const siteSpec& rSpec ) const
+    throw( utl::xcpt );
 
-        siteParam&
-        getSiteParam (const siteSpec& rSpec)
-        throw (utl::xcpt);
+    siteParam&
+    getSiteParam( const siteSpec& rSpec )
+    throw( utl::xcpt );
 
 // This could be done with an accumulator.
-        double
-        getWeight (void) const;
+    double
+    getWeight( void ) const;
 
-        bool operator< (const plexParam& rRightParam) const
-        {
-            if (siteParams < rRightParam.siteParams) return true;
-            if (rRightParam.siteParams < siteParams) return false;
-            if (molParams < rRightParam.molParams) return true;
-            if (rRightParam.molParams < molParams) return false;
-            return false;
-        }
-    };
+    bool operator< ( const plexParam& rRightParam ) const
+    {
+        if ( siteParams < rRightParam.siteParams ) return true;
+        if ( rRightParam.siteParams < siteParams ) return false;
+        if ( molParams < rRightParam.molParams ) return true;
+        if ( rRightParam.molParams < molParams ) return false;
+        return false;
+    }
+};
 }
 
 #endif

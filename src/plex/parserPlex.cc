@@ -35,56 +35,56 @@
 namespace plx
 {
 // This doesn't check for duplicate mol instance names.
-    int
-    parserPlex::
-    addMolByName (const std::string& rName,
-                  bnd::mzrMol* pMol)
-    {
-        int ndx = (int) mols.size();
-        mols.push_back (pMol);
-        nameToMolNdx[rName] = ndx;
-        return ndx;
-    }
+int
+parserPlex::
+addMolByName( const std::string& rName,
+              bnd::mzrMol* pMol )
+{
+    int ndx = ( int ) mols.size();
+    mols.push_back( pMol );
+    nameToMolNdx[rName] = ndx;
+    return ndx;
+}
 
-    int
-    parserPlex::
-    getMolNdxByName (const std::string& rName) const
-    {
-        std::map<std::string, int>::const_iterator iNameNdxPair
-        = nameToMolNdx.find (rName);
+int
+parserPlex::
+getMolNdxByName( const std::string& rName ) const
+{
+    std::map<std::string, int>::const_iterator iNameNdxPair
+    = nameToMolNdx.find( rName );
 
-        return (nameToMolNdx.end() == iNameNdxPair)
-               ? -1
-               : iNameNdxPair->second;
-    }
+    return ( nameToMolNdx.end() == iNameNdxPair )
+           ? -1
+           : iNameNdxPair->second;
+}
 
-    int
-    parserPlex::
-    mustGetMolNdxByName (xmlpp::Node* pRequestingNode,
-                         const std::string& rInstanceName) const
-    throw (unkMolInstXcpt)
-    {
-        int ndx = getMolNdxByName (rInstanceName);
-        if (ndx < 0) throw unkMolInstXcpt (rInstanceName,
-                                               pRequestingNode);
-        return ndx;
-    }
+int
+parserPlex::
+mustGetMolNdxByName( xmlpp::Node* pRequestingNode,
+                     const std::string& rInstanceName ) const
+throw( unkMolInstXcpt )
+{
+    int ndx = getMolNdxByName( rInstanceName );
+    if ( ndx < 0 ) throw unkMolInstXcpt( rInstanceName,
+                                             pRequestingNode );
+    return ndx;
+}
 
-    bnd::mzrMol*
-    parserPlex::getMolByName (const std::string& rName) const
-    {
-        int molNdx = getMolNdxByName (rName);
-        return 0 <= molNdx
-               ? mols[molNdx]
-               : 0;
-    }
+bnd::mzrMol*
+parserPlex::getMolByName( const std::string& rName ) const
+{
+    int molNdx = getMolNdxByName( rName );
+    return 0 <= molNdx
+           ? mols[molNdx]
+           : 0;
+}
 
-    bnd::mzrMol*
-    parserPlex::mustGetMolByName (xmlpp::Node* pRequestingNode,
-                                  const std::string& rInstanceName) const
-    throw (unkMolInstXcpt)
-    {
-        return mols[mustGetMolNdxByName (pRequestingNode,
-                                         rInstanceName) ];
-    }
+bnd::mzrMol*
+parserPlex::mustGetMolByName( xmlpp::Node* pRequestingNode,
+                              const std::string& rInstanceName ) const
+throw( unkMolInstXcpt )
+{
+    return mols[mustGetMolNdxByName( pRequestingNode,
+                                     rInstanceName )];
+}
 }

@@ -37,32 +37,32 @@
 namespace fnd
 {
 // A dumpStream is basically a list of these.
-    template<class dumpArgT>
-    class dmpColumn :
-                public basicDmpColumn
+template<class dumpArgT>
+class dmpColumn :
+            public basicDmpColumn
+{
+    dumpable<dumpArgT>* pDumpable;
+    dumpArgT dumpArg;
+
+public:
+    dmpColumn( dumpable<dumpArgT>* ptrDumpable,
+               const dumpArgT& rDumpArg ) :
+            pDumpable( ptrDumpable ),
+            dumpArg( rDumpArg )
+    {}
+
+    void
+    dumpHeader( void )
     {
-        dumpable<dumpArgT>* pDumpable;
-        dumpArgT dumpArg;
+        pDumpable->dumpHeader( dumpArg );
+    }
 
-    public:
-        dmpColumn (dumpable<dumpArgT>* ptrDumpable,
-                   const dumpArgT& rDumpArg) :
-                pDumpable (ptrDumpable),
-                dumpArg (rDumpArg)
-        {}
-
-        void
-        dumpHeader (void)
-        {
-            pDumpable->dumpHeader (dumpArg);
-        }
-
-        void
-        doDump (void)
-        {
-            pDumpable->doDump (dumpArg);
-        }
-    };
+    void
+    doDump( void )
+    {
+        pDumpable->doDump( dumpArg );
+    }
+};
 }
 
 #endif // FND_DUMPSTREAMCOLUMN_H

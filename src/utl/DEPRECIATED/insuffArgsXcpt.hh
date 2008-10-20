@@ -36,28 +36,28 @@
 
 namespace utl
 {
-    class insuffArgsXcpt :
-                public utl::xcpt
-    {
-        static std::string
-        mkCountsMsg (int actualArgCount,
-                     int minimumArgCount);
+class insuffArgsXcpt :
+            public utl::xcpt
+{
+    static std::string
+    mkCountsMsg( int actualArgCount,
+                 int minimumArgCount );
 
-        static std::string
-        mkGeneralMsg (void);
+    static std::string
+    mkGeneralMsg( void );
 
-        insuffArgsXcpt (const std::string& rMsg);
+    insuffArgsXcpt( const std::string& rMsg );
 
-    public:
-        static
-        insuffArgsXcpt
-        general (void);
+public:
+    static
+    insuffArgsXcpt
+    general( void );
 
-        static
-        insuffArgsXcpt
-        counts (int actualArgCount,
-                int minimumArgCount);
-    };
+    static
+    insuffArgsXcpt
+    counts( int actualArgCount,
+            int minimumArgCount );
+};
 }
 
 #endif // UTL_INSUFFARGSXCPT_H

@@ -34,13 +34,13 @@
 
 namespace mzr
 {
-    std::string
-    noStopEventWarning::
-    mkMsg (xmlpp::Node* pOffendingNode)
-    {
-        std::ostringstream msgStream;
-        msgStream << utl::dom::xcpt::mkMsg (pOffendingNode)
-        << "No stop event has been scheduled.";
-        return msgStream.str();
-    }
+std::string
+noStopEventWarning::
+mkMsg( xmlpp::Node* pOffendingNode )
+{
+    std::ostringstream msgStream;
+    msgStream << utl::dom::xcpt::mkMsg( pOffendingNode )
+    << "No stop event has been scheduled.";
+    return msgStream.str();
+}
 }

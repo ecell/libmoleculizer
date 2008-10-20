@@ -36,20 +36,20 @@
 
 namespace mzr
 {
-    class dupSpeciesNameXcpt :
-                public utl::xcpt
-    {
-        static std::string
-        mkMsg (const std::string& rSpeciesName,
-               xmlpp::Node* pRequestingNode = 0);
+class dupSpeciesNameXcpt :
+            public utl::xcpt
+{
+    static std::string
+    mkMsg( const std::string& rSpeciesName,
+           xmlpp::Node* pRequestingNode = 0 );
 
-    public:
-        dupSpeciesNameXcpt (const std::string& rSpeciesName,
-                            xmlpp::Node* pRequestingNode = 0) :
-                utl::xcpt (mkMsg (rSpeciesName,
-                                  pRequestingNode) )
-        {}
-    };
+public:
+    dupSpeciesNameXcpt( const std::string& rSpeciesName,
+                        xmlpp::Node* pRequestingNode = 0 ) :
+            utl::xcpt( mkMsg( rSpeciesName,
+                              pRequestingNode ) )
+    {}
+};
 }
 
 #endif // MZR_DUPSPECIESNAMEXCPT_H

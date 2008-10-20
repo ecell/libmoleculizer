@@ -38,54 +38,54 @@
 
 namespace fnd
 {
-    namespace aux
+namespace aux
+{
+template <typename T>
+class compareByPtrValue
+{
+public:
+    bool operator()( const T* const a, const T* const b ) const
     {
-        template <typename T>
-        class compareByPtrValue
-        {
-        public:
-            bool operator() (const T* const a, const T* const b) const
-            {
-                return *a < *b;
-            }
-
-            bool operator()(const boost::shared_ptr<const T>  a, 
-                            const boost::shared_ptr<const T>  b) const
-            {
-                return *a < *b;
-            } 
-        };
-
-        template <typename ListCatalogT>
-        class doDeleteStringPtrs
-                    : public std::unary_function<typename ListCatalogT::value_type, void>
-        {
-        public:
-            void operator() (const typename doDeleteStringPtrs::argument_type& refPairWithString)
-            {
-                delete refPairWithString.first;
-            }
-        };
-
-        template <typename ListCatalogT>
-        class findEntryWithName
-                    : public std::unary_function<typename ListCatalogT::value_type, bool>
-        {
-        public:
-            findEntryWithName (const std::string& nameToFind)
-                    :
-                    nameMatchTarget ( nameToFind )
-            {}
-
-            bool operator() (const typename findEntryWithName::argument_type& potentialMatch)
-            {
-                return (*potentialMatch.first == nameMatchTarget);
-            }
-
-        private:
-            const std::string& nameMatchTarget;
-        };
+        return *a < *b;
     }
+
+    bool operator()( const boost::shared_ptr<const T>  a,
+                     const boost::shared_ptr<const T>  b ) const
+    {
+        return *a < *b;
+    }
+};
+
+template <typename ListCatalogT>
+class doDeleteStringPtrs
+            : public std::unary_function<typename ListCatalogT::value_type, void>
+{
+public:
+    void operator()( const typename doDeleteStringPtrs::argument_type& refPairWithString )
+    {
+        delete refPairWithString.first;
+    }
+};
+
+template <typename ListCatalogT>
+class findEntryWithName
+            : public std::unary_function<typename ListCatalogT::value_type, bool>
+{
+public:
+    findEntryWithName( const std::string& nameToFind )
+            :
+            nameMatchTarget( nameToFind )
+    {}
+
+    bool operator()( const typename findEntryWithName::argument_type& potentialMatch )
+    {
+        return ( *potentialMatch.first == nameMatchTarget );
+    }
+
+private:
+    const std::string& nameMatchTarget;
+};
+}
 
 }
 

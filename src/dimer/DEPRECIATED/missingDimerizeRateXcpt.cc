@@ -36,14 +36,14 @@ namespace dimer
 {
 // There is lots more useful information in the sites that could be emitted
 // here; e.g. the names of the sites and shapes.
-    std::string
-    missingDimerizeRateXcpt::
-    mkMsg (const cpx::cxSite<plx::mzrPlexSpecies, plx::mzrPlexFamily>& cxLeft,
-           const cpx::cxSite<plx::mzrPlexSpecies, plx::mzrPlexFamily>& cxRight)
-    {
-        std::ostringstream msgStream;
-        msgStream << "dimerizeNoExtrap extrapolator encountered "
-        << "site shapes for which no nominal rate has been given.";
-        return msgStream.str();
-    }
+std::string
+missingDimerizeRateXcpt::
+mkMsg( const cpx::cxSite<plx::mzrPlexSpecies, plx::mzrPlexFamily>& cxLeft,
+       const cpx::cxSite<plx::mzrPlexSpecies, plx::mzrPlexFamily>& cxRight )
+{
+    std::ostringstream msgStream;
+    msgStream << "dimerizeNoExtrap extrapolator encountered "
+    << "site shapes for which no nominal rate has been given.";
+    return msgStream.str();
+}
 }

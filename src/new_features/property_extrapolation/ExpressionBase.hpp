@@ -5,7 +5,7 @@ class ExpressionBase
 {
 protected:
     typedef ExpressionCompiler::Code Code;
-    
+
     typedef void* Pointer;
 
     class VirtualMachine
@@ -24,12 +24,12 @@ protected:
         ~VirtualMachine()
         {}
 
-        Real execute( const Code& code);
+        Real execute( const Code& code );
 
-        void setExpression(const std::string& value);
+        void setExpression( const std::string& value );
         const std::string& getExpression() const;
-        
-        
+
+
 
     protected:
         std::string expression;
@@ -38,5 +38,5 @@ protected:
     private:
 
     };
-        
+
 };

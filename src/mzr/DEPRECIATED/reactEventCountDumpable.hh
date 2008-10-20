@@ -36,25 +36,25 @@
 
 namespace mzr
 {
-    /*! \ingroup dumpGroup
-    \brief Dumps the number of reactions performed so far.
+/*! \ingroup dumpGroup
+\brief Dumps the number of reactions performed so far.
 
-    This is for monitoring program performance and progress.
+This is for monitoring program performance and progress.
 
-    Reaction complexity varies considerably, so that number of reactions
-    performed may not correlate well with amount of work done.
+Reaction complexity varies considerably, so that number of reactions
+performed may not correlate well with amount of work done.
 
-    \sa activationCountDumpable
-    */
-    class reactEventCountDumpable :
-                public fnd::dumpable<fnd::basicDumpable::dumpArg>
-    {
-    public:
-        reactEventCountDumpable (void);
+\sa activationCountDumpable
+*/
+class reactEventCountDumpable :
+            public fnd::dumpable<fnd::basicDumpable::dumpArg>
+{
+public:
+    reactEventCountDumpable( void );
 
-        virtual void
-        doDump (const fnd::basicDumpable::dumpArg& rDumpArg) const;
-    };
+    virtual void
+    doDump( const fnd::basicDumpable::dumpArg& rDumpArg ) const;
+};
 }
 
 #endif // MZR_REACTEVENTCOUNTDUMPABLE_H

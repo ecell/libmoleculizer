@@ -33,43 +33,43 @@
 
 namespace bnd
 {
-    namespace eltName
-    {
-        const std::string modifications ("modifications");
-        const std::string modification ("modification");
-        const std::string modification_nameAttr ("name");
-        const std::string weightDelta ("weight-delta");
-        const std::string weightDelta_daltonsAttr ("daltons");
+namespace eltName
+{
+const std::string modifications( "modifications" );
+const std::string modification( "modification" );
+const std::string modification_nameAttr( "name" );
+const std::string weightDelta( "weight-delta" );
+const std::string weightDelta_daltonsAttr( "daltons" );
 
-        const std::string mols ("mols");
-        const std::string modMol ("mod-mol");
-        const std::string modMol_nameAttr ("name");
-        const std::string weight ("weight");
-        const std::string weight_daltonsAttr ("daltons");
-        const std::string bindingSite ("binding-site");
-        const std::string bindingSite_nameAttr ("name");
-        const std::string defaultShapeRef ("default-shape-ref");
-        const std::string defaultShapeRef_nameAttr ("name");
-        const std::string siteShape ("site-shape");
-        const std::string siteShape_nameAttr ("name");
-        const std::string modSite ("mod-site");
-        const std::string modSite_nameAttr ("name");
-        const std::string defaultModRef ("default-mod-ref");
-        const std::string defaultModRef_nameAttr ("name");
+const std::string mols( "mols" );
+const std::string modMol( "mod-mol" );
+const std::string modMol_nameAttr( "name" );
+const std::string weight( "weight" );
+const std::string weight_daltonsAttr( "daltons" );
+const std::string bindingSite( "binding-site" );
+const std::string bindingSite_nameAttr( "name" );
+const std::string defaultShapeRef( "default-shape-ref" );
+const std::string defaultShapeRef_nameAttr( "name" );
+const std::string siteShape( "site-shape" );
+const std::string siteShape_nameAttr( "name" );
+const std::string modSite( "mod-site" );
+const std::string modSite_nameAttr( "name" );
+const std::string defaultModRef( "default-mod-ref" );
+const std::string defaultModRef_nameAttr( "name" );
 
-        const std::string smallMol ("small-mol");
-        const std::string smallMol_nameAttr ("name");
+const std::string smallMol( "small-mol" );
+const std::string smallMol_nameAttr( "name" );
 
-        const std::string allostericState ("allosteric-state");
-        const std::string modMap ("mod-map");
-        const std::string modSiteRef ("mod-site-ref");
-        const std::string modSiteRef_nameAttr ("name");
-        const std::string modRef ("mod-ref");
-        const std::string modRef_nameAttr ("name");
-        const std::string siteShapeMap ("site-shape-map");
-        const std::string bindingSiteRef ("binding-site-ref");
-        const std::string bindingSiteRef_nameAttr ("name");
-        const std::string siteShapeRef ("site-shape-ref");
-        const std::string siteShapeRef_nameAttr ("name");
-    }
+const std::string allostericState( "allosteric-state" );
+const std::string modMap( "mod-map" );
+const std::string modSiteRef( "mod-site-ref" );
+const std::string modSiteRef_nameAttr( "name" );
+const std::string modRef( "mod-ref" );
+const std::string modRef_nameAttr( "name" );
+const std::string siteShapeMap( "site-shape-map" );
+const std::string bindingSiteRef( "binding-site-ref" );
+const std::string bindingSiteRef_nameAttr( "name" );
+const std::string siteShapeRef( "site-shape-ref" );
+const std::string siteShapeRef_nameAttr( "name" );
+}
 }

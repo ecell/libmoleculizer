@@ -42,21 +42,21 @@
 namespace nmr
 {
 
-    DECLARE_CLASS ( nmrUnit );
-    DECLARE_CLASS ( NameAssembler );
-    class NameAssembler
+DECLARE_CLASS( nmrUnit );
+DECLARE_CLASS( NameAssembler );
+class NameAssembler
+{
+public:
+
+    // This is intended as a sanity check function that can be called during constructors of
+    // different NameAssemblers.  It will throw an exception if startingComplexOutputState != endingComplexOutputState
+    static void assertEncodeDecodeAccuracy( NameAssembler* ptrNameAssembler ) throw( encodeDecodeInconsistencyXcpt )
     {
-    public:
+        // TODO/7: In NameAssembler::assertEncodeDecodeAccuracey, create a much more
+        // complicated ComplexOutputState for checking encoding/decoding equivelence.
 
-        // This is intended as a sanity check function that can be called during constructors of
-        // different NameAssemblers.  It will throw an exception if startingComplexOutputState != endingComplexOutputState
-        static void assertEncodeDecodeAccuracy (NameAssembler* ptrNameAssembler) throw (encodeDecodeInconsistencyXcpt)
-        {
-             // TODO/7: In NameAssembler::assertEncodeDecodeAccuracey, create a much more
-             // complicated ComplexOutputState for checking encoding/decoding equivelence.
-
-             // Create a sufficiently complicated ComplexOutputState.
-            // ComplexOutputState aComplexOutputState;
+        // Create a sufficiently complicated ComplexOutputState.
+        // ComplexOutputState aComplexOutputState;
 
 //             // Encode the COS into a name, then decode the name back into a COS.
 //             ComplexOutputState decodedEncodingOS = ptrNameAssembler->createOutputStateFromName( ptrNameAssembler->createNameFromOutputState( aComplexOutputState ) );
@@ -73,43 +73,43 @@ namespace nmr
 //             {
 //                 throw encodeDecodeInconsistencyXcpt( ptrNameAssembler->getName() );
 //             }
-        }
+    }
 
-    public:
-        NameAssembler (const std::string& nameAssemblerName,
-                       nmr::nmrUnit& refNmrUnit)
-                :
-                assemblerName (nameAssemblerName),
-                theNmrUnit ( refNmrUnit )
-        {}
+public:
+    NameAssembler( const std::string& nameAssemblerName,
+                   nmr::nmrUnit& refNmrUnit )
+            :
+            assemblerName( nameAssemblerName ),
+            theNmrUnit( refNmrUnit )
+    {}
 
-        virtual ~NameAssembler()
-        {}
+    virtual ~NameAssembler()
+    {}
 
-        const std::string&
-        getName() const
-        {
-            return assemblerName;
-        }
+    const std::string&
+    getName() const
+    {
+        return assemblerName;
+    }
 
-        // TODO/5 Depreciate NameAssembler::createName in favor
-        // of "generateNameFromComplexSpecies".
-        std::string
-        createName (ComplexSpeciesCref aComplexSpecies) const
-        {
-            ComplexOutputState anOutputState;
-            aComplexSpecies.constructOutputState ( anOutputState );
+    // TODO/5 Depreciate NameAssembler::createName in favor
+    // of "generateNameFromComplexSpecies".
+    std::string
+    createName( ComplexSpeciesCref aComplexSpecies ) const
+    {
+        ComplexOutputState anOutputState;
+        aComplexSpecies.constructOutputState( anOutputState );
 
-            return createNameFromOutputState ( anOutputState );
-        }
+        return createNameFromOutputState( anOutputState );
+    }
 
-        // TODO/5 Depreciate NameAssembler::createCanonicalName in favor
-        // of "generateCanonicalNameFromComplexSpecies".
-        std::string
-        createCanonicalName ( ComplexSpeciesCref aComplexSpecies) const
-        {
-            ComplexSpeciesOutputMinimizer canonicalNameGenerator;
-            ComplexOutputState minimalOutputState = canonicalNameGenerator.getMinimalOutputState ( aComplexSpecies );
+    // TODO/5 Depreciate NameAssembler::createCanonicalName in favor
+    // of "generateCanonicalNameFromComplexSpecies".
+    std::string
+    createCanonicalName( ComplexSpeciesCref aComplexSpecies ) const
+    {
+        ComplexSpeciesOutputMinimizer canonicalNameGenerator;
+        ComplexOutputState minimalOutputState = canonicalNameGenerator.getMinimalOutputState( aComplexSpecies );
 
 
 //             // TODO DEBUG Delete this debugging only code
@@ -139,44 +139,44 @@ namespace nmr
 //             }
 //             // TODO END DEBUG Delete
 
-            std::string answer = createNameFromOutputState ( minimalOutputState );
-            return answer;
-        }
+        std::string answer = createNameFromOutputState( minimalOutputState );
+        return answer;
+    }
 
-        std::string
-        generateNameFromComplexSpecies (ComplexSpeciesCref aComplexSpecies) const
-        {
-            ComplexOutputState anOutputState;
-            aComplexSpecies.constructOutputState ( anOutputState );
+    std::string
+    generateNameFromComplexSpecies( ComplexSpeciesCref aComplexSpecies ) const
+    {
+        ComplexOutputState anOutputState;
+        aComplexSpecies.constructOutputState( anOutputState );
 
-            // I'm surprised this works....
-            return createNameFromOutputState ( anOutputState );
-        }
+        // I'm surprised this works....
+        return createNameFromOutputState( anOutputState );
+    }
 
-        std::string
-        generateCanonicalNameFromComplexSpecies ( ComplexSpeciesCref aComplexSpecies) const
-        {
-            ComplexSpeciesOutputMinimizer canonicalNameGenerator;
-            ComplexOutputState minimalOutputState = canonicalNameGenerator.getMinimalOutputState ( aComplexSpecies );
+    std::string
+    generateCanonicalNameFromComplexSpecies( ComplexSpeciesCref aComplexSpecies ) const
+    {
+        ComplexSpeciesOutputMinimizer canonicalNameGenerator;
+        ComplexOutputState minimalOutputState = canonicalNameGenerator.getMinimalOutputState( aComplexSpecies );
 
-            // I'm surprised this works
-            return createNameFromOutputState ( minimalOutputState );
-        }
+        // I'm surprised this works
+        return createNameFromOutputState( minimalOutputState );
+    }
 
-        virtual std::string createNameFromOutputState ( ComplexOutputStateCref aComplexOutputState) const = 0;
-        virtual ComplexOutputState createOutputStateFromName ( const std::string& aMangledName) const
-        throw (nmr::UnparsableNameXcpt, utl::NotImplementedXcpt)
-        {
-            // For the time being, I am trying out making this throw something but be overridable.
-            // If it isn't successful, this function should go back to being pure-virtual.
-            throw utl::NotImplementedXcpt ( "NameAssembler::createOutputStateFromName" );
-        }
+    virtual std::string createNameFromOutputState( ComplexOutputStateCref aComplexOutputState ) const = 0;
+    virtual ComplexOutputState createOutputStateFromName( const std::string& aMangledName ) const
+    throw( nmr::UnparsableNameXcpt, utl::NotImplementedXcpt )
+    {
+        // For the time being, I am trying out making this throw something but be overridable.
+        // If it isn't successful, this function should go back to being pure-virtual.
+        throw utl::NotImplementedXcpt( "NameAssembler::createOutputStateFromName" );
+    }
 
-    protected:
-        const std::string assemblerName;
-        nmr::nmrUnit& theNmrUnit;
+protected:
+    const std::string assemblerName;
+    nmr::nmrUnit& theNmrUnit;
 
-    };
+};
 
 }
 

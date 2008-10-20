@@ -36,78 +36,78 @@
 
 namespace bnd
 {
-    mzrBndSite::
-    mzrBndSite (const std::string& rName,
-                const std::set<std::string>& rShapeNames,
-                const std::string& rDefaultShapeName) :
-            cpx::basicBndSite (rName,
+mzrBndSite::
+mzrBndSite( const std::string& rName,
+            const std::set<std::string>& rShapeNames,
+                const std::string& rDefaultShapeName ) :
+            cpx::basicBndSite( rName,
                                rShapeNames,
-                               rDefaultShapeName)
+                               rDefaultShapeName )
+{}
+
+const cpx::siteShape*
+mzrBndSite::
+mustGetShape( const mzrMol* pMol,
+              const std::string& rShapeName,
+              const xmlpp::Node* pRequestingNode ) const
+throw( utl::xcpt )
+{
+    const cpx::siteShape* pShape
+    = getShape( rShapeName );
+
+    if ( ! pShape )
+        throw unkSiteShapeXcpt( pRequestingNode,
+                                *this,
+                                pMol,
+                                rShapeName );
+
+    return pShape;
+}
+
+class insertShapeElt :
+            public std::unary_function<std::pair<const std::string, cpx::siteShape>, void>
+{
+    xmlpp::Element* pBindingSiteElt;
+public:
+    insertShapeElt( xmlpp::Element* pBindingSiteElement ) :
+            pBindingSiteElt( pBindingSiteElement )
     {}
 
-    const cpx::siteShape*
-    mzrBndSite::
-    mustGetShape (const mzrMol* pMol,
-                  const std::string& rShapeName,
-                  const xmlpp::Node* pRequestingNode) const
-    throw (utl::xcpt)
+    void
+    operator()( const std::pair<const std::string, cpx::siteShape>& rEntry ) const
+    throw( std::exception )
     {
-        const cpx::siteShape* pShape
-        = getShape (rShapeName);
+        xmlpp::Element* pSiteShapeElt
+        = pBindingSiteElt->add_child( eltName::siteShape );
 
-        if (! pShape)
-            throw unkSiteShapeXcpt (pRequestingNode,
-                                    *this,
-                                    pMol,
-                                    rShapeName);
-
-        return pShape;
+        pSiteShapeElt->set_attribute( eltName::siteShape_nameAttr,
+                                      rEntry.second.getName() );
     }
+};
 
-    class insertShapeElt :
-                public std::unary_function<std::pair<const std::string, cpx::siteShape>, void>
-    {
-        xmlpp::Element* pBindingSiteElt;
-    public:
-        insertShapeElt (xmlpp::Element* pBindingSiteElement) :
-                pBindingSiteElt (pBindingSiteElement)
-        {}
+xmlpp::Element*
+mzrBndSite::
+insertElt( xmlpp::Element* pMolElt ) const
+throw( utl::xcpt )
+{
+    xmlpp::Element* pBindingSiteElt
+    = pMolElt->add_child( eltName::bindingSite );
 
-        void
-        operator() (const std::pair<const std::string, cpx::siteShape>& rEntry) const
-        throw (std::exception)
-        {
-            xmlpp::Element* pSiteShapeElt
-            = pBindingSiteElt->add_child (eltName::siteShape);
-
-            pSiteShapeElt->set_attribute (eltName::siteShape_nameAttr,
-                                          rEntry.second.getName() );
-        }
-    };
-
-    xmlpp::Element*
-    mzrBndSite::
-    insertElt (xmlpp::Element* pMolElt) const
-    throw (utl::xcpt)
-    {
-        xmlpp::Element* pBindingSiteElt
-        = pMolElt->add_child (eltName::bindingSite);
-
-        pBindingSiteElt->set_attribute (eltName::bindingSite_nameAttr,
-                                        getName() );
+    pBindingSiteElt->set_attribute( eltName::bindingSite_nameAttr,
+                                    getName() );
 
 // Put in the name of this binding site's default shape.
-        xmlpp::Element* pDefaultShapeRefElt
-        = pBindingSiteElt->add_child (eltName::defaultShapeRef);
+    xmlpp::Element* pDefaultShapeRefElt
+    = pBindingSiteElt->add_child( eltName::defaultShapeRef );
 
-        pDefaultShapeRefElt->set_attribute (eltName::defaultShapeRef_nameAttr,
-                                            getDefaultShape()->getName() );
+    pDefaultShapeRefElt->set_attribute( eltName::defaultShapeRef_nameAttr,
+                                        getDefaultShape()->getName() );
 
 // Put in all the binding sites shapes.
-        std::for_each (shapesByName.begin(),
-                       shapesByName.end(),
-                       insertShapeElt (pBindingSiteElt) );
+    std::for_each( shapesByName.begin(),
+                   shapesByName.end(),
+                   insertShapeElt( pBindingSiteElt ) );
 
-        return pBindingSiteElt;
-    }
+    return pBindingSiteElt;
+}
 }

@@ -38,30 +38,30 @@
 
 namespace bnd
 {
-    class smallMol :
-                public cpx::smallMol<bnd::mzrMol>
-    {
+class smallMol :
+            public cpx::smallMol<bnd::mzrMol>
+{
 // Constructs a vector just containing one binding site with
 // one site shape, both with the given name.
-        static std::vector<mzrBndSite>
-        makeBindingSites (const std::string& rMolName);
+    static std::vector<mzrBndSite>
+    makeBindingSites( const std::string& rMolName );
 
-    public:
-        smallMol (const std::string& rName,
-                  double molecularWeight) :
-                cpx::smallMol<bnd::mzrMol> (mzrMol (rName,
-                                                    makeBindingSites (rName) ),
-                                            molecularWeight)
-        {}
+public:
+    smallMol( const std::string& rName,
+              double molecularWeight ) :
+            cpx::smallMol<bnd::mzrMol> ( mzrMol( rName,
+                                                 makeBindingSites( rName ) ),
+                                         molecularWeight )
+    {}
 
-        virtual
-        std::string
-        genInstanceName (int molInstanceNdx) const;
+    virtual
+    std::string
+    genInstanceName( int molInstanceNdx ) const;
 
-        xmlpp::Element*
-        insertElt (xmlpp::Element*) const
-        throw (std::exception);
-    };
+    xmlpp::Element*
+    insertElt( xmlpp::Element* ) const
+    throw( std::exception );
+};
 
 }
 

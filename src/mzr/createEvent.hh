@@ -36,38 +36,38 @@
 
 namespace mzr
 {
-    class mzrSpecies;
-    class mzrUnit;
+class mzrSpecies;
+class mzrUnit;
 
-    /*! \ingroup eventGroup
-    \brief Abstract base class for all events.
+/*! \ingroup eventGroup
+\brief Abstract base class for all events.
 
-    Basically, everything that happens in the simulation is an event.
+Basically, everything that happens in the simulation is an event.
 
-    Aside from the pure virtual doEvent method, which can do just about
-    anything, the event is enabled to keep track of its entry in the
-    global queue of events.  This allows one to determine if the event
-    is scheduled to happen and at what simulation time. */
+Aside from the pure virtual doEvent method, which can do just about
+anything, the event is enabled to keep track of its entry in the
+global queue of events.  This allows one to determine if the event
+is scheduled to happen and at what simulation time. */
 
-    /*! \ingroup eventGroup
-    \brief Event to create species members. */
-    class createEvent :
-                public mzrEvent
-    {
-        mzrSpecies* pSpeciesToCreate;
-        int howMany;
+/*! \ingroup eventGroup
+\brief Event to create species members. */
+class createEvent :
+            public mzrEvent
+{
+    mzrSpecies* pSpeciesToCreate;
+    int howMany;
 
-        mzrUnit& rMzrUnit;
+    mzrUnit& rMzrUnit;
 
-    public:
-        createEvent (mzrSpecies* pSpecies,
-                     int count,
-                     mzrUnit& refMzrUnit);
+public:
+    createEvent( mzrSpecies* pSpecies,
+                 int count,
+                 mzrUnit& refMzrUnit );
 
-        fnd::eventResult
-        happen (moleculizer& rMolzer)
-        throw (std::exception);
-    };
+    fnd::eventResult
+    happen( moleculizer& rMolzer )
+    throw( std::exception );
+};
 }
 
 #endif // MZR_CREATEEVENT_H

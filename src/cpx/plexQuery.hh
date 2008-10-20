@@ -39,83 +39,83 @@
 
 namespace cpx
 {
-    /*! \ingroup plexSpeciesGroup
-    \brief Base class for queries about complexes.
+/*! \ingroup plexSpeciesGroup
+\brief Base class for queries about complexes.
 
-    Adds to plexSpecies::paramQuery the need to map plexParam argument
-    through a plex isomorphism. This way of applying the query is used
-    in omniplex dumps.
-    */
-    template<class plexSpeciesT,
-    class omniPlexT>
-    class plexQuery :
-                public fnd::query<plexSpeciesT>
-    {
-    public:
-        typedef plexSpeciesT plexSpeciesType;
-        typedef omniPlexT omniPlexType;
-        typedef subPlexSpec<omniPlexType> specType;
+Adds to plexSpecies::paramQuery the need to map plexParam argument
+through a plex isomorphism. This way of applying the query is used
+in omniplex dumps.
+*/
+template<class plexSpeciesT,
+class omniPlexT>
+class plexQuery :
+            public fnd::query<plexSpeciesT>
+{
+public:
+    typedef plexSpeciesT plexSpeciesType;
+    typedef omniPlexT omniPlexType;
+    typedef subPlexSpec<omniPlexType> specType;
 
 // Seem to be having some trouble overloading operator() to handle
 // this case.
-        virtual bool
-        applyTracked (const plexSpeciesT& rPlexSpecies,
-                      const specType& rSpec) const = 0;
-    };
+    virtual bool
+    applyTracked( const plexSpeciesT& rPlexSpecies,
+                  const specType& rSpec ) const = 0;
+};
 
-    /*! \brief Auxiliary function class to help do AND of a number of
-    plexQueries. */
-    template<class plexSpeciesT,
-    class omniPlexT>
-    class andPlexQueries :
-                public fnd::andQueries<plexQuery<plexSpeciesT,
-                omniPlexT> >
-    {
-    public:
-        typedef plexSpeciesT plexSpeciesType;
-        typedef omniPlexT omniPlexType;
+/*! \brief Auxiliary function class to help do AND of a number of
+plexQueries. */
+template<class plexSpeciesT,
+class omniPlexT>
+class andPlexQueries :
+            public fnd::andQueries<plexQuery<plexSpeciesT,
+            omniPlexT> >
+{
+public:
+    typedef plexSpeciesT plexSpeciesType;
+    typedef omniPlexT omniPlexType;
 
-        typedef plexQuery<plexSpeciesType,
-        omniPlexType> plexQueryType;
+    typedef plexQuery<plexSpeciesType,
+    omniPlexType> plexQueryType;
 
-        typedef subPlexSpec<omniPlexType> specType;
+    typedef subPlexSpec<omniPlexType> specType;
 
-        bool
-        applyTracked (const plexSpeciesT& rPlexSpecies,
-                      const specType& rSpec) const;
-    };
+    bool
+    applyTracked( const plexSpeciesT& rPlexSpecies,
+                  const specType& rSpec ) const;
+};
 
 // Applies a test of state to a particular mol instance in a complex.
 //
 // At this point in time, the only mols with variable state are modMols.
-    template<class plexSpeciesT,
-    class omniPlexT>
-    class molStatePlexQuery :
-                public plexQuery<plexSpeciesT,
-                omniPlexT>
-    {
+template<class plexSpeciesT,
+class omniPlexT>
+class molStatePlexQuery :
+            public plexQuery<plexSpeciesT,
+            omniPlexT>
+{
 // The index in the complex of the mol whose state is to be queried.
-        molSpec theMolSpec;
+    molSpec theMolSpec;
 
 // Query for state of mol.
-        const cpx::molStateQuery& rQuery;
+    const cpx::molStateQuery& rQuery;
 
-    public:
+public:
 
-        molStatePlexQuery (const molSpec& rMolSpec,
-                           const cpx::molStateQuery& rMolStateQuery) :
-                theMolSpec (rMolSpec),
-                rQuery (rMolStateQuery)
-        {}
+    molStatePlexQuery( const molSpec& rMolSpec,
+                       const cpx::molStateQuery& rMolStateQuery ) :
+            theMolSpec( rMolSpec ),
+            rQuery( rMolStateQuery )
+    {}
 
-        bool
-        operator()
-        (const typename molStatePlexQuery::plexSpeciesType& rPlexSpecies) const;
+    bool
+    operator()
+    ( const typename molStatePlexQuery::plexSpeciesType& rPlexSpecies ) const;
 
-        bool
-        applyTracked (const typename molStatePlexQuery::plexSpeciesType& rPlexSpecies,
-                      const typename molStatePlexQuery::specType& rSpec) const;
-    };
+    bool
+    applyTracked( const typename molStatePlexQuery::plexSpeciesType& rPlexSpecies,
+                  const typename molStatePlexQuery::specType& rSpec ) const;
+};
 }
 
 #include "cpx/plexQueryImpl.hh"

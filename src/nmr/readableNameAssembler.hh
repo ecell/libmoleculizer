@@ -37,12 +37,12 @@
 
 namespace nmr
 {
-    class readableNameAssembler : public NameAssembler
-    {
+class readableNameAssembler : public NameAssembler
+{
 
-    public:
-        std::string createNameFromOutputState ( ComplexOutputStateCref aCOS) const;
-    };
+public:
+    std::string createNameFromOutputState( ComplexOutputStateCref aCOS ) const;
+};
 
 }
 

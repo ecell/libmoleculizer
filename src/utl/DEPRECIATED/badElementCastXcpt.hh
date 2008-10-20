@@ -36,20 +36,20 @@
 
 namespace utl
 {
-    namespace dom
-    {
+namespace dom
+{
 // Thrown when a node is unexpectedly not an element.
-        class badElementCastXcpt :
-                    public xcpt
-        {
-            static std::string
-            mkMsg (const xmlpp::Node* pNode);
+class badElementCastXcpt :
+            public xcpt
+{
+    static std::string
+    mkMsg( const xmlpp::Node* pNode );
 
-        public:
-            badElementCastXcpt (const xmlpp::Node* pNode)
-            throw();
-        };
-    }
+public:
+    badElementCastXcpt( const xmlpp::Node* pNode )
+    throw();
+};
+}
 }
 
 #endif // UTL_BADELEMENTCASTXCPT_H

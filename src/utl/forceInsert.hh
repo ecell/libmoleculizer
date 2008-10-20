@@ -38,52 +38,52 @@
 
 namespace utl
 {
-    template<class mapClass>
-    void
-    forceInsert (mapClass& rTargetMap,
-                 const typename mapClass::value_type& rKeyValuePair)
-    {
+template<class mapClass>
+void
+forceInsert( mapClass& rTargetMap,
+             const typename mapClass::value_type& rKeyValuePair )
+{
 // Attempt to insert the key/value pair.  This will not succeed if
 // the key is already associated to a value by the map.
-        typename std::pair<typename mapClass::iterator, bool> insertResult
-        = rTargetMap.insert (rKeyValuePair);
+    typename std::pair<typename mapClass::iterator, bool> insertResult
+    = rTargetMap.insert( rKeyValuePair );
 
 // If the key was already mapped, reset the value associated to it.
-        if (! insertResult.second)
-        {
-            typename mapClass::iterator iEntry = insertResult.first;
-            iEntry->second = rKeyValuePair.second;
-        }
-    }
-
-    template<class mapClass>
-    class forceInsertOne :
-                public std::unary_function<typename mapClass::value_type, void>
+    if ( ! insertResult.second )
     {
-        mapClass& rTarget;
-
-    public:
-        forceInsertOne (mapClass& rTargetMap) :
-                rTarget (rTargetMap)
-        {}
-
-        void operator() (const typename mapClass::value_type& rEntry) const
-        {
-            forceInsert (rTarget,
-                         rEntry);
-        }
-    };
-
-    template<class mapClass>
-    void
-    forceInsert (mapClass& rTargetMap,
-                 typename mapClass::const_iterator startIter,
-                 typename mapClass::const_iterator stopIter)
-    {
-        std::for_each (startIter,
-                       stopIter,
-                       forceInsertOne<mapClass> (rTargetMap) );
+        typename mapClass::iterator iEntry = insertResult.first;
+        iEntry->second = rKeyValuePair.second;
     }
+}
+
+template<class mapClass>
+class forceInsertOne :
+            public std::unary_function<typename mapClass::value_type, void>
+{
+    mapClass& rTarget;
+
+public:
+    forceInsertOne( mapClass& rTargetMap ) :
+            rTarget( rTargetMap )
+    {}
+
+    void operator()( const typename mapClass::value_type& rEntry ) const
+    {
+        forceInsert( rTarget,
+                     rEntry );
+    }
+};
+
+template<class mapClass>
+void
+forceInsert( mapClass& rTargetMap,
+             typename mapClass::const_iterator startIter,
+             typename mapClass::const_iterator stopIter )
+{
+    std::for_each( startIter,
+                   stopIter,
+                   forceInsertOne<mapClass> ( rTargetMap ) );
+}
 }
 
 #endif // UTL_FORCEINSERT_H

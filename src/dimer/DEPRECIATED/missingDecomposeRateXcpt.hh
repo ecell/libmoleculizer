@@ -42,20 +42,20 @@ namespace dimer
 // Thrown by decomposeNoExtrap extrapolator when the extrapolator is asked
 // to construct a decomposition rate for site shape pairs that have not been
 // given a nominal rate.
-    class missingDecomposeRateXcpt :
-                public utl::xcpt
-    {
-        static std::string
-        mkMsg (const std::string& rFirstSiteShapeName,
-               const std::string& rSecondSiteShapeName);
+class missingDecomposeRateXcpt :
+            public utl::xcpt
+{
+    static std::string
+    mkMsg( const std::string& rFirstSiteShapeName,
+           const std::string& rSecondSiteShapeName );
 
-    public:
-        missingDecomposeRateXcpt (const std::string& rFirstSiteShapeName,
-                                  const std::string& rSecondSiteShapeName) :
-                utl::xcpt (mkMsg (rFirstSiteShapeName,
-                                  rSecondSiteShapeName) )
-        {}
-    };
+public:
+    missingDecomposeRateXcpt( const std::string& rFirstSiteShapeName,
+                              const std::string& rSecondSiteShapeName ) :
+            utl::xcpt( mkMsg( rFirstSiteShapeName,
+                              rSecondSiteShapeName ) )
+    {}
+};
 }
 
 #endif // DIMER_MISSINGDECOMPOSERATEXCPT_H

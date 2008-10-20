@@ -36,17 +36,17 @@
 
 namespace cpx
 {
-    class badModMolStateXcpt :
-                public utl::xcpt
-    {
-        static std::string
-        mkMsg (void);
+class badModMolStateXcpt :
+            public utl::xcpt
+{
+    static std::string
+    mkMsg( void );
 
-    public:
-        badModMolStateXcpt (void) :
-                utl::xcpt (mkMsg() )
-        {}
-    };
+public:
+    badModMolStateXcpt( void ) :
+            utl::xcpt( mkMsg() )
+    {}
+};
 }
 
 #endif // CPX_BADMODMOLSTATEXCPT_H

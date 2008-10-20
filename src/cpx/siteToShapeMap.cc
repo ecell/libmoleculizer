@@ -36,64 +36,64 @@
 
 namespace cpx
 {
-    const siteShape*
-    siteToShapeMap::
-    getSiteShape (const siteSpec& rPlexSiteSpec) const
-    {
-        const_iterator iEntry
-        = find (rPlexSiteSpec);
+const siteShape*
+siteToShapeMap::
+getSiteShape( const siteSpec& rPlexSiteSpec ) const
+{
+    const_iterator iEntry
+    = find( rPlexSiteSpec );
 
-        return end() == iEntry
-               ? 0
-               : iEntry->second;
-    }
+    return end() == iEntry
+           ? 0
+           : iEntry->second;
+}
 
-    const siteShape*
-    siteToShapeMap::
-    mustGetSiteShape (const siteSpec& rPlexSiteSpec) const
-    throw (utl::xcpt)
-    {
-        const siteShape* pSiteShape
-        = getSiteShape (rPlexSiteSpec);
+const siteShape*
+siteToShapeMap::
+mustGetSiteShape( const siteSpec& rPlexSiteSpec ) const
+throw( utl::xcpt )
+{
+    const siteShape* pSiteShape
+    = getSiteShape( rPlexSiteSpec );
 
-        if (! pSiteShape) throw unmappedSiteSpecXcpt();
+    if ( ! pSiteShape ) throw unmappedSiteSpecXcpt();
 
-        return pSiteShape;
-    }
+    return pSiteShape;
+}
 
-    void
-    siteToShapeMap::
-    setSiteShape (const siteSpec& rPlexSiteSpec,
-                  const siteShape* pSiteShape)
-    {
-        utl::forceInsert (*this,
-                          std::pair<siteSpec, const siteShape*> (rPlexSiteSpec,
-                                                                 pSiteShape) );
-    }
+void
+siteToShapeMap::
+setSiteShape( const siteSpec& rPlexSiteSpec,
+              const siteShape* pSiteShape )
+{
+    utl::forceInsert( *this,
+                      std::pair<siteSpec, const siteShape*> ( rPlexSiteSpec,
+                                                              pSiteShape ) );
+}
 
-    class setOneSiteShape :
-                public std::unary_function<siteToShapeMap::value_type, void>
-    {
-        siteToShapeMap& rTargetMap;
-    public:
-        setOneSiteShape (siteToShapeMap& refTargetMap) :
-                rTargetMap (refTargetMap)
-        {}
-
-        void
-        operator() (const argument_type& rSpecShapePair) const
-        {
-            rTargetMap.setSiteShape (rSpecShapePair.first,
-                                     rSpecShapePair.second);
-        }
-    };
+class setOneSiteShape :
+            public std::unary_function<siteToShapeMap::value_type, void>
+{
+    siteToShapeMap& rTargetMap;
+public:
+    setOneSiteShape( siteToShapeMap& refTargetMap ) :
+            rTargetMap( refTargetMap )
+    {}
 
     void
-    siteToShapeMap::
-    setSiteShapes (const siteToShapeMap& rSiteToShapeMap)
+    operator()( const argument_type& rSpecShapePair ) const
     {
-        std::for_each (rSiteToShapeMap.begin(),
-                       rSiteToShapeMap.end(),
-                       setOneSiteShape (*this) );
+        rTargetMap.setSiteShape( rSpecShapePair.first,
+                                 rSpecShapePair.second );
     }
+};
+
+void
+siteToShapeMap::
+setSiteShapes( const siteToShapeMap& rSiteToShapeMap )
+{
+    std::for_each( rSiteToShapeMap.begin(),
+                   rSiteToShapeMap.end(),
+                   setOneSiteShape( *this ) );
+}
 }

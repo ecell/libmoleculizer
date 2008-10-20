@@ -36,18 +36,18 @@
 
 namespace utl
 {
-    namespace dom
-    {
+namespace dom
+{
 // Used in domBatchJob.
-        class noDocumentParsedXcpt :
-                    public xcpt
-        {
-        public:
-            noDocumentParsedXcpt (void) :
-                    xcpt ("Test of parser shows no document has been parsed.")
-            {}
-        };
-    }
+class noDocumentParsedXcpt :
+            public xcpt
+{
+public:
+    noDocumentParsedXcpt( void ) :
+            xcpt( "Test of parser shows no document has been parsed." )
+    {}
+};
+}
 }
 
 #endif // UTL_NODOCUMENTPARSEDXCPT_H

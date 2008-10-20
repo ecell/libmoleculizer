@@ -36,19 +36,19 @@
 
 namespace fnd
 {
-    enum eventResult
-    {
-        go,
-        stop
-    };
+enum eventResult
+{
+    go,
+    stop
+};
 
-    template<class applicationType>
-    class event
-    {
-    public:
-        virtual
-        ~event (void)
-        {}
+template<class applicationType>
+class event
+{
+public:
+    virtual
+    ~event( void )
+    {}
 
 // How the event happens. Typically, this is by making changes to state
 // variables to which the event is directly connected, for example, a
@@ -56,11 +56,11 @@ namespace fnd
 // species. But an event could also change something global, such as the
 // volume in a mixed-bag simulation, which can be made accessible via
 // pApp.
-        virtual
-        eventResult
-        happen (applicationType& rApp)
-        throw (std::exception) = 0;
-    };
+    virtual
+    eventResult
+    happen( applicationType& rApp )
+    throw( std::exception ) = 0;
+};
 }
 
 #endif // FND_EVENT_H

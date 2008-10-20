@@ -37,9 +37,9 @@
 
 namespace cpx
 {
-    typedef fnd::query<molParam> molStateQuery;
+typedef fnd::query<molParam> molStateQuery;
 
-    typedef fnd::andQueries<molStateQuery> andMolStateQueries;
+typedef fnd::andQueries<molStateQuery> andMolStateQueries;
 }
 
 #endif // CPX_MOLQUERY_H

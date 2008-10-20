@@ -38,20 +38,20 @@
 
 namespace bnd
 {
-    class parseSiteShapeName :
-                public std::unary_function<xmlpp::Node*, std::string>
+class parseSiteShapeName :
+            public std::unary_function<xmlpp::Node*, std::string>
+{
+public:
+    std::string
+    operator()( xmlpp::Node* pSiteShapeNode ) const
     {
-    public:
-        std::string
-        operator() (xmlpp::Node* pSiteShapeNode) const
-        {
-            xmlpp::Element* pSiteShapeElt
-            = utl::dom::mustBeElementPtr (pSiteShapeNode);
+        xmlpp::Element* pSiteShapeElt
+        = utl::dom::mustBeElementPtr( pSiteShapeNode );
 
-            return utl::dom::mustGetAttrString (pSiteShapeElt,
-                                                eltName::siteShape_nameAttr);
-        }
-    };
+        return utl::dom::mustGetAttrString( pSiteShapeElt,
+                                            eltName::siteShape_nameAttr );
+    }
+};
 }
 
 #endif // MOL_PARSESITESHAPENAME_H

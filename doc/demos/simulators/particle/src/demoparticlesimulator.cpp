@@ -38,11 +38,11 @@ void SimpleParticleSimulator::singleStep()
 
     std::vector<std::string> stringPtrVector;
 
-    BOOST_FOREACH ( const modelPairType& mpt, theModel)
+    BOOST_FOREACH( const modelPairType& mpt, theModel )
     {
-        if (mpt.second > 0)
+        if ( mpt.second > 0 )
         {
-            stringPtrVector.push_back ( mpt.first );
+            stringPtrVector.push_back( mpt.first );
         }
     }
 
@@ -58,7 +58,7 @@ void SimpleParticleSimulator::singleStep()
         speciesNameOne = stringPtrVector[ firstIndex ];
         speciesNameTwo = stringPtrVector[ secondIndex ];
 
-        if (speciesNameOne == speciesNameTwo && theModel[speciesNameOne] >= 2)
+        if ( speciesNameOne == speciesNameTwo && theModel[speciesNameOne] >= 2 )
         {
             illegalpick = false;
         }
@@ -67,21 +67,21 @@ void SimpleParticleSimulator::singleStep()
             illegalpick = false;
         }
     }
-    while (illegalpick);
+    while ( illegalpick );
 
 
     std::cout << "Collision between " << speciesNameOne << " and " << speciesNameTwo << std::endl;
 
     // Look up these species in the moleculizer list.
-    mzr::moleculizer::SpeciesTypePtr speciesPtrOne = speciesReactionGenerator.getSpeciesWithName ( speciesNameOne );
-    mzr::moleculizer::SpeciesTypePtr speciesPtrTwo = speciesReactionGenerator.getSpeciesWithName ( speciesNameTwo );
+    mzr::moleculizer::SpeciesTypePtr speciesPtrOne = speciesReactionGenerator.getSpeciesWithName( speciesNameOne );
+    mzr::moleculizer::SpeciesTypePtr speciesPtrTwo = speciesReactionGenerator.getSpeciesWithName( speciesNameTwo );
 
     std::vector<mzr::moleculizer::ReactionTypePtr> reactionVector;
-    speciesReactionGenerator.findReactionWithSubstrates ( speciesPtrOne,
+    speciesReactionGenerator.findReactionWithSubstrates( speciesPtrOne,
             speciesPtrTwo,
             reactionVector );
 
-    if (reactionVector.size() == 0)
+    if ( reactionVector.size() == 0 )
     {
         std::cout << "\tNORES \t-- (No reactions between)." << std::endl << std::endl;
         return;
@@ -89,7 +89,7 @@ void SimpleParticleSimulator::singleStep()
 
 
     std::cout << "\t!!! reaction." << std::endl;
-    executeReaction ( reactionVector[ rand() % reactionVector.size() ] );
+    executeReaction( reactionVector[ rand() % reactionVector.size()] );
 }
 
 
@@ -97,24 +97,24 @@ void SimpleParticleSimulator::doSingleUnaryReaction()
 {
 
     std::vector<std::string> stringPtrVector;
-    BOOST_FOREACH ( const modelPairType& mpt, theModel)
+    BOOST_FOREACH( const modelPairType& mpt, theModel )
     {
-        if (mpt.second > 0)
+        if ( mpt.second > 0 )
         {
-            stringPtrVector.push_back ( mpt.first );
+            stringPtrVector.push_back( mpt.first );
         }
     }
 
-    std::string particleName = stringPtrVector[rand() % stringPtrVector.size() ];
+    std::string particleName = stringPtrVector[rand() % stringPtrVector.size()];
 
     std::cout << "Possible unary reaction: " << '\n'
-              << '\t' << particleName << std::endl;
+    << '\t' << particleName << std::endl;
 
-    mzr::moleculizer::SpeciesTypePtr particlePtr = speciesReactionGenerator.getSpeciesWithName ( particleName );
+    mzr::moleculizer::SpeciesTypePtr particlePtr = speciesReactionGenerator.getSpeciesWithName( particleName );
 
     std::vector<mzr::moleculizer::ReactionTypePtr> reactionVector;
-    speciesReactionGenerator.findReactionWithSubstrates (particlePtr,
-            reactionVector);
+    speciesReactionGenerator.findReactionWithSubstrates( particlePtr,
+            reactionVector );
 
     if ( reactionVector.size() == 0 )
     {
@@ -124,8 +124,8 @@ void SimpleParticleSimulator::doSingleUnaryReaction()
 
     std::cout << "\t!!! reaction." << std::endl;
 
-    mzr::moleculizer::ReactionTypePtr rxn = reactionVector[ rand() % reactionVector.size() ];
+    mzr::moleculizer::ReactionTypePtr rxn = reactionVector[ rand() % reactionVector.size()];
 
-    executeReaction ( rxn );
+    executeReaction( rxn );
 
 }

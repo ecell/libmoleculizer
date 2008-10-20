@@ -49,66 +49,66 @@ using namespace std;
 
 #define define_error( type_of_error ) const bool type_of_error( false );
 
-define_error ( EXPECTED_EXCEPTION_HERE );
-define_error ( DID_NOT_EXPECT_EXCEPTION_HERE );
+define_error( EXPECTED_EXCEPTION_HERE );
+define_error( DID_NOT_EXPECT_EXCEPTION_HERE );
 
-std::vector<int> range (unsigned int max)
+std::vector<int> range( unsigned int max )
 {
     std::vector<int> theRange;
-    for (unsigned int i = 0;
+    for ( unsigned int i = 0;
             i != max;
-            ++i)
+            ++i )
     {
-        theRange.push_back (i);
+        theRange.push_back( i );
     }
     return theRange;
 }
 
 void test_constructors()
 {
-    MinimalMol mm ("DebugMolType");
-    MinimalMol mm_copy ( mm );
+    MinimalMol mm( "DebugMolType" );
+    MinimalMol mm_copy( mm );
 
-    BOOST_CHECK ( mm.getMolType() == "DebugMolType");
-    BOOST_CHECK ( mm_copy.getMolType() == "DebugMolType");
+    BOOST_CHECK( mm.getMolType() == "DebugMolType" );
+    BOOST_CHECK( mm_copy.getMolType() == "DebugMolType" );
 }
 
 void test_semantics()
 {
 
-    MinimalMol mm ("FooType");
-    mm.addNewBindingSite ("C");
-    mm.addNewBindingSite ("A");
-    mm.addNewBindingSite ("B");
-    mm.addNewBindingSite ("D");
+    MinimalMol mm( "FooType" );
+    mm.addNewBindingSite( "C" );
+    mm.addNewBindingSite( "A" );
+    mm.addNewBindingSite( "B" );
+    mm.addNewBindingSite( "D" );
 
-    mm.addNewModificationSite ("Site-1", "NULL");
-    mm.addNewModificationSite ("Site-2", "NULL");
-    mm.addNewModificationSite ("Site-3", "NULL");
+    mm.addNewModificationSite( "Site-1", "NULL" );
+    mm.addNewModificationSite( "Site-2", "NULL" );
+    mm.addNewModificationSite( "Site-3", "NULL" );
 
-    BOOST_CHECK ( mm.getBindingSiteInteger ("A") == 1);
-    BOOST_CHECK ( mm.getBindingSiteInteger ("C") == 0);
-
-
-    BOOST_CHECK ( mm.checkIfBindingSiteExists ("A") );
-    BOOST_CHECK ( mm.checkIfBindingSiteExists ("B") );
-    BOOST_CHECK ( mm.checkIfBindingSiteExists ("C") );
-    BOOST_CHECK ( mm.checkIfBindingSiteExists ("D") );
-
-    BOOST_CHECK ( mm.checkIfBindingSiteExists ("E") == false );
-
-    BOOST_CHECK ( mm.checkIfModificationSiteExists ("Site-3") );
-    BOOST_CHECK ( mm.checkIfModificationSiteExists ("Site-1") );
-    BOOST_CHECK ( mm.checkIfModificationSiteExists ("Site-2") );
+    BOOST_CHECK( mm.getBindingSiteInteger( "A" ) == 1 );
+    BOOST_CHECK( mm.getBindingSiteInteger( "C" ) == 0 );
 
 
-    BOOST_CHECK ( mm.checkIfModificationSiteExists ("Site-4") == false );
+    BOOST_CHECK( mm.checkIfBindingSiteExists( "A" ) );
+    BOOST_CHECK( mm.checkIfBindingSiteExists( "B" ) );
+    BOOST_CHECK( mm.checkIfBindingSiteExists( "C" ) );
+    BOOST_CHECK( mm.checkIfBindingSiteExists( "D" ) );
+
+    BOOST_CHECK( mm.checkIfBindingSiteExists( "E" ) == false );
+
+    BOOST_CHECK( mm.checkIfModificationSiteExists( "Site-3" ) );
+    BOOST_CHECK( mm.checkIfModificationSiteExists( "Site-1" ) );
+    BOOST_CHECK( mm.checkIfModificationSiteExists( "Site-2" ) );
 
 
-    BOOST_CHECK ( mm.getBindingSiteInteger ("C") == 0);
-    BOOST_CHECK ( mm.getBindingSiteInteger ("A") == 1);
-    BOOST_CHECK ( mm.getBindingSiteInteger ("D") == 3);
-    BOOST_CHECK ( mm.getBindingSiteInteger ("B") == 2);
+    BOOST_CHECK( mm.checkIfModificationSiteExists( "Site-4" ) == false );
+
+
+    BOOST_CHECK( mm.getBindingSiteInteger( "C" ) == 0 );
+    BOOST_CHECK( mm.getBindingSiteInteger( "A" ) == 1 );
+    BOOST_CHECK( mm.getBindingSiteInteger( "D" ) == 3 );
+    BOOST_CHECK( mm.getBindingSiteInteger( "B" ) == 2 );
 
     // BOOST_CHECK( mm.getBindingSiteInteger("A") == 1);
 //     BOOST_CHECK( mm.getBindingSiteInteger("B") == 2);
@@ -124,43 +124,43 @@ void test_semantics()
 //     {}
 
 
-    BOOST_CHECK ( mm.getModificationSiteInteger ("Site-1") == 0);
-    BOOST_CHECK ( mm.getModificationSiteInteger ("Site-2") == 1);
-    BOOST_CHECK ( mm.getModificationSiteInteger ("Site-3") == 2);
+    BOOST_CHECK( mm.getModificationSiteInteger( "Site-1" ) == 0 );
+    BOOST_CHECK( mm.getModificationSiteInteger( "Site-2" ) == 1 );
+    BOOST_CHECK( mm.getModificationSiteInteger( "Site-3" ) == 2 );
 
-    BOOST_CHECK ( mm.checkIfBindingSiteIsBound ("C") == false );
+    BOOST_CHECK( mm.checkIfBindingSiteIsBound( "C" ) == false );
 
-    mm.bindAtBindingSite ("C");
+    mm.bindAtBindingSite( "C" );
 
-    BOOST_CHECK ( mm.checkIfBindingSiteIsBound ("C") == true );
+    BOOST_CHECK( mm.checkIfBindingSiteIsBound( "C" ) == true );
 
-    mm.unbindAtBindingSite ( "C" );
+    mm.unbindAtBindingSite( "C" );
 
-    BOOST_CHECK ( mm.checkIfBindingSiteIsBound ("C") == false );
+    BOOST_CHECK( mm.checkIfBindingSiteIsBound( "C" ) == false );
 
-    BOOST_CHECK (mm.getModificationValueAtModificationSite ("Site-2") == "NULL");
-    mm.updateModificationState ("Site-1", "ALPHA");
-    mm.updateModificationState ("Site-3", "BETA");
+    BOOST_CHECK( mm.getModificationValueAtModificationSite( "Site-2" ) == "NULL" );
+    mm.updateModificationState( "Site-1", "ALPHA" );
+    mm.updateModificationState( "Site-3", "BETA" );
 
-    BOOST_CHECK (mm.getModificationValueAtModificationSite ("Site-1") == "ALPHA");
-    BOOST_CHECK (mm.getModificationValueAtModificationSite ("Site-2") == "NULL");
-    BOOST_CHECK (mm.getModificationValueAtModificationSite ("Site-3") == "BETA");
+    BOOST_CHECK( mm.getModificationValueAtModificationSite( "Site-1" ) == "ALPHA" );
+    BOOST_CHECK( mm.getModificationValueAtModificationSite( "Site-2" ) == "NULL" );
+    BOOST_CHECK( mm.getModificationValueAtModificationSite( "Site-3" ) == "BETA" );
 
-    mm.updateModificationState ("Site-1", "NULL");
+    mm.updateModificationState( "Site-1", "NULL" );
 
-    BOOST_CHECK (mm.getModificationValueAtModificationSite ("Site-1") == "NULL");
-    BOOST_CHECK (mm.getModificationValueAtModificationSite ("Site-2") == "NULL");
-    BOOST_CHECK (mm.getModificationValueAtModificationSite ("Site-3") == "BETA");
+    BOOST_CHECK( mm.getModificationValueAtModificationSite( "Site-1" ) == "NULL" );
+    BOOST_CHECK( mm.getModificationValueAtModificationSite( "Site-2" ) == "NULL" );
+    BOOST_CHECK( mm.getModificationValueAtModificationSite( "Site-3" ) == "BETA" );
 
 }
 
 test_suite*
-init_unit_test_suite ( int, char* [] )
+init_unit_test_suite( int, char* [] )
 {
-    declare_test_suite ( "nmr::Mol Test Suite");
+    declare_test_suite( "nmr::Mol Test Suite" );
 
-    add_test ( test_constructors );
-    add_test ( test_semantics );
+    add_test( test_constructors );
+    add_test( test_semantics );
 
     return 0;
 }

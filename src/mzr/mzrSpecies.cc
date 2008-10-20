@@ -37,30 +37,30 @@
 
 namespace mzr
 {
-    void
-    mzrSpecies::expandReactionNetwork()
-    {
-        this->expandReactionNetwork(1);
-    }
+void
+mzrSpecies::expandReactionNetwork()
+{
+    this->expandReactionNetwork( 1 );
+}
 
-    void
-    mzrSpecies::expandReactionNetwork (unsigned int depth)
-    {
-        ensureNotified(depth);
-    }
+void
+mzrSpecies::expandReactionNetwork( unsigned int depth )
+{
+    ensureNotified( depth );
+}
 
-    void
-    mzrSpecies::setGenerateDepth (unsigned int i)
-    {
-        mzrSpecies::generateDepth = i;
-    }
+void
+mzrSpecies::setGenerateDepth( unsigned int i )
+{
+    mzrSpecies::generateDepth = i;
+}
 
 
-    unsigned int
-    mzrSpecies::getGenerateDepth()
-    {
-        return mzrSpecies::generateDepth;
-    }
+unsigned int
+mzrSpecies::getGenerateDepth()
+{
+    return mzrSpecies::generateDepth;
+}
 
-    unsigned int mzrSpecies::generateDepth = 1;
+unsigned int mzrSpecies::generateDepth = 1;
 }

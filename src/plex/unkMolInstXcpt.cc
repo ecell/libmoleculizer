@@ -34,23 +34,23 @@
 
 namespace plx
 {
-    std::string
-    unkMolInstXcpt::
-    mkMsg (const std::string& rMolInstName,
-           const xmlpp::Node* pOffendingNode)
-    {
-        std::ostringstream msgStream;
-        msgStream << utl::dom::xcpt::mkMsg (pOffendingNode)
-        << "Unknown mol instance `"
-        << rMolInstName
-        << ".";
-        return msgStream.str();
-    }
+std::string
+unkMolInstXcpt::
+mkMsg( const std::string& rMolInstName,
+       const xmlpp::Node* pOffendingNode )
+{
+    std::ostringstream msgStream;
+    msgStream << utl::dom::xcpt::mkMsg( pOffendingNode )
+    << "Unknown mol instance `"
+    << rMolInstName
+    << ".";
+    return msgStream.str();
+}
 
-    unkMolInstXcpt::
-    unkMolInstXcpt (const std::string& rMolInstName,
-                    const xmlpp::Node* pOffendingNode) :
-            utl::xcpt (mkMsg (rMolInstName,
-                              pOffendingNode) )
-    {}
+unkMolInstXcpt::
+unkMolInstXcpt( const std::string& rMolInstName,
+                const xmlpp::Node* pOffendingNode ) :
+        utl::xcpt( mkMsg( rMolInstName,
+                          pOffendingNode ) )
+{}
 }

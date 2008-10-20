@@ -38,251 +38,251 @@
 namespace nmr
 {
 
-    ComplexOutputState
-    ComplexSpeciesOutputMinimizer::getMinimalOutputState ( ComplexSpeciesCref theComplexSpecies)
-    {
+ComplexOutputState
+ComplexSpeciesOutputMinimizer::getMinimalOutputState( ComplexSpeciesCref theComplexSpecies )
+{
 
-        ComplexSpecies aComplexSpecies (theComplexSpecies);
+    ComplexSpecies aComplexSpecies( theComplexSpecies );
 
-        setupDataStructuresForCalculation ( aComplexSpecies );
+    setupDataStructuresForCalculation( aComplexSpecies );
 
-        Permutation theMinimizingPermutation =
-            calculateCanonicalPermutationForColoredGraph ( complexGraphEdgeMap,
-                    partitionSpecification);
+    Permutation theMinimizingPermutation =
+        calculateCanonicalPermutationForColoredGraph( complexGraphEdgeMap,
+                partitionSpecification );
 
-        aComplexSpecies.applyPermutationToComplex ( theMinimizingPermutation);
+    aComplexSpecies.applyPermutationToComplex( theMinimizingPermutation );
 
-        ComplexOutputState theCanonicalOutputState;
-        theComplexSpecies.constructOutputState ( theCanonicalOutputState );
-        return theCanonicalOutputState;
+    ComplexOutputState theCanonicalOutputState;
+    theComplexSpecies.constructOutputState( theCanonicalOutputState );
+    return theCanonicalOutputState;
 
-    }
+}
 
-    void
-    ComplexSpeciesOutputMinimizer::setupDataStructuresForCalculation (ComplexSpeciesRef aComplexSpecies)
-    {
+void
+ComplexSpeciesOutputMinimizer::setupDataStructuresForCalculation( ComplexSpeciesRef aComplexSpecies )
+{
 
 // Ensure graph is standard, with at most one binding between any two mols in the complex.
-        if (!checkComplexSpeciesIsSimpleGraph (aComplexSpecies) ) throw NonSimpleGraphXcpt (aComplexSpecies);
+    if ( !checkComplexSpeciesIsSimpleGraph( aComplexSpecies ) ) throw NonSimpleGraphXcpt( aComplexSpecies );
 
-        Permutation molOrderingPermutation = calculateMolSortingPermutationForComplex ( aComplexSpecies);
-        aComplexSpecies.applyPermutationToComplex ( molOrderingPermutation );
+    Permutation molOrderingPermutation = calculateMolSortingPermutationForComplex( aComplexSpecies );
+    aComplexSpecies.applyPermutationToComplex( molOrderingPermutation );
 
-        setupComplexEdgeMap ( aComplexSpecies );
-        setupComplexColorPartition ( aComplexSpecies );
-        return;
+    setupComplexEdgeMap( aComplexSpecies );
+    setupComplexColorPartition( aComplexSpecies );
+    return;
+}
+
+void ComplexSpeciesOutputMinimizer::setupComplexEdgeMap( ComplexSpeciesCref aComplexSpecies )
+{
+    BOOST_FOREACH( std::set<int>* ptrSet, complexGraphEdgeMap )
+    {
+        delete ptrSet;
     }
 
-    void ComplexSpeciesOutputMinimizer::setupComplexEdgeMap ( ComplexSpeciesCref aComplexSpecies)
+    for ( unsigned int ii = 0; ii != aComplexSpecies.getNumberOfMolsInComplex(); ++ii )
     {
-        BOOST_FOREACH ( std::set<int>* ptrSet, complexGraphEdgeMap)
-        {
-            delete ptrSet;
-        }
+        complexGraphEdgeMap.push_back( new std::set<int>() );
+    }
 
-        for (unsigned int ii = 0; ii != aComplexSpecies.getNumberOfMolsInComplex(); ++ii)
-        {
-            complexGraphEdgeMap.push_back ( new std::set<int>() );
-        }
-
-        typedef std::pair<int, int> KeyType;
+    typedef std::pair<int, int> KeyType;
 
 
-        ComplexSpecies::BindingListCref theBindingList = aComplexSpecies.getBindingList();
+    ComplexSpecies::BindingListCref theBindingList = aComplexSpecies.getBindingList();
 
 // Create the edge-map for the complex.
-        for ( ComplexSpecies::BindingList::const_iterator bndIter = theBindingList.begin();
-                bndIter != theBindingList.end();
-                ++bndIter)
+    for ( ComplexSpecies::BindingList::const_iterator bndIter = theBindingList.begin();
+            bndIter != theBindingList.end();
+            ++bndIter )
+    {
+
+        int molNdx1 = ( *bndIter ).second.first;
+        int molNdx2 = ( *bndIter ).first.first;
+
+        complexGraphEdgeMap[molNdx1]->insert( molNdx2 );
+        complexGraphEdgeMap[molNdx2]->insert( molNdx1 );
+    }
+}
+
+void ComplexSpeciesOutputMinimizer::setupComplexColorPartition( ComplexSpeciesCref aComplexSpecies )
+{
+    int complexSize = aComplexSpecies.getNumberOfMolsInComplex();
+
+    partitionSpecification.clear();
+    partitionSpecification.reserve( complexSize );
+    partitionSpecification.resize( complexSize );
+
+    ComplexSpecies::MolListCref theMolList = aComplexSpecies.getMolList();
+
+    std::string current_name( "This cannot possibly be a mol-name" );
+    for ( int molNdx = 0; molNdx != ( complexSize - 1 ); ++molNdx )
+    {
+        if ( theMolList[molNdx]->getMolType() != theMolList[molNdx + 1] ->getMolType() )
         {
-
-            int molNdx1 = (*bndIter).second.first;
-            int molNdx2 = (*bndIter).first.first;
-
-            complexGraphEdgeMap[molNdx1]->insert (molNdx2);
-            complexGraphEdgeMap[molNdx2]->insert (molNdx1);
+            partitionSpecification[molNdx] = 0;
+        }
+        else
+        {
+            partitionSpecification[molNdx] = 1;
         }
     }
-
-    void ComplexSpeciesOutputMinimizer::setupComplexColorPartition ( ComplexSpeciesCref aComplexSpecies)
-    {
-        int complexSize = aComplexSpecies.getNumberOfMolsInComplex();
-
-        partitionSpecification.clear();
-        partitionSpecification.reserve ( complexSize );
-        partitionSpecification.resize ( complexSize );
-
-        ComplexSpecies::MolListCref theMolList = aComplexSpecies.getMolList();
-
-        std::string current_name ("This cannot possibly be a mol-name");
-        for ( int molNdx = 0; molNdx != (complexSize - 1); ++molNdx)
-        {
-            if (theMolList[molNdx]->getMolType() != theMolList[molNdx + 1] ->getMolType() )
-            {
-                partitionSpecification[molNdx] = 0;
-            }
-            else
-            {
-                partitionSpecification[molNdx] = 1;
-            }
-        }
 
 // The last item ALWAYS ends a cell.
-        partitionSpecification[complexSize - 1] = 0;
+    partitionSpecification[complexSize - 1] = 0;
 
-        return;
-    }
+    return;
+}
 
 
-    bool
-    ComplexSpeciesOutputMinimizer::checkComplexSpeciesIsSimpleGraph ( ComplexSpeciesCref aComplexSpecies)
+bool
+ComplexSpeciesOutputMinimizer::checkComplexSpeciesIsSimpleGraph( ComplexSpeciesCref aComplexSpecies )
+{
+    typedef std::pair<int, int> IntPair;
+
+    std::map<IntPair, int> bindingsBetweenMap;
+    for ( int firstNdx = 0; firstNdx != aComplexSpecies.getNumberOfMolsInComplex(); ++firstNdx )
     {
-        typedef std::pair<int, int> IntPair;
-
-        std::map<IntPair, int> bindingsBetweenMap;
-        for (int firstNdx = 0; firstNdx != aComplexSpecies.getNumberOfMolsInComplex(); ++firstNdx)
+        for ( int secondNdx = 0; secondNdx != aComplexSpecies.getNumberOfMolsInComplex(); ++secondNdx )
         {
-            for (int secondNdx = 0; secondNdx != aComplexSpecies.getNumberOfMolsInComplex(); ++secondNdx)
-            {
-                IntPair theKey = std::make_pair (firstNdx, secondNdx);
-                int theValue = 0;
+            IntPair theKey = std::make_pair( firstNdx, secondNdx );
+            int theValue = 0;
 
-                bindingsBetweenMap.insert ( std::make_pair ( theKey, theValue) );
-            }
+            bindingsBetweenMap.insert( std::make_pair( theKey, theValue ) );
         }
+    }
 
 
 // Now iterate through each of the bindings and count up the number of connections
-        ComplexSpecies::BindingListCref theBindingList = aComplexSpecies.getBindingList();
-        for ( ComplexSpecies::BindingList::const_iterator bndIter = theBindingList.begin();
-                bndIter != theBindingList.end();
-                ++bndIter)
-        {
-            int bindingIndex1 = (*bndIter).first.first;
-            int bindingIndex2 = (*bndIter).second.first;
+    ComplexSpecies::BindingListCref theBindingList = aComplexSpecies.getBindingList();
+    for ( ComplexSpecies::BindingList::const_iterator bndIter = theBindingList.begin();
+            bndIter != theBindingList.end();
+            ++bndIter )
+    {
+        int bindingIndex1 = ( *bndIter ).first.first;
+        int bindingIndex2 = ( *bndIter ).second.first;
 
 // This means that there is a binding from a mol to itself within a complex species.
-            if (bindingIndex1 == bindingIndex2) return false;
+        if ( bindingIndex1 == bindingIndex2 ) return false;
 
-            IntPair theKey;
+        IntPair theKey;
 
-            if (bindingIndex2 < bindingIndex1) theKey = std::make_pair (bindingIndex2, bindingIndex2);
-            else theKey = std::make_pair (bindingIndex1, bindingIndex2);
+        if ( bindingIndex2 < bindingIndex1 ) theKey = std::make_pair( bindingIndex2, bindingIndex2 );
+        else theKey = std::make_pair( bindingIndex1, bindingIndex2 );
 
-            if (bindingsBetweenMap[theKey] == 1) return false;
-            else bindingsBetweenMap[theKey] = 1;
-        }
-
-        return true;
+        if ( bindingsBetweenMap[theKey] == 1 ) return false;
+        else bindingsBetweenMap[theKey] = 1;
     }
 
-    Permutation
-    ComplexSpeciesOutputMinimizer::calculateCanonicalPermutationForColoredGraph (const GraphEdgeList& graphEdgeList,
-            const ColoringPartition& theColoring)
-    {
-        static DEFAULTOPTIONS_GRAPH (options);
-        options.getcanon = TRUE;
-        options.defaultptn = FALSE;
+    return true;
+}
 
-        DYNALLSTAT (graph,g,g_sz);
-        DYNALLSTAT (int,lab,lab_sz);
-        DYNALLSTAT (int,ptn,ptn_sz);
-        DYNALLSTAT (int,orbits,orbits_sz);
-        DYNALLSTAT (setword,workspace,workspace_sz);
-        DYNALLSTAT (graph, canong, canong_sz);
+Permutation
+ComplexSpeciesOutputMinimizer::calculateCanonicalPermutationForColoredGraph( const GraphEdgeList& graphEdgeList,
+        const ColoringPartition& theColoring )
+{
+    static DEFAULTOPTIONS_GRAPH( options );
+    options.getcanon = TRUE;
+    options.defaultptn = FALSE;
 
-        statsblk stats;
+    DYNALLSTAT( graph,g,g_sz );
+    DYNALLSTAT( int,lab,lab_sz );
+    DYNALLSTAT( int,ptn,ptn_sz );
+    DYNALLSTAT( int,orbits,orbits_sz );
+    DYNALLSTAT( setword,workspace,workspace_sz );
+    DYNALLSTAT( graph, canong, canong_sz );
 
-        int n = theColoring.size();
-        int m = (n + WORDSIZE - 1) / WORDSIZE;
+    statsblk stats;
 
-        set *gv;
+    int n = theColoring.size();
+    int m = ( n + WORDSIZE - 1 ) / WORDSIZE;
+
+    set *gv;
 
 // This dynamically allocates g, the workspace, lab, ptn, and orbits
 
-        char error[] = "malloc";
-        DYNALLOC2 (graph,g,g_sz,m,n,error);
-        DYNALLOC1 (setword, workspace, workspace_sz, 50*m, error);
-        DYNALLOC1 (int, lab, lab_sz, n, error);
-        DYNALLOC1 (int, ptn, ptn_sz, n, error);
-        DYNALLOC1 (int, orbits, orbits_sz, n, error);
-        DYNALLOC2 (graph, canong, canong_sz, m, n, error);
+    char error[] = "malloc";
+    DYNALLOC2( graph,g,g_sz,m,n,error );
+    DYNALLOC1( setword, workspace, workspace_sz, 50*m, error );
+    DYNALLOC1( int, lab, lab_sz, n, error );
+    DYNALLOC1( int, ptn, ptn_sz, n, error );
+    DYNALLOC1( int, orbits, orbits_sz, n, error );
+    DYNALLOC2( graph, canong, canong_sz, m, n, error );
 
 // Create the graph here.
-        for (int vertexNumber = 0; vertexNumber != n; ++vertexNumber)
-        {
-            gv = GRAPHROW (g,vertexNumber,m);
-            EMPTYSET (gv, m);
+    for ( int vertexNumber = 0; vertexNumber != n; ++vertexNumber )
+    {
+        gv = GRAPHROW( g,vertexNumber,m );
+        EMPTYSET( gv, m );
 
-            for (std::set<int>::const_iterator iter = complexGraphEdgeMap[vertexNumber]->begin();
+        for ( std::set<int>::const_iterator iter = complexGraphEdgeMap[vertexNumber]->begin();
                     iter != complexGraphEdgeMap[vertexNumber]->end();
-                    ++iter)
+                    ++iter )
             {
-                ADDELEMENT (gv, *iter);
+                ADDELEMENT( gv, *iter );
             }
-        }
+    }
 
 // Create the coloring partition here.
-        for (unsigned int ii = 0; ii != n; ++ii)
-        {
-            lab[ii] = ii;
-            ptn[ii] = partitionSpecification[ii];
-        }
-
-        nauty (g, lab, ptn, NULL, orbits, &options, &stats, workspace, 50*m, m, n, canong);
-
-        std::vector<int> basicPerm (n, 0);
-
-        for (unsigned int ndx = 0;
-                ndx != n;
-                ++ndx)
-        {
-            basicPerm[ndx] = lab[ndx];
-        }
-
-        DYNFREE (g, g_sz);
-        DYNFREE (lab, lab_sz);
-        DYNFREE (ptn, ptn_sz);
-        DYNFREE (orbits, orbits_sz);
-        DYNFREE (workspace, workspace_sz);
-        DYNFREE (canong, canong_sz);
-
-        return Permutation (basicPerm);
+    for ( unsigned int ii = 0; ii != n; ++ii )
+    {
+        lab[ii] = ii;
+        ptn[ii] = partitionSpecification[ii];
     }
 
-    Permutation
-    ComplexSpeciesOutputMinimizer::calculateMolSortingPermutationForComplex ( ComplexSpeciesCref aComplexSpecies)
+    nauty( g, lab, ptn, NULL, orbits, &options, &stats, workspace, 50*m, m, n, canong );
+
+    std::vector<int> basicPerm( n, 0 );
+
+    for ( unsigned int ndx = 0;
+            ndx != n;
+            ++ndx )
     {
+        basicPerm[ndx] = lab[ndx];
+    }
+
+    DYNFREE( g, g_sz );
+    DYNFREE( lab, lab_sz );
+    DYNFREE( ptn, ptn_sz );
+    DYNFREE( orbits, orbits_sz );
+    DYNFREE( workspace, workspace_sz );
+    DYNFREE( canong, canong_sz );
+
+    return Permutation( basicPerm );
+}
+
+Permutation
+ComplexSpeciesOutputMinimizer::calculateMolSortingPermutationForComplex( ComplexSpeciesCref aComplexSpecies )
+{
 //initialize a vector with entries 0...size-1
-        std::vector<int> permutationVect;
-        for (unsigned int i=0;
-                i != aComplexSpecies.getNumberOfMolsInComplex();
-                ++i)
-        {
-            permutationVect.push_back (i);
-        }
+    std::vector<int> permutationVect;
+    for ( unsigned int i=0;
+            i != aComplexSpecies.getNumberOfMolsInComplex();
+            ++i )
+    {
+        permutationVect.push_back( i );
+    }
 
 //Sort permutation using a function which compares the theMols belonging at that index.
-        std::sort (permutationVect.begin(),
-                   permutationVect.end(),
-                   MolIndexLessThanCmp (aComplexSpecies) );
+    std::sort( permutationVect.begin(),
+               permutationVect.end(),
+               MolIndexLessThanCmp( aComplexSpecies ) );
 
-        Permutation inversePerm = Permutation (permutationVect);
-        Permutation forwardPerm = inversePerm.invertPermutation();
-        return forwardPerm;
-    }
+    Permutation inversePerm = Permutation( permutationVect );
+    Permutation forwardPerm = inversePerm.invertPermutation();
+    return forwardPerm;
+}
 
 
-    ComplexSpeciesOutputMinimizer::MolIndexLessThanCmp::MolIndexLessThanCmp ( ComplexSpeciesCref aComplexSpeciesForCmp)
-            :
-            theComparisonMolList ( aComplexSpeciesForCmp.getMolList() )
-    {}
+ComplexSpeciesOutputMinimizer::MolIndexLessThanCmp::MolIndexLessThanCmp( ComplexSpeciesCref aComplexSpeciesForCmp )
+        :
+        theComparisonMolList( aComplexSpeciesForCmp.getMolList() )
+{}
 
-    bool
-    ComplexSpeciesOutputMinimizer::MolIndexLessThanCmp::operator() (int ndx1, int ndx2)
-    {
-        return *theComparisonMolList[ndx1] < *theComparisonMolList[ndx2];
-    }
+bool
+ComplexSpeciesOutputMinimizer::MolIndexLessThanCmp::operator()( int ndx1, int ndx2 )
+{
+    return *theComparisonMolList[ndx1] < *theComparisonMolList[ndx2];
+}
 
 
 

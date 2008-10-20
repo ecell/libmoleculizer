@@ -36,17 +36,17 @@
 
 namespace cpx
 {
-    class modPlexQueryTypeXcpt :
-                public utl::xcpt
-    {
-        static std::string
-        mkMsg (void);
+class modPlexQueryTypeXcpt :
+            public utl::xcpt
+{
+    static std::string
+    mkMsg( void );
 
-    public:
-        modPlexQueryTypeXcpt (void) :
-                utl::xcpt (mkMsg() )
-        {}
-    };
+public:
+    modPlexQueryTypeXcpt( void ) :
+            utl::xcpt( mkMsg() )
+    {}
+};
 }
 
 #endif // CPX_MODPLEXQUERYTYPEXCPT_H

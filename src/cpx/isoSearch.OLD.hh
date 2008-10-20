@@ -36,46 +36,46 @@
 
 namespace cpx
 {
-    template<class plexT>
-    class isoSearch
-    {
-        const plexT& rLeft;
-        const plexT& rRight;
+template<class plexT>
+class isoSearch
+{
+    const plexT& rLeft;
+    const plexT& rRight;
 
 // Determines if rCurrentIso can be extended over all the bindings
 // starting at leftBindingIndex in the left plex.  This is the basic
 // recursive step in the process of finding an injection or isomorphism.
-        bool
-        mapRestBindings (int leftBindingIndex,
-                         const plexIso& rCurrentIso) const;
+    bool
+    mapRestBindings( int leftBindingIndex,
+                     const plexIso& rCurrentIso ) const;
 
 
-    public:
-        isoSearch (const plexT& rLeftPlex,
-                   const plexT& rRightPlex) :
-                rLeft (rLeftPlex),
-                rRight (rRightPlex)
-        {}
+public:
+    isoSearch( const plexT& rLeftPlex,
+               const plexT& rRightPlex ) :
+            rLeft( rLeftPlex ),
+            rRight( rRightPlex )
+    {}
 
-        virtual
-        ~isoSearch (void)
-        {}
+    virtual
+    ~isoSearch( void )
+    {}
 
 // Virtual function called on the first isomorphism (or injection) found
 // during the search, if any.  This could be to copy the isomorphism out
 // as a return value, as in the derived reportIsoSearch class.
-        virtual void
-        onSuccess (const plexIso& rIso) const
+    virtual void
+    onSuccess( const plexIso& rIso ) const
         {}
 
 // Determines if the left plex is a subcomplex of the right plex.
-        bool
-        findInjection (void) const;
+    bool
+    findInjection( void ) const;
 
 // Determines if the left plex is isomorphic to the right plex.
-        bool
-        findIso (void) const;
-    };
+    bool
+    findIso( void ) const;
+};
 }
 
 #include "cpx/isoSearchImpl.hh"

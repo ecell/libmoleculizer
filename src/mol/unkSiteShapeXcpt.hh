@@ -41,25 +41,25 @@ namespace bnd
 {
 // Exception thrown when the user refers to a binding site shape
 // by an incorrect name.
-    class unkSiteShapeXcpt :
-                public utl::xcpt
-    {
-        static std::string
-        mkMsg (const xmlpp::Node* pOffendingNode,
-               const mzrBndSite& rBindingSite,
-               const mzrMol* pMol,
-               const std::string& rBadSiteShapeName);
-    public:
-        unkSiteShapeXcpt (const xmlpp::Node* pOffendingNode,
-                          const mzrBndSite& rBindingSite,
-                          const mzrMol* pMol,
-                          const std::string& rBadSiteShapeName) :
-                utl::xcpt (mkMsg (pOffendingNode,
-                                  rBindingSite,
-                                  pMol,
-                                  rBadSiteShapeName) )
-        {}
-    };
+class unkSiteShapeXcpt :
+            public utl::xcpt
+{
+    static std::string
+    mkMsg( const xmlpp::Node* pOffendingNode,
+           const mzrBndSite& rBindingSite,
+           const mzrMol* pMol,
+           const std::string& rBadSiteShapeName );
+public:
+    unkSiteShapeXcpt( const xmlpp::Node* pOffendingNode,
+                      const mzrBndSite& rBindingSite,
+                      const mzrMol* pMol,
+                      const std::string& rBadSiteShapeName ) :
+            utl::xcpt( mkMsg( pOffendingNode,
+                              rBindingSite,
+                              pMol,
+                              rBadSiteShapeName ) )
+    {}
+};
 }
 
 #endif // MOL_UNKSITESHAPEXCPT_H

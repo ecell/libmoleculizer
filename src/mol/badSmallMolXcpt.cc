@@ -34,41 +34,41 @@
 
 namespace bnd
 {
-    std::string
-    badSmallMolXcpt::mkMsg (const mzrMol* pMol,
-                            const xmlpp::Node* pOffendingNode)
-    {
-        std::ostringstream msgStream;
-        msgStream << utl::dom::xcpt::mkMsg (pOffendingNode)
-        << "Mol "
-        << pMol->getName()
-        << " is not a small-mol.";
-        return msgStream.str();
-    }
+std::string
+badSmallMolXcpt::mkMsg( const mzrMol* pMol,
+                        const xmlpp::Node* pOffendingNode )
+{
+    std::ostringstream msgStream;
+    msgStream << utl::dom::xcpt::mkMsg( pOffendingNode )
+    << "Mol "
+    << pMol->getName()
+    << " is not a small-mol.";
+    return msgStream.str();
+}
 
-    smallMol*
-    mustBeSmallMol (mzrMol* pMol,
-                    const xmlpp::Node* pRequestingNode)
-    throw (utl::xcpt)
-    {
-        smallMol* pSmallMol = dynamic_cast<smallMol*> (pMol);
+smallMol*
+mustBeSmallMol( mzrMol* pMol,
+                const xmlpp::Node* pRequestingNode )
+throw( utl::xcpt )
+{
+    smallMol* pSmallMol = dynamic_cast<smallMol*>( pMol );
 
-        if (0 == pSmallMol) throw badSmallMolXcpt (pMol,
-                    pRequestingNode);
-        return pSmallMol;
-    }
+    if ( 0 == pSmallMol ) throw badSmallMolXcpt( pMol,
+                pRequestingNode );
+    return pSmallMol;
+}
 
-    const smallMol*
-    mustBeSmallMol (const mzrMol* pMol,
-                    const xmlpp::Node* pRequestingNode)
-    throw (utl::xcpt)
-    {
-        const smallMol* pSmallMol
-        = dynamic_cast<const smallMol*> (pMol);
+const smallMol*
+mustBeSmallMol( const mzrMol* pMol,
+                const xmlpp::Node* pRequestingNode )
+throw( utl::xcpt )
+{
+    const smallMol* pSmallMol
+    = dynamic_cast<const smallMol*>( pMol );
 
-        if (0 == pSmallMol)
-            throw badSmallMolXcpt (pMol,
-                                   pRequestingNode);
-        return pSmallMol;
-    }
+    if ( 0 == pSmallMol )
+        throw badSmallMolXcpt( pMol,
+                               pRequestingNode );
+    return pSmallMol;
+}
 }

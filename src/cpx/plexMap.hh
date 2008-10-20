@@ -37,123 +37,123 @@
 
 namespace cpx
 {
-    /*! \ingroup plexStructGroup
-    \brief Structure-preserving map from one complex to another. */
-    class plexMap
-    {
-    public:
-        std::vector<int> molMap;
-        std::vector<int> bindingMap;
+/*! \ingroup plexStructGroup
+\brief Structure-preserving map from one complex to another. */
+class plexMap
+{
+public:
+    std::vector<int> molMap;
+    std::vector<int> bindingMap;
 
-        plexMap (void)
-        {}
+    plexMap( void )
+    {}
 
-        plexMap (int molCount,
-                 int bindingCount) :
-                molMap (molCount, -1),
-                bindingMap (bindingCount, -1)
-        {}
+    plexMap( int molCount,
+             int bindingCount ) :
+            molMap( molCount, -1 ),
+            bindingMap( bindingCount, -1 )
+    {}
 
 // Methods for applying a plexMap to the specs of various physical
 // features of the complex.
-        siteSpec
-        applyToSiteSpec (const siteSpec& rSourceSiteSpec) const;
+    siteSpec
+    applyToSiteSpec( const siteSpec& rSourceSiteSpec ) const;
 
 // Ever used?
-        bindingSpec
-        applyToBindingSpec (bindingSpec sourceBindingSpec) const
-        {
-            return bindingMap[sourceBindingSpec];
-        }
+    bindingSpec
+    applyToBindingSpec( bindingSpec sourceBindingSpec ) const
+    {
+        return bindingMap[sourceBindingSpec];
+    }
 
-        molSpec
-        applyToMolSpec (molSpec sourceMolSpec) const
-        {
-            return molMap[sourceMolSpec];
-        }
+    molSpec
+    applyToMolSpec( molSpec sourceMolSpec ) const
+    {
+        return molMap[sourceMolSpec];
+    }
 
 // Leaving out subPlexSpec for the time being; it's slightly
 // more complicated, and I doubt it's needed.
 
-        bool
-        molUnmapped (int molNdx) const
-        {
-            return molMap[molNdx] < 0;
-        }
+    bool
+    molUnmapped( int molNdx ) const
+    {
+        return molMap[molNdx] < 0;
+    }
 
-        bool
-        bindingUnmapped (int bindingNdx) const
-        {
-            return bindingMap[bindingNdx] < 0;
-        }
+    bool
+    bindingUnmapped( int bindingNdx ) const
+    {
+        return bindingMap[bindingNdx] < 0;
+    }
 
 // Returns true if 'this' map agrees with the assignment of the source
 // mol to the target mol already, or if the source mol is unmapped
 // and the source mol and target mol are the same.  If this is the case,
 // then the map can be "legally" extended by mapping the source mol
 // to the target mol.
-        template<class plexT>
-        bool
-        canMapMol (const plexT& rSrcPlex,
-                   int srcMolNdx,
-                   const plexT& rTgtPlex,
-                   int tgtMolNdx) const;
+    template<class plexT>
+    bool
+    canMapMol( const plexT& rSrcPlex,
+               int srcMolNdx,
+               const plexT& rTgtPlex,
+               int tgtMolNdx ) const;
 
 // Similar to the above: returns true if the mols on which the binding
 // sites occur are "mappable" according to canMapMol above and the source
 // binding site and target binding site are the same binding site (on the
 // same mol.)
-        template<class plexT>
-        bool
-        canMapSite (const plexT& rSrcPlex,
-                    const siteSpec& rSrcSite,
-                    const plexT& rTgtPlex,
-                    const siteSpec& rTgtSite) const;
+    template<class plexT>
+    bool
+    canMapSite( const plexT& rSrcPlex,
+                const siteSpec& rSrcSite,
+                const plexT& rTgtPlex,
+                const siteSpec& rTgtSite ) const;
 
 // Similar to the above: returns true if 'this' map can be extended by
 // mapping the "from" binding to the "to" binding.  The "must flip" flag
 // is set if the sites of the bindings are ordered oppositely to the way
 // that they must be matched up by the map.
-        template<class plexT>
-        bool
-        canMapBinding (const plexT& rSrcPlex,
-                       int fromBindingNdx,
-                       const plexT& rTgtPlex,
-                       int toBindingNdx,
-                       bool& rMustFlip) const;
+    template<class plexT>
+    bool
+    canMapBinding( const plexT& rSrcPlex,
+                   int fromBindingNdx,
+                   const plexT& rTgtPlex,
+                   int toBindingNdx,
+                   bool& rMustFlip ) const;
 
 // Destructively modifies 'this' map by extending the mapping over another
 // binding, which has previously been tested with "canMapBinding."
-        template<class plexT>
-        void
-        doMapBinding (const plexT& rSrcPlex,
-                      int srcBindingNdx,
-                      const plexT& rTgtPlex,
-                      int tgtBindingNdx,
-                      bool flipBinding);
+    template<class plexT>
+    void
+    doMapBinding( const plexT& rSrcPlex,
+                  int srcBindingNdx,
+                  const plexT& rTgtPlex,
+                  int tgtBindingNdx,
+                  bool flipBinding );
 
 // Generates the identity map from a given complex to itself.
-        static plexMap
-        makeIdentity (int molCount,
-                      int bindingCount);
+    static plexMap
+    makeIdentity( int molCount,
+                  int bindingCount );
 
 // So that plexMaps and plexIsoPairs can be sorted/used for map keys.
-        bool
-        operator< (const plexMap& rRightMap) const
-        {
-            return ( (molMap < rRightMap.molMap)
-                     || ( (molMap == rRightMap.molMap)
-                          && (bindingMap < rRightMap.bindingMap) ) );
-        }
+    bool
+    operator< ( const plexMap& rRightMap ) const
+    {
+        return (( molMap < rRightMap.molMap )
+                || (( molMap == rRightMap.molMap )
+                    && ( bindingMap < rRightMap.bindingMap ) ) );
+    }
 
 // This is used in the comparison function for plexIsos.
-        bool
-        operator== (const plexMap& rRightMap) const
-        {
-            return ( (molMap == rRightMap.molMap)
-                     && (bindingMap == rRightMap.bindingMap) );
-        }
-    };
+    bool
+    operator== ( const plexMap& rRightMap ) const
+    {
+        return (( molMap == rRightMap.molMap )
+                && ( bindingMap == rRightMap.bindingMap ) );
+    }
+};
 }
 
 #include "cpx/plexMapImpl.hh"

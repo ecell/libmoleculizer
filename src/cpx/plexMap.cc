@@ -33,29 +33,29 @@
 
 namespace cpx
 {
-    siteSpec
-    plexMap::
-    applyToSiteSpec (const siteSpec& rSourceSiteSpec) const
-    {
-        siteSpec targetSpec;
-        targetSpec.setMolNdx (molMap[rSourceSiteSpec.molNdx() ]);
-        targetSpec.setSiteNdx (rSourceSiteSpec.siteNdx() );
-        return targetSpec;
-    }
+siteSpec
+plexMap::
+applyToSiteSpec( const siteSpec& rSourceSiteSpec ) const
+{
+    siteSpec targetSpec;
+    targetSpec.setMolNdx( molMap[rSourceSiteSpec.molNdx()] );
+    targetSpec.setSiteNdx( rSourceSiteSpec.siteNdx() );
+    return targetSpec;
+}
 
-    plexMap
-    plexMap::
-    makeIdentity (int molCount,
-                  int bindingCount)
-    {
-        plexMap returnValue (molCount,
-                             bindingCount);
-        while (0 < molCount--)
-            returnValue.molMap[molCount] = molCount;
+plexMap
+plexMap::
+makeIdentity( int molCount,
+              int bindingCount )
+{
+    plexMap returnValue( molCount,
+                         bindingCount );
+    while ( 0 < molCount-- )
+        returnValue.molMap[molCount] = molCount;
 
-        while (0 < bindingCount--)
-            returnValue.bindingMap[bindingCount] = bindingCount;
+    while ( 0 < bindingCount-- )
+        returnValue.bindingMap[bindingCount] = bindingCount;
 
-        return returnValue;
-    }
+    return returnValue;
+}
 }

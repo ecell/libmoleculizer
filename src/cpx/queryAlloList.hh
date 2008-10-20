@@ -42,18 +42,18 @@ namespace cpx
 // its components satisfy state queries.  This optimizes traversal,
 // since we must run through all the queries for every new species
 // in the plex family.
-    template<class plexSpeciesT,
-    class omniPlexT>
-    class queryAllosteryList :
-                public std::list<std::pair<const andPlexQueries<plexSpeciesT,
-                omniPlexT>*,
-                siteToShapeMap> >
-    {
-    public:
-        typedef andPlexQueries<plexSpeciesT,
-        omniPlexT> queryType;
+template<class plexSpeciesT,
+class omniPlexT>
+class queryAllosteryList :
+            public std::list<std::pair<const andPlexQueries<plexSpeciesT,
+            omniPlexT>*,
+            siteToShapeMap> >
+{
+public:
+    typedef andPlexQueries<plexSpeciesT,
+    omniPlexT> queryType;
 
-        typedef subPlexSpec<omniPlexT> specType;
+    typedef subPlexSpec<omniPlexT> specType;
 
 // This is used to add allostery to a plexFamily.
 //
@@ -62,9 +62,9 @@ namespace cpx
 // plexFamily appears, then then the query is applied.  If it tests true,
 // then the associated shapes are overlaid on the new species's binding
 // site shapes.
-        void
-        addQueryAndMap (const queryType* pQuery,
-                        const siteToShapeMap& rSiteToShapeMap);
+    void
+    addQueryAndMap( const queryType* pQuery,
+                    const siteToShapeMap& rSiteToShapeMap );
 
 // Decided, for reasons unknown, to use overloading for the
 // version of this function that works through the injection
@@ -79,18 +79,18 @@ namespace cpx
 // This is used in the construction of new plexSpecies that belong to a
 // plexFamily for which allosteric states have been declared (an
 // allosteric-plex.)
-        void
-        setSatisfiedQuerySiteShapes (plexSpeciesT& rSpecies) const;
+    void
+    setSatisfiedQuerySiteShapes( plexSpeciesT& rSpecies ) const;
 
 // Same as the above, but the queries are pushed forward through
 // the injection, as are the changes in site shapes.
 //
 // This is used in the construction of new plexSpecies in which
 // allosteric subcomplexes have been detected.
-        void
-        setSatisfiedQuerySiteShapes (plexSpeciesT& rSpecies,
-                                     const specType& rSubPlexSpec) const;
-    };
+    void
+    setSatisfiedQuerySiteShapes( plexSpeciesT& rSpecies,
+                                 const specType& rSubPlexSpec ) const;
+};
 }
 
 #include "cpx/queryAlloListImpl.hh"

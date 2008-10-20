@@ -40,29 +40,29 @@
 
 namespace plx
 {
-    class mzrOmniPlex :
-                public cpx::omniPlex<bnd::mzrMol,
-                mzrPlex,
-                mzrPlexSpecies,
-                mzrPlexFamily,
-                mzrOmniPlex>
-    {
-    public:
+class mzrOmniPlex :
+            public cpx::omniPlex<bnd::mzrMol,
+            mzrPlex,
+            mzrPlexSpecies,
+            mzrPlexFamily,
+            mzrOmniPlex>
+{
+public:
 
-        mzrOmniPlex (mzrPlexFamily* pPlexFamily,
-                     fnd::andQueries<structureQueryType>* pOmniStructureQueries,
-                     stateQueriesType* pOmniStateQueries) :
-                cpx::omniPlex<bnd::mzrMol,
-                mzrPlex,
-                mzrPlexSpecies,
-                mzrPlexFamily,
-                mzrOmniPlex> (pPlexFamily,
-                              pOmniStructureQueries,
-                              pOmniStateQueries)
-        {
-            pPlexFamily->addOmniPlex (this);
-        }
-    };
+    mzrOmniPlex( mzrPlexFamily* pPlexFamily,
+                 fnd::andQueries<structureQueryType>* pOmniStructureQueries,
+                 stateQueriesType* pOmniStateQueries ) :
+            cpx::omniPlex<bnd::mzrMol,
+            mzrPlex,
+            mzrPlexSpecies,
+            mzrPlexFamily,
+            mzrOmniPlex> ( pPlexFamily,
+                           pOmniStructureQueries,
+                           pOmniStateQueries )
+    {
+        pPlexFamily->addOmniPlex( this );
+    }
+};
 }
 
 #endif // PLEX_MZROMNIPLEX_H

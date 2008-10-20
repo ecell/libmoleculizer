@@ -34,20 +34,20 @@
 
 namespace mzr
 {
-    noReactEvent::
-    noReactEvent (mzrUnit& refMzrUnit) :
-            rMzrUnit (refMzrUnit)
-    {}
+noReactEvent::
+noReactEvent( mzrUnit& refMzrUnit ) :
+        rMzrUnit( refMzrUnit )
+{}
 
 // Stops reaction generation.
-    fnd::eventResult
-    noReactEvent::
-    happen (moleculizer& rMolzer)
-    throw (std::exception)
-    {
+fnd::eventResult
+noReactEvent::
+happen( moleculizer& rMolzer )
+throw( std::exception )
+{
 //rMzrUnit.setGenerateOk(false);
 
-        rMzrUnit.setGenerateDepth (false);
-        return fnd::go;
-    }
+    rMzrUnit.setGenerateDepth( false );
+    return fnd::go;
+}
 }

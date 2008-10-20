@@ -41,7 +41,7 @@ in scripts. */
 
 namespace fnd
 {
-    extern const double avogadrosNumber;
+extern const double avogadrosNumber;
 }
 
 #endif

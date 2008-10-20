@@ -36,18 +36,18 @@ namespace dimer
 {
 // I think tons of useful information is actually available through
 // the binding context, but not emitted here.
-    std::string
-    missingDecomposeRateXcpt::
-    mkMsg (const std::string& rFirstSiteShapeName,
-           const std::string& rSecondSiteShapeName)
-    {
-        std::ostringstream msgStream;
-        msgStream << "decomposeNoExtrap extrapolator encountered "
-        << "site shapes '"
-        << rFirstSiteShapeName
-        << "' and '"
-        << rSecondSiteShapeName
-        << "' for which no nominal rate has been given.";
-        return msgStream.str();
-    }
+std::string
+missingDecomposeRateXcpt::
+mkMsg( const std::string& rFirstSiteShapeName,
+       const std::string& rSecondSiteShapeName )
+{
+    std::ostringstream msgStream;
+    msgStream << "decomposeNoExtrap extrapolator encountered "
+    << "site shapes '"
+    << rFirstSiteShapeName
+    << "' and '"
+    << rSecondSiteShapeName
+    << "' for which no nominal rate has been given.";
+    return msgStream.str();
+}
 }

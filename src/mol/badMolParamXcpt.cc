@@ -34,18 +34,18 @@
 
 namespace bnd
 {
-    std::string
-    badMolParamXcpt::mkMsg (const std::string& rParamClassName,
-                            const std::string& rMolName)
-    {
-        std::ostringstream msgStream;
-        msgStream << utl::xcpt::mkMsg()
-        << "Parameter was of the wrong class, "
-        << rParamClassName
-        << ", for mol "
-        << rMolName
-        << ".";
-        return msgStream.str();
-    }
+std::string
+badMolParamXcpt::mkMsg( const std::string& rParamClassName,
+                        const std::string& rMolName )
+{
+    std::ostringstream msgStream;
+    msgStream << utl::xcpt::mkMsg()
+    << "Parameter was of the wrong class, "
+    << rParamClassName
+    << ", for mol "
+    << rMolName
+    << ".";
+    return msgStream.str();
+}
 
 }

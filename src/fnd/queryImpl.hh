@@ -37,36 +37,36 @@
 
 namespace fnd
 {
-    template<class queryT>
-    class queryReturnsFalse :
-                public std::unary_function<queryT*, bool>
-    {
-    public:
-        typedef typename queryT::argType argType;
+template<class queryT>
+class queryReturnsFalse :
+            public std::unary_function<queryT*, bool>
+{
+public:
+    typedef typename queryT::argType argType;
 
-        const typename queryT::argType& rArg;
+    const typename queryT::argType& rArg;
 
-        queryReturnsFalse (const argType& rArgument) :
-                rArg (rArgument)
-        {}
+    queryReturnsFalse( const argType& rArgument ) :
+            rArg( rArgument )
+    {}
 
-        bool
-        operator() (const queryT* pQuery) const
-        {
-            const queryT& rQuery = *pQuery;
-            return ! rQuery (rArg);
-        }
-    };
-
-    template<class queryT>
     bool
-    andQueries<queryT>::
-    operator() (const typename queryT::argType& rArg) const
+    operator()( const queryT* pQuery ) const
     {
-        return queries.end() == std::find_if (queries.begin(),
-                                              queries.end(),
-                                              queryReturnsFalse<queryT> (rArg) );
+        const queryT& rQuery = *pQuery;
+        return ! rQuery( rArg );
     }
+};
+
+template<class queryT>
+bool
+andQueries<queryT>::
+operator()( const typename queryT::argType& rArg ) const
+{
+    return queries.end() == std::find_if( queries.begin(),
+                                          queries.end(),
+                                          queryReturnsFalse<queryT> ( rArg ) );
+}
 }
 
 #endif // FND_QUERYIMPL_H

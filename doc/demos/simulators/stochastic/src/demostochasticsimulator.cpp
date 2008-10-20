@@ -34,30 +34,30 @@
 #include "demostochasticsimulator.hpp"
 #include <algorithm>
 
-SimpleStochasticSimulator::SimpleStochasticSimulator (std::string rulesfile, std::string modelfile)
+SimpleStochasticSimulator::SimpleStochasticSimulator( std::string rulesfile, std::string modelfile )
         :
-        SimpleSimulator (rulesfile, modelfile)
+        SimpleSimulator( rulesfile, modelfile )
 {
     recordNewReactions();
 }
 
 void SimpleStochasticSimulator::recordNewReactions()
 {
-    std::copy ( speciesReactionGenerator.theDeltaReactionList.begin(),
-                speciesReactionGenerator.theDeltaReactionList.end(),
-                std::back_inserter ( reactions ) );
+    std::copy( speciesReactionGenerator.theDeltaReactionList.begin(),
+               speciesReactionGenerator.theDeltaReactionList.end(),
+               std::back_inserter( reactions ) );
 
-    if( speciesReactionGenerator.theDeltaReactionList.size() > 0)
+    if ( speciesReactionGenerator.theDeltaReactionList.size() > 0 )
     {
         std::cout << "Adding to StochasticSimulator: " << std::endl;
     }
 
-    BOOST_FOREACH (mzr::mzrReaction* rxn, speciesReactionGenerator.theDeltaReactionList)
+    BOOST_FOREACH( mzr::mzrReaction* rxn, speciesReactionGenerator.theDeltaReactionList )
     {
-        printRxn ( rxn );
+        printRxn( rxn );
     }
 
-    assert ( reactions.size() == speciesReactionGenerator.theCompleteReactionList.size() );
+    assert( reactions.size() == speciesReactionGenerator.theCompleteReactionList.size() );
 
 //     assert( reactions.size() == speciesReactionGenerator.zeroSubstrateRxns.size() + \
 //             speciesReactionGenerator.singleSubstrateRxns.size() +    \
@@ -69,13 +69,13 @@ void SimpleStochasticSimulator::recordNewReactions()
 mzr::mzrReaction* SimpleStochasticSimulator::calculateReactionToFire()
 {
 
-   // Get a list of potential reactions, in this case a list of reactions
-   // that have all positive numbers of substrates.
+    // Get a list of potential reactions, in this case a list of reactions
+    // that have all positive numbers of substrates.
 
     std::vector<mzr::moleculizer::ReactionTypePtr> potentialReactions;
-    getReactionsWithPositivePropensity ( potentialReactions );
+    getReactionsWithPositivePropensity( potentialReactions );
 
-    if (potentialReactions.size() == 0)
+    if ( potentialReactions.size() == 0 )
     {
         std::cout << "There are no reactions with positive propensity..." << std::endl;
         return NULL;
@@ -90,32 +90,32 @@ mzr::mzrReaction* SimpleStochasticSimulator::calculateReactionToFire()
 }
 
 
-void SimpleStochasticSimulator::getReactionsWithPositivePropensity (std::vector<mzr::mzrReaction*>& okReactions)
+void SimpleStochasticSimulator::getReactionsWithPositivePropensity( std::vector<mzr::mzrReaction*>& okReactions )
 {
     okReactions.clear();
 
-    BOOST_FOREACH (mzr::mzrReaction* rxnptr, reactions)
+    BOOST_FOREACH( mzr::mzrReaction* rxnptr, reactions )
     {
-        if ( reactionHasPositiveSubstrates ( rxnptr ) )
+        if ( reactionHasPositiveSubstrates( rxnptr ) )
         {
-            okReactions.push_back ( rxnptr );
+            okReactions.push_back( rxnptr );
         }
     }
 }
 
-bool SimpleStochasticSimulator::reactionHasPositiveSubstrates (const mzr::mzrReaction* rxnPtr)
+bool SimpleStochasticSimulator::reactionHasPositiveSubstrates( const mzr::mzrReaction* rxnPtr )
 {
     typedef std::pair<mzr::mzrSpecies*, int> PairType;
-    BOOST_FOREACH ( const PairType& pr, rxnPtr->getReactants() )
+    BOOST_FOREACH( const PairType& pr, rxnPtr->getReactants() )
     {
-        std::string substrateName ( pr.first->getName() );
+        std::string substrateName( pr.first->getName() );
 
-        if (theModel.find ( substrateName) == theModel.end() )
+        if ( theModel.find( substrateName ) == theModel.end() )
         {
             return false;
         }
 
-        if (theModel[ substrateName ] < pr.second ) return false;
+        if ( theModel[ substrateName ] < pr.second ) return false;
     }
 
     return true;
@@ -126,9 +126,9 @@ void SimpleStochasticSimulator::singleStep()
 {
     mzr::mzrReaction* reaction = calculateReactionToFire();
 
-    if (reaction)
+    if ( reaction )
     {
-        executeReaction ( reaction );
+        executeReaction( reaction );
     }
 
     recordNewReactions();

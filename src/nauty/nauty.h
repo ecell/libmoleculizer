@@ -716,27 +716,27 @@ struct optionstruct;  /* incomplete definition */
 
 typedef struct
 {
-    boolean (*isautom)        /* test for automorphism */
-    (graph*,permutation*,boolean,int,int);
-    int     (*testcanlab)     /* test for better labelling */
-    (graph*,graph*,int*,int*,int,int);
-    void    (*updatecan)      /* update canonical object */
-    (graph*,graph*,permutation*,int,int,int);
-    void    (*refine)         /* refine partition */
-    (graph*,int*,int*,int,int*,permutation*,set*,int*,int,int);
-    void    (*refine1)        /* refine partition, MAXM==1 */
-    (graph*,int*,int*,int,int*,permutation*,set*,int*,int,int);
-    boolean (*cheapautom)     /* test for easy automorphism */
-    (int*,int,boolean,int);
-    int     (*targetcell)     /* decide which cell to split */
-    (graph*,int*,int*,int,int,boolean,int,int,int);
-    void    (*freedyn) (void); /* free dynamic memory */
-    void    (*check)          /* check compilation parameters */
-    (int,int,int,int);
-    void    (*init) (graph*,graph**,graph*,graph**,int*,int*,set*,
-                     struct optionstruct*,int*,int,int);
-    void    (*cleanup) (graph*,graph**,graph*,graph**,int*,int*,
-                        struct optionstruct*,statsblk*,int,int);
+    boolean( *isautom )        /* test for automorphism */
+    ( graph*,permutation*,boolean,int,int );
+    int( *testcanlab )     /* test for better labelling */
+    ( graph*,graph*,int*,int*,int,int );
+    void( *updatecan )      /* update canonical object */
+    ( graph*,graph*,permutation*,int,int,int );
+    void( *refine )         /* refine partition */
+    ( graph*,int*,int*,int,int*,permutation*,set*,int*,int,int );
+    void( *refine1 )        /* refine partition, MAXM==1 */
+    ( graph*,int*,int*,int,int*,permutation*,set*,int*,int,int );
+    boolean( *cheapautom )     /* test for easy automorphism */
+    ( int*,int,boolean,int );
+    int( *targetcell )     /* decide which cell to split */
+    ( graph*,int*,int*,int,int,boolean,int,int,int );
+    void( *freedyn )( void ); /* free dynamic memory */
+    void( *check )          /* check compilation parameters */
+    ( int,int,int,int );
+    void( *init )( graph*,graph**,graph*,graph**,int*,int*,set*,
+                   struct optionstruct*,int*,int,int );
+    void( *cleanup )( graph*,graph**,graph*,graph**,int*,int*,
+                      struct optionstruct*,statsblk*,int,int );
 } dispatchvec;
 
 typedef struct optionstruct
@@ -750,16 +750,16 @@ typedef struct optionstruct
     boolean cartesian;        /* use cartesian rep for writing automs? */
     int linelength;           /* max chars/line (excl. '\n') for output */
     FILE *outfile;            /* file for output, if any */
-    void (*userrefproc)       /* replacement for usual refine procedure */
-    (graph*,int*,int*,int,int*,permutation*,set*,int*,int,int);
-    void (*userautomproc)     /* procedure called for each automorphism */
-    (int,permutation*,int*,int,int,int);
-    void (*userlevelproc)     /* procedure called for each level */
-    (int*,int*,int,int*,statsblk*,int,int,int,int,int,int);
-    void (*usernodeproc)      /* procedure called for each node */
-    (graph*,int*,int*,int,int,int,int,int,int);
-    void (*invarproc)         /* procedure to compute vertex-invariant */
-    (graph*,int*,int*,int,int,int,permutation*,int,boolean,int,int);
+    void( *userrefproc )       /* replacement for usual refine procedure */
+    ( graph*,int*,int*,int,int*,permutation*,set*,int*,int,int );
+    void( *userautomproc )     /* procedure called for each automorphism */
+    ( int,permutation*,int*,int,int,int );
+    void( *userlevelproc )     /* procedure called for each level */
+    ( int*,int*,int,int*,statsblk*,int,int,int,int,int,int );
+    void( *usernodeproc )      /* procedure called for each node */
+    ( graph*,int*,int*,int,int,int,int,int,int );
+    void( *invarproc )         /* procedure to compute vertex-invariant */
+    ( graph*,int*,int*,int,int,int,permutation*,int,boolean,int,int );
     int tc_level;             /* max level for smart target cell choosing */
     int mininvarlevel;        /* min level for invariant computation */
     int maxinvarlevel;        /* max level for invariant computation */
@@ -796,7 +796,7 @@ typedef struct optionstruct
 #define PUTC(c,f) io_putchar(c)
 #else
 #ifdef IS_JAVA
-extern void javastream (FILE* f,char c);
+extern void javastream( FILE* f,char c );
 #define PUTC(c,f) javastream(f,c)
 #else
 #define PUTC(c,f) putc(c,f)
@@ -811,9 +811,9 @@ extern void javastream (FILE* f,char c);
 #include <malloc.h>
 #endif
 #if MALLOC_DEC==0
-extern void *malloc (size_t);
-extern void *realloc (void*,size_t);
-extern void free (void*);
+extern void *malloc( size_t );
+extern void *realloc( void*,size_t );
+extern void free( void* );
 #endif
 #endif
 
@@ -1025,42 +1025,42 @@ extern "C"
 {
 #endif
 
-    extern void alloc_error (char*);
-    extern void breakout (int*,int*,int,int,int,set*,int);
-    extern boolean cheapautom (int*,int,boolean,int);
-    extern void doref (graph*,int*,int*,int,int*,int*,permutation*,set*,int*,
-                           void (*) (graph*,int*,int*,int,int*,permutation*,set*,int*,int,int),
-                           void (*) (graph*,int*,int*,int,int,int,permutation*,int,boolean,int,int),
-                           int,int,int,boolean,int,int);
-    extern void extra_autom (permutation*,int);
-    extern void extra_level (int,int*,int*,int,int,int,int,int,int);
-    extern boolean isautom (graph*,permutation*,boolean,int,int);
+    extern void alloc_error( char* );
+    extern void breakout( int*,int*,int,int,int,set*,int );
+    extern boolean cheapautom( int*,int,boolean,int );
+    extern void doref( graph*,int*,int*,int,int*,int*,permutation*,set*,int*,
+                           void( * )( graph*,int*,int*,int,int*,permutation*,set*,int*,int,int ),
+                           void( * )( graph*,int*,int*,int,int,int,permutation*,int,boolean,int,int ),
+                           int,int,int,boolean,int,int );
+    extern void extra_autom( permutation*,int );
+    extern void extra_level( int,int*,int*,int,int,int,int,int,int );
+    extern boolean isautom( graph*,permutation*,boolean,int,int );
     extern dispatchvec dispatch_graph;
-    extern int itos (int,char*);
-    extern void fmperm (permutation*,set*,set*,int,int);
-    extern void fmptn (int*,int*,int,set*,set*,int,int);
-    extern void longprune (set*,set*,set*,set*,int);
-    extern void nauty (graph*,int*,int*,set*,int*,optionblk*,
-                           statsblk*,set*,int,int,int,graph*);
-    extern void maketargetcell (graph*,int*,int*,int,set*,int*,int*,int,boolean,
-                                    int,int (*) (graph*,int*,int*,int,int,boolean,int,int,int),int,int);
-    extern int nextelement (set*,int,int);
-    extern int orbjoin (int*,permutation*,int);
-    extern void permset (set*,set*,int,permutation*);
-    extern void putstring (FILE*,char*);
-    extern void refine (graph*,int*,int*,int,int*,permutation*,set*,int*,int,int);
-    extern void refine1 (graph*,int*,int*,int,int*,permutation*,set*,int*,int,int);
-    extern void shortprune (set*,set*,int);
-    extern int targetcell (graph*,int*,int*,int,int,boolean,int,int,int);
-    extern int testcanlab (graph*,graph*,int*,int*,int,int);
-    extern void updatecan (graph*,graph*,permutation*,int,int,int);
-    extern void writeperm (FILE*,permutation*,boolean,int,int);
-    extern void nauty_freedyn (void);
-    extern void nauty_check (int,int,int,int);
-    extern void naugraph_check (int,int,int,int);
-    extern void nautil_check (int,int,int,int);
-    extern void nautil_freedyn (void);
-    extern void naugraph_freedyn (void);
+    extern int itos( int,char* );
+    extern void fmperm( permutation*,set*,set*,int,int );
+    extern void fmptn( int*,int*,int,set*,set*,int,int );
+    extern void longprune( set*,set*,set*,set*,int );
+    extern void nauty( graph*,int*,int*,set*,int*,optionblk*,
+                           statsblk*,set*,int,int,int,graph* );
+    extern void maketargetcell( graph*,int*,int*,int,set*,int*,int*,int,boolean,
+                                    int,int( * )( graph*,int*,int*,int,int,boolean,int,int,int ),int,int );
+    extern int nextelement( set*,int,int );
+    extern int orbjoin( int*,permutation*,int );
+    extern void permset( set*,set*,int,permutation* );
+    extern void putstring( FILE*,char* );
+    extern void refine( graph*,int*,int*,int,int*,permutation*,set*,int*,int,int );
+    extern void refine1( graph*,int*,int*,int,int*,permutation*,set*,int*,int,int );
+    extern void shortprune( set*,set*,int );
+    extern int targetcell( graph*,int*,int*,int,int,boolean,int,int,int );
+    extern int testcanlab( graph*,graph*,int*,int*,int,int );
+    extern void updatecan( graph*,graph*,permutation*,int,int,int );
+    extern void writeperm( FILE*,permutation*,boolean,int,int );
+    extern void nauty_freedyn( void );
+    extern void nauty_check( int,int,int,int );
+    extern void naugraph_check( int,int,int,int );
+    extern void nautil_check( int,int,int,int );
+    extern void nautil_freedyn( void );
+    extern void naugraph_freedyn( void );
 
 #ifdef __cplusplus
 }

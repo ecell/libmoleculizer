@@ -39,26 +39,26 @@
 
 namespace ftr
 {
-    class parseOmniGen :
-                public std::unary_function<xmlpp::Node*, void>
-    {
-        mzr::mzrUnit& rMzrUnit;
-        bnd::molUnit& rMolUnit;
-        plx::plexUnit& rPlexUnit;
+class parseOmniGen :
+            public std::unary_function<xmlpp::Node*, void>
+{
+    mzr::mzrUnit& rMzrUnit;
+    bnd::molUnit& rMolUnit;
+    plx::plexUnit& rPlexUnit;
 
-    public:
-        parseOmniGen (mzr::mzrUnit& refMzrUnit,
-                      bnd::molUnit& refMolUnit,
-                      plx::plexUnit& refPlexUnit) :
-                rMzrUnit (refMzrUnit),
-                rMolUnit (refMolUnit),
-                rPlexUnit (refPlexUnit)
-        {}
+public:
+    parseOmniGen( mzr::mzrUnit& refMzrUnit,
+                  bnd::molUnit& refMolUnit,
+                  plx::plexUnit& refPlexUnit ) :
+            rMzrUnit( refMzrUnit ),
+            rMolUnit( refMolUnit ),
+            rPlexUnit( refPlexUnit )
+    {}
 
-        void
-        operator() (xmlpp::Node* pOmniGenNode) const
-        throw (utl::xcpt);
-    };
+    void
+    operator()( xmlpp::Node* pOmniGenNode ) const
+    throw( utl::xcpt );
+};
 }
 
 #endif // FTR_PARSEOMNIGEN_H

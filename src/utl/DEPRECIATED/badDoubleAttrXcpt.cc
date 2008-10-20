@@ -34,31 +34,31 @@
 
 namespace utl
 {
-    namespace dom
-    {
-        std::string
-        badDoubleAttrXcpt::
-        mkMsg (const xmlpp::Element* pElement,
-               const std::string& rAttrName,
-               const std::string& rBadAttrValue)
-        {
-            std::ostringstream msgStream;
-            msgStream << xcpt::mkMsg (pElement)
-            << "Expected double for value of "
-            << rAttrName
-            << " attribute; got `"
-            << rBadAttrValue
-            << "'.";
-            return msgStream.str();
-        }
+namespace dom
+{
+std::string
+badDoubleAttrXcpt::
+mkMsg( const xmlpp::Element* pElement,
+       const std::string& rAttrName,
+       const std::string& rBadAttrValue )
+{
+    std::ostringstream msgStream;
+    msgStream << xcpt::mkMsg( pElement )
+    << "Expected double for value of "
+    << rAttrName
+    << " attribute; got `"
+    << rBadAttrValue
+    << "'.";
+    return msgStream.str();
+}
 
-        badDoubleAttrXcpt::
-        badDoubleAttrXcpt (const xmlpp::Element* pElement,
-                           const std::string& rAttrName,
-                           const std::string& rBadAttrValue) throw() :
-                xcpt (mkMsg (pElement,
-                             rAttrName,
-                             rBadAttrValue) )
-        {}
-    }
+badDoubleAttrXcpt::
+badDoubleAttrXcpt( const xmlpp::Element* pElement,
+                   const std::string& rAttrName,
+                   const std::string& rBadAttrValue ) throw() :
+        xcpt( mkMsg( pElement,
+                     rAttrName,
+                     rBadAttrValue ) )
+{}
+}
 }

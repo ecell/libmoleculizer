@@ -37,37 +37,37 @@
 
 namespace ftr
 {
-    class uniMolFam :
-                public utl::autoVector<mzr::mzrReaction>
+class uniMolFam :
+            public utl::autoVector<mzr::mzrReaction>
+{
+    uniMolRxnGen rxnGen;
+
+public:
+    uniMolFam( mzr::mzrUnit& refMzrUnit,
+               plx::plexUnit& refPlexUnit,
+               bnd::mzrModMol* pEnablingModMol,
+               cpx::andMolStateQueries* pAndMolQueries,
+               const std::vector<molModExchange>& rModExchanges,
+               mzr::mzrSpecies* pAuxReactant,
+               mzr::mzrSpecies* pAuxProduct,
+               const uniMolExtrapolator* pUniMolExtrapolator ) :
+            rxnGen( refMzrUnit,
+                    refPlexUnit,
+                    pEnablingModMol,
+                    pAndMolQueries,
+                    rModExchanges,
+                    pAuxReactant,
+                    pAuxProduct,
+                    this,
+                    pUniMolExtrapolator )
+    {}
+
+    uniMolRxnGen*
+    getRxnGen( void )
     {
-        uniMolRxnGen rxnGen;
-
-    public:
-        uniMolFam (mzr::mzrUnit& refMzrUnit,
-                   plx::plexUnit& refPlexUnit,
-                   bnd::mzrModMol* pEnablingModMol,
-                   cpx::andMolStateQueries* pAndMolQueries,
-                   const std::vector<molModExchange>& rModExchanges,
-                   mzr::mzrSpecies* pAuxReactant,
-                   mzr::mzrSpecies* pAuxProduct,
-                   const uniMolExtrapolator* pUniMolExtrapolator) :
-                rxnGen (refMzrUnit,
-                        refPlexUnit,
-                        pEnablingModMol,
-                        pAndMolQueries,
-                        rModExchanges,
-                        pAuxReactant,
-                        pAuxProduct,
-                        this,
-                        pUniMolExtrapolator)
-        {}
-
-        uniMolRxnGen*
-        getRxnGen (void)
-        {
-            return &rxnGen;
-        }
-    };
+        return &rxnGen;
+    }
+};
 }
 
 #endif // FTR_UNIMOLFAM_H

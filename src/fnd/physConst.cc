@@ -33,5 +33,5 @@
 
 namespace fnd
 {
-    const double avogadrosNumber = 6.02e23;
+const double avogadrosNumber = 6.02e23;
 }

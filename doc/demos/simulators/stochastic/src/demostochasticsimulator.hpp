@@ -36,17 +36,17 @@
 class SimpleStochasticSimulator : public SimpleSimulator
 {
 public:
-    SimpleStochasticSimulator (std::string rulesfile, std::string modelfile);
+    SimpleStochasticSimulator( std::string rulesfile, std::string modelfile );
     void singleStep();
 
 protected:
 
     mzr::mzrReaction* calculateReactionToFire();
-    void getReactionsWithPositivePropensity ( std::vector<mzr::mzrReaction*>& okReactions);
-    bool reactionHasPositiveSubstrates (const mzr::mzrReaction* rxnPtr);
+    void getReactionsWithPositivePropensity( std::vector<mzr::mzrReaction*>& okReactions );
+    bool reactionHasPositiveSubstrates( const mzr::mzrReaction* rxnPtr );
     void recordNewReactions();
 
-    void printRxn (const mzr::mzrReaction* rxnPtr) const
+    void printRxn( const mzr::mzrReaction* rxnPtr ) const
     {
         std::cout << rxnPtr->getName() << std::endl;
     }

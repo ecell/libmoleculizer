@@ -44,189 +44,189 @@
 
 namespace nmr
 {
-    const int Permutation::UNDEF = -1;
+const int Permutation::UNDEF = -1;
 
-    Permutation::Permutation (Dimension n)
-            :
-            thePermutation (n, Permutation::UNDEF), //n values of UNDEF
-            theDimension ( n )
+Permutation::Permutation( Dimension n )
+        :
+        thePermutation( n, Permutation::UNDEF ), //n values of UNDEF
+        theDimension( n )
+{
+    if ( n == 1 ) setValueAtPosition( 0, 0 );
+}
+
+Permutation::Permutation( PermutationCref aPermutation )
+        :
+        thePermutation( aPermutation.getCorePermutation() ),
+        theDimension( aPermutation.getDimension() )
+{}
+
+Permutation::Permutation( CorePermutationTypeCref aPermutationVector )
+        :
+        thePermutation( aPermutationVector.begin(),
+                        aPermutationVector.end() ),
+        theDimension( aPermutationVector.size() )
+{}
+
+Permutation::Permutation( PermutationCref aPermutation,
+                          PermutationCref bPermutation )
+{
+    std::vector<int> corePerm( aPermutation.getCorePermutation().begin(),
+                               aPermutation.getCorePermutation().end() );
+
+    BOOST_FOREACH( int i, bPermutation.getCorePermutation() )
     {
-        if (n == 1) setValueAtPosition (0, 0);
+        corePerm.push_back( i + aPermutation.getDimension() );
     }
 
-    Permutation::Permutation (PermutationCref aPermutation)
-            :
-            thePermutation ( aPermutation.getCorePermutation() ),
-            theDimension ( aPermutation.getDimension() )
-    {}
+    thePermutation = corePerm;
+    theDimension = thePermutation.size();
+}
 
-    Permutation::Permutation (CorePermutationTypeCref aPermutationVector)
-            :
-            thePermutation (aPermutationVector.begin(),
-                            aPermutationVector.end() ),
-            theDimension ( aPermutationVector.size() )
-    {}
-
-    Permutation::Permutation ( PermutationCref aPermutation,
-                               PermutationCref bPermutation)
+Permutation::Permutation( PermutationCref aPermutation,
+                          BindingNdx pos,
+                          int value )
+throw( nmr::BadPermutationConstructorXcpt )
+        :
+        thePermutation( aPermutation.getCorePermutation() ),
+        theDimension( aPermutation.getDimension() )
+{
+    if ( aPermutation.getValueAtPosition( pos ) != Permutation::UNDEF )
     {
-        std::vector<int> corePerm ( aPermutation.getCorePermutation().begin(),
-                                    aPermutation.getCorePermutation().end() );
-
-        BOOST_FOREACH ( int i, bPermutation.getCorePermutation() )
-        {
-            corePerm.push_back ( i + aPermutation.getDimension() );
-        }
-
-        thePermutation = corePerm;
-        theDimension = thePermutation.size();
+        throw nmr::BadPermutationConstructorXcpt( aPermutation[pos], pos );
     }
 
-    Permutation::Permutation (PermutationCref aPermutation,
-                              BindingNdx pos,
-                              int value)
-    throw (nmr::BadPermutationConstructorXcpt)
-            :
-            thePermutation ( aPermutation.getCorePermutation() ),
-            theDimension ( aPermutation.getDimension() )
+    setValueAtPosition( pos, value );
+}
+
+int
+Permutation::getValueAtPosition( BindingNdx pos ) const
+throw( nmr::BadPermutationIndexXcpt )
+{
+    try
     {
-        if ( aPermutation.getValueAtPosition (pos) != Permutation::UNDEF )
-        {
-            throw nmr::BadPermutationConstructorXcpt ( aPermutation[pos], pos );
-        }
-
-        setValueAtPosition (pos, value);
+        return this->thePermutation.at( pos );
     }
-
-    int
-    Permutation::getValueAtPosition (BindingNdx pos) const
-    throw (nmr::BadPermutationIndexXcpt)
+    catch ( std::out_of_range& e )
     {
-        try
-        {
-            return this->thePermutation.at (pos);
-        }
-        catch (std::out_of_range& e)
-        {
-            throw nmr::BadPermutationIndexXcpt ( getDimension(), pos);
-        }
+        throw nmr::BadPermutationIndexXcpt( getDimension(), pos );
     }
+}
 
-    std::string
-    Permutation::repr() const
+std::string
+Permutation::repr() const
+{
+    std::ostringstream oss;
+    oss << *this;
+    return oss.str();
+}
+
+void
+Permutation::setValueAtPosition( BindingNdx pos, unsigned int val )
+throw( nmr::BadPermutationIndexXcpt, nmr::DuplicateValueXcpt )
+{
+
+    CorePermutationType::const_iterator foundLocation = find( thePermutation.begin(),thePermutation.end(), val );
+    CorePermutationType::const_iterator locationInQuestion = thePermutation.begin() + pos;
+    CorePermutationType::const_iterator PermutationEnd = thePermutation.end();
+
+    if ( foundLocation != PermutationEnd && foundLocation != locationInQuestion )
     {
         std::ostringstream oss;
         oss << *this;
-        return oss.str();
+        throw nmr::DuplicateValueXcpt( oss.str() , pos, val );
     }
 
-    void
-    Permutation::setValueAtPosition (BindingNdx pos, unsigned int val)
-    throw ( nmr::BadPermutationIndexXcpt, nmr::DuplicateValueXcpt)
+
+    try
     {
-
-        CorePermutationType::const_iterator foundLocation = find ( thePermutation.begin(),thePermutation.end(), val);
-        CorePermutationType::const_iterator locationInQuestion = thePermutation.begin() + pos;
-        CorePermutationType::const_iterator PermutationEnd = thePermutation.end();
-
-        if ( foundLocation != PermutationEnd && foundLocation != locationInQuestion )
-        {
-            std::ostringstream oss;
-            oss << *this;
-            throw nmr::DuplicateValueXcpt ( oss.str() , pos, val);
-        }
-
-
-        try
-        {
-            this->thePermutation.at (pos) =val;
-        }
-        catch (std::out_of_range& e)
-        {
-            throw nmr::BadPermutationIndexXcpt ( getDimension(), pos);
-        }
+        this->thePermutation.at( pos ) =val;
     }
-
-    void
-    Permutation::resetValueAtPosition (BindingNdx pos)
-    throw (nmr::BadPermutationIndexXcpt)
+    catch ( std::out_of_range& e )
     {
-        try
-        {
-            this->thePermutation.at (pos) = Permutation::UNDEF;
-        }
-        catch (std::out_of_range& e)
-        {
-            throw nmr::BadPermutationIndexXcpt ( getDimension(), pos);
-        }
+        throw nmr::BadPermutationIndexXcpt( getDimension(), pos );
     }
+}
 
-    Permutation
-    Permutation::of (PermutationCref compositionPermutation) const
-    throw ( nmr::IncompatiblePermutationsXcpt)
+void
+Permutation::resetValueAtPosition( BindingNdx pos )
+throw( nmr::BadPermutationIndexXcpt )
+{
+    try
     {
+        this->thePermutation.at( pos ) = Permutation::UNDEF;
+    }
+    catch ( std::out_of_range& e )
+    {
+        throw nmr::BadPermutationIndexXcpt( getDimension(), pos );
+    }
+}
+
+Permutation
+Permutation::of( PermutationCref compositionPermutation ) const
+throw( nmr::IncompatiblePermutationsXcpt )
+{
 // If the two dimensions don't match up, someone fucked up.
 // Let's judge that blockhead by taking exception!
-        if ( getDimension() != compositionPermutation.getDimension() )
-        {
-            throw nmr::IncompatiblePermutationsXcpt ( getDimension(), compositionPermutation.getDimension() );
-        }
-
-        Permutation tmpPerm ( this->getDimension() );
-
-        for (BindingNdx i = 0;
-                i != this->getDimension();
-                ++i)
-        {
-            int intermediateValue=compositionPermutation.getValueAtPosition (i);
-            if ( intermediateValue==Permutation::UNDEF )
-            {
-                tmpPerm[i]=Permutation::UNDEF;
-            }
-            else
-            {
-                int finalValue=this->getValueAtPosition (intermediateValue);
-                tmpPerm[i]=finalValue;
-            }
-
-        }
-
-        return tmpPerm;
+    if ( getDimension() != compositionPermutation.getDimension() )
+    {
+        throw nmr::IncompatiblePermutationsXcpt( getDimension(), compositionPermutation.getDimension() );
     }
 
-    Permutation
-    Permutation::invertPermutation() const
+    Permutation tmpPerm( this->getDimension() );
+
+    for ( BindingNdx i = 0;
+            i != this->getDimension();
+            ++i )
     {
+        int intermediateValue=compositionPermutation.getValueAtPosition( i );
+        if ( intermediateValue==Permutation::UNDEF )
+        {
+            tmpPerm[i]=Permutation::UNDEF;
+        }
+        else
+        {
+            int finalValue=this->getValueAtPosition( intermediateValue );
+            tmpPerm[i]=finalValue;
+        }
+
+    }
+
+    return tmpPerm;
+}
+
+Permutation
+Permutation::invertPermutation() const
+{
 // This function returns a brand new Permutation that is the inverse
 // to (*this).
 
-        Permutation invertedPermutation ( getDimension() );;
+    Permutation invertedPermutation( getDimension() );;
 
-        for ( BindingNdx index = 0;
-                index != theDimension;
-                ++index)
+    for ( BindingNdx index = 0;
+            index != theDimension;
+            ++index )
+    {
+        const int value( getValueAtPosition( index ) );
+        if ( value != Permutation::UNDEF )
         {
-            const int value ( getValueAtPosition ( index ) );
-            if ( value != Permutation::UNDEF )
-            {
-                invertedPermutation[ value ] = index;
-            }
+            invertedPermutation[ value ] = index;
         }
-
-        return invertedPermutation;
     }
 
+    return invertedPermutation;
+}
 
-    bool
-    Permutation::getIsComplete() const
-    {
+
+bool
+Permutation::getIsComplete() const
+{
 // A permutation is complete iff it has no undefinded values and
 // is also a legal permutation.
-        CorePermutationType::const_iterator i=find (thePermutation.begin(),
-                                              thePermutation.end(),
-                                              Permutation::UNDEF);
-        return (checkPermutationLegality() && i == thePermutation.end() );
-    }
+    CorePermutationType::const_iterator i=find( thePermutation.begin(),
+                                          thePermutation.end(),
+                                          Permutation::UNDEF );
+    return ( checkPermutationLegality() && i == thePermutation.end() );
+}
 
 //     bool
 //     Permutation::getIsBijection() const
@@ -235,42 +235,42 @@ namespace nmr
 //     }
 
 
-    bool
-    Permutation::getIsIncomplete() const
-    {
-        return !getIsComplete();
-    }
+bool
+Permutation::getIsIncomplete() const
+{
+    return !getIsComplete();
+}
 
-    Permutation::Dimension
-    Permutation::getDimension() const
-    {
-        return theDimension;
-    }
+Permutation::Dimension
+Permutation::getDimension() const
+{
+    return theDimension;
+}
 
-    int&
-    Permutation::operator[] (const BindingNdx& n)
-    throw (nmr::BadPermutationIndexXcpt)
-    {
-        if (n >= getDimension() ) throw nmr::BadPermutationIndexXcpt ( getDimension(), n);
+int&
+Permutation::operator[]( const BindingNdx& n )
+throw( nmr::BadPermutationIndexXcpt )
+{
+    if ( n >= getDimension() ) throw nmr::BadPermutationIndexXcpt( getDimension(), n );
 
-        return thePermutation[n];
-    }
+    return thePermutation[n];
+}
 
-    const int&
-    Permutation::operator[] (const BindingNdx& n) const
-    throw (nmr::BadPermutationIndexXcpt)
-    {
-        if (n >= getDimension() ) throw nmr::BadPermutationIndexXcpt ( getDimension(), n);
+const int&
+Permutation::operator[]( const BindingNdx& n ) const
+throw( nmr::BadPermutationIndexXcpt )
+{
+    if ( n >= getDimension() ) throw nmr::BadPermutationIndexXcpt( getDimension(), n );
 
-        return thePermutation[n];
-    }
+    return thePermutation[n];
+}
 
 
-    unsigned int
-    Permutation::getLeastValueNotInPermutation() const
-    throw (GeneralNmrXcpt)
-    {
-        if ( getIsComplete() ) throw GeneralNmrXcpt ("Logical Error in Permutation::getLeastValueNotInPermutation.  Function was called on a completed permutation.");
+unsigned int
+Permutation::getLeastValueNotInPermutation() const
+throw( GeneralNmrXcpt )
+{
+    if ( getIsComplete() ) throw GeneralNmrXcpt( "Logical Error in Permutation::getLeastValueNotInPermutation.  Function was called on a completed permutation." );
 
 // This function returns the least positive number that is not yet "fixed"
 // by this partial permutation.
@@ -279,35 +279,35 @@ namespace nmr
 // the value to be returned is 1.
 
 // 1. Copy all non-negative values in the Permutation to a new vector.
-        UnsignedIntegerVector positiveValues;
-        utl::copy_if (thePermutation.begin(),
-                      thePermutation.end(),
-                      back_inserter (positiveValues),
-                      std::bind2nd (std::greater_equal<int>(), 0) );
+    UnsignedIntegerVector positiveValues;
+    utl::copy_if( thePermutation.begin(),
+                  thePermutation.end(),
+                  back_inserter( positiveValues ),
+                  std::bind2nd( std::greater_equal<int>(), 0 ) );
 
 // 2. Sort the new vector
-        std::sort (positiveValues.begin(),
-                   positiveValues.end() );
+    std::sort( positiveValues.begin(),
+               positiveValues.end() );
 
 
 //3. Iterate through the new vector, returning the first position such that
 //   value!=position
-        for (unsigned int index = 0;
-                index != positiveValues.size();
-                ++index)
-        {
-            if (positiveValues[index] != index) return index;
-        }
+    for ( unsigned int index = 0;
+            index != positiveValues.size();
+            ++index )
+    {
+        if ( positiveValues[index] != index ) return index;
+    }
 
 //TODO/4 Write a real explanation here.
 //4. I'm too brain-dead to explain this.  It's what the doctor ordered here.
-        return positiveValues.size();
-    }
+    return positiveValues.size();
+}
 
 
-    bool
-    Permutation::checkPermutationLegality() const
-    {
+bool
+Permutation::checkPermutationLegality() const
+{
 
 // A permutation is legal iff
 // 1. Every member if the range is in {0, ..., dimension -1 } U Permutation::UNDEF
@@ -315,240 +315,238 @@ namespace nmr
 // 2. If Permutation(x) == z and Permutation(y) == z where z is an element of
 //    {0, ..., dim - 1} then x == z.
 
-        IntegerVector rangeCounts (this->thePermutation.size(), 0);
+    IntegerVector rangeCounts( this->thePermutation.size(), 0 );
 
-        for (CorePermutationType::const_iterator iter = thePermutation.begin();
-                iter !=thePermutation.end();
-                ++iter )
-        {
+    for ( CorePermutationType::const_iterator iter = thePermutation.begin();
+            iter !=thePermutation.end();
+            ++iter )
+    {
 //if (*iter) isn't in -1, 0, 1,..., thePermutation.size()-1, return false
-            if ( (*iter) <Permutation::UNDEF || *iter >= static_cast<int> (getDimension() ) )
-            {
-                return false;
-            }
-            else if ( *iter != Permutation::UNDEF)
-            {
-                rangeCounts[*iter] += 1;
-            }
-        }
-
-        for (std::vector<int>::const_iterator iter =rangeCounts.begin();
-                iter != rangeCounts.end();
-                ++iter)
+        if (( *iter ) <Permutation::UNDEF || *iter >= static_cast<int>( getDimension() ) )
         {
-            if ( *iter > 1)
-            {
-                return false;
-            }
+            return false;
         }
+        else if ( *iter != Permutation::UNDEF )
+        {
+            rangeCounts[*iter] += 1;
+        }
+    }
 
+    for ( std::vector<int>::const_iterator iter =rangeCounts.begin();
+            iter != rangeCounts.end();
+            ++iter )
+    {
+        if ( *iter > 1 )
+        {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+
+bool
+Permutation::operator== ( const Permutation& pm )
+{
+    if (( this->thePermutation ) == ( pm.thePermutation ) )
         return true;
-    }
+    else return false;
+}
 
-
-    bool
-    Permutation::operator== (const Permutation& pm)
-    {
-        if ( (this->thePermutation) == (pm.thePermutation) )
-            return true;
-        else return false;
-    }
-
-    bool
-    Permutation::operator< (const Permutation& pm) const
-    {
+bool
+Permutation::operator< ( const Permutation& pm ) const
+{
 
 // TODO: is this correct?
-        if ( this->getDimension() < pm.getDimension() ) return true;
-        else if ( this->getDimension() > pm.getDimension() ) return false;
+    if ( this->getDimension() < pm.getDimension() ) return true;
+    else if ( this->getDimension() > pm.getDimension() ) return false;
 
-        CorePermutationType::const_iterator jjIter;
-        for (CorePermutationType::const_iterator iiIter = thePermutation.begin(),
-                jjIter = pm.getCorePermutation().begin();
-                iiIter != thePermutation.end();
-                ++iiIter, ++jjIter)
-        {
-            if (*iiIter < *jjIter ) return true;
-        }
-
-        return false;
+    CorePermutationType::const_iterator jjIter;
+    for ( CorePermutationType::const_iterator iiIter = thePermutation.begin(),
+            jjIter = pm.getCorePermutation().begin();
+            iiIter != thePermutation.end();
+            ++iiIter, ++jjIter )
+    {
+        if ( *iiIter < *jjIter ) return true;
     }
 
+    return false;
+}
 
-    void
-    Permutation::getPreimage (const int& rangeElement,
-                              std::set<unsigned int>& refDomainElements) const
+
+void
+Permutation::getPreimage( const int& rangeElement,
+                          std::set<unsigned int>& refDomainElements ) const
     {
-        for (unsigned int domainElement = 0;
+        for ( unsigned int domainElement = 0;
                 domainElement != getDimension();
-                ++domainElement)
+                ++domainElement )
         {
-            if ( getValueAtPosition (domainElement) == rangeElement)
+            if ( getValueAtPosition( domainElement ) == rangeElement )
             {
-                refDomainElements.insert ( domainElement );
+                refDomainElements.insert( domainElement );
             }
         }
 
         return;
     }
 
-    void
-    Permutation::maximallyExtend()
+void
+Permutation::maximallyExtend()
+{
+    if ( getNumberOfUndefElements() == 1 )
     {
-        if ( getNumberOfUndefElements() == 1)
-        {
 
-            std::set<unsigned int> domainSubset;
-            getUnfixedDomainElements ( domainSubset);
-            unsigned int singlyRemainingValue = *domainSubset.begin();
-            setValueAtPosition (singlyRemainingValue,
-                                getLeastValueNotInPermutation() );
-        }
-    }
-
-    unsigned int
-    Permutation::getNumberOfFixedElements() const
-    {
-        return getDimension() - getNumberOfUndefElements();
-    }
-
-    unsigned int
-    Permutation::getNumberOfUndefElements() const
-    {
         std::set<unsigned int> domainSubset;
-        getPreimage (Permutation::UNDEF,
-                     domainSubset);
-        return domainSubset.size();
+        getUnfixedDomainElements( domainSubset );
+        unsigned int singlyRemainingValue = *domainSubset.begin();
+        setValueAtPosition( singlyRemainingValue,
+                            getLeastValueNotInPermutation() );
+    }
+}
+
+unsigned int
+Permutation::getNumberOfFixedElements() const
+{
+    return getDimension() - getNumberOfUndefElements();
+}
+
+unsigned int
+Permutation::getNumberOfUndefElements() const
+{
+    std::set<unsigned int> domainSubset;
+    getPreimage( Permutation::UNDEF,
+                 domainSubset );
+    return domainSubset.size();
+}
+
+void
+Permutation::getUnfixedDomainElements( std::set<unsigned int>& refDomainElements ) const
+    {
+        getPreimage( Permutation::UNDEF, refDomainElements );
     }
 
-    void
-    Permutation::getUnfixedDomainElements ( std::set<unsigned int>& refDomainElements) const
-    {
-        getPreimage ( Permutation::UNDEF, refDomainElements);
-    }
-
-    void
-    Permutation::generate_Sn ( std::set<Permutation>& setOfPermutations, unsigned int N)
-    {
+void
+Permutation::generate_Sn( std::set<Permutation>& setOfPermutations, unsigned int N )
+{
 // Illegal dimension.
-        if (N == 0)
-        {
-            setOfPermutations.clear();
-            return;
-        }
-        else if (N == 1)
-        {
-            setOfPermutations.clear();
-            std::vector<int> corePermutation (1, 0);
-            setOfPermutations.insert ( Permutation ( std::vector<int> (1, 0) ) );
-        }
-        else
-        {
+    if ( N == 0 )
+    {
+        setOfPermutations.clear();
+        return;
+    }
+    else if ( N == 1 )
+    {
+        setOfPermutations.clear();
+        std::vector<int> corePermutation( 1, 0 );
+        setOfPermutations.insert( Permutation( std::vector<int> ( 1, 0 ) ) );
+    }
+    else
+    {
 // recursive step.
-            generate_Sn ( setOfPermutations, N - 1);
+        generate_Sn( setOfPermutations, N - 1 );
 
 // This copying is highly inefficient here.
 
 // This didn't work for some reason...
 // std::set<Permutation> tmpSet( setOfPermutations.begin(), setOfPermutations.end() );
 
-            std::set< Permutation > tmpSet;
-            BOOST_FOREACH (const Permutation& perm, setOfPermutations)
-            {
-                tmpSet.insert ( Permutation (perm) );
-            }
-            setOfPermutations.clear();
+        std::set< Permutation > tmpSet;
+        BOOST_FOREACH( const Permutation& perm, setOfPermutations )
+        {
+            tmpSet.insert( Permutation( perm ) );
+        }
+        setOfPermutations.clear();
 
 
 // For example, an element from S_2 might be [1, 0].
 // To Take this element into N=3, we must add the number 2.
-            const int NEXT_RANGE_ELEMENT = N - 1;
+        const int NEXT_RANGE_ELEMENT = N - 1;
 
-            for ( SetOfPermutations::iterator iter = tmpSet.begin();
-                    iter != tmpSet.end();
-                    ++iter)
-            {
-                std::vector<int> constructedCorePermutation;
-                constructedCorePermutation.reserve ( iter->getCorePermutation().size() + 1 );
+        for ( SetOfPermutations::iterator iter = tmpSet.begin();
+                iter != tmpSet.end();
+                ++iter )
+        {
+            std::vector<int> constructedCorePermutation;
+            constructedCorePermutation.reserve( iter->getCorePermutation().size() + 1 );
 
-                constructedCorePermutation.push_back ( NEXT_RANGE_ELEMENT );
+            constructedCorePermutation.push_back( NEXT_RANGE_ELEMENT );
 
-                std::copy (iter->getCorePermutation().begin(),
-                           iter->getCorePermutation().end(),
-                           std::back_inserter (constructedCorePermutation) );
+            std::copy( iter->getCorePermutation().begin(),
+                       iter->getCorePermutation().end(),
+                       std::back_inserter( constructedCorePermutation ) );
 
 
 // Copy this first permutation in....
-                setOfPermutations.insert ( Permutation (constructedCorePermutation) );
+            setOfPermutations.insert( Permutation( constructedCorePermutation ) );
 
-                int index = 1;
-                while ( index != constructedCorePermutation.size() )
-                {
-                    std::swap (constructedCorePermutation[index-1],
-                               constructedCorePermutation[index]);
+            int index = 1;
+            while ( index != constructedCorePermutation.size() )
+            {
+                std::swap( constructedCorePermutation[index-1],
+                           constructedCorePermutation[index] );
 
 // Copy the permutation in....
-                    setOfPermutations.insert ( Permutation (constructedCorePermutation) );
-                    ++index;
-                }
-
+                setOfPermutations.insert( Permutation( constructedCorePermutation ) );
+                ++index;
             }
+
         }
     }
+}
 
 
 
-    Permutation
-    Permutation::generateIdentity ( unsigned int dim)
+Permutation
+Permutation::generateIdentity( unsigned int dim )
+{
+    Permutation identity( dim );
+    for ( unsigned int index = 0; index != dim; ++index )
     {
-        Permutation identity ( dim );
-        for (unsigned int index = 0; index != dim; ++index)
-        {
-            identity.setValueAtPosition ( index, index);
-        }
-        return identity;
+        identity.setValueAtPosition( index, index );
     }
+    return identity;
+}
 
-    void
-    Permutation::generateAllPermutationsMatchingSignature ( SetOfPermutationsRef permSet,
-            const std::vector<unsigned int>& signature)
-    {
-        DECLARE_TYPE ( std::vector<unsigned int>, Signature);
+void
+Permutation::generateAllPermutationsMatchingSignature( SetOfPermutationsRef permSet,
+        const std::vector<unsigned int>& signature )
+{
+    DECLARE_TYPE( std::vector<unsigned int>, Signature );
 
 // Make permSet = to S_0
-        permSet.clear();
-        permSet.insert ( Permutation (0) );
+    permSet.clear();
+    permSet.insert( Permutation( 0 ) );
 
-        for (Signature::const_iterator iter = signature.begin();
-                iter != signature.end();
-                ++iter)
-        {
+    for ( Signature::const_iterator iter = signature.begin();
+            iter != signature.end();
+            ++iter )
+    {
 
 // Copy from prev to here.
-            SetOfPermutations originalSet;
-            BOOST_FOREACH ( PermutationCref perm, permSet)
-            {
-                originalSet.insert ( perm );
-            }
+        SetOfPermutations originalSet;
+        BOOST_FOREACH( PermutationCref perm, permSet )
+        {
+            originalSet.insert( perm );
+        }
 
-            permSet.clear();
+        permSet.clear();
 
 // Create the next tmpSet
-            SetOfPermutations tmpSet;
-            generate_Sn (tmpSet, *iter);
+        SetOfPermutations tmpSet;
+        generate_Sn( tmpSet, *iter );
 
-            for ( SetOfPermutations::iterator origSetIter = originalSet.begin();
-                    origSetIter != originalSet.end();
-                    ++origSetIter)
+        for ( SetOfPermutations::iterator origSetIter = originalSet.begin();
+                origSetIter != originalSet.end();
+                ++origSetIter )
+        {
+
+            for ( SetOfPermutations::iterator tmpSetIter = tmpSet.begin();
+                    tmpSetIter != tmpSet.end();
+                    ++tmpSetIter )
             {
-
-                for ( SetOfPermutations::iterator tmpSetIter = tmpSet.begin();
-                        tmpSetIter != tmpSet.end();
-                        ++tmpSetIter)
-                {
-                    permSet.insert ( Permutation ( *origSetIter, *tmpSetIter) );
-
-                }
+                permSet.insert( Permutation( *origSetIter, *tmpSetIter ) );
 
             }
 
@@ -558,25 +556,27 @@ namespace nmr
 
 }
 
+}
 
-std::ostream& operator<< (std::ostream& s, const nmr::Permutation& thePerm)
+
+std::ostream& operator<< ( std::ostream& s, const nmr::Permutation& thePerm )
 {
     s << '[';
 
-    for (unsigned int ndx = 0;
+    for ( unsigned int ndx = 0;
             ndx != thePerm.getDimension();
-            ++ndx)
+            ++ndx )
     {
-        if ( thePerm.getValueAtPosition (ndx) == nmr::Permutation::UNDEF)
+        if ( thePerm.getValueAtPosition( ndx ) == nmr::Permutation::UNDEF )
         {
             s << '*';
         }
         else
         {
-            s << thePerm.getValueAtPosition ( ndx );
+            s << thePerm.getValueAtPosition( ndx );
         }
 
-        if (ndx  != thePerm.getDimension() - 1 )
+        if ( ndx  != thePerm.getDimension() - 1 )
         {
             s << ", ";
         }

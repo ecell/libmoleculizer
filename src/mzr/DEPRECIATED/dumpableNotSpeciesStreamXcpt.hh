@@ -36,17 +36,17 @@
 
 namespace mzr
 {
-    class dumpableNotSpeciesStreamXcpt :
-                public utl::xcpt
-    {
-        static std::string
-        mkMsg (const std::string& rDumpableName);
+class dumpableNotSpeciesStreamXcpt :
+            public utl::xcpt
+{
+    static std::string
+    mkMsg( const std::string& rDumpableName );
 
-    public:
-        dumpableNotSpeciesStreamXcpt (const std::string& rDumpableName) :
-                utl::xcpt (mkMsg (rDumpableName) )
-        {}
-    };
+public:
+    dumpableNotSpeciesStreamXcpt( const std::string& rDumpableName ) :
+            utl::xcpt( mkMsg( rDumpableName ) )
+    {}
+};
 }
 
 #endif // MZR_DUMPABLENOTSPECIESSTREAMXCPT_H

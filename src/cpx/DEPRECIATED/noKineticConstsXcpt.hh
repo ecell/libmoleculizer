@@ -53,77 +53,77 @@ namespace cpx
 // The common thread is that the binding features and kinetics are
 // both stored in databases in the dimerUnit; these databases are
 // filled from dimerization-gen constructs.
-    class noKineticConstsXcpt :
-                public utl::xcpt
+class noKineticConstsXcpt :
+            public utl::xcpt
+{
+    static std::string
+    mkShapesOnlyMsg( const std::string& rLeftSiteShapeName,
+                     const std::string& rRightSiteShapeName );
+
+    static std::string
+    mkMolsAndSitesMsg( const std::string& rLeftMolName,
+                       const std::string& rLeftSiteName,
+                       const std::string& rRightMolName,
+                       const std::string& rRightSiteName );
+
+    static std::string
+    mkFullMsg( const std::string& rLeftMolName,
+               const std::string& rLeftSiteName,
+               const std::string& rLeftSiteShapeName,
+               const std::string& rRightMolName,
+               const std::string& rRightSiteName,
+               const std::string& rRightSiteShapeName );
+
+    noKineticConstsXcpt( const std::string& rMsg ) :
+            utl::xcpt( rMsg )
+    {}
+
+public:
+    static
+    noKineticConstsXcpt
+    shapesOnly( const std::string& rLeftSiteShapeName,
+                const std::string& rRightSiteShapeName )
     {
-        static std::string
-        mkShapesOnlyMsg (const std::string& rLeftSiteShapeName,
-                         const std::string& rRightSiteShapeName);
+        return
+            noKineticConstsXcpt
+            ( mkShapesOnlyMsg( rLeftSiteShapeName,
+                               rRightSiteShapeName ) );
+    }
 
-        static std::string
-        mkMolsAndSitesMsg (const std::string& rLeftMolName,
-                           const std::string& rLeftSiteName,
-                           const std::string& rRightMolName,
-                           const std::string& rRightSiteName);
+    static
+    noKineticConstsXcpt
+    molsAndSites( const std::string& rLeftMolName,
+                  const std::string& rLeftSiteName,
+                  const std::string& rRightMolName,
+                  const std::string& rRightSiteName )
+    {
+        return
+            noKineticConstsXcpt
+            ( mkMolsAndSitesMsg( rLeftMolName,
+                                 rLeftSiteName,
+                                 rRightMolName,
+                                 rRightSiteName ) );
+    }
 
-        static std::string
-        mkFullMsg (const std::string& rLeftMolName,
-                   const std::string& rLeftSiteName,
-                   const std::string& rLeftSiteShapeName,
-                   const std::string& rRightMolName,
-                   const std::string& rRightSiteName,
-                   const std::string& rRightSiteShapeName);
-
-        noKineticConstsXcpt (const std::string& rMsg) :
-                utl::xcpt (rMsg)
-        {}
-
-    public:
-        static
-        noKineticConstsXcpt
-        shapesOnly (const std::string& rLeftSiteShapeName,
-                    const std::string& rRightSiteShapeName)
-        {
-            return
-                noKineticConstsXcpt
-                (mkShapesOnlyMsg (rLeftSiteShapeName,
-                                  rRightSiteShapeName) );
-        }
-
-        static
-        noKineticConstsXcpt
-        molsAndSites (const std::string& rLeftMolName,
-                      const std::string& rLeftSiteName,
-                      const std::string& rRightMolName,
-                      const std::string& rRightSiteName)
-        {
-            return
-                noKineticConstsXcpt
-                (mkMolsAndSitesMsg (rLeftMolName,
-                                    rLeftSiteName,
-                                    rRightMolName,
-                                    rRightSiteName) );
-        }
-
-        static
-        noKineticConstsXcpt
-        fullMessage (const std::string& rLeftMolName,
-                     const std::string& rLeftSiteName,
-                     const std::string& rLeftSiteShapeName,
-                     const std::string& rRightMolName,
-                     const std::string& rRightSiteName,
-                     const std::string& rRightSiteShapeName)
-        {
-            return
-                noKineticConstsXcpt
-                (mkFullMsg (rLeftMolName,
-                            rLeftSiteName,
-                            rLeftSiteShapeName,
-                            rRightMolName,
-                            rRightSiteName,
-                            rRightSiteShapeName) );
-        }
-    };
+    static
+    noKineticConstsXcpt
+    fullMessage( const std::string& rLeftMolName,
+                 const std::string& rLeftSiteName,
+                 const std::string& rLeftSiteShapeName,
+                 const std::string& rRightMolName,
+                 const std::string& rRightSiteName,
+                 const std::string& rRightSiteShapeName )
+    {
+        return
+            noKineticConstsXcpt
+            ( mkFullMsg( rLeftMolName,
+                         rLeftSiteName,
+                         rLeftSiteShapeName,
+                         rRightMolName,
+                         rRightSiteName,
+                         rRightSiteShapeName ) );
+    }
+};
 }
 
 #endif // CPX_NOKINETICCONSTSXCPT_H

@@ -41,17 +41,17 @@ namespace plx
 // know, it probably means that the client unit didn't register an Xpath for
 // the node with the plexUnit, so the plexUnit didn't really parse the
 // omniplex.  (This might be a common error in new unit implementation.)
-    class noOmniForNodeXcpt :
-                public utl::xcpt
-    {
-        static std::string
-        mkMsg (const xmlpp::Node* pParentNode = 0);
+class noOmniForNodeXcpt :
+            public utl::xcpt
+{
+    static std::string
+    mkMsg( const xmlpp::Node* pParentNode = 0 );
 
-    public:
-        noOmniForNodeXcpt (const xmlpp::Node* pParentNode = 0) :
-                utl::xcpt (mkMsg (pParentNode) )
-        {}
-    };
+public:
+    noOmniForNodeXcpt( const xmlpp::Node* pParentNode = 0 ) :
+            utl::xcpt( mkMsg( pParentNode ) )
+    {}
+};
 }
 
 #endif // PLEX_NOOMNIFORNODEXCPT_H

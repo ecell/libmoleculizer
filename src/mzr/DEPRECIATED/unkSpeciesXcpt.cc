@@ -34,16 +34,16 @@
 
 namespace mzr
 {
-    std::string
-    unkSpeciesXcpt::
-    mkMsg (const std::string& rSpeciesName,
-           xmlpp::Node* pOffendingNode)
-    {
-        std::ostringstream msgStream;
-        msgStream << utl::dom::xcpt::mkMsg (pOffendingNode)
-        << "Unknown species `"
-        << rSpeciesName
-        << "'.";
-        return msgStream.str();
-    }
+std::string
+unkSpeciesXcpt::
+mkMsg( const std::string& rSpeciesName,
+       xmlpp::Node* pOffendingNode )
+{
+    std::ostringstream msgStream;
+    msgStream << utl::dom::xcpt::mkMsg( pOffendingNode )
+    << "Unknown species `"
+    << rSpeciesName
+    << "'.";
+    return msgStream.str();
+}
 }

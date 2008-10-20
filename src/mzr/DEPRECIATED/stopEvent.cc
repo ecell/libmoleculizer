@@ -33,10 +33,10 @@
 
 namespace mzr
 {
-    fnd::eventResult
-    stopEvent::happen (moleculizer& rMolzer)
-    throw (std::exception)
-    {
-        return fnd::stop;
-    }
+fnd::eventResult
+stopEvent::happen( moleculizer& rMolzer )
+throw( std::exception )
+{
+    return fnd::stop;
+}
 }

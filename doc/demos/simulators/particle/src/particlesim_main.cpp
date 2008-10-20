@@ -38,11 +38,11 @@
 using namespace std;
 
 void
-processCommandLineArgs (int argc, char* argv[], std::string& theFileName, std::string& modelFile, int& numberIters);
+processCommandLineArgs( int argc, char* argv[], std::string& theFileName, std::string& modelFile, int& numberIters );
 
 void displayHelpAndExitProgram();
 
-int main (int argc, char* argv[])
+int main( int argc, char* argv[] )
 {
 
     try
@@ -50,13 +50,13 @@ int main (int argc, char* argv[])
         int numberIters = 500;
         std::string modelfile;
         std::string rulesfile;
-        processCommandLineArgs (argc, argv, rulesfile, modelfile, numberIters);
+        processCommandLineArgs( argc, argv, rulesfile, modelfile, numberIters );
 
-        SimpleParticleSimulator theSim ( rulesfile, modelfile);
+        SimpleParticleSimulator theSim( rulesfile, modelfile );
 
         std::cout << "\n\n#######################################################\nBeginning simulation\n\n";
 
-        for (unsigned int ii = 0; ii != numberIters; ++ii)
+        for ( unsigned int ii = 0; ii != numberIters; ++ii )
         {
             theSim.singleStep();
         }
@@ -65,7 +65,7 @@ int main (int argc, char* argv[])
         theSim.printState();
         return 0;
     }
-    catch(const std::exception& e)
+    catch ( const std::exception& e )
     {
         std::cerr << e.what() << std::endl;
         return 1;
@@ -73,54 +73,54 @@ int main (int argc, char* argv[])
 
 }
 
-void processCommandLineArgs (int argc, char* argv[], std::string& rulesFile, std::string& modelFile, int& numberIters)
+void processCommandLineArgs( int argc, char* argv[], std::string& rulesFile, std::string& modelFile, int& numberIters )
 {
 
-    bool rulesFound (false);
-    bool modelFound (false);
+    bool rulesFound( false );
+    bool modelFound( false );
 // Skip the command name
     argc--;
     argv++;
 
-    if (argc == 0)
+    if ( argc == 0 )
     {
         displayHelpAndExitProgram();
     }
 
-    while (0 < argc)
+    while ( 0 < argc )
     {
-        std::string arg (*argv);
+        std::string arg( *argv );
         argv++;
         argc--;
 
-        if (arg == "--help")
+        if ( arg == "--help" )
         {
             displayHelpAndExitProgram();
         }
 
-        if (arg == "--rules")
+        if ( arg == "--rules" )
         {
-            rulesFile = utl::mustGetArg (argc, argv);
+            rulesFile = utl::mustGetArg( argc, argv );
             rulesFound = true;
         }
 
-        if (arg == "--model")
+        if ( arg == "--model" )
         {
-            modelFile = utl::mustGetArg (argc, argv);
+            modelFile = utl::mustGetArg( argc, argv );
             modelFound = true;
         }
 
-        if (arg == "-n")
+        if ( arg == "-n" )
         {
-            std::string numberString = utl::mustGetArg(argc, argv);
-            utl::from_string(numberIters, numberString);
+            std::string numberString = utl::mustGetArg( argc, argv );
+            utl::from_string( numberIters, numberString );
         }
     }
 
-    if (!modelFound || !rulesFound)
+    if ( !modelFound || !rulesFound )
     {
         std::cerr << "Error, both a --rules and a --model parameter must be provided." << endl;
-        exit (1);
+        exit( 1 );
     }
 
 }
@@ -136,5 +136,5 @@ void displayHelpAndExitProgram()
     cout << "Moleculizer should have come with associated documentation.  Please read it for more details." << endl;
     cout << "\tNathan Addy <addy@molsci.org>\n\tSeptember 18, 2008." << endl;
 
-    exit (0);
+    exit( 0 );
 }

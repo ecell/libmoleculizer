@@ -37,23 +37,23 @@
 
 namespace mzr
 {
-    volumeEvent::
-    volumeEvent (mzrUnit& refMzrUnit,
-                 double targetVolume) :
-            rMzrUnit (refMzrUnit),
-            vol (targetVolume)
-    {}
+volumeEvent::
+volumeEvent( mzrUnit& refMzrUnit,
+             double targetVolume ) :
+        rMzrUnit( refMzrUnit ),
+        vol( targetVolume )
+{}
 
-    fnd::eventResult
-    volumeEvent::
-    happen (moleculizer& rMolzer)
-    throw (std::exception)
-    {
-        fnd::sensitivityList<mzrReaction> affectedReactions;
+fnd::eventResult
+volumeEvent::
+happen( moleculizer& rMolzer )
+throw( std::exception )
+{
+    fnd::sensitivityList<mzrReaction> affectedReactions;
 
 // Reset the volume.
-        rMzrUnit.getMolarFactor().updateVolume (vol,
-                                                affectedReactions);
+    rMzrUnit.getMolarFactor().updateVolume( vol,
+                                            affectedReactions );
 
 // Reschedule everybody.  This invocation stinks to high
 // heaven of confused reference structure in this program.
@@ -61,6 +61,6 @@ namespace mzr
 // 	     affectedReactions.end(),
 // 	     respondReaction(rMolzer));
 
-        return fnd::go;
-    }
+    return fnd::go;
+}
 }

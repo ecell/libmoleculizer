@@ -37,31 +37,31 @@
 
 namespace utl
 {
-    class warning
+class warning
+{
+    std::string message;
+
+public:
+    warning( const std::string& rMessage ) throw() :
+            message( rMessage )
+    {}
+
+    warning( const char* pMessage ) throw() :
+            message( pMessage )
+    {}
+
+    const std::string&
+    getMessage( void ) const throw()
     {
-        std::string message;
+        return message;
+    }
 
-    public:
-        warning (const std::string& rMessage) throw() :
-                message (rMessage)
-        {}
-
-        warning (const char* pMessage) throw() :
-                message (pMessage)
-        {}
-
-        const std::string&
-        getMessage (void) const throw()
-        {
-            return message;
-        }
-
-        void
-        issue (void) const throw()
-        {
-            std::cerr << "Warning: " << getMessage() << std::endl;
-        }
-    };
+    void
+    issue( void ) const throw()
+    {
+        std::cerr << "Warning: " << getMessage() << std::endl;
+    }
+};
 }
 
 #endif // UTL_WARN_H

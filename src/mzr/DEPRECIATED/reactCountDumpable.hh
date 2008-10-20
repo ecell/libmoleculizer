@@ -36,18 +36,18 @@
 
 namespace mzr
 {
-    /*! \ingroup dumpGroup
-    \brief Dumps the number of reactions that have occurred at least once.
-    */
-    class reactCountDumpable
-                : public fnd::dumpable<fnd::basicDumpable::dumpArg>
-    {
-    public:
-        reactCountDumpable (void);
+/*! \ingroup dumpGroup
+\brief Dumps the number of reactions that have occurred at least once.
+*/
+class reactCountDumpable
+            : public fnd::dumpable<fnd::basicDumpable::dumpArg>
+{
+public:
+    reactCountDumpable( void );
 
-        virtual void
-        doDump (const fnd::basicDumpable::dumpArg& rDumpArg) const;
-    };
+    virtual void
+    doDump( const fnd::basicDumpable::dumpArg& rDumpArg ) const;
+};
 }
 
 #endif // MZR_REACTCOUNTDUMPABLE_H

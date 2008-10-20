@@ -39,7 +39,7 @@ class BasicValue
 public:
     virtual ~BasicValue() = 0;
 
-    
+
 };
 
 #endif

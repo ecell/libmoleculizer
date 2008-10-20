@@ -38,16 +38,16 @@ extern "C"
 {
 #endif
 
-    extern void freepermrec (permrec*, int);
-    extern grouprec *groupptr (boolean);
-    extern permrec *newpermrec (int);
-    extern void groupautomproc (int,permutation*,int*,int,int,int);
+    extern void freepermrec( permrec*, int );
+    extern grouprec *groupptr( boolean );
+    extern permrec *newpermrec( int );
+    extern void groupautomproc( int,permutation*,int*,int,int,int );
     extern void
-        grouplevelproc (int*,int*,int,int*,statsblk*,int,int,int,int,int,int);
-    extern void makecosetreps (grouprec*);
-    extern int permcycles (permutation*,int,int*,boolean);
-    extern void allgroup (grouprec*,void (*) (permutation*,int) );
-    extern int allgroup2 (grouprec*,void (*) (permutation*,int,int*) );
+        grouplevelproc( int*,int*,int,int*,statsblk*,int,int,int,int,int,int );
+    extern void makecosetreps( grouprec* );
+    extern int permcycles( permutation*,int,int*,boolean );
+    extern void allgroup( grouprec*,void( * )( permutation*,int ) );
+    extern int allgroup2( grouprec*,void( * )( permutation*,int,int* ) );
 
 #ifdef __cplusplus
 }

@@ -41,20 +41,20 @@
 namespace nmr
 {
 
-    DECLARE_CLASS ( nmrUnit );
-    DECLARE_CLASS ( NameEncoderFactory );
-    class NameEncoderFactory
+DECLARE_CLASS( nmrUnit );
+DECLARE_CLASS( NameEncoderFactory );
+class NameEncoderFactory
+{
+public:
+
+    NameEncoderFactory( nmrUnit& aNmrUnit )
+            :
+            theNmrUnit( aNmrUnit )
+    {}
+
+    NameAssembler*
+    create( const std::string& manglerName ) throw( NoSuchNameEncoderXcpt )
     {
-    public:
-
-        NameEncoderFactory ( nmrUnit& aNmrUnit)
-                :
-                theNmrUnit ( aNmrUnit)
-        {}
-
-        NameAssembler*
-        create (const std::string& manglerName) throw ( NoSuchNameEncoderXcpt )
-        {
 //       if( manglerName == manglernames::basicManglerName )
 //         {
 //           return new basicNameAssembler<molT>;
@@ -73,21 +73,21 @@ namespace nmr
 //           throw NoSuchNameManglerXcpt( manglerName );
 //         }
 
-            if ( manglerName == manglernames::compactEncoderName )
-            {
-                return new MangledNameAssembler ( theNmrUnit );
-            }
-            else
-            {
-                throw NoSuchNameEncoderXcpt ( manglerName );
-            }
-
+        if ( manglerName == manglernames::compactEncoderName )
+        {
+            return new MangledNameAssembler( theNmrUnit );
+        }
+        else
+        {
+            throw NoSuchNameEncoderXcpt( manglerName );
         }
 
-    protected:
-        nmrUnit& theNmrUnit;
+    }
 
-    };
+protected:
+    nmrUnit& theNmrUnit;
+
+};
 
 
 }

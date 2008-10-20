@@ -56,40 +56,40 @@ namespace fnd
 // In compartmental moleculizer, reactions don't reschedule, they just
 // recalculate their propensities, a less costly operation. But the same
 // technique is still used.
-    template<class sensitiveT>
-    class sensitivityList :
-                public std::set<sensitiveT*>
+template<class sensitiveT>
+class sensitivityList :
+            public std::set<sensitiveT*>
     {
-    public:
+public:
 
         typedef sensitiveT sensitiveType;
 
         sensitivityList()
         {}
 
-        sensitivityList ( const std::set<sensitiveT*> aSet)
-                :
-                std::set<sensitiveT*> (aSet.begin(), aSet.end() )
-        {}
+        sensitivityList( const std::set<sensitiveT*> aSet )
+                    :
+                    std::set<sensitiveT*> ( aSet.begin(), aSet.end() )
+            {}
 
 // Here is the reason for using a set here: a reaction can add itself to a
 // reactant's sensitivity list more than once with no subsequent loss of
 // efficiency.
         void
-        addSensitive (sensitiveType* pSensitive)
+        addSensitive( sensitiveType* pSensitive )
         {
-            insert (pSensitive);
+            insert( pSensitive );
         }
 
 // This might be used to elicit immediate responses from the
 // sensitive items.
         template<class sensitiveFunction>
         void
-        forEachSensitive (const sensitiveFunction& rFunction) const
+        forEachSensitive( const sensitiveFunction& rFunction ) const
         {
-            std::for_each (this->begin(),
+            std::for_each( this->begin(),
                            this->end(),
-                           rFunction);
+                           rFunction );
         }
 
 // For accumulating the union of several sensitivity lists
@@ -98,9 +98,9 @@ namespace fnd
 // This is used to accumulate the union of the sensitivity lists
 // of the species whose populations are changed by a reaction event.
         void
-        getSensitives (sensitivityList& rSensitives) const
+        getSensitives( sensitivityList& rSensitives ) const
         {
-            rSensitives.insert (this->begin(),
+            rSensitives.insert( this->begin(),
                                 this->end() );
         }
     };

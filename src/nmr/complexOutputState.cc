@@ -38,81 +38,81 @@
 
 namespace nmr
 {
-    bool
-    ComplexOutputState::operator== (ComplexOutputStateCref other) const
-    {
-        return (theMolTokens == other.theMolTokens &&
-                theBindingTokens == other.theBindingTokens &&
-                theModificationTokens == other.theModificationTokens);
-    }
-
-    bool
-    ComplexOutputState::operator!= (ComplexOutputStateCref other) const
-    {
-        return ! ( *this == other );
-    }
-
-    void
-    ComplexOutputState::addMolTokenToOutputState (MolTokenStrCref aMolToken)
-    {
-        theMolTokens.push_back (aMolToken);
-    }
-
-    void
-    ComplexOutputState::addBindingTokenToOutputState (BindingTokenStrCref aBindingToken)
-    {
-        theBindingTokens.push_back (aBindingToken);
-
-    }
-
-    void
-    ComplexOutputState::addModificationTokenToOutputState (ModificationTokenStrCref aModificationToken)
-    {
-        theModificationTokens.push_back (aModificationToken);
-    }
-
-    void
-    ComplexOutputState::clear()
-    {
-        theMolTokens.clear();
-        theBindingTokens.clear();
-        theModificationTokens.clear();
-    }
-
-    std::string
-    ComplexOutputState::repr() const
-    {
-        std::ostringstream oss;
-        BOOST_FOREACH (ComplexOutputState::MolTokenStrCref molName, theMolTokens)
-        {
-            oss << molName << "-";
-        }
-
-        BOOST_FOREACH (ComplexOutputState::BindingTokenStrCref bindingName, theBindingTokens)
-        {
-            oss << '|' ;
-            oss << bindingName.first.first << "-";
-            oss << bindingName.first.second << "-";
-            oss << bindingName.second.first << "-";
-            oss << bindingName.second.second << '|' << '-';
-        }
-
-        BOOST_FOREACH (ComplexOutputState::ModificationTokenStrCref modificationToken, theModificationTokens)
-        {
-            oss << '|';
-            oss << modificationToken.first
-            << '-'
-            << modificationToken.second.first
-            << '-'
-            << modificationToken.second.second << '|';
-        }
-
-        return oss.str();
-
-    }
+bool
+ComplexOutputState::operator== ( ComplexOutputStateCref other ) const
+{
+    return ( theMolTokens == other.theMolTokens &&
+             theBindingTokens == other.theBindingTokens &&
+             theModificationTokens == other.theModificationTokens );
 }
 
-std::ostream& operator<< (std::ostream& os, const nmr::ComplexOutputState& cos)
+bool
+ComplexOutputState::operator!= ( ComplexOutputStateCref other ) const
+{
+    return !( *this == other );
+}
+
+void
+ComplexOutputState::addMolTokenToOutputState( MolTokenStrCref aMolToken )
+{
+    theMolTokens.push_back( aMolToken );
+}
+
+void
+ComplexOutputState::addBindingTokenToOutputState( BindingTokenStrCref aBindingToken )
+{
+    theBindingTokens.push_back( aBindingToken );
+
+}
+
+void
+ComplexOutputState::addModificationTokenToOutputState( ModificationTokenStrCref aModificationToken )
+{
+    theModificationTokens.push_back( aModificationToken );
+}
+
+void
+ComplexOutputState::clear()
+{
+    theMolTokens.clear();
+    theBindingTokens.clear();
+    theModificationTokens.clear();
+}
+
+std::string
+ComplexOutputState::repr() const
+{
+    std::ostringstream oss;
+    BOOST_FOREACH( ComplexOutputState::MolTokenStrCref molName, theMolTokens )
+    {
+        oss << molName << "-";
+    }
+
+    BOOST_FOREACH( ComplexOutputState::BindingTokenStrCref bindingName, theBindingTokens )
+    {
+        oss << '|' ;
+        oss << bindingName.first.first << "-";
+        oss << bindingName.first.second << "-";
+        oss << bindingName.second.first << "-";
+        oss << bindingName.second.second << '|' << '-';
+    }
+
+    BOOST_FOREACH( ComplexOutputState::ModificationTokenStrCref modificationToken, theModificationTokens )
+    {
+        oss << '|';
+        oss << modificationToken.first
+        << '-'
+        << modificationToken.second.first
+        << '-'
+        << modificationToken.second.second << '|';
+    }
+
+    return oss.str();
+
+}
+}
+
+std::ostream& operator<< ( std::ostream& os, const nmr::ComplexOutputState& cos )
 {
 //   os << "Mols:\n";
 //   for(std::vector<nmr::ComplexOutputState::MolTokenStr>::const_iterator iter = cos.theMolTokens.begin();

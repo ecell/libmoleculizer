@@ -41,17 +41,17 @@ class Convert_Vector_to_Python
 {
 public:
     static PyObject*
-    convert ( const std::vector<T>& theVector)
+    convert( const std::vector<T>& theVector )
     {
         list myList;
-        BOOST_FOREACH (const T& TObject, theVector)
+        BOOST_FOREACH( const T& TObject, theVector )
         {
-            object myObject ( TObject );
-            incref ( myObject.ptr() );
-            myList.append ( myObject );
+            object myObject( TObject );
+            incref( myObject.ptr() );
+            myList.append( myObject );
         }
 
-        return incref ( myList.ptr() );
+        return incref( myList.ptr() );
     }
 
 };

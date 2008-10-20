@@ -36,24 +36,24 @@
 
 namespace dimer
 {
-    namespace eltName
-    {
-        extern const std::string dimerizationGen;
-        extern const std::string dimerizationGen_rateExtrapAttr;
-        extern const std::string dimerizationGen_rateExtrap_none;
-        extern const std::string dimerizationGen_rateExtrap_mass;
-        extern const std::string siteRef;
-        extern const std::string siteRef_nameAttr;
-        extern const std::string defaultOnRate;
-        extern const std::string defaultOnRate_valueAttr;
-        extern const std::string defaultOffRate;
-        extern const std::string defaultOffRate_valueAttr;
-        extern const std::string alloRates;
-        extern const std::string onRate;
-        extern const std::string onRate_valueAttr;
-        extern const std::string offRate;
-        extern const std::string offRate_valueAttr;
-    }
+namespace eltName
+{
+extern const std::string dimerizationGen;
+extern const std::string dimerizationGen_rateExtrapAttr;
+extern const std::string dimerizationGen_rateExtrap_none;
+extern const std::string dimerizationGen_rateExtrap_mass;
+extern const std::string siteRef;
+extern const std::string siteRef_nameAttr;
+extern const std::string defaultOnRate;
+extern const std::string defaultOnRate_valueAttr;
+extern const std::string defaultOffRate;
+extern const std::string defaultOffRate_valueAttr;
+extern const std::string alloRates;
+extern const std::string onRate;
+extern const std::string onRate_valueAttr;
+extern const std::string offRate;
+extern const std::string offRate_valueAttr;
+}
 }
 
 #endif

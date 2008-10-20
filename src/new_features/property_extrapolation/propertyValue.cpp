@@ -32,16 +32,16 @@
 #include "propertyValue.hpp"
 
 Value::Value()
-    :
-    underlyingValue( new Real(0.0f) )
+        :
+        underlyingValue( new Real( 0.0f ) )
 {}
 
-Value::Value(const Value& value)
-    :
-    underlyingValue( new Real (value.valueAsReal()) )
+Value::Value( const Value& value )
+        :
+        underlyingValue( new Real( value.valueAsReal() ) )
 {}
 
-const Value& Value::operator=(const Value& value)
+const Value& Value::operator=( const Value& value )
 {
     *underlyingValue = value.valueAsReal();
     return *this;
@@ -50,29 +50,29 @@ const Value& Value::operator=(const Value& value)
 Value::~Value()
 {}
 
-void Value::setValue(const Value& value)
+void Value::setValue( const Value& value )
 {
     *underlyingValue = value.valueAsReal();
 }
 
-void Value::setValue(String strValue) throw(utl::NotImplementedXcpt)
+void Value::setValue( String strValue ) throw( utl::NotImplementedXcpt )
 {
-    throw utl::NotImplementedXcpt("void Value::setValue(String strValue)");
+    throw utl::NotImplementedXcpt( "void Value::setValue(String strValue)" );
 }
 
-void Value::setValue(Integer intValue)
+void Value::setValue( Integer intValue )
 {
-    *underlyingValue = static_cast<Real>(intValue);
+    *underlyingValue = static_cast<Real>( intValue );
 }
 
-void Value::setValue(Real realValue)
+void Value::setValue( Real realValue )
 {
     *underlyingValue = realValue;
 }
 
 String Value::valueAsString() const
 {
-    throw utl::NotImplementedXcpt("String Value::valueAsString()");
+    throw utl::NotImplementedXcpt( "String Value::valueAsString()" );
 }
 
 Integer Value::valueAsInteger() const
@@ -91,7 +91,7 @@ Value Value::clone() const
 }
 
 
-std::ostream& operator<<(std::ostream& str, const Value& val)
+std::ostream& operator<<( std::ostream& str, const Value& val )
 {
     str << val.valueAsReal();
     return str;

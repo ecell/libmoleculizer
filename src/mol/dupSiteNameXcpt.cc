@@ -34,15 +34,15 @@
 
 namespace bnd
 {
-    std::string
-    dupSiteNameXcpt::mkMsg (const mzrMol& rMol,
-                            const std::string& rDuplicateName)
-    {
-        std::ostringstream msgStream;
-        msgStream << "Name `"
-        << rDuplicateName
-        << "' used for more than one binding site on mol "
-        << rMol.getName();
-        return msgStream.str();
-    }
+std::string
+dupSiteNameXcpt::mkMsg( const mzrMol& rMol,
+                        const std::string& rDuplicateName )
+{
+    std::ostringstream msgStream;
+    msgStream << "Name `"
+    << rDuplicateName
+    << "' used for more than one binding site on mol "
+    << rMol.getName();
+    return msgStream.str();
+}
 }

@@ -42,84 +42,84 @@
 
 namespace plx
 {
-    DECLARE_CLASS ( plexUnit);
+DECLARE_CLASS( plexUnit );
 }
 
 namespace mzr
 {
-    DECLARE_CLASS ( mzrSpecies );
+DECLARE_CLASS( mzrSpecies );
 }
 
 namespace nmr
 {
-    class nmrUnit : public mzr::unit
+class nmrUnit : public mzr::unit
+{
+public:
+    nmrUnit( mzr::moleculizer& rMoleculizer )
+            :
+            unit( "nmr",
+                  rMoleculizer ),
+            pMzrUnit( NULL ),
+            pMolUnit( NULL ),
+            pPlexUnit( NULL ),
+            ptrNameEncoderFactory( new NameEncoderFactory( *this ) ),
+            ptrNameAssembler( NULL )
     {
-    public:
-        nmrUnit (mzr::moleculizer& rMoleculizer)
-                :
-                unit ("nmr",
-                      rMoleculizer),
-                pMzrUnit (NULL),
-                pMolUnit (NULL),
-                pPlexUnit (NULL),
-                ptrNameEncoderFactory ( new NameEncoderFactory (*this) ),
-                ptrNameAssembler ( NULL )
-        {
-            setDefaultNameEncoder ( manglernames::compactEncoderName );
-        }
+        setDefaultNameEncoder( manglernames::compactEncoderName );
+    }
 
-        ~nmrUnit()
-        {
+    ~nmrUnit()
+    {
 // Don't delete any pointers to Units as they are memory managed elsewhere.
-            delete ptrNameEncoderFactory;
-            delete ptrNameAssembler;
-        }
+        delete ptrNameEncoderFactory;
+        delete ptrNameAssembler;
+    }
 
-        mzr::mzrSpecies*
-        constructSpeciesFromName ( const std::string& speciesName);
+    mzr::mzrSpecies*
+    constructSpeciesFromName( const std::string& speciesName );
 
 
-        const NameAssembler*
-        getNameEncoder() const throw ( MissingNameEncoderXcpt );
+    const NameAssembler*
+    getNameEncoder() const throw( MissingNameEncoderXcpt );
 
-        void
-        setDefaultNameEncoder ( const std::string& nameEncoderName) throw ( NoSuchNameEncoderXcpt  );
+    void
+    setDefaultNameEncoder( const std::string& nameEncoderName ) throw( NoSuchNameEncoderXcpt );
 
-        void
-        setMzrUnit (mzr::mzrUnit* ptrMzrUnit)
-        {
-            pMzrUnit = ptrMzrUnit;
-        }
+    void
+    setMzrUnit( mzr::mzrUnit* ptrMzrUnit )
+    {
+        pMzrUnit = ptrMzrUnit;
+    }
 
-        void
-        setPlexUnit (plx::plexUnit* ptrPlexUnit)
-        {
-            pPlexUnit = ptrPlexUnit;
-        }
+    void
+    setPlexUnit( plx::plexUnit* ptrPlexUnit )
+    {
+        pPlexUnit = ptrPlexUnit;
+    }
 
-        void setMolUnit (bnd::molUnit* ptrMolUnit)
-        {
-            pMolUnit = ptrMolUnit;
-        }
+    void setMolUnit( bnd::molUnit* ptrMolUnit )
+    {
+        pMolUnit = ptrMolUnit;
+    }
 
-        void
-        parseDomInput (xmlpp::Element* pRootElt,
-                       xmlpp::Element* pModelElt,
-                       xmlpp::Element* pStreamElt) throw (std::exception);
+    void
+    parseDomInput( xmlpp::Element* pRootElt,
+                   xmlpp::Element* pModelElt,
+                   xmlpp::Element* pStreamElt ) throw( std::exception );
 
-        void insertStateElts (xmlpp::Element* pRootElt) throw (std::exception);
+    void insertStateElts( xmlpp::Element* pRootElt ) throw( std::exception );
 
-        mzr::mzrUnit* pMzrUnit;
-        bnd::molUnit* pMolUnit;
-        plx::plexUnit* pPlexUnit;
+    mzr::mzrUnit* pMzrUnit;
+    bnd::molUnit* pMolUnit;
+    plx::plexUnit* pPlexUnit;
 
 // Protect this next function.
 //         plx::mzrPlexSpecies*
 //         makePlexFromName(const std::string& mangledName) const;
 
-        NameEncoderFactory* ptrNameEncoderFactory;
-        NameAssembler* ptrNameAssembler;
-    };
+    NameEncoderFactory* ptrNameEncoderFactory;
+    NameAssembler* ptrNameAssembler;
+};
 }
 
 

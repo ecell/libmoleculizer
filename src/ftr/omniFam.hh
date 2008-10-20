@@ -36,35 +36,35 @@
 
 namespace ftr
 {
-    class omniFam :
-                public utl::autoVector<mzr::mzrReaction>
+class omniFam :
+            public utl::autoVector<mzr::mzrReaction>
+{
+    omniRxnGen rxnGen;
+
+public:
+    omniFam( mzr::mzrUnit& refMzrUnit,
+             plx::plexUnit& refPlexUnit,
+             const std::vector<smallMolExchange>& rSMExchanges,
+             const std::vector<modificationExchange>& rModExchanges,
+             mzr::mzrSpecies* pAuxReactant,
+             mzr::mzrSpecies* pAuxProduct,
+             const omniExtrapolator* pOmniExtrapolator ) :
+            rxnGen( refMzrUnit,
+                    refPlexUnit,
+                    rSMExchanges,
+                    rModExchanges,
+                    pAuxReactant,
+                    pAuxProduct,
+                    this,
+                    pOmniExtrapolator )
+    {}
+
+    omniRxnGen*
+    getRxnGen( void )
     {
-        omniRxnGen rxnGen;
-
-    public:
-        omniFam (mzr::mzrUnit& refMzrUnit,
-                 plx::plexUnit& refPlexUnit,
-                 const std::vector<smallMolExchange>& rSMExchanges,
-                 const std::vector<modificationExchange>& rModExchanges,
-                 mzr::mzrSpecies* pAuxReactant,
-                 mzr::mzrSpecies* pAuxProduct,
-                 const omniExtrapolator* pOmniExtrapolator) :
-                rxnGen (refMzrUnit,
-                        refPlexUnit,
-                        rSMExchanges,
-                        rModExchanges,
-                        pAuxReactant,
-                        pAuxProduct,
-                        this,
-                        pOmniExtrapolator)
-        {}
-
-        omniRxnGen*
-        getRxnGen (void)
-        {
-            return &rxnGen;
-        }
-    };
+        return &rxnGen;
+    }
+};
 }
 
 #endif // OMNIFAM_H

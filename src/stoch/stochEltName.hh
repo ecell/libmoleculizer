@@ -36,26 +36,26 @@
 
 namespace stoch
 {
-    namespace eltName
-    {
-        extern const std::string stochSpecies;
-        extern const std::string stochSpecies_nameAttr;
+namespace eltName
+{
+extern const std::string stochSpecies;
+extern const std::string stochSpecies_nameAttr;
 
 // For state output.
 
-        extern const std::string taggedStochSpecies;
-        extern const std::string taggedStochSpecies_tagAttr;
-        extern const std::string taggedStochSpecies_nameAttr;
-        extern const std::string weight;
-        extern const std::string weight_daltonsAttr;
-        extern const std::string population;
-        extern const std::string population_countAttr;
+extern const std::string taggedStochSpecies;
+extern const std::string taggedStochSpecies_tagAttr;
+extern const std::string taggedStochSpecies_nameAttr;
+extern const std::string weight;
+extern const std::string weight_daltonsAttr;
+extern const std::string population;
+extern const std::string population_countAttr;
 
 // Redundant concentration element to avoid calculation upon
 // translation to ODE world.
-        extern const std::string concentration;
-        extern const std::string concentration_valueAttr;
-    }
+extern const std::string concentration;
+extern const std::string concentration_valueAttr;
+}
 }
 
 #endif

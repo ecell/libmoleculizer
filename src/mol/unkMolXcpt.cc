@@ -34,15 +34,15 @@
 
 namespace bnd
 {
-    std::string
-    unkMolXcpt::mkMsg (const std::string& rBadMolName,
-                       const xmlpp::Node* pOffendingNode)
-    {
-        std::ostringstream msgStream;
-        msgStream << utl::dom::xcpt::mkMsg (pOffendingNode)
-        << "Unknown mol `"
-        << rBadMolName
-        << "'.";
-        return msgStream.str();
-    }
+std::string
+unkMolXcpt::mkMsg( const std::string& rBadMolName,
+                   const xmlpp::Node* pOffendingNode )
+{
+    std::ostringstream msgStream;
+    msgStream << utl::dom::xcpt::mkMsg( pOffendingNode )
+    << "Unknown mol `"
+    << rBadMolName
+    << "'.";
+    return msgStream.str();
+}
 }

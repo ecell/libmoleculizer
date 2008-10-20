@@ -34,31 +34,31 @@
 
 namespace utl
 {
-    namespace dom
-    {
-        std::string
-        badIntAttrXcpt::
-        mkMsg (const xmlpp::Element* pOffendingElement,
-               const std::string& rAttrName,
-               const std::string& rBadAttrValue)
-        {
-            std::ostringstream msgStream;
-            msgStream << xcpt::mkMsg (pOffendingElement)
-            << "Expected integer for value of "
-            << rAttrName
-            << " attribute; got `"
-            << rBadAttrValue
-            << "'.";
-            return msgStream.str();
-        }
+namespace dom
+{
+std::string
+badIntAttrXcpt::
+mkMsg( const xmlpp::Element* pOffendingElement,
+       const std::string& rAttrName,
+       const std::string& rBadAttrValue )
+{
+    std::ostringstream msgStream;
+    msgStream << xcpt::mkMsg( pOffendingElement )
+    << "Expected integer for value of "
+    << rAttrName
+    << " attribute; got `"
+    << rBadAttrValue
+    << "'.";
+    return msgStream.str();
+}
 
-        badIntAttrXcpt::
-        badIntAttrXcpt (const xmlpp::Element* pOffendingElement,
-                        const std::string& rAttrName,
-                        const std::string& rBadAttrValue) :
-                xcpt (mkMsg (pOffendingElement,
-                             rAttrName,
-                             rBadAttrValue) )
-        {}
-    }
+badIntAttrXcpt::
+badIntAttrXcpt( const xmlpp::Element* pOffendingElement,
+                const std::string& rAttrName,
+                const std::string& rBadAttrValue ) :
+        xcpt( mkMsg( pOffendingElement,
+                     rAttrName,
+                     rBadAttrValue ) )
+{}
+}
 }

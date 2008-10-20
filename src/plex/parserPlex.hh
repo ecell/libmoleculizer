@@ -37,55 +37,55 @@
 
 namespace plx
 {
-    /*! \ingroup plexSpeciesGroup
-    \brief Complex embellished with instance names for the mols.
+/*! \ingroup plexSpeciesGroup
+\brief Complex embellished with instance names for the mols.
 
-    This is for use in the parser: you need to be able to
-    refer to the constituent mols in some easier way than, say,
-    indices. */
-    class parserPlex :
-                public mzrPlex
-    {
-    public:
+This is for use in the parser: you need to be able to
+refer to the constituent mols in some easier way than, say,
+indices. */
+class parserPlex :
+            public mzrPlex
+{
+public:
 // For incremental construction.
-        parserPlex (void)
-        {}
+    parserPlex( void )
+    {}
 
 // For constructing a parser plex (which has instance names) from
 // a plex and a naming of the instances.
-        parserPlex (const std::map<std::string, int>& rNameToMolNdx,
-                    const mzrPlex& rOriginal) :
-                mzrPlex (rOriginal),
-                nameToMolNdx (rNameToMolNdx)
-        {}
+    parserPlex( const std::map<std::string, int>& rNameToMolNdx,
+                const mzrPlex& rOriginal ) :
+            mzrPlex( rOriginal ),
+            nameToMolNdx( rNameToMolNdx )
+    {}
 
 // Mapping of instance names to mol index.
-        std::map<std::string, int> nameToMolNdx;
+    std::map<std::string, int> nameToMolNdx;
 
 // Appends a mol with the given instance name, returning
 // the new instance's index.
-        int
-        addMolByName (const std::string& rName,
-                      bnd::mzrMol* pMol);
+    int
+    addMolByName( const std::string& rName,
+                  bnd::mzrMol* pMol );
 
 // Returns -1 if the name isn't a mol instance name.
-        int
-        getMolNdxByName (const std::string& rName) const;
+    int
+    getMolNdxByName( const std::string& rName ) const;
 
-        int
-        mustGetMolNdxByName (xmlpp::Node* pRequestingNode,
-                             const std::string& rInstanceName) const
-        throw (plx::unkMolInstXcpt);
+    int
+    mustGetMolNdxByName( xmlpp::Node* pRequestingNode,
+                         const std::string& rInstanceName ) const
+    throw( plx::unkMolInstXcpt );
 
 // Returns 0 if the name isn't a mol instance name.
-        bnd::mzrMol*
-        getMolByName (const std::string& rName) const;
+    bnd::mzrMol*
+    getMolByName( const std::string& rName ) const;
 
-        bnd::mzrMol*
-        mustGetMolByName (xmlpp::Node* pRequstingNode,
-                          const std::string& rInstanceName) const
-        throw (plx::unkMolInstXcpt);
-    };
+    bnd::mzrMol*
+    mustGetMolByName( xmlpp::Node* pRequstingNode,
+                      const std::string& rInstanceName ) const
+    throw( plx::unkMolInstXcpt );
+};
 }
 
 #endif // PARSERPLEX_H

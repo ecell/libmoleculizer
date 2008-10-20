@@ -36,19 +36,19 @@ namespace fnd
 {
 // Base class for dmpColumn classes, of which
 // dumpStreams are basically a list.
-    class basicDmpColumn
-    {
-    public:
-        virtual
-        ~basicDmpColumn (void)
-        {}
+class basicDmpColumn
+{
+public:
+    virtual
+    ~basicDmpColumn( void )
+    {}
 
-        virtual void
-        dumpHeader (void) = 0;
+    virtual void
+    dumpHeader( void ) = 0;
 
-        virtual void
-        doDump (void) = 0;
-    };
+    virtual void
+    doDump( void ) = 0;
+};
 
 }
 

@@ -34,13 +34,13 @@
 
 namespace plx
 {
-    std::string
-    parsedPlexNotConnXcpt::
-    mkMsg (const xmlpp::Node* pPlexNode)
-    {
-        static std::ostringstream msgStream;
-        msgStream << utl::dom::xcpt::mkMsg (pPlexNode)
-        << "Plex is not connected.";
-        return msgStream.str();
-    }
+std::string
+parsedPlexNotConnXcpt::
+mkMsg( const xmlpp::Node* pPlexNode )
+{
+    static std::ostringstream msgStream;
+    msgStream << utl::dom::xcpt::mkMsg( pPlexNode )
+    << "Plex is not connected.";
+    return msgStream.str();
+}
 }

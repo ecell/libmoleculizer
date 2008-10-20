@@ -35,88 +35,88 @@
 
 namespace dimer
 {
-    void
-    dimerizeNoExtrap::
-    setRate (cpx::siteParam leftParam,
-             cpx::siteParam rightParam,
-             double rate)
+void
+dimerizeNoExtrap::
+setRate( cpx::siteParam leftParam,
+         cpx::siteParam rightParam,
+         double rate )
+{
+    // For the time being, I'm storing the pair in only one order,
+    // then searching for both orders when the pair is looked up.
+    std::pair<rateMapType::iterator, bool> insertResult
+    = rateMap.insert( std::make_pair( std::make_pair( leftParam,
+                                      rightParam ),
+                                      rate ) );
+    if ( ! insertResult.second )
     {
-        // For the time being, I'm storing the pair in only one order,
-        // then searching for both orders when the pair is looked up.
-        std::pair<rateMapType::iterator, bool> insertResult
-        = rateMap.insert (std::make_pair (std::make_pair (leftParam,
-                                          rightParam),
-                                          rate) );
-        if (! insertResult.second)
-        {
-            insertResult.first->second = rate;
-        }
+        insertResult.first->second = rate;
+    }
+}
+
+
+double
+dimerizeNoExtrap::
+getRate( const cpx::cxSite<plx::mzrPlexSpecies, plx::mzrPlexFamily>& rLeftContext,
+         const cpx::cxSite<plx::mzrPlexSpecies, plx::mzrPlexFamily>& rRightContext ) const
+{
+    // Now we have to check for both orders in the pair of site shape
+    // pointers.
+    rateMapType::const_iterator iEntry
+    = rateMap.find( std::make_pair( rLeftContext.getSiteParam(),
+                                    rRightContext.getSiteParam() ) );
+    if ( iEntry == rateMap.end() )
+    {
+        iEntry = rateMap.find( std::make_pair( rRightContext.getSiteParam(),
+                                               rLeftContext.getSiteParam() ) );
+        if ( iEntry == rateMap.end() )
+            throw missingDimerizeRateXcpt( rLeftContext,
+                                           rRightContext );
     }
 
+    return iEntry->second;
+}
 
-    double
-    dimerizeNoExtrap::
-    getRate (const cpx::cxSite<plx::mzrPlexSpecies, plx::mzrPlexFamily>& rLeftContext,
-             const cpx::cxSite<plx::mzrPlexSpecies, plx::mzrPlexFamily>& rRightContext) const
+void
+dimerizeMassExtrap::
+setRate( cpx::siteParam leftParam,
+         cpx::siteParam rightParam,
+         double rate )
+{
+    double invariant = fnd::bindingInvariant( rate,
+                       leftMass,
+                       rightMass );
+
+    std::pair<invMapType::iterator, bool> insertResult
+    = invariantMap.insert( std::make_pair( std::make_pair( leftParam,
+                                           rightParam ),
+                                           invariant ) );
+    if ( ! insertResult.second )
     {
-        // Now we have to check for both orders in the pair of site shape
-        // pointers.
-        rateMapType::const_iterator iEntry
-        = rateMap.find (std::make_pair (rLeftContext.getSiteParam(),
-                                        rRightContext.getSiteParam() ) );
-        if (iEntry == rateMap.end() )
-        {
-            iEntry = rateMap.find (std::make_pair (rRightContext.getSiteParam(),
-                                                   rLeftContext.getSiteParam() ) );
-            if (iEntry == rateMap.end() )
-                throw missingDimerizeRateXcpt (rLeftContext,
-                                               rRightContext);
-        }
+        insertResult.first->second = invariant;
+    }
+}
 
-        return iEntry->second;
+double
+dimerizeMassExtrap::
+getRate( const cpx::cxSite<plx::mzrPlexSpecies, plx::mzrPlexFamily>& rLeftContext,
+         const cpx::cxSite<plx::mzrPlexSpecies, plx::mzrPlexFamily>& rRightContext ) const
+{
+    // Since the rates were stored with the key pair in only one
+    // order, we have to check for both orders when looking it up.
+    invMapType::const_iterator iEntry
+    = invariantMap.find( std::make_pair( rLeftContext.getSiteParam(),
+                                         rRightContext.getSiteParam() ) );
+    if ( iEntry == invariantMap.end() )
+    {
+        iEntry = invariantMap.find( std::make_pair( rRightContext.getSiteParam(),
+                                    rLeftContext.getSiteParam() ) );
+        if ( iEntry == invariantMap.end() )
+            throw missingDimerizeInvariantXcpt( rLeftContext,
+                                                rRightContext );
     }
 
-    void
-    dimerizeMassExtrap::
-    setRate (cpx::siteParam leftParam,
-             cpx::siteParam rightParam,
-             double rate)
-    {
-        double invariant = fnd::bindingInvariant (rate,
-                           leftMass,
-                           rightMass);
-
-        std::pair<invMapType::iterator, bool> insertResult
-        = invariantMap.insert (std::make_pair (std::make_pair (leftParam,
-                                               rightParam),
-                                               invariant) );
-        if (! insertResult.second)
-        {
-            insertResult.first->second = invariant;
-        }
-    }
-
-    double
-    dimerizeMassExtrap::
-    getRate (const cpx::cxSite<plx::mzrPlexSpecies, plx::mzrPlexFamily>& rLeftContext,
-             const cpx::cxSite<plx::mzrPlexSpecies, plx::mzrPlexFamily>& rRightContext) const
-    {
-        // Since the rates were stored with the key pair in only one
-        // order, we have to check for both orders when looking it up.
-        invMapType::const_iterator iEntry
-        = invariantMap.find (std::make_pair (rLeftContext.getSiteParam(),
-                                             rRightContext.getSiteParam() ) );
-        if (iEntry == invariantMap.end() )
-        {
-            iEntry = invariantMap.find (std::make_pair (rRightContext.getSiteParam(),
-                                        rLeftContext.getSiteParam() ) );
-            if (iEntry == invariantMap.end() )
-                throw missingDimerizeInvariantXcpt (rLeftContext,
-                                                    rRightContext);
-        }
-
-        return fnd::bindingRate (iEntry->second,
-                                 rLeftContext.getPlexWeight(),
-                                 rRightContext.getPlexWeight() );
-    }
+    return fnd::bindingRate( iEntry->second,
+                             rLeftContext.getPlexWeight(),
+                             rRightContext.getPlexWeight() );
+}
 }

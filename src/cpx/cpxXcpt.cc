@@ -34,116 +34,116 @@
 
 namespace cpx
 {
-    std::string plexIsNotSimpleGraphXcpt::mkMsg()
-    {
-        std::ostringstream oss;
-        oss << "Error: Isomorphism checking on plexes require plexes be simple graphs "
-            << "(No intra-molecule bindings, at most one binding between different "
-            << "molecules).  This condition was not met.";
-        return oss.str();
-    }
+std::string plexIsNotSimpleGraphXcpt::mkMsg()
+{
+    std::ostringstream oss;
+    oss << "Error: Isomorphism checking on plexes require plexes be simple graphs "
+    << "(No intra-molecule bindings, at most one binding between different "
+    << "molecules).  This condition was not met.";
+    return oss.str();
+}
 
-    std::string
-    badModMolStateXcpt::
-    mkMsg (void)
-    {
-        std::ostringstream msgStream;
-        msgStream << utl::xcpt::mkMsg()
-                  << "modMolStateQuery applied to a molState "
-                  << "that was not a modMolState.";
-        return msgStream.str();
-    }
+std::string
+badModMolStateXcpt::
+mkMsg( void )
+{
+    std::ostringstream msgStream;
+    msgStream << utl::xcpt::mkMsg()
+    << "modMolStateQuery applied to a molState "
+    << "that was not a modMolState.";
+    return msgStream.str();
+}
 
-    std::string
-    modPlexQueryTypeXcpt::
-    mkMsg (void)
-    {
-        std::ostringstream msgStream;
-        msgStream << utl::xcpt::mkMsg()
-                  << "modPlexQuery applied to molState "
-                  << "that was not a modMolState.";
-        return msgStream.str();
-    }
+std::string
+modPlexQueryTypeXcpt::
+mkMsg( void )
+{
+    std::ostringstream msgStream;
+    msgStream << utl::xcpt::mkMsg()
+    << "modPlexQuery applied to molState "
+    << "that was not a modMolState.";
+    return msgStream.str();
+}
 
-    std::string
-    noKineticConstsXcpt::
-    mkShapesOnlyMsg (const std::string& rLeftSiteShapeName,
-                     const std::string& rRightSiteShapeName)
-    {
-        std::ostringstream msgStream;
-        msgStream << "Attempt to form binding of site shapes "
-                  << rLeftSiteShapeName
-                  << " and "
-                  << rRightSiteShapeName
-                  << " for which no on/off rates have been given.";
-        return msgStream.str();
-    }
+std::string
+noKineticConstsXcpt::
+mkShapesOnlyMsg( const std::string& rLeftSiteShapeName,
+                 const std::string& rRightSiteShapeName )
+{
+    std::ostringstream msgStream;
+    msgStream << "Attempt to form binding of site shapes "
+    << rLeftSiteShapeName
+    << " and "
+    << rRightSiteShapeName
+    << " for which no on/off rates have been given.";
+    return msgStream.str();
+}
 
-    std::string
-    noKineticConstsXcpt::
-    mkMolsAndSitesMsg (const std::string& rLeftMolName,
-                       const std::string& rLeftSiteName,
-                       const std::string& rRightMolName,
-                       const std::string& rRightSiteName)
-    {
-        std::ostringstream msgStream;
-        msgStream << "Plex contains binding between site "
-                  << rLeftSiteName
-                  << " on mol "
-                  << rLeftMolName
-                  << " and site "
-                  << rRightSiteName
-                  << " on mol "
-                  << rRightMolName
-                  << " for which no on/off rates have been given.";
-        return msgStream.str();
-    }
+std::string
+noKineticConstsXcpt::
+mkMolsAndSitesMsg( const std::string& rLeftMolName,
+                   const std::string& rLeftSiteName,
+                   const std::string& rRightMolName,
+                   const std::string& rRightSiteName )
+{
+    std::ostringstream msgStream;
+    msgStream << "Plex contains binding between site "
+    << rLeftSiteName
+    << " on mol "
+    << rLeftMolName
+    << " and site "
+    << rRightSiteName
+    << " on mol "
+    << rRightMolName
+    << " for which no on/off rates have been given.";
+    return msgStream.str();
+}
 
 // Thrown in dimerizeRxnGen.cc, makeBinaryReactions.
-    std::string
-    noKineticConstsXcpt::
-    mkFullMsg (const std::string& rLeftMolName,
-               const std::string& rLeftSiteName,
-               const std::string& rLeftSiteShapeName,
-               const std::string& rRightMolName,
-               const std::string& rRightSiteName,
-               const std::string& rRightSiteShapeName)
-    {
-        std::ostringstream msgStream;
-        msgStream << "Attempt to generate binding reaction between site "
-                  << rLeftSiteName
-                  << " on mol "
-                  << rLeftMolName
-                  << " (in shape "
-                  << rLeftSiteShapeName
-                  << ") with site "
-                  << rRightSiteName
-                  << " on mol "
-                  << rRightMolName
-                  << " (in shape "
-                  << rRightSiteShapeName
-                  << ") for which no on/off rates have been given.";
-        return msgStream.str();
-    }
+std::string
+noKineticConstsXcpt::
+mkFullMsg( const std::string& rLeftMolName,
+           const std::string& rLeftSiteName,
+           const std::string& rLeftSiteShapeName,
+           const std::string& rRightMolName,
+           const std::string& rRightSiteName,
+           const std::string& rRightSiteShapeName )
+{
+    std::ostringstream msgStream;
+    msgStream << "Attempt to generate binding reaction between site "
+    << rLeftSiteName
+    << " on mol "
+    << rLeftMolName
+    << " (in shape "
+    << rLeftSiteShapeName
+    << ") with site "
+    << rRightSiteName
+    << " on mol "
+    << rRightMolName
+    << " (in shape "
+    << rRightSiteShapeName
+    << ") for which no on/off rates have been given.";
+    return msgStream.str();
+}
 
-    std::string
-    plexNotConnectedXcpt::
-    mkMsg (void)
-    {
-        std::ostringstream msgStream;
-        msgStream << utl::xcpt::mkMsg()
-                  <<"Left plex not connected in plex isomorphism search.";
-        return msgStream.str();
-    }
+std::string
+plexNotConnectedXcpt::
+mkMsg( void )
+{
+    std::ostringstream msgStream;
+    msgStream << utl::xcpt::mkMsg()
+    <<"Left plex not connected in plex isomorphism search.";
+    return msgStream.str();
+}
 
-    std::string
-    unmappedSiteSpecXcpt::
-    mkMsg (void)
-    {
-        std::ostringstream msgStream;
-        msgStream << utl::xcpt::mkMsg()
-                  << "There is no binding site with the given specification.";
-        return msgStream.str();
-    }
+std::string
+unmappedSiteSpecXcpt::
+mkMsg( void )
+{
+    std::ostringstream msgStream;
+    msgStream << utl::xcpt::mkMsg()
+    << "There is no binding site with the given specification.";
+    return msgStream.str();
+}
 
 }

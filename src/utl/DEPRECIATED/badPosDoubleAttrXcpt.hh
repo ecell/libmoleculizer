@@ -36,23 +36,23 @@
 
 namespace utl
 {
-    namespace dom
-    {
-        class badPosDoubleAttrXcpt :
-                    public xcpt
-        {
-            static std::string
-            mkMsg (const xmlpp::Element* pOffendingElement,
-                   const std::string& rAttrName,
-                   double badDoubleValue);
+namespace dom
+{
+class badPosDoubleAttrXcpt :
+            public xcpt
+{
+    static std::string
+    mkMsg( const xmlpp::Element* pOffendingElement,
+           const std::string& rAttrName,
+           double badDoubleValue );
 
-        public:
-            badPosDoubleAttrXcpt (const xmlpp::Element* pOffendingElement,
-                                  const std::string& rAttrName,
-                                  double badDoubleValue)
-            throw();
-        };
-    }
+public:
+    badPosDoubleAttrXcpt( const xmlpp::Element* pOffendingElement,
+                          const std::string& rAttrName,
+                          double badDoubleValue )
+    throw();
+};
+}
 }
 
 #endif // UTL_BADPOSDOUBLEATTRXCPT_H

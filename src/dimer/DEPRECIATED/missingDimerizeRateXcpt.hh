@@ -42,21 +42,21 @@ namespace dimer
 // Thrown by dimerizeNoExtrap extrapolator when the extrapolator is asked to
 // construct rates for site shape pairs that have not been given a nominal
 // rate.
-    class missingDimerizeRateXcpt :
-                public utl::xcpt
-    {
-        static std::string
-        mkMsg (const cpx::cxSite<plx::mzrPlexSpecies, plx::mzrPlexFamily>& cxLeft,
-               const cpx::cxSite<plx::mzrPlexSpecies, plx::mzrPlexFamily>& cxRight);
+class missingDimerizeRateXcpt :
+            public utl::xcpt
+{
+    static std::string
+    mkMsg( const cpx::cxSite<plx::mzrPlexSpecies, plx::mzrPlexFamily>& cxLeft,
+           const cpx::cxSite<plx::mzrPlexSpecies, plx::mzrPlexFamily>& cxRight );
 
-    public:
-        missingDimerizeRateXcpt
-        (const cpx::cxSite<plx::mzrPlexSpecies, plx::mzrPlexFamily>& cxLeft,
-         const cpx::cxSite<plx::mzrPlexSpecies, plx::mzrPlexFamily>& cxRight) :
-                utl::xcpt (mkMsg (cxLeft,
-                                  cxRight) )
-        {}
-    };
+public:
+    missingDimerizeRateXcpt
+    ( const cpx::cxSite<plx::mzrPlexSpecies, plx::mzrPlexFamily>& cxLeft,
+      const cpx::cxSite<plx::mzrPlexSpecies, plx::mzrPlexFamily>& cxRight ) :
+            utl::xcpt( mkMsg( cxLeft,
+                              cxRight ) )
+    {}
+};
 }
 
 #endif // DIMER_MISSINGDIMERIZERATEXCPT_H

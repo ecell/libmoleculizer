@@ -36,19 +36,19 @@
 
 namespace utl
 {
-    namespace aux
+namespace aux
+{
+class ptrDereferenceSorter
+{
+public:
+    template <typename T>
+    bool operator()( const T* a, const T* b ) const
     {
-        class ptrDereferenceSorter
-        {
-        public:
-            template <typename T>
-            bool operator() (const T* a, const T* b) const
-            {
-                return (*a) < (*b);
-            }
-        };
-
+        return ( *a ) < ( *b );
     }
+};
+
+}
 }
 
 #endif

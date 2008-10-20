@@ -41,33 +41,33 @@ using std::cerr;
 using std::endl;
 
 
-void SimpleSimulator::createModelFromFile (const std::string& modelFile, std::map<std::string, int>& model)
+void SimpleSimulator::createModelFromFile( const std::string& modelFile, std::map<std::string, int>& model )
 {
     model.clear();
 
     std::ifstream inputfile;
-    inputfile.open ( modelFile.c_str() );
+    inputfile.open( modelFile.c_str() );
 
     std::string current_line;
-    while ( std::getline (inputfile, current_line) )
+    while ( std::getline( inputfile, current_line ) )
     {
         std::vector<std::string> tokenVector;
 
-        utl::tokenize ( current_line, tokenVector, " ");
-        if (tokenVector.size() == 0 ) continue;
+        utl::tokenize( current_line, tokenVector, " " );
+        if ( tokenVector.size() == 0 ) continue;
 
 
-        if (tokenVector.size() != 2)
+        if ( tokenVector.size() != 2 )
         {
-            if (tokenVector.size() == 1 && tokenVector[0] == "") continue;
+            if ( tokenVector.size() == 1 && tokenVector[0] == "" ) continue;
 
             std::cerr << "Error, bad line '" << current_line << "'.\n";
             int num = 1;
-            BOOST_FOREACH (std::string str, tokenVector)
+            BOOST_FOREACH( std::string str, tokenVector )
             {
                 std::cerr << num++ << ":\t" << str << '\n';
             }
-            assert (tokenVector.size() == 2);
+            assert( tokenVector.size() == 2 );
 
         }
 
@@ -75,23 +75,23 @@ void SimpleSimulator::createModelFromFile (const std::string& modelFile, std::ma
         std::string numAsString = tokenVector[1];
         int population;
 
-        utl::from_string (population, numAsString);
-        model.insert ( std::make_pair ( name, population) );
+        utl::from_string( population, numAsString );
+        model.insert( std::make_pair( name, population ) );
     }
 }
 
-SimpleSimulator::SimpleSimulator ( std::string rulesfile,
-                                   std::string modelfile )
+SimpleSimulator::SimpleSimulator( std::string rulesfile,
+                                  std::string modelfile )
 {
-    srand (time (NULL) );
-    attachRuleFile ( rulesfile);
-    
+    srand( time( NULL ) );
+    attachRuleFile( rulesfile );
+
     std::cout << "SS: State after attaching rules, before attaching Model:" << std::endl;
     speciesReactionGenerator.printAll();
 
     std::cout << "---------(END)" << std::endl;
-    
-    attachModelFile ( modelfile );
+
+    attachModelFile( modelfile );
 
     std::cout << "---------(BEGIN)" << std::endl;
 
@@ -101,58 +101,58 @@ SimpleSimulator::SimpleSimulator ( std::string rulesfile,
     std::cout << "---------(END)" << std::endl;
 }
 
-void SimpleSimulator::attachRuleFile (std::string rulesfile)
+void SimpleSimulator::attachRuleFile( std::string rulesfile )
 {
-    if (speciesReactionGenerator.getModelHasBeenLoaded() )
+    if ( speciesReactionGenerator.getModelHasBeenLoaded() )
     {
         std::cerr << "Modelfile has already been loaded.  Error." << std::endl;
-        exit (1);
+        exit( 1 );
     }
 
-    speciesReactionGenerator.attachFileName ( rulesfile );
+    speciesReactionGenerator.attachFileName( rulesfile );
 }
 
 
-void SimpleSimulator::attachModelFile ( std::string modelfile)
+void SimpleSimulator::attachModelFile( std::string modelfile )
 {
 
     theModel.clear();
 
     std::map<std::string, int> theNewModel;
-    createModelFromFile ( modelfile, theNewModel );
+    createModelFromFile( modelfile, theNewModel );
 
-    if (!assertModelValidity ( theNewModel ) )
+    if ( !assertModelValidity( theNewModel ) )
     {
         std::cerr << "Error, the model is not valid.  Crashing." << std::endl;
-        exit ( 1 );
+        exit( 1 );
     }
 
-    theModel.swap ( theNewModel );
+    theModel.swap( theNewModel );
     engageModel();
 }
 
 
-bool SimpleSimulator::assertModelValidity (const std::map<std::string, int>& model)
+bool SimpleSimulator::assertModelValidity( const std::map<std::string, int>& model )
 {
-    if (model.size() == 0)
+    if ( model.size() == 0 )
     {
         cerr << "Error.  No species are present in the model." << endl;
         return false;
     }
 
-    BOOST_FOREACH ( const modelPairType& thePair, model)
+    BOOST_FOREACH( const modelPairType& thePair, model )
     {
         // Find out if this is a legal name.
         try
         {
-            speciesReactionGenerator.getSpeciesWithName ( thePair.first );
+            speciesReactionGenerator.getSpeciesWithName( thePair.first );
         }
-        catch (mzr::IllegalNameXcpt)
+        catch ( mzr::IllegalNameXcpt )
         {
             std::cerr << "Illegal name: " << thePair.first << std::endl;
             return false;
         }
-        catch (...)
+        catch ( ... )
         {
             return false;
         }
@@ -163,21 +163,21 @@ bool SimpleSimulator::assertModelValidity (const std::map<std::string, int>& mod
 
 void SimpleSimulator::engageModel()
 {
-    BOOST_FOREACH ( const modelPairType& thePair, theModel)
+    BOOST_FOREACH( const modelPairType& thePair, theModel )
     {
-        if (thePair.second > 0)
+        if ( thePair.second > 0 )
         {
-            speciesReactionGenerator.incrementNetworkBySpeciesName ( thePair.first );
+            speciesReactionGenerator.incrementNetworkBySpeciesName( thePair.first );
         }
     }
 }
 
 
-void SimpleSimulator::executeReaction ( mzr::moleculizer::ReactionTypePtr ptrRxn)
+void SimpleSimulator::executeReaction( mzr::moleculizer::ReactionTypePtr ptrRxn )
 {
     std::cout << "Executing: " << ptrRxn->getName() << std::endl;
 
-    BOOST_FOREACH (const mzr::moleculizer::ReactionType::multMap::value_type& vt, ptrRxn->getReactants() )
+    BOOST_FOREACH( const mzr::moleculizer::ReactionType::multMap::value_type& vt, ptrRxn->getReactants() )
     {
         std::cout << '-' << vt.second << ' ' << vt.first->getName() << '\n';
 
@@ -185,13 +185,13 @@ void SimpleSimulator::executeReaction ( mzr::moleculizer::ReactionTypePtr ptrRxn
         theModel[ name ] -= vt.second;
     }
 
-    BOOST_FOREACH ( const mzr::moleculizer::ReactionType::multMap::value_type& vt, ptrRxn->getProducts() )
+    BOOST_FOREACH( const mzr::moleculizer::ReactionType::multMap::value_type& vt, ptrRxn->getProducts() )
     {
         std::cout << '+' << vt.second << ' ' << vt.first->getName() << '\n';
 
         std::string name = vt.first->getName();
 
-        if (theModel.find ( name ) == theModel.end() )
+        if ( theModel.find( name ) == theModel.end() )
         {
             std::cout << "Creating new species '" << name << "'.";
             theModel[ name ] = vt.second;
@@ -211,7 +211,7 @@ void SimpleSimulator::printState() const
 {
     std::cout << "SimpleSimulator state:" << std::endl;
     typedef std::pair<std::string, int> entry;
-    BOOST_FOREACH (const entry& ent, theModel)
+    BOOST_FOREACH( const entry& ent, theModel )
     {
         std::cout << "\t" << ent.first << ":\t" << ent.second << std::endl;
     }

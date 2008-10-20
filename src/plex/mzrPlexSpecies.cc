@@ -37,74 +37,74 @@
 
 namespace plx
 {
-    double
-    mzrPlexSpecies::
-    getWeight (void) const
-    {
-        return cpx::plexSpeciesMixin<mzrPlexFamily>::getWeight();
-    }
+double
+mzrPlexSpecies::
+getWeight( void ) const
+{
+    return cpx::plexSpeciesMixin<mzrPlexFamily>::getWeight();
+}
 
-    void
-    mzrPlexSpecies::
-    notify (int generateDepth)
-    {
-        rFamily.respond (fnd::newSpeciesStimulus<mzrPlexSpecies> (this,
-                         generateDepth) );
-    }
+void
+mzrPlexSpecies::
+notify( int generateDepth )
+{
+    rFamily.respond( fnd::newSpeciesStimulus<mzrPlexSpecies> ( this,
+                     generateDepth ) );
+}
 
-    std::string
-    mzrPlexSpecies::
-    getName (void) const
+std::string
+mzrPlexSpecies::
+getName( void ) const
+{
+    if ( nameGenerated )
     {
-        if (nameGenerated)
-        {
-            return name;
-        }
-        else
-        {
-            nameGenerated = true;
-            const nmr::NameAssembler* pNameAssembler = rFamily.getNamingStrategy();
-            name = getCanonicalName (pNameAssembler);
-            return name;
-        }
+        return name;
     }
-
-    xmlpp::Element*
-    mzrPlexSpecies::
-    insertElt (xmlpp::Element* pExplicitSpeciesElt,
-               double molarFactor) const
-    throw (std::exception)
+    else
     {
+        nameGenerated = true;
+        const nmr::NameAssembler* pNameAssembler = rFamily.getNamingStrategy();
+        name = getCanonicalName( pNameAssembler );
+        return name;
+    }
+}
+
+xmlpp::Element*
+mzrPlexSpecies::
+insertElt( xmlpp::Element* pExplicitSpeciesElt,
+           double molarFactor ) const
+throw( std::exception )
+{
 // Insert tagged-plex-species element.
-        xmlpp::Element* pTaggedPlexSpeciesElt
-        = pExplicitSpeciesElt->add_child (eltName::taggedPlexSpecies);
+    xmlpp::Element* pTaggedPlexSpeciesElt
+    = pExplicitSpeciesElt->add_child( eltName::taggedPlexSpecies );
 
-        pTaggedPlexSpeciesElt->set_attribute (eltName::taggedPlexSpecies_tagAttr,
-                                              getTag() );
+    pTaggedPlexSpeciesElt->set_attribute( eltName::taggedPlexSpecies_tagAttr,
+                                          getTag() );
 
-        pTaggedPlexSpeciesElt->set_attribute (eltName::taggedPlexSpecies_nameAttr,
-                                              getName() );
+    pTaggedPlexSpeciesElt->set_attribute( eltName::taggedPlexSpecies_nameAttr,
+                                          getName() );
 
 // Insert the paradigm plex.
-        rFamily.getParadigm().insertElt (pTaggedPlexSpeciesElt);
+    rFamily.getParadigm().insertElt( pTaggedPlexSpeciesElt );
 
 // Insert the non-default instance states.
 //
 // Might be easier and non-harmful to insert all instance states.
-        xmlpp::Element* pInstanceStatesElt
-        = pTaggedPlexSpeciesElt->add_child (eltName::instanceStates);
+    xmlpp::Element* pInstanceStatesElt
+    = pTaggedPlexSpeciesElt->add_child( eltName::instanceStates );
 
 // I need molNdx to generate a pseudo instance name.
-        for (int molNdx = 0;
-                molNdx < (int) molParams.size();
-                ++molNdx)
-        {
-            bnd::mzrMol* pMol = rFamily.getParadigm().mols[molNdx];
+    for ( int molNdx = 0;
+            molNdx < ( int ) molParams.size();
+            ++molNdx )
+    {
+        bnd::mzrMol* pMol = rFamily.getParadigm().mols[molNdx];
 
-            pMol->insertInstanceState (pInstanceStatesElt,
-                                       molNdx,
-                                       molParams[molNdx]);
-        }
+        pMol->insertInstanceState( pInstanceStatesElt,
+                                   molNdx,
+                                   molParams[molNdx] );
+    }
 
 //         xmlpp::Element* pPopulationElt
 //         = pTaggedPlexSpeciesElt->add_child (eltName::population);
@@ -123,11 +123,11 @@ namespace plx
 //                                           utl::stringify<double> (concentration) );
 
 // Add the updated flag for use by parametrizer.
-        if (hasNotified() )
-        {
-            pTaggedPlexSpeciesElt->add_child (eltName::updated);
-        }
-
-        return pTaggedPlexSpeciesElt;
+    if ( hasNotified() )
+    {
+        pTaggedPlexSpeciesElt->add_child( eltName::updated );
     }
+
+    return pTaggedPlexSpeciesElt;
+}
 }

@@ -39,30 +39,30 @@
 
 namespace mzr
 {
-    class moleculizer;
+class moleculizer;
 
-    class mzrSpecies :
-                public fnd::basicSpecies<mzrReaction>,
-                public fnd::massive,
-                public fnd::reactionNetworkComponent
-    {
-    public:
+class mzrSpecies :
+            public fnd::basicSpecies<mzrReaction>,
+            public fnd::massive,
+            public fnd::reactionNetworkComponent
+{
+public:
 
-        virtual void
-        expandReactionNetwork();
+    virtual void
+    expandReactionNetwork();
 
-        void expandReactionNetwork (unsigned int i);
+    void expandReactionNetwork( unsigned int i );
 
-        static void
-        setGenerateDepth (unsigned int i);
+    static void
+    setGenerateDepth( unsigned int i );
 
-        static unsigned int
-        getGenerateDepth();
+    static unsigned int
+    getGenerateDepth();
 
-        static unsigned int generateDepth;
+    static unsigned int generateDepth;
 
 
-    };
+};
 }
 
 #endif

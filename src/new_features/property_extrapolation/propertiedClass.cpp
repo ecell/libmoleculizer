@@ -35,9 +35,9 @@ PropertiedClass::PropertiedClass()
 {}
 
 
-PropertiedClass::PropertiedClass(const PropertiedClass& propertiedClass)
+PropertiedClass::PropertiedClass( const PropertiedClass& propertiedClass )
 {
-    
+
 }
 
 
@@ -46,19 +46,19 @@ PropertiedClass::~PropertiedClass()
 }
 
 Value
-PropertiedClass::operator[](const String& propertiedName) throw(PropertyDoesNotExistXcpt )
+PropertiedClass::operator[]( const String& propertiedName ) throw( PropertyDoesNotExistXcpt )
 {
     return this->getPropertyValue( propertiedName );
 }
 
 Value
-PropertiedClass::getPropertyValue( const String& propertyName) throw(PropertyDoesNotExistXcpt )
+PropertiedClass::getPropertyValue( const String& propertyName ) throw( PropertyDoesNotExistXcpt )
 {
     return getProperty( propertyName ).getValue();
 }
 
 Property&
-PropertiedClass::getProperty(const String& propertyName)
+PropertiedClass::getProperty( const String& propertyName )
 {
     return thePropertyMap.find( &propertyName )->second;
 }
@@ -68,14 +68,14 @@ PropertiedClass::getProperty(const String& propertyName)
 void PropertiedClass::addProperty( Property propertyToAdd )
 {
 
-    if (propertyToAdd.hasOwner())
+    if ( propertyToAdd.hasOwner() )
     {
-        throw utl::xcpt("property '" + propertyToAdd.getName() + "' already has an owner.");
+        throw utl::xcpt( "property '" + propertyToAdd.getName() + "' already has an owner." );
     }
 
     const String* ptrString = &propertyToAdd.getName();
 
-    if (thePropertyMap.find( ptrString ) == thePropertyMap.end() )
+    if ( thePropertyMap.find( ptrString ) == thePropertyMap.end() )
     {
         propertyToAdd.setOwner( this );
         thePropertyMap.insert( std::make_pair( ptrString, propertyToAdd ) );
@@ -84,25 +84,25 @@ void PropertiedClass::addProperty( Property propertyToAdd )
     {
         String badPropertyName( *ptrString );
         // throw PropertyAlreadyExistsXcpt( propertyName )
-        throw utl::xcpt("Property '" + badPropertyName + "' already exists in this PropertiedClass.");
+        throw utl::xcpt( "Property '" + badPropertyName + "' already exists in this PropertiedClass." );
     }
 }
 
 void PropertiedClass::createProperty( String propertyName )
 {
-    
-    Property newProp(propertyName, this);
+
+    Property newProp( propertyName, this );
 
     const String* ptrString = &newProp.getName();
-    
-    if (thePropertyMap.find( ptrString ) == thePropertyMap.end() )
+
+    if ( thePropertyMap.find( ptrString ) == thePropertyMap.end() )
     {
         thePropertyMap.insert( std::make_pair( ptrString, newProp ) );
     }
     else
     {
         // throw PropertyAlreadyExistsXcpt( propertyName )
-        throw utl::xcpt("Property '" + propertyName + "' already exists in this PropertiedClass.");
+        throw utl::xcpt( "Property '" + propertyName + "' already exists in this PropertiedClass." );
     }
-    
+
 }

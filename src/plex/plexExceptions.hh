@@ -36,15 +36,15 @@
 
 namespace plx
 {
-    class NonConstructableComplexOutputStateXcpt : public utl::xcpt
+class NonConstructableComplexOutputStateXcpt : public utl::xcpt
+{
+public:
+    NonConstructableComplexOutputStateXcpt()
+            :
+            xcpt( "Error: Complex output state could not be constructed by the plexUnit." )
     {
-    public:
-        NonConstructableComplexOutputStateXcpt()
-                :
-                xcpt ( "Error: Complex output state could not be constructed by the plexUnit.")
-        {
-        }
-    };
+    }
+};
 }
 
 

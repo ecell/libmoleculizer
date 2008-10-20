@@ -32,7 +32,7 @@
 #ifndef __VALUE_HPP
 #define __VALUE_HPP
 
-#include "utl/defs.hh" 
+#include "utl/defs.hh"
 
 using namespace boost;
 
@@ -46,29 +46,29 @@ public:
     Value();
 
     template <typename T>
-    Value(const T& valueType)
-        :
-        underlyingValue( new Real(0.0f) )
+    Value( const T& valueType )
+            :
+            underlyingValue( new Real( 0.0f ) )
     {
         this->setValue( valueType );
     }
 
-    Value(const Value& value);
+    Value( const Value& value );
     ~Value();
 
-    const Value& operator=(const Value& value);
+    const Value& operator=( const Value& value );
 
-    // Initially, I am planning to have the different Value types do 
+    // Initially, I am planning to have the different Value types do
     // template overriding, and so I am not making these virtual.  Should I?
-    void setValue(const Value& value);
-    void setValue(String strValue) throw( utl::NotImplementedXcpt );
-    void setValue(Integer intValue);
-    void setValue(Real realValue);
+    void setValue( const Value& value );
+    void setValue( String strValue ) throw( utl::NotImplementedXcpt );
+    void setValue( Integer intValue );
+    void setValue( Real realValue );
 
     String valueAsString() const;
     Integer valueAsInteger() const;
     Real valueAsReal() const;
-    
+
     Value clone() const;
 
 protected:
@@ -76,7 +76,7 @@ protected:
     UnderlyingValuePtr  underlyingValue;
 };
 
-std::ostream& operator<<(std::ostream& str, const Value& val);
+std::ostream& operator<<( std::ostream& str, const Value& val );
 
 
 #endif

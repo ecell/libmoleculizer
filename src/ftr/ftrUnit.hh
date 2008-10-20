@@ -39,60 +39,60 @@
 
 namespace ftr
 {
-    class ftrUnit : public mzr::unit
-    {
-    public:
-        mzr::mzrUnit& rMzrUnit;
-        bnd::molUnit& rMolUnit;
-        plx::plexUnit& rPlexUnit;
+class ftrUnit : public mzr::unit
+{
+public:
+    mzr::mzrUnit& rMzrUnit;
+    bnd::molUnit& rMolUnit;
+    plx::plexUnit& rPlexUnit;
 
-        ftrUnit (mzr::moleculizer& rMoleculizer,
-                 mzr::mzrUnit& refMzrUnit,
-                 bnd::molUnit& refMolUnit,
-                 plx::plexUnit& refPlexUnit) :
-                mzr::unit ("ftr",
-                           rMoleculizer),
-                rMzrUnit (refMzrUnit),
-                rMolUnit (refMolUnit),
-                rPlexUnit (refPlexUnit)
-        {
+    ftrUnit( mzr::moleculizer& rMoleculizer,
+             mzr::mzrUnit& refMzrUnit,
+             bnd::molUnit& refMolUnit,
+             plx::plexUnit& refPlexUnit ) :
+            mzr::unit( "ftr",
+                       rMoleculizer ),
+            rMzrUnit( refMzrUnit ),
+            rMolUnit( refMolUnit ),
+            rPlexUnit( refPlexUnit )
+    {
 // Register reaction generator names.  This is used by the parser
 // to verify that all elements appearing in the input file are "claimed"
 // by some module.  Why did I think that was a good idea?  Now, "open
 // schema" i.e. pay no attention to extraneous matter while parsing.
 // seems more rational to me.
-            inputCap.addReactionGenName (eltName::omniGen);
-            inputCap.addReactionGenName (eltName::uniMolGen);
+        inputCap.addReactionGenName( eltName::omniGen );
+        inputCap.addReactionGenName( eltName::uniMolGen );
 
 // Register the enabling complexes for omniRxnGen generators
 // as omniplexes, for processing by the plexUnit.
-            const std::string slash ("/");
-            std::ostringstream omniGensXpath;
-            omniGensXpath << mzr::eltName::model
-            << slash
-            << mzr::eltName::reactionGens
-            << slash
-            << eltName::omniGen
-            << slash
-            << eltName::enablingOmniplex;
-            rPlexUnit.addOmniXpath (omniGensXpath.str() );
-        }
+        const std::string slash( "/" );
+        std::ostringstream omniGensXpath;
+        omniGensXpath << mzr::eltName::model
+        << slash
+        << mzr::eltName::reactionGens
+        << slash
+        << eltName::omniGen
+        << slash
+        << eltName::enablingOmniplex;
+        rPlexUnit.addOmniXpath( omniGensXpath.str() );
+    }
 
 // The input parsing routine for this unit.
-        void
-        parseDomInput (xmlpp::Element* pRootElement,
-                       xmlpp::Element* pModelElement,
-                       xmlpp::Element* pStreamElt)
-        throw (std::exception);
+    void
+    parseDomInput( xmlpp::Element* pRootElement,
+                   xmlpp::Element* pModelElement,
+                   xmlpp::Element* pStreamElt )
+    throw( std::exception );
 
 // The state output routine for this unit.
-        void
-        insertStateElts (xmlpp::Element* pRootElt) throw (std::exception)
-        {
+    void
+    insertStateElts( xmlpp::Element* pRootElt ) throw( std::exception )
+    {
 // For now, this unit just provides reaction generators, which
 // for now I'm not dumping in "state dump."
-        }
-    };
+    }
+};
 }
 
 #endif // FTRUNIT_H

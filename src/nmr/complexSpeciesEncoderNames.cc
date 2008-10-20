@@ -33,12 +33,12 @@
 
 namespace nmr
 {
-    namespace manglernames
-    {
+namespace manglernames
+{
 
-        const std::string basicEncoderName ("basic-name-assembler");
-        const std::string detailedEncoderName ("detailed-name-assembler");
-        const std::string compactEncoderName ("mangled-name-assembler");
+const std::string basicEncoderName( "basic-name-assembler" );
+const std::string detailedEncoderName( "detailed-name-assembler" );
+const std::string compactEncoderName( "mangled-name-assembler" );
 
-    }
+}
 }

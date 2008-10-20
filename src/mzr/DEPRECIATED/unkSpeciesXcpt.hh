@@ -36,20 +36,20 @@
 
 namespace mzr
 {
-    class unkSpeciesXcpt :
-                public utl::xcpt
-    {
-        static std::string
-        mkMsg (const std::string& rSpeciesName,
-               xmlpp::Node* pOffendingNode = 0);
+class unkSpeciesXcpt :
+            public utl::xcpt
+{
+    static std::string
+    mkMsg( const std::string& rSpeciesName,
+           xmlpp::Node* pOffendingNode = 0 );
 
-    public:
-        unkSpeciesXcpt (const std::string& rSpeciesName,
-                        xmlpp::Node* pOffendingNode = 0) :
-                utl::xcpt (mkMsg (rSpeciesName,
-                                  pOffendingNode) )
-        {}
-    };
+public:
+    unkSpeciesXcpt( const std::string& rSpeciesName,
+                    xmlpp::Node* pOffendingNode = 0 ) :
+            utl::xcpt( mkMsg( rSpeciesName,
+                              pOffendingNode ) )
+    {}
+};
 }
 
 #endif // MZR_UNKSPECIESXCPT_H

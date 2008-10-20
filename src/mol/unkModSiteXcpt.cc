@@ -34,29 +34,29 @@
 
 namespace bnd
 {
-    std::string
-    unkModSiteXcpt::mkDomMsg (xmlpp::Node* pOffendingNode,
-                              const std::string& rModSiteName,
-                              const mzrModMol* pModMol)
-    {
-        std::ostringstream msgStream;
-        msgStream << utl::dom::xcpt::mkMsg (pOffendingNode)
-        << "Mod-mol "
-        << pModMol->getName()
-        << " has no modification site named `"
-        << rModSiteName
-        << "'.";
-        return msgStream.str();
-    }
+std::string
+unkModSiteXcpt::mkDomMsg( xmlpp::Node* pOffendingNode,
+                          const std::string& rModSiteName,
+                          const mzrModMol* pModMol )
+{
+    std::ostringstream msgStream;
+    msgStream << utl::dom::xcpt::mkMsg( pOffendingNode )
+    << "Mod-mol "
+    << pModMol->getName()
+    << " has no modification site named `"
+    << rModSiteName
+    << "'.";
+    return msgStream.str();
+}
 
-    std::string
-    unkModSiteXcpt::mkPlainMsg (const std::string& rModSiteName)
-    {
-        std::ostringstream msgStream;
-        msgStream << "Mod-mol (name unknown) "
-        << "has no modification site named `"
-        << rModSiteName
-        << "'.";;
-        return msgStream.str();
-    }
+std::string
+unkModSiteXcpt::mkPlainMsg( const std::string& rModSiteName )
+{
+    std::ostringstream msgStream;
+    msgStream << "Mod-mol (name unknown) "
+    << "has no modification site named `"
+    << rModSiteName
+    << "'.";;
+    return msgStream.str();
+}
 }

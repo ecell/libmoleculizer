@@ -36,23 +36,23 @@
 
 namespace mzr
 {
-    class moleculizer;
+class moleculizer;
 
-    /*! \ingroup dumpGroup
-    \brief Dumps the simulation time.
+/*! \ingroup dumpGroup
+\brief Dumps the simulation time.
 
-    Automatically used as the first field by most dump commands. */
-    class simTimeDumpable :
-                public fnd::dumpable<fnd::basicDumpable::dumpArg>
-    {
-        mzr::moleculizer& rMolzer;
+Automatically used as the first field by most dump commands. */
+class simTimeDumpable :
+            public fnd::dumpable<fnd::basicDumpable::dumpArg>
+{
+    mzr::moleculizer& rMolzer;
 
-    public:
-        simTimeDumpable (mzr::moleculizer& rMoleculizer);
+public:
+    simTimeDumpable( mzr::moleculizer& rMoleculizer );
 
-        virtual void
-        doDump (const fnd::basicDumpable::dumpArg& rDumpArg) const;
-    };
+    virtual void
+    doDump( const fnd::basicDumpable::dumpArg& rDumpArg ) const;
+};
 }
 
 #endif // MZR_SIMTIMEDUMPABLE_H

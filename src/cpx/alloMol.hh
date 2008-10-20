@@ -40,11 +40,11 @@
 
 namespace cpx
 {
-    template<class stateMolT>
-    class alloMol :
-                public stateMolT
-    {
-    protected:
+template<class stateMolT>
+class alloMol :
+            public stateMolT
+{
+protected:
 
 // Mapping from state to the shapes of the binding sites when
 // the mol is in the state, conveying the allosteric properties of
@@ -52,63 +52,63 @@ namespace cpx
 //
 // Note the implication here that mol states (stateT) must be suitable as
 // map keys.
-        typedef typename std::vector<const siteShape*> shapeVector;
-        typedef typename std::map<typename alloMol::stateType, shapeVector> alloMapType;
-        typedef typename alloMapType::value_type alloMapValue;
-        typedef typename alloMapType::iterator alloIterator;
-        typedef typename alloMapType::const_iterator constAlloIterator;
-        alloMapType alloMap;
+    typedef typename std::vector<const siteShape*> shapeVector;
+    typedef typename std::map<typename alloMol::stateType, shapeVector> alloMapType;
+    typedef typename alloMapType::value_type alloMapValue;
+    typedef typename alloMapType::iterator alloIterator;
+    typedef typename alloMapType::const_iterator constAlloIterator;
+    alloMapType alloMap;
 
 // Core of public externState and allostery member functions.
 //
 // Down-casts generic state pointer to pointer to stateT, throwing an
 // exception if not possible.  Checks that state is in the allostery
 // map, verifying that pStateToExternalize was produced by internState.
-        constAlloIterator
-        externalize (molParam pStateToExternalize) const
-        throw (typename utl::xcpt);
+    constAlloIterator
+    externalize( molParam pStateToExternalize ) const
+    throw( typename utl::xcpt );
 
-        alloIterator
-        externalize (molParam pStateToExternalize)
-        throw (typename utl::xcpt);
+    alloIterator
+    externalize( molParam pStateToExternalize )
+    throw( typename utl::xcpt );
 
-    public:
+public:
 
-        typedef stateMolT stateMolType;
+    typedef stateMolT stateMolType;
 
-        alloMol (const stateMolType& rStateMol) :
-                stateMolType (rStateMol)
-        {}
+    alloMol( const stateMolType& rStateMol ) :
+            stateMolType( rStateMol )
+    {}
 
 // Adds the new state to the mol's database of states, and returns a
 // generic pointer to the interned state.
-        const typename alloMol::stateType*
-        internState (const typename alloMol::stateType& rStateToIntern);
+    const typename alloMol::stateType*
+    internState( const typename alloMol::stateType& rStateToIntern );
 
 // Takes a generic pointer to an interned state and returns the actual
 // interned state.  Throws an exception if the generic pointer does not
 // "down cast" to a stateT*.  Throws an exception if the stateT* does not
 // point to an entry in the mol's database (indicating that pStateToExtern
 // was not returned from some earlier call to internState.)
-        const typename alloMol::stateType&
-        externState (molParam pState) const
-        throw (typename utl::xcpt)
-        {
-            return externalize (pState)->first;
-        }
+    const typename alloMol::stateType&
+    externState( molParam pState ) const
+    throw( typename utl::xcpt )
+    {
+        return externalize( pState )->first;
+    }
 
 // Note that this is/should be virtual in stateMolT, as it is in basicMol.
 //
 // Gives the shapes of the binding sites when the mol is in the state
 // given by the generic state pointer, which should have been produced
 // earlier by internState (or an exception will be thrown.)
-        std::vector<siteParam>&
-        allostery (molParam pState)
-        throw (typename utl::xcpt)
-        {
-            return externalize (pState)->second;
-        }
-    };
+    std::vector<siteParam>&
+    allostery( molParam pState )
+    throw( typename utl::xcpt )
+    {
+        return externalize( pState )->second;
+    }
+};
 }
 
 #include "cpx/alloMolImpl.hh"

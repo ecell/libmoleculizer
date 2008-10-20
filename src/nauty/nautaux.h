@@ -24,11 +24,11 @@ extern "C"
 {
 #endif
 
-    extern int component (graph*,int,set*,int,int);
-    extern boolean equitable (graph*,nvector*,nvector*,int,int,int);
-    extern long ptncode (graph*,nvector*,nvector*,int,int,int);
-    extern void nautaux_freedyn (void);
-    extern void nautaux_check (int,int,int,int);
+    extern int component( graph*,int,set*,int,int );
+    extern boolean equitable( graph*,nvector*,nvector*,int,int,int );
+    extern long ptncode( graph*,nvector*,nvector*,int,int,int );
+    extern void nautaux_freedyn( void );
+    extern void nautaux_check( int,int,int,int );
 #ifdef __cplusplus
 }
 #endif

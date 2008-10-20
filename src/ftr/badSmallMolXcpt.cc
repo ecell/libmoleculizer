@@ -34,16 +34,16 @@
 
 namespace ftr
 {
-    std::string
-    badSmallMolXcpt::
-    mkMsg (const std::string& rMolName,
-           const xmlpp::Node* pOffendingNode)
-    {
-        std::ostringstream msgStream;
-        msgStream << utl::dom::xcpt::mkMsg (pOffendingNode)
-        << "expected mol "
-        << rMolName
-        << " to be a small-mol, but it was not.";
-        return msgStream.str();
-    }
+std::string
+badSmallMolXcpt::
+mkMsg( const std::string& rMolName,
+       const xmlpp::Node* pOffendingNode )
+{
+    std::ostringstream msgStream;
+    msgStream << utl::dom::xcpt::mkMsg( pOffendingNode )
+    << "expected mol "
+    << rMolName
+    << " to be a small-mol, but it was not.";
+    return msgStream.str();
+}
 }

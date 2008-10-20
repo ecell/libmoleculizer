@@ -36,51 +36,51 @@
 
 namespace cpx
 {
-    /*! \ingroup plexSpeciesGroup
-    \brief A binding in a complex.
+/*! \ingroup plexSpeciesGroup
+\brief A binding in a complex.
 
-    Consists of two site specs, specifying the two sites in the complex
-    that are bound together. */
-    class binding :
-                public std::pair<siteSpec, siteSpec>
-    {
-    public:
+Consists of two site specs, specifying the two sites in the complex
+that are bound together. */
+class binding :
+            public std::pair<siteSpec, siteSpec>
+{
+public:
 // I think that this (apparently useless, since there is no way to
 // modify the constructed binding) constructor was in order to
 // be able to make an std::vector<binding>.
-        binding (void) :
-                std::pair<siteSpec, siteSpec> (siteSpec(), siteSpec() )
-        {}
+    binding( void ) :
+            std::pair<siteSpec, siteSpec> ( siteSpec(), siteSpec() )
+    {}
 
-        binding (const siteSpec& rLeftSiteSpec,
-                 const siteSpec& rRightSiteSpec) :
-                std::pair<siteSpec, siteSpec> (rLeftSiteSpec, rRightSiteSpec)
-        {}
+    binding( const siteSpec& rLeftSiteSpec,
+             const siteSpec& rRightSiteSpec ) :
+            std::pair<siteSpec, siteSpec> ( rLeftSiteSpec, rRightSiteSpec )
+    {}
 
-        const siteSpec&
-        leftSite (void) const
-        {
-            return first;
-        }
+    const siteSpec&
+    leftSite( void ) const
+    {
+        return first;
+    }
 
-        siteSpec&
-        leftSite (void)
-        {
-            return first;
-        }
+    siteSpec&
+    leftSite( void )
+    {
+        return first;
+    }
 
-        const siteSpec&
-        rightSite (void) const
-        {
-            return second;
-        }
+    const siteSpec&
+    rightSite( void ) const
+    {
+        return second;
+    }
 
-        siteSpec&
-        rightSite (void)
-        {
-            return second;
-        }
-    };
+    siteSpec&
+    rightSite( void )
+    {
+        return second;
+    }
+};
 }
 
 #endif // CPX_BINDING_H

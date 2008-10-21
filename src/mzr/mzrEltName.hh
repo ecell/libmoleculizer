@@ -40,14 +40,17 @@ namespace mzr
     {
         extern const std::string moleculizerInput;
 
+        extern const std::string executionParameters;
+        extern const std::string reactionNetworkGenerationMode;
         extern const std::string configurationSwitches;
         extern const std::string generationMethod;
         extern const std::string extrapolationMethod;
-        extern const std::string modeKeyword;
+        extern const std::string modeAttr;
+        extern const std::string methodAttr;
         extern const std::string spatialMode;
-        extern const std::string nonspatialMode;
-        extern const std::string noExtrapolationMode;
-        extern const std::string yesExtrapolationMode;
+        extern const std::string nonSpatialMode;
+        extern const std::string noReactionExtrapolation;
+        extern const std::string reactionExtrapolation;
 
 
 

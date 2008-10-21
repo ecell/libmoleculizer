@@ -73,11 +73,11 @@ void SimpleParticleSimulator::singleStep()
     std::cout << "Collision between " << speciesNameOne << " and " << speciesNameTwo << std::endl;
 
     // Look up these species in the moleculizer list.
-    mzr::moleculizer::SpeciesTypePtr speciesPtrOne = speciesReactionGenerator.getSpeciesWithName( speciesNameOne );
-    mzr::moleculizer::SpeciesTypePtr speciesPtrTwo = speciesReactionGenerator.getSpeciesWithName( speciesNameTwo );
+    mzr::moleculizer::SpeciesTypePtr speciesPtrOne = ptrSpeciesReactionGenerator->getSpeciesWithName( speciesNameOne );
+    mzr::moleculizer::SpeciesTypePtr speciesPtrTwo = ptrSpeciesReactionGenerator->getSpeciesWithName( speciesNameTwo );
 
     std::vector<mzr::moleculizer::ReactionTypePtr> reactionVector;
-    speciesReactionGenerator.findReactionWithSubstrates( speciesPtrOne,
+    ptrSpeciesReactionGenerator->findReactionWithSubstrates( speciesPtrOne,
             speciesPtrTwo,
             reactionVector );
 
@@ -110,10 +110,10 @@ void SimpleParticleSimulator::doSingleUnaryReaction()
     std::cout << "Possible unary reaction: " << '\n'
     << '\t' << particleName << std::endl;
 
-    mzr::moleculizer::SpeciesTypePtr particlePtr = speciesReactionGenerator.getSpeciesWithName( particleName );
+    mzr::moleculizer::SpeciesTypePtr particlePtr = ptrSpeciesReactionGenerator->getSpeciesWithName( particleName );
 
     std::vector<mzr::moleculizer::ReactionTypePtr> reactionVector;
-    speciesReactionGenerator.findReactionWithSubstrates( particlePtr,
+    ptrSpeciesReactionGenerator->findReactionWithSubstrates( particlePtr,
             reactionVector );
 
     if ( reactionVector.size() == 0 )
@@ -128,4 +128,27 @@ void SimpleParticleSimulator::doSingleUnaryReaction()
 
     executeReaction( rxn );
 
+}
+
+
+void SimpleParticleSimulator::displayNewSpeciesMsg( const mzrSpecies* mzrSpec)  const
+{
+    std::cout << "$$$New species ' " << mzrSpec->getName() << "' created with radius " << ptrSpeciesReactionGenerator->getRadiusForSpecies( mzrSpec )
+              << " and kD = " << ptrSpeciesReactionGenerator->getKDForSpecies(mzrSpec) << std::endl;
+}
+
+
+void SimpleParticleSimulator::printRxn( const mzr::mzrReaction* pMzrRxn) const
+{
+    std::cout << pMzrRxn->getName() << "\n\t"
+              << "kA = " << pMzrRxn->getRate() << std::endl;
+}
+
+
+void SimpleParticleSimulator::printSpec( const mzr::mzrSpecies* pSpec) const
+{
+    std::cout << pSpec->getName() << "\n\t" 
+              << "mass = " << pSpec->getWeight() << "\n\t" 
+              << "r    = " << ptrSpeciesReactionGenerator->getRadiusForSpecies( pSpec ) << "\n\t"
+              << "kD   = " << ptrSpeciesReactionGenerator->getKDForSpecies( pSpec )<< std::endl;
 }

@@ -80,36 +80,90 @@ void SimpleSimulator::createModelFromFile( const std::string& modelFile, std::ma
     }
 }
 
-SimpleSimulator::SimpleSimulator( std::string rulesfile,
-                                  std::string modelfile )
+SimpleSimulator::SimpleSimulator()
+    :
+    ptrSpeciesReactionGenerator(new mzr::moleculizer ),
+    rulesLoaded( false )
+    
 {
     srand( time( NULL ) );
-    attachRuleFile( rulesfile );
-
-    std::cout << "SS: State after attaching rules, before attaching Model:" << std::endl;
-    speciesReactionGenerator.printAll();
-
-    std::cout << "---------(END)" << std::endl;
-
-    attachModelFile( modelfile );
-
-    std::cout << "---------(BEGIN)" << std::endl;
-
-    std::cout << "SS: State after attaching rules, model" << std::endl;
-    speciesReactionGenerator.printAll();
-
-    std::cout << "---------(END)" << std::endl;
 }
+
+
+
+
+
+// SimpleSimulator::SimpleSimulator( std::string rulesfile,
+//                                   std::string modelfile )
+// {
+//     srand( time( NULL ) );
+//     attachRuleFile( rulesfile );
+
+//     std::cout << "SS: State after attaching rules, before attaching Model:" << std::endl;
+//     ptrSpeciesReactionGenerator->printAll();
+
+//     std::cout << "---------(END)" << std::endl;
+
+//     attachModelFile( modelfile );
+
+//     std::cout << "---------(BEGIN)" << std::endl;
+
+//     std::cout << "SS: State after attaching rules, model" << std::endl;
+//     ptrSpeciesReactionGenerator->printAll();
+
+//     std::cout << "---------(END)" << std::endl;
+// }
+
+
+void 
+SimpleSimulator::loadRules( std::string rulesFile )
+{
+    // This attaches the rules to moleculizer.
+    
+    if ( rulesLoaded )
+    {
+        releaseRules();
+    }
+
+    ptrSpeciesReactionGenerator->attachFileName( rulesFile );
+}
+
+void 
+SimpleSimulator::releaseRules()
+{
+    delete ptrSpeciesReactionGenerator;
+    ptrSpeciesReactionGenerator = new mzr::moleculizer;
+}
+
+
+void 
+SimpleSimulator::loadModel( std::string modelfile )
+{
+    // This function takes the contentents of model file and puts it into 
+    theModel.clear();
+
+    std::map<std::string, int> theNewModel;
+    createModelFromFile( modelfile, theNewModel );
+
+    if ( !assertModelValidity( theNewModel ) )
+    {
+        std::cerr << "Error, the model is not valid.  Crashing." << std::endl;
+        exit( 1 );
+    }
+
+    theModel.swap( theNewModel );
+}
+
 
 void SimpleSimulator::attachRuleFile( std::string rulesfile )
 {
-    if ( speciesReactionGenerator.getModelHasBeenLoaded() )
+    if ( ptrSpeciesReactionGenerator->getModelHasBeenLoaded() )
     {
         std::cerr << "Modelfile has already been loaded.  Error." << std::endl;
         exit( 1 );
     }
 
-    speciesReactionGenerator.attachFileName( rulesfile );
+    ptrSpeciesReactionGenerator->attachFileName( rulesfile );
 }
 
 
@@ -128,7 +182,6 @@ void SimpleSimulator::attachModelFile( std::string modelfile )
     }
 
     theModel.swap( theNewModel );
-    engageModel();
 }
 
 
@@ -145,7 +198,7 @@ bool SimpleSimulator::assertModelValidity( const std::map<std::string, int>& mod
         // Find out if this is a legal name.
         try
         {
-            speciesReactionGenerator.getSpeciesWithName( thePair.first );
+            ptrSpeciesReactionGenerator->getSpeciesWithName( thePair.first );
         }
         catch ( mzr::IllegalNameXcpt )
         {
@@ -161,13 +214,22 @@ bool SimpleSimulator::assertModelValidity( const std::map<std::string, int>& mod
     return true;
 }
 
-void SimpleSimulator::engageModel()
+void SimpleSimulator::initialize()
 {
     BOOST_FOREACH( const modelPairType& thePair, theModel )
     {
         if ( thePair.second > 0 )
         {
-            speciesReactionGenerator.incrementNetworkBySpeciesName( thePair.first );
+            // First we assume that the name present is defined in the rules file...
+            if ( ptrSpeciesReactionGenerator->nameIsUserName( thePair.first ) )
+            {
+                std::string mangledName( ptrSpeciesReactionGenerator->convertUserNameToGeneratedName( thePair.first ) );
+                ptrSpeciesReactionGenerator->incrementNetworkBySpeciesName( mangledName );
+            }
+            else
+            {
+                ptrSpeciesReactionGenerator->incrementNetworkBySpeciesName( thePair.first );
+            }
         }
     }
 }
@@ -209,13 +271,4 @@ void SimpleSimulator::executeReaction( mzr::moleculizer::ReactionTypePtr ptrRxn 
 
 void SimpleSimulator::printState() const
 {
-    std::cout << "SimpleSimulator state:" << std::endl;
-    typedef std::pair<std::string, int> entry;
-    BOOST_FOREACH( const entry& ent, theModel )
-    {
-        std::cout << "\t" << ent.first << ":\t" << ent.second << std::endl;
-    }
-    std::cout << "Moleculizer State" << std::endl;
-
-    speciesReactionGenerator.printAll();
 }

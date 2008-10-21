@@ -36,34 +36,45 @@
 
 SimpleStochasticSimulator::SimpleStochasticSimulator( std::string rulesfile, std::string modelfile )
         :
-        SimpleSimulator( rulesfile, modelfile )
+        SimpleSimulator()
 {
+    loadRules(rulesfile);
+    loadModel(modelfile);
+
+    std::cout << "Prior to initialization there are " 
+              << getNumSpecies() << " species and " << getNumRxns() << " reactions" << std::endl;
+
     recordNewReactions();
+
+    initialize();
+    
+    std::cout << "After initialization there are " 
+              << getNumSpecies() << " species and " << getNumRxns() << " reactions" << std::endl;
 }
 
 void SimpleStochasticSimulator::recordNewReactions()
 {
-    std::copy( speciesReactionGenerator.theDeltaReactionList.begin(),
-               speciesReactionGenerator.theDeltaReactionList.end(),
+    std::copy( ptrSpeciesReactionGenerator->theDeltaReactionList.begin(),
+               ptrSpeciesReactionGenerator->theDeltaReactionList.end(),
                std::back_inserter( reactions ) );
 
-    if ( speciesReactionGenerator.theDeltaReactionList.size() > 0 )
+    if ( ptrSpeciesReactionGenerator->theDeltaReactionList.size() > 0 )
     {
         std::cout << "Adding to StochasticSimulator: " << std::endl;
     }
 
-    BOOST_FOREACH( mzr::mzrReaction* rxn, speciesReactionGenerator.theDeltaReactionList )
+    BOOST_FOREACH( mzr::mzrReaction* rxn, ptrSpeciesReactionGenerator->theDeltaReactionList )
     {
         printRxn( rxn );
     }
 
-    assert( reactions.size() == speciesReactionGenerator.theCompleteReactionList.size() );
+    assert( reactions.size() == ptrSpeciesReactionGenerator->theCompleteReactionList.size() );
 
-//     assert( reactions.size() == speciesReactionGenerator.zeroSubstrateRxns.size() + \
-//             speciesReactionGenerator.singleSubstrateRxns.size() +    \
-//             speciesReactionGenerator.doubleSubstrateRxns.size() );
+//     assert( reactions.size() == ptrSpeciesReactionGenerator->zeroSubstrateRxns.size() + \
+//             ptrSpeciesReactionGenerator->singleSubstrateRxns.size() +    \
+//             ptrSpeciesReactionGenerator->doubleSubstrateRxns.size() );
 
-    speciesReactionGenerator.resetCurrentState();
+    ptrSpeciesReactionGenerator->resetCurrentState();
 }
 
 mzr::mzrReaction* SimpleStochasticSimulator::calculateReactionToFire()

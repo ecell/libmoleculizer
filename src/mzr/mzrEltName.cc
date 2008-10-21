@@ -38,18 +38,19 @@ namespace mzr
         const std::string moleculizerInput ("moleculizer-input");
 
 
+        const std::string executionParameters("runtime-info");
+        const std::string reactionNetworkGenerationMode("generation-method-mode");
+        const std::string methodAttr("extrapolation-method");
+
+
         const std::string configurationSwitches ("configuration");
         const std::string generationMethod("generation-method");
         const std::string extrapolationMethod("extrapolation-method");
-        const std::string modeKeyword("mode");
+        const std::string modeAttr("mode");
         const std::string spatialMode("spatial");
-        const std::string nonspatialMode("non-spatial");
-        const std::string noExtrapolationMode("no-extrapolate-reaction-rates");
-        const std::string yesExtrapolationMode(";
-
-
-
-
+        const std::string nonSpatialMode("non-spatial");
+        const std::string noReactionExtrapolation("no-extrapolate-reaction-rates");
+        const std::string reactionExtrapolation("extrapolate-reaction-rates");
 
         const std::string model ("model");
         const std::string streams ("streams");

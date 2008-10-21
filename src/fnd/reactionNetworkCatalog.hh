@@ -52,7 +52,7 @@ namespace fnd
 // void expandReactionNetwork().
 // That is,  derived from fnd::reactionNetworkComponent.
 template <typename speciesT,
-typename reactionT>
+          typename reactionT>
 class ReactionNetworkDescription
 {
 public:
@@ -177,14 +177,14 @@ public:
 
     }
 
-    SpeciesListCatalog&
+    SpeciesCatalog&
     getSpeciesCatalog()
     {
         return theSpeciesListCatalog;
     }
 
 
-    const SpeciesListCatalog&
+    const SpeciesCatalog&
     getSpeciesCatalog() const
     {
         return theSpeciesListCatalog;
@@ -211,6 +211,13 @@ public:
         {
             theSpeciesListCatalog.insert( std::make_pair( speciesHandle, pSpecies ) );
             theDeltaSpeciesList.push_back( pSpecies );
+
+            // It's a new species, so call all the new species callbacks on this.  
+            BOOST_FOREACH( NewSpeciesCallback cb, newSpeciesCallbacks)
+            {
+                cb( pSpecies );
+            }
+
             return true;
         }
         else
@@ -232,6 +239,13 @@ public:
         {
             theSpeciesListCatalog.insert( std::make_pair( speciesHandle, pSpecies ) );
             theDeltaSpeciesList.push_back( pSpecies );
+
+            // It's a new species, so call all the new species callbacks on this.  
+            BOOST_FOREACH( NewSpeciesCallback cb, newSpeciesCallbacks)
+            {
+                cb( pSpecies );
+            }
+
             return true;
         }
         else
@@ -282,7 +296,7 @@ public:
         }
 
         // Call each of the registered callbacks on the newly installed reaction.
-        BOOST_FOREACH( Callback cb, reactionCallbacks )
+        BOOST_FOREACH( NewReactionCallback cb, newReactionCallbacks )
         {
             cb( pRxn );
         }
@@ -368,49 +382,6 @@ public:
         }
     }
 
-
-
-    void
-    printAll() const
-    {
-        printSpecies( "Species: " );
-        print( std::string( "Reactions:" ), theCompleteReactionList );
-    }
-
-    void printSpecies( std::string prefix = std::string( "" ) ) const
-    {
-        typedef std::pair<const std::string*, SpeciesTypePtr> PairT;
-        BOOST_FOREACH( const PairT& aPair, theSpeciesListCatalog )
-        {
-            std::cout << prefix << *( aPair.first ) << '(' << aPair.second << ')';
-            if ( aPair.second->hasNotified() )
-            {
-                std::cout << "\t!!! (Notified)\n";
-            }
-            else
-            {
-                std::cout << std::endl;
-            }
-        }
-    }
-
-    void print( std::string str, const ReactionList& aVector ) const
-    {
-        BOOST_FOREACH( ReactionTypePtr refT, aVector )
-        {
-            std::cout << "(" << str << ") " << " [ " << refT << " ] " << refT->getName() << std::endl;
-        }
-    }
-
-    void print( std::string str, const SpeciesList& aVector ) const
-    {
-        BOOST_FOREACH( SpeciesTypePtr* refT, aVector )
-        {
-            std::cout << "(" << str << ") " << refT->getName() << std::endl;
-        }
-    }
-
-
     ~ReactionNetworkDescription()
     {
         // We don't memory manage any SpeciesType* or ReactionType*, but we do memory
@@ -442,14 +413,23 @@ public:
     /////////////////////////
     // NEWCODE
     //
-    typedef boost::function<void( const ReactionType* )> Callback;
-    std::vector<Callback> reactionCallbacks;
+    typedef boost::function<void( const ReactionType* )> NewReactionCallback;
+    typedef boost::function<void( const SpeciesType*)> NewSpeciesCallback;
+
+    std::vector<NewReactionCallback> newReactionCallbacks;
+    std::vector<NewSpeciesCallback> newSpeciesCallbacks;
 
 public:
-    void addCallback( Callback cb )
+    void addNewReactionCallback( NewReactionCallback cb )
     {
-        reactionCallbacks.push_back( cb );
+        newReactionCallbacks.push_back( cb );
     }
+
+    void addNewSpeciesCallback( NewSpeciesCallback cb )
+    {
+        newSpeciesCallbacks.push_back( cb );
+    }
+
     //
     /////////////////////////
 

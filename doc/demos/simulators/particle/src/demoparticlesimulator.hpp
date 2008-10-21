@@ -30,19 +30,67 @@
 //
 
 #include "demosimulator.hpp"
+#include "mzr/mzrSpecies.hh"
+#include "mzr/mzrReaction.hh"
+using namespace mzr;
 
 class SimpleParticleSimulator : public SimpleSimulator
 {
 public:
     SimpleParticleSimulator( std::string rulesfile, std::string modelfile )
-            :
-            SimpleSimulator( rulesfile, modelfile ),
-            numReactions( 0 )
-    {}
+    {
+
+        ptrSpeciesReactionGenerator->enableSpatialReactionNetworkGeneration();
+        loadRules( rulesfile );
+        
+        boost::function<void( const mzrSpecies* )> cb1;
+        cb1 = std::bind1st( std::mem_fun( &SimpleParticleSimulator::displayNewSpeciesMsg ), this );
+
+        ptrSpeciesReactionGenerator->addNewSpeciesCallback( cb1 );
+
+
+        loadModel( modelfile );
+
+        initialize();
+    }
 
     void singleStep();
+    virtual void initialize()
+    {
+        SimpleSimulator::initialize();
+    }
 
+    void printAll() const
+    {
+        std::cout << "Particle Simulator State" << std::endl;
+        printAllSpecies();
+        printAllRxns();
+    }
+
+    void printAllSpecies() const
+    {
+
+         BOOST_FOREACH( const mzr::moleculizer::SpeciesCatalog::value_type& vt, ptrSpeciesReactionGenerator->getSpeciesCatalog() )
+         {
+             printSpec( vt.second );
+         }
+    }
+    
+    void printAllRxns() const
+    {
+
+        BOOST_FOREACH( const mzr::moleculizer::ReactionList::value_type ptrRxn, ptrSpeciesReactionGenerator->getReactionList() )
+        {
+            printRxn( ptrRxn );
+        }
+    }
+
+
+    void printRxn(const mzr::mzrReaction* mzrReact) const;
+    void printSpec(const mzr::mzrSpecies* speciesName) const;
+    
 private:
     void doSingleUnaryReaction();
+    void displayNewSpeciesMsg(const mzr::mzrSpecies* mzrSpec) const;
     int numReactions;
 };

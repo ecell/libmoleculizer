@@ -56,6 +56,7 @@ AC_CONFIG_FILES([Makefile
                 src/nmr/tests/Makefile
                 src/mzr/tests/Makefile
                 doc/Makefile
+                doc/manual/Makefile
                 doc/demos/Makefile
                 doc/demos/simulators/Makefile
                 src/new_features/property_extrapolation/Makefile

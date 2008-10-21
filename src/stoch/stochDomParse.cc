@@ -125,7 +125,7 @@ public:
         = utl::dom::mustGetAttrString( pStochSpeciesElt,
                                        eltName::stochSpecies_nameAttr );
         mzr::mzrSpecies* pSpecies
-        = rMzrUnit.findSpecies( speciesName );
+            = rMzrUnit.findSpecies( speciesName );
 
         if ( 0 == pSpecies )
             throw mzr::unkSpeciesXcpt( speciesName,

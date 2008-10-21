@@ -1,1 +1,1 @@
-SUBDIRS=demos
+SUBDIRS=manual demos 

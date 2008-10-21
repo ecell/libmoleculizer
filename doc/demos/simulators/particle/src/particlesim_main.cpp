@@ -54,15 +54,13 @@ int main( int argc, char* argv[] )
 
         SimpleParticleSimulator theSim( rulesfile, modelfile );
 
-        std::cout << "\n\n#######################################################\nBeginning simulation\n\n";
-
         for ( unsigned int ii = 0; ii != numberIters; ++ii )
         {
             theSim.singleStep();
         }
+        
+        theSim.printAll();
 
-        std::cout << "\n\n#######################################################\nRun Completed.\n\nFinal State:\n";
-        theSim.printState();
         return 0;
     }
     catch ( const std::exception& e )

@@ -37,18 +37,37 @@
 class SimpleSimulator
 {
 public:
-    SimpleSimulator( std::string rulesfile, std::string modelfile );
+    SimpleSimulator();
+    // SimpleSimulator( std::string rulesfile, std::string modelfile );
+
+    void loadRules(std::string rulesFile);
+    void releaseRules();
+    void loadModel(std::string modelFile);
+
     virtual void singleStep() = 0;
     void printState() const;
+
+    int getNumSpecies() const
+    {
+        return ptrSpeciesReactionGenerator->getTotalNumberSpecies();
+    }
+
+    int getNumRxns() const
+    {
+        return ptrSpeciesReactionGenerator->getTotalNumberReactions();
+    }
 
 public:
     typedef std::pair<std::string, int> modelPairType;
 
 protected:
-    mzr::moleculizer speciesReactionGenerator;
+    mzr::moleculizer* ptrSpeciesReactionGenerator;
+    bool rulesLoaded;
+    
     std::map<std::string, int> theModel;
 
-    void engageModel();
+    virtual void initialize();
+
     void executeReaction( mzr::moleculizer::ReactionTypePtr ptrRxn );
 
 private:
@@ -59,7 +78,6 @@ private:
 
 
     void createModelFromFile( const std::string& modelFile, std::map<std::string, int>& model );
-
 };
 
 

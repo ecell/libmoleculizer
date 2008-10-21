@@ -151,7 +151,7 @@ protected:
     moleculizerParseDomInput( xmlpp::Element* pRootElt,
                               xmlpp::Element* pModelElt,
                               xmlpp::Element* pStreamElt )
-    throw( std::exception );
+        throw( std::exception );
 
     void
     configureRuntime( xmlpp::Element* pExecutionParameters ) throw( std::exception );
@@ -177,12 +177,37 @@ public:
         userNameToSpeciesIDChart.insert( std::make_pair( userName, genName ) );
     }
 
-protected:
-    std::string getGeneratedNameFromUserName( const std::string& userName )
+    bool
+    nameIsUserName(const std::string& possibleUserName) const
     {
-        return userNameToSpeciesIDChart[ userName ];
+        return (userNameToSpeciesIDChart.find( possibleUserName) != userNameToSpeciesIDChart.end());
     }
 
+    std::string
+    convertUserNameToGeneratedName(const std::string& possibleUserName) const 
+        throw( utl::xcpt )
+    {
+        std::map<std::string, std::string>::const_iterator iter( userNameToSpeciesIDChart.find(possibleUserName) );
+        if (iter == userNameToSpeciesIDChart.end() ) throw utl::xcpt( "Error, UserName doesn't exist and thus cannot be converted to a user name.");
+
+        return iter->second;
+    }
+
+    Real 
+    getKDForSpecies(const mzrSpecies* mzrSpec) const throw(utl::xcpt);
+
+    Real
+    getRadiusForSpecies( const mzrSpecies* mzrSpec) const throw( utl::xcpt )
+    {
+
+        std::map<SpeciesID, Real>::const_iterator iter( radiusChart.find(mzrSpec->getName()));
+        
+        if (iter == radiusChart.end()) throw utl::xcpt( "Species " + mzrSpec->getName() + " has no radius recorded.");
+        return iter->second;
+    }
+    
+
+protected:
     std::map<SpeciesID, Real> radiusChart; // These are in meters.
     std::map<SpeciesID, Real> k_DChart;
 

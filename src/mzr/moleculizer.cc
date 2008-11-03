@@ -232,7 +232,7 @@ namespace mzr
         delete pUserUnits;
     }
 
-    mzrSpecies*
+    const mzrSpecies*
     moleculizer::getSpeciesWithName( const std::string& speciesName )
         throw( mzr::IllegalNameXcpt )
     {
@@ -493,7 +493,7 @@ namespace mzr
             radiusChart.insert( std::make_pair( plexName, paramValue ) );
         }
 
-        else throw 666;
+        else throw utl::FatalXcpt("Unknown plex parameter passed into moleculizer::recordPlexParameter (jfdkalfdasnvnnvckdfla)");
     }
 
     void
@@ -528,6 +528,11 @@ namespace mzr
         if (iter == k_DChart.end()) throw utl::xcpt( "Species " + mzrSpec->getName() + " has no kD recorded.");
         return iter->second;
         
+    }
+
+    void moleculizer::printMsg()
+    {
+        std::cout << "Hello from moleculizer!!!" << std::endl;
     }
 
     int moleculizer::DEFAULT_GENERATION_DEPTH = 1;

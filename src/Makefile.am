@@ -43,7 +43,7 @@ LIBNAUTY = nauty/libmoleculizer_nauty.a
 
 ALL_MZR_LIBS = $(LIBFND) $(LIBUTL) $(LIBMZR) $(LIBSTOCH) $(LIBNMR) $(LIBNMR) $(LIBCPX) $(LIBMOL) $(LIBPLEX) $(LIBDIMER) $(LIBFTR) $(LIBNAUTY)
 
-bin_PROGRAMS = moleculizer
+bin_PROGRAMS = moleculizer ctest
 
 lib_LTLIBRARIES = libmoleculizer_super.la
 
@@ -87,4 +87,9 @@ endif
 moleculizer_DEPENDENCIES = $(ALL_MZR_LIBS)
 
 moleculizer_SOURCES=main.cc
+
+ctest_SOURCES=ctests.c
+ctest_LDADD=$(ALL_MZR_LIBS)
+
+
 

@@ -42,383 +42,349 @@
 namespace fnd
 {
 
-class coreRxnGen;
+    class coreRxnGen;
 
-template<class speciesType>
-class basicReaction
-{
-public:
-
-    typedef typename std::map<speciesType*, int> multMap;
-
-    bool
-    hasReactant( speciesType* species )
+    template<class speciesType>
+    class basicReaction
     {
-        return ( reactants.find( species ) != reactants.end() );
-    }
-
-    bool
-    hasProduct( speciesType* species )
-    {
-        return ( products.find( species ) != products.end() );
-    }
-
-
-    int
-    getReactantStochiometry( speciesType* species )
-    {
-        if ( !hasReactant( species ) ) return 0;
-        else
+        class CompareSpeciesEntries
         {
-            reactants[species];
-        }
-    }
+        public:
+            int operator()( const std::pair<speciesType*, int>& numOne, const std::pair<speciesType*, int>& numTwo )
+            {
+                return numOne.first->getName() < numTwo.first->getName();
+            }
+        };
+        
+    public:
 
-    const multMap&
-    getReactants() const
-    {
-        return reactants;
-    }
+        typedef typename std::map<speciesType*, int> multMap;
 
-    const multMap&
-    getProducts() const
-    {
-        return products;
-    }
-
-    bool
-    isStandardReaction() const
-    {
-        // This may be totally inappropriate here, but I anticipate there will only
-        // be a few reaction types
-
-        unsigned int reactantsSize = getReactants().size();
-        unsigned int productsSize = getProducts().size();
-
-        if ( reactantsSize == 0 )
+        bool
+        hasReactant( const speciesType* species ) const
         {
-            // 0->1 is acceptable, everything else is not.
-            return ( productsSize == 1 );
-        }
-        else if ( reactantsSize == 1 )
-        {
-            // 1-> 0, 1, or 2
-            return ( productsSize >= 0 && productsSize <= 2 );
-        }
-        else if ( reactantsSize == 2 )
-        {
-            // 2->1 || 2->2
-            return ( productsSize == 1 || productsSize == 2 );
-        }
-        else
-        {
-            return false;
-        }
-    }
-
-protected:
-
-    multMap reactants;
-    multMap products;
-    multMap deltas;
-
-    int arity;
-
-    double rate;
-
-    const coreRxnGen* ptrParentGen;
-
-public:
-    int getNumberOfReactants() const
-    {
-        int sum = 0;
-
-        BOOST_FOREACH( typename multMap::value_type tt, reactants )
-        {
-            sum += tt.second;
-
+            return ( reactants.find( const_cast<speciesType*>(species) ) != reactants.end() );
         }
 
-        return sum;
-    }
-
-    int getNumberOfProducts() const
-    {
-        int sum = 0;
-
-        BOOST_FOREACH( typename multMap::value_type tt, products )
+        bool
+        hasProduct( const speciesType* species ) const
         {
-            sum += tt.second;
+            return ( products.find( const_cast<speciesType*>(species) ) != products.end() );
+        }
+
+
+        int
+        getReactantStochiometry( const speciesType* species ) const
+        {
+            if ( !hasReactant( species ) ) return 0;
+            else
+            {
+                return reactants.find( const_cast<speciesType*>(species) )->second;
+            }
+        }
+
+        const multMap&
+        getReactants() const
+        {
+            return reactants;
+        }
+
+        const multMap&
+        getProducts() const
+        {
+            return products;
+        }
+
+        bool
+        isStandardReaction() const
+        {
+            // This may be totally inappropriate here, but I anticipate there will only
+            // be a few reaction types
+
+            unsigned int reactantsSize = getReactants().size();
+            unsigned int productsSize = getProducts().size();
+
+            if ( reactantsSize == 0 )
+            {
+                // 0->1 is acceptable, everything else is not.
+                return ( productsSize == 1 );
+            }
+            else if ( reactantsSize == 1 )
+            {
+                // 1-> 0, 1, or 2
+                return ( productsSize >= 0 && productsSize <= 2 );
+            }
+            else if ( reactantsSize == 2 )
+            {
+                // 2->1 || 2->2
+                return ( productsSize == 1 || productsSize == 2 );
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+    protected:
+
+        multMap reactants;
+        multMap products;
+        multMap deltas;
+
+        int arity;
+
+        double rate;
+
+        const coreRxnGen* ptrParentGen;
+
+    public:
+        inline int getNumberOfReactants() const
+        {
+            int sum = 0;
+
+            BOOST_FOREACH( typename multMap::value_type tt, reactants )
+            {
+                sum += tt.second;
+
+            }
+
+            return sum;
+        }
+
+        inline int getNumberOfProducts() const
+        {
+            int sum = 0;
+
+            BOOST_FOREACH( typename multMap::value_type tt, products )
+            {
+                sum += tt.second;
+
+            }
+
+            return sum;
 
         }
 
-        return sum;
-
-    }
-
-public:
-    basicReaction( double reactionRate = 0.0 ) :
+    public:
+        basicReaction( double reactionRate = 0.0 ) :
             arity( 0 ),
             rate( reactionRate ),
-            nameUnclean( true ),
-            ptrParentGen( NULL ),
-            theName( "" )
-    {}
+            ptrParentGen( NULL )
+        {}
 
-    virtual ~basicReaction()
-    {}
+        virtual ~basicReaction()
+        {}
 
-    void setOriginatingRxnGen( const coreRxnGen* parentGen )
-    {
-        ptrParentGen = parentGen;
-    }
+        void setOriginatingRxnGen( const coreRxnGen* parentGen )
+        {
+            ptrParentGen = parentGen;
+        }
 
-    const coreRxnGen* getOriginatingRxnGen( void ) const
-    {
-        return ptrParentGen;
-    }
+        const coreRxnGen* getOriginatingRxnGen( void ) const
+        {
+            return ptrParentGen;
+        }
 
-    void
-    addReactant( speciesType* pSpecies,
-                 int multiplicity );
+        void
+        addReactant( speciesType* pSpecies,
+                     int multiplicity );
 
-    void
-    addProduct( speciesType* pSpecies,
-                int multiplicity );
+        void
+        addProduct( speciesType* pSpecies,
+                    int multiplicity );
 
-    double
-    getRate( void ) const
-    {
-        return rate;
-    }
+        double
+        getRate( void ) const
+        {
+            return rate;
+        }
 
-    void
-    setRate( double newRate )
-    {
-        rate = newRate;
-    }
+        void
+        setRate( double newRate )
+        {
+            rate = newRate;
+        }
 
-    int
-    getArity( void ) const
-    {
-        return arity;
-    }
+        int
+        getArity( void ) const
+        {
+            return arity;
+        }
 
+        virtual
+        std::string
+        getName() const
+        {
 
-    std::string
-    getCanonicalName() const
-    {
-        if ( nameUnclean ) generateCanonicalName();
-        return theName;
-    }
+            std::vector< std::pair<speciesType*, int> > theReactants( reactants.begin(),
+                                                                      reactants.end() );
 
-    void
-    generateCanonicalName() const;
+            std::vector< std::pair<speciesType*, int> > theProducts( products.begin(),
+                                                                     products.end() );
 
-    virtual
-    std::string
-    getName() const
-    {
-        return getCanonicalName();
-    }
+            std::sort( theReactants.begin(),
+                       theReactants.end(),
+                       CompareSpeciesEntries()
+                );
 
 
-private:
-    // This is all naming stuff.  Students of history may find it notable that
-    // this is also the first time I've used the "mutable" keyword.
+            std::sort( theProducts.begin(),
+                       theProducts.end(),
+                       CompareSpeciesEntries()
+                );
 
-    mutable bool nameUnclean;
-    mutable std::string theName;
+            std::ostringstream reactionName;
 
-};
+            reactionName << "(" << reactants.size() << ", " << products.size() <<  ") -- ";
+
+            // This is sort of goofy because of the following
+            // vector = first| a, b, c| last
+            // " a + b + c" => add a " + " iff ndx of what we've just added
+
+            for ( unsigned int ii = 0;
+                  ii != theReactants.size();
+                  ++ii )
+            {
+
+                if ( theReactants[ii].second > 1 )
+                {
+
+                    reactionName << theReactants[ii].second
+                                 << " "
+                                 << theReactants[ii].first->getName();
+                }
+                else
+                {
+                    reactionName << theReactants[ii].first->getName();
+                }
+
+                // I don't like this condition as it seems error-prone.
+                // However
+                // if size == 4 and
+                // NDX: 0  1  2  3
+                //      a  b  c  d
+                // We want to add pluses for everything up to and including 2
+                if ( ii != theReactants.size() - 1 )
+                {
+                    reactionName << " + ";
+                }
+
+            }
+
+            reactionName << " -> ";
+
+            for ( unsigned int ii = 0;
+                  ii != theProducts.size();
+                  ++ii )
+            {
+                if ( theProducts[ii].second > 1 )
+                {
+                    reactionName << theProducts[ii].second
+                                 << " "
+                                 << theProducts[ii].first->getName();
+                }
+                else
+                {
+                    reactionName << theProducts[ii].first->getName();
+                }
+
+                if ( ii != ( theProducts.size() - 1 ) )
+                {
+                    reactionName << " + ";
+                }
+
+            }
+
+            return reactionName.str();
+
+
+
+        }
+
+    };
 
 // Note that this does nothing with regard to sensitization.  Sensitization
 // of the reaction to the new substrate must be done in descendant reaction
 // classes themselves, since those are the classes to which the species
 // are sensitive.
-template<class speciesType>
-void
-basicReaction<speciesType>::
-addReactant( speciesType* pSpecies,
-             int multiplicity )
-{
-    // Try to insert the new reactant species and its multiplicity into the
-    // reactant multiplicity map, under the assumption that the species is not
-    // already a reactant.
-    std::pair<typename multMap::iterator, bool> insertResult
-    = reactants.insert( std::pair<speciesType*, int> ( pSpecies,
-                        multiplicity ) );
-
-    // The insertion will fail if the species is already a reactant.
-    // If this is the case, then add to the reactant's multiplicity
-    // in the existing entry.
-    if ( ! insertResult.second )
+    template<class speciesType>
+    void
+    basicReaction<speciesType>::
+    addReactant( speciesType* pSpecies,
+                 int multiplicity )
     {
-        insertResult.first->second += multiplicity;
-    }
+        // Try to insert the new reactant species and its multiplicity into the
+        // reactant multiplicity map, under the assumption that the species is not
+        // already a reactant.
+        std::pair<typename multMap::iterator, bool> insertResult
+            = reactants.insert( std::pair<speciesType*, int> ( pSpecies,
+                                                               multiplicity ) );
 
-    // Try to insert the new reactant species and its (negative) delta
-    // in the delta multiplicity map, under the assumption that the species
-    // is neither a reactant nor a product.
-    insertResult
-    = deltas.insert( std::pair<speciesType*, int> ( pSpecies,
-                     - multiplicity ) );
-
-    // The insertion will fail if the species is already a reactant or a
-    // product.  If this is the case, then adjust the multiplicity in its
-    // existing entry.
-    if ( ! insertResult.second )
-    {
-        insertResult.first->second -= multiplicity;
-    }
-
-    // Add the reactant multiplicity to the arity.
-    arity += multiplicity;
-
-    // Adding a reactant means we will need to regenerate the name if anyone
-    // requests it.
-    nameUnclean = true;
-}
-
-template<class speciesType>
-void
-basicReaction<speciesType>::
-addProduct( speciesType* pSpecies,
-            int multiplicity )
-{
-    // Try to insert the new product species and its multiplicity into the
-    // product multiplicity map, under the assumption that the species is not
-    // already a product.
-    std::pair<typename multMap::iterator, bool> insertResult
-    = products.insert( std::pair<speciesType*, int> ( pSpecies,
-                       multiplicity ) );
-
-    // The insertion will fail if the species is already a product.
-    // If this is the case, then add to the product's multiplicity
-    // in the existing entry.
-    if ( ! insertResult.second )
-    {
-        insertResult.first->second += multiplicity;
-    }
-
-    // Try to insert the new product species and its (positive) delta
-    // in the delta multiplicity map, under the assumption that the species
-    // is neither a reactant nor a product.
-    insertResult
-    = deltas.insert( std::pair<speciesType*, int> ( pSpecies,
-                     multiplicity ) );
-
-    // The insertion will fail if the species is already a reactant or a
-    // product.  If this is the case, then adjust the multiplicity in its
-    // existing entry.
-    if ( ! insertResult.second )
-    {
-        insertResult.first->second += multiplicity;
-    }
-
-    // Adding a reactant means we will need to regenerate the name if anyone
-    // requests it.
-    nameUnclean = true;
-}
-
-template <typename speciesType>
-class CompareSpeciesEntries
-{
-public:
-    int operator()( const std::pair<speciesType*, int>& numOne, const std::pair<speciesType*, int>& numTwo )
-    {
-        return numOne.first->getName() < numTwo.first->getName();
-    }
-};
-
-template <class speciesType>
-void basicReaction<speciesType>::
-generateCanonicalName() const
-{
-
-    std::vector< std::pair<speciesType*, int> > theReactants( reactants.begin(),
-            reactants.end() );
-
-    std::vector< std::pair<speciesType*, int> > theProducts( products.begin(),
-            products.end() );
-
-    std::sort( theReactants.begin(),
-               theReactants.end(),
-               CompareSpeciesEntries<speciesType>()
-             );
-
-
-    std::sort( theProducts.begin(),
-               theProducts.end(),
-               CompareSpeciesEntries<speciesType>()
-             );
-
-    std::ostringstream reactionName;
-
-    reactionName << "(" << reactants.size() << ", " << products.size() <<  ") -- ";
-
-    // This is sort of goofy because of the following
-    // vector = first| a, b, c| last
-    // " a + b + c" => add a " + " iff ndx of what we've just added
-
-    for ( unsigned int ii = 0;
-            ii != theReactants.size();
-            ++ii )
-    {
-
-        if ( theReactants[ii].second > 1 )
+        // The insertion will fail if the species is already a reactant.
+        // If this is the case, then add to the reactant's multiplicity
+        // in the existing entry.
+        if ( ! insertResult.second )
         {
-
-            reactionName << theReactants[ii].second
-            << " "
-            << theReactants[ii].first->getName();
-        }
-        else
-        {
-            reactionName << theReactants[ii].first->getName();
+            insertResult.first->second += multiplicity;
         }
 
-        // I don't like this condition as it seems error-prone.
-        // However
-        // if size == 4 and
-        // NDX: 0  1  2  3
-        //      a  b  c  d
-        // We want to add pluses for everything up to and including 2
-        if ( ii != theReactants.size() - 1 )
+        // Try to insert the new reactant species and its (negative) delta
+        // in the delta multiplicity map, under the assumption that the species
+        // is neither a reactant nor a product.
+        insertResult
+            = deltas.insert( std::pair<speciesType*, int> ( pSpecies,
+                                                            - multiplicity ) );
+
+        // The insertion will fail if the species is already a reactant or a
+        // product.  If this is the case, then adjust the multiplicity in its
+        // existing entry.
+        if ( ! insertResult.second )
         {
-            reactionName << " + ";
+            insertResult.first->second -= multiplicity;
+        }
+
+        // Add the reactant multiplicity to the arity.
+        arity += multiplicity;
+
+    }
+
+    template<class speciesType>
+    void
+    basicReaction<speciesType>::
+    addProduct( speciesType* pSpecies,
+                int multiplicity )
+    {
+        // Try to insert the new product species and its multiplicity into the
+        // product multiplicity map, under the assumption that the species is not
+        // already a product.
+        std::pair<typename multMap::iterator, bool> insertResult
+            = products.insert( std::pair<speciesType*, int> ( pSpecies,
+                                                              multiplicity ) );
+
+        // The insertion will fail if the species is already a product.
+        // If this is the case, then add to the product's multiplicity
+        // in the existing entry.
+        if ( ! insertResult.second )
+        {
+            insertResult.first->second += multiplicity;
+        }
+
+        // Try to insert the new product species and its (positive) delta
+        // in the delta multiplicity map, under the assumption that the species
+        // is neither a reactant nor a product.
+        insertResult
+            = deltas.insert( std::pair<speciesType*, int> ( pSpecies,
+                                                            multiplicity ) );
+
+        // The insertion will fail if the species is already a reactant or a
+        // product.  If this is the case, then adjust the multiplicity in its
+        // existing entry.
+        if ( ! insertResult.second )
+        {
+            insertResult.first->second += multiplicity;
         }
 
     }
-
-    reactionName << " -> ";
-
-    for ( unsigned int ii = 0;
-            ii != theProducts.size();
-            ++ii )
-    {
-        if ( theProducts[ii].second > 1 )
-        {
-            reactionName << theProducts[ii].second
-            << " "
-            << theProducts[ii].first->getName();
-        }
-        else
-        {
-            reactionName << theProducts[ii].first->getName();
-        }
-
-        if ( ii != ( theProducts.size() - 1 ) )
-        {
-            reactionName << " + ";
-        }
-
-    }
-
-    nameUnclean = false;
-    theName = reactionName.str();
-
-}
 
 }
 

@@ -46,7 +46,8 @@ mzrSpecies.cc \
 mzrUnit.cc \
 mzrUnitInsert.cc \
 mzrUnitParse.cc \
-unitsMgr.cc
+unitsMgr.cc\
+libmzr_c_interface.cc
 
 # growEvent.cc 
 

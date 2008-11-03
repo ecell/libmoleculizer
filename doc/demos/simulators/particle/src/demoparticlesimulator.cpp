@@ -73,13 +73,13 @@ void SimpleParticleSimulator::singleStep()
     std::cout << "Collision between " << speciesNameOne << " and " << speciesNameTwo << std::endl;
 
     // Look up these species in the moleculizer list.
-    mzr::moleculizer::SpeciesTypePtr speciesPtrOne = ptrSpeciesReactionGenerator->getSpeciesWithName( speciesNameOne );
-    mzr::moleculizer::SpeciesTypePtr speciesPtrTwo = ptrSpeciesReactionGenerator->getSpeciesWithName( speciesNameTwo );
-
-    std::vector<mzr::moleculizer::ReactionTypePtr> reactionVector;
+    mzr::moleculizer::SpeciesTypeCptr speciesPtrOne = ptrSpeciesReactionGenerator->getSpeciesWithName( speciesNameOne );
+    mzr::moleculizer::SpeciesTypeCptr speciesPtrTwo = ptrSpeciesReactionGenerator->getSpeciesWithName( speciesNameTwo );
+    
+    std::vector<mzr::moleculizer::ReactionTypeCptr> reactionVector;
     ptrSpeciesReactionGenerator->findReactionWithSubstrates( speciesPtrOne,
-            speciesPtrTwo,
-            reactionVector );
+                                                             speciesPtrTwo,
+                                                             reactionVector );
 
     if ( reactionVector.size() == 0 )
     {
@@ -89,7 +89,7 @@ void SimpleParticleSimulator::singleStep()
 
 
     std::cout << "\t!!! reaction." << std::endl;
-    executeReaction( reactionVector[ rand() % reactionVector.size()] );
+//    executeReaction( reactionVector[ rand() % reactionVector.size()] );
 }
 
 
@@ -110,11 +110,11 @@ void SimpleParticleSimulator::doSingleUnaryReaction()
     std::cout << "Possible unary reaction: " << '\n'
     << '\t' << particleName << std::endl;
 
-    mzr::moleculizer::SpeciesTypePtr particlePtr = ptrSpeciesReactionGenerator->getSpeciesWithName( particleName );
+    mzr::moleculizer::SpeciesTypeCptr particlePtr = ptrSpeciesReactionGenerator->getSpeciesWithName( particleName );
 
-    std::vector<mzr::moleculizer::ReactionTypePtr> reactionVector;
+    std::vector<mzr::moleculizer::ReactionTypeCptr> reactionVector;
     ptrSpeciesReactionGenerator->findReactionWithSubstrates( particlePtr,
-            reactionVector );
+                                                             reactionVector );
 
     if ( reactionVector.size() == 0 )
     {
@@ -124,9 +124,9 @@ void SimpleParticleSimulator::doSingleUnaryReaction()
 
     std::cout << "\t!!! reaction." << std::endl;
 
-    mzr::moleculizer::ReactionTypePtr rxn = reactionVector[ rand() % reactionVector.size()];
+    mzr::moleculizer::ReactionTypeCptr rxn = reactionVector[ rand() % reactionVector.size()];
 
-    executeReaction( rxn );
+    // executeReaction( rxn );
 
 }
 

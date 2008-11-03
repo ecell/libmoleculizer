@@ -128,6 +128,25 @@ public:
     }
 };
 
+    class FatalXcpt : public xcpt
+    {
+        static std::string
+        mkMsg(const std::string& message)
+        {
+            std::ostringstream oss;
+            oss << xcpt::mkMsg()
+                << "Fatal Exception: " 
+                << message;
+            return oss.str();
+        }
+        
+    public:
+        FatalXcpt( const std::string& errorMsg)
+            :
+            xcpt( mkMsg( errorMsg) )
+        {}
+    };
+
 class NotImplementedXcpt : public xcpt
 {
     static std::string

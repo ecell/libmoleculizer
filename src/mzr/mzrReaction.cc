@@ -68,8 +68,6 @@ public:
     operator()( const argument_type& rSpeciesMultPair ) const
     {
         mzrSpecies* pSpecies = rSpeciesMultPair.first;
-        int multiplicity = rSpeciesMultPair.second;
-
         pSpecies->expandReactionNetwork( depth );
     }
 };

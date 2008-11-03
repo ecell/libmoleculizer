@@ -119,13 +119,14 @@ public:
 
 
     bool
-    findReactionWithSubstrates( const SpeciesTypePtr A,
-                                std::vector<ReactionTypePtr>& reactionVector )
+    findReactionWithSubstrates( SpeciesTypeCptr A,
+                                std::vector<ReactionTypeCptr>& reactionVector )
     {
 
         reactionVector.clear();
 
-        typename ParticipatingSpeciesRxnMap::const_iterator iter = singleSubstrateRxns.find( A );
+        
+        typename ParticipatingSpeciesRxnMap::const_iterator iter = singleSubstrateRxns.find( const_cast<SpeciesTypePtr>(A) );
 
 
         while ( iter->first == A )
@@ -139,9 +140,9 @@ public:
     }
 
     bool
-    findReactionWithSubstrates( const SpeciesTypePtr A,
-                                const SpeciesTypePtr B,
-                                std::vector<ReactionTypePtr>& reactionVector )
+    findReactionWithSubstrates( SpeciesTypeCptr A,
+                                SpeciesTypeCptr B,
+                                std::vector<ReactionTypeCptr>& reactionVector )
     {
 
         reactionVector.clear();
@@ -260,8 +261,7 @@ public:
     {
         if ( !pRxn->isStandardReaction() )
         {
-            std::cerr<< "A reaction is nonstandard." << std::endl;
-            throw 666;
+            throw utl::FatalXcpt("Error in reactionNetworkCatalog::recordReaction.  Reaction passed in is non-standard");
         }
 
         theCompleteReactionList.push_back( pRxn );
@@ -290,8 +290,7 @@ public:
             }
             break;
         default:
-            std::cerr << __FILE__ << ":" << __LINE__ << std::endl;
-            throw 666;
+            throw utl::FatalXcpt("Error in reactionNetworkCatalog::recordReaction.  Reaction is non-standard. (jfjhnnnnnfhd348)"  );
             break;
         }
 

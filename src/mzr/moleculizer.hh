@@ -113,11 +113,14 @@ public:
         return extrapolationEnabled;
     }
 
+    void printMsg();
+
+
     void attachFileName( const std::string& aFileName );
     void attachString( const std::string& documentAsString );
     void attachDocument( xmlpp::Document* pDoc );
 
-    mzrSpecies*
+    const mzrSpecies*
     getSpeciesWithName( const std::string& speciesName ) throw( mzr::IllegalNameXcpt );
 
 public:
@@ -188,7 +191,7 @@ public:
         throw( utl::xcpt )
     {
         std::map<std::string, std::string>::const_iterator iter( userNameToSpeciesIDChart.find(possibleUserName) );
-        if (iter == userNameToSpeciesIDChart.end() ) throw utl::xcpt( "Error, UserName doesn't exist and thus cannot be converted to a user name.");
+        if (iter == userNameToSpeciesIDChart.end() ) throw mzr::unknownUserNameXcpt( "Error, UserName doesn't exist and thus cannot be converted to a user name.");
 
         return iter->second;
     }

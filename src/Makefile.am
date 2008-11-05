@@ -41,8 +41,7 @@ LIBDIMER = dimer/libmoleculizer_dimer.la
 LIBFTR = ftr/libmoleculizer_ftr.la
 LIBNAUTY = nauty/libmoleculizer_nauty.a
 
-ALL_MZR_LIBS = $(LIBFND) $(LIBUTL) $(LIBMZR) $(LIBSTOCH) $(LIBNMR) $(LIBNMR) $(LIBCPX) $(LIBMOL) $(LIBPLEX) $(LIBDIMER) $(LIBFTR) $(LIBNAUTY)
-
+ALL_MZR_LIBS = $(LIBFND) $(LIBUTL) $(LIBMZR) $(LIBSTOCH) $(LIBNMR) $(LIBNMR) $(LIBCPX) $(LIBMOL) $(LIBPLEX) $(LIBDIMER) $(LIBFTR) $(LIBNAUTY)	
 bin_PROGRAMS = moleculizer ctest
 
 lib_LTLIBRARIES = libmoleculizer_super.la
@@ -62,6 +61,7 @@ libmoleculizer_super_la_LIBADD = \
 	$(LIBDIMER) \
 	$(LIBFTR)
 
+
 moleculizer_LDADD = \
 	$(LIBFND) \
 	$(LIBUTL) \
@@ -79,6 +79,7 @@ LIBXML_CFLAGS = @LIBXML_CFLAGS@
 LIBXML_LIBS = @LIBXML_LIBS@
 
 AM_CXXFLAGS = $(LIBXML_CFLAGS)
+AM_CFLAGS=-g -O0
 
 if STATIC_BUILD
 AM_LDFLAGS=-static

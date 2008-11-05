@@ -218,7 +218,8 @@ namespace mzr
 
     moleculizer::moleculizer( void )
         :
-        modelLoaded( false )
+        modelLoaded( false ),
+        extrapolationEnabled( false )
     {
 
         pUserUnits = new unitsMgr( *this );

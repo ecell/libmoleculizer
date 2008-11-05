@@ -386,7 +386,7 @@ namespace cpx
 
         std::vector<int>::const_iterator begin_first( labelingMap1.begin() ), begin_second( labelingMap2.begin() );
 
-        for ( unsigned int partNdx = 0; partNdx != partitionMap.size(); ++partNdx )
+        for ( int partNdx = 0; partNdx != (int) partitionMap.size(); ++partNdx )
         {
             if ( partitionMap[partNdx] == 0 ) continue;
 

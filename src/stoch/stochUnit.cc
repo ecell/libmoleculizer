@@ -119,14 +119,17 @@ namespace stoch
     stochUnit::
     insertStateElts( xmlpp::Element* pRootElt ) throw( std::exception )
     {
-        xmlpp::Element* pModelElt
-            = utl::dom::mustGetUniqueChild( pRootElt,
-                                            mzr::eltName::model );
 
-// Ensure that the tagged-species element is there.
-        xmlpp::Element* pTaggedSpeciesElt
-            = utl::dom::mustGetUniqueChild( pModelElt,
-                                            mzr::eltName::taggedSpecies );
+        // Commenting out this function for the time being.  With the new library status of 
+        // Moleculizer, it is somewhat unclear what exactly should go in here anyways.
+
+//         xmlpp::Element* pModelElt
+//             = utl::dom::mustGetUniqueChild( pRootElt,
+//                                             mzr::eltName::model );
+// // // Ensure that the tagged-species element is there.
+// //        xmlpp::Element* pTaggedSpeciesElt
+// //            = utl::dom::mustGetUniqueChild( pModelElt,
+//                                             mzr::eltName::taggedSpecies );
 // Insert stoch-species nodes.
 //         std::for_each (stochSpeciesByName.begin(),
 //                        stochSpeciesByName.end(),

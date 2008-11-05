@@ -15,7 +15,8 @@ LIBMOL = ../../mol/libmoleculizer_mol.la
 LIBPLEX = ../../plex/libmoleculizer_plex.la
 LIBDIMER = ../../dimer/libmoleculizer_dimer.la
 LIBFTR = ../../ftr/libmoleculizer_ftr.la
-ALL_MZR_LIBS = $(LIBFND) $(LIBUTL) $(LIBMZR) $(LIBSTOCH) $(LIBNMR) $(LIBNMR) $(LIBCPX) $(LIBMOL) $(LIBPLEX) $(LIBDIMER) $(LIBFTR)
+LIBNAUTY = ../../nauty/libmoleculizer_nauty.a
+ALL_MZR_LIBS = $(LIBFND) $(LIBUTL) $(LIBMZR) $(LIBSTOCH) $(LIBNMR) $(LIBNMR) $(LIBCPX) $(LIBMOL) $(LIBPLEX) $(LIBDIMER) $(LIBFTR) $(LIBNAUTY)
 
 LIBXML_CFLAGS = @LIBXML_CFLAGS@
 LIBXML_LIBS = @LIBXML_LIBS@
@@ -30,6 +31,10 @@ moleculizer_test_SOURCES = moleculizer_tests.cpp
 moleculizer_test_CXXFLAGS= @CXXFLAGS@ -Wall $(LIBXML_CFLAGS)
 moleculizer_test_LDADD = $(ALL_MZR_LIBS)
 
+check_PROGRAMS += c_interface_test
+c_interface_test_SOURCES = c_interface_tests.cpp
+c_interface_test_CXXFLAGS = @CXXFLAGS@ -Wall $(LIBXML_CFLAGS)
+c_interface_test_LDADD = $(ALL_MZR_LIBS)
 
 TESTS=$(check_PROGRAMS)
 

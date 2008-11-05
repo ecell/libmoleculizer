@@ -264,7 +264,7 @@ namespace plx
             plx::mzrPlexFamily* pProductFamily
                 = recognize( *pMzrPlex, originalToResultIsomorphism );
 
-            const plx::mzrPlex& refParadigm = pProductFamily->getParadigm();
+            // const plx::mzrPlex& refParadigm = pProductFamily->getParadigm();
 
             std::vector<cpx::molParam> theParams = pProductFamily->makeDefaultMolParams();
 
@@ -292,8 +292,8 @@ namespace plx
 
                 cpx::modMolState molState = pMzrMol->externState( theParams[originalToResultIsomorphism.forward.applyToMolSpec( molIndex )] );
                 int modificationIndex = ( *pMzrMol ).modSiteNameToNdx[iter->second.first];
-                const std::string& modificationSiteName = ( *pMzrMol ).modSiteNames[ modificationIndex ];
 
+                // const std::string& modificationSiteName = ( *pMzrMol ).modSiteNames[ modificationIndex ];
 
                 molState[modificationIndex] = rMolUnit.mustGetMod( iter->second.second );
                 theParams[originalToResultIsomorphism.forward.applyToMolSpec( molIndex )] = pMzrMol->internState( molState );

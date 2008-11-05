@@ -64,7 +64,7 @@ void test_scaffold()
 
     // This is pretty bad, as it relies on the program being run from /tests/.libs/.  I have very little
     // sense of whether this is portable or what.
-    theMoleculizer.attachFileName( "/home/naddy/Sources/libmoleculizer/src/mzr/tests/scaffold.xml" );
+    // theMoleculizer.attachFileName( "/home/naddy/Sources/libmoleculizer/src/mzr/tests/scaffold.xml" );
 }
 
 test_suite*

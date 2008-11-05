@@ -55,6 +55,7 @@ libmoleculizer_mzr_HEADERS=\
 createEvent.hh \
 dumpUtils.hh \
 inputCapTest.hh \
+libmzr_c_interface.h \
 molarFactor.hh \
 moleculizer.hh \
 mzrEltName.hh \

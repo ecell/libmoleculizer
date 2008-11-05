@@ -257,7 +257,7 @@ throw( utl::xcpt )
     cpx::plexIso recognitionIsos;
     rPlexUnit.recognize.unify( rParsedPlex,
                                pFamily,
-                               & recognitionIsos );
+                               &recognitionIsos );
 
     // Reindex the instance-name to instance-index map.
     std::map<std::string, int> nameToMolNdx;

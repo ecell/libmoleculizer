@@ -330,14 +330,19 @@ namespace plx
                 = tpsParser( pTaggedPlexSpeciesElt );
             
             
+
+            // All this re-reading of files as well as dumping need to be completely re-writted, 
+            // really.  For the time being, I am commenting this out (specific population of 
+            // different tagged plexes), as it serves no purpose anymore.
+
             // Get the population of the species at dump time.
-            xmlpp::Element* pPopulationElt
-                = utl::dom::mustGetUniqueChild( pTaggedPlexSpeciesElt,
-                                                eltName::population );
+//             xmlpp::Element* pPopulationElt
+//                 = utl::dom::mustGetUniqueChild( pTaggedPlexSpeciesElt,
+//                                                 eltName::population );
             
-            int dumpedPop
-                = utl::dom::mustGetAttrInt( pPopulationElt,
-                                            eltName::population_countAttr );
+//             int dumpedPop
+//                 = utl::dom::mustGetAttrInt( pPopulationElt,
+//                                             eltName::population_countAttr );
             
             // Update the species with its dumped population.  This obviates
             // the "zeroUpdate" pass that has to be made in prepareToDump,

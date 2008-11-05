@@ -123,9 +123,13 @@ public:
                                 std::vector<ReactionTypeCptr>& reactionVector )
     {
 
-        reactionVector.clear();
+        // This is bad.  It feels semantically correct, but probably means something
+        // should be refactored.
+        const_cast<SpeciesTypePtr>(A)->expandReactionNetwork();
 
-        
+
+
+        reactionVector.clear();
         typename ParticipatingSpeciesRxnMap::const_iterator iter = singleSubstrateRxns.find( const_cast<SpeciesTypePtr>(A) );
 
 
@@ -144,6 +148,10 @@ public:
                                 SpeciesTypeCptr B,
                                 std::vector<ReactionTypeCptr>& reactionVector )
     {
+        // This feels wrong (although semantically, so right), and probably means things 
+        // should be refactored.
+        const_cast<SpeciesTypePtr>(A)->expandReactionNetwork();
+        const_cast<SpeciesTypePtr>(B)->expandReactionNetwork();
 
         reactionVector.clear();
 

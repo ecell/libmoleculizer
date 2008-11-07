@@ -1,0 +1,266 @@
+\chapter{Libmoleculizer Interfaces}
+Libmoleculizer has multiple wrappings that allow users of several
+languages -- c++, c, or Python -- to use it in their own programs.
+This chapter describes each of them, as well as their intended use,
+and is followed by a section that discusses extending this procedure
+to new languages.  
+
+\subsection{C++ Interface}
+This is the standard interface for libmoleculizer, as well as the
+original coding language for the code.  Consequently, the c++
+interface is the most powerful as well as the most detailed.
+
+The c++ interface is composed of two portions. The
+ReactionNetworkDescription portion records all the species and
+reactions within the model and provides an interface to 
+locating species as well as locating reactions between them.  The
+Moleculizer portion of the interface is charged with managing the reaction
+network expansion settings, as well as loading sets of rules and
+species to be generated.  Together, these two make up the
+libmoleculizer interface.  These two portions of the code are
+given an overview below.  For a full discussion of the API, either
+consult the reference portions of this documentation, or browse the
+source code. 
+
+\subsubsection{The Moleculizer Interface}
+This interface (found in file src/mzr/moleculizer.hh) controls loading
+and unloading rules files, and species descriptions, as well as
+controlling parameters of how the species reaction network is to be
+generated independantly of the rules file (setting things like type of
+extrapolation, what things are being extrapolated, and other key
+parameters.)
+
+Creating a Moleculizer object is easy, as moleculizer only has one
+constructor: moleculizer::moleculizer().  An individual wishing the
+libmoleculizer library to be used in his/her work then would begin by
+creating a moleculizer object. 
+
+mzr::moleculizer m; // All the relevant code is contained in the
+                    // namespece mzr.
+
+To begin a libmoleculizer session, a rules file must be loaded.
+However, before this occurs, the session must be configured using the
+moleculizer interface.
+
+Libmoleculizer comes default with two basic schemes for reaction and
+species generation -- a spatial version in which radii,  diffusion
+coefficients, and masses of the newly created species are generated, and the
+intrinsic reaction rate is generated for newly genrated reactions, and
+a non-spatial mode in which mass is generated for the species, and the
+reaction rate (equivelent to the reaction rates in either differential
+equation systems or stochastic, Gillespie-type reaction systems) is
+generated for new reactions.  The moleculizer interface facilitates
+switching beetween these options.
+
+For the user of libmoleculizer, there are two ways that the
+operational mode (spatial or non-spatial) can be set, using the
+interface or set in the rules.  
+
+Setting this up using the api, is quite straightforward.  If spatial
+network is desired, the member function
+``enableSpatialReactionNetworkGeneration()'' must be called prior to
+rules being loaded.  What does this mean?  It means operationally,
+that libmoleculizer will generate masses, radii, and diffusion
+coefficients for each species that is constructed.  It also means
+that, in order to do this, the user must provide diffusion
+coefficients for each of the different mols in the model, as well as
+each of the named explicit-plex-species the user defines  With this
+mode of operation, the functions getKDForSpecies and
+getRadiusForSpecies can be called on any species pointer owned by the
+ReactionNetowrkDescription..
+
+If non-spatial network generation is desired, the moleculizer member
+function ``enableNonspatialReactionNetworkGeneration(bool)'' may be
+called.  This mode will only extrapolate masses of species, and the
+reaction rate of generated reactions.  The boolean value here
+determines whether the extrapolation of the reaction rate will use
+mass-extrapolation in calculating the reaction rate or not.  
+
+When the value passed in is false, overall reaction rates are
+calculated as follows.  Each reaction rule created by the user is
+provided with a basic on-rate and off-rate, which may be adjusted by
+specifying allostery (particular structural properties of the complex
+the mol exists within) that modifies these on and off rates.  If a
+particular pair of species is found to react, the most specific
+reaction rates associated with this rule (the basic rates are used
+unless an allosteric 'special case' applies to the reaction, in which
+case the allosteric rates are used) are used as the overall reaction
+rate, without modification.
+
+When the value passed in is true, mass-based reaction rate
+modification is used.  The basic on and off rates are obtained as
+described in the previous paragraph.  However, the final
+reaction-specific on and off rates are obtained by multiplying the
+basic rates by a mass-related correction factor.  [[[Show factor and
+discuss moleculizer paper.]]]
+
+Once configuration parameters have been set up, a model can be
+loaded.  This can be accomplished using one of three functions:
+``attachFileName( const std::string& aFileName )'', 
+``attachString( const std::string& documentAsString )'',
+or ``attachDocument( xmlpp::Document* pDoc )''.  Each of these takes a
+model, in one form or another, loads it, parses it, and loads it,
+preparing Moleculizer for species and reaction generation.  
+
+A libmoleculizer model is an xml description of basic molecules (mols) and
+reaction rules defined in terms of molecules, that usually describe
+either protein-protein interactions or enzymatic reactions on
+proteins.  A description of the full syntax of these files can be
+found in the chapter 'Rules'.  An xml specification can be either
+passed to libmoleculizer as a string containing file contents, a path
+to a model file, or can be passed in as an xmlpp::Document*
+(corresponding to an xml document parsed as a dom object using
+libxml++, the xml library used by libmoleculizer).
+
+Use cases:
+1.  Model file is contained in a file.
+If filePath is a string containing either an absolute or relative path
+to the file, then the function moleculizer::attachFileName can be
+called as follows.  
+
+// Create a new reaction-network generator.
+mzr::moleculizer m;
+
+// Setup extrapolation here. 
+m.enableSpatialReactionNetworkGeneration(); // For instance.
+
+// Load the file into the moleculizer object.
+m.attachFileName( filePath );
+
+2..Model is contained in a string.
+If modelContents is a string containing a model file, then the
+function moleculizer::attachString can be used to load this model file
+as follows
+
+// Create a new reaction-network generator.
+mzr::moleculizer m; 
+
+// Setup extrapolation here.
+m.enableNonspatialReactionNetworkGeneration( true ); // For instance.
+
+// Load the string holding the model file into the moleculizer object.
+m.attachString( modelContents );
+
+3.  Model has already been parsed and is contained in an
+xmlpp::Document* object called ptrModelDoc.
+
+// Create a new reaction-network generator.
+mzr::moleculizer m;
+
+// Setup extrapolation here.
+m.enableNonspatialReactionNetworkGeneration( false );  // For
+instance.
+
+// Load the Document* into moleculizer.
+m.attachDocument( ptrModelDocument );
+
+Any of these will load the necessary information into a model
+instance. Note however, that information can only be added into
+moleculizer once per instance.  Should the model have to be updated,
+the moleculizer object must be destroyed and recreated and loaded with
+the new model.  This is not optimal, and may change in upcoming
+versions.  Users can determine whether a model is loaded by calling
+the 'bool moleculizer::getModelHasBeenLoaded() const' function.  
+
+The moleculizer interface also contains one more critical function,
+the function 
+'const mzrSpecies* getSpeciesWithName( const std::string speciesName)'
+function.  A user can provide a species key (interchangably referred
+to as a species name) to molculizer, and it will return a species
+pointer to that species.  The primary feature of this function is that
+it will create the species if it does not already exist.  However, if
+it does exist, this function will merely return a pointer to that
+species.  If the species does not refer to a legal species, per the
+rules that have been loaded in, it will throw a mzr::IllegalNameXcpt.  
+
+\subsubsection{The ReactionNetworkDescription interface.}
+The ReactionNetworkDescription interface
+(fnd::ReactionNetworkDescription<mzr::mzrSpecies, mzr::mzrReaction> in
+code, found in src/fnd/reactionNetworkDescription.hh) manages questions
+about species and reactions that have been created within a session of
+libmoleculizer.  The basic, relevant functions to using this interface
+are listed below.  Full a full description of this interface, please
+consult class documentation provided elsewhere in this documentation.
+
+Generally speaking, the ReactionNetworkDescription interaface can do
+three things:
+
+1.
+Find species with certain names, using the findSpecies function.  This
+function takes the name of a species and either returns a constant
+pointer to that species, or throws a fnd::NoSuchSpeciesXcpt
+exception.  Note that an exception may be thrown even if the species
+name is a legal one for this model, so long as that species has not
+been constructed yet.  Typically this is appropriate.  For instance,
+any species formed as a procuct of a generated reaction is guaranteed
+to have been created such that it will be returned by findSpecies.
+That said, there may be special cases, such as working with data from
+a previous run of the same model, where legal species names must be
+used to create species even though the current expansion of the model
+has not expanded that portion yet.  In this case,
+mzr::moleculizer::getSpeciesWithName, as described in the previous
+section, should be used.  
+
+2.  Find reactions with one or more substrates.
+This is accomplished using the findReactionWithSubstrates functions.
+If unary reactions are desired (what decompositions can a particular
+species undergo), use the function 'bool
+findReactionWithSubstrates(SpeciesCPtr A,
+std::vector<ReactionTypeCPtr>& reactionVector)' function.  To use
+this, a species pointer that has been gotten using either the
+findSpecies or getSpeciesWithName functions is passed, along with an
+empty vector containing ReactionTypeCPtrs.  The function places a
+unique pointer to every unary reaction involving that species as a
+substrate, returning true if any exist.  
+
+For instance:
+m = mzr::molecuculizer();
+m.attachFile( ``Simpledemo-rules.xml''); 
+
+std::vector<const mzr::mzrReaction*> speciesDecompositionRxns;;
+
+// This function also converts user names, described in the rules, to
+// species pointers.
+const mzr::mzrSpecies* species = m.getSpeciesWithName(``A-B-dimer'');
+
+// When this function returns, speciesDecompositionRxns will contain
+// one element, corresponding to the ``AB -> A + B'' reaction.  
+m.findReactionWithSubstrates( species, speciesDecompositionRxns);
+
+For reactions involving two substrates (libmoleculizer does not
+support reactions involving three or greater substrates at this time),
+the same idea is followed, except involving two species.  
+
+Example:
+m = mzr::moleculizer();
+m.attachFile(``Simpledemo-rules.xml'');
+std::vector<const mzr::mzrReaction*> binaryRxns;;
+
+const mzr::mzrSpecies* species1 = m.findSpecies(``___1A______'');
+const mzr::mzrSpecies* species2 = m.findSpecies(``___1B______'');
+
+// After this function call, binaryRxns will contain one element
+// corresponding to the reaction ``A + B -> AB'').
+m.findReactionWithSubstrates(species1, species2, binaryRxns);
+
+
+ReactionNetworkDescriptionInterface also provides general information
+on the state of the generated network through several functions:
+
+unsigned int getTotalNumberSpecies() const, 
+unsigned int getTotalNumberReactions() const,
+bool checkSpeciesIsKnow( const std::string& speciesName) const.
+
+These functions all provide information about the state of the
+generated network.  The first two tell how large it is, and the third
+helps determine what is and is not in it.  
+
+
+
+
+
+\subsection{C Interface}
+\subsection{Python Interface}
+
+
+

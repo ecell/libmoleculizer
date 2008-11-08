@@ -255,6 +255,43 @@ These functions all provide information about the state of the
 generated network.  The first two tell how large it is, and the third
 helps determine what is and is not in it.  
 
+Finally, there are other functions for manipulating and expanding the
+reaction network.  Each species and reaction is of classtype
+fnd::reactionNetworkComponent, and had a function
+expandReactionNetwork(unsigned int).  This function will expand the
+reaction network around that object.  For any species X, calling this
+function will create all new reactions X + Y -> Z, where Y is a species
+already present in the system such that X and Y have a reaction rule
+which applies to them and Z is the product, as determined by the
+reaction rule.  Furthermore, any unary reactions X->? will be created
+and recorded in the system.  Finally, all species that occur on the
+right hand side of newly created reaction rules will be created and
+added to the system.  This sort of expansion can be done in two ways.
+
+1.  Calling expandReactionNetwork(unsigned int i) on a particular
+reactionNetworkComponent.
+
+All species (mzr::mzrSpecies) and reactions (mzr::mzrReaction) are
+also of type fnd::reactionNeworkComponent, and as such, have a function
+called expandReactionNetwork(unsigned int i).  This function can only
+be called once for any such reactionNeworkComponent (calling a second
+time has no effect), but will expand the generated reaction network
+around that component, generating new species and reactions.
+
+
+2.  Calling
+fnd::reactionNetowrkDescription::incrementNetworkBySpeciesName(const
+SpeciesID& name).  
+
+Calling this function and giving it the name of a species already
+recorded within the system has the same effect as calling
+expandReactionNetwork on the mzr::mzrSpecies* returned by calling
+fnd::ReactionnetoworkDescription::findSpecies using that same name. 
+
+One the reaction network has been expanded, users may be interested to
+find the difference with the old network: the set of species and
+reactions that were generated in that step.  
+
 
 
 

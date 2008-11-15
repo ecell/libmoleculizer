@@ -1,104 +1,142 @@
 \chapter{Libmoleculizer Interfaces}
-Libmoleculizer has multiple wrappings that allow users of several
-languages -- c++, c, or Python -- to use it in their own programs.
-This chapter describes each of them, as well as their intended use,
-and is followed by a section that discusses extending this procedure
+Libmoleculizer has multiple wrappings that allow users of different
+languages -- C++, C, or Python -- to use it in their own programs.
+This chapter describes each of these interfaces and how to use them, 
+and is followed by a section discussing how to extend this procedure
 to new languages.  
 
 \subsection{C++ Interface}
-This is the standard interface for libmoleculizer, as well as the
-original coding language for the code.  Consequently, the c++
-interface is the most powerful as well as the most detailed.
+The C++ interface is the standard interface for libmoleculizer, as
+well as the language that libmoleculizer has been implemented in.
+Consequently, the C++ interface is the most powerful as well as the
+most detailed. 
 
-The c++ interface is composed of two portions. The
-ReactionNetworkDescription portion records all the species and
-reactions within the model and provides an interface to 
-locating species as well as locating reactions between them.  The
-Moleculizer portion of the interface is charged with managing the reaction
-network expansion settings, as well as loading sets of rules and
-species to be generated.  Together, these two make up the
-libmoleculizer interface.  These two portions of the code are
-given an overview below.  For a full discussion of the API, either
-consult the reference portions of this documentation, or browse the
-source code. 
+The C++ interface controls creating a libmoleculizer intance,
+configuring it, loading a rules file into the instance, and expanding
+the reaction network out.  The interface also allows inspecting the
+network to see whether or not certain species have been created, see
+what reactions might be possible for a set of products, as well as
+other questions.  These parts are given an overview below, although
+for a complete overview of the API, please consult either reference
+portions of this documentation, or browse the source code (the
+moleculizer interface can be found in src/mzr/moleculizer.hh and
+src/fnd/reactionNetworkDescription.hh).
 
-\subsubsection{The Moleculizer Interface}
-This interface (found in file src/mzr/moleculizer.hh) controls loading
-and unloading rules files, and species descriptions, as well as
-controlling parameters of how the species reaction network is to be
-generated independantly of the rules file (setting things like type of
-extrapolation, what things are being extrapolated, and other key
-parameters.)
 
-Creating a Moleculizer object is easy, as moleculizer only has one
-constructor: moleculizer::moleculizer().  An individual wishing the
-libmoleculizer library to be used in his/her work then would begin by
-creating a moleculizer object. 
+\subsubsection{Overview}
+Use of libmoleculizer will usually follow, a ''create, configure,
+load, run'' pattern, with the first three parts being relatively
+constant from time to time.  
 
-mzr::moleculizer m; // All the relevant code is contained in the
-                    // namespece mzr.
+\subsubsection{Create}
+To use libmoleculizer in C++ code, a Moleculizer object, which
+represents a reaction-network that can be generated, must be
+created. This is easy, as Moleculizer only has one constructor:
+moleculizer::moleculizer().  An individual wishing to use generative
+reaction-networks libmoleculizer library to be used in his/her work
+then would begin by creating a moleculizer object.  
 
-To begin a libmoleculizer session, a rules file must be loaded.
-However, before this occurs, the session must be configured using the
-moleculizer interface.
+\begin{1stlisting}
+mzr::moleculizer m; // Note that this takes place in the namespace mzr,
+                    // as does all the C++ interface.
+\end{1stlisting}
 
-Libmoleculizer comes default with two basic schemes for reaction and
-species generation -- a spatial version in which radii,  diffusion
-coefficients, and masses of the newly created species are generated, and the
-intrinsic reaction rate is generated for newly genrated reactions, and
-a non-spatial mode in which mass is generated for the species, and the
-reaction rate (equivelent to the reaction rates in either differential
-equation systems or stochastic, Gillespie-type reaction systems) is
-generated for new reactions.  The moleculizer interface facilitates
-switching beetween these options.
 
-For the user of libmoleculizer, there are two ways that the
-operational mode (spatial or non-spatial) can be set, using the
-interface or set in the rules.  
+\subsubsection{Configure}
+Now that a new Moleculizer instance has been created, it must be
+configured as far as what type of reaction-network expansion to do, as
+well as configured to determine how deep to expand the
+reaction-network.  
 
-Setting this up using the api, is quite straightforward.  If spatial
-network is desired, the member function
-``enableSpatialReactionNetworkGeneration()'' must be called prior to
-rules being loaded.  What does this mean?  It means operationally,
-that libmoleculizer will generate masses, radii, and diffusion
-coefficients for each species that is constructed.  It also means
-that, in order to do this, the user must provide diffusion
-coefficients for each of the different mols in the model, as well as
-each of the named explicit-plex-species the user defines  With this
-mode of operation, the functions getKDForSpecies and
-getRadiusForSpecies can be called on any species pointer owned by the
-ReactionNetowrkDescription..
+Primary here is to determine whether or not to use spatial or
+non-spatial reaction network generation.  In each mode, new species
+and new reactions will be generated, however the parameters generated
+will be different depending on the case.  Spatial reaction network
+generation generates species-reaction networks with parameters
+appropriate for simulating the network in a spatial simulator: when a
+new species is generated, a mass, species radius, and diffusion
+coefficient is generated for that new species, and when a new reaction
+is generated, an intrinsic reaction rate is generated for that new
+reaction.  In non-spatial mode, parameters appropriate for either a
+Gillespie type stochastic simulation or a determanistic ODE simulation
+are produced: when a new species is generated, a mass is generated
+along with it, and when a new reaction is generated, a reaction rate
+is generated along with it.  Please see previous chapters for a
+description of these modes.
 
-If non-spatial network generation is desired, the moleculizer member
-function ``enableNonspatialReactionNetworkGeneration(bool)'' may be
-called.  This mode will only extrapolate masses of species, and the
-reaction rate of generated reactions.  The boolean value here
-determines whether the extrapolation of the reaction rate will use
-mass-extrapolation in calculating the reaction rate or not.  
+To configure a moleculizer object to use either of these modes, please
+use either the ''enableSpatialReactionNetworkGeneration'' or the
+''enableNonSpatialReactionNetworkGeneration(bool)'' functions.  The
+boolean parameter needed by
+''enableNonSpatialReactionNetworkGeneration'' controls massed-based
+extrapolation.  If false, the reaction rate extrapolated for a
+reaction is the same as the reaction rate described in the basic
+reaction-rule in the model file.  If it is true, the reaction-rate is
+modified by a ''mass-correction factor'', as described in the Brent,
+Lok paper.  
 
-When the value passed in is false, overall reaction rates are
-calculated as follows.  Each reaction rule created by the user is
-provided with a basic on-rate and off-rate, which may be adjusted by
-specifying allostery (particular structural properties of the complex
-the mol exists within) that modifies these on and off rates.  If a
-particular pair of species is found to react, the most specific
-reaction rates associated with this rule (the basic rates are used
-unless an allosteric 'special case' applies to the reaction, in which
-case the allosteric rates are used) are used as the overall reaction
-rate, without modification.
+\begin{1stlisting}
+  mzr::moleculizer m;                          // Create a Moleculizer object.
+  m.enableSpatialReactionNetworkGeneration();  // Configure it to generate spatial partameters.
+\end{1stlisting}
 
-When the value passed in is true, mass-based reaction rate
-modification is used.  The basic on and off rates are obtained as
-described in the previous paragraph.  However, the final
-reaction-specific on and off rates are obtained by multiplying the
-basic rates by a mass-related correction factor.  [[[Show factor and
-discuss moleculizer paper.]]]
+\begin{1st listing}
+  mzr::moleculizer m;                                   // Create a Moleculizer object.
+  m.enableNonspatialReactionNetworkGeneration( true );  // Configure it to generate non-spatial parameters, using mass-based extrapolation.
+\end{1stlistings}
 
+If spatial species-reaction network extrapolation is going to be used,
+please note that the 'explicit-species' elements must have an
+additional 'parameters' subsection, that provides a diffusion
+coefficient for each initial species in the model.  Failure to do so
+will result in a runtime error.  Please see the chapter ''Rules'' for
+more information.
+
+The second option that can be configured prior to runtime is the
+expansion depth of species-reaction generation.  At any given moment,
+beginning with the list of explicit-species provided in the rules as
+well as the generated set of reactions between them, moleculizer
+maintains a generated reaction-network, consisting of a list of
+species and a list of reactions.  Some of these species are
+'expanded'; that is, Moleculizer has presented each of those species
+to the list of species, has generated any new reactions based on them,
+and has added the new products of those reactions as 'unexpanded'
+species to the list.  Others are 'unexpanded', meaning that the
+reactions that species can participate in in, and any subseqeuent
+products of those reactions, have not yet been generated and added to
+the reaction network generation.  
+
+By default, Moleculizer expands species out to one ply.  This means
+that when a species is expanded, new reactions that involve already
+expanded species and the species being expanded are created, and
+reaction products are added to the network as being unexpanded.  
+
+Higher plys imply more species and reactions are generated with each
+expansion step, at the expense of more computational time and memory.
+For instance, expanding a species to a ply of two means that new
+reactions involving that species are generated, along with reaction
+products.  However, each of those products are also expanded.
+Expanding each of these products will cause more species and reactions
+to be generated.  Expanding to a third-ply will take each of these
+species and expand them in turn.  The standard ply of one is fine for
+most applications.  However, if desired, it can be checked using the
+'getGenerationDepth' function, and set using the
+'setGenerateDepth(unsigned int)' functions.  
+
+\begin{1stlisting}
+  mzr::moleculizer m; 
+  m.enableNonspatialReactionNetworkGeneration( true );
+  m.setGenerateDepth( 5 );
+\end{1stlisting}
+  
+
+
+\subsubsection{Loading}
 Once configuration parameters have been set up, a model can be
 loaded.  This can be accomplished using one of three functions:
-``attachFileName( const std::string& aFileName )'', 
-``attachString( const std::string& documentAsString )'',
-or ``attachDocument( xmlpp::Document* pDoc )''.  Each of these takes a
+''attachFileName( const std::string& aFileName )'',
+''attachString( const std::string& documentAsString )'',
+or ''attachDocument( xmlpp::Document* pDoc )''.  Each of these takes a
 model, in one form or another, loads it, parses it, and loads it,
 preparing Moleculizer for species and reaction generation.  
 
@@ -118,6 +156,7 @@ If filePath is a string containing either an absolute or relative path
 to the file, then the function moleculizer::attachFileName can be
 called as follows.  
 
+\begin{1stlisting}
 // Create a new reaction-network generator.
 mzr::moleculizer m;
 
@@ -126,12 +165,14 @@ m.enableSpatialReactionNetworkGeneration(); // For instance.
 
 // Load the file into the moleculizer object.
 m.attachFileName( filePath );
+\end{1stlisting}
 
 2..Model is contained in a string.
 If modelContents is a string containing a model file, then the
 function moleculizer::attachString can be used to load this model file
 as follows
 
+\being{1stlisting}
 // Create a new reaction-network generator.
 mzr::moleculizer m; 
 
@@ -140,10 +181,12 @@ m.enableNonspatialReactionNetworkGeneration( true ); // For instance.
 
 // Load the string holding the model file into the moleculizer object.
 m.attachString( modelContents );
+\end{1stlisting}
 
 3.  Model has already been parsed and is contained in an
 xmlpp::Document* object called ptrModelDoc.
 
+\begin{1stlisting}
 // Create a new reaction-network generator.
 mzr::moleculizer m;
 
@@ -153,6 +196,7 @@ instance.
 
 // Load the Document* into moleculizer.
 m.attachDocument( ptrModelDocument );
+\end{1stlisting}
 
 Any of these will load the necessary information into a model
 instance. Note however, that information can only be added into
@@ -160,18 +204,71 @@ moleculizer once per instance.  Should the model have to be updated,
 the moleculizer object must be destroyed and recreated and loaded with
 the new model.  This is not optimal, and may change in upcoming
 versions.  Users can determine whether a model is loaded by calling
-the 'bool moleculizer::getModelHasBeenLoaded() const' function.  
+the ''bool moleculizer::getModelHasBeenLoaded() const'' function.  
 
-The moleculizer interface also contains one more critical function,
-the function 
-'const mzrSpecies* getSpeciesWithName( const std::string speciesName)'
-function.  A user can provide a species key (interchangably referred
-to as a species name) to molculizer, and it will return a species
-pointer to that species.  The primary feature of this function is that
-it will create the species if it does not already exist.  However, if
-it does exist, this function will merely return a pointer to that
-species.  If the species does not refer to a legal species, per the
-rules that have been loaded in, it will throw a mzr::IllegalNameXcpt.  
+\subsubsection{Running}
+Once a Moleculizer object has been created, configured, and a
+rules-file has been loaded, there are several things that can be done.
+
+The things that can be done are inspecting the species and reactions
+that have been generated so far, expanding species and reactions in
+order to generate additional portions of the species and reaction
+network, inspecting the portion of the species and reaction network
+that were created during the most recent expansion phase, and
+searching for reactions that match certain parameters.  
+
+The most basic operation that can be performed on a species and
+reaction network is simply inspecting its contents.  These can be done
+using the interface functions ''getSpeciesCatalog'' and
+''getReactionList'' functions.  The 'getSpeciesCatalog' function
+returns a map from std::string pointers to mzr::mzrSpecies*.  (Please
+note that this map compares pointers based on their dereferenced
+values rather than the pointer values themselves.)  By scanning
+through this map, users can find out the identities of every species
+that has been created, by using its unique identifier.  Using this
+map, information can be gained for each species, using the relevant
+'getKDForSpecies', 'getRadiusForSpecies', 'getMassForSpecies'
+functions.  
+
+\begin{1stlisting}
+mzr::moculizer m;
+m.enableSpatialReactionNetworkGeneration();
+m.loadFile(''moleculizer-rules.xml'');
+
+std::pair<std::string, const mzr::mzrSpecies*> speciesPair =
+m.getSpeciesCatalog().first;
+
+Real speciesMass = m.getKDForSpecies( speciesPair.second );
+Real speciesRadius = m.getRadiusForSpecies( speciesPair.second );
+Real speciesKd = m.getKDForSpecies( speciesPair.second );
+\end{1stlisting}
+
+Note that every configuration of libmoleculizer generates masses for
+newly generated species, and so ''getMassForSpecies'' works under all
+situations.  However, species radii and diffusion coefficients are
+only generated when spatial extrapolation mode is configured by
+calling the ''configureSpatialGenerationMode'' prior to loading the
+model.  
+
+\begin{1stlisting}
+mzr::moculizer m;
+m.enableNonSpatialReactionNetworkGeneration( false );
+m.loadFile(''moleculizer-rules.xml'');
+
+std::pair<std::string, const mzr::mzrSpecies*> speciesPair =
+m.getSpeciesCatalog().first;
+
+Real speciesMass = m.getKDForSpecies( speciesPair.second ); // ok
+
+// Throws a BadModeXcpt, because this parameter is not generated for
+// this mode.
+Real speciesRadius = m.getRadiusForSpecies( speciesPair.second ); 
+\end{1stlisting}
+
+Likewise, for determining parameters associated with the reaction,
+functions ''
+
+
 
 \subsubsection{The ReactionNetworkDescription interface.}
 The ReactionNetworkDescription interface

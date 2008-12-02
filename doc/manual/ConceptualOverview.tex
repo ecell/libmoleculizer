@@ -1,0 +1,93 @@
+\chapter{Comceptual Overview of libmoleculizer}
+
+The objective of libmoleculizer is to take a description of protein
+and other molecular entities, as well as a set of descriptions of
+various biochemical interactions, and use it to generate information
+in a variety of forms about the explicit reaction netowrk and all the
+species within it.  
+
+In order to understand how libmoleculizer generates reaction networks,
+including their kinetics, it is importand to cover some background
+information on the kinds of interactions libmoleculizer represents and
+the way that libmoleculizer expands reaction networks. 
+
+\section{Combinatorial Reaction Networks}
+
+\subsection{Signal Transduction Pathways}
+
+\section{Rule-Based Reaction  Network Specifications}
+
+The fundamental idea behind libmoleculizer is that reaction rules can
+be applied to chemical species in order to possibly generate new
+species.  
+
+For example, a reaction rule might be represent a protein-protein
+dimerization.  If a model has defined a Ste5 protein that has a
+binding site 'ste5-binding-site1' as well as a Fus3 protein that has a
+binding site 'fus3-binding-site1', a reaction rule can be specified
+that says Ste5 can bind to Fus3 from the 'ste5-binding-site1' to the
+'fus3-binding-site1' at a particular on-rate $k_{on}$, and a particular
+off-rate $k_{off}$.  This rule will be applied in two ways.  First,
+any time a pair of molecular complexes, the first of which contains a
+Ste5 molecule with a free 'ste5-binding-site1' site, the second of which
+contains a Fus3 molecule with a free 'fus3-binding-site1', this rule
+will be applied to generate an explicit dimerization reaction between
+those two complexes.  At the same time, the off-rate provided will be
+using to generate an explicit decomposition reaction for the dimerized
+complex.  
+
+The on- and off- rates used in reaction rules are used to generate
+appropriate on- and off-rates in the explicit reaction.  This process
+can be configured in a variety of ways.  Among other things, values
+can either be passed directly through to explicit reactions, or
+reaction rate extrapolation can be used, where libmoleculizer will
+approximate explicit reaction rates for the generated reactons, based
+on the kinetics of the rule, as well as the masses of the substrate
+species.  Please see the section dealing with Reaction Rate Kinetics
+for more infomation.  
+
+\section{Allostery Based on Binding Shape}
+
+Biochemical reaction networks, particularly signal transduction
+pathways, will oftentimes regulate themselves using allosteric
+proteins.  Allosteric proteins are proteins that have functional sites
+(binding sites) and regulatory sites.  Typically different small
+molecules are bound to the regulatory sites, and this induces
+conformation changes to to functional site, which modify its
+functional kinetics.  
+
+At the physical level, states of the regulatory sites in a complex
+species affect the conformation of functional binding sites, and
+presence and state of subcomplexes within a complex may affect other
+kinetic properties of functional sites (e.g. a particular protein
+being bound at a particular binding site may physically block a
+functional site, preventing it from being used -- in affect, turing
+all the rates to 0 for that binding site).  MZR rules use the idea of
+binnding-site shape, a comcept that encompasses both allosteric
+changes to conformation, as well as other non-conformational physical
+effects that affect reaction kinetics.  
+
+Each binding site within libmoleculizer must be defined with a default
+binding-site shape, as well as a list of the other shapes that can
+occur at that binding-site. In another section of the rules,
+the conditions under which complex state induces binding site shape
+changes are specified.
+
+Finally, in reactions that occur between functional sites, allosteric
+rates are specified in terms of the relevant binding site shapes.  
+
+\subsection{An Argument For Using Binding Shapes to specify allostery,
+  over other Methods}
+
+
+
+
+\section{Reaction Rate Kinetics}
+
+
+
+\subsection{Mass-based reaction rate extrapolation}
+
+
+
+\section{Unique Complex Naming}

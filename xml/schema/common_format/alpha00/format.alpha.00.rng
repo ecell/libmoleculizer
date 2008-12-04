@@ -1,0 +1,342 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grammar
+    xmlns="http://relaxng.org/ns/structure/1.0"
+    datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
+  <start>
+    <element name="rules">
+      <!-- The parameters section is composed of one or more parameters elements -->
+      <element name="parameters">
+	<oneOrMore>
+	  <element name="parameter">
+	    <ref name="parameterContent" />
+	  </element>
+	</oneOrMore>
+      </element>
+
+      <element name="modifications">
+	<zeroOrMore>
+	  <element name="modification">
+	    <ref name="modificationContent" />
+	  </element>
+	</zeroOrMore>
+      </element>
+
+      <element name="modification-groups">
+	<oneOrMore>
+	  <element name="modification-group">
+	    <ref name="modificationGroupContent" />
+	  </element>
+	</oneOrMore>
+      </element>
+
+      <element name="mols">
+	<oneOrMore>
+	  <optional>
+	    <element name="mol" >
+	      <ref name="molContent" />
+	    </element>
+	    <element name="simple-mol">
+	      <ref name="simpleMolContent" />
+	    </element>
+          </optional>
+	</oneOrMore>
+      </element>
+
+      <!-- The rules element is composed of one or more rules.  -->
+      <element name="rules">
+	<oneOrMore>
+	  <!-- Each rule consists of a list of selectors, a transformation, and associated kinetics.  -->
+	  <element name="rule">
+	    <element name="name"><data type="token" /></element>
+	    <element name="selectors">
+	      <element name="selector">
+		<ref name="selector-content" />
+	      </element>
+	      <optional>
+		<element name="selector">
+		  <ref name="selectorContent" />
+		</element>
+	      </optional>
+	    </element>
+	    <element name="transformation">
+	      <ref name="transformationContent" />
+	    </element>
+	    <choice>
+	      <element name="mass-action"><ref name="massActionContent" /></element>
+	      <element name="generic-kinetics"><ref name="genericKineticsContent" /></element>
+	    </choice>
+	  </element>
+	</oneOrMore>
+      </element>
+    </element>
+
+  </start>
+
+
+  <define name="modelValueType">
+    <choice>
+      <data type="double" />
+      <element name="parameter-ref">
+        <!-- This attribute must refer to a parameter name defined in the parameters section. -->
+        <attribute name="name" />
+      </element>
+    </choice>
+  </define>
+
+
+  <define name="parameterContent">
+    <element name="name"><data type="token" /></element>
+    <element name="value">
+      <choice>
+	<data type="double" />
+	<!-- FIXME This should specify a math element in a better way. -->
+	<!--       Plus it isn't all of math, just the same subset SBML uses.  -->
+	<element name="math"><text/></element>
+      </choice>
+    </element>
+  </define>
+
+  <define name="modificationContent">
+    <element name="name"><data type="token" /></element>
+    <element name="weight">
+      <ref name="modelValueType" />
+    </element>
+  </define>
+
+  <define name="modificationGroupContent">
+    <element name="name"><data type="token" /></element>
+    <element name="default-value"><data type="token" /></element>
+    <zeroOrMore>
+      <element name="value"><data type="token" /></element>
+    </zeroOrMore>
+  </define>
+
+  <define name="simpleMolContent">
+    <element name="name"><data type="token" /></element>
+    <element name="weight"><ref name="modelValueType" /></element>
+  </define>
+
+  <define name="molContent">
+    <element name="name"><data type="token" /></element>
+    <element name="weight"><ref name="modelValueType" /></element>
+    <element name="states">
+      <!-- Both default-state and state originally wrapped their elements in a  -->
+      <!-- name element, which I have removed, because it just seems redundant.  -->
+      <element name="default-state"><data type="token" /></element>
+      <zeroOrMore>
+	<element name="state"><data type="token" /></element>
+      </zeroOrMore>
+    </element>
+
+    <element name="binding-sites">
+      <zeroOrMore>
+	<element name="binding-site">
+	  <element name="name"><data type="token" /></element>
+	  <element name="default-state"><data type="token" /></element>
+	  <zeroOrMore>
+	    <element name="state"><data type="token" /></element>
+	  </zeroOrMore>
+	</element>
+      </zeroOrMore>
+    </element>
+
+    <element name="modification-sites">
+      <zeroOrMore>
+	<element name="modification-site">
+	  <element name="name"><data type="token" /></element>
+	  <element name="modification-group"><data type="token" /></element>
+	</element>
+      </zeroOrMore>
+    </element>
+  </define>
+
+
+  <define name="selectorContent">
+    <element name="subgraph">
+      <element name="mol-instances">
+	<oneOrMore>
+	  <element name="mol-instance">
+	    <attribute name="id" />
+	    <element name="mol"><data type="token" /></element>
+
+	    <optional>
+	      <element name="state"><data type="token" /></element>
+	    </optional>
+
+	    <optional>
+	      <element name="binding-site-instances">
+		<zeroOrMore>
+		  <element name="binding-site-instance">
+		    <attribute name="id" />
+		    <element name="binding-site"><data type="token" /></element>
+		    <optional>
+		      <element name="bound">
+			<choice>
+			  <value>true</value>
+			  <value>false</value>
+			</choice>
+		      </element>
+		    </optional>
+		    <optional>
+		      <element name="state"><data type="token" /></element>
+                    </optional>
+                  </element>
+		</zeroOrMore>
+	      </element>
+	    </optional>
+
+	    <optional>
+	      <element name="modification-site-instances">
+		<zeroOrMore>
+		  <element name="modification-site-instance">
+		    <attribute name="id" />
+		    <element name="modification-site">
+		      <data type="token" />
+		    </element>
+		    <element name="modification">
+		      <data type="token" />
+		    </element>
+		  </element>
+		</zeroOrMore>
+	      </element>
+	    </optional>
+
+	  </element>
+	</oneOrMore>
+      </element>
+      
+      <element name="bindings">
+	<zeroOrMore>
+	  <choice>
+	    <element name="binding">
+	      <element name="mol-instance">
+		<element name="name"><data type="token" /></element>
+		<element name="binding-site"><data type="token" /></element>
+	      </element>
+	      <element name="mol-instance">
+		<element name="name"><data type="token" /></element>
+		<element name="binding-site"><data type="token" /></element>
+	      </element>
+	    </element>
+	    <element name="simple-mol-binding">
+	      <interleave>
+		<element name="mol-instance">
+		  <element name="name"><data type="token" /></element>
+		<element name="binding-site"><data type="token" /></element>
+		</element>
+		<element name="simple-mol-instance">
+		  <element name="name"><data type="token" /></element>
+		</element>
+	      </interleave>
+	    </element>
+	  </choice>
+	</zeroOrMore>
+      </element>
+    </element>
+  </define>
+
+  <define name="transformationContent">
+    <element name="mol-state-changes">
+      <zeroOrMore>
+	<element name="mol-state-change">
+	  <element name="mol-id"><data type="token" /></element>
+	  <element name="state"><data type="token" /></element>
+	</element>
+      </zeroOrMore>
+    </element>
+
+    <element name="binding-site-state-changes">
+      <zeroOrMore>
+	<element name="binding-site-state-change">
+          <element name="mol-id"><data type="token" /></element>
+          <element name="binding-site"><data type="token" /></element>
+          <element name="state"><data type="token" /></element>
+        </element>
+      </zeroOrMore>
+    </element>
+
+    <element name="binding-changes">
+      <zeroOrMore>
+	<choice>
+	  <element name="binding-created">
+	    <element name="binding-site-name"><data type="token" /></element>
+	    <element name="binding-site-name"><data type="token" /></element>
+	  </element>
+	  <element name="binding-deleted">
+	    <element name="binding-site-name"><data type="token" /></element>
+	  </element>
+	</choice>
+      </zeroOrMore>
+    </element>
+
+    <element name="modification-changes">
+      <zeroOrMore>
+	<element name="modification-change">
+          <element name="mol-id"><data type="token" /></element>
+	  <element name="modification-site"><data type="token" /></element>
+	  <element name="modification"><data type="token" /></element>
+	</element>
+      </zeroOrMore>
+    </element>
+
+    <element name="simple-mol-exchanges">
+      <zeroOrMore>
+	<element name="simple-mol-exchange">
+	  <element name="name"><data type="token" /></element>
+	  <element name="simple-mol"><data type="token" /></element>
+	</element>
+      </zeroOrMore>
+    </element>
+  </define>
+
+
+<define name="massActionContent">
+  <!-- Should this be reversible/irreversible by default?  -->
+  <attribute name="reversible">
+    <choice>
+      <value>true</value>
+      <value>false</value>
+    </choice>
+  </attribute>
+  <element name="default">
+    <element name="forward-rate"><data type="double" /></element>
+    <optional>
+      <element name="reverse-rate"><data type="double" /></element>
+    </optional>
+  </element>
+  <zeroOrMore>
+    <element name="allosteric-rates">
+      <element name="forward-rate"><data type="double" /></element>
+      <optional>
+	<element name="reverse-rate">
+	  <choice>
+	    <data type="double" />
+	    <element name="parameter-ref">
+	      <!-- This attribute must refer to a parameter name defined in the parameters section. -->
+	      <attribute name="name" />
+	    </element>
+	  </choice>
+	</element>
+      </optional>
+
+      <element name="selector">
+	<ref name="selectorContent" />
+      </element>
+      <optional>
+	<element name="selector">
+	  <ref name="selectorContent" />
+	</element>
+      </optional>
+
+    </element>
+  </zeroOrMore>
+
+</define>
+
+<define name="genericKineticsContent">
+  <element name="null-element"><value>null</value></element>
+</define>
+
+
+
+</grammar> 

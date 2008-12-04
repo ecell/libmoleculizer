@@ -1,0 +1,74 @@
+start = 
+
+element moleculizer-input
+{
+   element model
+   {
+     element modifications
+      {
+         element modification
+         {
+            attribute name( xsd:token ),
+            element weight-delta ( xsd:float )
+         }*
+      }
+
+      element mols
+      {
+         ( element mod-mol { modMolContent } |
+            element small-mol { smallMolContent} )*
+      }
+
+      element allosteric-plexes
+      {
+         element allosteric-plex { allostericPlexContent }*
+      }
+      
+      element allosteric-omnis
+      {
+         element allosteric-omni {allostericOmniContent}*
+      }
+
+      element reaction-gens
+      {
+         ( element dimerization-gen { dimerizationGenContent } |
+            element omni-gen { omniGenContent } )*
+      }
+
+      element explicit-species
+      {
+         element explicit-species { explicitSpeciesContent }*
+      }
+
+      element explicit-reactions
+      {
+         element explicit-reaction { explicitReactionContent }*
+      } 
+   }
+}
+
+smallMolContent =
+   attribute name{ xsd:token },
+   element weight { attribute daltons{ xsd:float } }
+
+modMolContent =
+   attribute name{ xsd:token },
+   element binding-site
+   {
+      attribute name{ xsd:token },
+      element default-site-shape{ attribute name{ xsd:token } },
+      element site-shape {attribute name{xsd:token} }+,
+   }*,
+   element mod-site
+   {
+      attribute name{ xsd:token }
+      
+   }*,
+   element allosteric-state
+   {
+   }*
+
+
+
+   
+}

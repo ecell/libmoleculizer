@@ -1,0 +1,28 @@
+- Is there a way in relax ng to specify that certain data types must
+  refer to a reference to something earlier in the doc? 
+
+- We need to figure out how to specify using a parameter value within
+  a math section in a parameter value section (one variable defined in
+  terms of another).
+
+- We need to figure out a good name for the root element.  (rules?)
+
+- Do we need names as well as ids?
+
+- Is there a consistant policy as to when to mandate empty subtags and
+  when to not (ie should mol-state-changes be a mandatory subelement
+  of transformation, even if it has no subelements?)
+
+- In transformation, how should state changes be applied?  For
+  creating or removing bingings, we are using ids, both for a simple
+  way to specify as well as to enforce the condition that to make a
+  binding both binding sites should be free/to break a binding, it
+  must exist.
+
+  However, to update a modification value or to changes the state of
+  either a mol or a binding site, this seems overly restrictive.  It
+  is well-defined to specify that a mol/binding site should end up
+  with a particular state on the reactant side without a precondition
+  on its initial state.
+  
+  

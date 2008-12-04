@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grammar xmlns="http://relaxng.org/ns/structure/1.0"><start><element name="moleculizer-defaults"><element name="server"><attribute name="url"/></element><element name="flat-doc-dir"><attribute name="url"/></element></element></start></grammar>

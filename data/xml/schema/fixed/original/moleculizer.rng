@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grammar xmlns="http://relaxng.org/ns/structure/1.0"
+><include href="mol.rng"
+/><include href="plex.rng"
+/><include href="dimer.rng"
+/><include href="stoch.rng"
+/><include href="gpa.rng"
+/><include href="nucEx.rng"
+/><include href="modKinase.rng"
+/><include href="scaffold.rng"
+/><define name="unit-model-content"
+><ref name="mol-model-content"
+/><ref name="plex-model-content"
+/></define><start
+><element name="moleculizer-input"
+><element name="model"
+><ref name="unit-model-content"
+/><element name="reaction-gens"
+><zeroOrMore
+><ref name="reaction-gens-content"
+/></zeroOrMore></element><element name="explicit-species"
+><zeroOrMore
+><ref name="explicit-species-content"
+/></zeroOrMore></element><element name="explicit-reactions"
+><zeroOrMore
+><element name="reaction"
+><zeroOrMore
+><element name="substrate-species-ref"
+><attribute name="name"
+/><attribute name="multiplicity"
+/></element></zeroOrMore><zeroOrMore
+><element name="product-species-ref"
+><attribute name="name"
+/><attribute name="multiplicity"
+/></element></zeroOrMore><element name="rate"
+><attribute name="value"
+/></element></element></zeroOrMore></element><element name="volume"
+><attribute name="liters"
+/></element></element><element name="streams"
+><element name="species-streams"
+><zeroOrMore
+><ref name="species-streams-content"
+/></zeroOrMore></element><element name="dump-streams"
+><zeroOrMore
+><element name="dump-stream"
+><attribute name="name"
+/><attribute name="dump-period"
+/><choice
+><element name="target-file"
+><attribute name="file-name"
+/></element><element name="target-output-stream"
+><attribute name="name"
+><choice
+><value
+>standard-output</value><value
+>standard-error</value></choice></attribute></element></choice><oneOrMore
+><choice
+><element name="species-stream-ref"
+><attribute name="name"
+/></element><element name="species-ref"
+><attribute name="name"
+/></element><element name="stat-stream-ref"
+><attribute name="name"
+><choice
+><value
+>sim-time</value><value
+>clock-time</value><value
+>species-count</value><value
+>reaction-count</value><value
+>reaction-event-count</value><value
+>volume</value></choice></attribute></element></choice></oneOrMore></element></zeroOrMore></element></element><element name="events"
+><zeroOrMore
+><choice
+><element name="create-event"
+><attribute name="time"
+/><element name="species-ref"
+><attribute name="name"
+/></element><element name="population"
+><attribute name="count"
+/></element></element><element name="start-dump-event"
+><attribute name="time"
+/><element name="dump-stream-ref"
+><attribute name="name"
+/></element></element><element name="dump-state-event"
+><attribute name="time"
+/><element name="target-file"
+><attribute name="file-name"
+/></element></element><element name="stop-event"
+><attribute name="time"
+/></element></choice></zeroOrMore></element></element></start></grammar>

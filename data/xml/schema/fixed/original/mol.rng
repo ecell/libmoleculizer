@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grammar xmlns="http://relaxng.org/ns/structure/1.0"
+><define name="site-shape-map"
+><element name="site-shape-map"
+><zeroOrMore
+><element name="binding-site-ref"
+><attribute name="name"
+/><element name="site-shape-ref"
+><attribute name="name"
+/></element></element></zeroOrMore></element></define><define name="mod-map"
+><element name="mod-map"
+><zeroOrMore
+><element name="mod-site-ref"
+><attribute name="name"
+/><element name="mod-ref"
+><attribute name="name"
+/></element></element></zeroOrMore></element></define><define name="mol-model-content"
+><element name="modifications"
+><zeroOrMore
+><element name="modification"
+><attribute name="name"
+/><element name="weight-delta"
+><attribute name="daltons"
+/></element></element></zeroOrMore></element><element name="mols"
+><zeroOrMore
+><element name="mod-mol"
+><attribute name="name"
+/><element name="weight"
+><attribute name="daltons"
+/></element><zeroOrMore
+><element name="binding-site"
+><attribute name="name"
+/><element name="default-shape-ref"
+><attribute name="name"
+/></element><oneOrMore
+><element name="site-shape"
+><attribute name="name"
+/></element></oneOrMore></element></zeroOrMore><zeroOrMore
+><element name="mod-site"
+><attribute name="name"
+/><element name="default-mod-ref"
+><attribute name="name"
+/></element></element></zeroOrMore><zeroOrMore
+><element name="allosteric-state"
+><ref name="mod-map"
+/><ref name="site-shape-map"
+/></element></zeroOrMore></element></zeroOrMore></element></define></grammar>

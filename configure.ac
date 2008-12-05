@@ -41,7 +41,6 @@ AC_SUBST(LIBXML_LIBS)
 # Checks for libraries.
 AC_CONFIG_FILES([Makefile
                 src/Makefile
-		src/nauty/Makefile
                 src/cpx/Makefile
 		src/dimer/Makefile
 		src/fnd/Makefile

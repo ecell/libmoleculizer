@@ -18,9 +18,8 @@ LIBMOL = $(SRC)/mol/libmoleculizer_mol.la
 LIBPLEX = $(SRC)/plex/libmoleculizer_plex.la
 LIBDIMER = $(SRC)/dimer/libmoleculizer_dimer.la
 LIBFTR = $(SRC)/ftr/libmoleculizer_ftr.la
-LIBNAUTY = $(SRC)/nauty/libmoleculizer_nauty.a
 
-ALL_MZR_LIBS = $(LIBFND) $(LIBUTL) $(LIBMZR) $(LIBSTOCH) $(LIBNMR) $(LIBNMR) $(LIBCPX) $(LIBMOL) $(LIBPLEX) $(LIBDIMER) $(LIBFTR) $(LIBNAUTY)
+ALL_MZR_LIBS = $(LIBFND) $(LIBUTL) $(LIBMZR) $(LIBSTOCH) $(LIBNMR) $(LIBNMR) $(LIBCPX) $(LIBMOL) $(LIBPLEX) $(LIBDIMER) $(LIBFTR) 
 
 LIBXML_CFLAGS = @LIBXML_CFLAGS@
 LIBXML_LIBS = @LIBXML_LIBS@

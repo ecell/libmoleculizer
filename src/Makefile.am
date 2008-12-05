@@ -4,8 +4,7 @@ abs_top_builddir=@abs_top_builddir@
 
 ## This is the order in which the libraries should be built.
 ## (dependencies go from left to right)
-SUBDIRS = nauty \
-	fnd \
+SUBDIRS = fnd \
 	utl \
 	mzr \
 	stoch \
@@ -38,9 +37,8 @@ LIBMOL = mol/libmoleculizer_mol.la
 LIBPLEX = plex/libmoleculizer_plex.la
 LIBDIMER = dimer/libmoleculizer_dimer.la
 LIBFTR = ftr/libmoleculizer_ftr.la
-LIBNAUTY = nauty/libmoleculizer_nauty.a
 
-ALL_MZR_LIBS = $(LIBFND) $(LIBUTL) $(LIBMZR) $(LIBSTOCH) $(LIBNMR) $(LIBNMR) $(LIBCPX) $(LIBMOL) $(LIBPLEX) $(LIBDIMER) $(LIBFTR) $(LIBNAUTY)	
+ALL_MZR_LIBS = $(LIBFND) $(LIBUTL) $(LIBMZR) $(LIBSTOCH) $(LIBNMR) $(LIBNMR) $(LIBCPX) $(LIBMOL) $(LIBPLEX) $(LIBDIMER) $(LIBFTR) 
 bin_PROGRAMS = moleculizer 
 
 lib_LTLIBRARIES = libmoleculizer_super.la
@@ -71,8 +69,8 @@ moleculizer_LDADD = \
 	$(LIBMOL) \
 	$(LIBPLEX) \
 	$(LIBDIMER) \
-	$(LIBFTR) \
-	$(LIBNAUTY)
+	$(LIBFTR)
+
 
 LIBXML_CFLAGS = @LIBXML_CFLAGS@
 LIBXML_LIBS = @LIBXML_LIBS@

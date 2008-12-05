@@ -71,7 +71,7 @@ physConst.hh \
 query.hh \
 queryImpl.hh \
 querySpeciesDumpable.hh \
-reactionNetworkCatalog.hh \
+reactionNetworkDescription.hh \
 reactionNetworkComponent.hh \
 rxnGen.hh \
 sensitive.hh \

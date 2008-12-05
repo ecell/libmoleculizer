@@ -218,6 +218,7 @@ namespace mzr
 
     moleculizer::moleculizer( void )
         :
+        theRunningMode( NONE ),
         modelLoaded( false ),
         extrapolationEnabled( false )
     {
@@ -372,6 +373,11 @@ namespace mzr
         rMzrUnit.setGenerateDepth( generateDepth );
     }
 
+    int moleculizer::getGenerationDepth() const
+    {
+        return pUserUnits->pMzrUnit->getGenerateDepth();
+    }
+
     class unitInsertStateElements :
         public std::unary_function<unit*, void>
     {
@@ -498,8 +504,10 @@ namespace mzr
     }
 
     void
-    moleculizer::enableSpatialReactionNetworkGeneration(bool extrapolate)
+    moleculizer::enableSpatialReactionNetworkGeneration()
     {
+        theRunningMode = SPATIAL;
+        
         boost::function<void( const mzrReaction* )> cb1, cb2, cb3, cb4;
 
         cb1 = std::bind1st( std::mem_fun( &moleculizer::installRadiusForNewSpecies ), this );
@@ -514,16 +522,45 @@ namespace mzr
         addNewReactionCallback( cb4 );
     }
 
+    void 
+    moleculizer::generateCompleteNetwork()
+    {
+        // This function will generate the entire network.  To be used primarily 
+        bool nodesUnexpanded = true;
+
+        while( nodesUnexpanded)
+        {
+            // Expand everything 
+            BOOST_FOREACH(const SpeciesCatalog::value_type& refPair, this->getSpeciesCatalog() )
+            {
+                refPair.second->expandReactionNetwork();
+            }
+            
+            nodesUnexpanded = false;
+            BOOST_FOREACH( const SpeciesCatalog::value_type& refPair, this->getSpeciesCatalog() )
+            {
+                if (! refPair.second->hasNotified() )
+                {
+                    nodesUnexpanded = true;
+                    break;
+                }
+            }
+        }
+    }
+
 
     void
     moleculizer::enableNonspatialReactionNetworkGeneration( bool extrapolate )
     {
         // Nothing actually gets called here, because it is implicit within the reaction itself.
+        theRunningMode = NONSPATIAL;
     }
 
     Real
     moleculizer::getKDForSpecies( const mzrSpecies* mzrSpec) const throw(utl::xcpt)
     {
+        if(getMode() != SPATIAL ) throw mzr::BadModeXcpt( "kD", mzrSpec->getName(), getMode());
+
         std::map<SpeciesID, Real>::const_iterator iter( k_DChart.find( mzrSpec->getName() ));
         
         if (iter == k_DChart.end()) throw utl::xcpt( "Species " + mzrSpec->getName() + " has no kD recorded.");
@@ -531,11 +568,90 @@ namespace mzr
         
     }
 
-    void moleculizer::printMsg()
+    int moleculizer::DEFAULT_GENERATION_DEPTH = 1;
+
+        Real
+        moleculizer::getRadiusForSpecies( const mzrSpecies* mzrSpec) const throw( utl::xcpt )
+        {
+            if(getMode() != SPATIAL ) throw mzr::BadModeXcpt( "radius", mzrSpec->getName(), getMode());
+
+            std::map<SpeciesID, Real>::const_iterator iter( radiusChart.find(mzrSpec->getName()));
+        
+            if (iter == radiusChart.end()) throw utl::xcpt( "Species " + mzrSpec->getName() + " has no radius recorded.");
+            return iter->second;
+        }
+
+
+    Real moleculizer::getKForReaction(const mzrReaction* mzrReaction) const throw(utl::xcpt)
+        {
+            if(getMode() != NONSPATIAL ) throw mzr::BadModeXcpt( std::string("k"), mzrReaction, getMode());
+
+            return mzrReaction->getRate();
+        }
+
+
+    Real moleculizer::getKaForReaction( const mzrReaction* mzrReaction) const throw(utl::xcpt)
+        {
+            if(getMode() != SPATIAL ) throw mzr::BadModeXcpt( "kA", mzrReaction, getMode());
+            
+            return mzrReaction->getRate();
+        }
+
+    Real moleculizer::getMassForSpecies( const mzrSpecies* ptrSpec) const throw(utl::xcpt)
+        {
+            return ptrSpec->getWeight();
+        }
+
+
+    std::string
+    BadModeXcpt::mkMsg(const std::string& paramName, const std::string& speciesName, mzr::moleculizer::MODE mode)
     {
-        std::cout << "Hello from moleculizer!!!" << std::endl;
+        std::ostringstream oss;
+        oss << "Parameter '"
+            << paramName
+            << "' cannot be found for species '"
+            << speciesName
+            << "' because mode is of type '"
+            << getModeString( mode )
+            << "'.";
+
+        return oss.str();
     }
 
-    int moleculizer::DEFAULT_GENERATION_DEPTH = 1;
+
+    std::string
+    BadModeXcpt::mkMsg(const std::string& paramName, const mzr::mzrReaction* mzrRxn, mzr::moleculizer::MODE mode)
+    {
+        std::ostringstream oss;
+        oss << "Parameter '"
+            << paramName
+            << "' cannot be found for reaction '"
+            << mzrRxn->getName()
+            << "' because mode is of type '"
+            << getModeString( mode )
+            << "'.";
+
+        return oss.str();
+    }
+
+    std::string 
+    BadModeXcpt::getModeString( moleculizer::MODE mode)
+    {
+        switch(mode)
+        {
+        case moleculizer::NONE:
+            return "NULL";
+            break;
+        case moleculizer::SPATIAL:
+            return "SPATIAL";
+            break;
+        case moleculizer::NONSPATIAL:
+            return "NONSPATIAL";
+            break;
+        default:
+            return "NOMODESTRING";
+        }
+    }
+
 
 }

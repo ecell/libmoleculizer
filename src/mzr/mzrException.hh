@@ -38,7 +38,6 @@
 
 namespace mzr
 {
-
     class BadRulesDefinitionXcpt : public utl::xcpt
     {
     public:
@@ -56,7 +55,6 @@ namespace mzr
         {
         }
     };
-
 
     class IllegalNameXcpt : public utl::xcpt
     {

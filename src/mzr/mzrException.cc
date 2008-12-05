@@ -1,4 +1,5 @@
 #include "mzrException.hh"
+#include "moleculizer.hh"
 
 namespace mzr
 {
@@ -129,4 +130,6 @@ namespace mzr
                   << ", which was not found.";
         return msgStream.str();
     }
+
 }
+

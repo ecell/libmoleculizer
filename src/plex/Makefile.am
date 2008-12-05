@@ -21,7 +21,6 @@ LIBMOL = ../mol/libmoleculizer_mol.la
 LIBPLEX = ../plex/libmoleculizer_plex.la
 LIBDIMER = ../dimer/libmoleculizer_dimer.la
 LIBFTR = ../ftr/libmoleculizer_ftr.la
-LIBNAUTY = ../nauty/libmoleculizer_nauty.la
 ALL_MZR_LIBS = $(LIBFND) $(LIBUTL) $(LIBMZR) $(LIBSTOCH) $(LIBNMR) $(LIBNMR) $(LIBCPX) $(LIBMOL) $(LIBPLEX) $(LIBDIMER) $(LIBFTR)
 
 libmoleculizer_plex_la_LIBADD = -lstdc++ $(LIBUTL) $(LIBNMR) $(LIBFND) $(LIBCPX) $(LIBMZR) $(LIBMOL) 

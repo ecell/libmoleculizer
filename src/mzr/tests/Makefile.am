@@ -1,4 +1,4 @@
-## Process this file with automake to produce Makefile.in.
+]## Process this file with automake to produce Makefile.in.
 
 abs_top_builddir=@abs_top_builddir@
 
@@ -15,8 +15,7 @@ LIBMOL = ../../mol/libmoleculizer_mol.la
 LIBPLEX = ../../plex/libmoleculizer_plex.la
 LIBDIMER = ../../dimer/libmoleculizer_dimer.la
 LIBFTR = ../../ftr/libmoleculizer_ftr.la
-LIBNAUTY = ../../nauty/libmoleculizer_nauty.a
-ALL_MZR_LIBS = $(LIBFND) $(LIBUTL) $(LIBMZR) $(LIBSTOCH) $(LIBNMR) $(LIBNMR) $(LIBCPX) $(LIBMOL) $(LIBPLEX) $(LIBDIMER) $(LIBFTR) $(LIBNAUTY)
+ALL_MZR_LIBS = $(LIBFND) $(LIBUTL) $(LIBMZR) $(LIBSTOCH) $(LIBNMR) $(LIBNMR) $(LIBCPX) $(LIBMOL) $(LIBPLEX) $(LIBDIMER) $(LIBFTR) 
 
 LIBXML_CFLAGS = @LIBXML_CFLAGS@
 LIBXML_LIBS = @LIBXML_LIBS@

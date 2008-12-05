@@ -1,9 +1,0 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<operations>
-  <operation>
-    <nodeIntervalRemoveOperation firstNodeIndex='2' lastNodeIndex='2' elementPath='grammar-doc 0 start 0 element 0'/>
-  </operation>
-  <operation>
-    <nodeIntervalRemoveOperation firstNodeIndex='2' lastNodeIndex='2' elementPath='grammar-doc 0 start 0 element 0'/>
-  </operation>
-</operations>

@@ -1,16 +1,18 @@
 \chapter{Introduction}
 
 \section{Overview of Libmoleculizer}
-Libmoleculizer is a computer library that takes a set of rules that 
-describe a set of proteins and small molecules, as well as
-protein-protein interactions, protein-small molecule interaction, and
-enzymatic reactions (protein modifications) amongst those molecule
-types, and from those rules explicitly generates the network of
-species and reactions described by those rules. 
+Libmoleculizer is a computer library that takes a set of rules which
+both describe a set of basic molecule types, such as proteins and
+small molecules, and defines a set of interaction channels, such as
+protein-protein, protein-small molecule, and enzymatic reactions
+(protein modifications) amongst those molecule types, and from them
+explicitly generates the network of species and reactions described by
+those rules.
 
-This can be very useful, as protein reaction networks may be
-exceptionally large, in spite of the fact that the relative number of
-protein types as well as biochemical interactions may be relatively
+The capacity to describe networks implicitly, as resulting from
+regular interactions, amongst molecules may be very adventageous, as
+such reaction neworks may be exceptionally large, in spite of a
+relative paicity that the relative number of protein types as well as biochemical interactions may be relatively
 few in number.  This is due to the combinatorial complexity that can
 occur, when proteins with multiple opportunities for binding interact
 with one another pairwise.  

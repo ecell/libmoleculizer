@@ -36,10 +36,11 @@ moleculizer::moleculizer().  An individual wishing to use generative
 reaction-networks libmoleculizer library to be used in his/her work
 then would begin by creating a moleculizer object.  
 
-\begin{1stlisting}
+\lstset{language=C++}
+\begin{lstlisting}[caption=Creating a moleculizer object, label=creatingmzrexample]
 mzr::moleculizer m; // Note that this takes place in the namespace mzr,
                     // as does all the C++ interface.
-\end{1stlisting}
+\end{lstlisting}
 
 
 \subsubsection{Configure}
@@ -75,15 +76,16 @@ reaction-rule in the model file.  If it is true, the reaction-rate is
 modified by a ''mass-correction factor'', as described in the Brent,
 Lok paper.  
 
-\begin{1stlisting}
+\lstset{language=C++}
+\begin{lstlisting}[caption=Enabling spatial reaction generation]
   mzr::moleculizer m;                          // Create a Moleculizer object.
   m.enableSpatialReactionNetworkGeneration();  // Configure it to generate spatial partameters.
-\end{1stlisting}
+\end{lstlisting}
 
-\begin{1st listing}
+\begin{lstlisting}[caption=Enabling non-spatial reaction generation]
   mzr::moleculizer m;                                   // Create a Moleculizer object.
   m.enableNonspatialReactionNetworkGeneration( true );  // Configure it to generate non-spatial parameters, using mass-based extrapolation.
-\end{1stlistings}
+\end{lstlisting}
 
 If spatial species-reaction network extrapolation is going to be used,
 please note that the 'explicit-species' elements must have an
@@ -123,20 +125,21 @@ most applications.  However, if desired, it can be checked using the
 'getGenerationDepth' function, and set using the
 'setGenerateDepth(unsigned int)' functions.  
 
-\begin{1stlisting}
+\lstset{language=C++}
+\begin{lstlisting}[caption=Setting a non-default network generation depth]
   mzr::moleculizer m; 
   m.enableNonspatialReactionNetworkGeneration( true );
   m.setGenerateDepth( 5 );
-\end{1stlisting}
+\end{lstlisting}
   
 
 
 \subsubsection{Loading}
 Once configuration parameters have been set up, a model can be
 loaded.  This can be accomplished using one of three functions:
-''attachFileName( const std::string& aFileName )'',
-''attachString( const std::string& documentAsString )'',
-or ''attachDocument( xmlpp::Document* pDoc )''.  Each of these takes a
+\lstinline@attachFileName( const std::string& aFileName )@.
+\lstinline@attachString( const std::string& documentAsString )@,
+or \lstinline@attachDocument( xmlpp::Document* pDoc )@.  Each of these takes a
 model, in one form or another, loads it, parses it, and loads it,
 preparing Moleculizer for species and reaction generation.  
 
@@ -156,7 +159,9 @@ If filePath is a string containing either an absolute or relative path
 to the file, then the function moleculizer::attachFileName can be
 called as follows.  
 
-\begin{1stlisting}
+\lstset{language=C++}
+\begin{lstlisting}[caption=Loading a MZR file into a running
+  moleculizer instance]
 // Create a new reaction-network generator.
 mzr::moleculizer m;
 
@@ -165,14 +170,14 @@ m.enableSpatialReactionNetworkGeneration(); // For instance.
 
 // Load the file into the moleculizer object.
 m.attachFileName( filePath );
-\end{1stlisting}
+\end{lstlisting}
 
 2..Model is contained in a string.
 If modelContents is a string containing a model file, then the
 function moleculizer::attachString can be used to load this model file
 as follows
 
-\being{1stlisting}
+\begin{lstlisting}[caption=Loading a MZR string into Moleculizer]
 // Create a new reaction-network generator.
 mzr::moleculizer m; 
 
@@ -181,12 +186,13 @@ m.enableNonspatialReactionNetworkGeneration( true ); // For instance.
 
 // Load the string holding the model file into the moleculizer object.
 m.attachString( modelContents );
-\end{1stlisting}
+\end{lstlisting}
 
 3.  Model has already been parsed and is contained in an
 xmlpp::Document* object called ptrModelDoc.
 
-\begin{1stlisting}
+\lstset{language=C++}
+\begin{lstlisting}[caption=Loading an XML document into moleculizer]
 // Create a new reaction-network generator.
 mzr::moleculizer m;
 
@@ -196,7 +202,7 @@ instance.
 
 // Load the Document* into moleculizer.
 m.attachDocument( ptrModelDocument );
-\end{1stlisting}
+\end{lstlisting}
 
 Any of these will load the necessary information into a model
 instance. Note however, that information can only be added into
@@ -230,7 +236,9 @@ map, information can be gained for each species, using the relevant
 'getKDForSpecies', 'getRadiusForSpecies', 'getMassForSpecies'
 functions.  
 
-\begin{1stlisting}
+\lstset{language=C++}
+\begin{lstlisting}[caption=Finding spatial properties of a species
+  using moleculizer]
 mzr::moculizer m;
 m.enableSpatialReactionNetworkGeneration();
 m.loadFile(''moleculizer-rules.xml'');
@@ -238,10 +246,12 @@ m.loadFile(''moleculizer-rules.xml'');
 std::pair<std::string, const mzr::mzrSpecies*> speciesPair =
 m.getSpeciesCatalog().first;
 
-Real speciesMass = m.getKDForSpecies( speciesPair.second );
-Real speciesRadius = m.getRadiusForSpecies( speciesPair.second );
-Real speciesKd = m.getKDForSpecies( speciesPair.second );
-\end{1stlisting}
+const mzr::mzrSpecies pSpecies = speciesPair.second;
+
+Real speciesMass = m.getKDForSpecies( pSpecies );
+Real speciesRadius = m.getRadiusForSpecies( pSpecies );
+Real speciesKd = m.getKDForSpecies( pSpecies );
+\end{lstlisting}
 
 Note that every configuration of libmoleculizer generates masses for
 newly generated species, and so ''getMassForSpecies'' works under all
@@ -250,7 +260,8 @@ only generated when spatial extrapolation mode is configured by
 calling the ''configureSpatialGenerationMode'' prior to loading the
 model.  
 
-\begin{1stlisting}
+\begin{lstlisting}[caption=Finding out information about species in
+  non-spatial mode]
 mzr::moculizer m;
 m.enableNonSpatialReactionNetworkGeneration( false );
 m.loadFile(''moleculizer-rules.xml'');
@@ -258,12 +269,14 @@ m.loadFile(''moleculizer-rules.xml'');
 std::pair<std::string, const mzr::mzrSpecies*> speciesPair =
 m.getSpeciesCatalog().first;
 
-Real speciesMass = m.getKDForSpecies( speciesPair.second ); // ok
+const mzr::mzrSpecies* pSpecies = speciesPair.second;
 
-// Throws a BadModeXcpt, because this parameter is not generated for
-// this mode.
-Real speciesRadius = m.getRadiusForSpecies( speciesPair.second ); 
-\end{1stlisting}
+Real speciesMass = m.getKDForSpecies( pSpecies ); // ok
+
+// This raises a BadModeXcpt exception, because this parameter is 
+// not generated for this mode.
+Real speciesRadius = m.getRadiusForSpecies( pSpecies ); 
+\end{lstlisting}
 
 Likewise, for determining parameters associated with the reaction,
 functions ''
@@ -301,9 +314,8 @@ section, should be used.
 2.  Find reactions with one or more substrates.
 This is accomplished using the findReactionWithSubstrates functions.
 If unary reactions are desired (what decompositions can a particular
-species undergo), use the function 'bool
-findReactionWithSubstrates(SpeciesCPtr A,
-std::vector<ReactionTypeCPtr>& reactionVector)' function.  To use
+species undergo), use the function 
+\lstinline@bool findReactionWithSubstrates(SpeciesCPtr A, std::vector<ReactionTypeCPtr>& reactionVector)@ function.  To use 
 this, a species pointer that has been gotten using either the
 findSpecies or getSpeciesWithName functions is passed, along with an
 empty vector containing ReactionTypeCPtrs.  The function places a
@@ -329,6 +341,7 @@ support reactions involving three or greater substrates at this time),
 the same idea is followed, except involving two species.  
 
 Example:
+\begin{lstlisting}
 m = mzr::moleculizer();
 m.attachFile(``Simpledemo-rules.xml'');
 std::vector<const mzr::mzrReaction*> binaryRxns;;
@@ -347,6 +360,7 @@ on the state of the generated network through several functions:
 unsigned int getTotalNumberSpecies() const, 
 unsigned int getTotalNumberReactions() const,
 bool checkSpeciesIsKnow( const std::string& speciesName) const.
+\end{lstlisting}
 
 These functions all provide information about the state of the
 generated network.  The first two tell how large it is, and the third
@@ -354,8 +368,8 @@ helps determine what is and is not in it.
 
 Finally, there are other functions for manipulating and expanding the
 reaction network.  Each species and reaction is of classtype
-fnd::reactionNetworkComponent, and had a function
-expandReactionNetwork(unsigned int).  This function will expand the
+\lstinline@fnd::reactionNetworkComponent@, and had a function
+\lstinline@expandReactionNetwork(unsigned int)@.  This function will expand the
 reaction network around that object.  For any species X, calling this
 function will create all new reactions X + Y -> Z, where Y is a species
 already present in the system such that X and Y have a reaction rule
@@ -365,20 +379,19 @@ and recorded in the system.  Finally, all species that occur on the
 right hand side of newly created reaction rules will be created and
 added to the system.  This sort of expansion can be done in two ways.
 
-1.  Calling expandReactionNetwork(unsigned int i) on a particular
+1.  Calling \lstinline@expandReactionNetwork(unsigned int i)@ on a particular
 reactionNetworkComponent.
 
-All species (mzr::mzrSpecies) and reactions (mzr::mzrReaction) are
-also of type fnd::reactionNeworkComponent, and as such, have a function
-called expandReactionNetwork(unsigned int i).  This function can only
+All species \lstinline@mzr::mzrSpecies@ and reactions \lstinline@mzr::mzrReaction@ are
+also of type \lstinline@fnd::reactionNeworkComponent@, and as such, have a function
+called \lstinline@expandReactionNetwork(unsigned int i)@.  This function can only
 be called once for any such reactionNeworkComponent (calling a second
 time has no effect), but will expand the generated reaction network
 around that component, generating new species and reactions.
 
 
 2.  Calling
-fnd::reactionNetowrkDescription::incrementNetworkBySpeciesName(const
-SpeciesID& name).  
+\lstinline@fnd::reactionNetowrkDescription::incrementNetworkBySpeciesName(const SpeciesID& name)@.  
 
 Calling this function and giving it the name of a species already
 recorded within the system has the same effect as calling

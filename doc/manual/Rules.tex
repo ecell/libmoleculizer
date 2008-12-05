@@ -1,0 +1,280 @@
+\chapter{Rules}
+A libmoleculizer input file (Moleculizer Rule File, or MZR
+file) is an xml document in a particular syntax that represents a set
+of molecule and species definitions as well as a set of reaction rule
+descriptions.
+
+This chapter discusses MZR file syntax, and describes how to express
+systems of rules describing signal transduction pathways or other
+biochemical systems in order to input it into libmoleculizer and
+generate a network with it.
+
+\section{MZR File Overview}
+A MZR file consists of a 'moleculizer-input' root tag that contains a
+single 'model' element.  The model element contains several important
+subelements, encoding the description of the network rule-based model:
+'modifications', 'mols', 'allosteric-plexes', 'allosteric-omnis',
+'reaction-gens', 'explicit-species', and 'explicit-reactions'.
+
+<!-- Overall structure of a MZR file -->
+<moleculizer-input>
+  <model>
+    <modifications />
+    <mols />
+    <allosteric-plexes />
+    <allosteric-omnis />
+    <reaction-gens />
+    <explicit-species />
+    <explicit-reactions />
+  </model>
+</moleculizer-input>
+
+\section{Modifications}
+The modifications element contains zero or more modification
+elements.  Modification elements represent the different modification
+states ( e.g. 'none', 'phosphorylated', 'ubiquitinated' ) that can
+occur at complex species modification sites the model. Modification
+values at modification sites must always correspond, and all reaction
+rules and explicit reactions must respect this contraint.  
+
+The 'modification' element itself has a mandatory name attribute, as
+well as a mandatory child element 'weight-delta' that itself has a
+mandatory 'daltons' attribute, which describes the mass that
+modification adds to the base weight of the complex in which it
+occurs.  Note that this is only important if weight-based reaction
+kinetics are used.  See the 'Using' chapter in this manual for more details.
+
+<modifications>
+  <modification name="none">
+    <weight-delta daltons="0.0" />
+  </modification>
+  <modification name="phosphorylated">
+    <weight-delta daltons="42.0" />
+  </modification>
+  <modification name="doubly-phosphorylated">
+    <weight-delta daltons="84.0" />
+  </modification>
+</modifications>
+
+\section{mols}
+
+Complexes in libmoleculizer are sets of molecules that are bound
+together between their binding sites in some configuration, with each
+modifcation site in each molecule in the complex associated with some
+modification in the 'modifications' section. Reaction rules describe
+interactions between various combinations of these molecules, and
+libmoleculizer applies these rules to each of the complexes that
+match the correct subcomplexes.  
+
+In the mols section, each of the molecule types that can occur in
+complexes within the model are specified.
+
+Libmoleculizer supports two kinds of molecules in its networks:
+structural molecules, typically representing proteins, that have some
+number of binding and modification sites, and small molecules, which
+represent small particles that participate in reactions amongst
+complex species, but do not have any structure themselves.
+
+These two kinds of molecules correspond to the two kinds of
+subelements that may go in the mols section: 'mod-mol' elements and
+'small-mol' elements.   
+
+\subsection{mod-mol}
+The mod-mol element represents a protein in the reaction netwwork.  It
+may have one or more binding sites  and one or more modification
+sites.  These mod-mols are the basic objects referred to by
+reaction-gens (a reaction rule), and can be a part of large
+multi-protein complexes.  
+
+A mod mol element has a mandatory weight subelement, zero or more
+binding-site elements and one or more mod-site elements.  
+
+The weight subelement has a mandatory 'daltons' attribute, which takes
+the default, unmodified, weight for that mod-mol.
+
+<mod-mol name="Gpa1">
+  <weight daltons="54075.9"/>
+  <!-- binding-site and mod-site elements -->
+</mod-mol>
+
+\subsubsection{binding-site}
+Mod-mols can have one or more binding sites, described by one or
+more binding-site subelements.  Each binding site represents a 
+location of iteraction where the mod-mol can complex with other proteins.
+
+Each binding site is also associated with a list of binding
+site states, called 'shapes'.  The use of binding site shapes
+semantic is a critical point to libmoleculizer.  Moleculizer makes the
+assumption that all kinetics
+
+In a MZR model,
+allosteric kinetics are specified in terms of 
+combinations of binding site shapes.   
+
+
+
+
+represents the  of possible shapes that the binding site may exist
+in due to allosteric interactions.  These shapes are then referenced
+in reaction rules in order to specificy allosteric reaction rate
+kinetics.   
+
+Each binding site element has a name attribute, that must be unique
+amongst the other binding-sites of the parent mod-mol.
+Each site must have on or more site-shape elements, representing the
+the list of binding site states which can affect binding kinetics for
+that binding site.  Also, an element 'default-shape-ref' with a
+mandatory name attribute must be present, representing the default shape
+taken by that bindinng site.  
+
+
+### Note that no information about the conditions under which the binding
+### site takes one site shape or another, other than the
+### default-site-shape, is recorded here.  That information is listed in
+### the allosteric-plexes and allosteric-omnis sections.
+
+<mod-mol name='Gpa1'>
+  <!-- Otherwise mandatory 'weight' has been omitted --> 
+  <binding-site name="to-GXP">
+    <!-- A list of the different site-shapes this binding site -->
+    <!-- can posess.  -->
+    <site-shape name="default"/>
+    <default-shape-ref name="default" />
+  </binding-site>
+  <binding-site name="to-Ste2">
+    <!-- The list of site-shapes and the default-shape-ref can be -->
+    <!-- intertwined.  -->
+    <default-shape-ref name="default" />
+    <site-shape name="default" />
+    <site-shape name="Ste4-bound" />
+  </binding-site>
+  <binding-site name="to-Ste4">
+    <default-shape-ref name="default" />
+    <site-shape name="default" />
+    <site-shape name="Ste2-GTP-bound" />
+    <site-shape name="Ste2-GDP-bound" />
+    <site-shape name="GTP-bound" />
+    <site-shape name="GDP-bound" />
+  </binding-site>
+</mod-mol>
+
+
+\subsubsection{A note on the binding-shape state constraint of
+  libmoleculizer}
+As mentioned elsewhere in this manual, one of the primary modeling
+metaphors used by libmoleculizer is to ensure each binding site has a
+site-specific shape at all times.  Binding site shapes are then the
+mechanism by which allosteric kinetics are specified in Moleculizer.
+
+For instance, suppose two mod-mols: Fus3 and Ste5 are defined in the
+mols section of the MZR rules file.  Fus3 has one binding site
+'to-Ste5' that has only one state possible: 'default'.  Ste5 has two
+binding sites, 'X' and 'to-Fus3', and 'to-Fus3' can be in either a
+'default' state or an 'occluded' state.  This information is specified
+in Fus3 and Ste5's mod-mol element definitions.
+v
+In either the allosteric-plexes or the allosteric-omnis section of the
+file, conditions under which different binding sites obtain different
+shapes can be specified.  For instance, in the previous example, a
+rule that states that when Ste5 is complexed with a mod-mol 'Ste11' at
+its 'X' site, then its 'to-Fus3' site has the shape 'occluded', this
+can be specified in the allosteric-omniss sections.  
+
+Finally, allosteric kinetics are specified in the specific
+reaction-gen (reaction rule) they apply to, and are specified relative
+to the binding site and binding site shape participating in the
+reaction.
+
+For instance if the general reaction rule is 'Ste5 binds with
+Fus3 at its 'to-Fus3' site at an on rate of k' and the allosteric
+exception is '...unless the 'to-Fus3' site has the shape 'occluded',
+in which case the reaction proceeds at a rate of 0,' the allosteric
+exception is specified in the reaction gen that defines the general
+reaction rule.
+
+\subsubsection{mod-site}
+A mod-site element represents a modification site on the mod-mol.
+That is, a site where the protein can undergo post-translational
+modifications as a part of the reaction network.  
+
+Each mod-site-element has a mandatory 'name' attribute, and a
+default-mod-ref subelement, which has a mandatory 'name' attribute
+itself, that must be identical to one of the modification elements in
+the modifications section.
+
+<modifications>
+  <modification name="none">
+    <weight-delta daltons="0.0"/>
+  </modification>
+  <modification name="phosphorylated">
+    <weight-delta daltons="42.0"/>
+  </modification>
+</modifications>
+
+<mols>
+  <mod-mol name="Gpna1">
+    <mod-site name="phosphorylation-site-1">
+      <default-mod-ref name="none"/>
+    </mod-site>
+    <mod-site name="phosphorylation-site-2">
+      <default-mod-ref name="none"/>
+    </mod-site>
+  </mod-mol>
+</mols>
+
+
+\subsubsection{allosteric-state}
+This optional section describes how one or more binding-site shapes in
+a mod-mol can change based on the states of its modification sites.
+
+\subsection{small-mol}
+A small-mol element represents a small molecule - typically an organic
+molecule that participates in pathway reactions.  ADP/ATP are perhaps
+the most common examples.
+
+The most defining semantic charecteristic of the small molecule as
+well as the small-mol, is a lack of structural information.  Small 
+molecules participate in chemical reactions in toto.  They do not have
+binding sites, nor do they have modification sites. 
+
+The definition for a small-mol element is a mandatory name attibute
+and a mandatory weight child with a mandatory daltons attribute.
+
+<mols>
+  <small-mol name="ADP">
+    <weight daltons="427.20"/>
+  </small-mol>
+  <small-mol name="ATP">
+    <weight daltons="507.181"/>
+  </small-mol>
+</mols>
+
+\section{allosteric-plex}
+
+\section{allosteric-omni}
+
+\section{reaction-gen}
+
+The reaction-gens section is where all of the rules for extrapolating
+reactions go.  In the current version of libmoleculizer, there are two
+main reaction-generators: dimerization-gen, which represents a
+protein-protein binding interaction as well its reverse decomposition
+reaction, and the omni-gen, which represents a generic reaction that
+can express unary and binary enzymatic reactions and other reaction
+forms.  
+
+\section{dimerization-gen}
+A dimerization-gen reaction generator represents a generic
+dimerization/decomposition reaction between two proteins.  
+
+
+
+\section{omni-gen}
+
+\section{explicit-species|}
+
+\section{explicit-reactions}
+
+
+
+

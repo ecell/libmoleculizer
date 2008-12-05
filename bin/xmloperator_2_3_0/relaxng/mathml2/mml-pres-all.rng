@@ -1,0 +1,16 @@
+<grammar xmlns="http://relaxng.org/ns/structure/1.0">
+
+<!-- Presentation entity: all presentation constructs -->
+
+<define name="mml.Presentation">
+ <choice>
+  <ref name="mml.ptoken"/>
+  <ref name="mml.petoken"/>
+  <ref name="mml.pscreschema"/>
+  <ref name="mml.plschema"/>
+  <ref name="mml.peschema"/>
+  <ref name="mml.pactions"/>
+ </choice>
+</define>
+
+</grammar>

@@ -1,0 +1,391 @@
+<?xml version="1.0" ?>
+<ecell-rules>
+  <parameters>
+    <parameter>
+      <name>volume</name>
+      <value>1.0</value>
+    </parameter>
+    <parameter>
+      <name>p1</name>
+      <value>0.5</value>
+    </parameter>
+    <parameter>
+      <name>ubiquitin-weight</name>
+      <value>0.5</value>
+    </parameter>
+    <parameter>
+      <name>p1</name>
+      <value>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply>
+            <times/>
+            <ci>cytosol</ci>
+            <apply>
+              <minus/>
+              <apply>
+                <times/>
+                <ci>kon</ci>
+                <ci>E</ci>
+                <ci>S</ci>
+              </apply>
+              <apply>
+                <times/>
+                <ci>koff</ci>
+                <ci>ES</ci>
+              </apply>
+            </apply>
+          </apply>
+        </math>
+      </value>
+    </parameter>
+  </parameters>
+
+  <modifications>
+    <modification>
+      <name>none</name>
+      <weight>0</weight>
+    </modification>
+    <modification>
+      <name>phosphorylated</name>
+      <weight>42</weight>
+    </modification>
+    <modification>
+      <name>ubiquitinated</name>
+      <weight><parameter-ref name="ubiquitin-weight" /></weight>
+    </modification>
+  </modifications>
+
+  <modification-groups>
+    <modification-group>
+      <name>phosphorylatable</name>
+      <default-value>none</default-value>
+      <value>phosphorylated</value>
+    </modification-group>
+    <modification-group>
+      <name>ubiquitinatable</name>
+      <default-value>none</default-value>
+      <value>ubiquitinatable</value>
+    </modification-group>
+  </modification-groups>
+
+  <mols>
+    <simple-mol>
+      <name>GTP</name>
+      <weight>...</weight>
+    </simple-mol>
+
+    <mol>
+     <name>Gpa1</name>
+     <weight>...</weight>
+     <binding-sites>
+       <binding-site>
+         <name>Ste5</name>
+       </binding-site>
+       <binding-site>
+         <name>Ste4</name>
+       </binding-site>
+     </binding-sites>
+     <modification-sites>
+       <modification-site>
+         <name>P1</name>
+         <modification-group>phosphorylatable</modification-group>
+       </modification-site>
+     </modification-sites>
+   </mol> 
+
+   <mol>
+     <name>Ste5</name>
+     <weight>...</weight>
+     <states>
+       <default-state>
+         <name>normal</name>
+       </default-state>
+       <state>
+         <name>bbb</name>
+       </state>
+     </states>
+     <binding-sites>
+       <binding-site>
+         <name>Gpa1</name>
+         <default-state>normal</default-state>
+         <state>obstructed</state>
+       </binding-site>
+       <binding-site>
+         <name>Ste4</name>
+         <default-state>normal</default-state>
+       </binding-site>
+       <binding-site>
+         <name>Ste11</name>
+         <default-state>normal</default-state>
+       </binding-site>
+       <binding-site>
+         <name>Fus3</name>
+         <default-state>normal</default-state>
+       </binding-site>
+     </binding-sites>
+     <modification-sites>
+       <modification-site>
+         <name>P1</name>
+         <modification-group>phosphorylatable</modification-group>
+       </modification-site>
+     </modification-sites>
+   </mol> 
+  </mols>
+
+  <rules>
+    <rule>
+      <name>Insane Fus3 to Gpa1 binding</name>
+      <selectors>
+        <selector>
+	  <subgraph>
+            <mol-instances>
+              <mol-instance>
+                <name>theFus3</name>
+                <mol>Fus3</mol>
+                <binding-site-instances>
+                  <binding-site-instance id="FreeToGpa1Site">
+                    <binding-site>toGpa1</binding-site>
+                    <bound>false</bound>
+                    <state>active</state>
+                  </binding-site-instance>
+
+                </binding-site-instances>
+              </mol-instance>
+            </mol-instances>
+          </subgraph>
+        </selector>
+        <selector>
+          <subgraph>
+            <mol-instances>
+              <mol-instance id="theGpa1">
+                <mol>Gpa1</mol>
+                <state>active</state>
+                <binding-site-instances>
+                  <binding-site-instance id="FreeToFus3Site">
+                    <binding-site>toFus3</binding-site>
+                    <bound>false</bound>
+                  </binding-site-instance>
+                </binding-site-instances>
+              </mol-instance>
+              <mol-instance id="theSte5">
+                <mol>Ste5</mol>
+                <state>inactive</state>
+                <binding-site-instances>
+                  <binding-site-instance id="OccludedSte11Site">
+                    <binding-site>toSte11</binding-site>
+                    <state>occluded</state>
+                  </binding-site-instance>
+                </binding-site-instances>
+                <modification-site-instances>
+                  <modification-site-instance id="PhoshorlyatedP03Site">
+                    <modification-site>P03</modification-site>
+                    <modification>Phosphorylated</modification>
+                  </modification-site-instance>
+                </modification-site-instances>
+              </mol-instance>
+              <simple-mol-instance id="Ste5BoundADP">
+                <simple-mol>ADP</simple-mol>
+              </simple-mol-instance>
+            </mol-instances>
+            <bindings>
+              <binding id="Gpa1ToSte5Bond">
+                <mol-instance>
+                  <name>theGpa1</name>
+                  <binding-site>toSte5</binding-site>
+                </mol-instance>
+                <mol-instance>
+                  <name>theSte5</name>
+                  <binding-site>toGpa1</binding-site>
+                </mol-instance>
+              </binding>
+              <simple-mol-binding id="Ste5ADPbond">
+                <mol-instance>
+                  <name>theSte5</name>
+                  <binding-site>toAXPSite</binding-site>
+                </mol-instance>
+                <simple-mol-instance>
+                  <name>theBoundADP</name>
+                </mol-instance>
+              </simple-mol-binding>
+            </bindings>
+          </subgraph>
+        </selector>
+      </selectors>
+
+      <transformation>
+        <mol-state-changes>
+          <mol-state-change>
+            <name>theGpa1</name>
+            <state>inactive</state>
+          </mol-state-change>
+          <mol-state-change>
+            <name>theSte5</name>
+            <state>active</state>
+          </mol-state-change>
+        </mol-state-changes>
+
+        <binding-site-state-changes>
+          <binding-site-state-change>
+            <name>OccludedSte11Site</name>
+            <state>active</state>
+          </binding-site-state-change>
+        </binding-site-state-changes>
+
+        <modification-changes>
+          <modification-change>
+            <name>PhoshorlyatedP03Site</name>
+            <modification>None</modification>
+          </modification-change>
+        <modification-changes>
+
+        <binding-changes>
+          <binding-created>
+            <binding-site-name>FreeToGpa1Site</binding-site-name>
+            <binding-site-name>FreeToFus3Site</binding-site-name>
+          </binding-created>
+          <binding-deleted>
+            <binding-name>Gpa1ToSte5Bond</binding-name>
+          </binding-deleted>
+        </binding-changes>
+
+        <simple-mol-exchanges>
+          <simple-mol-exchange>
+            <name>Ste5ADPbond</name>
+            <simple-mol>ATP</simple-mol>
+          </simple-mol-exchange>
+        </simple-mol-exchanges>
+      </transformation>
+
+      <mass-action reversible="false">
+        <reversible>true</reversible>
+        <default>
+          <forward-rate>10.0</forward-rate>
+        </default>
+        <allosteric-rates>
+          <forward-rate>5.0</forward-rate>
+          <selector>
+            <subgraph>
+              <mol-instances>
+                <mol-instance>
+                  <name>theFus3</name>
+                  <mol>Fus3</mol>
+                  <binding-site-instances>
+                    <binding-site-instance id="FreeToGpa1Site">
+                      <binding-site>toGpa1</binding-site>
+                      <bound>false</bound>
+                      <state>active</state>
+                    </binding-site-instance>
+                  </binding-site-instances>
+                </mol-instance>
+              </mol-instances>
+            </subgraph>
+          </selector>
+        </allosteric-rates>
+
+        <allosteric-rates>
+          <default>
+            <forward-rate>5.0</forward-rate>
+          </default>
+          <selector>
+            <subgraph>
+              <mol-instances>
+                <mol-instance>
+                  <name>theFus3</name>
+                  <mol>Fus3</mol>
+                  <binding-site-instances>
+                    <binding-site-instance id="FreeToGpa1Site">
+                      <binding-site>toGpa1</binding-site>
+                      <bound>false</bound>
+                      <state>active</state>
+                    </binding-site-instance>
+                  </binding-site-instances>
+
+                  <modification-site-instances>
+                    <modification-site-instance>
+                      <name>PhoshorlyatedP03Site</name>
+                      <modification-site>P03</modification-site>
+                      <modification>Phosphorylated</modification>
+                    </modification-site-instance>
+                  </modification-site-instances>
+                </mol-instance>
+              </mol-instances>
+            </subgraph>
+          </selector>
+        </allosteric-rates>
+      </mass-action>
+
+      <mass-action reversible="true">
+        <reversible>true</reversible>
+        <forward-rate>10.0</forward-rate>
+        <reverse-rate><parameter name="complexReactioOffRate" /></reverse-rate>
+      </mass-action>
+
+      <generic-kinetics reversible="false">
+        <forward-equation>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci>cytosol</ci>
+              <apply>
+                <minus/>
+                <apply>
+                  <times/>
+                  <ci>kon</ci>
+                  <ci>E</ci>
+                  <ci>S</ci>
+                </apply>
+                <apply>
+                  <times/>
+                  <ci>koff</ci>
+                  <ci>ES</ci>
+                </apply>
+              </apply>
+            </apply>
+          </math>
+        </forward-equation>
+
+        <reverse-equation>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci>cytosol</ci>
+              <apply>
+                <minus/>
+                <apply>
+                  <times/>
+                  <ci>kon</ci>
+                  <ci>E</ci>
+                  <ci>S</ci>
+                </apply>
+                <apply>
+                  <times/>
+                  <ci>koff</ci>
+                  <ci>ES</ci>
+                </apply>
+              </apply>
+            </apply>
+          </math>
+        </reverse-equation>
+      </generic-kinetics>
+    </rule>
+
+    <rule>
+      <selectors>
+        <selector>
+          ...
+        </selector>
+       </selectors>
+
+       <transformation>
+         <explicit-products>
+           <mol-instance>
+           </mol-instance>
+           <simple-mol>
+           </simple-mol>
+         </explicit-products>
+       </transformation>
+     </rule>
+    </rule>
+  </rules>
+</ecell-rules>
+  

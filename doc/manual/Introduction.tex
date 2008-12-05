@@ -1,0 +1,80 @@
+\chapter{Introduction}
+
+\section{Overview of Libmoleculizer}
+Libmoleculizer is a computer library that takes a set of rules that 
+describe a set of proteins and small molecules, as well as
+protein-protein interactions, protein-small molecule interaction, and
+enzymatic reactions (protein modifications) amongst those molecule
+types, and from those rules explicitly generates the network of
+species and reactions described by those rules. 
+
+This can be very useful, as protein reaction networks may be
+exceptionally large, in spite of the fact that the relative number of
+protein types as well as biochemical interactions may be relatively
+few in number.  This is due to the combinatorial complexity that can
+occur, when proteins with multiple opportunities for binding interact
+with one another pairwise.  
+
+In fact, these systems can often be so large in terms of absolute
+numbers of potential chemical species and reaction channels, that, in
+spite of the fact that number of molecule types and numbers of
+biochemical interactions are relatively small, an explicit enumeration
+of these networks is virtual impossible by human hands.  For example,
+the alpha response signal transduction pathway contains approximately
+15 types of protein, and approximately 20 biochemical interactions.
+Taking into account allosteric effects, the total number of
+interactions may be as high as 40.  In spite of the relative
+comprehensibility of the set of these proteins and interactions, the
+absolute size of the reaction network is something like 100000 species
+and 300000 reactions.  
+
+Libmoleculizer is a computer tool that manages the absolute set of
+species and reactions, by expanding the saner network of biochemical
+interactions that users provide.  Libmoleculizer is intended to be
+used as component of a larger simulator.
+
+\section{Manual Overview}
+This manual aims to provide a relatively concise introduction to the
+libmoleculizer library.  This treatment basically can be divided up
+into three aspects.  The first is understanding what Moleculizer does;
+this is treated in the chapters 'Conceptual Overview' and 'Using'.
+The second is understanding the MZR file format in which reaction
+rules are specified for libmoleculizer.  This is treated in the
+'Rules' chapter as well as the 'Mzr File Format Reference' chapters.
+Finally, the libmoleculizer API must be learned, in the 'Using',
+'Interfaces', and 'API Reference' chapters.  
+
+Finally, although libmoleculizer is a relatively standard source code
+package that should be fairly portable, installation instructions and
+some troubleshooting help is available in the 'Installing' chapter.
+
+\section{History}
+Libmoleculizer is the decendant of a prior program called Moleculizer,
+develeped by Dr. Larry Lok at the Molecular Sciences Institute to
+study the alpha mating pathway in yeast. The standard modeling
+techniques at the time all involved explicitly enumerating a set of
+chemical species and reactions. However, it was determined for the
+alpha signal transduction pathway in yeast that there were so many
+species and reactions possible, that they could never be practically
+enumerated. The typical response to this problem had previously been
+to simplify the system, combining species and reactions. However,
+this approach was non-optimal, as it required making fundamental
+assumptions about what was and was not important, prior to
+investigating system behavior. 
+
+The response was to develop a new simulator called Moleculizer that
+took in a description of the basic monomeric proteins and small
+molecules, as well as a set of rules that describing the basic
+interactions between proteins. These rules were used within a
+Gillespie simulator, which would alternate between executing Gillespie
+reaction events and using the rules in order to generate enough of the
+reaction network so that the immediately following reaction event
+would be accurate.  
+
+Realizing the versatility of this new rule-based approach, a new
+software project was begun by Nathan Addy at the Molecular Sciences
+Institute, to adapt the reaction network generating components of
+Moleculizer into a generic library, called libmoleculizer, that could
+be used within a variety of simulators and in a variety of contexts.
+
+This manual corresponds to version \currentversion of that software.

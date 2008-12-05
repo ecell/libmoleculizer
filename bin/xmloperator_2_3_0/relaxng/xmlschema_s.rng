@@ -1,0 +1,2627 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<grammar xmlns="http://relaxng.org/ns/structure/1.0"
+><start
+><ref name="schema_"
+/></start><define name="redefine"
+><element
+><name ns="http://www.w3.org/2001/XMLSchema"
+>redefine</name><group
+><choice
+><empty
+/><oneOrMore
+><attribute
+><anyName
+><except
+><choice
+><nsName ns="http://www.w3.org/2001/XMLSchema"
+/><nsName ns=""
+/><name ns="http://www.w3.org/XML/1998/namespace"
+>lang</name></choice></except></anyName><text
+/></attribute></oneOrMore></choice><choice
+><empty
+/><attribute
+><name ns=""
+>id</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="ID"
+/></attribute></choice><attribute
+><name ns=""
+>schemaLocation</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="anyURI"
+/></attribute><choice
+><empty
+/><oneOrMore
+><choice
+><ref name="annotation"
+/><choice
+><ref name="topLevelSimpleType"
+/><ref name="topLevelComplexType"
+/><ref name="namedGroup"
+/><ref name="namedAttributeGroup"
+/></choice></choice></oneOrMore></choice></group></element></define><define name="unique"
+><element
+><name ns="http://www.w3.org/2001/XMLSchema"
+>unique</name><group
+><group
+><choice
+><empty
+/><oneOrMore
+><attribute
+><anyName
+><except
+><choice
+><nsName ns="http://www.w3.org/2001/XMLSchema"
+/><nsName ns=""
+/><name ns="http://www.w3.org/XML/1998/namespace"
+>lang</name></choice></except></anyName><text
+/></attribute></oneOrMore></choice><choice
+><empty
+/><attribute
+><name ns=""
+>id</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="ID"
+/></attribute></choice><choice
+><empty
+/><ref name="annotation"
+/></choice></group><attribute
+><name ns=""
+>name</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="NCName"
+/></attribute><ref name="selector"
+/><oneOrMore
+><ref name="field"
+/></oneOrMore></group></element></define><define name="groupRef"
+><element
+><name ns="http://www.w3.org/2001/XMLSchema"
+>group</name><group
+><group
+><choice
+><empty
+/><oneOrMore
+><attribute
+><anyName
+><except
+><choice
+><nsName ns="http://www.w3.org/2001/XMLSchema"
+/><nsName ns=""
+/><name ns="http://www.w3.org/XML/1998/namespace"
+>lang</name></choice></except></anyName><text
+/></attribute></oneOrMore></choice><choice
+><empty
+/><attribute
+><name ns=""
+>id</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="ID"
+/></attribute></choice><choice
+><empty
+/><ref name="annotation"
+/></choice></group><choice
+><empty
+/><oneOrMore
+><choice
+><attribute
+><name ns=""
+>minOccurs</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="nonNegativeInteger"
+/></attribute><attribute
+><name ns=""
+>maxOccurs</name><choice
+><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="nonNegativeInteger"
+/><value datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" ns="http://www.w3.org/2001/XMLSchema" type="token"
+>unbounded</value></choice></attribute></choice></oneOrMore></choice><attribute
+><name ns=""
+>ref</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="QName"
+/></attribute></group></element></define><define name="minLength"
+><element
+><name ns="http://www.w3.org/2001/XMLSchema"
+>minLength</name><group
+><group
+><group
+><choice
+><empty
+/><oneOrMore
+><attribute
+><anyName
+><except
+><choice
+><nsName ns="http://www.w3.org/2001/XMLSchema"
+/><nsName ns=""
+/><name ns="http://www.w3.org/XML/1998/namespace"
+>lang</name></choice></except></anyName><text
+/></attribute></oneOrMore></choice><choice
+><empty
+/><attribute
+><name ns=""
+>id</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="ID"
+/></attribute></choice><choice
+><empty
+/><ref name="annotation"
+/></choice></group><choice
+><empty
+/><attribute
+><name ns=""
+>fixed</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="boolean"
+/></attribute></choice></group><attribute
+><name ns=""
+>value</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="nonNegativeInteger"
+/></attribute></group></element></define><define name="include"
+><element
+><name ns="http://www.w3.org/2001/XMLSchema"
+>include</name><group
+><group
+><choice
+><empty
+/><oneOrMore
+><attribute
+><anyName
+><except
+><choice
+><nsName ns="http://www.w3.org/2001/XMLSchema"
+/><nsName ns=""
+/><name ns="http://www.w3.org/XML/1998/namespace"
+>lang</name></choice></except></anyName><text
+/></attribute></oneOrMore></choice><choice
+><empty
+/><attribute
+><name ns=""
+>id</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="ID"
+/></attribute></choice><choice
+><empty
+/><ref name="annotation"
+/></choice></group><attribute
+><name ns=""
+>schemaLocation</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="anyURI"
+/></attribute></group></element></define><define name="maxInclusive"
+><element
+><name ns="http://www.w3.org/2001/XMLSchema"
+>maxInclusive</name><group
+><group
+><group
+><choice
+><empty
+/><oneOrMore
+><attribute
+><anyName
+><except
+><choice
+><nsName ns="http://www.w3.org/2001/XMLSchema"
+/><nsName ns=""
+/><name ns="http://www.w3.org/XML/1998/namespace"
+>lang</name></choice></except></anyName><text
+/></attribute></oneOrMore></choice><choice
+><empty
+/><attribute
+><name ns=""
+>id</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="ID"
+/></attribute></choice><choice
+><empty
+/><ref name="annotation"
+/></choice></group><choice
+><empty
+/><attribute
+><name ns=""
+>fixed</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="boolean"
+/></attribute></choice></group><attribute
+><name ns=""
+>value</name><choice
+><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="decimal"
+/><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="float"
+/><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="double"
+/><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="duration"
+/><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="dateTime"
+/><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="time"
+/><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="date"
+/><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="gYearMonth"
+/><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="gYear"
+/><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="gMonthDay"
+/><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="gMonth"
+/><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="gDay"
+/></choice></attribute></group></element></define><define name="namedAttributeGroup"
+><element
+><name ns="http://www.w3.org/2001/XMLSchema"
+>attributeGroup</name><group
+><group
+><choice
+><empty
+/><oneOrMore
+><attribute
+><anyName
+><except
+><choice
+><nsName ns="http://www.w3.org/2001/XMLSchema"
+/><nsName ns=""
+/><name ns="http://www.w3.org/XML/1998/namespace"
+>lang</name></choice></except></anyName><text
+/></attribute></oneOrMore></choice><choice
+><empty
+/><attribute
+><name ns=""
+>id</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="ID"
+/></attribute></choice><choice
+><empty
+/><ref name="annotation"
+/></choice></group><attribute
+><name ns=""
+>name</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="NCName"
+/></attribute><group
+><choice
+><empty
+/><oneOrMore
+><choice
+><ref name="localAttribute"
+/><ref name="attributeGroupRef"
+/></choice></oneOrMore></choice><choice
+><empty
+/><ref name="anyAttribute"
+/></choice></group></group></element></define><define name="simpleContent"
+><element
+><name ns="http://www.w3.org/2001/XMLSchema"
+>simpleContent</name><group
+><group
+><choice
+><empty
+/><oneOrMore
+><attribute
+><anyName
+><except
+><choice
+><nsName ns="http://www.w3.org/2001/XMLSchema"
+/><nsName ns=""
+/><name ns="http://www.w3.org/XML/1998/namespace"
+>lang</name></choice></except></anyName><text
+/></attribute></oneOrMore></choice><choice
+><empty
+/><attribute
+><name ns=""
+>id</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="ID"
+/></attribute></choice><choice
+><empty
+/><ref name="annotation"
+/></choice></group><choice
+><ref name="simpleRestriction"
+/><ref name="simpleExtension"
+/></choice></group></element></define><define name="sequence"
+><element
+><name ns="http://www.w3.org/2001/XMLSchema"
+>sequence</name><group
+><group
+><choice
+><empty
+/><oneOrMore
+><attribute
+><anyName
+><except
+><choice
+><nsName ns="http://www.w3.org/2001/XMLSchema"
+/><nsName ns=""
+/><name ns="http://www.w3.org/XML/1998/namespace"
+>lang</name></choice></except></anyName><text
+/></attribute></oneOrMore></choice><choice
+><empty
+/><attribute
+><name ns=""
+>id</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="ID"
+/></attribute></choice><choice
+><empty
+/><ref name="annotation"
+/></choice></group><choice
+><empty
+/><oneOrMore
+><choice
+><attribute
+><name ns=""
+>minOccurs</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="nonNegativeInteger"
+/></attribute><attribute
+><name ns=""
+>maxOccurs</name><choice
+><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="nonNegativeInteger"
+/><value datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" ns="http://www.w3.org/2001/XMLSchema" type="token"
+>unbounded</value></choice></attribute></choice></oneOrMore></choice><choice
+><empty
+/><oneOrMore
+><choice
+><ref name="localElement"
+/><ref name="groupRef"
+/><ref name="choice"
+/><ref name="sequence"
+/><ref name="any"
+/></choice></oneOrMore></choice></group></element></define><define name="fractionDigits"
+><element
+><name ns="http://www.w3.org/2001/XMLSchema"
+>fractionDigits</name><group
+><group
+><group
+><choice
+><empty
+/><oneOrMore
+><attribute
+><anyName
+><except
+><choice
+><nsName ns="http://www.w3.org/2001/XMLSchema"
+/><nsName ns=""
+/><name ns="http://www.w3.org/XML/1998/namespace"
+>lang</name></choice></except></anyName><text
+/></attribute></oneOrMore></choice><choice
+><empty
+/><attribute
+><name ns=""
+>id</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="ID"
+/></attribute></choice><choice
+><empty
+/><ref name="annotation"
+/></choice></group><choice
+><empty
+/><attribute
+><name ns=""
+>fixed</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="boolean"
+/></attribute></choice></group><attribute
+><name ns=""
+>value</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="nonNegativeInteger"
+/></attribute></group></element></define><define name="all"
+><element
+><name ns="http://www.w3.org/2001/XMLSchema"
+>all</name><group
+><group
+><group
+><choice
+><empty
+/><oneOrMore
+><attribute
+><anyName
+><except
+><choice
+><nsName ns="http://www.w3.org/2001/XMLSchema"
+/><nsName ns=""
+/><name ns="http://www.w3.org/XML/1998/namespace"
+>lang</name></choice></except></anyName><text
+/></attribute></oneOrMore></choice><choice
+><empty
+/><attribute
+><name ns=""
+>id</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="ID"
+/></attribute></choice><choice
+><empty
+/><ref name="annotation"
+/></choice></group><choice
+><empty
+/><oneOrMore
+><ref name="element_"
+/></oneOrMore></choice></group><choice
+><empty
+/><oneOrMore
+><choice
+><attribute
+><name ns=""
+>minOccurs</name><choice
+><value datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" ns="http://www.w3.org/2001/XMLSchema" type="nonNegativeInteger"
+>0</value><value datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" ns="http://www.w3.org/2001/XMLSchema" type="nonNegativeInteger"
+>1</value></choice></attribute><attribute
+><name ns=""
+>maxOccurs</name><value datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" ns="http://www.w3.org/2001/XMLSchema" type="nonNegativeInteger"
+>1</value></attribute></choice></oneOrMore></choice></group></element></define><define name="complexExtension"
+><element
+><name ns="http://www.w3.org/2001/XMLSchema"
+>extension</name><group
+><group
+><group
+><choice
+><empty
+/><oneOrMore
+><attribute
+><anyName
+><except
+><choice
+><nsName ns="http://www.w3.org/2001/XMLSchema"
+/><nsName ns=""
+/><name ns="http://www.w3.org/XML/1998/namespace"
+>lang</name></choice></except></anyName><text
+/></attribute></oneOrMore></choice><choice
+><empty
+/><attribute
+><name ns=""
+>id</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="ID"
+/></attribute></choice><choice
+><empty
+/><ref name="annotation"
+/></choice></group><attribute
+><name ns=""
+>base</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="QName"
+/></attribute></group><choice
+><empty
+/><choice
+><ref name="groupRef"
+/><ref name="all"
+/><ref name="choice"
+/><ref name="sequence"
+/></choice></choice><group
+><choice
+><empty
+/><oneOrMore
+><choice
+><ref name="localAttribute"
+/><ref name="attributeGroupRef"
+/></choice></oneOrMore></choice><choice
+><empty
+/><ref name="anyAttribute"
+/></choice></group></group></element></define><define name="attributeGroupRef"
+><element
+><name ns="http://www.w3.org/2001/XMLSchema"
+>attributeGroup</name><group
+><group
+><choice
+><empty
+/><oneOrMore
+><attribute
+><anyName
+><except
+><choice
+><nsName ns="http://www.w3.org/2001/XMLSchema"
+/><nsName ns=""
+/><name ns="http://www.w3.org/XML/1998/namespace"
+>lang</name></choice></except></anyName><text
+/></attribute></oneOrMore></choice><choice
+><empty
+/><attribute
+><name ns=""
+>id</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="ID"
+/></attribute></choice><choice
+><empty
+/><ref name="annotation"
+/></choice></group><attribute
+><name ns=""
+>ref</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="QName"
+/></attribute></group></element></define><define name="totalDigits"
+><element
+><name ns="http://www.w3.org/2001/XMLSchema"
+>totalDigits</name><group
+><group
+><group
+><choice
+><empty
+/><oneOrMore
+><attribute
+><anyName
+><except
+><choice
+><nsName ns="http://www.w3.org/2001/XMLSchema"
+/><nsName ns=""
+/><name ns="http://www.w3.org/XML/1998/namespace"
+>lang</name></choice></except></anyName><text
+/></attribute></oneOrMore></choice><choice
+><empty
+/><attribute
+><name ns=""
+>id</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="ID"
+/></attribute></choice><choice
+><empty
+/><ref name="annotation"
+/></choice></group><choice
+><empty
+/><attribute
+><name ns=""
+>fixed</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="boolean"
+/></attribute></choice></group><attribute
+><name ns=""
+>value</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="positiveInteger"
+/></attribute></group></element></define><define name="minExclusive"
+><element
+><name ns="http://www.w3.org/2001/XMLSchema"
+>minExclusive</name><group
+><group
+><group
+><choice
+><empty
+/><oneOrMore
+><attribute
+><anyName
+><except
+><choice
+><nsName ns="http://www.w3.org/2001/XMLSchema"
+/><nsName ns=""
+/><name ns="http://www.w3.org/XML/1998/namespace"
+>lang</name></choice></except></anyName><text
+/></attribute></oneOrMore></choice><choice
+><empty
+/><attribute
+><name ns=""
+>id</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="ID"
+/></attribute></choice><choice
+><empty
+/><ref name="annotation"
+/></choice></group><choice
+><empty
+/><attribute
+><name ns=""
+>fixed</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="boolean"
+/></attribute></choice></group><attribute
+><name ns=""
+>value</name><choice
+><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="decimal"
+/><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="float"
+/><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="double"
+/><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="duration"
+/><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="dateTime"
+/><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="time"
+/><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="date"
+/><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="gYearMonth"
+/><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="gYear"
+/><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="gMonthDay"
+/><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="gMonth"
+/><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="gDay"
+/></choice></attribute></group></element></define><define name="simpleRestriction"
+><element
+><name ns="http://www.w3.org/2001/XMLSchema"
+>restriction</name><group
+><group
+><choice
+><empty
+/><oneOrMore
+><attribute
+><anyName
+><except
+><choice
+><nsName ns="http://www.w3.org/2001/XMLSchema"
+/><nsName ns=""
+/><name ns="http://www.w3.org/XML/1998/namespace"
+>lang</name></choice></except></anyName><text
+/></attribute></oneOrMore></choice><choice
+><empty
+/><attribute
+><name ns=""
+>id</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="ID"
+/></attribute></choice><choice
+><empty
+/><ref name="annotation"
+/></choice></group><choice
+><group
+><attribute
+><name ns=""
+>base</name><value datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" ns="http://www.w3.org/2001/XMLSchema" type="QName"
+>xs:anySimpleType</value></attribute><interleave
+><interleave
+><choice
+><empty
+/><choice
+><ref name="minExclusive"
+/><ref name="minInclusive"
+/></choice></choice><choice
+><empty
+/><choice
+><ref name="maxExclusive"
+/><ref name="maxInclusive"
+/></choice></choice></interleave><group
+><choice
+><empty
+/><ref name="totalDigits"
+/></choice><choice
+><empty
+/><ref name="fractionDigits"
+/></choice></group><choice
+><ref name="length"
+/><interleave
+><choice
+><empty
+/><ref name="minLength"
+/></choice><choice
+><empty
+/><ref name="maxLength"
+/></choice></interleave></choice><choice
+><empty
+/><ref name="whiteSpace"
+/></choice><choice
+><empty
+/><oneOrMore
+><ref name="enumeration"
+/></oneOrMore></choice><choice
+><empty
+/><oneOrMore
+><ref name="pattern"
+/></oneOrMore></choice></interleave></group><group
+><attribute
+><name ns=""
+>base</name><value datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" ns="http://www.w3.org/2001/XMLSchema" type="QName"
+>xs:string</value></attribute><interleave
+><choice
+><ref name="length"
+/><interleave
+><choice
+><empty
+/><ref name="minLength"
+/></choice><choice
+><empty
+/><ref name="maxLength"
+/></choice></interleave></choice><choice
+><empty
+/><ref name="whiteSpace"
+/></choice><choice
+><empty
+/><oneOrMore
+><ref name="enumeration"
+/></oneOrMore></choice><choice
+><empty
+/><oneOrMore
+><ref name="pattern"
+/></oneOrMore></choice></interleave></group><group
+><attribute
+><name ns=""
+>base</name><value datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" ns="http://www.w3.org/2001/XMLSchema" type="QName"
+>xs:normalizedString</value></attribute><interleave
+><choice
+><ref name="length"
+/><interleave
+><choice
+><empty
+/><ref name="minLength"
+/></choice><choice
+><empty
+/><ref name="maxLength"
+/></choice></interleave></choice><choice
+><empty
+/><ref name="whiteSpaceReplaceOrCollapse"
+/></choice><choice
+><empty
+/><oneOrMore
+><ref name="enumeration"
+/></oneOrMore></choice><choice
+><empty
+/><oneOrMore
+><ref name="pattern"
+/></oneOrMore></choice></interleave></group><group
+><attribute
+><name ns=""
+>base</name><choice
+><value datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" ns="http://www.w3.org/2001/XMLSchema" type="QName"
+>xs:token</value><value datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" ns="http://www.w3.org/2001/XMLSchema" type="QName"
+>xs:language</value><value datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" ns="http://www.w3.org/2001/XMLSchema" type="QName"
+>xs:Name</value><value datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" ns="http://www.w3.org/2001/XMLSchema" type="QName"
+>xs:NCName</value><value datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" ns="http://www.w3.org/2001/XMLSchema" type="QName"
+>xs:ID</value><value datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" ns="http://www.w3.org/2001/XMLSchema" type="QName"
+>xs:IDREF</value><value datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" ns="http://www.w3.org/2001/XMLSchema" type="QName"
+>xs:IDREFS</value><value datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" ns="http://www.w3.org/2001/XMLSchema" type="QName"
+>xs:NMTOKEN</value><value datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" ns="http://www.w3.org/2001/XMLSchema" type="QName"
+>xs:NMTOKENS</value><value datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" ns="http://www.w3.org/2001/XMLSchema" type="QName"
+>xs:ENTITY</value><value datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" ns="http://www.w3.org/2001/XMLSchema" type="QName"
+>xs:ENTITIES</value><value datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" ns="http://www.w3.org/2001/XMLSchema" type="QName"
+>xs:hexBinary</value><value datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" ns="http://www.w3.org/2001/XMLSchema" type="QName"
+>xs:base64Binary</value><value datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" ns="http://www.w3.org/2001/XMLSchema" type="QName"
+>xs:anyURI</value><value datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" ns="http://www.w3.org/2001/XMLSchema" type="QName"
+>xs:QName</value><value datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" ns="http://www.w3.org/2001/XMLSchema" type="QName"
+>xs:NOTATION</value></choice></attribute><interleave
+><choice
+><ref name="length"
+/><interleave
+><choice
+><empty
+/><ref name="minLength"
+/></choice><choice
+><empty
+/><ref name="maxLength"
+/></choice></interleave></choice><group
+><choice
+><empty
+/><oneOrMore
+><ref name="enumeration"
+/></oneOrMore></choice><choice
+><empty
+/><ref name="whiteSpaceCollapse"
+/></choice><choice
+><empty
+/><oneOrMore
+><ref name="pattern"
+/></oneOrMore></choice></group></interleave></group><group
+><attribute
+><name ns=""
+>base</name><value datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" ns="http://www.w3.org/2001/XMLSchema" type="QName"
+>xs:boolean</value></attribute><interleave
+><choice
+><empty
+/><ref name="whiteSpaceCollapse"
+/></choice><choice
+><empty
+/><oneOrMore
+><ref name="pattern"
+/></oneOrMore></choice></interleave></group><group
+><attribute
+><name ns=""
+>base</name><choice
+><value datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" ns="http://www.w3.org/2001/XMLSchema" type="QName"
+>xs:decimal</value><value datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" ns="http://www.w3.org/2001/XMLSchema" type="QName"
+>xs:integer</value><value datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" ns="http://www.w3.org/2001/XMLSchema" type="QName"
+>xs:nonPositiveInteger</value><value datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" ns="http://www.w3.org/2001/XMLSchema" type="QName"
+>xs:nonNegativeInteger</value><value datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" ns="http://www.w3.org/2001/XMLSchema" type="QName"
+>xs:positiveInteger</value><value datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" ns="http://www.w3.org/2001/XMLSchema" type="QName"
+>xs:negativeInteger</value><value datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" ns="http://www.w3.org/2001/XMLSchema" type="QName"
+>xs:unsignedLong</value><value datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" ns="http://www.w3.org/2001/XMLSchema" type="QName"
+>xs:unsignedInt</value><value datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" ns="http://www.w3.org/2001/XMLSchema" type="QName"
+>xs:unsignedShort</value><value datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" ns="http://www.w3.org/2001/XMLSchema" type="QName"
+>xs:unsignedByte</value><value datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" ns="http://www.w3.org/2001/XMLSchema" type="QName"
+>xs:long</value><value datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" ns="http://www.w3.org/2001/XMLSchema" type="QName"
+>xs:int</value><value datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" ns="http://www.w3.org/2001/XMLSchema" type="QName"
+>xs:short</value><value datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" ns="http://www.w3.org/2001/XMLSchema" type="QName"
+>xs:byte</value></choice></attribute><interleave
+><group
+><choice
+><empty
+/><ref name="totalDigits"
+/></choice><choice
+><empty
+/><ref name="fractionDigits"
+/></choice></group><interleave
+><choice
+><empty
+/><choice
+><ref name="minExclusive"
+/><ref name="minInclusive"
+/></choice></choice><choice
+><empty
+/><choice
+><ref name="maxExclusive"
+/><ref name="maxInclusive"
+/></choice></choice></interleave><group
+><choice
+><empty
+/><oneOrMore
+><ref name="enumeration"
+/></oneOrMore></choice><choice
+><empty
+/><ref name="whiteSpaceCollapse"
+/></choice><choice
+><empty
+/><oneOrMore
+><ref name="pattern"
+/></oneOrMore></choice></group></interleave></group><group
+><attribute
+><name ns=""
+>base</name><choice
+><value datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" ns="http://www.w3.org/2001/XMLSchema" type="QName"
+>xs:float</value><value datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" ns="http://www.w3.org/2001/XMLSchema" type="QName"
+>xs:double</value><value datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" ns="http://www.w3.org/2001/XMLSchema" type="QName"
+>xs:duration</value><value datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" ns="http://www.w3.org/2001/XMLSchema" type="QName"
+>xs:dateTime</value><value datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" ns="http://www.w3.org/2001/XMLSchema" type="QName"
+>xs:time</value><value datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" ns="http://www.w3.org/2001/XMLSchema" type="QName"
+>xs:date</value><value datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" ns="http://www.w3.org/2001/XMLSchema" type="QName"
+>xs:gYearMonth</value><value datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" ns="http://www.w3.org/2001/XMLSchema" type="QName"
+>xs:gYear</value><value datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" ns="http://www.w3.org/2001/XMLSchema" type="QName"
+>xs:gMonthDay</value><value datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" ns="http://www.w3.org/2001/XMLSchema" type="QName"
+>xs:gMonth</value><value datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" ns="http://www.w3.org/2001/XMLSchema" type="QName"
+>xs:gDay</value></choice></attribute><interleave
+><interleave
+><choice
+><empty
+/><choice
+><ref name="minExclusive"
+/><ref name="minInclusive"
+/></choice></choice><choice
+><empty
+/><choice
+><ref name="maxExclusive"
+/><ref name="maxInclusive"
+/></choice></choice></interleave><group
+><choice
+><empty
+/><oneOrMore
+><ref name="enumeration"
+/></oneOrMore></choice><choice
+><empty
+/><ref name="whiteSpaceCollapse"
+/></choice><choice
+><empty
+/><oneOrMore
+><ref name="pattern"
+/></oneOrMore></choice></group></interleave></group><group
+><choice
+><attribute
+><name ns=""
+>base</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="QName"
+/></attribute><ref name="localSimpleType"
+/></choice><interleave
+><interleave
+><choice
+><empty
+/><choice
+><ref name="minExclusive"
+/><ref name="minInclusive"
+/></choice></choice><choice
+><empty
+/><choice
+><ref name="maxExclusive"
+/><ref name="maxInclusive"
+/></choice></choice></interleave><group
+><choice
+><empty
+/><ref name="totalDigits"
+/></choice><choice
+><empty
+/><ref name="fractionDigits"
+/></choice></group><choice
+><ref name="length"
+/><interleave
+><choice
+><empty
+/><ref name="minLength"
+/></choice><choice
+><empty
+/><ref name="maxLength"
+/></choice></interleave></choice><choice
+><empty
+/><ref name="whiteSpace"
+/></choice><choice
+><empty
+/><oneOrMore
+><ref name="enumeration"
+/></oneOrMore></choice><choice
+><empty
+/><oneOrMore
+><ref name="pattern"
+/></oneOrMore></choice></interleave></group></choice><group
+><choice
+><empty
+/><oneOrMore
+><choice
+><ref name="localAttribute"
+/><ref name="attributeGroupRef"
+/></choice></oneOrMore></choice><choice
+><empty
+/><ref name="anyAttribute"
+/></choice></group></group></element></define><define name="topLevelSimpleType"
+><element
+><name ns="http://www.w3.org/2001/XMLSchema"
+>simpleType</name><group
+><group
+><group
+><choice
+><empty
+/><oneOrMore
+><attribute
+><anyName
+><except
+><choice
+><nsName ns="http://www.w3.org/2001/XMLSchema"
+/><nsName ns=""
+/><name ns="http://www.w3.org/XML/1998/namespace"
+>lang</name></choice></except></anyName><text
+/></attribute></oneOrMore></choice><choice
+><empty
+/><attribute
+><name ns=""
+>id</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="ID"
+/></attribute></choice><choice
+><empty
+/><ref name="annotation"
+/></choice></group><choice
+><ref name="simpleRestriction"
+/><ref name="list"
+/><ref name="union"
+/></choice></group><attribute
+><name ns=""
+>name</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="NCName"
+/></attribute><choice
+><empty
+/><attribute
+><name ns=""
+>final</name><choice
+><value datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" ns="http://www.w3.org/2001/XMLSchema" type="token"
+>#all</value><list
+><choice
+><empty
+/><oneOrMore
+><choice
+><value datatypeLibrary="" ns="http://www.w3.org/2001/XMLSchema" type="token"
+>list</value><value datatypeLibrary="" ns="http://www.w3.org/2001/XMLSchema" type="token"
+>union</value><value datatypeLibrary="" ns="http://www.w3.org/2001/XMLSchema" type="token"
+>restriction</value></choice></oneOrMore></choice></list></choice></attribute></choice></group></element></define><define name="localSimpleType"
+><element
+><name ns="http://www.w3.org/2001/XMLSchema"
+>simpleType</name><group
+><group
+><choice
+><empty
+/><oneOrMore
+><attribute
+><anyName
+><except
+><choice
+><nsName ns="http://www.w3.org/2001/XMLSchema"
+/><nsName ns=""
+/><name ns="http://www.w3.org/XML/1998/namespace"
+>lang</name></choice></except></anyName><text
+/></attribute></oneOrMore></choice><choice
+><empty
+/><attribute
+><name ns=""
+>id</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="ID"
+/></attribute></choice><choice
+><empty
+/><ref name="annotation"
+/></choice></group><choice
+><ref name="simpleRestriction"
+/><ref name="list"
+/><ref name="union"
+/></choice></group></element></define><define name="appinfo"
+><element
+><name ns="http://www.w3.org/2001/XMLSchema"
+>appinfo</name><group
+><choice
+><empty
+/><attribute
+><name ns=""
+>source</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="anyURI"
+/></attribute></choice><interleave
+><choice
+><empty
+/><oneOrMore
+><ref name="_"
+/></oneOrMore></choice><text
+/></interleave></group></element></define><define name="topLevelComplexType"
+><element
+><name ns="http://www.w3.org/2001/XMLSchema"
+>complexType</name><group
+><group
+><group
+><choice
+><empty
+/><oneOrMore
+><attribute
+><anyName
+><except
+><choice
+><nsName ns="http://www.w3.org/2001/XMLSchema"
+/><nsName ns=""
+/><name ns="http://www.w3.org/XML/1998/namespace"
+>lang</name></choice></except></anyName><text
+/></attribute></oneOrMore></choice><choice
+><empty
+/><attribute
+><name ns=""
+>id</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="ID"
+/></attribute></choice><choice
+><empty
+/><ref name="annotation"
+/></choice></group><choice
+><ref name="simpleContent"
+/><group
+><choice
+><empty
+/><attribute
+><name ns=""
+>mixed</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="boolean"
+/></attribute></choice><choice
+><ref name="complexContent"
+/><group
+><choice
+><empty
+/><choice
+><ref name="groupRef"
+/><ref name="all"
+/><ref name="choice"
+/><ref name="sequence"
+/></choice></choice><group
+><choice
+><empty
+/><oneOrMore
+><choice
+><ref name="localAttribute"
+/><ref name="attributeGroupRef"
+/></choice></oneOrMore></choice><choice
+><empty
+/><ref name="anyAttribute"
+/></choice></group></group></choice></group></choice></group><attribute
+><name ns=""
+>name</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="NCName"
+/></attribute><choice
+><empty
+/><oneOrMore
+><choice
+><attribute
+><name ns=""
+>abstract</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="boolean"
+/></attribute><attribute
+><name ns=""
+>block</name><choice
+><value datatypeLibrary="" ns="http://www.w3.org/2001/XMLSchema" type="token"
+>#all</value><list
+><choice
+><empty
+/><oneOrMore
+><choice
+><value datatypeLibrary="" ns="http://www.w3.org/2001/XMLSchema" type="token"
+>extension</value><value datatypeLibrary="" ns="http://www.w3.org/2001/XMLSchema" type="token"
+>restriction</value></choice></oneOrMore></choice></list></choice></attribute><attribute
+><name ns=""
+>final</name><choice
+><value datatypeLibrary="" ns="http://www.w3.org/2001/XMLSchema" type="token"
+>#all</value><list
+><choice
+><empty
+/><oneOrMore
+><choice
+><value datatypeLibrary="" ns="http://www.w3.org/2001/XMLSchema" type="token"
+>extension</value><value datatypeLibrary="" ns="http://www.w3.org/2001/XMLSchema" type="token"
+>restriction</value></choice></oneOrMore></choice></list></choice></attribute></choice></oneOrMore></choice></group></element></define><define name="topLevelElement"
+><element
+><name ns="http://www.w3.org/2001/XMLSchema"
+>element</name><group
+><group
+><group
+><choice
+><empty
+/><oneOrMore
+><attribute
+><anyName
+><except
+><choice
+><nsName ns="http://www.w3.org/2001/XMLSchema"
+/><nsName ns=""
+/><name ns="http://www.w3.org/XML/1998/namespace"
+>lang</name></choice></except></anyName><text
+/></attribute></oneOrMore></choice><choice
+><empty
+/><attribute
+><name ns=""
+>id</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="ID"
+/></attribute></choice><choice
+><empty
+/><ref name="annotation"
+/></choice></group><choice
+><empty
+/><attribute
+><name ns=""
+>fixed</name><text
+/></attribute><attribute
+><name ns=""
+>default</name><text
+/></attribute></choice><choice
+><empty
+/><oneOrMore
+><choice
+><attribute
+><name ns=""
+>nillable</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="boolean"
+/></attribute><attribute
+><name ns=""
+>block</name><choice
+><value datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" ns="http://www.w3.org/2001/XMLSchema" type="token"
+>#all</value><list
+><choice
+><empty
+/><oneOrMore
+><choice
+><value datatypeLibrary="" ns="http://www.w3.org/2001/XMLSchema" type="token"
+>extension</value><value datatypeLibrary="" ns="http://www.w3.org/2001/XMLSchema" type="token"
+>restriction</value><value datatypeLibrary="" ns="http://www.w3.org/2001/XMLSchema" type="token"
+>substitution</value></choice></oneOrMore></choice></list></choice></attribute></choice></oneOrMore></choice><choice
+><empty
+/><attribute
+><name ns=""
+>type</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="QName"
+/></attribute><ref name="localSimpleType"
+/><ref name="localComplexType"
+/></choice><choice
+><empty
+/><oneOrMore
+><choice
+><ref name="unique"
+/><ref name="key"
+/><ref name="keyref"
+/></choice></oneOrMore></choice></group><attribute
+><name ns=""
+>name</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="NCName"
+/></attribute><choice
+><empty
+/><oneOrMore
+><choice
+><attribute
+><name ns=""
+>substitutionGroup</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="QName"
+/></attribute><attribute
+><name ns=""
+>abstract</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="boolean"
+/></attribute><attribute
+><name ns=""
+>final</name><choice
+><value datatypeLibrary="" ns="http://www.w3.org/2001/XMLSchema" type="token"
+>#all</value><list
+><choice
+><empty
+/><oneOrMore
+><choice
+><value datatypeLibrary="" ns="http://www.w3.org/2001/XMLSchema" type="token"
+>extension</value><value datatypeLibrary="" ns="http://www.w3.org/2001/XMLSchema" type="token"
+>restriction</value></choice></oneOrMore></choice></list></choice></attribute></choice></oneOrMore></choice></group></element></define><define name="pattern"
+><element
+><name ns="http://www.w3.org/2001/XMLSchema"
+>pattern</name><group
+><group
+><choice
+><empty
+/><oneOrMore
+><attribute
+><anyName
+><except
+><choice
+><nsName ns="http://www.w3.org/2001/XMLSchema"
+/><nsName ns=""
+/><name ns="http://www.w3.org/XML/1998/namespace"
+>lang</name></choice></except></anyName><text
+/></attribute></oneOrMore></choice><choice
+><empty
+/><attribute
+><name ns=""
+>id</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="ID"
+/></attribute></choice><choice
+><empty
+/><ref name="annotation"
+/></choice></group><attribute
+><name ns=""
+>value</name><text
+/></attribute></group></element></define><define name="keyref"
+><element
+><name ns="http://www.w3.org/2001/XMLSchema"
+>keyref</name><group
+><group
+><group
+><choice
+><empty
+/><oneOrMore
+><attribute
+><anyName
+><except
+><choice
+><nsName ns="http://www.w3.org/2001/XMLSchema"
+/><nsName ns=""
+/><name ns="http://www.w3.org/XML/1998/namespace"
+>lang</name></choice></except></anyName><text
+/></attribute></oneOrMore></choice><choice
+><empty
+/><attribute
+><name ns=""
+>id</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="ID"
+/></attribute></choice><choice
+><empty
+/><ref name="annotation"
+/></choice></group><attribute
+><name ns=""
+>name</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="NCName"
+/></attribute><ref name="selector"
+/><oneOrMore
+><ref name="field"
+/></oneOrMore></group><attribute
+><name ns=""
+>refer</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="QName"
+/></attribute></group></element></define><define name="namedGroup"
+><element
+><name ns="http://www.w3.org/2001/XMLSchema"
+>group</name><group
+><group
+><choice
+><empty
+/><oneOrMore
+><attribute
+><anyName
+><except
+><choice
+><nsName ns="http://www.w3.org/2001/XMLSchema"
+/><nsName ns=""
+/><name ns="http://www.w3.org/XML/1998/namespace"
+>lang</name></choice></except></anyName><text
+/></attribute></oneOrMore></choice><choice
+><empty
+/><attribute
+><name ns=""
+>id</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="ID"
+/></attribute></choice><choice
+><empty
+/><ref name="annotation"
+/></choice></group><attribute
+><name ns=""
+>name</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="NCName"
+/></attribute><choice
+><ref name="all_"
+/><ref name="choice_"
+/><ref name="sequence_"
+/></choice></group></element></define><define name="complexContent"
+><element
+><name ns="http://www.w3.org/2001/XMLSchema"
+>complexContent</name><group
+><group
+><choice
+><empty
+/><oneOrMore
+><attribute
+><anyName
+><except
+><choice
+><nsName ns="http://www.w3.org/2001/XMLSchema"
+/><nsName ns=""
+/><name ns="http://www.w3.org/XML/1998/namespace"
+>lang</name></choice></except></anyName><text
+/></attribute></oneOrMore></choice><choice
+><empty
+/><attribute
+><name ns=""
+>id</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="ID"
+/></attribute></choice><choice
+><empty
+/><ref name="annotation"
+/></choice></group><choice
+><empty
+/><attribute
+><name ns=""
+>mixed</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="boolean"
+/></attribute></choice><choice
+><ref name="complexRestriction"
+/><ref name="complexExtension"
+/></choice></group></element></define><define name="any"
+><element
+><name ns="http://www.w3.org/2001/XMLSchema"
+>any</name><group
+><group
+><group
+><choice
+><empty
+/><oneOrMore
+><attribute
+><anyName
+><except
+><choice
+><nsName ns="http://www.w3.org/2001/XMLSchema"
+/><nsName ns=""
+/><name ns="http://www.w3.org/XML/1998/namespace"
+>lang</name></choice></except></anyName><text
+/></attribute></oneOrMore></choice><choice
+><empty
+/><attribute
+><name ns=""
+>id</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="ID"
+/></attribute></choice><choice
+><empty
+/><ref name="annotation"
+/></choice></group><choice
+><empty
+/><oneOrMore
+><choice
+><attribute
+><name ns=""
+>namespace</name><choice
+><value datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" ns="http://www.w3.org/2001/XMLSchema" type="token"
+>##any</value><value datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" ns="http://www.w3.org/2001/XMLSchema" type="token"
+>##other</value><list
+><choice
+><empty
+/><oneOrMore
+><choice
+><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="anyURI"
+/><value datatypeLibrary="" ns="http://www.w3.org/2001/XMLSchema" type="token"
+>##targetNamespace</value><value datatypeLibrary="" ns="http://www.w3.org/2001/XMLSchema" type="token"
+>##local</value></choice></oneOrMore></choice></list></choice></attribute><attribute
+><name ns=""
+>processContents</name><choice
+><value datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" ns="http://www.w3.org/2001/XMLSchema" type="token"
+>lax</value><value datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" ns="http://www.w3.org/2001/XMLSchema" type="token"
+>skip</value><value datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" ns="http://www.w3.org/2001/XMLSchema" type="token"
+>strict</value></choice></attribute></choice></oneOrMore></choice></group><choice
+><empty
+/><oneOrMore
+><choice
+><attribute
+><name ns=""
+>minOccurs</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="nonNegativeInteger"
+/></attribute><attribute
+><name ns=""
+>maxOccurs</name><choice
+><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="nonNegativeInteger"
+/><value datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" ns="http://www.w3.org/2001/XMLSchema" type="token"
+>unbounded</value></choice></attribute></choice></oneOrMore></choice></group></element></define><define name="importRequiredNamespace"
+><element
+><name ns="http://www.w3.org/2001/XMLSchema"
+>import</name><group
+><group
+><group
+><choice
+><empty
+/><oneOrMore
+><attribute
+><anyName
+><except
+><choice
+><nsName ns="http://www.w3.org/2001/XMLSchema"
+/><nsName ns=""
+/><name ns="http://www.w3.org/XML/1998/namespace"
+>lang</name></choice></except></anyName><text
+/></attribute></oneOrMore></choice><choice
+><empty
+/><attribute
+><name ns=""
+>id</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="ID"
+/></attribute></choice><choice
+><empty
+/><ref name="annotation"
+/></choice></group><choice
+><empty
+/><attribute
+><name ns=""
+>schemaLocation</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="anyURI"
+/></attribute></choice></group><attribute
+><name ns=""
+>namespace</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="anyURI"
+/></attribute></group></element></define><define name="choice"
+><element
+><name ns="http://www.w3.org/2001/XMLSchema"
+>choice</name><group
+><group
+><choice
+><empty
+/><oneOrMore
+><attribute
+><anyName
+><except
+><choice
+><nsName ns="http://www.w3.org/2001/XMLSchema"
+/><nsName ns=""
+/><name ns="http://www.w3.org/XML/1998/namespace"
+>lang</name></choice></except></anyName><text
+/></attribute></oneOrMore></choice><choice
+><empty
+/><attribute
+><name ns=""
+>id</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="ID"
+/></attribute></choice><choice
+><empty
+/><ref name="annotation"
+/></choice></group><choice
+><empty
+/><oneOrMore
+><choice
+><attribute
+><name ns=""
+>minOccurs</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="nonNegativeInteger"
+/></attribute><attribute
+><name ns=""
+>maxOccurs</name><choice
+><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="nonNegativeInteger"
+/><value datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" ns="http://www.w3.org/2001/XMLSchema" type="token"
+>unbounded</value></choice></attribute></choice></oneOrMore></choice><choice
+><empty
+/><oneOrMore
+><choice
+><ref name="localElement"
+/><ref name="groupRef"
+/><ref name="choice"
+/><ref name="sequence"
+/><ref name="any"
+/></choice></oneOrMore></choice></group></element></define><define name="enumeration"
+><element
+><name ns="http://www.w3.org/2001/XMLSchema"
+>enumeration</name><group
+><group
+><choice
+><empty
+/><oneOrMore
+><attribute
+><anyName
+><except
+><choice
+><nsName ns="http://www.w3.org/2001/XMLSchema"
+/><nsName ns=""
+/><name ns="http://www.w3.org/XML/1998/namespace"
+>lang</name></choice></except></anyName><text
+/></attribute></oneOrMore></choice><choice
+><empty
+/><attribute
+><name ns=""
+>id</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="ID"
+/></attribute></choice><choice
+><empty
+/><ref name="annotation"
+/></choice></group><attribute
+><name ns=""
+>value</name><text
+/></attribute></group></element></define><define name="simpleExtension"
+><element
+><name ns="http://www.w3.org/2001/XMLSchema"
+>extension</name><group
+><group
+><group
+><choice
+><empty
+/><oneOrMore
+><attribute
+><anyName
+><except
+><choice
+><nsName ns="http://www.w3.org/2001/XMLSchema"
+/><nsName ns=""
+/><name ns="http://www.w3.org/XML/1998/namespace"
+>lang</name></choice></except></anyName><text
+/></attribute></oneOrMore></choice><choice
+><empty
+/><attribute
+><name ns=""
+>id</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="ID"
+/></attribute></choice><choice
+><empty
+/><ref name="annotation"
+/></choice></group><attribute
+><name ns=""
+>base</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="QName"
+/></attribute></group><group
+><choice
+><empty
+/><oneOrMore
+><choice
+><ref name="localAttribute"
+/><ref name="attributeGroupRef"
+/></choice></oneOrMore></choice><choice
+><empty
+/><ref name="anyAttribute"
+/></choice></group></group></element></define><define name="annotation"
+><element
+><name ns="http://www.w3.org/2001/XMLSchema"
+>annotation</name><group
+><choice
+><empty
+/><oneOrMore
+><attribute
+><anyName
+><except
+><choice
+><nsName ns="http://www.w3.org/2001/XMLSchema"
+/><nsName ns=""
+/><name ns="http://www.w3.org/XML/1998/namespace"
+>lang</name></choice></except></anyName><text
+/></attribute></oneOrMore></choice><choice
+><empty
+/><attribute
+><name ns=""
+>id</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="ID"
+/></attribute></choice><choice
+><empty
+/><oneOrMore
+><choice
+><ref name="documentation"
+/><ref name="appinfo"
+/></choice></oneOrMore></choice></group></element></define><define name="notation"
+><element
+><name ns="http://www.w3.org/2001/XMLSchema"
+>notation</name><group
+><group
+><choice
+><empty
+/><oneOrMore
+><attribute
+><anyName
+><except
+><choice
+><nsName ns="http://www.w3.org/2001/XMLSchema"
+/><nsName ns=""
+/><name ns="http://www.w3.org/XML/1998/namespace"
+>lang</name></choice></except></anyName><text
+/></attribute></oneOrMore></choice><choice
+><empty
+/><attribute
+><name ns=""
+>id</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="ID"
+/></attribute></choice><choice
+><empty
+/><ref name="annotation"
+/></choice></group><attribute
+><name ns=""
+>name</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="NCName"
+/></attribute><attribute
+><name ns=""
+>public</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="token"
+/></attribute><choice
+><empty
+/><attribute
+><name ns=""
+>system</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="anyURI"
+/></attribute></choice></group></element></define><define name="topLevelAttribute"
+><element
+><name ns="http://www.w3.org/2001/XMLSchema"
+>attribute</name><group
+><group
+><choice
+><empty
+/><oneOrMore
+><attribute
+><anyName
+><except
+><choice
+><nsName ns="http://www.w3.org/2001/XMLSchema"
+/><nsName ns=""
+/><name ns="http://www.w3.org/XML/1998/namespace"
+>lang</name></choice></except></anyName><text
+/></attribute></oneOrMore></choice><choice
+><empty
+/><attribute
+><name ns=""
+>id</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="ID"
+/></attribute></choice><choice
+><empty
+/><ref name="annotation"
+/></choice></group><attribute
+><name ns=""
+>name</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="NCName"
+/></attribute><choice
+><empty
+/><attribute
+><name ns=""
+>fixed</name><text
+/></attribute><attribute
+><name ns=""
+>default</name><text
+/></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>type</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="QName"
+/></attribute><ref name="localSimpleType"
+/></choice></group></element></define><define name="anyAttribute"
+><element
+><name ns="http://www.w3.org/2001/XMLSchema"
+>anyAttribute</name><group
+><group
+><choice
+><empty
+/><oneOrMore
+><attribute
+><anyName
+><except
+><choice
+><nsName ns="http://www.w3.org/2001/XMLSchema"
+/><nsName ns=""
+/><name ns="http://www.w3.org/XML/1998/namespace"
+>lang</name></choice></except></anyName><text
+/></attribute></oneOrMore></choice><choice
+><empty
+/><attribute
+><name ns=""
+>id</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="ID"
+/></attribute></choice><choice
+><empty
+/><ref name="annotation"
+/></choice></group><choice
+><empty
+/><oneOrMore
+><choice
+><attribute
+><name ns=""
+>namespace</name><choice
+><value datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" ns="http://www.w3.org/2001/XMLSchema" type="token"
+>##any</value><value datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" ns="http://www.w3.org/2001/XMLSchema" type="token"
+>##other</value><list
+><choice
+><empty
+/><oneOrMore
+><choice
+><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="anyURI"
+/><value datatypeLibrary="" ns="http://www.w3.org/2001/XMLSchema" type="token"
+>##targetNamespace</value><value datatypeLibrary="" ns="http://www.w3.org/2001/XMLSchema" type="token"
+>##local</value></choice></oneOrMore></choice></list></choice></attribute><attribute
+><name ns=""
+>processContents</name><choice
+><value datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" ns="http://www.w3.org/2001/XMLSchema" type="token"
+>lax</value><value datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" ns="http://www.w3.org/2001/XMLSchema" type="token"
+>skip</value><value datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" ns="http://www.w3.org/2001/XMLSchema" type="token"
+>strict</value></choice></attribute></choice></oneOrMore></choice></group></element></define><define name="whiteSpaceCollapse"
+><element
+><name ns="http://www.w3.org/2001/XMLSchema"
+>whiteSpace</name><group
+><group
+><group
+><choice
+><empty
+/><oneOrMore
+><attribute
+><anyName
+><except
+><choice
+><nsName ns="http://www.w3.org/2001/XMLSchema"
+/><nsName ns=""
+/><name ns="http://www.w3.org/XML/1998/namespace"
+>lang</name></choice></except></anyName><text
+/></attribute></oneOrMore></choice><choice
+><empty
+/><attribute
+><name ns=""
+>id</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="ID"
+/></attribute></choice><choice
+><empty
+/><ref name="annotation"
+/></choice></group><choice
+><empty
+/><attribute
+><name ns=""
+>fixed</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="boolean"
+/></attribute></choice></group><attribute
+><name ns=""
+>value</name><value datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" ns="http://www.w3.org/2001/XMLSchema" type="token"
+>collapse</value></attribute></group></element></define><define name="minInclusive"
+><element
+><name ns="http://www.w3.org/2001/XMLSchema"
+>minInclusive</name><group
+><group
+><group
+><choice
+><empty
+/><oneOrMore
+><attribute
+><anyName
+><except
+><choice
+><nsName ns="http://www.w3.org/2001/XMLSchema"
+/><nsName ns=""
+/><name ns="http://www.w3.org/XML/1998/namespace"
+>lang</name></choice></except></anyName><text
+/></attribute></oneOrMore></choice><choice
+><empty
+/><attribute
+><name ns=""
+>id</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="ID"
+/></attribute></choice><choice
+><empty
+/><ref name="annotation"
+/></choice></group><choice
+><empty
+/><attribute
+><name ns=""
+>fixed</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="boolean"
+/></attribute></choice></group><attribute
+><name ns=""
+>value</name><choice
+><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="decimal"
+/><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="float"
+/><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="double"
+/><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="duration"
+/><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="dateTime"
+/><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="time"
+/><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="date"
+/><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="gYearMonth"
+/><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="gYear"
+/><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="gMonthDay"
+/><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="gMonth"
+/><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="gDay"
+/></choice></attribute></group></element></define><define name="list"
+><element
+><name ns="http://www.w3.org/2001/XMLSchema"
+>list</name><group
+><group
+><choice
+><empty
+/><oneOrMore
+><attribute
+><anyName
+><except
+><choice
+><nsName ns="http://www.w3.org/2001/XMLSchema"
+/><nsName ns=""
+/><name ns="http://www.w3.org/XML/1998/namespace"
+>lang</name></choice></except></anyName><text
+/></attribute></oneOrMore></choice><choice
+><empty
+/><attribute
+><name ns=""
+>id</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="ID"
+/></attribute></choice><choice
+><empty
+/><ref name="annotation"
+/></choice></group><choice
+><ref name="localSimpleType"
+/><attribute
+><name ns=""
+>itemType</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="QName"
+/></attribute></choice></group></element></define><define name="complexRestriction"
+><element
+><name ns="http://www.w3.org/2001/XMLSchema"
+>restriction</name><group
+><group
+><choice
+><empty
+/><oneOrMore
+><attribute
+><anyName
+><except
+><choice
+><nsName ns="http://www.w3.org/2001/XMLSchema"
+/><nsName ns=""
+/><name ns="http://www.w3.org/XML/1998/namespace"
+>lang</name></choice></except></anyName><text
+/></attribute></oneOrMore></choice><choice
+><empty
+/><attribute
+><name ns=""
+>id</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="ID"
+/></attribute></choice><choice
+><empty
+/><ref name="annotation"
+/></choice></group><attribute
+><name ns=""
+>base</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="QName"
+/></attribute><choice
+><empty
+/><choice
+><ref name="groupRef"
+/><ref name="all"
+/><ref name="choice"
+/><ref name="sequence"
+/></choice></choice><group
+><choice
+><empty
+/><oneOrMore
+><choice
+><ref name="localAttribute"
+/><ref name="attributeGroupRef"
+/></choice></oneOrMore></choice><choice
+><empty
+/><ref name="anyAttribute"
+/></choice></group></group></element></define><define name="maxLength"
+><element
+><name ns="http://www.w3.org/2001/XMLSchema"
+>maxLength</name><group
+><group
+><group
+><choice
+><empty
+/><oneOrMore
+><attribute
+><anyName
+><except
+><choice
+><nsName ns="http://www.w3.org/2001/XMLSchema"
+/><nsName ns=""
+/><name ns="http://www.w3.org/XML/1998/namespace"
+>lang</name></choice></except></anyName><text
+/></attribute></oneOrMore></choice><choice
+><empty
+/><attribute
+><name ns=""
+>id</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="ID"
+/></attribute></choice><choice
+><empty
+/><ref name="annotation"
+/></choice></group><choice
+><empty
+/><attribute
+><name ns=""
+>fixed</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="boolean"
+/></attribute></choice></group><attribute
+><name ns=""
+>value</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="nonNegativeInteger"
+/></attribute></group></element></define><define name="selector"
+><element
+><name ns="http://www.w3.org/2001/XMLSchema"
+>selector</name><group
+><group
+><choice
+><empty
+/><oneOrMore
+><attribute
+><anyName
+><except
+><choice
+><nsName ns="http://www.w3.org/2001/XMLSchema"
+/><nsName ns=""
+/><name ns="http://www.w3.org/XML/1998/namespace"
+>lang</name></choice></except></anyName><text
+/></attribute></oneOrMore></choice><choice
+><empty
+/><attribute
+><name ns=""
+>id</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="ID"
+/></attribute></choice><choice
+><empty
+/><ref name="annotation"
+/></choice></group><attribute
+><name ns=""
+>xpath</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="token"
+><param name="pattern"
+>(\.//)?(((child::)?((\i\c*:)?(\i\c*|\*)))|\.)(/(((child::)?((\i\c*:)?(\i\c*|\*)))|\.))*(\|(\.//)?(((child::)?((\i\c*:)?(\i\c*|\*)))|\.)(/(((child::)?((\i\c*:)?(\i\c*|\*)))|\.))*)*</param></data></attribute></group></element></define><define name="length"
+><element
+><name ns="http://www.w3.org/2001/XMLSchema"
+>length</name><group
+><group
+><group
+><choice
+><empty
+/><oneOrMore
+><attribute
+><anyName
+><except
+><choice
+><nsName ns="http://www.w3.org/2001/XMLSchema"
+/><nsName ns=""
+/><name ns="http://www.w3.org/XML/1998/namespace"
+>lang</name></choice></except></anyName><text
+/></attribute></oneOrMore></choice><choice
+><empty
+/><attribute
+><name ns=""
+>id</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="ID"
+/></attribute></choice><choice
+><empty
+/><ref name="annotation"
+/></choice></group><choice
+><empty
+/><attribute
+><name ns=""
+>fixed</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="boolean"
+/></attribute></choice></group><attribute
+><name ns=""
+>value</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="nonNegativeInteger"
+/></attribute></group></element></define><define name="whiteSpace"
+><element
+><name ns="http://www.w3.org/2001/XMLSchema"
+>whiteSpace</name><group
+><group
+><group
+><choice
+><empty
+/><oneOrMore
+><attribute
+><anyName
+><except
+><choice
+><nsName ns="http://www.w3.org/2001/XMLSchema"
+/><nsName ns=""
+/><name ns="http://www.w3.org/XML/1998/namespace"
+>lang</name></choice></except></anyName><text
+/></attribute></oneOrMore></choice><choice
+><empty
+/><attribute
+><name ns=""
+>id</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="ID"
+/></attribute></choice><choice
+><empty
+/><ref name="annotation"
+/></choice></group><choice
+><empty
+/><attribute
+><name ns=""
+>fixed</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="boolean"
+/></attribute></choice></group><attribute
+><name ns=""
+>value</name><choice
+><value datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" ns="http://www.w3.org/2001/XMLSchema" type="token"
+>preserve</value><value datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" ns="http://www.w3.org/2001/XMLSchema" type="token"
+>replace</value><value datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" ns="http://www.w3.org/2001/XMLSchema" type="token"
+>collapse</value></choice></attribute></group></element></define><define name="localAttribute"
+><element
+><name ns="http://www.w3.org/2001/XMLSchema"
+>attribute</name><group
+><group
+><choice
+><empty
+/><oneOrMore
+><attribute
+><anyName
+><except
+><choice
+><nsName ns="http://www.w3.org/2001/XMLSchema"
+/><nsName ns=""
+/><name ns="http://www.w3.org/XML/1998/namespace"
+>lang</name></choice></except></anyName><text
+/></attribute></oneOrMore></choice><choice
+><empty
+/><attribute
+><name ns=""
+>id</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="ID"
+/></attribute></choice><choice
+><empty
+/><ref name="annotation"
+/></choice></group><choice
+><empty
+/><attribute
+><name ns=""
+>use</name><choice
+><value datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" ns="http://www.w3.org/2001/XMLSchema" type="token"
+>optional</value><value datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" ns="http://www.w3.org/2001/XMLSchema" type="token"
+>prohibited</value><value datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" ns="http://www.w3.org/2001/XMLSchema" type="token"
+>required</value></choice></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>fixed</name><text
+/></attribute><attribute
+><name ns=""
+>default</name><text
+/></attribute></choice><choice
+><attribute
+><name ns=""
+>ref</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="QName"
+/></attribute><group
+><attribute
+><name ns=""
+>name</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="NCName"
+/></attribute><choice
+><empty
+/><attribute
+><name ns=""
+>form</name><choice
+><value datatypeLibrary="" ns="http://www.w3.org/2001/XMLSchema" type="token"
+>qualified</value><value datatypeLibrary="" ns="http://www.w3.org/2001/XMLSchema" type="token"
+>unqualified</value></choice></attribute></choice><choice
+><empty
+/><attribute
+><name ns=""
+>type</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="QName"
+/></attribute><ref name="localSimpleType"
+/></choice></group></choice></group></element></define><define name="key"
+><element
+><name ns="http://www.w3.org/2001/XMLSchema"
+>key</name><group
+><group
+><choice
+><empty
+/><oneOrMore
+><attribute
+><anyName
+><except
+><choice
+><nsName ns="http://www.w3.org/2001/XMLSchema"
+/><nsName ns=""
+/><name ns="http://www.w3.org/XML/1998/namespace"
+>lang</name></choice></except></anyName><text
+/></attribute></oneOrMore></choice><choice
+><empty
+/><attribute
+><name ns=""
+>id</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="ID"
+/></attribute></choice><choice
+><empty
+/><ref name="annotation"
+/></choice></group><attribute
+><name ns=""
+>name</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="NCName"
+/></attribute><ref name="selector"
+/><oneOrMore
+><ref name="field"
+/></oneOrMore></group></element></define><define name="maxExclusive"
+><element
+><name ns="http://www.w3.org/2001/XMLSchema"
+>maxExclusive</name><group
+><group
+><group
+><choice
+><empty
+/><oneOrMore
+><attribute
+><anyName
+><except
+><choice
+><nsName ns="http://www.w3.org/2001/XMLSchema"
+/><nsName ns=""
+/><name ns="http://www.w3.org/XML/1998/namespace"
+>lang</name></choice></except></anyName><text
+/></attribute></oneOrMore></choice><choice
+><empty
+/><attribute
+><name ns=""
+>id</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="ID"
+/></attribute></choice><choice
+><empty
+/><ref name="annotation"
+/></choice></group><choice
+><empty
+/><attribute
+><name ns=""
+>fixed</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="boolean"
+/></attribute></choice></group><attribute
+><name ns=""
+>value</name><choice
+><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="decimal"
+/><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="float"
+/><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="double"
+/><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="duration"
+/><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="dateTime"
+/><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="time"
+/><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="date"
+/><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="gYearMonth"
+/><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="gYear"
+/><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="gMonthDay"
+/><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="gMonth"
+/><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="gDay"
+/></choice></attribute></group></element></define><define name="documentation"
+><element
+><name ns="http://www.w3.org/2001/XMLSchema"
+>documentation</name><group
+><choice
+><empty
+/><oneOrMore
+><choice
+><attribute
+><name ns=""
+>source</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="anyURI"
+/></attribute><attribute
+><name ns="http://www.w3.org/XML/1998/namespace"
+>lang</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="language"
+/></attribute></choice></oneOrMore></choice><interleave
+><choice
+><empty
+/><oneOrMore
+><ref name="_"
+/></oneOrMore></choice><text
+/></interleave></group></element></define><define name="localComplexType"
+><element
+><name ns="http://www.w3.org/2001/XMLSchema"
+>complexType</name><group
+><group
+><choice
+><empty
+/><oneOrMore
+><attribute
+><anyName
+><except
+><choice
+><nsName ns="http://www.w3.org/2001/XMLSchema"
+/><nsName ns=""
+/><name ns="http://www.w3.org/XML/1998/namespace"
+>lang</name></choice></except></anyName><text
+/></attribute></oneOrMore></choice><choice
+><empty
+/><attribute
+><name ns=""
+>id</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="ID"
+/></attribute></choice><choice
+><empty
+/><ref name="annotation"
+/></choice></group><choice
+><ref name="simpleContent"
+/><group
+><choice
+><empty
+/><attribute
+><name ns=""
+>mixed</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="boolean"
+/></attribute></choice><choice
+><ref name="complexContent"
+/><group
+><choice
+><empty
+/><choice
+><ref name="groupRef"
+/><ref name="all"
+/><ref name="choice"
+/><ref name="sequence"
+/></choice></choice><group
+><choice
+><empty
+/><oneOrMore
+><choice
+><ref name="localAttribute"
+/><ref name="attributeGroupRef"
+/></choice></oneOrMore></choice><choice
+><empty
+/><ref name="anyAttribute"
+/></choice></group></group></choice></group></choice></group></element></define><define name="localElement"
+><element
+><name ns="http://www.w3.org/2001/XMLSchema"
+>element</name><group
+><choice
+><empty
+/><oneOrMore
+><choice
+><attribute
+><name ns=""
+>minOccurs</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="nonNegativeInteger"
+/></attribute><attribute
+><name ns=""
+>maxOccurs</name><choice
+><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="nonNegativeInteger"
+/><value datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" ns="http://www.w3.org/2001/XMLSchema" type="token"
+>unbounded</value></choice></attribute></choice></oneOrMore></choice><choice
+><attribute
+><name ns=""
+>ref</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="QName"
+/></attribute><group
+><group
+><group
+><choice
+><empty
+/><oneOrMore
+><attribute
+><anyName
+><except
+><choice
+><nsName ns="http://www.w3.org/2001/XMLSchema"
+/><nsName ns=""
+/><name ns="http://www.w3.org/XML/1998/namespace"
+>lang</name></choice></except></anyName><text
+/></attribute></oneOrMore></choice><choice
+><empty
+/><attribute
+><name ns=""
+>id</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="ID"
+/></attribute></choice><choice
+><empty
+/><ref name="annotation"
+/></choice></group><choice
+><empty
+/><attribute
+><name ns=""
+>fixed</name><text
+/></attribute><attribute
+><name ns=""
+>default</name><text
+/></attribute></choice><choice
+><empty
+/><oneOrMore
+><choice
+><attribute
+><name ns=""
+>nillable</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="boolean"
+/></attribute><attribute
+><name ns=""
+>block</name><choice
+><value datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" ns="http://www.w3.org/2001/XMLSchema" type="token"
+>#all</value><list
+><choice
+><empty
+/><oneOrMore
+><choice
+><value datatypeLibrary="" ns="http://www.w3.org/2001/XMLSchema" type="token"
+>extension</value><value datatypeLibrary="" ns="http://www.w3.org/2001/XMLSchema" type="token"
+>restriction</value><value datatypeLibrary="" ns="http://www.w3.org/2001/XMLSchema" type="token"
+>substitution</value></choice></oneOrMore></choice></list></choice></attribute></choice></oneOrMore></choice><choice
+><empty
+/><attribute
+><name ns=""
+>type</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="QName"
+/></attribute><ref name="localSimpleType"
+/><ref name="localComplexType"
+/></choice><choice
+><empty
+/><oneOrMore
+><choice
+><ref name="unique"
+/><ref name="key"
+/><ref name="keyref"
+/></choice></oneOrMore></choice></group><attribute
+><name ns=""
+>name</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="NCName"
+/></attribute><choice
+><empty
+/><attribute
+><name ns=""
+>form</name><choice
+><value datatypeLibrary="" ns="http://www.w3.org/2001/XMLSchema" type="token"
+>qualified</value><value datatypeLibrary="" ns="http://www.w3.org/2001/XMLSchema" type="token"
+>unqualified</value></choice></attribute></choice></group></choice></group></element></define><define name="field"
+><element
+><name ns="http://www.w3.org/2001/XMLSchema"
+>field</name><group
+><group
+><choice
+><empty
+/><oneOrMore
+><attribute
+><anyName
+><except
+><choice
+><nsName ns="http://www.w3.org/2001/XMLSchema"
+/><nsName ns=""
+/><name ns="http://www.w3.org/XML/1998/namespace"
+>lang</name></choice></except></anyName><text
+/></attribute></oneOrMore></choice><choice
+><empty
+/><attribute
+><name ns=""
+>id</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="ID"
+/></attribute></choice><choice
+><empty
+/><ref name="annotation"
+/></choice></group><attribute
+><name ns=""
+>xpath</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="token"
+><param name="pattern"
+>(\.//)?((((child::)?((\i\c*:)?(\i\c*|\*)))|\.)/)*((((child::)?((\i\c*:)?(\i\c*|\*)))|\.)|((attribute::|@)((\i\c*:)?(\i\c*|\*))))(\|(\.//)?((((child::)?((\i\c*:)?(\i\c*|\*)))|\.)/)*((((child::)?((\i\c*:)?(\i\c*|\*)))|\.)|((attribute::|@)((\i\c*:)?(\i\c*|\*)))))*</param></data></attribute></group></element></define><define name="union"
+><element
+><name ns="http://www.w3.org/2001/XMLSchema"
+>union</name><group
+><group
+><choice
+><empty
+/><oneOrMore
+><attribute
+><anyName
+><except
+><choice
+><nsName ns="http://www.w3.org/2001/XMLSchema"
+/><nsName ns=""
+/><name ns="http://www.w3.org/XML/1998/namespace"
+>lang</name></choice></except></anyName><text
+/></attribute></oneOrMore></choice><choice
+><empty
+/><attribute
+><name ns=""
+>id</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="ID"
+/></attribute></choice><choice
+><empty
+/><ref name="annotation"
+/></choice></group><choice
+><group
+><attribute
+><name ns=""
+>memberTypes</name><list
+><oneOrMore
+><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="QName"
+/></oneOrMore></list></attribute><choice
+><empty
+/><oneOrMore
+><ref name="localSimpleType"
+/></oneOrMore></choice></group><group
+><choice
+><empty
+/><attribute
+><name ns=""
+>memberTypes</name><empty
+/></attribute></choice><oneOrMore
+><ref name="localSimpleType"
+/></oneOrMore></group></choice></group></element></define><define name="whiteSpaceReplaceOrCollapse"
+><element
+><name ns="http://www.w3.org/2001/XMLSchema"
+>whiteSpace</name><group
+><group
+><group
+><choice
+><empty
+/><oneOrMore
+><attribute
+><anyName
+><except
+><choice
+><nsName ns="http://www.w3.org/2001/XMLSchema"
+/><nsName ns=""
+/><name ns="http://www.w3.org/XML/1998/namespace"
+>lang</name></choice></except></anyName><text
+/></attribute></oneOrMore></choice><choice
+><empty
+/><attribute
+><name ns=""
+>id</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="ID"
+/></attribute></choice><choice
+><empty
+/><ref name="annotation"
+/></choice></group><choice
+><empty
+/><attribute
+><name ns=""
+>fixed</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="boolean"
+/></attribute></choice></group><attribute
+><name ns=""
+>value</name><choice
+><value datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" ns="http://www.w3.org/2001/XMLSchema" type="token"
+>replace</value><value datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" ns="http://www.w3.org/2001/XMLSchema" type="token"
+>collapse</value></choice></attribute></group></element></define><define name="importOptionalNamespace"
+><element
+><name ns="http://www.w3.org/2001/XMLSchema"
+>import</name><group
+><group
+><group
+><choice
+><empty
+/><oneOrMore
+><attribute
+><anyName
+><except
+><choice
+><nsName ns="http://www.w3.org/2001/XMLSchema"
+/><nsName ns=""
+/><name ns="http://www.w3.org/XML/1998/namespace"
+>lang</name></choice></except></anyName><text
+/></attribute></oneOrMore></choice><choice
+><empty
+/><attribute
+><name ns=""
+>id</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="ID"
+/></attribute></choice><choice
+><empty
+/><ref name="annotation"
+/></choice></group><choice
+><empty
+/><attribute
+><name ns=""
+>schemaLocation</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="anyURI"
+/></attribute></choice></group><choice
+><empty
+/><attribute
+><name ns=""
+>namespace</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="anyURI"
+/></attribute></choice></group></element></define><define name="schema_"
+><element
+><name ns="http://www.w3.org/2001/XMLSchema"
+>schema</name><group
+><choice
+><empty
+/><oneOrMore
+><attribute
+><anyName
+><except
+><choice
+><nsName ns="http://www.w3.org/2001/XMLSchema"
+/><nsName ns=""
+/><name ns="http://www.w3.org/XML/1998/namespace"
+>lang</name></choice></except></anyName><text
+/></attribute></oneOrMore></choice><choice
+><empty
+/><oneOrMore
+><choice
+><attribute
+><name ns=""
+>version</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="token"
+/></attribute><attribute
+><name ns=""
+>finalDefault</name><choice
+><value datatypeLibrary="" ns="http://www.w3.org/2001/XMLSchema" type="token"
+>#all</value><list
+><choice
+><empty
+/><oneOrMore
+><choice
+><value datatypeLibrary="" ns="http://www.w3.org/2001/XMLSchema" type="token"
+>extension</value><value datatypeLibrary="" ns="http://www.w3.org/2001/XMLSchema" type="token"
+>restriction</value></choice></oneOrMore></choice></list></choice></attribute><attribute
+><name ns=""
+>blockDefault</name><choice
+><value datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" ns="http://www.w3.org/2001/XMLSchema" type="token"
+>#all</value><list
+><choice
+><empty
+/><oneOrMore
+><choice
+><value datatypeLibrary="" ns="http://www.w3.org/2001/XMLSchema" type="token"
+>extension</value><value datatypeLibrary="" ns="http://www.w3.org/2001/XMLSchema" type="token"
+>restriction</value><value datatypeLibrary="" ns="http://www.w3.org/2001/XMLSchema" type="token"
+>substitution</value></choice></oneOrMore></choice></list></choice></attribute><attribute
+><name ns=""
+>attributeFormDefault</name><choice
+><value datatypeLibrary="" ns="http://www.w3.org/2001/XMLSchema" type="token"
+>qualified</value><value datatypeLibrary="" ns="http://www.w3.org/2001/XMLSchema" type="token"
+>unqualified</value></choice></attribute><attribute
+><name ns=""
+>elementFormDefault</name><choice
+><value datatypeLibrary="" ns="http://www.w3.org/2001/XMLSchema" type="token"
+>qualified</value><value datatypeLibrary="" ns="http://www.w3.org/2001/XMLSchema" type="token"
+>unqualified</value></choice></attribute><attribute
+><name ns=""
+>id</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="ID"
+/></attribute><attribute
+><name ns="http://www.w3.org/XML/1998/namespace"
+>lang</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="language"
+/></attribute></choice></oneOrMore></choice><choice
+><group
+><attribute
+><name ns=""
+>targetNamespace</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="anyURI"
+/></attribute><choice
+><empty
+/><oneOrMore
+><choice
+><ref name="include"
+/><ref name="importOptionalNamespace"
+/><ref name="redefine"
+/><ref name="annotation"
+/></choice></oneOrMore></choice></group><choice
+><empty
+/><oneOrMore
+><choice
+><ref name="include"
+/><ref name="importRequiredNamespace"
+/><ref name="redefine"
+/><ref name="annotation"
+/></choice></oneOrMore></choice></choice><choice
+><empty
+/><oneOrMore
+><group
+><choice
+><choice
+><ref name="topLevelSimpleType"
+/><ref name="topLevelComplexType"
+/><ref name="namedGroup"
+/><ref name="namedAttributeGroup"
+/></choice><ref name="topLevelElement"
+/><ref name="topLevelAttribute"
+/><ref name="notation"
+/></choice><choice
+><empty
+/><oneOrMore
+><ref name="annotation"
+/></oneOrMore></choice></group></oneOrMore></choice></group></element></define><define name="all_"
+><element
+><name ns="http://www.w3.org/2001/XMLSchema"
+>all</name><group
+><group
+><choice
+><empty
+/><oneOrMore
+><attribute
+><anyName
+><except
+><choice
+><nsName ns="http://www.w3.org/2001/XMLSchema"
+/><nsName ns=""
+/><name ns="http://www.w3.org/XML/1998/namespace"
+>lang</name></choice></except></anyName><text
+/></attribute></oneOrMore></choice><choice
+><empty
+/><attribute
+><name ns=""
+>id</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="ID"
+/></attribute></choice><choice
+><empty
+/><ref name="annotation"
+/></choice></group><choice
+><empty
+/><oneOrMore
+><ref name="element_"
+/></oneOrMore></choice></group></element></define><define name="choice_"
+><element
+><name ns="http://www.w3.org/2001/XMLSchema"
+>choice</name><group
+><group
+><choice
+><empty
+/><oneOrMore
+><attribute
+><anyName
+><except
+><choice
+><nsName ns="http://www.w3.org/2001/XMLSchema"
+/><nsName ns=""
+/><name ns="http://www.w3.org/XML/1998/namespace"
+>lang</name></choice></except></anyName><text
+/></attribute></oneOrMore></choice><choice
+><empty
+/><attribute
+><name ns=""
+>id</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="ID"
+/></attribute></choice><choice
+><empty
+/><ref name="annotation"
+/></choice></group><choice
+><empty
+/><oneOrMore
+><choice
+><ref name="localElement"
+/><ref name="groupRef"
+/><ref name="choice"
+/><ref name="sequence"
+/><ref name="any"
+/></choice></oneOrMore></choice></group></element></define><define name="sequence_"
+><element
+><name ns="http://www.w3.org/2001/XMLSchema"
+>sequence</name><group
+><group
+><choice
+><empty
+/><oneOrMore
+><attribute
+><anyName
+><except
+><choice
+><nsName ns="http://www.w3.org/2001/XMLSchema"
+/><nsName ns=""
+/><name ns="http://www.w3.org/XML/1998/namespace"
+>lang</name></choice></except></anyName><text
+/></attribute></oneOrMore></choice><choice
+><empty
+/><attribute
+><name ns=""
+>id</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="ID"
+/></attribute></choice><choice
+><empty
+/><ref name="annotation"
+/></choice></group><choice
+><empty
+/><oneOrMore
+><choice
+><ref name="localElement"
+/><ref name="groupRef"
+/><ref name="choice"
+/><ref name="sequence"
+/><ref name="any"
+/></choice></oneOrMore></choice></group></element></define><define name="element_"
+><element
+><name ns="http://www.w3.org/2001/XMLSchema"
+>element</name><group
+><choice
+><empty
+/><oneOrMore
+><choice
+><attribute
+><name ns=""
+>minOccurs</name><choice
+><value datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" ns="http://www.w3.org/2001/XMLSchema" type="nonNegativeInteger"
+>0</value><value datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" ns="http://www.w3.org/2001/XMLSchema" type="nonNegativeInteger"
+>1</value></choice></attribute><attribute
+><name ns=""
+>maxOccurs</name><choice
+><value datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" ns="http://www.w3.org/2001/XMLSchema" type="nonNegativeInteger"
+>0</value><value datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" ns="http://www.w3.org/2001/XMLSchema" type="nonNegativeInteger"
+>1</value></choice></attribute></choice></oneOrMore></choice><choice
+><attribute
+><name ns=""
+>ref</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="QName"
+/></attribute><group
+><group
+><group
+><choice
+><empty
+/><oneOrMore
+><attribute
+><anyName
+><except
+><choice
+><nsName ns="http://www.w3.org/2001/XMLSchema"
+/><nsName ns=""
+/><name ns="http://www.w3.org/XML/1998/namespace"
+>lang</name></choice></except></anyName><text
+/></attribute></oneOrMore></choice><choice
+><empty
+/><attribute
+><name ns=""
+>id</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="ID"
+/></attribute></choice><choice
+><empty
+/><ref name="annotation"
+/></choice></group><choice
+><empty
+/><attribute
+><name ns=""
+>fixed</name><text
+/></attribute><attribute
+><name ns=""
+>default</name><text
+/></attribute></choice><choice
+><empty
+/><oneOrMore
+><choice
+><attribute
+><name ns=""
+>nillable</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="boolean"
+/></attribute><attribute
+><name ns=""
+>block</name><choice
+><value datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" ns="http://www.w3.org/2001/XMLSchema" type="token"
+>#all</value><list
+><choice
+><empty
+/><oneOrMore
+><choice
+><value datatypeLibrary="" ns="http://www.w3.org/2001/XMLSchema" type="token"
+>extension</value><value datatypeLibrary="" ns="http://www.w3.org/2001/XMLSchema" type="token"
+>restriction</value><value datatypeLibrary="" ns="http://www.w3.org/2001/XMLSchema" type="token"
+>substitution</value></choice></oneOrMore></choice></list></choice></attribute></choice></oneOrMore></choice><choice
+><empty
+/><attribute
+><name ns=""
+>type</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="QName"
+/></attribute><ref name="localSimpleType"
+/><ref name="localComplexType"
+/></choice><choice
+><empty
+/><oneOrMore
+><choice
+><ref name="unique"
+/><ref name="key"
+/><ref name="keyref"
+/></choice></oneOrMore></choice></group><attribute
+><name ns=""
+>name</name><data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="NCName"
+/></attribute><choice
+><empty
+/><attribute
+><name ns=""
+>form</name><choice
+><value datatypeLibrary="" ns="http://www.w3.org/2001/XMLSchema" type="token"
+>qualified</value><value datatypeLibrary="" ns="http://www.w3.org/2001/XMLSchema" type="token"
+>unqualified</value></choice></attribute></choice></group></choice></group></element></define><define name="_"
+><element
+><anyName
+/><group
+><choice
+><empty
+/><oneOrMore
+><attribute
+><anyName
+/><text
+/></attribute></oneOrMore></choice><interleave
+><choice
+><empty
+/><oneOrMore
+><ref name="_"
+/></oneOrMore></choice><text
+/></interleave></group></element></define></grammar>

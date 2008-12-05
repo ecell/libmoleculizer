@@ -1,0 +1,15 @@
+Authors of libmoleculizer
+
+Copyright (C) 2001 Walter Lawrence (Larry) Lok
+
+Copying and distribution of this file, with or without modification,
+are permitted in any medium without royalty provided the copyright
+notice and this notice are preserved.
+
+The following contributions warranted legal paper exchanges with
+the Molecular Sciences Institute.  Also see ChangeLog and THANKS.
+
+NAME		EMAIL
+Nathan Addy	<addy@molsci.org>	Refactored Moleculizer 1.1 into libmoleculizer
+
+Larry Lok	<lok@molsci.org>	Original author, developer of moleculizer.

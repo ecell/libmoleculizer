@@ -1,0 +1,1 @@
+The original documents are on http://www.rddl.org/RDDL2.html

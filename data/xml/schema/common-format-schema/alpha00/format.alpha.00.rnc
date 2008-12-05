@@ -1,0 +1,353 @@
+# This schema defines the draft standard for a shared rule-based
+# modeling format in compact Relax NG format as developed at Riken
+# Yokohama during a workshop in November in a collaberation between the 
+# Molecular Sciences Institute, Riken, and Keio University.
+
+start =
+
+   element ecell-rules
+   {
+      element parameters
+      {
+         element parameter
+         {
+            parameterContent
+         }*
+      },
+
+      element modifications
+      {
+         element modification
+         {
+            modificationContent
+         }*
+      },
+      
+      element modification-groups
+      {
+         element modification-group
+         {
+            modificationGroupContent
+         }*
+      },
+
+      element mols
+      {
+         (element mol{ molContent } |
+            element simple-mol{ simpleMolContent })+
+      },
+
+      element rules
+      {
+         element rules
+         {
+            ruleContent
+         }*
+      }
+   }
+
+parameterContent =
+   element name{ xsd:token },
+   element value 
+   {
+      # This is not the same as the standard valueElement used
+      # in the model, which is why we cannot use "valueElement" 
+      # to define this.
+
+      ( xsd:float | 
+         element math
+         {
+            text
+         }
+      )
+   }
+
+
+realValueContent =
+   ( xsd:float | 
+      element parameter-ref{ attribute name{ xsd:token } }
+   )
+
+
+modificationContent =
+   element name{ xsd:token },
+   element weight
+   {
+      realValueContent
+   }
+
+modificationGroupContent = 
+   element name{ xsd:token },
+   element default-value{ xsd:token },
+   element value{ xsd:token }+
+
+molContent = 
+   element name{ xsd:token },
+   element weight{ realValueContent },
+   element states
+   {
+      element default-state{ element name{ xsd:token } },
+      element state{ element name{ xsd:token } }+
+
+   }?,
+   element binding-sites
+   {
+      element binding-site
+      {
+         element name{ xsd:token },
+         element default-state{ element name{ xsd:token } },
+         element state
+         {
+            element name{ xsd:token }
+         }+
+      }*
+   },
+   element modification-sites
+   {
+      element modification-site
+      {
+         element name{ xsd:token },
+
+         # The token in modification-group should refer to the name
+         # of a modification group defined in the modification-groups
+         # section.
+         element modification-group{ xsd:token }
+      }*
+   }
+
+
+simpleMolContent =
+   element name{ xsd:token },
+   element weight{ realValueContent }
+
+ruleContent =
+
+   element name{ xsd:token },
+
+   element selectors
+   {
+      element selector{ selectorContent },
+      element selector{ selectorContent }?
+   },
+
+   element transformation
+   {
+      transformationContent
+   },
+
+   (element mass-action{ massActionKineticsContent } |
+      element generic-kinetics{ genericKineticsContent } )
+   
+
+
+selectorContent =
+   element subgraph
+   {
+      (
+         element mol-instance
+         {
+            attribute id{ xsd:token },
+            element mol{ xsd:token },
+            element state{ xsd:token }?,
+            element binding-site-instances
+            {
+               element binding-site-instance
+               {
+                  attribute id{ xsd:token },
+                  element binding-site{ xsd:token },
+                  
+                  # This isn't strictly correct.  Precisely, at least
+                  # one and possibly both, of bound and state must be 
+                  # defined.
+
+                  element bound
+                  {
+                     "true" | "false"
+                  }?,
+
+                  element state{ xsd:token }
+
+               }+
+            }?
+            
+         } |
+         element simple-mol-instance
+         {
+            attribute id{ xsd:token },
+            element simple-mol{ xsd:token }
+         }
+      )+,
+
+      element bindings
+      {
+         (
+            element binding 
+            {
+               attribute id{ xsd:token },
+               element mol-instance
+               {
+                  element name{ xsd:token },
+                  element binding-site{ xsd:token }
+               },
+               element mol-instance
+               {
+                  element name{ xsd:token },
+                  element binding-site{ xsd:token }
+               }
+            } |
+            element simple-mol-binding
+            {
+               element small-mol-instance
+               {
+                  element name{ xsd:token } 
+               } 
+             & element mol-instance
+               {
+                  element name{ xsd:token },
+                  element binding-site{ xsd:token }
+               }
+            }
+         )+
+      }
+   }
+
+transformationContent =
+   element mol-state-changes
+   {
+      element mol-state-change
+      {
+         element name{ xsd:token },
+         element state{ xsd:token }
+      }*
+   },
+
+   element binding-site-state-changes
+   {
+      element binding-site-state-change
+      {
+         element name{ xsd:token },
+         element state{ xsd:token }
+      }*
+   },
+
+   element modification-changes
+   {
+      element modification-change
+      {
+         element name{ xsd:token },
+         element modification{ xsd:token }
+      }
+   },
+   
+   element binding-changes
+   {
+      ( element binding-created
+         {
+            element binding-site-name{ xsd:token },
+            element binding-site-name{ xsd:token }
+         } |
+         element binding-deleted
+         {
+            element binding-name{ xsd:token }
+         }
+      )*
+   },
+
+   element simple-mol-exchanges
+   {
+      element simple-mol-enchange
+      {
+         element name{ xsd:token },
+         element simple-mol{ xsd:token }
+      }*
+   },
+   
+   element additional-products
+   {
+      # How to define such a thing?
+      element additional-products
+      {
+         empty
+      }*
+   }
+
+massActionKineticsContent = 
+   # Should this be an element or an attribute?
+   attribute reversible{ "true" | "false" },
+   
+   element default-rates
+   {
+      element forward-rate{ realValueContent },
+      element reverse-rate{ realValueContent }?
+   },
+   element allosteric-rates
+   {
+      element forward-rate{ realValueContent },
+      element reverse-rate{ realValueContent },
+      
+      element selector
+      {
+         selectorContent
+      },
+
+      element selector
+      {
+         selectorContent
+      }?
+      
+   }
+
+genericKineticsContent = 
+
+   attribute reversible { "true" | "false" },
+   element forward-equation
+   {
+      kineticsEquationContent
+   },
+   element reverse-equation
+   {
+      kineticsEquationContent
+   }?,
+
+   element allosteric-rates
+   {
+      element forward-equation
+      {
+         kineticsEquationContent
+      },
+      element reverse-equation
+      {
+         kineticsEquationContent
+      }?,
+      
+      element selector
+      {
+         selectorContent
+      },
+
+      element selector
+      {
+         selectorContent
+      }?
+   }*
+
+kineticsEquationContent = 
+   element math
+   {
+      attribute * { text }*,
+      anyWellFormedXml
+   }
+
+anyWellFormedXml = 
+  element * {
+    (attribute * { text }
+     | text
+     | anyElement)*
+  }+
+
+anyElement =
+  element * {
+    (attribute * { text }
+     | text
+     | anyElement)*
+  }

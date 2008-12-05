@@ -15,8 +15,7 @@ SUBDIRS = nauty \
 	plex \
 	dimer \
 	ftr \
-	python \
-	new_features/property_extrapolation 
+	python 
 
 MOLECULIZER_DIRNAME = @MOLECULIZER_DIRNAME@
 moleculizerheaderdir=${include_dir}/${MOLECULIZER_DIRNAME}

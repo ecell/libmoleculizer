@@ -59,7 +59,6 @@ AC_CONFIG_FILES([Makefile
                 doc/manual/Makefile
                 doc/demos/Makefile
                 doc/demos/simulators/Makefile
-                src/new_features/property_extrapolation/Makefile
 		])
 
 

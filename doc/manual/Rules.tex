@@ -2,17 +2,17 @@
 A libmoleculizer input file (Moleculizer Rule File, or MZR
 file) is an xml document in a particular syntax, representing a set
 of molecule and species definitions as well as a set of reaction rule
-descriptions.
+descriptions.  
 
-This chapter talks about MZR file syntax, and discusses how to express
+   This chapter talks about MZR file syntax, and discusses how to express
 sets of rules representing a variety of biological pathways within it.
 
 \section{MZR File Overview}
 A MZR file consists of a 'moleculizer-input' root tag that contains a
 single 'model' element.  The model element contains several mandatory
-subelements, which contain the description of the network rule-based model:
+subelements, which contain all of the description of the model:
 'modifications', 'mols', 'allosteric-plexes', 'allosteric-omnis',
-'reaction-gens', 'explicit-species', and 'explicit-reactions'.
+'reaction-gens', 'explicit-species', and 'explicit-reactions'. 
 
 \lstset{language=XML}
 \begin{lstlisting}[caption=Overall structure of a MZR file, label=overallmzrstruct]
@@ -64,19 +64,16 @@ question of how to write it, please consult the appropriate section in
 this chyapter.  For further information, please check out the chapter
 'API Reference'.  
 
-\section{The 'modifications' Section - /moleculizer-input/model/modifications }
-This section consists of a list of zero or more modification elements,
+\section{The 'modifications' Section -
+  /moleculizer-input/model/modifications } 
+The modifications section consists of zero or more modification elements,
 each of which represents a particular modification that may be present
 on a protein, e.g. 'none', 'phosphorylated', 'ubiquitinated', at one
 of its modification sites.
 
-Each modification that is defined must have a name and a weight-delta,
-the amount by which the modification changes the molecular weight of
-the mol that it appears on.  
-
-To represent this information, each 'modification' element has a
-mandatory name attribute, and a mandatory child element called
-'weight-delta' that itself has a mandatory 'daltons' attribute.  
+Each modification must have a unique name attribute and a weight-delta
+subelement, representing the weight that that modification adds to the
+basic molecular weight of the mol that it appears on.  
 
 \lstset{language=XML}
 \begin{lstlisting}[caption=A Sample Modifications Section, label=modifications ]
@@ -93,15 +90,14 @@ mandatory name attribute, and a mandatory child element called
 </modifications>
 \end{lstlisting}
 
+Each of the modifications that will be used and referred to in the
+model must be defined here. 
+
 \section{The 'mols' section - /moleculizer-input/model/mols}
 
-Complexes in libmoleculizer are sets of molecules that are bound
-together between their binding sites in some configuration, with each
-modifcation site in each molecule in the complex associated with some
-modification in the 'modifications' section. Reaction rules describe
-interactions between various combinations of these molecules, and
-libmoleculizer applies these rules to each of the complexes that
-match the correct subcomplexes.  
+Complex species in libmoleculizer are combinations of molecules bound
+together between different binding sites, along with modifications
+associated with each modification site for each molecule in the complex.  
 
 In the mols section, each of the molecule types that can occur in
 complexes within the model are specified.
@@ -117,10 +113,9 @@ subelements that may go in the mols section: 'mod-mol' elements and
 'small-mol' elements.   
 
 \subsection{Defining 'mod-mol' elements}
-A mod-mol element represents the definition of a single protein type,
-or more generally structure-posessing molecule type, in the reaction
-network.  A mod-mol is defined with a name, a weight, and any number
-of binding and modification sites. These mod-mols and their structural
+Each mod-mol element defines a single protein type in the reaction 
+network.  A mod-mol is defined with a unique name, a weight, and any number
+of binding and modification sites. Mod-mols and their structural
 components (binding sites, modification sites) are the basic entities 
 referred to by reaction rules in the reaction-gens section of the MZR
 file, and are the basic element of multi-protein complexes.
@@ -496,8 +491,6 @@ complex species, will induce allosteric shape changes to binding sites
 within that subcomplex.  
 
 \subsection{Defining the plex element}
-The plex subelement 
-
 
 \subsubsection{Defining the allosteric-sites element}
 
@@ -506,8 +499,8 @@ The plex subelement
 \section{'reaction-gen'}
 
 The reaction-gens section is where all of the rules for extrapolating
-reactions go.  In the current version of libmoleculizer, there are two
-main reaction-generators: dimerization-gen, which represents a
+reactions go.  Currently, there are two
+reaction-generators: dimerization-gen, which represents a
 protein-protein binding interaction as well its reverse decomposition
 reaction, and the omni-gen, which represents a generic reaction that
 can express unary and binary enzymatic reactions and other reaction
@@ -515,16 +508,230 @@ forms.
 
 \section{'dimerization-gen'}
 A dimerization-gen reaction generator represents a generic
-dimerization/decomposition reaction between two proteins.  
+dimerization/decomposition reaction between a pair of modular binding
+domains belonging to two proteins.  
+
+The first information needed by a dimerization-gen is two mol-ref
+elements, each with a site-ref subelement, which each specify one of
+the binding sites that participates in this dimerization reaction.
+For instance, if the model has defined (in the mod-mol section) a
+protein named 'Substrate' that has a binding site 'to-Enzyme', the
+proper way to specify this binding site is by writing 
+
+\begin{lstlisting}
+<mol-ref name=''Substrate''>
+  <site-ref name="to-Enzyme" />
+</mol-ref>
+\end{lstlisting}
+
+Following two of these elements, two elements: default-on-rate-value
+and default-off-rate value must be provided.  Each must have a value
+element, which corresponds to the basic reaction rate.  Units of this
+are (Hz)(l)/mol.  See /ref{simpleDimerizationExample} for a basic
+example of a dimerization reaction between two proteins.
+
+\begin{lstlisting}
+<dimerization-gen>
+  <mol-ref name="Substrate">
+    <site-ref name="to-Enzyme" />
+  </mol-ref>
+  <mol-ref name="Enzyme">
+    <site-ref name="to-Substrate" />
+  </mol-ref>
+  <default-on-rate value="1.0e12" />
+  <default-off-rate value="1.0" />
+</dimerization-gen>
+\end{lstlisting}
+
+Each allosteric form of the reaction can be listed in its own
+allo-rates element.  Each allo-rates element consists of two
+site-shape-ref elements, and on-rate and off-rate elements.  When the
+first binding-site in the dimerization reaction has the first
+binding-site shape, and the second binding-site has the second shape,
+then the allo-rates on and off rates are used instead.  So in
+/ref{alloRatesExample}, Substrate will bind at its 'to-Enzyme' site
+with Enzyme at its 'to-Substrate' site at a rate of of 1.0e12 (Hz) (l)
+/ sec, unless the 'to-Enzyme' site has the shape 'occluded', in which
+case the binding rate is 0.0.
+
+\begin{lstlisting} 
+<dimerization-gen>
+  <mol-ref name="Substrate">
+    <site-ref name="to-Enzyme" />
+  </mol-ref>
+  <mol-ref name="Enzyme">
+    <site-ref name="to-Substrate" />
+  </mol-ref>
+  <default-on-rate value="1.0e12" />
+  <default-off-rate value="1.0" />
+  <allo-rates>
+    <site-shape-ref name="Obstructed" />
+    <site-shape-ref name="default" />
+    <on-rate value = 0.0 />
+    <off-rate value = 1.0e12 />
+  </allo-rates>
+</dimerization-gen>
+ \end{lstlisting}
 
 
+\section{uni-mol-gen}
+A uni-mol-gen is a reaction generator which responds to the presence
+of a single enabling mod-mol.  By adding enabling modification, you
+can arrange that the reaction generator only creates reactions whose
+enabling substrate is in a particular modification state.  The
+generated reaction can ghange the modification state of the mol by
+adding modification-exchanges.  This reaction can be made
+binary by adding additional product species.  Users can likewise add
+additional product species in the 'additional-product-species'
+section.  
+
+\begin{lstlisting}[caption='A simple uni-mol-gen that represents a protein
+  with two phosphorylation sites that is ubiquitinated']
+<uni-mol-gen>
+  <enabling-mol name='Protein' />
+  <enabling-modifications>
+    <mod-site-ref name='PhosphorylationSite_1'>
+      <mod-ref name='phosphorylated' />
+    </mod-site-ref>
+    <mod-site-ref name='PhosphorylationSite_2'>
+      <mod-ref name='phosphorylated' />
+    </mod-site-ref>
+  </enabling-modifications>
+  <modification-exchanges>
+    <modification-exchange>
+      <mod-site-ref name='UbiquitinationSite' />
+      <installed-mod-ref name='Ubiquitinated' />
+    </modification-exchange>
+  </modification-exchanges>
+  <rate value='1e10' />
+</uni-mol-gen>  
+\end{lstlisting}
 
 \section{'omni-gen'}
 
+An omni-gen is a generic reaction generator that can generate, for
+each complex species containing a particular omniplex, a reaction with
+flexible characteristics. The generated reactions can change any one
+small-mol component of the omniplex into another small-mol, if
+desired. The generated reactions can change the modification at any
+one modification site on any one mod-mol component of the omniplex, if
+desired. The generated reactions can be binary, if desired, requiring
+any explicit reactant species as a co-reactant with the species that
+is recognized as containing the omniplex. The generated reactions can
+produce an arbitrary explicit product species, in addition to the
+transformed primary reactant, if desired. Each of these separate
+activities on the part of the generated reactions is engaged simply by
+including the appropriate optional elements in this reaction generator
+specification. 
+
+\begin{lstlisting}
+\end{1stlisting}
+
 \section{'explicit-species'}
+
+This section is where users describe species explicitly because you
+want to create molecules of the species at some point during the
+simulation, because you want to track the population of the species
+through the simulation, or because you want to define explict
+reactions involving the species. Some things that you might think
+would be explicit species, such as a monomeric protein, may not be;
+rather, they are constituents of species of complexes. (The monomeric
+protein is a "mol" but you can define an explicit plex-species that
+contains just the one mol.)
+
+\begin{lstlisting}
+<explicit-species>
+  <plex-species name='AA_Dimer'>
+    <mol-instance name='First_A'>
+      <mol-ref name='A' />
+    </mol-instance>
+    <mol-instance name='Second_A'>
+      <mol-ref name='A' />
+    </mol-instance>
+    <binding>
+      <mol-instance-ref name='First_A'>
+        <binding-site-ref name='to-A' />
+      </mol-instance-ref>
+      <mol-instance-ref name='Second_A'>
+        <binding-site-ref name='to-A' />
+      </mol-instance-ref>
+    </binding>
+  </plex-species>
+</explicit-species>
+\end{1stlisting}
 
 \section{'explicit-reactions'}
 
+Most of the reactions that libmoleculizer works with are generated
+automatically by reaction generators, but you can enter reactions
+one-at-a-time, too. The participants in an explicit reaction have to
+be explicit species, so that they have names and you therefore have a
+way to refer to them in the explicit reaction's definition. 
 
 
+\begin{lstlisting}
+<explicit-species>
 
+  <plex-species name='A-singleton'>
+    <mol-instance name='the-A'>
+      <mol-ref name='A' />
+    </mol-instance>
+  </plex-species>
+
+  <plex-species name='B-singleton'>
+    <mol-instance name='the-B'>
+      <mol-ref name='B' />
+    </mol-instance>
+  </plex-species>
+
+  <plex-species name='AA_Dimer'>
+    <mol-instance name='First_A'>
+      <mol-ref name='A' />
+    </mol-instance>
+    <mol-instance name='Second_A'>
+      <mol-ref name='A' />
+    </mol-instance>
+    <binding>
+      <mol-instance-ref name='First_A'>
+        <binding-site-ref name='to-A' />
+      </mol-instance-ref>
+      <mol-instance-ref name='Second_A'>
+        <binding-site-ref name='to-A' />
+      </mol-instance-ref>
+    </binding>
+  </plex-species>
+
+  <plex-species name='AB_Dimer'>
+    <mol-instance name='the-A'>
+      <mol-ref name='A' />
+    </mol-instance>
+    <mol-instance name='the-B'>
+      <mol-ref name='B' />
+    </mol-instance>
+    <binding>
+      <mol-instance-ref name='the-A'>
+        <binding-site-ref name='to-B' />
+      </mol-instance-ref>
+      <mol-instance-ref name='the-B'>
+        <binding-site-ref name='to-A' />
+      </mol-instance-ref>
+    </binding>
+  </plex-species>
+
+</explicit-species>
+
+<explicit-reactions>
+
+  <reaction>
+    <substrate-species-ref name='A-singleton' multiplicity='2' />
+    <product-species-ref name='AA_Dimer' />
+  </reaction>
+
+  <reaction>
+    <substrate-species-ref name='A-singleton' multiplicity='1' />
+    <substrate-species-ref name='B-singleton' multiplicity='1' />
+    <product-species-ref name='AB_Dimer' />
+  </reaction>
+
+</explicit-reactions>  
+\end{lstlisting}

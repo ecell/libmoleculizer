@@ -4,7 +4,7 @@ file) is an xml document in a particular syntax, representing a set
 of molecule and species definitions as well as a set of reaction rule
 descriptions.  
 
-   This chapter talks about MZR file syntax, and discusses how to express
+This chapter talks about MZR file syntax, and discusses how to express
 sets of rules representing a variety of biological pathways within it.
 
 \section{MZR File Overview}
@@ -14,9 +14,7 @@ subelements, which contain all of the description of the model:
 'modifications', 'mols', 'allosteric-plexes', 'allosteric-omnis',
 'reaction-gens', 'explicit-species', and 'explicit-reactions'. 
 
-\lstset{language=XML}
-\begin{lstlisting}[caption=Overall structure of a MZR file, label=overallmzrstruct]
-
+\begin{ExampleXML}[caption=Overall structure of a MZR file, label=overallmzrstruct]
 <!-- Overall structure of a MZR file -->
 <moleculizer-input>
   <model>
@@ -29,8 +27,7 @@ subelements, which contain all of the description of the model:
     <explicit-reactions />
   </model>
 </moleculizer-input>
-
-\end{lstlisting}
+\end{ExampleXML}
 
 Generally speaking, the information in the modifications section
 describes and defines each of the legal modification values, typically
@@ -51,8 +48,8 @@ rules in the model; each of these corresponds to a single biochemical
 interaction between different combinations of functional and
 regulatory sites.  Typically these will correspond to dimerization
 reactions, decomposition reactions, and more complicated enzymatic
-reactions.  
-
+reactions. 
+ 
 The explicit-species section is where complexes can be specified and
 given names, names that can be used later in reactions or within
 libmoleculizer to refer to those complexes.  The explicit-reactions
@@ -735,3 +732,8 @@ way to refer to them in the explicit reaction's definition.
 
 </explicit-reactions>  
 \end{lstlisting}
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "user-manual"
+%%% End: 

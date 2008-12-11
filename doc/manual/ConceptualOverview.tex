@@ -1,25 +1,171 @@
 \chapter{Comceptual Overview of libmoleculizer}
 
-The objective of libmoleculizer is to take a description of protein
+The objective of libmoleculizer is to take a description of proteins
 and other molecular entities, as well as a set of descriptions of
-various biochemical interactions, and use it to generate information
-in a variety of forms about the explicit reaction netowrk and all the
-species within it.  
+various biochemical interactions, and use this description to generate
+information in a variety of forms about the explicit reaction network
+and all the species within it that are implicitly described by those
+rules.  
 
-In order to understand how libmoleculizer generates reaction networks,
-including their kinetics, it is importand to cover some background
-information on the kinds of interactions libmoleculizer represents and
-the way that libmoleculizer expands reaction networks. 
+In order to understand in detail how libmoleculizer generates reaction
+networks, including their kinetics, it is importand to cover some
+background information on the kinds of interactions libmoleculizer
+represents and the way that libmoleculizer expands reaction networks.  
 
 \section{Combinatorial Reaction Networks}
+%% TODO - Write this section in detail 
+Biological reaction networks can usually be described as a set of
+interactions between proteins.  
 
 \subsection{Signal Transduction Pathways}
+Signal transduction pathways are possibly the most fruitful target for
+this software.  
+
+%% END TODO
 
 \section{Rule-Based Reaction  Network Specifications}
 
-The fundamental idea behind libmoleculizer is that reaction rules can
-be applied to chemical species in order to possibly generate new
-species.  
+The fundamental idea behind libmoleculizer is reaction networks can
+be specified by describing the proteins and molecules (including
+small-molecules, but also including other 'large-molecules' such as
+DNA) that participate in that network, along with a set of rules, each
+of with describes an individual biochemical interaction amongst those
+types.  
+
+
+\subsection{Species are made from structural bindings between
+  structural molecules}
+
+The fundamental physical objects in libmoleculizer are biochemical
+{\it species}, which are sets of {\it mols} bound together between
+their {\it binding sites}
+
+Mols are the physical abstraction used in libmoleculizer.  Each mol is
+a structural obect that must be defined by the user in the model. Mols
+represent different indivisible biochemical entities, typically
+proteins, but also small molecules, DNA, and potentially other objects
+such as organelles. 
+
+Each mol has its own name and is defined with a set of modular binding
+sites.  Each of these binding sites is given a name so that it can
+be uniquely identified, as well as a collection of {\it shapes}, which
+represent the different conformational states of that binding site and
+affect the allostery of reactions involving that binding site.
+
+Mols can be bound together between their binding sites in order to
+form {\it complex species}, also referred to as {\it complexes} or
+{\it species}.  This includes the special case where a complex species
+consists of only a single mol that is bound to nothing.  
+
+Mols may also be defined with {\it modification sites}, locations on
+the mol that can accept {\it modifications}, post-translational
+modifications such as phosphorylation groups that are relevant to the
+state of the mol, but which do not fit into the category of a binding
+between two mols.  
+
+\subsection{Species have  structural features based on their
+  constituent mols}
+
+The important thing about species is that they have structural
+features based on the structural features of the mols that make them
+up.  For instance, if a species is composed of an A protein and a B
+protein, and the A protein has a modification site that is
+phosphorylated, then when we bind that A protein together with the B
+protein, in a molecular binding between two of their binding sites,
+the complex species, the A-B dimer, will also posess a modification
+site that is phosphorylated. Likewise, the dimer will posess all the
+same binding sites as did the individual mols before they were bound.  
+
+{\it Features} in libmoleculizer refer to specific structural
+features, possessed by mols or sets of mols, that can be searched for
+within species.  For instance, a simple feature might be a
+particular modification site on a particular mol with a particular
+modification state, for instance a particular phosphorylated
+modification site on a Ste11, a kind of protein kinase.  Any complex
+species that contains a Ste11 mol with that modification site
+phosphorylated will match that feature.
+
+A more complicated feature might be a binding between a particular binding
+site on a Ste11 to a particular binding site between a Ste5.  Any
+complex containing a Ste11 bound to a Ste5 at the correct binding
+sites will match that feature.  
+
+There is no limit to the complexity that features in libmoleculizer
+can have (although very complicated features are probably not so
+biologically relevant).  It is entirely possible to talk about a
+feature which is a complicated sub-complex, called an {\it omniplex}
+in the language of libmoleculizer, consisting of many mols bound
+together in just the right way and possessing various modifications.
+
+\subsection{Rules are amongst features}
+
+Rules in libmoleculizer specify features to look for and a
+transformation to apply to those features.  For instance, using a {\it
+  dimerization-gen} rule, two features are specified, each of which is
+a particular free binding-site on a particular mol.  The result of
+finding these two features is to join them with a binding.  The
+dimerization rule is defined between features of mols.  When this rule
+is applied to two species that possess these features, the result is
+to bind them together in a $Complex1 + Complex2 \arrow
+DimerizedComplex$ reaction.  
+
+Other reactions may look for specific binding features between
+proteins (in order to generate a decomposition reaction), particular
+modification site features, or omniplex features, in order to use them
+in their reactions.
+
+In fact, the three basic kinds of reaction rules are
+dimerization-gens, uni-mol-gens, and omni-gens. Dimerization-gens
+create dimerization reactions as well as their decomposition
+reactions by looking for features corresponding to free binding sites
+amongst pairs of species.  Uni-mol-gens create new reactions by
+looking for features that are specific types of molecules, possibly
+with certain sets of modification states associated to them.  Finally,
+omni-gens look for omni-plex features (these are subcomplexes that may
+or may not be defined with associated modifications as well).  
+
+Each of these reaction types will be better defined and discussed in
+later chapters.  For now, the important information is the definition
+of a {\it feature}, a collection of structural information that may
+exist at either the mol, or the sub-complex (collection of mols)
+level, and the knowledge of how rules look for complex species
+containing specific features in order to apply their transformations,
+such as dimerization, decomposition, small-mol exchanges, and
+modification-exchanges.  
+
+\subsection{Reactions are amongst species}
+
+When a rule, which looks for either one or two features depending on
+whether it will produce unary or binary reactions, finds two species
+that contain those features, it will be applied.  A dimerization-gen
+will find two species with two free binding sites, a uni-mol-gen will
+find a species containing a specific mol in a particular state, and an
+omni-mol-gen will find a species containing a particular omni-plex.  
+
+
+
+
+
+Each rule describes a set of 'features' and a transformation that when
+contained in a particular species, in the case of an unary reaction
+rule, or amongst a pair of species, in the case of a binary reaction
+rule, will generate
+
+   
+
+, if found in a particular
+species or pair of species, will
+imply 
+
+(in the case of an unary reaction rule, e.g. a reaction rule that
+specifies that a Ras protein will hydrolize bound GTP to GTP at a 
+specific rate ) 
+
+(in the case of binary
+reaction rules, e.g. a reaction rule that specifies that a Ste5
+protein with particular binding domain free may bind with a Ste11 with
+one of its specific binding domains free at a particular rate)
+
 
 For example, a reaction rule might be represent a protein-protein
 dimerization.  If a model has defined a Ste5 protein that has a

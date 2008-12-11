@@ -11,9 +11,20 @@
 \lstloadlanguages{XML, C++, C, Python}
 % \lstset{langague=c++}
 
+\lstnewenvironment{LocalRNG}
+{\lstset{language=XML, keywords=} }
+{}
+
+\lstnewenvironment{ExampleXML}
+{\lstset{language=XML, caption=, label=,keywords=} }
+{}
+
+
+
 \begin{document}
 
 \maketitle
+
 \tableofcontents
 
 \include{Introduction}
@@ -25,5 +36,6 @@
 \include{Cookbook}
 \include{APIReference}
 \include{MZRReference}
+\include{Glossary}
 
 \end{document}

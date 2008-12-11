@@ -1,21 +1,21 @@
 \chapter{Introduction}
 
 \section{Overview of Libmoleculizer}
-Libmoleculizer is a computer library that takes a set of rules which
-both describe a set of basic molecule types, such as proteins and
-small molecules, and defines a set of interaction channels, such as
+Libmoleculizer is a computer library that takes a set of rules that
+describe a collection of types of proteins and small molecules, as
+well as a set of interactions amongst those types, such as
 protein-protein, protein-small molecule, and enzymatic reactions
-(protein modifications) amongst those molecule types, and from them
-explicitly generates the network of species and reactions described by
-those rules.
+(protein modifications), and from that information explicitly
+generates the network of species and reactions described by those
+rules.  
 
-The capacity to describe networks implicitly, as resulting from
-regular interactions, amongst molecules may be very adventageous, as
-such reaction neworks may be exceptionally large, in spite of a
-relative paicity that the relative number of protein types as well as biochemical interactions may be relatively
-few in number.  This is due to the combinatorial complexity that can
-occur, when proteins with multiple opportunities for binding interact
-with one another pairwise.  
+The capacity to describe networks implicitly, i.e. by using rules to
+generate a network can be be very adventageous.  This is because of
+the exponential growth of the explicit networks relative to the number
+of protein/molecule types and interactions amongst them.  
+
+%% TODO -- Finish writing the introduction of what libmoleculizer is 
+%%      -- here.
 
 In fact, these systems can often be so large in terms of absolute
 numbers of potential chemical species and reaction channels, that, in
@@ -35,16 +35,20 @@ species and reactions, by expanding the saner network of biochemical
 interactions that users provide.  Libmoleculizer is intended to be
 used as component of a larger simulator.
 
+%% END TODO
+
 \section{Manual Overview}
-This manual aims to provide a relatively concise introduction to the
-libmoleculizer library.  This treatment basically can be divided up
-into three aspects.  The first is understanding what Moleculizer does;
-this is treated in the chapters 'Conceptual Overview' and 'Using'.
-The second is understanding the MZR file format in which reaction
-rules are specified for libmoleculizer.  This is treated in the
-'Rules' chapter as well as the 'Mzr File Format Reference' chapters.
-Finally, the libmoleculizer API must be learned, in the 'Using',
-'Interfaces', and 'API Reference' chapters.  
+This manual aims to provide introduction to the functionality and use
+of the libmoleculizer library.  
+
+This manual can be divided up into three aspects.  The first objective
+is to describe what Moleculizer does; this is treated in the chapters
+'Conceptual Overview' and 'Using Moleculizer'.  The second is understanding the
+MZR file format in which reaction rules are specified for
+libmoleculizer.  This is treated in the 'Rules' chapter as well as the
+'Mzr File Format Reference' chapters.  Finally, the libmoleculizer API
+must be learned, in the 'Using', 'Interfaces', and 'API Reference'
+chapters.
 
 Finally, although libmoleculizer is a relatively standard source code
 package that should be fairly portable, installation instructions and

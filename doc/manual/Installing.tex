@@ -10,15 +10,18 @@ compile and run libmoleculizer.
 
 The necessary prerequisites are
 \begin{enumerate}
-\item The Boost C++ libraries, \emph{http://boost.org}
-\item The Gnu Scientific Libraries, \emph{http://gnu.org/software/gsl}
-\item Libxml++v2.6, \emph{http://libxmlplusplus.sourceforge.net/}
+\item The Boost C++ libraries, 
+  \emph{http://boost.org}
+\item The Gnu Scientific Libraries, 
+  \emph{http://gnu.org/software/gsl}
+\item Libxml++v2.6, 
+  \emph{http://libxmlplusplus.sourceforge.net/}
 \end{enumerate}
 
 These libraries can either be installed from source, or by using a
 package manager, if one is available on the target system.  For
 instance, on the Ubuntu system I use, these dependencies can be
-fulfilled by running the commands `sudo apt-get install
+fulfilled by running the commands ``sudo apt-get install
 libxml++2.6-dev'', ``sudo apt-get install libboost-dev'', ``sudo apt-get
 install libboost-python1.34.1'', ``sudo apt-get install
 libgsl0-dev''.  This will quickly install the necessary files
@@ -30,15 +33,15 @@ installed, compilation and installation of libmoleculizer can begin.
 Depending on your system configuration, the following procedure will
 probably be all that is necessary to do.
 
-\begin{enumerate}
-\item Go to \libmzrwebsite and download the latest
-  libmoleculizer.tar.gz source file.
-\item Unpack it
-\item \bf{./bootstrap.sh}.
-\item \bf{./configure}
-\item \bf{make}
-\item \bf{sudo make install}
-\end{enumerate}
+Go to \libmzrwebsite and download the latest
+  libmoleculizer.tar.gz source file, and make sure it is unpacked.  
+
+%\begin{ShellCommands}
+./bootstrap.sh
+./configure
+make
+sudo make install
+%\end{ShellCommands}
 
 Difficulties, if any, will probably occur in the {\bf ./configure} step.  
 

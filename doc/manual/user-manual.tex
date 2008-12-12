@@ -1,25 +1,29 @@
+%% Some basic substitution commands I'm defining. 
 \newcommand{\libmzrwebsite}{\emph{http://sourceforge.net/projects/moleculizer/}}
 \newcommand{\myemail}{\emph{addy@molsci.org}}
 \newcommand{\currentversion}{1.0 }
 
+%% The libmoleculizer manual.
+
 \documentclass{report}
+
+\usepackage{listings}
+\usepackage{makeidx}
+\usepackage{glossary}
+
+%% Some definitions for the listings package.
+\lstloadlanguages{XML, C++, C, Python}
+\lstnewenvironment{LocalCPP}{\lstset{language=C++,caption=,label=,keywords=}}{}
+\lstnewenvironment{LocalRNG}{\lstset{language=XML, keywords=} }{}
+\lstnewenvironment{ExampleXML}{\lstset{language=XML, caption=, label=,keywords=} }{}
+\lstnewenvironment{ShellCommands}{\lstset{language=Shell,caption=,label=, keywords=}}{}
+
 \author{Nathan Addy}
 \title{Libmoleculizer \currentversion User's Manual}
 
-\usepackage{listings}
-
-\lstloadlanguages{XML, C++, C, Python}
-% \lstset{langague=c++}
-
-\lstnewenvironment{LocalRNG}
-{\lstset{language=XML, keywords=} }
-{}
-
-\lstnewenvironment{ExampleXML}
-{\lstset{language=XML, caption=, label=,keywords=} }
-{}
-
-
+% I'm told these must be in the preamble.
+\makeindex
+\makeglossary
 
 \begin{document}
 
@@ -27,6 +31,8 @@
 
 \tableofcontents
 
+
+%% Each of the chapters, in order. 
 \include{Introduction}
 \include{ConceptualOverview}
 \include{Installing}
@@ -36,6 +42,12 @@
 \include{Cookbook}
 \include{APIReference}
 \include{MZRReference}
-\include{Glossary}
+
+%% Print the glossary, the index, and then the bibliography.
+\printglossary
+\printindex
+
+\bibliographystyle{plain}
+\bibliography{references}
 
 \end{document}

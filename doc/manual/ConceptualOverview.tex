@@ -1,239 +1,243 @@
-\chapter{Comceptual Overview of libmoleculizer}
+\chapter{Conceptual Overview of libmoleculizer}
 
-The objective of libmoleculizer is to take a description of proteins
-and other molecular entities, as well as a set of descriptions of
-various biochemical interactions, and use this description to generate
-information in a variety of forms about the explicit reaction network
-and all the species within it that are implicitly described by those
-rules.  
+The objective of libmoleculizer is to take in a description of
+proteins and other molecular entities along with a list of rules
+describing various biochemical interactions, and then use this
+information to generate information about the reaction network and
+species that are implicitly described by those rules.
 
-In order to understand in detail how libmoleculizer generates reaction
-networks, including their kinetics, it is importand to cover some
-background information on the kinds of interactions libmoleculizer
-represents and the way that libmoleculizer expands reaction networks.  
+In order to understand in detail how libmoleculizer generates the
+species and reactions, including kinetics, that makes up the implicit
+reaction networks, it is important to understand some background
+on what libmoleculizer represents, and how it understands and interprets
+rules of interaction.
 
-\section{Combinatorial Reaction Networks}
 %% TODO - Write this section in detail 
-Biological reaction networks can usually be described as a set of
-interactions between proteins.  
-
-\subsection{Signal Transduction Pathways}
-Signal transduction pathways are possibly the most fruitful target for
-this software.  
-
+%% \section{Combinatorial Reaction Networks}
+%% \subsection{Signal Transduction Pathways}
 %% END TODO
 
-\section{Rule-Based Reaction  Network Specifications}
+\section{Rule-Based Reaction Network Specifications}
+\label{concRuleBasedSpec}
+\index{rule-based modeling}
 
-The fundamental idea behind libmoleculizer is reaction networks can
-be specified by describing the proteins and molecules (including
-small-molecules, but also including other 'large-molecules' such as
-DNA) that participate in that network, along with a set of rules, each
-of with describes an individual biochemical interaction amongst those
-types.  
+The fundamental principle underlying libmoleculizer is that reaction
+networks can be specified by describing the basic constituents of
+chemical species, such as types of proteins and other biochemical molecules
+(including small-molecules, but also including other larger molecules
+such as DNA) that exist in the network, along with a set of
+rules, each of with describes an individual biochemical interaction
+amongst those types.  We call this type of modeling rule-based
+modeling.  
 
 
 \subsection{Species are made from structural bindings between
   structural molecules}
 
-The fundamental physical objects in libmoleculizer are biochemical
-{\it species}, which are sets of {\it mols} bound together between
-their {\it binding sites}
-
-Mols are the physical abstraction used in libmoleculizer.  Each mol is
-a structural obect that must be defined by the user in the model. Mols
-represent different indivisible biochemical entities, typically
-proteins, but also small molecules, DNA, and potentially other objects
-such as organelles. 
+In libmoleculizer, the physical objects that participate in reactions
+are called species. Species are different structural orientations of
+objects called mols. Each mol represents a variety of indivisible
+biochemical entity; typically the types of mols will be various kinds
+of proteins, but also can mean different small molecules, DNA, and
+potentially even objects such as organelles as well.
 
 Each mol has its own name and is defined with a set of modular binding
-sites.  Each of these binding sites is given a name so that it can
-be uniquely identified, as well as a collection of {\it shapes}, which
-represent the different conformational states of that binding site and
-affect the allostery of reactions involving that binding site.
+sites.  Each of these binding sites has its own uniquely identifying
+name, as well as a collection of shapes, which represent the different
+conformational states that binding site may be, thus affecting binding
+kinetics.  
 
-Mols can be bound together between their binding sites in order to
-form {\it complex species}, also referred to as {\it complexes} or
-{\it species}.  This includes the special case where a complex species
-consists of only a single mol that is bound to nothing.  
+Mols bind together between their binding sites in order to form
+species.  This includes the special case where a complex species
+consists of only a single mol that is bound to nothing else.
 
-Mols may also be defined with {\it modification sites}, locations on
-the mol that can accept {\it modifications}, post-translational
-modifications such as phosphorylation groups that are relevant to the
-state of the mol, but which do not fit into the category of a binding
+Mols also may be defined with modification sites, which are different
+locations on the mol are associated with different modifications,
+post-translational modifications such as phosphorylation groups, that
+are relevant to the state of the mol, but which do involve a binding
 between two mols.  
 
-\subsection{Species have  structural features based on their
-  constituent mols}
+\subsection{Species have structural features based on their
+ constituent mols}
 
-The important thing about species is that they have structural
-features based on the structural features of the mols that make them
-up.  For instance, if a species is composed of an A protein and a B
-protein, and the A protein has a modification site that is
-phosphorylated, then when we bind that A protein together with the B
-protein, in a molecular binding between two of their binding sites,
-the complex species, the A-B dimer, will also posess a modification
-site that is phosphorylated. Likewise, the dimer will posess all the
-same binding sites as did the individual mols before they were bound.  
+The relevance of species is that they have structural features based
+on the structural features of the mols that make them up.  For
+instance, if a species is composed of an A protein and a B protein,
+and the A protein has a modification site that is phosphorylated, then
+when we bind that A protein together with the B protein, in a
+molecular binding between two of their binding sites, the complex
+species, the A-B dimer, will also posess a modification site that is
+phosphorylated. Likewise, the dimer will posess all the same binding
+sites as did the individual mols before they were bound.
 
-{\it Features} in libmoleculizer refer to specific structural
-features, possessed by mols or sets of mols, that can be searched for
-within species.  For instance, a simple feature might be a
-particular modification site on a particular mol with a particular
-modification state, for instance a particular phosphorylated
-modification site on a Ste11, a kind of protein kinase.  Any complex
-species that contains a Ste11 mol with that modification site
-phosphorylated will match that feature.
+Features in libmoleculizer refer to specific structural features,
+defined in terms of either mols or sets of mols, that individiual
+species may or may not possess. For instance, a feature might be the
+condition that a particular modification site on a specific type of
+mol has a certain modification state -- e.g. that a particular
+modification site on a Ste11 protein kinase must be
+phosphorylated. Any complex species containing one or more a Ste11
+mols with that modification site phosphorylated will match that
+feature.
 
-A more complicated feature might be a binding between a particular binding
-site on a Ste11 to a particular binding site between a Ste5.  Any
-complex containing a Ste11 bound to a Ste5 at the correct binding
-sites will match that feature.  
+Another structural feature, this time concerning two mols, would be
+the presence of a particular binding between two mols at two binding
+sites - e.g. the condition that there is a binding that joins a Ste5
+to a Ste11. Any complex that contains a Ste11 bound to a Ste5 between
+the correct binding sites will match that feature.
 
-There is no limit to the complexity that features in libmoleculizer
-can have (although very complicated features are probably not so
-biologically relevant).  It is entirely possible to talk about a
-feature which is a complicated sub-complex, called an {\it omniplex}
-in the language of libmoleculizer, consisting of many mols bound
-together in just the right way and possessing various modifications.
+There is no limit in principle to the complexity that features in
+libmoleculizer can have. It is possible to talk about a feature which
+is the condition of possessing a complicated sub-complex (called an
+omni-plex in libmoleculizer), with a particular pattern of
+modification states on it.  
 
 \subsection{Rules are amongst features}
+As stated before, rules in libmoleculizer specify the different types
+of biochemical interactions in a MZR model.  These rules are then used
+to generate new species and new reactions between them based upon an
+initial set of initial species. The underlying metaphor in how
+libmoleculizer specifies interaction rules is to say that all
+interactions can be specified in terms of features and the features
+react together.  Reaction rules specify features, and reactions
+between the features.  Libmoleculizer applies the feature reaction
+transformations specified in the rules to any sets of species
+possessing the relevent features.  This process is applied
+iteratively and thus, a network of species and reactions is generated.  
 
-Rules in libmoleculizer specify features to look for and a
-transformation to apply to those features.  For instance, using a {\it
-  dimerization-gen} rule, two features are specified, each of which is
-a particular free binding-site on a particular mol.  The result of
-finding these two features is to join them with a binding.  The
-dimerization rule is defined between features of mols.  When this rule
-is applied to two species that possess these features, the result is
-to bind them together in a $Complex1 + Complex2 \arrow
-DimerizedComplex$ reaction.  
+The features that are required by each type of rule is rule-specific
+to the three kinds of rules.  The first type of rule, called a
+dimerization-gen, which specifies a particular binding interaction -
+it looks for two features, one matching a free binding site on a
+particular mol type and the other with another free binding site on
+another type of mol, and when two species are found that match these
+features, the two free sites are bound together.  The second type of
+rule is an omni-gen, which looks for a particular omni-plex, a mol
+sub-complex of species, with any portion of its modification state
+specified.  When it finds this omni-plex, any number of small molecule
+exchanges or modification exchanges may be performed on that
+omni-plex.  Finally, the uni-mol-gen, which looks for a specific type
+of mol with a potentially partially specified modification state; on
+this mol any number of small molecule exchanges or modification
+exchanges may be specified.  Note that this is a special case of the
+omni-gen, and will likely be depreciated in the next version.
 
-Other reactions may look for specific binding features between
-proteins (in order to generate a decomposition reaction), particular
-modification site features, or omniplex features, in order to use them
-in their reactions.
+Each of these three types of rule, dimerization-gen by looking for two
+free site features, omni-gen looking for an omni-plex feature, and
+uni-mol, looking for a single mol matching feature behaves similarly:
+it looks for features, and when finding them, has a specified
+transformation it applies to the species.  The dimerization-gen joins
+the two free binding sites together, and both the omni-gen and the
+uni-mol-gen perform some kind of state change - a small mol exchange
+or a modification exchanage - on the matching structural feature.
 
-In fact, the three basic kinds of reaction rules are
-dimerization-gens, uni-mol-gens, and omni-gens. Dimerization-gens
-create dimerization reactions as well as their decomposition
-reactions by looking for features corresponding to free binding sites
-amongst pairs of species.  Uni-mol-gens create new reactions by
-looking for features that are specific types of molecules, possibly
-with certain sets of modification states associated to them.  Finally,
-omni-gens look for omni-plex features (these are subcomplexes that may
-or may not be defined with associated modifications as well).  
+\subsection{Reaction rules create species and reactions from an
+  initial list of species}
 
-Each of these reaction types will be better defined and discussed in
-later chapters.  For now, the important information is the definition
-of a {\it feature}, a collection of structural information that may
-exist at either the mol, or the sub-complex (collection of mols)
-level, and the knowledge of how rules look for complex species
-containing specific features in order to apply their transformations,
-such as dimerization, decomposition, small-mol exchanges, and
-modification-exchanges.  
+Either in the set of rules or by using the libmoleculizer API, the
+user must specify a list of initial species that exist within the
+model. For sets of species containing the features needed for the
+different rules, libmoleculizer will apply the rule's transformation
+to the matching substrate species, in order to create a set of product
+species, which may or may not be new.  This mapping of substrate
+species to product species is added as a reaction to the list of
+reactions.  In addition, kinetics are generated based on the reaction
+rule and added to the reaction, a topic to be discussed later in this
+chapter. At this point, the reaction rules have been applied to the
+initial set of species, which, when applied, create a new reaction
+with potentially new product species.  If any of the product species
+are new, they are checked for features, which may set off the
+application of rules, causing more new reactions with potentially new
+product species to be formed.  The whole reaction network relative to
+a set of initial species includes all species and all reactions that
+might be created on any iterative step of the expansion process.  
 
-\subsection{Reactions are amongst species}
+\section{Specifying Reaction Kinetics} 
 
-When a rule, which looks for either one or two features depending on
-whether it will produce unary or binary reactions, finds two species
-that contain those features, it will be applied.  A dimerization-gen
-will find two species with two free binding sites, a uni-mol-gen will
-find a species containing a specific mol in a particular state, and an
-omni-mol-gen will find a species containing a particular omni-plex.  
+%% TODO fix X and Y units for the reaction rate.  
+For any reaction rule, one or more reaction rates must be specified
+that indicate the kinetics of the reaction.  Uni-mol and omni-gen
+reaction rules take a single reaction rate.  A dimerization-gen
+reaction rule takes two: dimerization reactions are assumed to be
+reversible by default.  Irreversible reaction rules are expressed as a
+reversible reaction with an off rate of 0.  
 
+There are two ways this kinetic parameter can be interpreted.  If no
+reaction rate extrapolation is used, then the on-rates supplied in the
+rule are passed into the generated reaction directly.  Using this
+method, users can use whatever units they would like.
 
+Libmoleculizer also has the potential to extrapolate a reaction rate
+from the kinetics provided based on the masses of the substrate
+species involved. 
 
+%% TODO figure this out and get a reference in here.
+This assumption is used because of something in Gillespie.  This
+paragraph references what this is and why it is relevant.
 
+%% Figure out these units here.
+When reaction rate extrapolation is used, the rate associated with a
+binary reaction is multiplied by the reduced-mass of the the substrate
+species, in order to better approximate the way that the masses of the
+species affect the collisions due to collisions that underly the
+reaction.  In this interpretation, units must be in either X or Y.
 
-Each rule describes a set of 'features' and a transformation that when
-contained in a particular species, in the case of an unary reaction
-rule, or amongst a pair of species, in the case of a binary reaction
-rule, will generate
-
-   
-
-, if found in a particular
-species or pair of species, will
-imply 
-
-(in the case of an unary reaction rule, e.g. a reaction rule that
-specifies that a Ras protein will hydrolize bound GTP to GTP at a 
-specific rate ) 
-
-(in the case of binary
-reaction rules, e.g. a reaction rule that specifies that a Ste5
-protein with particular binding domain free may bind with a Ste11 with
-one of its specific binding domains free at a particular rate)
-
-
-For example, a reaction rule might be represent a protein-protein
-dimerization.  If a model has defined a Ste5 protein that has a
-binding site 'ste5-binding-site1' as well as a Fus3 protein that has a
-binding site 'fus3-binding-site1', a reaction rule can be specified
-that says Ste5 can bind to Fus3 from the 'ste5-binding-site1' to the
-'fus3-binding-site1' at a particular on-rate $k_{on}$, and a particular
-off-rate $k_{off}$.  This rule will be applied in two ways.  First,
-any time a pair of molecular complexes, the first of which contains a
-Ste5 molecule with a free 'ste5-binding-site1' site, the second of which
-contains a Fus3 molecule with a free 'fus3-binding-site1', this rule
-will be applied to generate an explicit dimerization reaction between
-those two complexes.  At the same time, the off-rate provided will be
-using to generate an explicit decomposition reaction for the dimerized
-complex.  
-
-The on- and off- rates used in reaction rules are used to generate
-appropriate on- and off-rates in the explicit reaction.  This process
-can be configured in a variety of ways.  Among other things, values
-can either be passed directly through to explicit reactions, or
-reaction rate extrapolation can be used, where libmoleculizer will
-approximate explicit reaction rates for the generated reactons, based
-on the kinetics of the rule, as well as the masses of the substrate
-species.  Please see the section dealing with Reaction Rate Kinetics
-for more infomation.  
-
-\section{Allostery Based on Binding Shape}
-
+\section{Allosteric Kinetics are Based on Binding Shape}
 Biochemical reaction networks, particularly signal transduction
-pathways, will oftentimes regulate themselves using allosteric
-proteins.  Allosteric proteins are proteins that have functional sites
-(binding sites) and regulatory sites.  Typically different small
-molecules are bound to the regulatory sites, and this induces
-conformation changes to to functional site, which modify its
-functional kinetics.  
+pathways, often use allosteric proteins to regulate their
+behavior. Allosteric proteins are proteins whose shape, and
+consequently behavior, with regards to different interactions can
+change into one of multiple different forms depending upon the state
+of certain modifications on that protein as well as what entities that
+protein is bound to.  One example would be a model in which a protein
+Fic10 can bind to another Sca3, after it has been activated by being
+doubly phosphorylated on two of its modification sites.  
 
-At the physical level, states of the regulatory sites in a complex
-species affect the conformation of functional binding sites, and
-presence and state of subcomplexes within a complex may affect other
-kinetic properties of functional sites (e.g. a particular protein
-being bound at a particular binding site may physically block a
-functional site, preventing it from being used -- in affect, turing
-all the rates to 0 for that binding site).  MZR rules use the idea of
-binnding-site shape, a comcept that encompasses both allosteric
-changes to conformation, as well as other non-conformational physical
-effects that affect reaction kinetics.  
+How does libmoleculizer treat an allosteric reaction?  Say we would
+like to express the above reaction: Sca3 binds with Fic10, say from
+the ``to-Fic10'' and ``to-Sca3'' sites respectively, but only when
+Sca3 has been doubly phosphorylated, say at it's ``phos-site-one'' and
+``phos-site-two'' sites; how can this be done?  Libmoleculizer
+decomposes a reaction like that into defining the charectoristics that
+cause the behavior of that molecule binding site (in this case the
+``to-Fic10'' site of Sca3) to change.  These charectoristics, another
+feature that can be tested for in new species, are associated with
+binding shape changes.  In this case, the binding site ``to-Fic10''
+may have been defined with the mandatory default-binding-site-shape
+parameter equal to ``half-activated''; specifying the feature that
+a Sca3 has both of its phos-sites phosphorylated would be associated
+with the binding-site-shape change that when this feature is matched
+the matching Sca3 mol's ``to-Fic10'' site is updated to the shape
+``fully-activated''.  Second, in the applicable reaction rule the
+allostery applies to, describe the allosteric kinetic rates in terms
+of the binding site shapes that supply the allostery. 
 
-Each binding site within libmoleculizer must be defined with a default
-binding-site shape, as well as a list of the other shapes that can
-occur at that binding-site. In another section of the rules,
-the conditions under which complex state induces binding site shape
-changes are specified.
+For instance, to represent above reaction describing the doubly
+phosphorylated Sca3-Fic10 dimerization, we start by providing
+information that the Sca3 binding site has default shape ``inactive''
+and define that when it is doubly phosphorylated at its
+``phos-site-one'' and ``-two'' sites, that shape becomes ``active''.
+Next, we define the dimerization rule representing Sca3 and Fic10
+dimerization with a dimerization-gen.  The default kinetics described
+in that reaction rule applywhen the two binding sites are have their
+default shapes.  In this case, we would want to express that that
+reaction does not occur, so we give the on-rate as 0, and the off-rate
+as a very high number to indicate that does not happen.  Inside that
+rule, we would also specify the allostery, with an shape-based
+'exception' to the default kinetics: i.e. if the ``to-Fic10'' site has
+shape ``activated'', then in that case the on- and off-rates should be
+given as the activated kinetic rates.  
 
-Finally, in reactions that occur between functional sites, allosteric
-rates are specified in terms of the relevant binding site shapes.  
+%% TODO
+%% \section{Some design rationale in the form of a Philosophical Argument for using shapes with allostery}
 
-\subsection{An Argument For Using Binding Shapes to specify allostery,
-  over other Methods}
-
-
-
-
-\section{Reaction Rate Kinetics}
-
-
-
-\subsection{Mass-based reaction rate extrapolation}
-
-
-
-\section{Unique Complex Naming}
+\section{Unique IDs for Naming Complex Species}
+ For input and output capabilities, it is important that there is a
+ consistent naming scheme for naming complex species.  For instance,
+ it is desirable that structurally identical species will produce the
+ same name, and that the structure can be determined from the name.
+ For the time being, it is out of the scope of this document to
+ discuss exactly how these names are generated.  However, it is
+ important to know that each complex species has a unique id.  Two
+ complexes are structurally identical if and only if the ids produced
+ for them by libmoleculizer are the same.  

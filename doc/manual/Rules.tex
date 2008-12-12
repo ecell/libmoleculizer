@@ -1,4 +1,4 @@
-\chapter{Rules}
+\chapter{The MZR Language for expressing rule-based models}
 A libmoleculizer input file (Moleculizer Rule File, or MZR
 file) is an xml document in a particular syntax, representing a set
 of molecule and species definitions as well as a set of reaction rule
@@ -63,6 +63,9 @@ this chyapter.  For further information, please check out the chapter
 
 \section{The 'modifications' Section -
   /moleculizer-input/model/modifications } 
+\label{sec:modifications}
+\index{modifications}
+
 The modifications section consists of zero or more modification elements,
 each of which represents a particular modification that may be present
 on a protein, e.g. 'none', 'phosphorylated', 'ubiquitinated', at one
@@ -497,7 +500,8 @@ within that subcomplex.
 
 The reaction-gens section is where all of the rules for extrapolating
 reactions go.  Currently, there are two
-reaction-generators: dimerization-gen, which represents a
+reaction-generators: dimerization-gen\glossary{name={modification},
+  description={A modification is a changable part of the mols.}}, which represents a
 protein-protein binding interaction as well its reverse decomposition
 reaction, and the omni-gen, which represents a generic reaction that
 can express unary and binary enzymatic reactions and other reaction

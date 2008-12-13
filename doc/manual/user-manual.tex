@@ -3,19 +3,23 @@
 \newcommand{\myemail}{\emph{addy@molsci.org}}
 \newcommand{\currentversion}{1.0 }
 
+
 %% The libmoleculizer manual.
 
 \documentclass{report}
 
 \usepackage{listings}
 \usepackage{makeidx}
-\usepackage{glossary}
+\usepackage{setspace}
+
+% \usepackage{glossary}
 
 %% Some definitions for the listings package.
 \lstloadlanguages{XML, C++, C, Python}
 \lstnewenvironment{LocalCPP}{\lstset{language=C++,caption=,label=,keywords=}}{}
 \lstnewenvironment{LocalRNG}{\lstset{language=XML, keywords=} }{}
-\lstnewenvironment{ExampleXML}{\lstset{language=XML, caption=, label=,keywords=} }{}
+\lstnewenvironment{ExampleXML}{\lstset{language=XML, caption=,
+    label=,showspaces=false, showtabs=false, keywords=} }{}
 \lstnewenvironment{ShellCommands}{\lstset{language=Shell,caption=,label=, keywords=}}{}
 
 \author{Nathan Addy}
@@ -23,7 +27,9 @@
 
 % I'm told these must be in the preamble.
 \makeindex
-\makeglossary
+\doublespacing
+
+% \makeglossary
 
 \begin{document}
 
@@ -44,7 +50,7 @@
 \include{MZRReference}
 
 %% Print the glossary, the index, and then the bibliography.
-\printglossary
+% \printglossary
 \printindex
 
 \bibliographystyle{plain}

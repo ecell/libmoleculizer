@@ -254,6 +254,6 @@ throw( utl::xcpt )
 
 //         // Attach dumpable to omniplex, where it will be told of all
 //         // new species satisfying the omniplex's queries.
-//         pOmni->getSubPlexFeature()->setDumpable (pDumpable);
+//       pOmni->getSubPlexFeature()->setDumpable (pDumpable);
 //     }
 }

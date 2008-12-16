@@ -768,19 +768,6 @@ throw( utl::xcpt )
     rMzrUnit.addSpecies( plexSpeciesName,
                          pPlexSpecies );
 
-    // Now find the associated parameters and install them in the species list.
-    xmlpp::Element* pParametersNode = utl::dom::mustGetUniqueChild( pPlexSpeciesElt,
-                                      std::string( "parameters" ) );
-
-    xmlpp::Node::NodeList ParameterNodes = pParametersNode->get_children( std::string( "parameter" ) );
-    BOOST_FOREACH( xmlpp::Node* pNode, ParameterNodes )
-    {
-        std::string paramName = utl::dom::mustGetAttrString( utl::dom::mustBeElementPtr( pNode ), std::string( "name" ) );
-        double paramValue = utl::dom::mustGetAttrDouble( utl::dom::mustBeElementPtr( pNode ), std::string( "value" ) );
-        rMzrUnit.rMolzer.recordPlexParameter( pPlexSpecies->getName(), paramName, paramValue );
-    }
-
-
     return pPlexSpecies;
 }
 

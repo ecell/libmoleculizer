@@ -93,7 +93,7 @@ int setupSpatialExtrapolation(moleculizer* handle)
     try
     {
         underlyingMoleculizerObject->setRateExtrapolation( false );
-        underlyingMoleculizerObject->enableSpatialReactionNetworkGeneration();
+//        underlyingMoleculizerObject->enableSpatialReactionNetworkGeneration();
         return SUCCESS;
     }
     catch(...)
@@ -117,7 +117,7 @@ int setupNonSpatialExtrapolation(moleculizer* handle, int useMassBasedRateExtrap
     try
     {
         underlyingMoleculizerObject->setRateExtrapolation( useMassBasedRateExtrapolation );
-        underlyingMoleculizerObject->enableSpatialReactionNetworkGeneration();
+//        underlyingMoleculizerObject->enableSpatialReactionNetworkGeneration();
         return SUCCESS;
     }
     catch(...)
@@ -478,63 +478,63 @@ species* createNewCSpeciesFromMzrSpecies( moleculizer* cMzrPtr, const mzr::mzrSp
 {
     species* newSpecies = new species;
 
-    newSpecies->name = NULL;
-    newSpecies->mass = NULL;
-    newSpecies->radiusSet = NULL;
-    newSpecies->radius = NULL;
-    newSpecies->diffusionCoeffSet = NULL;
-    newSpecies->diffusionCoeff = NULL;
+//     newSpecies->name = NULL;
+//     newSpecies->mass = NULL;
+//     newSpecies->radiusSet = NULL;
+//     newSpecies->radius = NULL;
+//     newSpecies->diffusionCoeffSet = NULL;
+//     newSpecies->diffusionCoeff = NULL;
 
-    // COPY OVER THE NAME.
-    //
-    std::string speciesKey( pMzrSpecies->getName() );            // Create a string with the name.
-    newSpecies->name = new char[speciesKey.size() + 1];          // Create a new char buffer in newSpecies->name.
-    strcpy( newSpecies->name, speciesKey.c_str() );              // Copy the string into the char buffer.
+//     // COPY OVER THE NAME.
+//     //
+//     std::string speciesKey( pMzrSpecies->getName() );            // Create a string with the name.
+//     newSpecies->name = new char[speciesKey.size() + 1];          // Create a new char buffer in newSpecies->name.
+//     strcpy( newSpecies->name, speciesKey.c_str() );              // Copy the string into the char buffer.
 
-#ifdef DEBUG
-    // Double check that the buffers are all working out all right.
-    assert( strcmp( newSpecies->name, speciesKey.c_str() ) == 0 );
-#endif
+// #ifdef DEBUG
+//     // Double check that the buffers are all working out all right.
+//     assert( strcmp( newSpecies->name, speciesKey.c_str() ) == 0 );
+// #endif
     
-    // Copy over the mass
-    // 
-    newSpecies->mass = new double;                    // Allocate new mem for a double in mass.
-    *(newSpecies->mass) = pMzrSpecies->getWeight();   // Put the weight there.
+//     // Copy over the mass
+//     // 
+//     newSpecies->mass = new double;                    // Allocate new mem for a double in mass.
+//     *(newSpecies->mass) = pMzrSpecies->getWeight();   // Put the weight there.
 
-    // Set the radius and the diffusion coefficient
-    newSpecies->radiusSet = new int;                  // Allocate memory for the radisSet.
-    newSpecies->radius = new double;                  // Ditto for the radius.
+//     // Set the radius and the diffusion coefficient
+//     newSpecies->radiusSet = new int;                  // Allocate memory for the radisSet.
+//     newSpecies->radius = new double;                  // Ditto for the radius.
 
-    newSpecies->diffusionCoeffSet = new int;          // Allocate memory for the diffusionCoeffSet.
-    newSpecies->diffusionCoeff = new double;          // ... and for the diffusionCoeff.
+//     newSpecies->diffusionCoeffSet = new int;          // Allocate memory for the diffusionCoeffSet.
+//     newSpecies->diffusionCoeff = new double;          // ... and for the diffusionCoeff.
 
-    // Attempt to get the radius from the moleculizer handle and set both radiusSet and radius.
-    // If it doesn't work (the radius has not been recorded), record the radiusSet as unset.
-    try
-    {
-        double theRadiusFromMzr = convertCMzrPtrToMzrPtr(cMzrPtr)->getRadiusForSpecies(pMzrSpecies);
-        *(newSpecies->radiusSet) = 1;
-        *(newSpecies->radius) = theRadiusFromMzr;
+//     // Attempt to get the radius from the moleculizer handle and set both radiusSet and radius.
+//     // If it doesn't work (the radius has not been recorded), record the radiusSet as unset.
+//     try
+//     {
+//         //double theRadiusFromMzr = convertCMzrPtrToMzrPtr(cMzrPtr)->getRadiusForSpecies(pMzrSpecies);
+//         //*(newSpecies->radiusSet) = 1;
+//         //*(newSpecies->radius) = theRadiusFromMzr;
             
-    }
-    catch(utl::xcpt e)
-    {
-        *(newSpecies->radiusSet) = 0;
-    }
+//     }
+//     catch(utl::xcpt e)
+//     {
+//         //*(newSpecies->radiusSet) = 0;
+//     }
 
-    // Attempt to get the kD from moleculizer and use it to set diffusionCoeff.
-    // If it doesn't work, record the diffusionCoeffSet as false.
-    try
-    {
-        double theDiffusionCoeffFromMzr = convertCMzrPtrToMzrPtr(cMzrPtr)->getKDForSpecies(pMzrSpecies);
-        *(newSpecies->diffusionCoeffSet) = 1;
-        *(newSpecies->diffusionCoeff) = theDiffusionCoeffFromMzr;
+//     // Attempt to get the kD from moleculizer and use it to set diffusionCoeff.
+//     // If it doesn't work, record the diffusionCoeffSet as false.
+//     try
+//     {
+// //         double theDiffusionCoeffFromMzr = convertCMzrPtrToMzrPtr(cMzrPtr)->getKDForSpecies(pMzrSpecies);
+// //         *(newSpecies->diffusionCoeffSet) = 1;
+// //         *(newSpecies->diffusionCoeff) = theDiffusionCoeffFromMzr;
 
-    }
-    catch( utl::xcpt e)
-    {
-        *(newSpecies->diffusionCoeffSet) = 0;
-    }
+//     }
+//     catch( utl::xcpt e)
+//     {
+//         *(newSpecies->diffusionCoeffSet) = 0;
+//     }
     
     // Return the pointer to the newly created and instantiated newSpecies.
     return newSpecies;

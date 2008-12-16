@@ -170,55 +170,54 @@ namespace mzr
                                                               eltName::modeAttr );
 
 
-        if ( modeString == eltName::spatialMode ) configureSpatialGenerationMode( pGenerationMode );
-        else if ( modeString == eltName::nonSpatialMode ) configureNonSpatialGenerationMode( pGenerationMode );
+//         if ( modeString == eltName::spatialMode ) configureSpatialGenerationMode( pGenerationMode );
+//         else if ( modeString == eltName::nonSpatialMode ) configureNonSpatialGenerationMode( pGenerationMode );
 
-        else throw utl::xcpt( "Error in moleculizer::configureRuntime.  '" + modeString + "' is not a legal mode." );
+//        else throw utl::xcpt( "Error in moleculizer::configureRuntime.  '" + modeString + "' is not a legal mode." );
         return;
     }
 
-    void
-    moleculizer::configureSpatialGenerationMode( xmlpp::Element* pSpatialGenerationModeElement )
-    {
-        // For spatial extrapolation, on-rates symbolize activation energies.  Therefore
-        // there is no rate extrapolation whatsoever.
-        this->setRateExtrapolation( false );
+//     void
+//     moleculizer::configureSpatialGenerationMode( xmlpp::Element* pSpatialGenerationModeElement )
+//     {
+//         // For spatial extrapolation, on-rates symbolize activation energies.  Therefore
+//         // there is no rate extrapolation whatsoever.
+//         this->setRateExtrapolation( false );
 
-        enableSpatialReactionNetworkGeneration();
+//         enableSpatialReactionNetworkGeneration();
 
-    }
+//     }
 
-    void
-    moleculizer::configureNonSpatialGenerationMode( xmlpp::Element* pNonSpatialGenerationModeElement )
-    {
-        // Ensure this is a spatial Generation Mode.  If so, add in the correct callback, and ensure there
-        // is no extrapolation.
+//     void
+//     moleculizer::configureNonSpatialGenerationMode( xmlpp::Element* pNonSpatialGenerationModeElement )
+//     {
+//         // Ensure this is a spatial Generation Mode.  If so, add in the correct callback, and ensure there
+//         // is no extrapolation.
 
-        try
-        {
-            std::string toExtrapolateOrNotString = utl::dom::mustGetAttrString( pNonSpatialGenerationModeElement,
-                                                                                eltName::methodAttr );
+//         try
+//         {
+//             std::string toExtrapolateOrNotString = utl::dom::mustGetAttrString( pNonSpatialGenerationModeElement,
+//                                                                                 eltName::methodAttr );
 
-            if ( toExtrapolateOrNotString == eltName::noReactionExtrapolation )
-            {
-                this->setRateExtrapolation( false );
-            }
-            else if ( toExtrapolateOrNotString == eltName::reactionExtrapolation )
-            {
-                this->setRateExtrapolation( true );
-            }
-        }
-        catch ( utl::dom::xcpt )
-        {
-            std::cerr <<"Extrapolation element not found." << std::endl;
-            this->setRateExtrapolation( false );
-        }
-    }
+//             if ( toExtrapolateOrNotString == eltName::noReactionExtrapolation )
+//             {
+//                 this->setRateExtrapolation( false );
+//             }
+//             else if ( toExtrapolateOrNotString == eltName::reactionExtrapolation )
+//             {
+//                 this->setRateExtrapolation( true );
+//             }
+//         }
+//         catch ( utl::dom::xcpt )
+//         {
+//             std::cerr <<"Extrapolation element not found." << std::endl;
+//             this->setRateExtrapolation( false );
+//         }
+//     }
 
 
     moleculizer::moleculizer( void )
         :
-        theRunningMode( NONE ),
         modelLoaded( false ),
         extrapolationEnabled( false )
     {
@@ -486,41 +485,41 @@ namespace mzr
 
     }
 
-    void
-    moleculizer::recordPlexParameter( const std::string& plexName,
-                                      const std::string& paramName,
-                                      const double& paramValue )
-    {
-        if ( paramName == "kD" )
-        {
-            k_DChart.insert( std::make_pair( plexName, paramValue ) );
-        }
-        else if ( paramName == "radius" )
-        {
-            radiusChart.insert( std::make_pair( plexName, paramValue ) );
-        }
+//     void
+//     moleculizer::recordPlexParameter( const std::string& plexName,
+//                                       const std::string& paramName,
+//                                       const double& paramValue )
+//     {
+//         if ( paramName == "kD" )
+//         {
+//             k_DChart.insert( std::make_pair( plexName, paramValue ) );
+//         }
+//         else if ( paramName == "radius" )
+//         {
+//             radiusChart.insert( std::make_pair( plexName, paramValue ) );
+//         }
 
-        else throw utl::FatalXcpt("Unknown plex parameter passed into moleculizer::recordPlexParameter (jfdkalfdasnvnnvckdfla)");
-    }
+//         else throw utl::FatalXcpt("Unknown plex parameter passed into moleculizer::recordPlexParameter (jfdkalfdasnvnnvckdfla)");
+//     }
 
-    void
-    moleculizer::enableSpatialReactionNetworkGeneration()
-    {
-        theRunningMode = SPATIAL;
+//     void
+//     moleculizer::enableSpatialReactionNetworkGeneration()
+//     {
+//         theRunningMode = SPATIAL;
         
-        boost::function<void( const mzrReaction* )> cb1, cb2, cb3, cb4;
+//         boost::function<void( const mzrReaction* )> cb1, cb2, cb3, cb4;
 
-        cb1 = std::bind1st( std::mem_fun( &moleculizer::installRadiusForNewSpecies ), this );
-        cb2 = std::bind1st( std::mem_fun( &moleculizer::installKdForNewSpecies ), this );
-        cb3 = std::bind1st( std::mem_fun( &moleculizer::installKaForNewBinaryReaction ), this );
-        cb4 = std::bind1st( std::mem_fun( &moleculizer::installKForNewUnaryReaction ), this );
+//         cb1 = std::bind1st( std::mem_fun( &moleculizer::installRadiusForNewSpecies ), this );
+//         cb2 = std::bind1st( std::mem_fun( &moleculizer::installKdForNewSpecies ), this );
+//         cb3 = std::bind1st( std::mem_fun( &moleculizer::installKaForNewBinaryReaction ), this );
+//         cb4 = std::bind1st( std::mem_fun( &moleculizer::installKForNewUnaryReaction ), this );
 
-        // Note that the order of these may matter.
-        addNewReactionCallback( cb1 );
-        addNewReactionCallback( cb2 );
-        addNewReactionCallback( cb3 );
-        addNewReactionCallback( cb4 );
-    }
+//         // Note that the order of these may matter.
+//         addNewReactionCallback( cb1 );
+//         addNewReactionCallback( cb2 );
+//         addNewReactionCallback( cb3 );
+//         addNewReactionCallback( cb4 );
+//     }
 
     void 
     moleculizer::generateCompleteNetwork()
@@ -549,58 +548,58 @@ namespace mzr
     }
 
 
-    void
-    moleculizer::enableNonspatialReactionNetworkGeneration( bool extrapolate )
-    {
-        // Nothing actually gets called here, because it is implicit within the reaction itself.
-        theRunningMode = NONSPATIAL;
-    }
+//     void
+//     moleculizer::enableNonspatialReactionNetworkGeneration( bool extrapolate )
+//     {
+//         // Nothing actually gets called here, because it is implicit within the reaction itself.
+//         theRunningMode = NONSPATIAL;
+//     }
 
-    Real
-    moleculizer::getKDForSpecies( const mzrSpecies* mzrSpec) const throw(utl::xcpt)
-    {
-        if(getMode() != SPATIAL ) throw mzr::BadModeXcpt( "kD", mzrSpec->getName(), getMode());
+//     Real
+//     moleculizer::getKDForSpecies( const mzrSpecies* mzrSpec) const throw(utl::xcpt)
+//     {
+//         if(getMode() != SPATIAL ) throw mzr::BadModeXcpt( "kD", mzrSpec->getName(), getMode());
 
-        std::map<SpeciesID, Real>::const_iterator iter( k_DChart.find( mzrSpec->getName() ));
+//         std::map<SpeciesID, Real>::const_iterator iter( k_DChart.find( mzrSpec->getName() ));
         
-        if (iter == k_DChart.end()) throw utl::xcpt( "Species " + mzrSpec->getName() + " has no kD recorded.");
-        return iter->second;
+//         if (iter == k_DChart.end()) throw utl::xcpt( "Species " + mzrSpec->getName() + " has no kD recorded.");
+//         return iter->second;
         
-    }
+//     }
 
     int moleculizer::DEFAULT_GENERATION_DEPTH = 1;
 
-        Real
-        moleculizer::getRadiusForSpecies( const mzrSpecies* mzrSpec) const throw( utl::xcpt )
-        {
-            if(getMode() != SPATIAL ) throw mzr::BadModeXcpt( "radius", mzrSpec->getName(), getMode());
+//         Real
+//         moleculizer::getRadiusForSpecies( const mzrSpecies* mzrSpec) const throw( utl::xcpt )
+//         {
+//             if(getMode() != SPATIAL ) throw mzr::BadModeXcpt( "radius", mzrSpec->getName(), getMode());
 
-            std::map<SpeciesID, Real>::const_iterator iter( radiusChart.find(mzrSpec->getName()));
+//             std::map<SpeciesID, Real>::const_iterator iter( radiusChart.find(mzrSpec->getName()));
         
-            if (iter == radiusChart.end()) throw utl::xcpt( "Species " + mzrSpec->getName() + " has no radius recorded.");
-            return iter->second;
-        }
+//             if (iter == radiusChart.end()) throw utl::xcpt( "Species " + mzrSpec->getName() + " has no radius recorded.");
+//             return iter->second;
+//         }
 
 
-    Real moleculizer::getKForReaction(const mzrReaction* mzrReaction) const throw(utl::xcpt)
-        {
-            if(getMode() != NONSPATIAL ) throw mzr::BadModeXcpt( std::string("k"), mzrReaction, getMode());
+//     Real moleculizer::getKForReaction(const mzrReaction* mzrReaction) const throw(utl::xcpt)
+//         {
+//             if(getMode() != NONSPATIAL ) throw mzr::BadModeXcpt( std::string("k"), mzrReaction, getMode());
 
-            return mzrReaction->getRate();
-        }
+//             return mzrReaction->getRate();
+//         }
 
 
-    Real moleculizer::getKaForReaction( const mzrReaction* mzrReaction) const throw(utl::xcpt)
-        {
-            if(getMode() != SPATIAL ) throw mzr::BadModeXcpt( "kA", mzrReaction, getMode());
+//     Real moleculizer::getKaForReaction( const mzrReaction* mzrReaction) const throw(utl::xcpt)
+//         {
+//             if(getMode() != SPATIAL ) throw mzr::BadModeXcpt( "kA", mzrReaction, getMode());
             
-            return mzrReaction->getRate();
-        }
+//             return mzrReaction->getRate();
+//         }
 
-    Real moleculizer::getMassForSpecies( const mzrSpecies* ptrSpec) const throw(utl::xcpt)
-        {
-            return ptrSpec->getWeight();
-        }
+//     Real moleculizer::getMassForSpecies( const mzrSpecies* ptrSpec) const throw(utl::xcpt)
+//         {
+//             return ptrSpec->getWeight();
+//         }
 
 
     std::string

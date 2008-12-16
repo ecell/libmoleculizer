@@ -37,7 +37,7 @@ libmoleculizer_mzr_la_LIBADD = -lstdc++ $(LIBUTL)
 
 libmoleculizer_mzr_la_SOURCES =\
 dumpUtils.cc \
-extrapolationFormula.cc \
+libmzr_c_interface.cc \
 moleculizer.cc \
 mzrEltName.cc \
 mzrException.cc \
@@ -46,8 +46,10 @@ mzrSpecies.cc \
 mzrUnit.cc \
 mzrUnitInsert.cc \
 mzrUnitParse.cc \
-unitsMgr.cc\
-libmzr_c_interface.cc
+spatialExtrapolationFunctions.cc \
+unitsMgr.cc
+
+
 
 # growEvent.cc 
 
@@ -68,6 +70,7 @@ mzrStream.hh \
 mzrUnit.hh \
 respondReaction.hh \
 rxnDescriptionInterface.hh \
+spatialExtrapolationFunctions.hh \
 unit.hh \
 unitsMgr.hh
 

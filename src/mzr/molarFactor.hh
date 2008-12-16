@@ -42,9 +42,9 @@ class molarFactorGlobal :
             public fnd::stateVar<double, mzrReaction>
 {
 public:
-// Default volume is 1 liter, so default molar factor is Avogadro's number.
+    // Default volume is 1 liter, so default molar factor is Avogadro's number.
     molarFactorGlobal( double initialVolume = 1.0 ) :
-            fnd::stateVar<double, mzrReaction> ( initialVolume * fnd::avogadrosNumber )
+        fnd::stateVar<double, mzrReaction> ( initialVolume * fnd::avogadrosNumber )
     {}
 
     const double

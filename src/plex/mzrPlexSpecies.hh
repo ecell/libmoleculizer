@@ -58,9 +58,9 @@ public:
     mzrPlexSpecies( mzrPlexFamily& rContainingFamily,
                     const cpx::siteToShapeMap& rSiteParams,
                     const std::vector<cpx::molParam>& rMolParams ) :
-            cpx::plexSpeciesMixin<mzrPlexFamily> ( rContainingFamily,
-                                                   rSiteParams,
-                                                   rMolParams )
+        cpx::plexSpeciesMixin<mzrPlexFamily> ( rContainingFamily,
+                                               rSiteParams,
+                                               rMolParams )
     {
         nameGenerated = false;
         name = "";

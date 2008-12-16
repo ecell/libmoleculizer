@@ -106,15 +106,15 @@ namespace mzr
 
     public:
 
-        MODE theRunningMode;
+//         MODE theRunningMode;
 
-        MODE getMode() const
-        {
-            return theRunningMode;
-        }
+//         MODE getMode() const
+//         {
+//             return theRunningMode;
+//         }
 
-        void enableSpatialReactionNetworkGeneration();
-        void enableNonspatialReactionNetworkGeneration( bool extrapolation = false );
+//         void enableSpatialReactionNetworkGeneration();
+//         void enableNonspatialReactionNetworkGeneration( bool extrapolation = false );
 
         void generateCompleteNetwork();
 
@@ -169,9 +169,9 @@ namespace mzr
 
     public:
 
-        void recordPlexParameter( const std::string& plexName,
-                                  const std::string& parameterName,
-                                  const double& parameterValue );
+//         void recordPlexParameter( const std::string& plexName,
+//                                   const std::string& parameterName,
+//                                   const double& parameterValue );
 
         void recordUserNameToGeneratedNamePair( const std::string& userName,
                                                 const std::string& genName )
@@ -195,11 +195,11 @@ namespace mzr
             return iter->second;
         }
 
-        Real getKDForSpecies(const mzrSpecies* mzrSpec) const throw(utl::xcpt);
-        Real getRadiusForSpecies( const mzrSpecies* mzrSpec) const throw( utl::xcpt );
-        Real getKForReaction(const mzrReaction*) const throw(utl::xcpt);
-        Real getKaForReaction( const mzrReaction*) const throw(utl::xcpt);
-        Real getMassForSpecies( const mzrSpecies* ptrSpec) const throw(utl::xcpt);
+//         Real getKDForSpecies(const mzrSpecies* mzrSpec) const throw(utl::xcpt);
+//         Real getRadiusForSpecies( const mzrSpecies* mzrSpec) const throw( utl::xcpt );
+//         Real getKForReaction(const mzrReaction*) const throw(utl::xcpt);
+//         Real getKaForReaction( const mzrReaction*) const throw(utl::xcpt);
+//         Real getMassForSpecies( const mzrSpecies* ptrSpec) const throw(utl::xcpt);
 
     protected:
         void
@@ -233,22 +233,22 @@ namespace mzr
     
 
     protected:
-        std::map<SpeciesID, Real> radiusChart; // These are in meters.
-        std::map<SpeciesID, Real> k_DChart;
+//         std::map<SpeciesID, Real> radiusChart; // These are in meters.
+//         std::map<SpeciesID, Real> k_DChart;
 
-        std::map<const mzrReaction*, Real> reactionRateChart;
-        std::map<const mzrReaction*, Real> binaryActivationEnergyChart;
+//         std::map<const mzrReaction*, Real> reactionRateChart;
+//         std::map<const mzrReaction*, Real> binaryActivationEnergyChart;
 
-        std::map<const fnd::coreRxnGen*, double> binaryActivationEnergiesParameterLookup;
-        std::map<const fnd::coreRxnGen*, double> unaryReactionRatesParameterLookup;
-        std::map<const fnd::coreRxnGen*, double> binaryReactionRatesParameterLookup;
+//         std::map<const fnd::coreRxnGen*, double> binaryActivationEnergiesParameterLookup;
+//         std::map<const fnd::coreRxnGen*, double> unaryReactionRatesParameterLookup;
+//         std::map<const fnd::coreRxnGen*, double> binaryReactionRatesParameterLookup;
 
-        void installKForNewUnaryReaction( const mzrReaction* mzrReaction );
-        void installKForNewBinaryReaction( const mzrReaction* mzrReaction );
-        void installKaForNewBinaryReaction( const mzrReaction* mzrReaction );
-        void installRadiusForNewSpecies( const mzrReaction* mzrRxn );
-        void installKdForNewSpecies( const mzrReaction* mzrRxn );
-        double calculateNewRadiusForSpecies( const mzrSpecies* ptrSpecies );
+//         void installKForNewUnaryReaction( const mzrReaction* mzrReaction );
+//         void installKForNewBinaryReaction( const mzrReaction* mzrReaction );
+//         void installKaForNewBinaryReaction( const mzrReaction* mzrReaction );
+//         void installRadiusForNewSpecies( const mzrReaction* mzrRxn );
+//         void installKdForNewSpecies( const mzrReaction* mzrRxn );
+//         double calculateNewRadiusForSpecies( const mzrSpecies* ptrSpecies );
 
         bool isDecompositionRxn( const mzrReaction* ptrRxn ) const
         {

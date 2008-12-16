@@ -417,29 +417,6 @@ public:
     ParticipatingSpeciesRxnMap singleSubstrateRxns;
     ParticipatingSpeciesRxnMap doubleSubstrateRxns;
 
-    /////////////////////////
-    // NEWCODE
-    //
-    typedef boost::function<void( const ReactionType* )> NewReactionCallback;
-    typedef boost::function<void( const SpeciesType*)> NewSpeciesCallback;
-
-    std::vector<NewReactionCallback> newReactionCallbacks;
-    std::vector<NewSpeciesCallback> newSpeciesCallbacks;
-
-public:
-    void addNewReactionCallback( NewReactionCallback cb )
-    {
-        newReactionCallbacks.push_back( cb );
-    }
-
-    void addNewSpeciesCallback( NewSpeciesCallback cb )
-    {
-        newSpeciesCallbacks.push_back( cb );
-    }
-
-    //
-    /////////////////////////
-
 };
 
 

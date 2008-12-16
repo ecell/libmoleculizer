@@ -467,6 +467,19 @@ namespace mzr
         }
     }
 
+
+    
+    bool moleculizer::getRateExtrapolation( void ) const
+    {
+        return extrapolationEnabled;
+    }
+    
+    void moleculizer::setRateExtrapolation( bool rateExtrapolation )
+    {
+        extrapolationEnabled = rateExtrapolation;
+    }
+
+
     int moleculizer::DEFAULT_GENERATION_DEPTH = 1;
 
 }

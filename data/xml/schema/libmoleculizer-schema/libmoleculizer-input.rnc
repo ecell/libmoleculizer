@@ -1,0 +1,444 @@
+start = 
+   
+   element moleculizer-input
+   {
+      element model
+      {
+         ## The modifications section contains a list of all modifications
+         ## that may be associated with the mod-sites of mod-mols in the model.
+         element modifications
+         {
+            ## Each modification element represents a value that a mod-mol
+            ## may take at one of its modification sites.
+            element modification
+            {
+               attribute name{ xsd:token },
+               element weight-delta 
+               { 
+                  attribute daltons{ xsd:float } 
+               }
+            }*
+         },
+         
+         ## Mols are constituents of complexes.  In this section, each mol 
+         ## type that can occur in the model is defined.
+         element mols
+         {
+            ## Mod-mols represent simple proteins.  They may be defined with
+            ## any number of binding sites and any number of modification 
+            ## sites.
+            ## Small-mols are small molecules that participate in binding. 
+            ## Small-mols only have one binding site (its name it the same
+            ## as the name of the small-mol itself) and no modification
+            ## sites.
+            
+            ( element mod-mol { modMolContent } |
+               element small-mol { smallMolContent} )*
+         },
+         
+         ## This section is used for specifying allostery on a selected set 
+         ## of binding-sites in a complex.  
+         element allosteric-plexes
+         {
+            element allosteric-plex { allostericPlexContent }*
+         },
+         
+         ## This section is used for specifying allostery on a selected set
+         ## of binding-sites in a subcomplex.  
+         element allosteric-omnis
+         {
+            element allosteric-omni {allostericOmniContent}*
+         },
+         
+         ## This section is used for specifying each of the reaction rules, 
+         ## generalized reactions between subcomplexes, that when applied
+         ## to complex-species generate reactions.
+         element reaction-gens
+         {
+            ## Any of these three types of these reaction-generators may
+            ## appear in any order within this section.
+            ( element dimerization-gen { dimerizationGenContent } |
+               ( element omni-gen { omniGenContent } |
+                  element uni-mol-gen {uniMolGenContent} ))*
+         },
+         
+         ## This section is used for defining explicit complex species
+         ## and assigning them names.
+         element explicit-species
+         {
+            element explicit-species { explicitSpeciesContent }*
+         },
+         
+         ## This section is used for defining explicit reactions between
+         ## explicit-species.  ** Is this true? **
+         element explicit-reactions
+         {
+            element explicit-reaction { explicitReactionContent }*
+         } 
+      }
+   }
+
+smallMolContent =
+   attribute name{ xsd:token },
+   element weight { attribute daltons{ xsd:float } }
+
+modMolContent =
+   attribute name{ xsd:token },
+   
+   element binding-site
+   {
+      attribute name{ xsd:token },
+      element default-site-shape{ attribute name{ xsd:token } },
+      element site-shape { attribute name{ xsd:token } }
+   },
+   
+   element mod-site
+   {
+      attribute name{ xsd:token },
+      element default-mod-ref{ attribute name{ xsd:token } }
+   }*,
+   element allosteric-state
+   {
+      element mod-map
+      {
+         element mod-site-ref
+         { 
+            attribute name{ xsd:token },
+            element mod-ref{ attribute name{ xsd:token } }
+         }+
+      },
+      
+      element site-shape-map
+      {
+         element binding-site-ref
+         {
+            attribute name{ xsd:token },
+            element site-shape-ref{ attribute name{ xsd:token } }
+         }+
+      }
+   }*
+
+
+allostericPlexContent =
+   element allostericPlex
+   {
+      element plex
+      {
+         element mol-instance
+         {
+            attribute name{ xsd:token },
+            element mol-ref{ attribute name{ xsd:token } }
+         }+,
+         
+         element binding
+         {
+            element mol-instance-ref
+            {
+               attribute name{ xsd:token },
+               element binding-site-ref{ attribute name{ xsd:token } }
+            },
+            
+            element mol-instance-ref
+            {
+               attribute name{ xsd:token },
+               element binding-site-ref{ attribute name{ xsd:token } }
+            }
+         }*
+      },
+      
+      element instance-states
+      {
+         element mod-mol-instance-ref
+         {
+            attribute name{ xsd:token },
+            element mod-map
+            {
+               element mod-site-ref
+               {
+                  attribute name{ xsd:token },
+                  element mod-ref{ attribute name{ xsd:token } }
+               }
+            }
+         }*
+      },
+      
+      element allosteric-sites
+      {
+         element mol-instance-ref
+         {
+            attribute name{ xsd:token },
+            element binding-site-ref
+            {
+               attribute name{ xsd:token },
+               element site-shape-ref{ attribute name{ xsd:token } }
+            }
+         }+
+      }
+   }*
+
+allostericOmniContent =
+   
+   element plex
+   {
+      element mol-instance
+      {
+         attribute name{ xsd:token },
+         element mol-ref{ attribute name{ xsd:token } }
+      }+,
+      
+      element binding
+      {
+         element mol-instance-ref
+         {
+            attribute name{ xsd:token },
+            element binding-site-ref{ attribute name{ xsd:token } }
+         },
+         element mol-instance-ref
+         {
+            attribute name{ xsd:token },
+            element binding-site-ref{ attribute name{ xsd:token } }
+         }
+      }*
+   },
+   
+   element instance-states
+   {
+      element mod-mol-instance-ref
+      {
+         attribute name{ xsd:token },
+         element mod-map
+         {
+            element mod-site-ref
+            {
+               attribute name{ xsd:token },
+               element mod-ref{ attribute name{ xsd:token } }
+            }+
+         }
+      }*
+   },
+   
+   element allosteric-sites
+   {
+      element mol-instance-ref
+      {
+         attribute name{ xsd:token },
+         element binding-site-ref
+         {
+            attribute name{ xsd:token },
+            element site-shape-ref
+            {
+               attribute name{ xsd:token }
+            }
+         }
+      }+
+   } 
+
+
+dimerizationGenContent = 
+   element mol-ref 
+   { 
+      attribute name{ xsd:token },
+      element site-ref{ attribute name{ xsd:token } }
+   },
+   
+   element mol-ref 
+   {       
+      attribute name{ xsd:token },
+      element site-ref{ attribute name{ xsd:token } }
+   },
+   
+   element default-on-rate{ attribute value{ xsd:float } },
+   element default-off-rate{ attribute value{ xsd:float } },
+   
+   element allo-rates
+   {
+      element site-shape-ref{ attribute name{ xsd:token } },
+      element site-shape-ref{ attribute name{ xsd:token } },
+      element on-rate{ attribute value{ xsd:float } },
+      element off-rate{ attribute value{ xsd:float } }
+   }*
+
+omniGenContent = 
+   
+   element enabling-omniplex
+   {
+      element plex
+      {
+         element mol-instance
+         {
+            attribute name{ xsd:token },
+            element mol-ref{ attribute name{ xsd:token } }
+         }+,
+         
+         element binding
+         {
+            element mol-instance-ref 
+            {
+               attribute name{ xsd:token },
+               element binding-site-ref { attribute name{ xsd:token } }
+            },
+            
+            element mol-instance-ref 
+            {
+               attribute name{ xsd:token },
+               element binding-site-ref { attribute name{ xsd:token } }
+            }
+         }+
+      },
+
+      element  instance-states
+      {
+         element mod-mol-instance-ref
+         {
+            attribute name{ xsd:token },
+            element mod-map
+            {
+               element mod-site-ref
+               {
+                  attribute name{ xsd:token },
+                  element mod-ref{ attribute name{ xsd:token } }
+               }+
+            }
+         }+
+      }
+   },
+   
+   element small-mol-exchanges
+   {
+      element small-mol-exchange
+      {
+         element small-mol-instance-ref{ attribute name{ xsd:token } },
+         element small-mol-ref { attribute name{ xsd:token } }
+      }*
+   }?, 
+   
+   element modification-exchanges 
+   {
+      element modification-exchange
+      {
+         element mod-mol-instance-ref
+         {
+            attribute name{ xsd:token },
+            element mod-site-ref{ attribute name{ xsd:token } }
+         },
+         
+         element installed-mod-ref{ attribute name{ xsd:token } }
+      }+
+   }?,
+
+   element rate{ attribute value{ xsd:float } }
+
+uniMolGenContent = 
+   element enabling-mol
+   {
+      attribute name{ xsd:token } 
+   },
+   
+   element enabling-modifications
+   {
+      element mod-site-ref
+      {
+         attribute name{ xsd:token },
+         element mod-ref
+         {
+            attribute name{ xsd:token }
+         }
+      }+
+   },
+   
+   element modification-exchanges
+   {
+      element modification-exchange
+      {
+         element mod-site-ref
+         {
+            attribute name{ xsd:token }
+         },
+         
+         element installed-mod-ref
+         {
+            attribute name{ xsd:token }
+         }
+      }+
+   },
+   
+   element additional-reactant-species
+   {
+      attribute name{ xsd:token }
+   }?,
+   
+   element additional-product-species
+   {
+      attribute name{ xsd:token }
+   }?,
+   
+   element rate{ attribute value{ xsd:float } }
+
+explicitSpeciesContent = 
+   element plex-species
+   {
+      attribute name{ xsd:token },
+      element plex
+      {
+         element mol-instance
+         {
+            attribute name{ xsd:token },
+            element mol-ref
+            {
+               attribute name{ xsd:token }
+            }
+         }+,
+         
+         element binding
+         {
+            element mol-instance-ref
+            {
+               attribute name{ xsd:token },
+               element binding-site-ref{ attribute name{ xsd:token } }
+            },
+            
+            element mol-instance-ref
+            {
+               attribute name{ xsd:token },
+               element binding-site-ref{ attribute name{ xsd:token } }
+            }
+         }*
+      },
+      
+      element instance-states
+      {
+         element mod-mol-instance-ref
+         {
+            attribute name{ xsd:token },
+            element mod-map
+            {
+               element mod-site-ref
+               {
+                  attribute name{ xsd:token },
+                  element mod-ref
+                  {
+                     attribute name{ xsd:token } 
+                  }+
+               }
+            }
+         }
+      }
+   }
+
+explicitReactionContent = 
+   
+   element reaction
+   {
+      element substrate-species-ref
+      {
+         attribute name{ xsd:token },
+         attribute multiplicity {xsd:integer}
+      }+,
+      
+      element product-species-ref
+      {
+         attribute name{ xsd:token },
+         attribute multiplicity{ xsd:integer }
+      }+
+      
+   }*

@@ -101,51 +101,40 @@ namespace mzr
         void generateCompleteNetwork();
 
     public:
-        bool getModelHasBeenLoaded() const;
 
-
-        int getGenerationDepth( void ) const;
-        void setGenerateDepth( unsigned int generateDepth );
-
-        void setRateExtrapolation( bool rateExtrapolation )
-        {
-            extrapolationEnabled = rateExtrapolation;
-        }
-
-        bool getRateExtrapolation() const
-        {
-            return extrapolationEnabled;
-        }
-
-    public:
         void attachFileName( const std::string& aFileName );
         void attachString( const std::string& documentAsString );
         void attachDocument( xmlpp::Document* pDoc );
 
-    public:
-        const mzrSpecies*
-        getSpeciesWithName( const std::string& speciesName ) throw( mzr::IllegalNameXcpt );
+        bool getModelHasBeenLoaded() const;
 
     public:
+
+        int getGenerationDepth( void ) const;
+        void setGenerateDepth( unsigned int generateDepth );
+
+        void setRateExtrapolation( bool rateExtrapolation );
+        bool getRateExtrapolation() const;
+
+    public:
+        const mzrSpecies* 
+        getSpeciesWithName( const std::string& speciesName ) throw( mzr::IllegalNameXcpt );
+
         void
         incrementSpecies( std::string& speciesName );
 
         std::string
         getRandomSpeciesName() const;
 
-    protected:
-        void configureSpatialGenerationMode( xmlpp::Element* pSpatialGenerationModeElement );
-        void configureNonSpatialGenerationMode( xmlpp::Element* pSpatialGenerationModeElement );
-
-    protected:
-        void setModelHasBeenLoaded( bool value );
-
     public:
         xmlpp::Document*
         makeDomOutput( void ) throw( std::exception );
 
-    public:
+    protected:
+        void setModelHasBeenLoaded( bool value );
 
+
+    public:
         void recordUserNameToGeneratedNamePair( const std::string& userName,
                                                 const std::string& genName )
         {

@@ -83,45 +83,22 @@ namespace mzr
 {
     class unitsMgr;
 
-/*! \ingroup mzrGroup
-  \brief The main application object. */
+    /*! \ingroup mzrGroup
+      \brief The main application object. */
 
-// The main bulk of this class can be found in ReactionNetworkDescription.
+    // The main bulk of this class can be found in ReactionNetworkDescription.
     class moleculizer :
         public fnd::ReactionNetworkDescription<mzrSpecies, mzrReaction>
     {
 
     public:
-        enum INTERNAL_MODE { NONE,
-                             SPATIAL,
-                             NONSPATIAL };
-
-        typedef INTERNAL_MODE MODE;
-
-    public:
         // Moleculizer only has basic constructors and destructors.  
-
         moleculizer( void );
         ~moleculizer( void );
 
     public:
 
-//         MODE theRunningMode;
-
-//         MODE getMode() const
-//         {
-//             return theRunningMode;
-//         }
-
-//         void enableSpatialReactionNetworkGeneration();
-//         void enableNonspatialReactionNetworkGeneration( bool extrapolation = false );
-
         void generateCompleteNetwork();
-
-        // Write this function, which can set the operation based on what is in the 
-        // provided xml file.
-        //  int setConfigurationFromRules( xmlpp:Element* pRulesDocument);
-
 
     public:
         bool getModelHasBeenLoaded() const;
@@ -169,10 +146,6 @@ namespace mzr
 
     public:
 
-//         void recordPlexParameter( const std::string& plexName,
-//                                   const std::string& parameterName,
-//                                   const double& parameterValue );
-
         void recordUserNameToGeneratedNamePair( const std::string& userName,
                                                 const std::string& genName )
         {
@@ -194,12 +167,6 @@ namespace mzr
 
             return iter->second;
         }
-
-//         Real getKDForSpecies(const mzrSpecies* mzrSpec) const throw(utl::xcpt);
-//         Real getRadiusForSpecies( const mzrSpecies* mzrSpec) const throw( utl::xcpt );
-//         Real getKForReaction(const mzrReaction*) const throw(utl::xcpt);
-//         Real getKaForReaction( const mzrReaction*) const throw(utl::xcpt);
-//         Real getMassForSpecies( const mzrSpecies* ptrSpec) const throw(utl::xcpt);
 
     protected:
         void
@@ -226,29 +193,7 @@ namespace mzr
         void
         configureRuntime( xmlpp::Element* pExecutionParameters ) throw( std::exception );
 
-        // NEW STUFF --------------
-
         std::map<std::string, std::string> userNameToSpeciesIDChart;
-
-    
-
-    protected:
-//         std::map<SpeciesID, Real> radiusChart; // These are in meters.
-//         std::map<SpeciesID, Real> k_DChart;
-
-//         std::map<const mzrReaction*, Real> reactionRateChart;
-//         std::map<const mzrReaction*, Real> binaryActivationEnergyChart;
-
-//         std::map<const fnd::coreRxnGen*, double> binaryActivationEnergiesParameterLookup;
-//         std::map<const fnd::coreRxnGen*, double> unaryReactionRatesParameterLookup;
-//         std::map<const fnd::coreRxnGen*, double> binaryReactionRatesParameterLookup;
-
-//         void installKForNewUnaryReaction( const mzrReaction* mzrReaction );
-//         void installKForNewBinaryReaction( const mzrReaction* mzrReaction );
-//         void installKaForNewBinaryReaction( const mzrReaction* mzrReaction );
-//         void installRadiusForNewSpecies( const mzrReaction* mzrRxn );
-//         void installKdForNewSpecies( const mzrReaction* mzrRxn );
-//         double calculateNewRadiusForSpecies( const mzrSpecies* ptrSpecies );
 
         bool isDecompositionRxn( const mzrReaction* ptrRxn ) const
         {
@@ -272,9 +217,8 @@ namespace mzr
                 return false;
         }
 
-        ////////////////////////////////////////////////
-
     public:
+        ////////////////////////////////////////////////
         // Units loaded by the user, waiting for destruction.
         //
         // This class is the manager for units, and the place that new units
@@ -293,93 +237,6 @@ namespace mzr
         bool extrapolationEnabled;
     };
 
-    class BadModeXcpt : public utl::xcpt
-    {
-    public:
-        static std::string
-        mkMsg( const std::string& paramName, const std::string& speciesName, mzr::moleculizer::MODE mode);
-
-        static std::string
-        mkMsg( const std::string& paramName, const mzr::mzrReaction* mzrReaction, mzr::moleculizer::MODE mode);
-
-        BadModeXcpt( const std::string& paramName, 
-                     const std::string& speciesName,
-                     moleculizer::MODE mode)
-            :
-            utl::xcpt( mkMsg( paramName,
-                              speciesName,
-                              mode))
-        {}
-
-        BadModeXcpt( const std::string& paramName, 
-                     const mzr::mzrReaction* mzrReaction,
-                     mzr::moleculizer::MODE mode)
-            :
-            utl::xcpt( mkMsg( paramName,
-                              mzrReaction,
-                              mode))
-        {}
-
-    protected:
-        static std::string 
-        getModeString( moleculizer::MODE mode);
-
-    };
-
 }
-
-// class spatialMoleculizer : public moleculizer
-// {
-// public:
-//     double calculateSpeciesRadius( const mzr::mzrSpecies* mzrSpecies)
-//     {
-//         double mass = mzrSpecies->getWeight();
-//         double volume = mass * invProteinDensity;
-        
-//         double radius = pow( 3.0 * volume / (4.0 * Pi), 1.0 / 3.0);
-//         return radius;
-//     }
-
-//     void setGlobalDiffusionRate(const double globalDiffusionCoeff)
-//     {
-//         diffusionRate = globalDiffusionCoeff;
-//     }
-
-//     void setDiffusionRate(const mzr::mzrSpecies* pSpecies, const double& diffusionRate)
-//     {
-//         diffusionRates[ pSpecies ] = diffusionRate;
-//     }
-
-//     void getDiffusionRate( const mzr::mzrSpecies* pSpecies )
-//     {
-//         if (diffusionRate.find( pSpecies ) != diffusionRate.end() )
-//         {
-//             return diffusionRate[ pSpecies ];
-//         }
-//         else
-//         {
-//             return globalDiffusionRate;
-//         }
-//     }
-
-//     double calculateActivationEnergy( const mzr::mzrReaction* pMzrReaction)
-//     {
-//         double rate = pMzrReaction->k;
-
-//         double sigma = 0.0f;
-//         double D = 0.0f;
-        
-//         BOOST_FOREACH( mzr::mzrSpecies*
-
-
-//     }
-
-// private:
-//     // In daltons/m**3
-//     const float proteinDensity;
-//     float globalDiffusionRate;
-
-//     std::map<const mzr::mzrSpecies*, double> diffusionRates;
-// };
 
 #endif

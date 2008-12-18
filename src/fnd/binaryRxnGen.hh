@@ -126,24 +126,17 @@ public:
                                            *this,
                                            rStimulus.getNotificationDepth() );
 
-// This does not work as a for_each loop, because of some gcc bug involving
-// templates/inheritance that causes this->end() to be incorrectly interpreted
-// such that the loop is overrun, causing junk to be processed by anotherContext
-// and segfaulting.  On Monday, I shall report this bug to gcc, but for the moment
-// I am a GOLDEN GOD.
-
-        for ( uint ii = 0; ii != rOtherFtr.contexts.size(); ++ii )
+	// Somehow this was not working as a for_each loop, overrunning where 
+	// the rOtherFtr.contexts vector and crashing.  Writing the loop
+	// explicitly like so fixed the problem.
+        for ( unsigned int ii = 0; ii != rOtherFtr.contexts.size(); ++ii )
         {
             anotherContext( rOtherFtr.contexts[ii] );
         }
-
-//       for_each(rOtherFtr.contexts.begin(),
-// 	       rOtherFtr.contexts.end(),
-// 	       );
     }
 
-// Note that the "generateDepth" param here comes straight from
-// the featureStimulus; it has not yet been decremented.
+  // Note that the "generateDepth" param here comes straight from
+  // the featureStimulus; it has not yet been decremented.
     virtual void
     makeBinaryReactions( const newContextClass& rNewContext,
                          const otherContextType& rOtherContext,

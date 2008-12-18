@@ -13,8 +13,8 @@ SUBDIRS = fnd \
 	nmr \
 	plex \
 	dimer \
-	ftr \
-	python 
+	ftr 
+## 	python 
 
 MOLECULIZER_DIRNAME = @MOLECULIZER_DIRNAME@
 moleculizerheaderdir=${include_dir}/${MOLECULIZER_DIRNAME}
@@ -41,22 +41,22 @@ LIBFTR = ftr/libmoleculizer_ftr.la
 ALL_MZR_LIBS = $(LIBFND) $(LIBUTL) $(LIBMZR) $(LIBSTOCH) $(LIBNMR) $(LIBNMR) $(LIBCPX) $(LIBMOL) $(LIBPLEX) $(LIBDIMER) $(LIBFTR) 
 bin_PROGRAMS = moleculizer 
 
-lib_LTLIBRARIES = libmoleculizer_super.la
+# lib_LTLIBRARIES = libmoleculizer_super.la
 
-libmoleculizer_super_la_SOURCES =
+# libmoleculizer_super_la_SOURCES =
 
-nodist_EXTRA_libmoleculizer_super_la_SOURCES = dummy.cpp
-libmoleculizer_super_la_LIBADD = \
-	$(LIBFND) \
-	$(LIBUTL) \
-	$(LIBMZR) \
-	$(LIBSTOCH) \
-	$(LIBNMR) \
-	$(LIBCPX) \
-	$(LIBMOL) \
-	$(LIBPLEX) \
-	$(LIBDIMER) \
-	$(LIBFTR)
+# nodist_EXTRA_libmoleculizer_super_la_SOURCES = dummy.cpp
+# libmoleculizer_super_la_LIBADD = \
+# 	$(LIBFND) \
+# 	$(LIBUTL) \
+# 	$(LIBMZR) \
+# 	$(LIBSTOCH) \
+# 	$(LIBNMR) \
+# 	$(LIBCPX) \
+# 	$(LIBMOL) \
+# 	$(LIBPLEX) \
+# 	$(LIBDIMER) \
+# 	$(LIBFTR)
 
 
 moleculizer_LDADD = \

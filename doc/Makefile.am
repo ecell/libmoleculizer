@@ -1,4 +1,3 @@
-SUBDIRS=manual 
+SUBDIRS=manual demos 
 
 # Removing the demos directory
-# demos 

@@ -282,7 +282,7 @@ namespace nmr
 
     void ComplexSpeciesOutputMinimizer::maximallyExtendPermutation(Permutation& refPermToExtend, ComplexSpeciesCref aComplexSpecies)
     {
-        uint iii = 0;
+        unsigned int iii = 0;
 
         // We iterate over the inversePerm in order to ensure that things are done from most significant to least significant in terms of 
         // the naming order.  

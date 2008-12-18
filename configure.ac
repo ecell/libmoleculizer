@@ -30,11 +30,11 @@ fi
 dnl
 dnl
 AC_CHECK_LIB(python${PYTHON_VERSION},main,,AC_MSG_ERROR([could not find libpython.]))
-AC_CHECK_LIB(boost_python,main,,AC_MSG_ERROR([could not find libboost_python.]),-lpython${PYTHON_VERSION})
+dnl AC_CHECK_LIB(boost_python,main,,AC_MSG_ERROR([could not find libboost_python.]),-lpython${PYTHON_VERSION})
 dnl
 dnl
 dnl PKG_CHECK_MODULES(LIBXML, libxml++-1.0)
-PKG_CHECK_MODULES(LIBXML, libxml++-2.6)
+PKG_CHECK_MODULES(LIBXML, libxml++-2.6 >= 2.10)
 AC_SUBST(LIBXML_CFLAGS)
 AC_SUBST(LIBXML_LIBS)
 

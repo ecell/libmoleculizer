@@ -116,12 +116,18 @@ namespace mzr
         void setRateExtrapolation( bool rateExtrapolation );
         bool getRateExtrapolation() const;
 
+        int getNumberOfPlexFamilies() const;
+
+        void 
+        getSpeciesInSpeciesStream(const std::string& streamName,
+                                  std::vector<const mzr::mzrSpecies*>& speciesVector) const;
+
+
+        void getSpeciesStreams( std::vector<std::string>& speciesStreamNames) const;
+
     public:
         const mzrSpecies* 
         getSpeciesWithName( const std::string& speciesName ) throw( mzr::IllegalNameXcpt );
-
-        void
-        incrementSpecies( std::string& speciesName );
 
         std::string
         getRandomSpeciesName() const;
@@ -184,29 +190,7 @@ namespace mzr
 
         std::map<std::string, std::string> userNameToSpeciesIDChart;
 
-        bool isDecompositionRxn( const mzrReaction* ptrRxn ) const
-        {
-            if ( ptrRxn->getNumberOfReactants() == 1 && ptrRxn->getNumberOfProducts() == 2 )
-                return true;
-            else return false;
-        }
-
-        bool isDimerizationRxn( const mzrReaction* ptrRxn ) const
-        {
-            if ( ptrRxn->getNumberOfReactants() == 2 && ptrRxn->getNumberOfProducts() == 1 )
-                return true;
-            else return false;
-        }
-
-        bool isOneToOneRxn( const mzrReaction* ptrRxn ) const
-        {
-            if ( ptrRxn->getNumberOfReactants() == 1 && ptrRxn->getNumberOfProducts() == 1 )
-                return true;
-            else
-                return false;
-        }
-
-    public:
+    private:
         ////////////////////////////////////////////////
         // Units loaded by the user, waiting for destruction.
         //
@@ -221,7 +205,7 @@ namespace mzr
 
         static int DEFAULT_GENERATION_DEPTH;
 
-    private:
+
         bool modelLoaded;
         bool extrapolationEnabled;
     };

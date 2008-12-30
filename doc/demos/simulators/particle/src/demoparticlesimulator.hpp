@@ -40,13 +40,13 @@ public:
     SimpleParticleSimulator( std::string rulesfile, std::string modelfile )
     {
 
-        ptrSpeciesReactionGenerator->enableSpatialReactionNetworkGeneration();
+//        ptrSpeciesReactionGenerator->enableSpatialReactionNetworkGeneration();
         loadRules( rulesfile );
         
-        boost::function<void( const mzrSpecies* )> cb1;
-        cb1 = std::bind1st( std::mem_fun( &SimpleParticleSimulator::displayNewSpeciesMsg ), this );
+//         boost::function<void( const mzrSpecies* )> cb1;
+//         cb1 = std::bind1st( std::mem_fun( &SimpleParticleSimulator::displayNewSpeciesMsg ), this );
 
-        ptrSpeciesReactionGenerator->addNewSpeciesCallback( cb1 );
+//         ptrSpeciesReactionGenerator->addNewSpeciesCallback( cb1 );
 
 
         loadModel( modelfile );

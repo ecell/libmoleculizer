@@ -58,9 +58,6 @@
             </mol-ref>
           </mol-instance>
         </plex>
-        <parameters>
-          <parameter name="kD" value="100.0" />
-        </parameters>
       </plex-species>
       <plex-species name="B-singleton">
         <plex>
@@ -69,9 +66,6 @@
             </mol-ref>
           </mol-instance>
         </plex>
-        <parameters>
-          <parameter name="kD" value="500.0" />
-        </parameters>
       </plex-species>
     </explicit-species>
     <explicit-reactions>
@@ -80,5 +74,25 @@
   </volume>
   </model>
   <streams>
+    <species-streams>
+      <omni-species-stream name="A-B dimer">
+        <plex>
+          <mol-instance name="the-A">
+            <mol-ref name="A" />
+          </mol-instance>
+          <mol-instance name="the-B">
+            <mol-ref name="B" />
+          </mol-instance>
+          <binding>
+            <mol-instance-ref name="the-A">
+              <binding-site-ref name="to-B" />
+            </mol-instance-ref>
+            <mol-instance-ref name="the-B">
+              <binding-site-ref name="to-A" />
+            </mol-instance-ref>
+          </binding>
+        </plex>
+      </omni-species-stream>
+    </species-streams>
   </streams>
 </moleculizer-input>

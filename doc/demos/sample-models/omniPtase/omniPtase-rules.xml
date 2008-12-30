@@ -288,7 +288,7 @@
     <explicit-reactions>
     </explicit-reactions>
     <volume liters="1.0e-12">
-</volume>
-</model>
+    </volume>
+  </model>
 </moleculizer-input>
 

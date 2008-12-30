@@ -57,6 +57,8 @@ namespace cpx
         typedef plexSpeciesT plexSpeciesType;
         typedef plexFamilyT plexFamilyType;
         typedef omniPlexT omniPlexType;
+
+        typedef typename plexSpeciesT::msDumpableType dumpableType;
         
         typedef andPlexQueries<plexSpeciesType,
                                omniPlexType> stateQueryType;
@@ -68,9 +70,13 @@ namespace cpx
         typedef fnd::newContextStimulus<contextType> stimulusType;
         
     private:
+        // If a dumpable is really attached to this feature, then
+        // this points to it; otherwise null.
+        dumpableType* pDumpable;
         
     public:
-        omniPlexFeature( void )
+        omniPlexFeature( void ) :
+            pDumpable(0)
         {}
         
         // Generate reactions
@@ -80,6 +86,15 @@ namespace cpx
         virtual
         void
         respond( const typename omniPlexFeature::stimulusType& rNewFeatureContext );
+
+        // To "turn on" dumping of the species in this omniplex.
+        // These aren't query-based dumpables, since the omniplex
+        // itself does all the querying.
+        void
+        setDumpable(typename omniPlexFeature::dumpableType* ptrDumpable)
+        {
+            pDumpable = ptrDumpable;
+        }
     };
     
     template<class molT,
@@ -110,6 +125,18 @@ namespace cpx
         {
             // Notify reaction generators
             fnd::feature<contextType>::respond( rStim );
+
+            // Notify dumpable if any.
+            if(pDumpable)
+            {
+                // Note that this just gets back the newSpeciesStimulus.
+                // This really stinks.
+                fnd::newSpeciesStimulus<plexSpeciesType>
+                    dumpStim(pSpecies,
+                             rStim.getNotificationDepth());
+                
+                pDumpable->respond(dumpStim);
+	  }
         }
     }
 }

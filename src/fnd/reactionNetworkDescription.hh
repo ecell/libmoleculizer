@@ -220,20 +220,10 @@ public:
         {
             theSpeciesListCatalog.insert( std::make_pair( speciesHandle, pSpecies ) );
             theDeltaSpeciesList.push_back( pSpecies );
-
-            // It's a new species, so call all the new species callbacks on this.  
-            BOOST_FOREACH( NewSpeciesCallback cb, newSpeciesCallbacks)
-            {
-                cb( pSpecies );
-            }
-
             return true;
         }
-        else
-        {
-            return false;
-        }
-
+        
+        return false;
     }
 
     bool
@@ -248,20 +238,10 @@ public:
         {
             theSpeciesListCatalog.insert( std::make_pair( speciesHandle, pSpecies ) );
             theDeltaSpeciesList.push_back( pSpecies );
-
-            // It's a new species, so call all the new species callbacks on this.  
-            BOOST_FOREACH( NewSpeciesCallback cb, newSpeciesCallbacks)
-            {
-                cb( pSpecies );
-            }
-
             return true;
         }
-        else
-        {
-            return false;
-        }
-
+        
+        return false;
     }
 
     bool
@@ -300,12 +280,6 @@ public:
         default:
             throw utl::FatalXcpt("Error in reactionNetworkCatalog::recordReaction.  Reaction is non-standard. (jfjhnnnnnfhd348)"  );
             break;
-        }
-
-        // Call each of the registered callbacks on the newly installed reaction.
-        BOOST_FOREACH( NewReactionCallback cb, newReactionCallbacks )
-        {
-            cb( pRxn );
         }
 
         return true;
@@ -409,29 +383,6 @@ public:
     ReactionList zeroSubstrateRxns;
     ParticipatingSpeciesRxnMap singleSubstrateRxns;
     ParticipatingSpeciesRxnMap doubleSubstrateRxns;
-
-    /////////////////////////
-    // NEWCODE
-    //
-    typedef boost::function<void( const ReactionType* )> NewReactionCallback;
-    typedef boost::function<void( const SpeciesType*)> NewSpeciesCallback;
-
-    std::vector<NewReactionCallback> newReactionCallbacks;
-    std::vector<NewSpeciesCallback> newSpeciesCallbacks;
-
-public:
-    void addNewReactionCallback( NewReactionCallback cb )
-    {
-        newReactionCallbacks.push_back( cb );
-    }
-
-    void addNewSpeciesCallback( NewSpeciesCallback cb )
-    {
-        newSpeciesCallbacks.push_back( cb );
-    }
-
-    //
-    /////////////////////////
 
 };
 

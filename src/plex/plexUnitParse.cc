@@ -71,24 +71,24 @@ namespace plx
     void
     plexUnit::parseDomInput( xmlpp::Element* pRootElt,
                              xmlpp::Element* pModelElt,
-                             xmlpp::Element* pStreamElt )
+                             xmlpp::Element* pStreamsElt )
         throw( utl::xcpt )
     {
         // First we pick out a number of elements and lists of elements
         // for tranversal.
         
-        //     // Species streams.
-        //     xmlpp::Element* pSpeciesStreamsElt
-        //       = utl::dom::mustGetUniqueChild(pStreamsElt,
-        // 				     mzr::eltName::speciesStreams);
+        // Species streams.
+        xmlpp::Element* pSpeciesStreamsElt
+            = utl::dom::mustGetUniqueChild(pStreamsElt,
+                                           mzr::eltName::speciesStreams);
         
-        //     xmlpp::Node::NodeList omniSpeciesStreamNodes
-        //       = pSpeciesStreamsElt
-        //       ->get_children(eltName::omniSpeciesStream);
+        xmlpp::Node::NodeList omniSpeciesStreamNodes
+            = pSpeciesStreamsElt
+            ->get_children(eltName::omniSpeciesStream);
         
-        //     xmlpp::Node::NodeList plexSpeciesStreamNodes
-        //       = pSpeciesStreamsElt
-        //       ->get_children(eltName::plexSpeciesStream);
+        xmlpp::Node::NodeList plexSpeciesStreamNodes
+            = pSpeciesStreamsElt
+            ->get_children(eltName::plexSpeciesStream);
         
         // Allosteric omnis.
         xmlpp::Element* pAlloOmnisElt
@@ -163,11 +163,11 @@ namespace plx
         // any species of complexes are generated.
         
         // Parse query-based dumpables for omniplexes.
-        //     std::for_each(omniSpeciesStreamNodes.begin(),
-        // 		  omniSpeciesStreamNodes.end(),
-        // 		  parseOmniSpeciesStream(rMzrUnit,
-        // 					 rMolUnit,
-        // 					 *this));
+        std::for_each(omniSpeciesStreamNodes.begin(),
+                      omniSpeciesStreamNodes.end(),
+                      parseOmniSpeciesStream(rMzrUnit,
+                                             rMolUnit,
+                                             *this));
         
         // Parse query-based dumpables for plexes.
         //     std::for_each(plexSpeciesStreamNodes.begin(),

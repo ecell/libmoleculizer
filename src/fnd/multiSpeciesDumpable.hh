@@ -35,80 +35,53 @@
 #include "fnd/dumpable.hh"
 #include "fnd/sensitive.hh"
 #include "fnd/newSpeciesStimulus.hh"
+#include <vector>
+#include <iostream>
+#include <boost/foreach.hpp>
 
 namespace fnd
 {
-// This doeesn't include any output (state dump) functionality.  Decided to
-// keep xml parsing and output out of template components like this.
-
-template<class speciesT,
-class dumpArgT>
-class multiSpeciesDumpable :
-            public dumpable<dumpArgT>,
-            public fnd::sensitive<fnd::newSpeciesStimulus<speciesT> >
-{
-protected:
-    std::vector<const speciesT*> dumpedSpecies;
-
-public:
-    multiSpeciesDumpable( const std::string& rName ) :
+    // This doeesn't include any output (state dump) functionality.  Decided to
+    // keep xml parsing and output out of template components like this.
+    
+    template<class speciesT,
+             class dumpArgT>
+    class multiSpeciesDumpable :
+        public dumpable<dumpArgT>,
+        public fnd::sensitive<fnd::newSpeciesStimulus<speciesT> >
+    {
+    protected:
+        std::vector<const speciesT*> dumpedSpecies;
+        
+    public:
+        multiSpeciesDumpable( const std::string& rName ) :
             dumpable<dumpArgT> ( rName )
-    {}
+        {}
+        
+        virtual
+        ~multiSpeciesDumpable( void )
+        {}
+        
+        virtual void
+        doDump( const dumpArgT& rDumpArg ) const
+        {
+        }
 
-    virtual
-    ~multiSpeciesDumpable( void )
-    {}
+        
+        const std::vector<const speciesT*>* 
+        getSpeciesInMultiSpeciesStream() const
+        {
+            return &dumpedSpecies;
+        }
 
-//         virtual int
-//         getTotalPop (const dumpArgT& rDumpArg) const;
 
-    virtual void
-    doDump( const dumpArgT& rDumpArg ) const
-    {
-        // rDumpArg.getOstream() << getTotalPop (rDumpArg);
-    }
-
-    virtual
-    void
-    respond( const fnd::newSpeciesStimulus<speciesT>& rStimulus )
-    {
-        dumpedSpecies.push_back( rStimulus.getSpecies() );
-    }
-};
-
-//     template<class speciesT>
-//     class addDumpedSpeciesPop :
-//                 public std::unary_function<const speciesT*, void>
-//     {
-//         int& rTotalPop;
-
-//     public:
-//         addDumpedSpeciesPop (int& refTotalPop) :
-//                 rTotalPop (refTotalPop)
-//         {}
-
-//         void
-//         operator() (const speciesT* pSpecies) const
-//         {
-//             rTotalPop += pSpecies->getPop();
-//         }
-//     };
-
-// The automatically defined version doesn't use the dumpArg
-// in the process of getting the total population of the species.
-//     template<class speciesT,
-//     class dumpArgT>
-//     int
-//     multiSpeciesDumpable<speciesT,
-//     dumpArgT>::
-//     getTotalPop (const dumpArgT& rDumpArg) const
-//     {
-//         int totalPop = 0;
-//         std::for_each (dumpedSpecies.begin(),
-//                        dumpedSpecies.end(),
-//                        addDumpedSpeciesPop<speciesT> (totalPop) );
-//         return totalPop;
-//     }
+        virtual
+        void
+        respond( const fnd::newSpeciesStimulus<speciesT>& rStimulus )
+        {
+            dumpedSpecies.push_back( rStimulus.getSpecies() );
+        }
+    };
 }
 
 #endif // FND_MULTISPECIESDUMPABLE_H

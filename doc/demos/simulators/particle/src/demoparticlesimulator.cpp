@@ -133,8 +133,7 @@ void SimpleParticleSimulator::doSingleUnaryReaction()
 
 void SimpleParticleSimulator::displayNewSpeciesMsg( const mzrSpecies* mzrSpec)  const
 {
-    std::cout << "$$$New species ' " << mzrSpec->getName() << "' created with radius " << ptrSpeciesReactionGenerator->getRadiusForSpecies( mzrSpec )
-              << " and kD = " << ptrSpeciesReactionGenerator->getKDForSpecies(mzrSpec) << std::endl;
+    std::cout << "$$$New species ' " << mzrSpec->getName() << "' created." << std::endl;
 }
 
 
@@ -148,7 +147,6 @@ void SimpleParticleSimulator::printRxn( const mzr::mzrReaction* pMzrRxn) const
 void SimpleParticleSimulator::printSpec( const mzr::mzrSpecies* pSpec) const
 {
     std::cout << pSpec->getName() << "\n\t" 
-              << "mass = " << pSpec->getWeight() << "\n\t" 
-              << "r    = " << ptrSpeciesReactionGenerator->getRadiusForSpecies( pSpec ) << "\n\t"
-              << "kD   = " << ptrSpeciesReactionGenerator->getKDForSpecies( pSpec )<< std::endl;
+              << "mass = " << pSpec->getWeight() << std::endl;
+
 }

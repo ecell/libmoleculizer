@@ -101,11 +101,6 @@ public:
 
             notify( notifyDepth );
         }
-        else
-        {
-            std::cout << '\n';
-        }
-
     }
 };
 }

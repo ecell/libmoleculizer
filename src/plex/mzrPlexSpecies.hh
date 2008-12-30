@@ -40,6 +40,7 @@
 #include "fnd/basicDumpable.hh"
 #include "cpx/plexSpcsMixin.hh"
 #include "mzr/mzrSpecies.hh"
+#include "mzr/mzrSpeciesDumpable.hh"
 
 namespace plx
 {
@@ -54,6 +55,10 @@ private:
     mutable bool nameGenerated;
     mutable std::string name;
 public:
+
+    typedef mzr::querySpeciesDumpable<mzrPlexSpecies> queryDumpableType;
+
+    typedef mzr::multiSpeciesDumpable<mzrPlexSpecies> msDumpableType;
 
     mzrPlexSpecies( mzrPlexFamily& rContainingFamily,
                     const cpx::siteToShapeMap& rSiteParams,

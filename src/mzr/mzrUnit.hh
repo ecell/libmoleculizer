@@ -79,7 +79,7 @@ class mzrUnit :
     utl::autoVector<utl::autoVector<mzrReaction> > reactionFamilies;
 
     // All dumpables.
-    utl::autoCatalog<fnd::dumpable<fnd::basicDumpable::dumpArg> >dumpables;
+    utl::autoCatalog<fnd::dumpable<fnd::basicDumpable::dumpArg> > dumpables;
 
     // Memory management for queries of all kinds.  The basicQuery
     // base class serves no purpose other than memory management here.
@@ -112,12 +112,6 @@ public:
     {
         return generateDepth;
     }
-
-//         molarFactorGlobal&
-//         getMolarFactor (void)
-//         {
-//             return theMolarFactor;
-//         }
 
     // This doesn't register the species for deletion, so it can be used
     // for explicit plexSpecies, which are deleted by their plexFamilies.
@@ -202,6 +196,15 @@ public:
     {
         return dumpables.addEntry( pDumpable->getName(),
                                    pDumpable );
+    }
+
+    void
+    getListOfDumpables( std::vector<std::string>& streamVec) const
+    {
+        BOOST_FOREACH( const utl::autoCatalog<fnd::dumpable<fnd::basicDumpable::dumpArg> >::value_type& vt, dumpables)
+        {
+            streamVec.push_back( vt.first );
+        }
     }
 
     // Throws an exception if there is already a dumpable

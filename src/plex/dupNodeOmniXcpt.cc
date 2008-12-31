@@ -34,16 +34,16 @@
 
 namespace plx
 {
-std::string
-dupNodeOmniXcpt::
-mkMsg( const xmlpp::Node* pParentNode )
-{
-    std::ostringstream msgStream;
-    msgStream << utl::xcpt::mkMsg()
-    << utl::dom::xcpt::mkMsg( pParentNode )
-    << "Attempt to attach more than one omniplex to this node.";
-    return msgStream.str();
-}
+    std::string
+    dupNodeOmniXcpt::
+    mkMsg( const xmlpp::Node* pParentNode )
+    {
+        std::ostringstream msgStream;
+        msgStream << utl::xcpt::mkMsg()
+                  << utl::dom::xcpt::mkMsg( pParentNode )
+                  << "Attempt to attach more than one omniplex to this node.";
+        return msgStream.str();
+    }
 }
 
 

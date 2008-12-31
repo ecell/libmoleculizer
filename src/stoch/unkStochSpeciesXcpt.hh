@@ -36,20 +36,20 @@
 
 namespace stoch
 {
-class unkStochSpeciesXcpt :
-            public utl::xcpt
-{
-    static std::string
-    mkMsg( std::string requestedName,
-           xmlpp::Node* pRequestingNode = 0 );
-
-public:
-    unkStochSpeciesXcpt( std::string requestedName,
-                         xmlpp::Node* pRequestingNode = 0 ) :
+    class unkStochSpeciesXcpt :
+        public utl::xcpt
+    {
+        static std::string
+        mkMsg( std::string requestedName,
+               xmlpp::Node* pRequestingNode = 0 );
+        
+    public:
+        unkStochSpeciesXcpt( std::string requestedName,
+                             xmlpp::Node* pRequestingNode = 0 ) :
             utl::xcpt( mkMsg( requestedName,
                               pRequestingNode ) )
-    {}
-};
+        {}
+    };
 }
 
 #endif // STOCH_UNKSTOCHSPECIESXCPT_H

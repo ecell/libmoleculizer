@@ -40,57 +40,57 @@
 
 namespace cpx
 {
-template<class omniPlexT> class subPlexSpec;
-
-// This is used to describe the shapes of the binding sites in a particular
-// plexSpecies.  It is also used to record the allosteric variations in site
-// shapes connected with an omniplex or with a particular plex structure
-// (see plexFamily).
-//
-// The "setSiteShape(s)" methods support Moleculizer's (unwholesome and
-// really completely unsatisfactory) way of bringing about a number of
-// allosteric changes by simply sequentially overlaying their effects on
-// binding site shapes.
-class siteToShapeMap :
-            public std::map<siteSpec, const siteShape*>
-{
-public:
-
-// Returns null if the siteSpec is unmapped.
-    const siteShape*
-    getSiteShape( const siteSpec& rPlexSiteSpec ) const;
-
-// Throws an exception if the siteSpec is unmapped.
-    const siteShape*
-    mustGetSiteShape( const siteSpec& rPlexSiteSpec ) const
-    throw( utl::xcpt );
-
-// Forces insertion of the one given site-shape pair.
-    void
-    setSiteShape( const siteSpec& rPlexSiteSpec,
-                  const siteShape* pSiteShape );
-
-// Same as above, but does the insertion through the
-// given subPlexSpec.
-    template<class omniPlexT>
-    void
-    setSiteShape( const siteSpec& rPlexSiteSpec,
-                  const siteShape* pSiteShape,
-                  const subPlexSpec<omniPlexT>& rSubPlexSpec );
-
-// Forces insertion of all the site-to-shape entries from the
-// given rSiteToShapeMap.
-    void
-    setSiteShapes( const siteToShapeMap& rSiteToShapeMap );
-
-// Forces insertion of all the site-to-shape entries from the given
-// rSiteToShapeMap, but pushes all of the site specifications
-// through the given injection.
-    template<class omniPlexT>
-    void
-    setSiteShapes( const siteToShapeMap& rSiteToShapeMap,
-                   const subPlexSpec<omniPlexT>& rSubPlexSpec );
-};
+    template<class omniPlexT> class subPlexSpec;
+    
+    // This is used to describe the shapes of the binding sites in a particular
+    // plexSpecies.  It is also used to record the allosteric variations in site
+    // shapes connected with an omniplex or with a particular plex structure
+    // (see plexFamily).
+    //
+    // The "setSiteShape(s)" methods support Moleculizer's (unwholesome and
+    // really completely unsatisfactory) way of bringing about a number of
+    // allosteric changes by simply sequentially overlaying their effects on
+    // binding site shapes.
+    class siteToShapeMap :
+        public std::map<siteSpec, const siteShape*>
+    {
+    public:
+        
+        // Returns null if the siteSpec is unmapped.
+        const siteShape*
+        getSiteShape( const siteSpec& rPlexSiteSpec ) const;
+        
+        // Throws an exception if the siteSpec is unmapped.
+        const siteShape*
+        mustGetSiteShape( const siteSpec& rPlexSiteSpec ) const
+            throw( utl::xcpt );
+        
+        // Forces insertion of the one given site-shape pair.
+        void
+        setSiteShape( const siteSpec& rPlexSiteSpec,
+                      const siteShape* pSiteShape );
+        
+        // Same as above, but does the insertion through the
+        // given subPlexSpec.
+        template<class omniPlexT>
+        void
+        setSiteShape( const siteSpec& rPlexSiteSpec,
+                      const siteShape* pSiteShape,
+                      const subPlexSpec<omniPlexT>& rSubPlexSpec );
+        
+        // Forces insertion of all the site-to-shape entries from the
+        // given rSiteToShapeMap.
+        void
+        setSiteShapes( const siteToShapeMap& rSiteToShapeMap );
+        
+        // Forces insertion of all the site-to-shape entries from the given
+        // rSiteToShapeMap, but pushes all of the site specifications
+        // through the given injection.
+        template<class omniPlexT>
+        void
+        setSiteShapes( const siteToShapeMap& rSiteToShapeMap,
+                       const subPlexSpec<omniPlexT>& rSubPlexSpec );
+    };
 }
 
 #include "cpx/siteToShapeMapImpl.hh"

@@ -78,9 +78,9 @@ namespace cpx
                 throw duplicateModSiteNameXcpt( rSiteName );
             }
         }
-
+        
         // Removed this code because it doesn't seem to be used anywhere.
-
+        
         //         // Now we construct the defaultModifications vector.
         //         typedef std::pair<std::string, const modification*> DefaultModMapPairType;
         //         BOOST_FOREACH( const DefaultModMapPairType& nameDefaultModPair, rDefaultModMap )
@@ -210,3 +210,4 @@ namespace cpx
     
     
 }
+ 

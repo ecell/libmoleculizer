@@ -61,33 +61,33 @@
 // Takahashi in his work on the E-Cell Project <http://www.e-cell.org>.
 //
 
-#define DECLARE_TYPE( mydecl, mytype ) \
-typedef mydecl         mytype;       \
-typedef mytype *       mytype ## Ptr;                \
-typedef boost::shared_ptr<mytype>  mytype ## SharedPtr;        \
-typedef const mytype * mytype ## Cptr;                        \
-typedef mytype &       mytype ## Ref;                         \
-typedef const mytype & mytype ## Cref;                        \
-
+#define DECLARE_TYPE( mydecl, mytype )          \
+    typedef mydecl         mytype;                   \
+    typedef mytype *       mytype ## Ptr;                      \
+    typedef boost::shared_ptr<mytype>  mytype ## SharedPtr;    \
+    typedef const mytype * mytype ## Cptr;                     \
+    typedef mytype &       mytype ## Ref;                      \
+    typedef const mytype & mytype ## Cref;                     \
+    
 /**
-Declare class , class pointer ,
-                const pointer, class reference
-                    and const class reference types for classes. For example
-                        DECLARE_CLASS( Exception );
-@param tag The class being declared
-            */
+   Declare class , class pointer ,
+   const pointer, class reference
+   and const class reference types for classes. For example
+   DECLARE_CLASS( Exception );
+   @param tag The class being declared
+*/
 
-#define DECLARE_CLASS( tag )           \
-class   tag;                         \
-typedef tag *       tag ## Ptr;      \
-typedef boost::shared_ptr<tag> tag##SharedPtr; \
-typedef const tag * tag ## Cptr;     \
-typedef tag &       tag ## Ref;      \
-typedef const tag & tag ## Cref;
+#define DECLARE_CLASS( tag )         \
+    class   tag;                     \
+    typedef tag *       tag ## Ptr;            \
+    typedef boost::shared_ptr<tag> tag##SharedPtr;      \
+    typedef const tag * tag ## Cptr;                    \
+    typedef tag &       tag ## Ref;                     \
+    typedef const tag & tag ## Cref;
 
 
 // Some global types.
-            typedef int Integer;
+typedef int Integer;
 typedef float Real;
 typedef std::string String;
 

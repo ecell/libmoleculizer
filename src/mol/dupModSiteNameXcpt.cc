@@ -34,13 +34,13 @@
 
 namespace bnd
 {
-std::string
-dupModSiteNameXcpt::mkMsg( const std::string& rBadModSiteName )
-{
-    std::ostringstream msgStream;
-    msgStream << "Duplicate modification site name `"
-    << rBadModSiteName
-    << "'.";
-    return msgStream.str();
-}
+    std::string
+    dupModSiteNameXcpt::mkMsg( const std::string& rBadModSiteName )
+    {
+        std::ostringstream msgStream;
+        msgStream << "Duplicate modification site name `"
+                  << rBadModSiteName
+                  << "'.";
+        return msgStream.str();
+    }
 }

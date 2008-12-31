@@ -38,69 +38,69 @@
 
 namespace plx
 {
-mzrPlexFamily::
-mzrPlexFamily( const mzrPlex& rParadigm,
-               cpx::knownBindings<bnd::mzrMol, fnd::feature<cpx::cxBinding<mzrPlexSpecies, mzrPlexFamily> > >& refKnownBindings,
-               std::set<mzrPlexFamily*>& refOmniplexFamilies,
+    mzrPlexFamily::
+    mzrPlexFamily( const mzrPlex& rParadigm,
+                   cpx::knownBindings<bnd::mzrMol, fnd::feature<cpx::cxBinding<mzrPlexSpecies, mzrPlexFamily> > >& refKnownBindings,
+                   std::set<mzrPlexFamily*>& refOmniplexFamilies,
                    nmr::nmrUnit& refNmrUnit ) :
-            cpx::plexFamily<bnd::mzrMol,
-            mzrPlex,
-            mzrPlexSpecies,
-            mzrPlexFamily,
-            mzrOmniPlex> ( rParadigm,
-                           refKnownBindings,
-                           refOmniplexFamilies ),
-            rNmrUnit( refNmrUnit )
-{}
-
-mzrPlexSpecies*
-mzrPlexFamily::
-constructSpecies( const cpx::siteToShapeMap& rSiteParams,
-                  const std::vector<cpx::molParam>& rMolParams )
-{
-    return new mzrPlexSpecies( *this,
-                               rSiteParams,
-                               rMolParams );
-}
-
-class insertMzrPlexSpecies :
-            public std::unary_function<mzrPlexFamily::value_type, void>
-{
-    xmlpp::Element* pExplicitSpeciesElt;
-    double molFact;
-
-public:
-    insertMzrPlexSpecies( xmlpp::Element* pExplicitSpeciesElement,
-                          double molarFactor ) :
+        cpx::plexFamily<bnd::mzrMol,
+                        mzrPlex,
+                        mzrPlexSpecies,
+                        mzrPlexFamily,
+                        mzrOmniPlex> ( rParadigm,
+                                       refKnownBindings,
+                                       refOmniplexFamilies ),
+        rNmrUnit( refNmrUnit )
+    {}
+    
+    mzrPlexSpecies*
+    mzrPlexFamily::
+    constructSpecies( const cpx::siteToShapeMap& rSiteParams,
+                      const std::vector<cpx::molParam>& rMolParams )
+    {
+        return new mzrPlexSpecies( *this,
+                                   rSiteParams,
+                                   rMolParams );
+    }
+    
+    class insertMzrPlexSpecies :
+        public std::unary_function<mzrPlexFamily::value_type, void>
+    {
+        xmlpp::Element* pExplicitSpeciesElt;
+        double molFact;
+        
+    public:
+        insertMzrPlexSpecies( xmlpp::Element* pExplicitSpeciesElement,
+                              double molarFactor ) :
             pExplicitSpeciesElt( pExplicitSpeciesElement ),
             molFact( molarFactor )
-    {}
-
+        {}
+        
+        void
+        operator()( const argument_type& rPlexFamilyEntry ) const
+            throw( std::exception )
+        {
+            mzrPlexSpecies* pSpecies = rPlexFamilyEntry.second;
+            pSpecies->insertElt( pExplicitSpeciesElt,
+                                 molFact );
+        }
+    };
+    
     void
-    operator()( const argument_type& rPlexFamilyEntry ) const
-    throw( std::exception )
+    mzrPlexFamily::insertSpecies( xmlpp::Element* pExplicitSpeciesElt,
+                                  double molarFactor ) const
+        throw( std::exception )
     {
-        mzrPlexSpecies* pSpecies = rPlexFamilyEntry.second;
-        pSpecies->insertElt( pExplicitSpeciesElt,
-                             molFact );
+        std::for_each( begin(),
+                       end(),
+                       insertMzrPlexSpecies( pExplicitSpeciesElt,
+                                             molarFactor ) );
     }
-};
-
-void
-mzrPlexFamily::insertSpecies( xmlpp::Element* pExplicitSpeciesElt,
-                              double molarFactor ) const
-throw( std::exception )
-{
-    std::for_each( begin(),
-                   end(),
-                   insertMzrPlexSpecies( pExplicitSpeciesElt,
-                                         molarFactor ) );
-}
-
-const nmr::NameAssembler*
-mzrPlexFamily::getNamingStrategy() const
-{
-    return rNmrUnit.getNameEncoder();
-}
-
+    
+    const nmr::NameAssembler*
+    mzrPlexFamily::getNamingStrategy() const
+    {
+        return rNmrUnit.getNameEncoder();
+    }
+    
 }

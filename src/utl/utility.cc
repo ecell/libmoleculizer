@@ -34,100 +34,100 @@
 
 namespace utl
 {
-std::string
-getFileName( int argc,
-             char* argv[] )
-{
-    std::string filename;
-
-    for ( int i = 0; i != argc; ++i )
+    std::string
+    getFileName( int argc,
+                 char* argv[] )
     {
-        if ( std::string( argv[i] ) == std::string( "-f" ) )
+        std::string filename;
+        
+        for ( int i = 0; i != argc; ++i )
         {
-            if ( i + 1 == argc )
+            if ( std::string( argv[i] ) == std::string( "-f" ) )
             {
-                throw badFileNameXcpt();
+                if ( i + 1 == argc )
+                {
+                    throw badFileNameXcpt();
+                }
+                else
+                {
+                    filename = std::string( argv[i + 1] );
+                    return filename;
+                }
+            }
+        }
+        // Nothing was found, so throw an exception.
+        throw badFileNameXcpt();
+        return 0;
+    }
+    
+    
+    void tokenize( const std::string& str,
+                   std::vector<std::string>& tokens,
+                   const std::string& deliminator )
+    {
+        const std::string::size_type DELIM_SIZE( deliminator.size() );
+        
+        std::string::size_type index( 0 );
+        
+        // If the string starts with a deliminator, ignore it.
+        if ( str.find( deliminator ) == 0 )
+        {
+            index += DELIM_SIZE;
+        }
+        
+        while ( true )
+        {
+            std::string::size_type nextDelimStart = str.find( deliminator, index );
+            
+            // Two cases:
+            // A deliminator is found
+            // A deliminator is not found
+            
+            if ( nextDelimStart != std::string::npos )
+            {
+                // everything between index and nextDelimStart should be pushed back
+                
+                if ( index == nextDelimStart )
+                {
+                    tokens.push_back( std::string( "" ) );
+                }
+                else
+                {
+                    tokens.push_back( std::string( str, index, nextDelimStart - index ) );
+                }
+                index = nextDelimStart + DELIM_SIZE;
             }
             else
             {
-                filename = std::string( argv[i + 1] );
-                return filename;
+                tokens.push_back( std::string( str, index, str.size() - index ) );
+                return;
             }
         }
     }
-    // Nothing was found, so throw an exception.
-    throw badFileNameXcpt();
-    return 0;
-}
-
-
-void tokenize( const std::string& str,
-               std::vector<std::string>& tokens,
-               const std::string& deliminator )
-{
-    const std::string::size_type DELIM_SIZE( deliminator.size() );
-
-    std::string::size_type index( 0 );
-
-    // If the string starts with a deliminator, ignore it.
-    if ( str.find( deliminator ) == 0 )
+    
+    
+    bool
+    stringIsInt( const std::string& rString,
+                 int& rInt )
     {
-        index += DELIM_SIZE;
+        const char* start = rString.c_str();
+        char* pEnd;
+        // Setting the base to 0 here means that strings with C-style base
+        // indicators (e.g. 0xFFF) can be read successfully.
+        rInt = strtol( start, &pEnd, 0 );
+        return 0 == *pEnd;
     }
-
-    while ( true )
+    
+    bool
+    stringIsDouble( const std::string& rString,
+                    double& rDouble )
     {
-        std::string::size_type nextDelimStart = str.find( deliminator, index );
-
-        // Two cases:
-        // A deliminator is found
-        // A deliminator is not found
-
-        if ( nextDelimStart != std::string::npos )
-        {
-            // everything between index and nextDelimStart should be pushed back
-
-            if ( index == nextDelimStart )
-            {
-                tokens.push_back( std::string( "" ) );
-            }
-            else
-            {
-                tokens.push_back( std::string( str, index, nextDelimStart - index ) );
-            }
-            index = nextDelimStart + DELIM_SIZE;
-        }
-        else
-        {
-            tokens.push_back( std::string( str, index, str.size() - index ) );
-            return;
-        }
+        const char* start = rString.c_str();
+        char* pEnd;
+        rDouble = strtod( start, &pEnd );
+        return 0 == *pEnd;
     }
-}
-
-
-bool
-stringIsInt( const std::string& rString,
-             int& rInt )
-{
-    const char* start = rString.c_str();
-    char* pEnd;
-    // Setting the base to 0 here means that strings with C-style base
-    // indicators (e.g. 0xFFF) can be read successfully.
-    rInt = strtol( start, &pEnd, 0 );
-    return 0 == *pEnd;
-}
-
-bool
-stringIsDouble( const std::string& rString,
-                double& rDouble )
-{
-    const char* start = rString.c_str();
-    char* pEnd;
-    rDouble = strtod( start, &pEnd );
-    return 0 == *pEnd;
-}
-
-
-
+    
+    
+    
 }

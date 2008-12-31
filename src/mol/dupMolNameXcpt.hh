@@ -36,23 +36,23 @@
 
 namespace bnd
 {
-// Exception thrown when two mols (of any kind) are given the same
-// name.  If offending node is given, its Xpath is included in the
-// exception message.
-class dupMolNameXcpt :
-            public utl::xcpt
-{
-    static std::string
-    mkMsg( const std::string& rBadMolName,
-           const xmlpp::Node* pOffendingNode = 0 );
-
-public:
-    dupMolNameXcpt( const std::string& rBadMolName,
-                    const xmlpp::Node* pOffendingNode = 0 ) :
+    // Exception thrown when two mols (of any kind) are given the same
+    // name.  If offending node is given, its Xpath is included in the
+    // exception message.
+    class dupMolNameXcpt :
+        public utl::xcpt
+    {
+        static std::string
+        mkMsg( const std::string& rBadMolName,
+               const xmlpp::Node* pOffendingNode = 0 );
+        
+    public:
+        dupMolNameXcpt( const std::string& rBadMolName,
+                        const xmlpp::Node* pOffendingNode = 0 ) :
             utl::xcpt( mkMsg( rBadMolName,
                               pOffendingNode ) )
-    {}
-};
+        {}
+    };
 }
 
 #endif // MOL_DUPMOLNAMEXCPT_H

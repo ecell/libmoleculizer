@@ -37,39 +37,39 @@
 
 namespace cpx
 {
-template<class plexT>
-class omniStructureQueryArg
-{
-public:
-    const plexT& rPlex;
-    const plexIso& rInjection;
-
-    omniStructureQueryArg( const plexT& rStructurePlex,
-                           const plexIso& rInjectionIso ) :
+    template<class plexT>
+    class omniStructureQueryArg
+    {
+    public:
+        const plexT& rPlex;
+        const plexIso& rInjection;
+        
+        omniStructureQueryArg( const plexT& rStructurePlex,
+                               const plexIso& rInjectionIso ) :
             rPlex( rStructurePlex ),
             rInjection( rInjectionIso )
-    {}
-};
-
-// Examines matching plex to see if specified free sites in the
-// omni are also free sites in the matching plex.
-template<class plexT>
-class omniFreeSiteQuery :
-            public fnd::query<omniStructureQueryArg<plexT> >
-{
-    siteSpec freeSiteSpec;
-
-public:
-    omniFreeSiteQuery( const siteSpec& rFreeSiteSpec ) :
+        {}
+    };
+    
+    // Examines matching plex to see if specified free sites in the
+    // omni are also free sites in the matching plex.
+    template<class plexT>
+    class omniFreeSiteQuery :
+        public fnd::query<omniStructureQueryArg<plexT> >
+    {
+        siteSpec freeSiteSpec;
+        
+    public:
+        omniFreeSiteQuery( const siteSpec& rFreeSiteSpec ) :
             freeSiteSpec( rFreeSiteSpec )
-    {}
-
-    ~omniFreeSiteQuery( void )
-    {}
-
-    bool
-    operator()( const omniStructureQueryArg<plexT>& rArg ) const;
-};
+        {}
+        
+        ~omniFreeSiteQuery( void )
+        {}
+        
+        bool
+        operator()( const omniStructureQueryArg<plexT>& rArg ) const;
+    };
 }
 
 #include "cpx/omniStructureQueryImpl.hh"

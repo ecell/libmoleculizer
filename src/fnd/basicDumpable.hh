@@ -37,47 +37,47 @@
 
 namespace fnd
 {
-// This will allow common memory management of all dumpable types.
-class basicDumpable
-{
-
-    // Used as a column header in the dump file.
-    const std::string name;
-
-public:
-    basicDumpable( const std::string& rName ) :
-            name( rName )
-    {}
-
-    virtual
-    ~basicDumpable( void )
-    {}
-
-    const std::string&
-    getName( void ) const
+    // This will allow common memory management of all dumpable types.
+    class basicDumpable
     {
-        return name;
-    }
-
-    // The output stream is now passed in the dumpArg;
-    // this basic dumpArg does nothing more.
-    class dumpArg
-    {
-        // As a pointer for assignability.
-        std::ostream* pOs;
-
+        
+        // Used as a column header in the dump file.
+        const std::string name;
+        
     public:
-        dumpArg( std::ostream& rOstream ) :
-                pOs( &rOstream )
+        basicDumpable( const std::string& rName ) :
+            name( rName )
         {}
-
-        std::ostream&
-        getOstream( void ) const
+        
+        virtual
+        ~basicDumpable( void )
+        {}
+        
+        const std::string&
+        getName( void ) const
         {
-            return *pOs;
+            return name;
         }
+        
+        // The output stream is now passed in the dumpArg;
+        // this basic dumpArg does nothing more.
+        class dumpArg
+        {
+            // As a pointer for assignability.
+            std::ostream* pOs;
+            
+        public:
+            dumpArg( std::ostream& rOstream ) :
+                pOs( &rOstream )
+            {}
+            
+            std::ostream&
+            getOstream( void ) const
+            {
+                return *pOs;
+            }
+        };
     };
-};
 }
 
 #endif // FND_BASICDUMPARG_H

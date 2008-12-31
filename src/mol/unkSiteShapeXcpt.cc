@@ -34,21 +34,21 @@
 
 namespace bnd
 {
-std::string
-unkSiteShapeXcpt::mkMsg( const xmlpp::Node* pOffendingNode,
-                         const mzrBndSite& rBindingSite,
-                         const mzrMol* pMol,
-                         const std::string& rBadSiteShapeName )
-{
-    std::ostringstream msgStream;
-    msgStream << utl::dom::xcpt::mkMsg( pOffendingNode )
-    << "Binding site "
-    << rBindingSite.getName()
-    << " on mol "
-    << pMol->getName()
-    << " has no shape named `"
-    << rBadSiteShapeName
-    << "'.";
-    return msgStream.str();
-}
+    std::string
+    unkSiteShapeXcpt::mkMsg( const xmlpp::Node* pOffendingNode,
+                             const mzrBndSite& rBindingSite,
+                             const mzrMol* pMol,
+                             const std::string& rBadSiteShapeName )
+    {
+        std::ostringstream msgStream;
+        msgStream << utl::dom::xcpt::mkMsg( pOffendingNode )
+                  << "Binding site "
+                  << rBindingSite.getName()
+                  << " on mol "
+                  << pMol->getName()
+                  << " has no shape named `"
+                  << rBadSiteShapeName
+                  << "'.";
+        return msgStream.str();
+    }
 }

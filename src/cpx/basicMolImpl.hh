@@ -34,116 +34,116 @@
 
 namespace cpx
 {
-class duplicateSiteNameXcpt :
-            public utl::xcpt
-{
-    static std::string
-    mkMsg( const std::string& rMolName,
-           const std::string& rDuplicateSiteName )
+    class duplicateSiteNameXcpt :
+        public utl::xcpt
     {
-        std::ostringstream msgStream;
-        msgStream << "The mol "
-        << rMolName
-        << " already has a binding site named "
-        << rDuplicateSiteName
-        << ".";
-        return msgStream.str();
-    }
-public:
-    duplicateSiteNameXcpt( const std::string& rMolName,
-                           const std::string& rDuplicateSiteName ) :
+        static std::string
+        mkMsg( const std::string& rMolName,
+               const std::string& rDuplicateSiteName )
+        {
+            std::ostringstream msgStream;
+            msgStream << "The mol "
+                      << rMolName
+                      << " already has a binding site named "
+                      << rDuplicateSiteName
+                      << ".";
+            return msgStream.str();
+        }
+    public:
+        duplicateSiteNameXcpt( const std::string& rMolName,
+                               const std::string& rDuplicateSiteName ) :
             utl::xcpt( mkMsg( rMolName,
                               rDuplicateSiteName ) )
-    {}
-};
-
-template<class bndSiteT>
-basicMol<bndSiteT>::
-basicMol( const typename std::string& rName,
-          const typename std::vector<bndSiteT>& rSites )
-throw( typename utl::xcpt ) :
+        {}
+    };
+    
+    template<class bndSiteT>
+    basicMol<bndSiteT>::
+    basicMol( const typename std::string& rName,
+              const typename std::vector<bndSiteT>& rSites )
+        throw( typename utl::xcpt ) :
         std::vector<bndSiteT> ( rSites ),
         name( rName ),
         defaultShapes( getDefaultSiteParams() )
-{
-    int siteNdx = this->size();
-    basicMol& rMe = *this;
-    while ( 0 < siteNdx-- )
     {
-        const typename std::string& rSiteName = rMe[siteNdx].getName();
-
-        typename std::pair<indexIterator, bool> insertResult
-        = siteNameToNdx.insert( indexValueType( rSiteName,
-                                                siteNdx ) );
-        if ( ! insertResult.second )
-            throw duplicateSiteNameXcpt( name,
-                                         rSiteName );
+        int siteNdx = this->size();
+        basicMol& rMe = *this;
+        while ( 0 < siteNdx-- )
+        {
+            const typename std::string& rSiteName = rMe[siteNdx].getName();
+            
+            typename std::pair<indexIterator, bool> insertResult
+                = siteNameToNdx.insert( indexValueType( rSiteName,
+                                                        siteNdx ) );
+            if ( ! insertResult.second )
+                throw duplicateSiteNameXcpt( name,
+                                             rSiteName );
+        }
     }
-}
-
-template<class bndSiteT>
-basicMol<bndSiteT>::
-basicMol( const basicMol& rOriginal ) :
+    
+    template<class bndSiteT>
+    basicMol<bndSiteT>::
+    basicMol( const basicMol& rOriginal ) :
         std::vector<bndSiteT> ( rOriginal ),
         name( rOriginal.getName() ),
         siteNameToNdx( rOriginal.siteNameToNdx ),
         defaultShapes( getDefaultSiteParams() )
-{}
-
-template<class bndSiteT>
-std::string
-basicMol<bndSiteT>::
-genInstanceName( int molInstanceNdx ) const
-{
-    std::ostringstream oss;
-    oss << "basic-mol_"
-    << molInstanceNdx;
-    return oss.str();
-}
-
-template<class bndSiteT>
-bool
-basicMol<bndSiteT>::
-findSite( const typename std::string& rName,
-          int& rSiteNdx ) const
-{
-    constIndexIterator iEntry
-    = siteNameToNdx.find( rName );
-    if ( siteNameToNdx.end() == iEntry )
+    {}
+    
+    template<class bndSiteT>
+    std::string
+    basicMol<bndSiteT>::
+    genInstanceName( int molInstanceNdx ) const
     {
-        return false;
+        std::ostringstream oss;
+        oss << "basic-mol_"
+            << molInstanceNdx;
+        return oss.str();
     }
-    else
+    
+    template<class bndSiteT>
+    bool
+    basicMol<bndSiteT>::
+    findSite( const typename std::string& rName,
+              int& rSiteNdx ) const
     {
-        rSiteNdx = iEntry->second;
-        return true;
+        constIndexIterator iEntry
+            = siteNameToNdx.find( rName );
+        if ( siteNameToNdx.end() == iEntry )
+        {
+            return false;
+        }
+        else
+        {
+            rSiteNdx = iEntry->second;
+            return true;
+        }
     }
-}
-
-template<class bndSiteT>
-bndSiteT*
-basicMol<bndSiteT>::
-getSite( const typename std::string& rName )
-{
-    int siteNdx = -1;
-    basicMol& rMe = *this;
-    return findSite( rName, siteNdx )
-           ? & ( rMe[siteNdx] )
-           : 0;
-}
-
-template<class bndSiteT>
-std::vector<siteParam>
-basicMol<bndSiteT>::
-getDefaultSiteParams( void ) const
-{
-    std::vector<siteParam> result( this->size() );
-    std::transform( this->begin(),
-                    this->end(),
-                    result.begin(),
-                    std::mem_fun_ref( &bndSiteT::getDefaultShape ) );
-    return result;
-}
+    
+    template<class bndSiteT>
+    bndSiteT*
+    basicMol<bndSiteT>::
+    getSite( const typename std::string& rName )
+    {
+        int siteNdx = -1;
+        basicMol& rMe = *this;
+        return findSite( rName, siteNdx )
+            ? & ( rMe[siteNdx] )
+            : 0;
+    }
+    
+    template<class bndSiteT>
+    std::vector<siteParam>
+    basicMol<bndSiteT>::
+    getDefaultSiteParams( void ) const
+    {
+        std::vector<siteParam> result( this->size() );
+        std::transform( this->begin(),
+                        this->end(),
+                        result.begin(),
+                        std::mem_fun_ref( &bndSiteT::getDefaultShape ) );
+        return result;
+    }
 }
 
 #endif // CPX_BASICMOLIMPL_H

@@ -34,76 +34,76 @@
 
 namespace cpx
 {
-template<class molT>
-size_t
-hashMolRec<molT>::
-operator()( int molNdx,
-            int depth ) const
-{
-    typename utl::linearHash lh;
-    size_t hashValue = 0;
-
-// Have we seen this mol?
-//
-// Not by pointer, since who knows when we might encounter
-// a particular mol species in a random traversal.
-    if ( rMolsSeen.find( molNdx ) == rMolsSeen.end() )
+    template<class molT>
+    size_t
+    hashMolRec<molT>::
+    operator()( int molNdx,
+                int depth ) const
     {
-// We have now seen the mol that this path goes to.
-        rMolsSeen.insert( molNdx );
-
-// Initialize the hash value using the mol pointer and
-// the depth.
-        molT* pMol = rPlex.mols[molNdx];
-        hashValue = lh( lh(( size_t ) pMol )
-                        + ( size_t ) depth );
-
-// Traverse the sites on this mol.  We can use the ordering
-// of the sites on the mol.
-        for ( int siteNdx = 0;
-                siteNdx < ( int ) pMol->getSiteCount();
-                siteNdx++ )
+        typename utl::linearHash lh;
+        size_t hashValue = 0;
+        
+        // Have we seen this mol?
+        //
+        // Not by pointer, since who knows when we might encounter
+        // a particular mol species in a random traversal.
+        if ( rMolsSeen.find( molNdx ) == rMolsSeen.end() )
         {
-            siteSpec curSiteSpec( molNdx, siteNdx );
-
-            typename std::map<siteSpec, int>::const_iterator iPair
-            = rSiteToBindings.find( curSiteSpec );
-
-            if ( iPair != rSiteToBindings.end() )
+            // We have now seen the mol that this path goes to.
+            rMolsSeen.insert( molNdx );
+            
+            // Initialize the hash value using the mol pointer and
+            // the depth.
+            molT* pMol = rPlex.mols[molNdx];
+            hashValue = lh( lh(( size_t ) pMol )
+                            + ( size_t ) depth );
+            
+            // Traverse the sites on this mol.  We can use the ordering
+            // of the sites on the mol.
+            for ( int siteNdx = 0;
+                  siteNdx < ( int ) pMol->getSiteCount();
+                  siteNdx++ )
             {
-                int bindingNdx = iPair->second;
-                const binding& rBinding
-                = rPlex.bindings[bindingNdx];
-
-                if ( rBinding.leftSite().molNdx() == molNdx
-                        && rBinding.leftSite().siteNdx() == siteNdx )
+                siteSpec curSiteSpec( molNdx, siteNdx );
+                
+                typename std::map<siteSpec, int>::const_iterator iPair
+                    = rSiteToBindings.find( curSiteSpec );
+                
+                if ( iPair != rSiteToBindings.end() )
                 {
-                    hashValue
-                    = lh(( size_t ) rBinding.rightSite().siteNdx()
-                         + lh(( size_t ) siteNdx
-                              + lh( hashValue ) ) );
-
-                    hashValue = lh(( *this )( rBinding.rightSite().molNdx(),
-                                              depth + 1 )
-                                   + lh( hashValue ) );
+                    int bindingNdx = iPair->second;
+                    const binding& rBinding
+                        = rPlex.bindings[bindingNdx];
+                    
+                    if ( rBinding.leftSite().molNdx() == molNdx
+                         && rBinding.leftSite().siteNdx() == siteNdx )
+                    {
+                        hashValue
+                            = lh(( size_t ) rBinding.rightSite().siteNdx()
+                                 + lh(( size_t ) siteNdx
+                                      + lh( hashValue ) ) );
+                        
+                        hashValue = lh(( *this )( rBinding.rightSite().molNdx(),
+                                                  depth + 1 )
+                                       + lh( hashValue ) );
+                    }
+                    else
+                    {
+                        hashValue
+                            = lh(( size_t ) rBinding.leftSite().siteNdx()
+                                 + lh(( size_t ) siteNdx
+                                      + lh( hashValue ) ) );
+                        
+                        hashValue = lh(( *this )( rBinding.leftSite().molNdx(),
+                                                  depth + 1 )
+                                       + lh( hashValue ) );
+                    }
+                    
                 }
-                else
-                {
-                    hashValue
-                    = lh(( size_t ) rBinding.leftSite().siteNdx()
-                         + lh(( size_t ) siteNdx
-                              + lh( hashValue ) ) );
-
-                    hashValue = lh(( *this )( rBinding.leftSite().molNdx(),
-                                              depth + 1 )
-                                   + lh( hashValue ) );
-                }
-
             }
         }
+        return hashValue;
     }
-    return hashValue;
-}
 }
 
 #endif // CPX_HASHMOLRECIMPL_H

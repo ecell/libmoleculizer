@@ -33,49 +33,49 @@
 
 namespace plx
 {
-namespace eltName
-{
-const std::string allostericPlexes( "allosteric-plexes" );
-const std::string allostericPlex( "allosteric-plex" );
-const std::string allostericOmnis( "allosteric-omnis" );
-const std::string allostericOmni( "allosteric-omni" );
-const std::string plex( "plex" );
-const std::string molInstance( "mol-instance" );
-const std::string molInstance_nameAttr( "name" );
-const std::string molRef( "mol-ref" );
-const std::string molRef_nameAttr( "name" );
-const std::string binding( "binding" );
-const std::string molInstanceRef( "mol-instance-ref" );
-const std::string molInstanceRef_nameAttr( "name" );
-const std::string allostericSites( "allosteric-sites" );
-
-const std::string plexSpecies( "plex-species" );
-const std::string plexSpecies_nameAttr( "name" );
-
-const std::string omniSpeciesStream( "omni-species-stream" );
-const std::string omniSpeciesStream_nameAttr( "name" );
-const std::string plexSpeciesStream( "plex-species-stream" );
-const std::string plexSpeciesStream_nameAttr( "name" );
-
-const std::string instanceStates( "instance-states" );
-const std::string modMolInstanceRef( "mod-mol-instance-ref" );
-const std::string modMolInstanceRef_nameAttr( "name" );
-
-const std::string unboundSites( "unbound-sites" );
-const std::string instanceRef( "instance-ref" );
-const std::string instanceRef_nameAttr( "name" );
-const std::string siteRef( "site-ref" );
-const std::string siteRef_nameAttr( "name" );
-
-// For state dump.
-
-const std::string taggedPlexSpecies( "tagged-plex-species" );
-const std::string taggedPlexSpecies_tagAttr( "tag" );
-const std::string taggedPlexSpecies_nameAttr( "name" );
-const std::string population( "population" );
-const std::string population_countAttr( "count" );
-const std::string concentration( "concentration" );
-const std::string concentration_valueAttr( "value" );
-const std::string updated( "updated" );
-}
+    namespace eltName
+    {
+        const std::string allostericPlexes( "allosteric-plexes" );
+        const std::string allostericPlex( "allosteric-plex" );
+        const std::string allostericOmnis( "allosteric-omnis" );
+        const std::string allostericOmni( "allosteric-omni" );
+        const std::string plex( "plex" );
+        const std::string molInstance( "mol-instance" );
+        const std::string molInstance_nameAttr( "name" );
+        const std::string molRef( "mol-ref" );
+        const std::string molRef_nameAttr( "name" );
+        const std::string binding( "binding" );
+        const std::string molInstanceRef( "mol-instance-ref" );
+        const std::string molInstanceRef_nameAttr( "name" );
+        const std::string allostericSites( "allosteric-sites" );
+        
+        const std::string plexSpecies( "plex-species" );
+        const std::string plexSpecies_nameAttr( "name" );
+        
+        const std::string omniSpeciesStream( "omni-species-stream" );
+        const std::string omniSpeciesStream_nameAttr( "name" );
+        const std::string plexSpeciesStream( "plex-species-stream" );
+        const std::string plexSpeciesStream_nameAttr( "name" );
+        
+        const std::string instanceStates( "instance-states" );
+        const std::string modMolInstanceRef( "mod-mol-instance-ref" );
+        const std::string modMolInstanceRef_nameAttr( "name" );
+        
+        const std::string unboundSites( "unbound-sites" );
+        const std::string instanceRef( "instance-ref" );
+        const std::string instanceRef_nameAttr( "name" );
+        const std::string siteRef( "site-ref" );
+        const std::string siteRef_nameAttr( "name" );
+        
+        // For state dump.
+        
+        const std::string taggedPlexSpecies( "tagged-plex-species" );
+        const std::string taggedPlexSpecies_tagAttr( "tag" );
+        const std::string taggedPlexSpecies_nameAttr( "name" );
+        const std::string population( "population" );
+        const std::string population_countAttr( "count" );
+        const std::string concentration( "concentration" );
+        const std::string concentration_valueAttr( "value" );
+        const std::string updated( "updated" );
+    }
 }

@@ -38,80 +38,80 @@
 
 namespace mzr
 {
-class molarFactorGlobal :
-            public fnd::stateVar<double, mzrReaction>
-{
-public:
-    // Default volume is 1 liter, so default molar factor is Avogadro's number.
-    molarFactorGlobal( double initialVolume = 1.0 ) :
-        fnd::stateVar<double, mzrReaction> ( initialVolume * fnd::avogadrosNumber )
-    {}
-
-    const double
-    getFactor( void ) const
+    class molarFactorGlobal :
+        public fnd::stateVar<double, mzrReaction>
     {
-        return getValue();
-    }
-
-    const double
-    getVolume( void ) const
+    public:
+        // Default volume is 1 liter, so default molar factor is Avogadro's number.
+        molarFactorGlobal( double initialVolume = 1.0 ) :
+            fnd::stateVar<double, mzrReaction> ( initialVolume * fnd::avogadrosNumber )
+        {}
+        
+        const double
+        getFactor( void ) const
+        {
+            return getValue();
+        }
+        
+        const double
+        getVolume( void ) const
+        {
+            return getFactor() / fnd::avogadrosNumber;
+        }
+        
+        void
+        updateFactor( double simpleMolarFactor,
+                      fnd::sensitivityList<mzrReaction>& rAffectedReactions )
+        {
+            updateValue( simpleMolarFactor,
+                         rAffectedReactions );
+        }
+        
+        void
+        updateVolume( double newVolume,
+                      fnd::sensitivityList<mzrReaction>& rAffectedReactions )
+        {
+            updateValue( newVolume * fnd::avogadrosNumber,
+                         rAffectedReactions );
+        }
+    };
+    
+    class volumeGlobal :
+        public fnd::stateVar<double, mzrReaction>
     {
-        return getFactor() / fnd::avogadrosNumber;
-    }
-
-    void
-    updateFactor( double simpleMolarFactor,
-                  fnd::sensitivityList<mzrReaction>& rAffectedReactions )
-    {
-        updateValue( simpleMolarFactor,
-                     rAffectedReactions );
-    }
-
-    void
-    updateVolume( double newVolume,
-                  fnd::sensitivityList<mzrReaction>& rAffectedReactions )
-    {
-        updateValue( newVolume * fnd::avogadrosNumber,
-                     rAffectedReactions );
-    }
-};
-
-class volumeGlobal :
-            public fnd::stateVar<double, mzrReaction>
-{
-public:
-    volumeGlobal( double initialVolume = 1.0 ) :
+    public:
+        volumeGlobal( double initialVolume = 1.0 ) :
             fnd::stateVar<double, mzrReaction> ( initialVolume )
-    {}
-
-    const double
-    getFactor( void ) const
-    {
-        return getVolume() * fnd::avogadrosNumber;
-    }
-
-    const double
-    getVolume( void ) const
-    {
-        return getValue();
-    }
-
-    void
-    updateFactor( double simpleMolarFactor,
-                  fnd::sensitivityList<mzrReaction>& rAffectedReactions )
-    {
-        updateValue( simpleMolarFactor / fnd::avogadrosNumber,
-                     rAffectedReactions );
-    }
-
-    void
-    updateVolume( double newVolume,
-                  fnd::sensitivityList<mzrReaction>& rAffectedReactions )
-    {
-        updateValue( newVolume,
-                     rAffectedReactions );
-    }
-};
+        {}
+        
+        const double
+        getFactor( void ) const
+        {
+            return getVolume() * fnd::avogadrosNumber;
+        }
+        
+        const double
+        getVolume( void ) const
+        {
+            return getValue();
+        }
+        
+        void
+        updateFactor( double simpleMolarFactor,
+                      fnd::sensitivityList<mzrReaction>& rAffectedReactions )
+        {
+            updateValue( simpleMolarFactor / fnd::avogadrosNumber,
+                         rAffectedReactions );
+        }
+        
+        void
+        updateVolume( double newVolume,
+                      fnd::sensitivityList<mzrReaction>& rAffectedReactions )
+        {
+            updateValue( newVolume,
+                         rAffectedReactions );
+        }
+    };
 }
 
 #endif // MOLARFACTOR_H

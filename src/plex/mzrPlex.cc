@@ -37,113 +37,113 @@
 
 namespace plx
 {
-class insertBindingSiteElt :
-            public std::unary_function<cpx::basicBndSite, void>
-{
-    xmlpp::Element* pBindingElt;
-    const mzrPlex& rPlx;
-
-public:
-    insertBindingSiteElt( xmlpp::Element* pBindingElement,
-                          const mzrPlex& rPlex ) :
+    class insertBindingSiteElt :
+        public std::unary_function<cpx::basicBndSite, void>
+    {
+        xmlpp::Element* pBindingElt;
+        const mzrPlex& rPlx;
+        
+    public:
+        insertBindingSiteElt( xmlpp::Element* pBindingElement,
+                              const mzrPlex& rPlex ) :
             pBindingElt( pBindingElement ),
             rPlx( rPlex )
-    {}
-
-    void
-    operator()( const cpx::siteSpec& rSiteSpec ) const
-    throw( std::exception )
+        {}
+        
+        void
+        operator()( const cpx::siteSpec& rSiteSpec ) const
+            throw( std::exception )
+        {
+            xmlpp::Element* pMolInstanceRefElt
+                = pBindingElt->add_child( eltName::molInstanceRef );
+            
+            // Cause the mol on which the site occurs to generate a
+            // fake instance name from the instance index.
+            const bnd::mzrMol& rMol = * ( rPlx.mols[rSiteSpec.molNdx()] );
+            pMolInstanceRefElt->set_attribute( eltName::molInstanceRef_nameAttr,
+                                               rMol.genInstanceName( rSiteSpec.molNdx() ) );
+            
+            // Insert reference by name to binding site.
+            xmlpp::Element* pBindingSiteRefElt
+                = pMolInstanceRefElt->add_child( bnd::eltName::bindingSiteRef );
+            
+            const bnd::mzrBndSite& rBindingSite
+                = rMol[rSiteSpec.siteNdx()];
+            
+            pBindingSiteRefElt->set_attribute( bnd::eltName::bindingSiteRef_nameAttr,
+                                               rBindingSite.getName() );
+        }
+    };
+    
+    class insertBindingElt :
+        public std::unary_function<cpx::binding, xmlpp::Element*>
     {
-        xmlpp::Element* pMolInstanceRefElt
-        = pBindingElt->add_child( eltName::molInstanceRef );
-
-// Cause the mol on which the site occurs to generate a
-// fake instance name from the instance index.
-        const bnd::mzrMol& rMol = * ( rPlx.mols[rSiteSpec.molNdx()] );
-        pMolInstanceRefElt->set_attribute( eltName::molInstanceRef_nameAttr,
-                                           rMol.genInstanceName( rSiteSpec.molNdx() ) );
-
-// Insert reference by name to binding site.
-        xmlpp::Element* pBindingSiteRefElt
-        = pMolInstanceRefElt->add_child( bnd::eltName::bindingSiteRef );
-
-        const bnd::mzrBndSite& rBindingSite
-        = rMol[rSiteSpec.siteNdx()];
-
-        pBindingSiteRefElt->set_attribute( bnd::eltName::bindingSiteRef_nameAttr,
-                                           rBindingSite.getName() );
-    }
-};
-
-class insertBindingElt :
-            public std::unary_function<cpx::binding, xmlpp::Element*>
-{
-    xmlpp::Element* pPlexElt;
-    const mzrPlex& rPlx;
-
-public:
-    insertBindingElt( xmlpp::Element* pPlexElement,
-                      const mzrPlex& rPlex ) :
+        xmlpp::Element* pPlexElt;
+        const mzrPlex& rPlx;
+        
+    public:
+        insertBindingElt( xmlpp::Element* pPlexElement,
+                          const mzrPlex& rPlex ) :
             pPlexElt( pPlexElement ),
             rPlx( rPlex )
-    {}
-
+        {}
+        
+        xmlpp::Element*
+        operator()( const cpx::binding& rBinding ) const
+            throw( std::exception )
+        {
+            // Insert the binding element.
+            xmlpp::Element* pBindingElt
+                = pPlexElt->add_child( eltName::binding );
+            
+            // Generate child element of binding element for each of the two
+            // bound sites.
+            insertBindingSiteElt insertSite( pBindingElt,
+                                             rPlx );
+            insertSite( rBinding.leftSite() );
+            insertSite( rBinding.rightSite() );
+            
+            return pBindingElt;
+        }
+    };
+    
     xmlpp::Element*
-    operator()( const cpx::binding& rBinding ) const
-    throw( std::exception )
+    mzrPlex::
+    insertElt( xmlpp::Element* pParentElt ) const
+        throw( std::exception )
     {
-// Insert the binding element.
-        xmlpp::Element* pBindingElt
-        = pPlexElt->add_child( eltName::binding );
-
-// Generate child element of binding element for each of the two
-// bound sites.
-        insertBindingSiteElt insertSite( pBindingElt,
-                                         rPlx );
-        insertSite( rBinding.leftSite() );
-        insertSite( rBinding.rightSite() );
-
-        return pBindingElt;
+        xmlpp::Element* pPlexElt
+            = pParentElt->add_child( eltName::plex );
+        
+        // Insert elements for each mol instance.  I'm using the index
+        // to generate instance names.  Users will be disappointed that
+        // their own instance names have been forgotten.
+        for ( int molNdx = 0;
+              molNdx < ( int ) mols.size();
+              ++molNdx )
+        {
+            xmlpp::Element* pMolInstanceElt
+                = pPlexElt->add_child( eltName::molInstance );
+            
+            bnd::mzrMol* pMol = mols[molNdx];
+            
+            // Stringify the instance index as an instance name.
+            pMolInstanceElt->set_attribute( eltName::molInstance_nameAttr,
+                                            pMol->genInstanceName( molNdx ) );
+            
+            xmlpp::Element* pMolRefElt
+                = pMolInstanceElt->add_child( eltName::molRef );
+            
+            pMolRefElt->set_attribute( eltName::molRef_nameAttr,
+                                       mols[molNdx]->getName() );
+        }
+        
+        // Insert elements for each binding.
+        std::for_each( bindings.begin(),
+                       bindings.end(),
+                       insertBindingElt( pPlexElt,
+                                         *this ) );
+        
+        return pPlexElt;
     }
-};
-
-xmlpp::Element*
-mzrPlex::
-insertElt( xmlpp::Element* pParentElt ) const
-throw( std::exception )
-{
-    xmlpp::Element* pPlexElt
-    = pParentElt->add_child( eltName::plex );
-
-// Insert elements for each mol instance.  I'm using the index
-// to generate instance names.  Users will be disappointed that
-// their own instance names have been forgotten.
-    for ( int molNdx = 0;
-            molNdx < ( int ) mols.size();
-            ++molNdx )
-    {
-        xmlpp::Element* pMolInstanceElt
-        = pPlexElt->add_child( eltName::molInstance );
-
-        bnd::mzrMol* pMol = mols[molNdx];
-
-// Stringify the instance index as an instance name.
-        pMolInstanceElt->set_attribute( eltName::molInstance_nameAttr,
-                                        pMol->genInstanceName( molNdx ) );
-
-        xmlpp::Element* pMolRefElt
-        = pMolInstanceElt->add_child( eltName::molRef );
-
-        pMolRefElt->set_attribute( eltName::molRef_nameAttr,
-                                   mols[molNdx]->getName() );
-    }
-
-// Insert elements for each binding.
-    std::for_each( bindings.begin(),
-                   bindings.end(),
-                   insertBindingElt( pPlexElt,
-                                     *this ) );
-
-    return pPlexElt;
-}
 }

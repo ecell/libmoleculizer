@@ -36,22 +36,22 @@
 
 namespace bnd
 {
-// Exception thrown when the user refers to a modification by an incorrect
-// name.
-class unkModXcpt :
-            public utl::xcpt
-{
-    static std::string
-    mkMsg( const std::string& badModName,
-           const xmlpp::Node* pOffendingNode = 0 );
-
-public:
-    unkModXcpt( const std::string& rBadModName,
-                const xmlpp::Node* pOffendingNode = 0 ) :
+    // Exception thrown when the user refers to a modification by an incorrect
+    // name.
+    class unkModXcpt :
+        public utl::xcpt
+    {
+        static std::string
+        mkMsg( const std::string& badModName,
+               const xmlpp::Node* pOffendingNode = 0 );
+        
+    public:
+        unkModXcpt( const std::string& rBadModName,
+                    const xmlpp::Node* pOffendingNode = 0 ) :
             utl::xcpt( mkMsg( rBadModName,
                               pOffendingNode ) )
-    {}
-};
+        {}
+    };
 }
 
 #endif // MOL_UNKMODXCPT_H

@@ -36,17 +36,17 @@
 
 namespace plx
 {
-class dupNodeOmniXcpt :
-            public utl::xcpt
-{
-    static std::string
-    mkMsg( const xmlpp::Node* pParentNode );
-
-public :
-    dupNodeOmniXcpt( const xmlpp::Node* pParentNode ) :
+    class dupNodeOmniXcpt :
+        public utl::xcpt
+    {
+        static std::string
+        mkMsg( const xmlpp::Node* pParentNode );
+        
+    public :
+        dupNodeOmniXcpt( const xmlpp::Node* pParentNode ) :
             utl::xcpt( mkMsg( pParentNode ) )
-    {}
-};
+        {}
+    };
 }
 
 #endif // PLEX_DUPNODEOMNIXCPT_H

@@ -38,23 +38,23 @@
 
 namespace mzr
 {
-
+    
     double proteinDiffusionCoeff = 3.0f;
     double smallMolDiffusionCoeff = 100.0f;
-
+    
     // Units returned are in micrometers^2/sec.
     double getProteinDiffusionCoef();
     double getSmallMolDiffusionCoef();
-
+    
     // Units must be in micrometer^2/sec.
     void setProteinDiffusionCoef(double rate);
     void setSmallMolDiffusionCoef(double rate);
-
+    
     double extrapolateIntrinsicReactionRate(const mzr::mzrReaction* pRxn);
- 
+    
     double extrapolateMolecularRadius( const mzr::mzrSpecies* pSPecies);
     double extrapolateMolecularRadius(const double& mass);
-
+    
 }
 
 

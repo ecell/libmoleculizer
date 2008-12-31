@@ -34,15 +34,15 @@
 
 namespace plx
 {
-std::string
-noOmniForNodeXcpt::
-mkMsg( const xmlpp::Node* pParentNode )
-{
-    std::ostringstream msgStream;
-    msgStream << utl::xcpt::mkMsg()
-    << utl::dom::xcpt::mkMsg( pParentNode )
-    << "No omniPlex was found for this node. Unregistered "
-    << "omniPlex Xpath?";
-    return msgStream.str();
-}
+    std::string
+    noOmniForNodeXcpt::
+    mkMsg( const xmlpp::Node* pParentNode )
+    {
+        std::ostringstream msgStream;
+        msgStream << utl::xcpt::mkMsg()
+                  << utl::dom::xcpt::mkMsg( pParentNode )
+                  << "No omniPlex was found for this node. Unregistered "
+                  << "omniPlex Xpath?";
+        return msgStream.str();
+    }
 }

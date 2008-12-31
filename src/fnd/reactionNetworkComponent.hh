@@ -34,15 +34,15 @@
 
 namespace fnd
 {
-class reactionNetworkComponent
-{
-public:
-    virtual ~reactionNetworkComponent() {}
-
-    virtual void
-    expandReactionNetwork() = 0;
-};
-
+    class reactionNetworkComponent
+    {
+    public:
+        virtual ~reactionNetworkComponent() {}
+        
+        virtual void
+        expandReactionNetwork() = 0;
+    };
+    
 }
 
 

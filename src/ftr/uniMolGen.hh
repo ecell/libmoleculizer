@@ -39,67 +39,67 @@
 
 namespace ftr
 {
-class molModExchange
-{
-public:
-    int modSiteNdx;
-    const cpx::modification* pReplacementMod;
-
-    molModExchange() :
+    class molModExchange
+    {
+    public:
+        int modSiteNdx;
+        const cpx::modification* pReplacementMod;
+        
+        molModExchange() :
             modSiteNdx( -1 ),
             pReplacementMod( 0 )
-    {}
-
-    molModExchange( int modSite,
-                    const cpx::modification* pMod ) :
+        {}
+        
+        molModExchange( int modSite,
+                        const cpx::modification* pMod ) :
             modSiteNdx( modSite ),
             pReplacementMod( pMod )
-    {}
-};
-
-class uniMolRxnGen :
-            public fnd::rxnGen<cpx::cxMol<plx::mzrPlexSpecies, plx::mzrPlexFamily> >
-{
-// To intern reactions for memory management.
-    mzr::mzrUnit& rMzrUnit;
-
-// To recognize the new complex.
-    plx::plexUnit& rPlexUnit;
-
-// The mod-mol triggering reaction generation.
-    bnd::mzrModMol* pEnablingMol;
-
-// Queries on the mol's state that must be passed to enable
-// reaction generation.
-    cpx::andMolStateQueries* pMolQueries;
-
-// Exchanges of modifications.
-    const std::vector<molModExchange> molModExchanges;
-
-// Additional massive reactant; null if there is no additional reactant.
-    mzr::mzrSpecies* pAdditionalReactant;
-
-// Additional product; null if there is no additional product.
-    mzr::mzrSpecies* pAdditionalProduct;
-
-// Reaction family to receive generated reactions.
-    utl::autoVector<mzr::mzrReaction>* pFamily;
-
-// Rate extrapolator, which sometimes is unary and sometimes is binary.
-// This omniRxnGen is responsible for memory management of its
-// extrapolator.
-    const uniMolExtrapolator* pExtrapolator;
-
-public:
-    uniMolRxnGen( mzr::mzrUnit& refMzrUnit,
-                  plx::plexUnit& refPlexUnit,
-                  bnd::mzrModMol* pEnablingModMol,
-                  cpx::andMolStateQueries* pAndMolStateQueries,
-                  const std::vector<molModExchange>& rModExchanges,
-                  mzr::mzrSpecies* pAuxReactant,
-                  mzr::mzrSpecies* pAuxProduct,
-                  utl::autoVector<mzr::mzrReaction>* pReactionFamily,
-                  const uniMolExtrapolator* pUniMolExtrapolator ) :
+        {}
+    };
+    
+    class uniMolRxnGen :
+        public fnd::rxnGen<cpx::cxMol<plx::mzrPlexSpecies, plx::mzrPlexFamily> >
+    {
+        // To intern reactions for memory management.
+        mzr::mzrUnit& rMzrUnit;
+        
+        // To recognize the new complex.
+        plx::plexUnit& rPlexUnit;
+        
+        // The mod-mol triggering reaction generation.
+        bnd::mzrModMol* pEnablingMol;
+        
+        // Queries on the mol's state that must be passed to enable
+        // reaction generation.
+        cpx::andMolStateQueries* pMolQueries;
+        
+        // Exchanges of modifications.
+        const std::vector<molModExchange> molModExchanges;
+        
+        // Additional massive reactant; null if there is no additional reactant.
+        mzr::mzrSpecies* pAdditionalReactant;
+        
+        // Additional product; null if there is no additional product.
+        mzr::mzrSpecies* pAdditionalProduct;
+        
+        // Reaction family to receive generated reactions.
+        utl::autoVector<mzr::mzrReaction>* pFamily;
+        
+        // Rate extrapolator, which sometimes is unary and sometimes is binary.
+        // This omniRxnGen is responsible for memory management of its
+        // extrapolator.
+        const uniMolExtrapolator* pExtrapolator;
+        
+    public:
+        uniMolRxnGen( mzr::mzrUnit& refMzrUnit,
+                      plx::plexUnit& refPlexUnit,
+                      bnd::mzrModMol* pEnablingModMol,
+                      cpx::andMolStateQueries* pAndMolStateQueries,
+                      const std::vector<molModExchange>& rModExchanges,
+                      mzr::mzrSpecies* pAuxReactant,
+                      mzr::mzrSpecies* pAuxProduct,
+                      utl::autoVector<mzr::mzrReaction>* pReactionFamily,
+                      const uniMolExtrapolator* pUniMolExtrapolator ) :
             rMzrUnit( refMzrUnit ),
             rPlexUnit( refPlexUnit ),
             pEnablingMol( pEnablingModMol ),
@@ -109,16 +109,16 @@ public:
             pAdditionalProduct( pAuxProduct ),
             pFamily( pReactionFamily ),
             pExtrapolator( pUniMolExtrapolator )
-    {}
-
-    ~uniMolRxnGen( void )
-    {
-        delete pExtrapolator;
-    }
-
-    void
-    respond( const fnd::featureStimulus<cpx::cxMol<plx::mzrPlexSpecies, plx::mzrPlexFamily> >& rStimulus );
-};
+        {}
+        
+        ~uniMolRxnGen( void )
+        {
+            delete pExtrapolator;
+        }
+        
+        void
+        respond( const fnd::featureStimulus<cpx::cxMol<plx::mzrPlexSpecies, plx::mzrPlexFamily> >& rStimulus );
+    };
 }
 
 #endif // UNIMOLGEN_H

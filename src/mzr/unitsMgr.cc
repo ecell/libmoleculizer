@@ -41,8 +41,8 @@
 
 namespace mzr
 {
-unitsMgr::
-unitsMgr( moleculizer& rMoleculizer ) :
+    unitsMgr::
+    unitsMgr( moleculizer& rMoleculizer ) :
         pNmrUnit( new nmr::nmrUnit( rMoleculizer ) ),
         pMzrUnit( new mzr::mzrUnit( rMoleculizer ) ),
         pMolUnit( new bnd::molUnit( rMoleculizer ) ),
@@ -60,56 +60,56 @@ unitsMgr( moleculizer& rMoleculizer ) :
                                     *pMzrUnit,
                                     *pMolUnit,
                                     *pPlexUnit ) )
-{
-
-    pNmrUnit->setMzrUnit( pMzrUnit );
-    pNmrUnit->setMolUnit( pMolUnit );
-    pNmrUnit->setPlexUnit( pPlexUnit );
-
-// Note that these need to be in output order, which is slightly
-// different from linkage order: mzrUnit "plays cleanup" by parsing
-// after other units are done.
-
-// dimerUnit has to come before plexUnit, since the plex parser checks
-// for impossible bindings.
-//
-// ftrUnit has to come after plexUnit, since it uses omniPlexes in its
-// reaction generators.
-    addEntry( pNmrUnit );
-    addEntry( pStochUnit );
-    addEntry( pMolUnit );
-    addEntry( pDimerUnit );
-    addEntry( pPlexUnit );
-    addEntry( pFtrUnit );
-    addEntry( pMzrUnit );
-
-
-}
-
-// Class for constructing overall input capabilities of moleculizer
-// from input capabilities of each unit.
-class addCapToUnion :
-            public std::unary_function<const unit*, void>
-{
-    inputCapabilities& rUnionCaps;
-public:
-    addCapToUnion( inputCapabilities& rUnionCapabilities ) :
-            rUnionCaps( rUnionCapabilities )
-    {}
-
-    void
-    operator()( const unit* pUnit ) const
     {
-        rUnionCaps.addCap( pUnit->inputCap );
+        
+        pNmrUnit->setMzrUnit( pMzrUnit );
+        pNmrUnit->setMolUnit( pMolUnit );
+        pNmrUnit->setPlexUnit( pPlexUnit );
+        
+        // Note that these need to be in output order, which is slightly
+        // different from linkage order: mzrUnit "plays cleanup" by parsing
+        // after other units are done.
+        
+        // dimerUnit has to come before plexUnit, since the plex parser checks
+        // for impossible bindings.
+        //
+        // ftrUnit has to come after plexUnit, since it uses omniPlexes in its
+        // reaction generators.
+        addEntry( pNmrUnit );
+        addEntry( pStochUnit );
+        addEntry( pMolUnit );
+        addEntry( pDimerUnit );
+        addEntry( pPlexUnit );
+        addEntry( pFtrUnit );
+        addEntry( pMzrUnit );
+        
+        
     }
-};
-
-void
-unitsMgr::
-unionInputCaps( inputCapabilities& rUnion )
-{
-    for_each( begin(),
-              end(),
-              addCapToUnion( rUnion ) );
-}
+    
+    // Class for constructing overall input capabilities of moleculizer
+    // from input capabilities of each unit.
+    class addCapToUnion :
+        public std::unary_function<const unit*, void>
+    {
+        inputCapabilities& rUnionCaps;
+    public:
+        addCapToUnion( inputCapabilities& rUnionCapabilities ) :
+            rUnionCaps( rUnionCapabilities )
+        {}
+        
+        void
+        operator()( const unit* pUnit ) const
+        {
+            rUnionCaps.addCap( pUnit->inputCap );
+        }
+    };
+    
+    void
+    unitsMgr::
+    unionInputCaps( inputCapabilities& rUnion )
+    {
+        for_each( begin(),
+                  end(),
+                  addCapToUnion( rUnion ) );
+    }
 }

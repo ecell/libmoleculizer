@@ -48,14 +48,14 @@ namespace mzr
             oss << "Can't parse a bad ruleset.";
             return oss.str();
         }
-
+        
         BadRulesDefinitionXcpt()
             :
             xcpt( mkMsg() )
         {
         }
     };
-
+    
     class IllegalNameXcpt : public utl::xcpt
     {
     public:
@@ -66,48 +66,48 @@ namespace mzr
             oss << "Illegal Name: '" << illegalName << "'";
             return oss.str();
         }
-
+        
         IllegalNameXcpt( const std::string& illegalName )
             :
             xcpt( mkMsg( illegalName ) )
         {}
     };
-
+    
     class illegalSpeciesNameXcpt
         : public utl::xcpt
     {
         static std::string
         mkMsg( const std::string& rSpeciesName,
                const std::string& rMessage = "" );
-
+        
     public:
         illegalSpeciesNameXcpt( const std::string& rSpeciesName, const std::string& rMessage ) :
             utl::xcpt( mkMsg( rSpeciesName,
                               rMessage ) )
         {}
-
+        
     };
-
+    
     class dumpableNotSpeciesStreamXcpt :
         public utl::xcpt
     {
         static std::string
         mkMsg( const std::string& rDumpableName );
-
+        
     public:
         dumpableNotSpeciesStreamXcpt( const std::string& rDumpableName ) :
             utl::xcpt( mkMsg( rDumpableName ) )
         {}
     };
-   
-
+    
+    
     class unkDumpableXcpt :
         public utl::xcpt
     {
         static std::string
         mkMsg( const std::string& rDumpableName,
                xmlpp::Node* pOffendingNode = 0 );
-
+        
     public:
         unkDumpableXcpt( const std::string& rDumpableName,
                          xmlpp::Node* pOffendingNode = 0 ) :
@@ -115,14 +115,14 @@ namespace mzr
                               pOffendingNode ) )
         {}
     };
-
+    
     class dupDumpableNameXcpt :
         public utl::xcpt
     {
         static std::string
         mkMsg( const std::string& rDumpableName,
                xmlpp::Node* pOffendingNode = 0 );
-
+        
     public:
         dupDumpableNameXcpt( const std::string& rDumpableName,
                              xmlpp::Node* pOffendingNode = 0 ) :
@@ -130,8 +130,8 @@ namespace mzr
                               pOffendingNode ) )
         {}
     };
-
-
+    
+    
     class unhandledModelContentXcpt :
         public utl::xcpt
     {
@@ -150,7 +150,7 @@ namespace mzr
             utl::xcpt( mkMsg( pOffendingModelContentNode ) )
         {}
     };
-
+    
     class unhandledExplicitSpeciesContentXcpt :
         public utl::xcpt
     {
@@ -169,7 +169,7 @@ namespace mzr
             utl::xcpt( mkMsg( pBadExplicitSpeciesContentNode ) )
         {}
     };
-
+    
     class unhandledSpeciesStreamsContentXcpt :
         public utl::xcpt
     {
@@ -188,7 +188,7 @@ namespace mzr
             utl::xcpt( mkMsg( pBadSpeciesStreamsContentNode ) )
         {}
     };
-
+    
     class unhandledEventsContentXcpt :
         public utl::xcpt
     {
@@ -202,13 +202,13 @@ namespace mzr
                       << " node in the events section.";
             return msgStream.str();
         }
-
+        
     public:
         unhandledEventsContentXcpt( xmlpp::Node* pOffendingEventsContentNode ) :
             utl::xcpt( mkMsg( pOffendingEventsContentNode ) )
         {}
     };
-
+    
     class unhandledReactionGenXcpt :
         public utl::xcpt
     {
@@ -228,14 +228,14 @@ namespace mzr
         {
         }
     };
-
+    
     class unkSpeciesXcpt :
         public utl::xcpt
     {
         static std::string
         mkMsg( const std::string& rSpeciesName,
                xmlpp::Node* pOffendingNode = 0 );
-
+        
     public:
         unkSpeciesXcpt( const std::string& rSpeciesName,
                         xmlpp::Node* pOffendingNode = 0 ) :
@@ -243,20 +243,20 @@ namespace mzr
                               pOffendingNode ) )
         {}
     };
-
+    
     class unknownUserNameXcpt
         :
         public utl::xcpt
     {
         static std::string
         mkMsg(const std::string& unknownUserName);
-
+        
     public:
         unknownUserNameXcpt( const std::string& unkName)
             :
             utl::xcpt( mkMsg( unkName ))
         {}
-       
+        
     };
     
     class dupSpeciesNameXcpt :
@@ -265,7 +265,7 @@ namespace mzr
         static std::string
         mkMsg( const std::string& rSpeciesName,
                xmlpp::Node* pRequestingNode = 0 );
-
+        
     public:
         dupSpeciesNameXcpt( const std::string& rSpeciesName,
                             xmlpp::Node* pRequestingNode = 0 ) :
@@ -273,15 +273,15 @@ namespace mzr
                               pRequestingNode ) )
         {}
     };
-
-
+    
+    
     class stopEventInPastXcpt :
         public utl::xcpt
     {
         static std::string
         mkMsg( double now,
                double badEventTime );
-
+        
     public:
         stopEventInPastXcpt( double now,
                              double badEventTime ) :
@@ -289,14 +289,14 @@ namespace mzr
                               badEventTime ) )
         {}
     };
-
+    
     class unkStatStreamXcpt :
         public utl::xcpt
     {
         static std::string
         mkMsg( const std::string& rBadStreamName,
                xmlpp::Node* pOffendingNode = 0 );
-
+        
     public:
         unkStatStreamXcpt( const std::string& rBadStreamName,
                            xmlpp::Node* pOffendingNode = 0 ) :
@@ -304,14 +304,14 @@ namespace mzr
                               pOffendingNode ) )
         {}
     };
-
+    
     class missingExtrapolationParameter :
         public utl::xcpt
     {
         static std::string
         mkMsg( const std::string& rSpeciesName,
                const std::string& missingParamName );
-
+        
     public:
         missingExtrapolationParameter( const std::string& rSpeciesName,
                                        const std::string& missingParamName )
@@ -319,7 +319,7 @@ namespace mzr
             utl::xcpt( mkMsg( rSpeciesName, missingParamName ) )
         {}
     };
-
+    
 }
 
 #endif

@@ -31,111 +31,111 @@
 
 namespace cpx
 {
-template<class plexSpeciesT,
-class omniPlexT>
-void
-queryAllosteryList<plexSpeciesT,
-omniPlexT>::
-addQueryAndMap( const queryType* pQuery,
-                const siteToShapeMap& rSiteToShapeMap )
-{
-    push_back( std::make_pair( pQuery, rSiteToShapeMap ) );
-}
-
-template<class plexSpeciesT,
-class omniPlexT>
-class setShapesIfSatisfied :
-            public std::unary_function<typename queryAllosteryList<plexSpeciesT,
-            omniPlexT>::value_type,
-            void>
-{
-    plexSpeciesT& rSpecies;
-
-public:
-    setShapesIfSatisfied( plexSpeciesT& refSpecies ) :
-            rSpecies( refSpecies )
-    {}
-
+    template<class plexSpeciesT,
+             class omniPlexT>
     void
-    operator()( const typename setShapesIfSatisfied::argument_type& rQueryShapeMapPair ) const
+    queryAllosteryList<plexSpeciesT,
+                       omniPlexT>::
+    addQueryAndMap( const queryType* pQuery,
+                    const siteToShapeMap& rSiteToShapeMap )
     {
-        const andPlexQueries<plexSpeciesT, omniPlexT>& rQuery
-        = * ( rQueryShapeMapPair.first );
-
-        if ( rQuery( rSpecies ) )
-        {
-            const siteToShapeMap& rSiteToShapeMap = rQueryShapeMapPair.second;
-            rSpecies.siteParams.setSiteShapes( rSiteToShapeMap );
-        }
+        push_back( std::make_pair( pQuery, rSiteToShapeMap ) );
     }
-};
-
-template<class plexSpeciesT,
-class omniPlexT>
-void
-queryAllosteryList<plexSpeciesT,
-omniPlexT>::
-setSatisfiedQuerySiteShapes( plexSpeciesT& rSpecies ) const
-{
-    setShapesIfSatisfied<plexSpeciesT, omniPlexT>
-    setShapes( rSpecies );
-
-    std::for_each( this->begin(),
-                   this->end(),
-                   setShapes );
-}
-
-template<class plexSpeciesT,
-class omniPlexT>
-class setShapesIfSatisfiedTracked :
-            public std::unary_function<typename queryAllosteryList<plexSpeciesT,
-            omniPlexT>::value_type,
-            void>
-{
-public:
-    typedef subPlexSpec<omniPlexT> specType;
-    typedef andPlexQueries<plexSpeciesT, omniPlexT> queryType;
-
-private:
-    plexSpeciesT& rSpecies;
-    const specType& rSpec;
-
-public:
-    setShapesIfSatisfiedTracked( plexSpeciesT& refSpecies,
-                                 const specType& rSubPlexSpec ) :
+    
+    template<class plexSpeciesT,
+             class omniPlexT>
+    class setShapesIfSatisfied :
+        public std::unary_function<typename queryAllosteryList<plexSpeciesT,
+                                                               omniPlexT>::value_type,
+                                   void>
+    {
+        plexSpeciesT& rSpecies;
+        
+    public:
+        setShapesIfSatisfied( plexSpeciesT& refSpecies ) :
+            rSpecies( refSpecies )
+        {}
+        
+        void
+        operator()( const typename setShapesIfSatisfied::argument_type& rQueryShapeMapPair ) const
+        {
+            const andPlexQueries<plexSpeciesT, omniPlexT>& rQuery
+                = * ( rQueryShapeMapPair.first );
+            
+            if ( rQuery( rSpecies ) )
+            {
+                const siteToShapeMap& rSiteToShapeMap = rQueryShapeMapPair.second;
+                rSpecies.siteParams.setSiteShapes( rSiteToShapeMap );
+            }
+        }
+    };
+    
+    template<class plexSpeciesT,
+             class omniPlexT>
+    void
+    queryAllosteryList<plexSpeciesT,
+                       omniPlexT>::
+    setSatisfiedQuerySiteShapes( plexSpeciesT& rSpecies ) const
+    {
+        setShapesIfSatisfied<plexSpeciesT, omniPlexT>
+            setShapes( rSpecies );
+        
+        std::for_each( this->begin(),
+                       this->end(),
+                       setShapes );
+    }
+    
+    template<class plexSpeciesT,
+             class omniPlexT>
+    class setShapesIfSatisfiedTracked :
+        public std::unary_function<typename queryAllosteryList<plexSpeciesT,
+                                                               omniPlexT>::value_type,
+                                   void>
+    {
+    public:
+        typedef subPlexSpec<omniPlexT> specType;
+        typedef andPlexQueries<plexSpeciesT, omniPlexT> queryType;
+        
+    private:
+        plexSpeciesT& rSpecies;
+        const specType& rSpec;
+        
+    public:
+        setShapesIfSatisfiedTracked( plexSpeciesT& refSpecies,
+                                     const specType& rSubPlexSpec ) :
             rSpecies( refSpecies ),
             rSpec( rSubPlexSpec )
-    {}
-
-    void
-    operator()( const typename setShapesIfSatisfiedTracked::argument_type& rQueryShapeMapPair ) const
-    {
-        const queryType& rQuery = * ( rQueryShapeMapPair.first );
-        if ( rQuery.applyTracked( rSpecies,
-                                  rSpec ) )
+        {}
+        
+        void
+        operator()( const typename setShapesIfSatisfiedTracked::argument_type& rQueryShapeMapPair ) const
         {
-            const siteToShapeMap& rSiteToShapeMap
-            = rQueryShapeMapPair.second;
-            rSpecies.siteParams.setSiteShapes( rSiteToShapeMap,
-                                               rSpec );
+            const queryType& rQuery = * ( rQueryShapeMapPair.first );
+            if ( rQuery.applyTracked( rSpecies,
+                                      rSpec ) )
+            {
+                const siteToShapeMap& rSiteToShapeMap
+                    = rQueryShapeMapPair.second;
+                rSpecies.siteParams.setSiteShapes( rSiteToShapeMap,
+                                                   rSpec );
+            }
         }
+    };
+    
+    template<class plexSpeciesT,
+             class omniPlexT>
+    void
+    queryAllosteryList<plexSpeciesT,
+                       omniPlexT>::
+    setSatisfiedQuerySiteShapes( plexSpeciesT& rSpecies,
+                                 const specType& rSubPlexSpec ) const
+    {
+        setShapesIfSatisfiedTracked<plexSpeciesT, omniPlexT>
+            setShapes( rSpecies,
+                       rSubPlexSpec );
+        
+        std::for_each( this->begin(),
+                       this->end(),
+                       this->setMixinShapes );
     }
-};
-
-template<class plexSpeciesT,
-class omniPlexT>
-void
-queryAllosteryList<plexSpeciesT,
-omniPlexT>::
-setSatisfiedQuerySiteShapes( plexSpeciesT& rSpecies,
-                             const specType& rSubPlexSpec ) const
-{
-    setShapesIfSatisfiedTracked<plexSpeciesT, omniPlexT>
-    setShapes( rSpecies,
-               rSubPlexSpec );
-
-    std::for_each( this->begin(),
-                   this->end(),
-                   this->setMixinShapes );
-}
 }

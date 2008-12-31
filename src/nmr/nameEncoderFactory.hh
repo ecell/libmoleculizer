@@ -40,56 +40,56 @@
 
 namespace nmr
 {
-
-DECLARE_CLASS( nmrUnit );
-DECLARE_CLASS( NameEncoderFactory );
-class NameEncoderFactory
-{
-public:
-
-    NameEncoderFactory( nmrUnit& aNmrUnit )
+    
+    DECLARE_CLASS( nmrUnit );
+    DECLARE_CLASS( NameEncoderFactory );
+    class NameEncoderFactory
+    {
+    public:
+        
+        NameEncoderFactory( nmrUnit& aNmrUnit )
             :
             theNmrUnit( aNmrUnit )
-    {}
-
-    NameAssembler*
-    create( const std::string& manglerName ) throw( NoSuchNameEncoderXcpt )
-    {
-//       if( manglerName == manglernames::basicManglerName )
-//         {
-//           return new basicNameAssembler<molT>;
-//         }
-//       else if ( manglerName == manglernames::detailedManglerName )
-//         {
-//           return new readableNameAssembler<molT>;
-
-//         }
-//       else if ( manglerName == manglernames::compactManglerName )
-//         {
-//           return new MangledNameAssembler<molT>;
-//         }
-//       else
-//         {
-//           throw NoSuchNameManglerXcpt( manglerName );
-//         }
-
-        if ( manglerName == manglernames::compactEncoderName )
+        {}
+        
+        NameAssembler*
+        create( const std::string& manglerName ) throw( NoSuchNameEncoderXcpt )
         {
-            return new MangledNameAssembler( theNmrUnit );
+            //       if( manglerName == manglernames::basicManglerName )
+            //         {
+            //           return new basicNameAssembler<molT>;
+            //         }
+            //       else if ( manglerName == manglernames::detailedManglerName )
+            //         {
+            //           return new readableNameAssembler<molT>;
+            
+            //         }
+            //       else if ( manglerName == manglernames::compactManglerName )
+            //         {
+            //           return new MangledNameAssembler<molT>;
+            //         }
+            //       else
+            //         {
+            //           throw NoSuchNameManglerXcpt( manglerName );
+            //         }
+            
+            if ( manglerName == manglernames::compactEncoderName )
+            {
+                return new MangledNameAssembler( theNmrUnit );
+            }
+            else
+            {
+                throw NoSuchNameEncoderXcpt( manglerName );
+            }
+            
         }
-        else
-        {
-            throw NoSuchNameEncoderXcpt( manglerName );
-        }
-
-    }
-
-protected:
-    nmrUnit& theNmrUnit;
-
-};
-
-
+        
+    protected:
+        nmrUnit& theNmrUnit;
+        
+    };
+    
+    
 }
 
 

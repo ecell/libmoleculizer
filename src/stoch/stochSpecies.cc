@@ -37,44 +37,44 @@
 
 namespace stoch
 {
-xmlpp::Element*
-stochSpecies::insertElt( xmlpp::Element* pTaggedSpeciesElt,
-                         double molarFactor ) const
-throw( std::exception )
-{
-    xmlpp::Element* pTaggedStochSpeciesElt
-    = pTaggedSpeciesElt->add_child( eltName::taggedStochSpecies );
-
-    pTaggedStochSpeciesElt->set_attribute( eltName::taggedStochSpecies_tagAttr,
-                                           getTag() );
-
-    pTaggedStochSpeciesElt->set_attribute( eltName::taggedStochSpecies_nameAttr,
-                                           getName() );
-
-    xmlpp::Element* pWeightElt
-    = pTaggedStochSpeciesElt->add_child( eltName::weight );
-
-    pWeightElt->set_attribute( eltName::weight_daltonsAttr,
-                               utl::stringify<double> ( getWeight() ) );
-
-//         xmlpp::Element* pPopulationElt
-//         = pTaggedStochSpeciesElt->add_child (eltName::population);
-
-//         pPopulationElt->set_attribute (eltName::population_countAttr,
-//                                        utl::stringify<int> (getPop() ) );
-
-// Adding redundant concentration element for use by ODE solver.
-// An alternative would be to convert population to concentration
-// (using Java?) during translation of state dump fro ODE solver.
-//         double concentration
-//         = getPop() / molarFactor;
-
-//         xmlpp::Element* pConcentrationElt
-//         = pTaggedStochSpeciesElt->add_child (eltName::concentration);
-
-//         pConcentrationElt->set_attribute (eltName::concentration_valueAttr,
-//                                           utl::stringify<double> (concentration) );
-
-    return pTaggedStochSpeciesElt;
-}
+    xmlpp::Element*
+    stochSpecies::insertElt( xmlpp::Element* pTaggedSpeciesElt,
+                             double molarFactor ) const
+        throw( std::exception )
+    {
+        xmlpp::Element* pTaggedStochSpeciesElt
+            = pTaggedSpeciesElt->add_child( eltName::taggedStochSpecies );
+        
+        pTaggedStochSpeciesElt->set_attribute( eltName::taggedStochSpecies_tagAttr,
+                                               getTag() );
+        
+        pTaggedStochSpeciesElt->set_attribute( eltName::taggedStochSpecies_nameAttr,
+                                               getName() );
+        
+        xmlpp::Element* pWeightElt
+            = pTaggedStochSpeciesElt->add_child( eltName::weight );
+        
+        pWeightElt->set_attribute( eltName::weight_daltonsAttr,
+                                   utl::stringify<double> ( getWeight() ) );
+        
+        //         xmlpp::Element* pPopulationElt
+        //         = pTaggedStochSpeciesElt->add_child (eltName::population);
+        
+        //         pPopulationElt->set_attribute (eltName::population_countAttr,
+        //                                        utl::stringify<int> (getPop() ) );
+        
+        // Adding redundant concentration element for use by ODE solver.
+        // An alternative would be to convert population to concentration
+        // (using Java?) during translation of state dump fro ODE solver.
+        //         double concentration
+        //         = getPop() / molarFactor;
+        
+        //         xmlpp::Element* pConcentrationElt
+        //         = pTaggedStochSpeciesElt->add_child (eltName::concentration);
+        
+        //         pConcentrationElt->set_attribute (eltName::concentration_valueAttr,
+        //                                           utl::stringify<double> (concentration) );
+        
+        return pTaggedStochSpeciesElt;
+    }
 }

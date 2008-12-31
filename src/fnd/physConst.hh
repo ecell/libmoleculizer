@@ -33,15 +33,15 @@
 #define PHYSCONST_H
 
 /*! \file physConst.hh
-\ingroup chemGroup
-\brief Compiled-in physical constants.
-
-I've generally tried to avoid these, preferring to put in such things
-in scripts. */
+  \ingroup chemGroup
+  \brief Compiled-in physical constants.
+  
+  I've generally tried to avoid these, preferring to put in such things
+  in scripts. */
 
 namespace fnd
 {
-extern const double avogadrosNumber;
+    extern const double avogadrosNumber;
 }
 
 #endif

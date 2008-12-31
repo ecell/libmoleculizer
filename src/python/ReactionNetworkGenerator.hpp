@@ -45,17 +45,17 @@
 class Species
 {
 public:
-//     Species()
-//         :
-//         name(""),
-//         mass(0.0f){}
-
+    //     Species()
+    //         :
+    //         name(""),
+    //         mass(0.0f){}
+    
     Species( const mzr::mzrSpecies& aMzrSpecies )
-            :
-            name( aMzrSpecies.getName() ),
-            mass( aMzrSpecies.getWeight() )
+        :
+        name( aMzrSpecies.getName() ),
+        mass( aMzrSpecies.getWeight() )
     {}
-
+    
     std::string getName() const
     {
         return name;
@@ -64,7 +64,7 @@ public:
     {
         return mass;
     }
-
+    
 private:
     std::string name;
     float mass;
@@ -74,27 +74,27 @@ class Reaction
 {
 public:
     typedef fnd::basicReaction<mzr::mzrSpecies> CoreRxnType;
-
-//    Reaction(){}
+    
+    //    Reaction(){}
     Reaction( const CoreRxnType& aReaction );
-
+    
     float getRate() const
     {
         return rate;
     }
-
+    
     std::vector<Species>
     getSubstrates() const
     {
         return substrates;
     }
-
+    
     std::vector<Species>
     getProducts() const
     {
         return products;
     }
-
+    
 protected:
     float rate;
     std::vector<Species> substrates;
@@ -107,68 +107,68 @@ struct BasicComplexRepresentation
     typedef std::pair<int, std::string> HalfBinding;
     typedef std::pair<HalfBinding, HalfBinding> BindingType;
     typedef std::pair< int, std::pair<std::string, std::string> > ModType;
-
+    
     void
     addMolNameToComplex( const std::string& molName );
-
+    
     void addModificationToComplex( int molIndex,
                                    const std::string& modificationSiteName,
                                    const std::string& modificationValue );
-
+    
     void addBindingToComplex( int firstMolNdx,
                               const std::string& bindingName1,
                               int secondMolNdx,
                               const std::string& bindingName2 );
-
+    
     std::vector<std::string> mols;
     std::vector<BindingType > bindings;
     std::vector<ModType> modifications;
-
+    
 };
 
 
 class ReactionNetworkGenerator
 {
-
+    
 public:
     ReactionNetworkGenerator()
     {
         ptrMoleculizer = new mzr::moleculizer;
     }
-
+    
     ~ReactionNetworkGenerator()
     {
         delete ptrMoleculizer;
     }
-
+    
     void
     runInteractiveMode()
     {
         ptrMoleculizer->RunInteractiveDebugMode();
         return;
     }
-
+    
     int
     getNumUnary() const
     {
         ptrMoleculizer->unaryReactionList.size();
     }
-
+    
     int getNumBinary() const
     {
         ptrMoleculizer->binaryReactionList.size();
     }
-
+    
     void showDeadSpecies() const
     {
         ptrMoleculizer->DEBUG_showDeadSpecies();
     }
-
+    
     void showLiveSpecies() const
     {
         ptrMoleculizer->DEBUG_showLiveSpecies();
     }
-
+    
     void addRules( const std::string& filename ) throw( mzr::BadRulesDefinitionXcpt )
     {
         try
@@ -180,13 +180,13 @@ public:
         catch ( mzr::BadRulesDefinitionXcpt e )
         {
             e.warn();
-
+            
             if ( ptrMoleculizer )
             {
                 delete ptrMoleculizer;
                 ptrMoleculizer = NULL;
             }
-
+            
             throw e;
         }
         catch ( utl::xcpt x )
@@ -202,43 +202,43 @@ public:
             x.wailAndBail();
         }
     }
-
+    
     std::vector<Reaction>
     getBinaryReactions( const std::string& species1,
                         const std::string& species2 ) throw( mzr::IllegalNameXcpt );
-
+    
     std::vector<Reaction>
     getUnaryReactions( const std::string& species1 ) throw( mzr::IllegalNameXcpt );
-
+    
     Species
     getSpecies( const std::string& species ) throw( mzr::IllegalNameXcpt );
-
+    
     bool
     checkSpeciesNameLegality( const std::string& species1 ) throw( mzr::IllegalNameXcpt );
-
-
-// For now I am writing two versions of this function.  This 'stricter' one insists on
-// molecules in the ComplexRepresentation being a priori defined in the moleculizer
-// rules.  This is so that "default" modifications that aren't in the complex representation.
-// But that might just be stupid.
+    
+    
+    // For now I am writing two versions of this function.  This 'stricter' one insists on
+    // molecules in the ComplexRepresentation being a priori defined in the moleculizer
+    // rules.  This is so that "default" modifications that aren't in the complex representation.
+    // But that might just be stupid.
     std::string
     generateNameFromBasicComplexRepresentation( const BasicComplexRepresentation& aBCR );
-
+    
     std::string
     generateNameFromBasicComplexRepresentationStrict( const BasicComplexRepresentation& aBCR );
-
+    
     void showAllReactions();
     void incrementSpecies( const std::string& species );
     int getNumberOfSpecies();
     int getNumberOfReactions();
-
+    
     void
     showAllSpecies()
     {
         ptrMoleculizer->DEBUG_showAllSpecies();
     }
-
-
+    
+    
 protected:
     mzr::moleculizer* ptrMoleculizer;
 };
@@ -248,10 +248,10 @@ class modificationNotOfNdx
 public:
     int ndx;
     modificationNotOfNdx( int index )
-            :
-            ndx( index )
+        :
+        ndx( index )
     {}
-
+    
     bool operator()( const BasicComplexRepresentation::ModType& theModType )
     {
         return theModType.first != ndx;

@@ -3,7 +3,7 @@
 
 namespace mzr
 {
-
+    
     std::string
     unknownUserNameXcpt::
     mkMsg(const std::string& unknownUserName)
@@ -15,7 +15,7 @@ namespace mzr
             << "' cannot be found in the database of user names to species.";
         return oss.str();
     }
-
+    
     std::string
     dumpableNotSpeciesStreamXcpt::
     mkMsg( const std::string& rDumpableName )
@@ -28,7 +28,7 @@ namespace mzr
                   << "was registered as such.";
         return msgStream.str();
     }
-
+    
     std::string
     illegalSpeciesNameXcpt::
     mkMsg( const std::string& rSpeciesName,
@@ -36,7 +36,7 @@ namespace mzr
     {
         return ( rSpeciesName + " is an illegal name" );
     }
-
+    
     std::string
     unkDumpableXcpt::
     mkMsg( const std::string& rDumpableName,
@@ -49,7 +49,7 @@ namespace mzr
                   << "'.";
         return msgStream.str();
     }
-
+    
     std::string
     dupDumpableNameXcpt::
     mkMsg( const std::string& rDumpableName,
@@ -62,7 +62,7 @@ namespace mzr
                   << ".";
         return msgStream.str();
     }
-
+    
     std::string
     unkSpeciesXcpt::
     mkMsg( const std::string& rSpeciesName,
@@ -75,7 +75,7 @@ namespace mzr
                   << "'.";
         return msgStream.str();
     }
-
+    
     std::string
     dupSpeciesNameXcpt::
     mkMsg( const std::string& rSpeciesName,
@@ -88,7 +88,7 @@ namespace mzr
                   << ".";
         return msgStream.str();
     }
-
+    
     std::string
     stopEventInPastXcpt::
     mkMsg( double now,
@@ -102,8 +102,8 @@ namespace mzr
                   << ".";
         return msgStream.str();
     }
-
-
+    
+    
     std::string
     unkStatStreamXcpt::
     mkMsg( const std::string& rBadStreamName,
@@ -116,7 +116,7 @@ namespace mzr
                   << "'.";
         return msgStream.str();
     }
-
+    
     std::string
     missingExtrapolationParameter::
     mkMsg( const std::string& rSpeciesName,
@@ -130,6 +130,6 @@ namespace mzr
                   << ", which was not found.";
         return msgStream.str();
     }
-
+    
 }
 

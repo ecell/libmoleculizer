@@ -37,20 +37,20 @@
 
 namespace ftr
 {
-class uniMolFam :
-            public utl::autoVector<mzr::mzrReaction>
-{
-    uniMolRxnGen rxnGen;
-
-public:
-    uniMolFam( mzr::mzrUnit& refMzrUnit,
-               plx::plexUnit& refPlexUnit,
-               bnd::mzrModMol* pEnablingModMol,
-               cpx::andMolStateQueries* pAndMolQueries,
-               const std::vector<molModExchange>& rModExchanges,
-               mzr::mzrSpecies* pAuxReactant,
-               mzr::mzrSpecies* pAuxProduct,
-               const uniMolExtrapolator* pUniMolExtrapolator ) :
+    class uniMolFam :
+        public utl::autoVector<mzr::mzrReaction>
+    {
+        uniMolRxnGen rxnGen;
+        
+    public:
+        uniMolFam( mzr::mzrUnit& refMzrUnit,
+                   plx::plexUnit& refPlexUnit,
+                   bnd::mzrModMol* pEnablingModMol,
+                   cpx::andMolStateQueries* pAndMolQueries,
+                   const std::vector<molModExchange>& rModExchanges,
+                   mzr::mzrSpecies* pAuxReactant,
+                   mzr::mzrSpecies* pAuxProduct,
+                   const uniMolExtrapolator* pUniMolExtrapolator ) :
             rxnGen( refMzrUnit,
                     refPlexUnit,
                     pEnablingModMol,
@@ -60,14 +60,14 @@ public:
                     pAuxProduct,
                     this,
                     pUniMolExtrapolator )
-    {}
-
-    uniMolRxnGen*
-    getRxnGen( void )
-    {
-        return &rxnGen;
-    }
-};
+        {}
+        
+        uniMolRxnGen*
+        getRxnGen( void )
+        {
+            return &rxnGen;
+        }
+    };
 }
 
 #endif // FTR_UNIMOLFAM_H

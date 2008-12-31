@@ -38,35 +38,35 @@
 
 namespace nmr
 {
-DECLARE_CLASS( PermutationName );
-struct PermutationName
-{
-
-    static int counter;
-    PermutationName()
+    DECLARE_CLASS( PermutationName );
+    struct PermutationName
     {
-        ; // do nothing
-    }
-
-    PermutationName( PermutationNameCref aPermutationName )
+        
+        static int counter;
+        PermutationName()
+        {
+            ; // do nothing
+        }
+        
+        PermutationName( PermutationNameCref aPermutationName )
             :
             thePermutation( aPermutationName.thePermutation ),
             theCorrespondingPartialTokenList( aPermutationName.theCorrespondingPartialTokenList )
-    {
-        ; // do nothing
-    }
-
-    bool operator== ( PermutationNameCref anotherPermutationName )
-    {
-        return ( thePermutation == anotherPermutationName.thePermutation );
-    }
-
-
-    bool operator< ( PermutationNameCref aPermutationName ) const;
-    Permutation thePermutation;
-    PartialTokenList theCorrespondingPartialTokenList;
-
-};
+        {
+            ; // do nothing
+        }
+        
+        bool operator== ( PermutationNameCref anotherPermutationName )
+        {
+            return ( thePermutation == anotherPermutationName.thePermutation );
+        }
+        
+        
+        bool operator< ( PermutationNameCref aPermutationName ) const;
+        Permutation thePermutation;
+        PartialTokenList theCorrespondingPartialTokenList;
+        
+    };
 }
 
 

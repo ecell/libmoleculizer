@@ -36,50 +36,50 @@
 
 namespace nmr
 {
-
-std::string
-readableNameAssembler::createNameFromOutputState( ComplexOutputStateCref aCOS ) const
-{
-// We would like the output to be something like the following.
-// X(phosphorylated):Y:Z(not_phos).
-
-    std::string name( "" );
-
-    for ( unsigned int molNdx = 0;
-            molNdx != aCOS.theMolTokens.size();
-            ++molNdx )
+    
+    std::string
+    readableNameAssembler::createNameFromOutputState( ComplexOutputStateCref aCOS ) const
     {
-        name += aCOS.theMolTokens[molNdx];
-
-        std::string modSitesString( "" );
-        int numberModSites = 0;
-        std::string molNdxAsString = utl::stringify( molNdx );
-
-        for ( unsigned int modNdx = 0 ;
-                modNdx!= aCOS.theModificationTokens.size();
-                ++modNdx )
+        // We would like the output to be something like the following.
+        // X(phosphorylated):Y:Z(not_phos).
+        
+        std::string name( "" );
+        
+        for ( unsigned int molNdx = 0;
+              molNdx != aCOS.theMolTokens.size();
+              ++molNdx )
         {
-            if ( aCOS.theModificationTokens[modNdx].first == molNdxAsString )
+            name += aCOS.theMolTokens[molNdx];
+            
+            std::string modSitesString( "" );
+            int numberModSites = 0;
+            std::string molNdxAsString = utl::stringify( molNdx );
+            
+            for ( unsigned int modNdx = 0 ;
+                  modNdx!= aCOS.theModificationTokens.size();
+                  ++modNdx )
             {
-                modSitesString += aCOS.theModificationTokens[modNdx].second.second;
-                modSitesString += ",";
-                numberModSites++;
+                if ( aCOS.theModificationTokens[modNdx].first == molNdxAsString )
+                {
+                    modSitesString += aCOS.theModificationTokens[modNdx].second.second;
+                    modSitesString += ",";
+                    numberModSites++;
+                }
             }
+            
+            if ( numberModSites )
+            {
+                modSitesString = modSitesString.substr( 0, modSitesString.length() - 1 );
+                modSitesString = "(" + modSitesString + ")";
+                name += modSitesString;
+            }
+            name += "-";
         }
-
-        if ( numberModSites )
-        {
-            modSitesString = modSitesString.substr( 0, modSitesString.length() - 1 );
-            modSitesString = "(" + modSitesString + ")";
-            name += modSitesString;
-        }
-        name += "-";
+        
+        name = name.substr( 0, name.length() - 1 );
+        
+        return name;
     }
-
-    name = name.substr( 0, name.length() - 1 );
-
-    return name;
-}
-
-
+    
+    
 }

@@ -34,39 +34,39 @@
 
 namespace cpx
 {
-/*! \ingroup plexSpeciesGroup
-\brief (Concrete) base class for state of molecules. */
-class molState
-{
-protected:
-    // Other contributions from molecular state may go into the true
-    // molecular weight; hence the name.
-    double baseWeight;
-
-public:
-    molState( double molWeight ) :
+    /*! \ingroup plexSpeciesGroup
+      \brief (Concrete) base class for state of molecules. */
+    class molState
+    {
+    protected:
+        // Other contributions from molecular state may go into the true
+        // molecular weight; hence the name.
+        double baseWeight;
+        
+    public:
+        molState( double molWeight ) :
             baseWeight( molWeight )
-    {}
-
-    virtual ~molState()
-    {}
-
-    virtual double
-    getMolWeight( void ) const
-    {
-        return baseWeight;
-    }
-
-    bool
-    operator< ( const molState& rRight ) const
-    {
-        return baseWeight < rRight.baseWeight;
-    }
-
-};
-
-// Now not sure if this was such a good idea...
-typedef const molState* molParam;
+        {}
+        
+        virtual ~molState()
+        {}
+        
+        virtual double
+        getMolWeight( void ) const
+        {
+            return baseWeight;
+        }
+        
+        bool
+        operator< ( const molState& rRight ) const
+        {
+            return baseWeight < rRight.baseWeight;
+        }
+        
+    };
+    
+    // Now not sure if this was such a good idea...
+    typedef const molState* molParam;
 }
 
 #endif // MOLSTATE_H

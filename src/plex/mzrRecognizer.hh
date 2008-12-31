@@ -40,35 +40,35 @@
 
 namespace nmr
 {
-class NmrUnit;
+    class NmrUnit;
 }
 
 namespace plx
 {
-class plexUnit;
-
-class mzrRecognizer :
-            public cpx::recognizer<mzrPlex, mzrPlexFamily>
-{
-    plexUnit& rPlexUnit;
-    nmr::nmrUnit& rNmrUnit;
-
-public:
-    mzrRecognizer( plexUnit& refPlexUnit,
-                   nmr::nmrUnit& refNmrUnit ) :
+    class plexUnit;
+    
+    class mzrRecognizer :
+        public cpx::recognizer<mzrPlex, mzrPlexFamily>
+    {
+        plexUnit& rPlexUnit;
+        nmr::nmrUnit& rNmrUnit;
+        
+    public:
+        mzrRecognizer( plexUnit& refPlexUnit,
+                       nmr::nmrUnit& refNmrUnit ) :
             rPlexUnit( refPlexUnit ),
             rNmrUnit( refNmrUnit )
-    {}
-
-    mzrPlexFamily*
-    makePlexFamily( const mzrPlex& rPlex ) const;
-
-// Output routine.
-    void
-    insertSpecies( xmlpp::Element* pExplicitSpeciesElt,
-                   double molarFactor ) const
-    throw( std::exception );
-};
+        {}
+        
+        mzrPlexFamily*
+        makePlexFamily( const mzrPlex& rPlex ) const;
+        
+        // Output routine.
+        void
+        insertSpecies( xmlpp::Element* pExplicitSpeciesElt,
+                       double molarFactor ) const
+            throw( std::exception );
+    };
 }
 
 #endif

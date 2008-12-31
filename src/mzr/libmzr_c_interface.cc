@@ -53,7 +53,7 @@ createNewCRxnFromMzrReaction( moleculizer* cMzrPtr, const mzr::mzrReaction* pMzr
 
 int 
 convertUserNameToSpeciesKey( moleculizer* handle, char* theUserName, char* correspondingSpeciesKey);
- 
+
 
 void 
 constructCSpeciesArrayFromSpeciesMap(moleculizer* cMzrPtr, 
@@ -70,10 +70,10 @@ constructCSpeciesArrayFromSpeciesMap(moleculizer* cMzrPtr,
 
 moleculizer* createNewMoleculizerObject()
 {
-// Creates a new moleculizer object (the c-struct) that wraps a mzr::moleculizer c++ object.
-// The pointer is owned by whoever calls this function and must be free'd using the 
-// freeMoleculizerObject function.
-
+    // Creates a new moleculizer object (the c-struct) that wraps a mzr::moleculizer c++ object.
+    // The pointer is owned by whoever calls this function and must be free'd using the 
+    // freeMoleculizerObject function.
+    
     moleculizer_handle* newHandle = new moleculizer_handle;
     newHandle->mzrObject = (void*) new mzr::moleculizer;
     return newHandle;
@@ -84,40 +84,40 @@ int setupSpatialExtrapolation(moleculizer* handle)
     enum LOCAL_ERROR_TYPE { SUCCESS = 0,
                             UNKNOWN_ERROR = 1,
                             MODEL_ALREADY_LOADED = 2 };
-
-
+    
+    
     mzr::moleculizer* underlyingMoleculizerObject = convertCMzrPtrToMzrPtr(handle);
-
+    
     if ( underlyingMoleculizerObject->getModelHasBeenLoaded() ) return MODEL_ALREADY_LOADED;
-
+    
     try
     {
         underlyingMoleculizerObject->setRateExtrapolation( false );
-//        underlyingMoleculizerObject->enableSpatialReactionNetworkGeneration();
+        //        underlyingMoleculizerObject->enableSpatialReactionNetworkGeneration();
         return SUCCESS;
     }
     catch(...)
     {
         return UNKNOWN_ERROR;
     }
-
+    
 }
 
 int setupNonSpatialExtrapolation(moleculizer* handle, int useMassBasedRateExtrapolation)
 {
-
+    
     enum LOCAL_ERROR_TYPE { SUCCESS = 0,
                             UNKNOWN_ERROR = 1,
                             MODEL_ALREADY_LOADED = 2 };
-
+    
     mzr::moleculizer* underlyingMoleculizerObject = convertCMzrPtrToMzrPtr(handle);
     
     if ( underlyingMoleculizerObject->getModelHasBeenLoaded() ) return MODEL_ALREADY_LOADED;
-
+    
     try
     {
         underlyingMoleculizerObject->setRateExtrapolation( useMassBasedRateExtrapolation );
-//        underlyingMoleculizerObject->enableSpatialReactionNetworkGeneration();
+        //        underlyingMoleculizerObject->enableSpatialReactionNetworkGeneration();
         return SUCCESS;
     }
     catch(...)
@@ -128,7 +128,7 @@ int setupNonSpatialExtrapolation(moleculizer* handle, int useMassBasedRateExtrap
 
 void freeMoleculizerObject( moleculizer* handle)
 {
-// This function frees the c-style moleculizer handle.
+    // This function frees the c-style moleculizer handle.
     delete convertCMzrPtrToMzrPtr(handle);
     delete handle;
 }
@@ -136,79 +136,79 @@ void freeMoleculizerObject( moleculizer* handle)
 
 int attachRulesFileToMoleculizerObject(moleculizer* handle, char* fileName)
 {
-// This function takes a string to a file containing an xml rules 
-// description for the system and loads it into mzr::moleculizer.
-// See documentation for a specification of model files as well as
-// examples.
-
-   enum LOCAL_ERROR_TYPE { SUCCESS = 0,
-                           UNKNOWN_ERROR = 1, 
-                           DOCUMENT_UNPARSABLE = 2,
-                           RULES_ALREADY_LOADED = 3};
-
+    // This function takes a string to a file containing an xml rules 
+    // description for the system and loads it into mzr::moleculizer.
+    // See documentation for a specification of model files as well as
+    // examples.
+    
+    enum LOCAL_ERROR_TYPE { SUCCESS = 0,
+                            UNKNOWN_ERROR = 1, 
+                            DOCUMENT_UNPARSABLE = 2,
+                            RULES_ALREADY_LOADED = 3};
+    
     try
     {
         convertCMzrPtrToMzrPtr( handle )->attachFileName( std::string(fileName) );
         return SUCCESS;
     }
     catch(utl::dom::noDocumentParsedXcpt xcpt)
-   {
-       xcpt.warn();
-       return DOCUMENT_UNPARSABLE;
-   }
-   catch(utl::modelAlreadyLoadedXcpt xcpt)
-   {
-       xcpt.warn();
-       return RULES_ALREADY_LOADED;
-   }
-   catch(utl::xcpt xcpt)
-   {
-       xcpt.warn();
-       return UNKNOWN_ERROR;
-   }
+    {
+        xcpt.warn();
+        return DOCUMENT_UNPARSABLE;
+    }
+    catch(utl::modelAlreadyLoadedXcpt xcpt)
+    {
+        xcpt.warn();
+        return RULES_ALREADY_LOADED;
+    }
+    catch(utl::xcpt xcpt)
+    {
+        xcpt.warn();
+        return UNKNOWN_ERROR;
+    }
     catch(...)
     {
         return UNKNOWN_ERROR;
     }
-
+    
 }
 
 int attachRulesStringToMoleculizerObject( moleculizer* handle, char* rulesCstring)
 {
-// This function takes a string containing a rules definition of the file and loads 
-// it into the provided moleculizer object.
-
-   enum LOCAL_ERROR_TYPE { SUCCESS = 0,
-                           UNKNOWN_ERROR=1,
-                           DOCUMENT_UNPARSABLE = 2,
-                           RULES_ALREADY_LOADED = 3};
-
-   std::string rules( rulesCstring );
-   try
-   {
-       convertCMzrPtrToMzrPtr( handle )->attachString( rules );
-       return SUCCESS;
-   }
-   catch(utl::dom::noDocumentParsedXcpt xcpt)
-   {
-       xcpt.warn();
-       return DOCUMENT_UNPARSABLE;
-   }
-   catch(utl::modelAlreadyLoadedXcpt xcpt)
-   {
-       xcpt.warn();
-       return RULES_ALREADY_LOADED;
-   }
-   catch(utl::xcpt xcpt)
-   {
-       xcpt.warn();
-       return UNKNOWN_ERROR;
-   }
-   catch(...)
-   {
-       return UNKNOWN_ERROR;
-   }
-
+    // This function takes a string containing a rules definition of the file and loads 
+    // it into the provided moleculizer object.
+    
+    enum LOCAL_ERROR_TYPE { SUCCESS = 0,
+                            UNKNOWN_ERROR=1,
+                            DOCUMENT_UNPARSABLE = 2,
+                            RULES_ALREADY_LOADED = 3};
+    
+    std::string rules( rulesCstring );
+    try
+    {
+        convertCMzrPtrToMzrPtr( handle )->attachString( rules );
+        return SUCCESS;
+    }
+    catch(utl::dom::noDocumentParsedXcpt xcpt)
+    {
+        xcpt.warn();
+        return DOCUMENT_UNPARSABLE;
+    }
+    catch(utl::modelAlreadyLoadedXcpt xcpt)
+    {
+        xcpt.warn();
+        return RULES_ALREADY_LOADED;
+    }
+    catch(utl::xcpt xcpt)
+    {
+        xcpt.warn();
+        return UNKNOWN_ERROR;
+    }
+    catch(...)
+    {
+        return UNKNOWN_ERROR;
+    }
+    
 }
 
 int getReactionsBetween(moleculizer* handle, char* cStrSpeciesName1, char* cStrSpeciesName2, reaction*** ptrReactionPtrArray, int* numReactions)
@@ -216,19 +216,19 @@ int getReactionsBetween(moleculizer* handle, char* cStrSpeciesName1, char* cStrS
     // This function takes two species names, and provides a moleculizer* and a pointer to an array of
     // reaction*'s, and uses moleculizer to determine if there are any reactions between the two species.
     // If so, they are placed in reactionPtrArray and their number is placed in numReactions.
-
+    
     enum LOCAL_ERROR_TYPE { SUCCESS=0,
                             UNKNOWN_ERROR = 1,
                             ILLEGAL_SPECIES_NAME=2};
     
     std::string speciesName1( cStrSpeciesName1 );
     std::string speciesName2( cStrSpeciesName2 );
-
+    
     mzr::moleculizer* moleculizerPtr = convertCMzrPtrToMzrPtr( handle );
- 
+    
     const mzr::mzrSpecies* species1;
     const mzr::mzrSpecies* species2;
-
+    
     try
     {
         species1 = moleculizerPtr->getSpeciesWithName( speciesName1 );
@@ -242,72 +242,72 @@ int getReactionsBetween(moleculizer* handle, char* cStrSpeciesName1, char* cStrS
     {
         return UNKNOWN_ERROR;
     }
-
+    
     std::vector<const mzr::mzrReaction*> reactionsBetweenContainer;
     reactionsBetweenContainer.reserve(10);
-
+    
     moleculizerPtr->findReactionWithSubstrates( species1, species2, reactionsBetweenContainer);
-
+    
     if( reactionsBetweenContainer.empty() )
     {
         *ptrReactionPtrArray = NULL;
         *numReactions = 0;
         return SUCCESS;
     }
-
+    
     typedef reaction* reactionPtr;
     *ptrReactionPtrArray = new reactionPtr[ reactionsBetweenContainer.size() ];
-
+    
     int size = reactionsBetweenContainer.size();
     *numReactions = size;
-
+    
     for(unsigned int rxnIndex = 0; rxnIndex != reactionsBetweenContainer.size(); ++rxnIndex)
     {
         (*ptrReactionPtrArray)[ rxnIndex ] = createNewCRxnFromMzrReaction( handle, reactionsBetweenContainer[rxnIndex]);
     }
-
+    
     return SUCCESS;
-
+    
 }
 
 int getUnaryReactions(moleculizer* handle, char* speciesName, reaction*** ptrReactionPtrArray, int* numReactions)
 {
-// Same as getBinaryReactions, but with only one species.
-
+    // Same as getBinaryReactions, but with only one species.
+    
     enum LOCAL_ERROR_TYPE { SUCCESS = 0,
                             UNKNOWN_ERROR = 1,
                             ILLEGAL_SPECIES_NAME = 2};
-
+    
     try
     {
         mzr::moleculizer* moleculizerPtr = convertCMzrPtrToMzrPtr( handle );
         const mzr::mzrSpecies* pSpecies;
-    
+        
         pSpecies = moleculizerPtr->getSpeciesWithName( std::string(speciesName) );
-
+        
         // Just a guess so as to preserve speed when a few reactions are returned;
         std::vector<const mzr::mzrReaction*> unaryReactionContainer;
         unaryReactionContainer.reserve(10);
-
+        
         moleculizerPtr->findReactionWithSubstrates( pSpecies, unaryReactionContainer);
-
+        
         if ( unaryReactionContainer.empty() )
         {
             *ptrReactionPtrArray = NULL;
             *numReactions = 0;
             return SUCCESS;
         }
-
+        
         *numReactions = unaryReactionContainer.size();
-
+        
         typedef reaction* reactionPtr;        
         *ptrReactionPtrArray = new reactionPtr[ unaryReactionContainer.size() ];
-
+        
         for(unsigned int rxnIndex = 0; rxnIndex != unaryReactionContainer.size(); ++rxnIndex)
         {
             (*ptrReactionPtrArray)[rxnIndex] = createNewCRxnFromMzrReaction( handle, unaryReactionContainer[ rxnIndex ] );
         }
-
+        
         return SUCCESS;
     }
     catch( mzr::IllegalNameXcpt )
@@ -332,7 +332,7 @@ void freeReactionArray( reaction** pRxnArray, unsigned int numElements)
         // This will free numElements in the array (all of them);
         freeReaction( pRxnArray[num] );
     }
-
+    
     // This will delete the allocated memory for the pointers in the array themselves.
     delete [] pRxnArray;
 }
@@ -344,7 +344,7 @@ void freeSpeciesArray( species** speciesArray, unsigned int numElements)
         // Releases the memory each of the pointers points to.
         freeSpecies( speciesArray[num] );
     }
-
+    
     // Releases the pointers themselves.
     delete [] speciesArray;
 }
@@ -354,7 +354,7 @@ void freeReaction( reaction* pRxn)
     // This frees up all the memory associated with each of the pointers.
     freeSpeciesArray( pRxn->reactantVector, pRxn->numberReactants);
     freeSpeciesArray( pRxn->productVector, pRxn->numberProducts);
-
+    
     delete pRxn->rate;
 }
 
@@ -362,24 +362,24 @@ void freeSpecies( species* pSpecies)
 {
     // I am told this is correct under all cases.  
     delete [] pSpecies->name;
-
+    
     delete pSpecies->mass;
     delete pSpecies->radiusSet;
     delete pSpecies->radius;
     delete pSpecies->diffusionCoeffSet;
     delete pSpecies->diffusionCoeff;
-
+    
 }
 
 void constructCSpeciesArrayFromSpeciesMap(moleculizer* cMzrPtr, 
-                                           const mzr::mzrReaction::multMap& speciesMap, 
-                                           species*** ptrSpeciesPtrArray, int& numberInList)
+                                          const mzr::mzrReaction::multMap& speciesMap, 
+                                          species*** ptrSpeciesPtrArray, int& numberInList)
 {
     int numberSpeciesInMap = getSpeciesMapSize(speciesMap);
     
     typedef species* SpeciesPtr;
     *ptrSpeciesPtrArray = new SpeciesPtr[numberSpeciesInMap] ;
-
+    
     int counter = 0;
     BOOST_FOREACH( const mzr::mzrReaction::multMap::value_type& value, speciesMap)
     {
@@ -392,7 +392,7 @@ void constructCSpeciesArrayFromSpeciesMap(moleculizer* cMzrPtr,
     }
     
     numberInList = numberSpeciesInMap;
-
+    
     return;
 }
 
@@ -401,41 +401,41 @@ reaction* createNewCRxnFromMzrReaction( moleculizer* cMzrPtr, const mzr::mzrReac
 {
     reaction* theNewRxn = new reaction;
     theNewRxn->rate = new double;
-
+    
     *(theNewRxn->rate) = pMzrReaction->getRate();
-
+    
     constructCSpeciesArrayFromSpeciesMap( cMzrPtr, pMzrReaction->getReactants(),&theNewRxn->reactantVector, theNewRxn->numberReactants); 
     constructCSpeciesArrayFromSpeciesMap( cMzrPtr, pMzrReaction->getProducts(), &theNewRxn->productVector, theNewRxn->numberProducts);
-
+    
     return theNewRxn;
-
+    
 }
 
 
 
 int convertUserNameToSpeciesKey( moleculizer* handle, char* theUserName, char* correspondingSpeciesKey)
 {
-
+    
     enum LOCAL_ERROR_TYPE { SUCCESS = 0,
                             NONEXISTANT_USER_NAME = 1,
                             UNKNOWN_ERROR = 2};
-
+    
     std::string userName( theUserName );
-
+    
     try
     {
         std::string speciesKey = convertCMzrPtrToMzrPtr(handle)->convertUserNameToGeneratedName( userName );
-
+        
         // Allocate enough memory for the name as well as a '\0'.  
         correspondingSpeciesKey = new char[ speciesKey.size() + 1];
-
+        
         // Copy it in.
         strcpy(correspondingSpeciesKey, speciesKey.c_str() );
-
+        
         assert( strcmp( speciesKey.c_str(), correspondingSpeciesKey) == 0);
-
+        
         return SUCCESS;
-
+        
     }
     catch( mzr::unknownUserNameXcpt e)
     {
@@ -477,64 +477,64 @@ inline mzr::moleculizer* convertCMzrPtrToMzrPtr(moleculizer* cMzrPtr)
 species* createNewCSpeciesFromMzrSpecies( moleculizer* cMzrPtr, const mzr::mzrSpecies* pMzrSpecies)
 {
     species* newSpecies = new species;
-
-//     newSpecies->name = NULL;
-//     newSpecies->mass = NULL;
-//     newSpecies->radiusSet = NULL;
-//     newSpecies->radius = NULL;
-//     newSpecies->diffusionCoeffSet = NULL;
-//     newSpecies->diffusionCoeff = NULL;
-
-//     // COPY OVER THE NAME.
-//     //
-//     std::string speciesKey( pMzrSpecies->getName() );            // Create a string with the name.
-//     newSpecies->name = new char[speciesKey.size() + 1];          // Create a new char buffer in newSpecies->name.
-//     strcpy( newSpecies->name, speciesKey.c_str() );              // Copy the string into the char buffer.
-
-// #ifdef DEBUG
-//     // Double check that the buffers are all working out all right.
-//     assert( strcmp( newSpecies->name, speciesKey.c_str() ) == 0 );
-// #endif
     
-//     // Copy over the mass
-//     // 
-//     newSpecies->mass = new double;                    // Allocate new mem for a double in mass.
-//     *(newSpecies->mass) = pMzrSpecies->getWeight();   // Put the weight there.
-
-//     // Set the radius and the diffusion coefficient
-//     newSpecies->radiusSet = new int;                  // Allocate memory for the radisSet.
-//     newSpecies->radius = new double;                  // Ditto for the radius.
-
-//     newSpecies->diffusionCoeffSet = new int;          // Allocate memory for the diffusionCoeffSet.
-//     newSpecies->diffusionCoeff = new double;          // ... and for the diffusionCoeff.
-
-//     // Attempt to get the radius from the moleculizer handle and set both radiusSet and radius.
-//     // If it doesn't work (the radius has not been recorded), record the radiusSet as unset.
-//     try
-//     {
-//         //double theRadiusFromMzr = convertCMzrPtrToMzrPtr(cMzrPtr)->getRadiusForSpecies(pMzrSpecies);
-//         //*(newSpecies->radiusSet) = 1;
-//         //*(newSpecies->radius) = theRadiusFromMzr;
-            
-//     }
-//     catch(utl::xcpt e)
-//     {
-//         //*(newSpecies->radiusSet) = 0;
-//     }
-
-//     // Attempt to get the kD from moleculizer and use it to set diffusionCoeff.
-//     // If it doesn't work, record the diffusionCoeffSet as false.
-//     try
-//     {
-// //         double theDiffusionCoeffFromMzr = convertCMzrPtrToMzrPtr(cMzrPtr)->getKDForSpecies(pMzrSpecies);
-// //         *(newSpecies->diffusionCoeffSet) = 1;
-// //         *(newSpecies->diffusionCoeff) = theDiffusionCoeffFromMzr;
-
-//     }
-//     catch( utl::xcpt e)
-//     {
-//         *(newSpecies->diffusionCoeffSet) = 0;
-//     }
+    //     newSpecies->name = NULL;
+    //     newSpecies->mass = NULL;
+    //     newSpecies->radiusSet = NULL;
+    //     newSpecies->radius = NULL;
+    //     newSpecies->diffusionCoeffSet = NULL;
+    //     newSpecies->diffusionCoeff = NULL;
+    
+    //     // COPY OVER THE NAME.
+    //     //
+    //     std::string speciesKey( pMzrSpecies->getName() );            // Create a string with the name.
+    //     newSpecies->name = new char[speciesKey.size() + 1];          // Create a new char buffer in newSpecies->name.
+    //     strcpy( newSpecies->name, speciesKey.c_str() );              // Copy the string into the char buffer.
+    
+    // #ifdef DEBUG
+    //     // Double check that the buffers are all working out all right.
+    //     assert( strcmp( newSpecies->name, speciesKey.c_str() ) == 0 );
+    // #endif
+    
+    //     // Copy over the mass
+    //     // 
+    //     newSpecies->mass = new double;                    // Allocate new mem for a double in mass.
+    //     *(newSpecies->mass) = pMzrSpecies->getWeight();   // Put the weight there.
+    
+    //     // Set the radius and the diffusion coefficient
+    //     newSpecies->radiusSet = new int;                  // Allocate memory for the radisSet.
+    //     newSpecies->radius = new double;                  // Ditto for the radius.
+    
+    //     newSpecies->diffusionCoeffSet = new int;          // Allocate memory for the diffusionCoeffSet.
+    //     newSpecies->diffusionCoeff = new double;          // ... and for the diffusionCoeff.
+    
+    //     // Attempt to get the radius from the moleculizer handle and set both radiusSet and radius.
+    //     // If it doesn't work (the radius has not been recorded), record the radiusSet as unset.
+    //     try
+    //     {
+    //         //double theRadiusFromMzr = convertCMzrPtrToMzrPtr(cMzrPtr)->getRadiusForSpecies(pMzrSpecies);
+    //         //*(newSpecies->radiusSet) = 1;
+    //         //*(newSpecies->radius) = theRadiusFromMzr;
+    
+    //     }
+    //     catch(utl::xcpt e)
+    //     {
+    //         //*(newSpecies->radiusSet) = 0;
+    //     }
+    
+    //     // Attempt to get the kD from moleculizer and use it to set diffusionCoeff.
+    //     // If it doesn't work, record the diffusionCoeffSet as false.
+    //     try
+    //     {
+    // //         double theDiffusionCoeffFromMzr = convertCMzrPtrToMzrPtr(cMzrPtr)->getKDForSpecies(pMzrSpecies);
+    // //         *(newSpecies->diffusionCoeffSet) = 1;
+    // //         *(newSpecies->diffusionCoeff) = theDiffusionCoeffFromMzr;
+    
+    //     }
+    //     catch( utl::xcpt e)
+    //     {
+    //         *(newSpecies->diffusionCoeffSet) = 0;
+    //     }
     
     // Return the pointer to the newly created and instantiated newSpecies.
     return newSpecies;

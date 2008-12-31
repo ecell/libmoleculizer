@@ -35,68 +35,68 @@
 
 namespace utl
 {
-std::string
-mustGetArg( int& rArgc,
-            char**& rArgv )
-throw( xcpt )
-{
-    if ( rArgc <= 0 )
+    std::string
+    mustGetArg( int& rArgc,
+                char**& rArgv )
+        throw( xcpt )
     {
-        throw insuffArgsXcpt::general();
+        if ( rArgc <= 0 )
+        {
+            throw insuffArgsXcpt::general();
+        }
+        
+        std::string argString( *rArgv );
+        ++rArgv;
+        --rArgc;
+        
+        return argString;
     }
-
-    std::string argString( *rArgv );
-    ++rArgv;
-    --rArgc;
-
-    return argString;
-}
-
-int
-argMustBePosInt( const std::string& rArgString )
-throw( xcpt )
-{
-    int argValue = -1;
-
-    if ( !( stringIsInt( rArgString,
-                         argValue )
-            && ( 0 < argValue ) ) )
+    
+    int
+    argMustBePosInt( const std::string& rArgString )
+        throw( xcpt )
     {
-        throw badPosIntArgXcpt( rArgString );
+        int argValue = -1;
+        
+        if ( !( stringIsInt( rArgString,
+                             argValue )
+                && ( 0 < argValue ) ) )
+        {
+            throw badPosIntArgXcpt( rArgString );
+        }
+        
+        return argValue;
     }
-
-    return argValue;
-}
-
-int
-argMustBeNNInt( const std::string& rArgString )
-throw( xcpt )
-{
-    int argValue = -1;
-
-    if ( !( stringIsInt( rArgString,
-                         argValue )
-            && ( 0 <= argValue ) ) )
+    
+    int
+    argMustBeNNInt( const std::string& rArgString )
+        throw( xcpt )
     {
-        throw badNNIntArgXcpt( rArgString );
+        int argValue = -1;
+        
+        if ( !( stringIsInt( rArgString,
+                             argValue )
+                && ( 0 <= argValue ) ) )
+        {
+            throw badNNIntArgXcpt( rArgString );
+        }
+        
+        return argValue;
     }
-
-    return argValue;
-}
-
-double
-argMustBeNNDouble( const std::string& rArgString )
-throw( xcpt )
-{
-    double argValue = -1.0;
-
-    if ( !( stringIsDouble( rArgString,
-                            argValue )
-            && ( 0.0 <= argValue ) ) )
+    
+    double
+    argMustBeNNDouble( const std::string& rArgString )
+        throw( xcpt )
     {
-        throw badNNDoubleArgXcpt( rArgString );
+        double argValue = -1.0;
+        
+        if ( !( stringIsDouble( rArgString,
+                                argValue )
+                && ( 0.0 <= argValue ) ) )
+        {
+            throw badNNDoubleArgXcpt( rArgString );
+        }
+        
+        return argValue;
     }
-
-    return argValue;
-}
 }

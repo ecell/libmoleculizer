@@ -39,98 +39,98 @@
 
 namespace utl
 {
-
-class badNNDoubleArgXcpt :
-            public utl::xcpt
-{
-    static std::string
-    mkMsg( const std::string& rTheBadArg );
-
-public:
-    badNNDoubleArgXcpt( const std::string& rTheBadArg ) :
+    
+    class badNNDoubleArgXcpt :
+        public utl::xcpt
+    {
+        static std::string
+        mkMsg( const std::string& rTheBadArg );
+        
+    public:
+        badNNDoubleArgXcpt( const std::string& rTheBadArg ) :
             utl::xcpt( mkMsg( rTheBadArg ) )
-    {}
-};
-
-class badNNIntArgXcpt :
-            public utl::xcpt
-{
-    static std::string
-    mkMsg( const std::string& rTheBadArgument );
-
-public:
-    badNNIntArgXcpt( const std::string& rTheBadArgument ) :
+        {}
+    };
+    
+    class badNNIntArgXcpt :
+        public utl::xcpt
+    {
+        static std::string
+        mkMsg( const std::string& rTheBadArgument );
+        
+    public:
+        badNNIntArgXcpt( const std::string& rTheBadArgument ) :
             utl::xcpt( mkMsg( rTheBadArgument ) )
-    {}
-};
-
-class badPosIntArgXcpt :
-            public utl::xcpt
-{
-    static std::string
-    mkMsg( const std::string& rTheBadArgument );
-
-public:
-    badPosIntArgXcpt( const std::string& rTheBadArgument ) :
+        {}
+    };
+    
+    class badPosIntArgXcpt :
+        public utl::xcpt
+    {
+        static std::string
+        mkMsg( const std::string& rTheBadArgument );
+        
+    public:
+        badPosIntArgXcpt( const std::string& rTheBadArgument ) :
             utl::xcpt( mkMsg( rTheBadArgument ) )
-    {}
-};
-
-class insuffArgsXcpt :
-            public utl::xcpt
-{
-    static std::string
-    mkCountsMsg( int actualArgCount,
-                 int minimumArgCount );
-
-    static std::string
-    mkGeneralMsg( void );
-
-    insuffArgsXcpt( const std::string& rMsg );
-
-public:
-    static
-    insuffArgsXcpt
-    general( void );
-
-    static
-    insuffArgsXcpt
-    counts( int actualArgCount,
-            int minimumArgCount );
-};
-
-class unkArgXcpt :
-            public utl::xcpt
-{
-    static std::string
-    mkMsg( const std::string& rTheUnrecognizedArg );
-
-public:
-    unkArgXcpt( const std::string& rTheUnrecognizedArg ) :
+        {}
+    };
+    
+    class insuffArgsXcpt :
+        public utl::xcpt
+    {
+        static std::string
+        mkCountsMsg( int actualArgCount,
+                     int minimumArgCount );
+        
+        static std::string
+        mkGeneralMsg( void );
+        
+        insuffArgsXcpt( const std::string& rMsg );
+        
+    public:
+        static
+        insuffArgsXcpt
+        general( void );
+        
+        static
+        insuffArgsXcpt
+        counts( int actualArgCount,
+                int minimumArgCount );
+    };
+    
+    class unkArgXcpt :
+        public utl::xcpt
+    {
+        static std::string
+        mkMsg( const std::string& rTheUnrecognizedArg );
+        
+    public:
+        unkArgXcpt( const std::string& rTheUnrecognizedArg ) :
             utl::xcpt( mkMsg( rTheUnrecognizedArg ) )
-    {}
-};
-
-class modelAlreadyLoadedXcpt : public utl::xcpt
-{
-
-public:
-    modelAlreadyLoadedXcpt()
+        {}
+    };
+    
+    class modelAlreadyLoadedXcpt : public utl::xcpt
+    {
+        
+    public:
+        modelAlreadyLoadedXcpt()
             :
             utl::xcpt( "Model already loaded." )
-    {}
-};
-
-class badFileNameXcpt :
-            public xcpt
-{
-public:
-    badFileNameXcpt()
+        {}
+    };
+    
+    class badFileNameXcpt :
+        public xcpt
+    {
+    public:
+        badFileNameXcpt()
             :
             xcpt( "Error: No filename specified.  Proper usage is \"-f FILENAME\"." )
-    {}
-};
-
+        {}
+    };
+    
 }
 
 

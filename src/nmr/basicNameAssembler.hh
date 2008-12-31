@@ -38,17 +38,17 @@
 
 namespace nmr
 {
-
-DECLARE_CLASS( basicNameAssembler );
-
-
-// TODO/2 Write a description of the mangling algorithm used by basicNameAssembler::createNameFromOutputState.
-class basicNameAssembler : public NameAssembler
-{
-public:
-    std::string createNameFromOutputState( ComplexOutputStateCref aCOS ) const;
-    ComplexOutputState createOutputStateFromName( const std::string& aMangledName ) const throw( utl::NotImplementedXcpt );
-};
-
+    
+    DECLARE_CLASS( basicNameAssembler );
+    
+    
+    // TODO/2 Write a description of the mangling algorithm used by basicNameAssembler::createNameFromOutputState.
+    class basicNameAssembler : public NameAssembler
+    {
+    public:
+        std::string createNameFromOutputState( ComplexOutputStateCref aCOS ) const;
+        ComplexOutputState createOutputStateFromName( const std::string& aMangledName ) const throw( utl::NotImplementedXcpt );
+    };
+    
 }
 #endif

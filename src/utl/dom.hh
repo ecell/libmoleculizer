@@ -41,81 +41,81 @@
 
 namespace utl
 {
-namespace dom
-{
-xmlpp::Element*
-mustBeElementPtr( xmlpp::Node* pNode )
-throw( xcpt );
-
-const xmlpp::Element*
-mustBeElementPtr( const xmlpp::Node* pNode )
-throw( xcpt );
-
-xmlpp::Element*
-mustGetUniqueChild( const xmlpp::Node* pParentNode,
-                    const std::string& rChildName )
-throw( xcpt );
-
-xmlpp::Element*
-mustGetUniqueChild( const xmlpp::Node* pParentNode,
-                    const std::set<std::string>& rChoiceEltNames )
-    throw( xcpt );
-
-// Returns null pointer if no child has the given name.  Throws
-// badChildCountXcpt if more than one child has the given name.
-xmlpp::Element*
-getOptionalChild( const xmlpp::Node* pParentNode,
-                  const std::string& rChildName )
-throw( xcpt );
-
-std::string
-mustGetAttrString( const xmlpp::Element* pElement,
-                   const std::string& rAttrName )
-throw( xcpt );
-
-double
-mustGetAttrDouble( const xmlpp::Element* pElement,
-                   const std::string& rAttrName )
-throw( xcpt );
-
-double
-mustGetAttrPosDouble( const xmlpp::Element* pElement,
-                      const std::string& AttrName )
-throw( xcpt );
-
-double
-mustGetAttrNNDouble( const xmlpp::Element* pElement,
-                     const std::string& rAttrName )
-throw( xcpt );
-
-int
-mustGetAttrInt( const xmlpp::Element* pElement,
-                const std::string& rAttrName )
-throw( xcpt );
-
-int
-mustGetAttrPosInt( const xmlpp::Element* pElement,
-                   const std::string& rAttrName )
-throw( xcpt );
-
-int
-mustGetAttrNNInt( const xmlpp::Element* pElement,
-                  const std::string& rAttrName )
-throw( xcpt );
-
-// Inserts a stereotyped double-valued parameter element, with additional
-// elements giving the parameter value in scientific notation
-//
-// This is basically part of a fix to introduce scientific notation for
-// all parameter values so as to be able, using XSLT, to generate SBML and
-// other formats that have the fraction and exponent in separate XML
-// constructs.
-void
-addDoubleParamChild( xmlpp::Node* pParentNode,
-                     const std::string& rChildName,
-                     const std::string& rParameterName,
-                     double parameterValue );
-}
+    namespace dom
+    {
+        xmlpp::Element*
+        mustBeElementPtr( xmlpp::Node* pNode )
+        throw( xcpt );
+        
+        const xmlpp::Element*
+        mustBeElementPtr( const xmlpp::Node* pNode )
+            throw( xcpt );
+        
+        xmlpp::Element*
+        mustGetUniqueChild( const xmlpp::Node* pParentNode,
+                            const std::string& rChildName )
+            throw( xcpt );
+        
+        xmlpp::Element*
+        mustGetUniqueChild( const xmlpp::Node* pParentNode,
+                            const std::set<std::string>& rChoiceEltNames )
+            throw( xcpt );
+        
+        // Returns null pointer if no child has the given name.  Throws
+        // badChildCountXcpt if more than one child has the given name.
+        xmlpp::Element*
+        getOptionalChild( const xmlpp::Node* pParentNode,
+                          const std::string& rChildName )
+            throw( xcpt );
+        
+        std::string
+        mustGetAttrString( const xmlpp::Element* pElement,
+                           const std::string& rAttrName )
+            throw( xcpt );
+        
+        double
+        mustGetAttrDouble( const xmlpp::Element* pElement,
+                           const std::string& rAttrName )
+            throw( xcpt );
+        
+        double
+        mustGetAttrPosDouble( const xmlpp::Element* pElement,
+                              const std::string& AttrName )
+            throw( xcpt );
+        
+        double
+        mustGetAttrNNDouble( const xmlpp::Element* pElement,
+                             const std::string& rAttrName )
+            throw( xcpt );
+        
+        int
+        mustGetAttrInt( const xmlpp::Element* pElement,
+                        const std::string& rAttrName )
+            throw( xcpt );
+        
+        int
+        mustGetAttrPosInt( const xmlpp::Element* pElement,
+                           const std::string& rAttrName )
+            throw( xcpt );
+        
+        int
+        mustGetAttrNNInt( const xmlpp::Element* pElement,
+                          const std::string& rAttrName )
+            throw( xcpt );
+        
+        // Inserts a stereotyped double-valued parameter element, with additional
+        // elements giving the parameter value in scientific notation
+        //
+        // This is basically part of a fix to introduce scientific notation for
+        // all parameter values so as to be able, using XSLT, to generate SBML and
+        // other formats that have the fraction and exponent in separate XML
+        // constructs.
+        void
+        addDoubleParamChild( xmlpp::Node* pParentNode,
+                             const std::string& rChildName,
+                             const std::string& rParameterName,
+                             double parameterValue );
+    }
 }
 
 #endif // UTL_DOM_H

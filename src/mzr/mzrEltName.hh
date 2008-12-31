@@ -39,7 +39,7 @@ namespace mzr
     namespace eltName
     {
         extern const std::string moleculizerInput;
-
+        
         extern const std::string executionParameters;
         extern const std::string reactionNetworkGenerationMode;
         extern const std::string configurationSwitches;
@@ -51,21 +51,15 @@ namespace mzr
         extern const std::string nonSpatialMode;
         extern const std::string noReactionExtrapolation;
         extern const std::string reactionExtrapolation;
-
-
-
-
-
-
-
+        
         extern const std::string model;
         extern const std::string streams;
         extern const std::string events;
-
+        
         extern const std::string explicitSpecies;
-
+        
         extern const std::string speciesStreams;
-
+        
         extern const std::string dumpStreams;
         extern const std::string dumpStream;
         extern const std::string dumpStream_dumpPeriodAttr;
@@ -85,9 +79,9 @@ namespace mzr
         extern const std::string statStream_reactionCount;
         extern const std::string statStream_reactionEventCount;
         extern const std::string statStream_volume;
-
+        
         extern const std::string reactionGens;
-
+        
         extern const std::string explicitReactions;
         extern const std::string reaction;
         extern const std::string substrateSpeciesRef;
@@ -98,43 +92,43 @@ namespace mzr
         extern const std::string productSpeciesRef_multAttr;
         extern const std::string rate;
         extern const std::string rate_valueAttr;
-
-//         extern const std::string volume;
-//         extern const std::string volume_litersAttr;
-
+        
+        //         extern const std::string volume;
+        //         extern const std::string volume_litersAttr;
+        
         extern const std::string createEvent;
         extern const std::string createEvent_timeAttr;
-//         extern const std::string population;
+        //         extern const std::string population;
         extern const std::string population_countAttr;
         extern const std::string dumpStreamRef;
         extern const std::string dumpStreamRef_nameAttr;
         extern const std::string dumpStateEvent;
         extern const std::string dumpStateEvent_timeAttr;
-
+        
         extern const std::string noReactEvent;
         extern const std::string noReactEvent_timeAttr;
-
+        
         extern const std::string stopEvent;
         extern const std::string stopEvent_timeAttr;
-
-// Elements pertaining to output.
-
-// Names for dumping scientific notation for double-valued parameters,
-// intentded for use in SBML, etc.
+        
+        // Elements pertaining to output.
+        
+        // Names for dumping scientific notation for double-valued parameters,
+        // intentded for use in SBML, etc.
         extern const std::string sciNote;
         extern const std::string sciNote_fractionAttr;
         extern const std::string sciNote_exponentAttr;
-
+        
         extern const std::string moleculizerState;
         extern const std::string unitsStates;
-
+        
         extern const std::string explicitSpeciesTags;
         extern const std::string explicitSpeciesTag;
         extern const std::string explicitSpeciesTag_nameAttr;
         extern const std::string explicitSpeciesTag_tagAttr;
-
+        
         extern const std::string taggedSpecies;
-
+        
         extern const std::string tagReactions;
         extern const std::string tagReaction;
         extern const std::string taggedSubstrate;
@@ -143,16 +137,16 @@ namespace mzr
         extern const std::string taggedProduct;
         extern const std::string taggedProduct_tagAttr;
         extern const std::string taggedProduct_multAttr;
-
+        
         extern const std::string time;
         extern const std::string time_secondsAttr;
-
+        
         extern const std::string taggedSpeciesStreams;
         extern const std::string taggedSpeciesStream;
         extern const std::string taggedSpeciesStream_nameAttr;
         extern const std::string taggedSpeciesRef;
         extern const std::string taggedSpeciesRef_tagAttr;
-
+        
         extern const std::string taggedDumpStreams;
         extern const std::string taggedDumpStream;
         extern const std::string taggedDumpStream_fileNameAttr;

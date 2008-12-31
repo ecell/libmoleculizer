@@ -36,26 +36,26 @@
 
 namespace cpx
 {
-template<class plexT>
-class reportIsoSearch :
-            public isoSearch<plexT>
-{
-    plexIso& rReport;
-public:
-    reportIsoSearch( const plexT& rLeftPlex,
-                     const plexT& rRightPlex,
-                     plexIso& rReportIso ) :
+    template<class plexT>
+    class reportIsoSearch :
+        public isoSearch<plexT>
+    {
+        plexIso& rReport;
+    public:
+        reportIsoSearch( const plexT& rLeftPlex,
+                         const plexT& rRightPlex,
+                         plexIso& rReportIso ) :
             isoSearch<plexT> ( rLeftPlex,
                                rRightPlex ),
             rReport( rReportIso )
-    {}
-
-    void
-    onSuccess( const plexIso& rIso ) const
-    {
-        rReport = rIso;
-    }
-};
+        {}
+        
+        void
+        onSuccess( const plexIso& rIso ) const
+        {
+            rReport = rIso;
+        }
+    };
 }
 
 #endif // CPX_REPORTISOSEARCH_H

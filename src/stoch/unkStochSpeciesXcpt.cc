@@ -34,17 +34,17 @@
 
 namespace stoch
 {
-std::string
-unkStochSpeciesXcpt::
-mkMsg( std::string requestedName,
-       xmlpp::Node* pRequestingNode )
-{
-    std::ostringstream msgStream;
-    msgStream << utl::dom::xcpt::mkMsg( pRequestingNode )
-    << "Unknown stoch species `"
-    << requestedName
-    << "'.";
-    return msgStream.str();
-}
+    std::string
+    unkStochSpeciesXcpt::
+    mkMsg( std::string requestedName,
+           xmlpp::Node* pRequestingNode )
+    {
+        std::ostringstream msgStream;
+        msgStream << utl::dom::xcpt::mkMsg( pRequestingNode )
+                  << "Unknown stoch species `"
+                  << requestedName
+                  << "'.";
+        return msgStream.str();
+    }
 }
 

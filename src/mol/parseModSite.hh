@@ -39,59 +39,59 @@
 
 namespace bnd
 {
-// Modification sites don't have any existence outside of their mod-mol, so
-// parsing an argument to the modMol constructor.
-class parseModSite :
-            public std::unary_function<xmlpp::Node*,
-            std::pair<std::string, const cpx::modification*> >
-{
-    molUnit& rMolUnit;
-
-public:
-    parseModSite( molUnit& refMolUnit ) :
-            rMolUnit( refMolUnit )
-    {}
-
-    std::pair<std::string, const cpx::modification*>
-    operator()( xmlpp::Node* pModSiteNode ) const
-    throw( utl::xcpt )
+    // Modification sites don't have any existence outside of their mod-mol, so
+    // parsing an argument to the modMol constructor.
+    class parseModSite :
+        public std::unary_function<xmlpp::Node*,
+                                   std::pair<std::string, const cpx::modification*> >
     {
-// Make sure the node is an element, possibly unnecessarily.
-        xmlpp::Element* pModSiteElt
-        = dynamic_cast<xmlpp::Element*>( pModSiteNode );
-        if ( 0 == pModSiteElt ) throw utl::dom::badElementCastXcpt( pModSiteNode );
-
-// Get the mod site name.
-        std::string modSiteName
-        = utl::dom::mustGetAttrString( pModSiteElt,
-                                       eltName::modSite_nameAttr );
-
-// Get the default modification element.
-        xmlpp::Element* pDefaultModRefElt
-        = utl::dom::mustGetUniqueChild( pModSiteElt,
-                                        eltName::defaultModRef );
-
-// Get the default modification name.
-        std::string defaultModName
-        = utl::dom::mustGetAttrString( pDefaultModRefElt,
-                                       eltName::defaultModRef_nameAttr );
-
-// Look up the default modification.
-//
-// Note that this is yet another BAD BAD BAD static catalog use.
-//
-// Testing that the lookup succeeded indicates lack of trust in
-// validation.
-        const cpx::modification* pDefaultMod
-        = rMolUnit.getMod( defaultModName );
-
-        if ( 0 == pDefaultMod ) throw unkModXcpt( defaultModName,
-                    pDefaultModRefElt );
-
-        return std::make_pair( modSiteName,
-                               pDefaultMod );
-    }
-};
+        molUnit& rMolUnit;
+        
+    public:
+        parseModSite( molUnit& refMolUnit ) :
+            rMolUnit( refMolUnit )
+        {}
+        
+        std::pair<std::string, const cpx::modification*>
+        operator()( xmlpp::Node* pModSiteNode ) const
+            throw( utl::xcpt )
+        {
+            // Make sure the node is an element, possibly unnecessarily.
+            xmlpp::Element* pModSiteElt
+                = dynamic_cast<xmlpp::Element*>( pModSiteNode );
+            if ( 0 == pModSiteElt ) throw utl::dom::badElementCastXcpt( pModSiteNode );
+            
+            // Get the mod site name.
+            std::string modSiteName
+                = utl::dom::mustGetAttrString( pModSiteElt,
+                                               eltName::modSite_nameAttr );
+            
+            // Get the default modification element.
+            xmlpp::Element* pDefaultModRefElt
+                = utl::dom::mustGetUniqueChild( pModSiteElt,
+                                                eltName::defaultModRef );
+            
+            // Get the default modification name.
+            std::string defaultModName
+                = utl::dom::mustGetAttrString( pDefaultModRefElt,
+                                               eltName::defaultModRef_nameAttr );
+            
+            // Look up the default modification.
+            //
+            // Note that this is yet another BAD BAD BAD static catalog use.
+            //
+            // Testing that the lookup succeeded indicates lack of trust in
+            // validation.
+            const cpx::modification* pDefaultMod
+                = rMolUnit.getMod( defaultModName );
+            
+            if ( 0 == pDefaultMod ) throw unkModXcpt( defaultModName,
+                                                      pDefaultModRefElt );
+            
+            return std::make_pair( modSiteName,
+                                   pDefaultMod );
+        }
+    };
 }
 
 #endif // MOL_PARSEMODSITE_H

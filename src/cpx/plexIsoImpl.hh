@@ -34,52 +34,52 @@
 
 namespace cpx
 {
-template<class plexT>
-bool
-plexIso::
-tryMapBinding( const plexT& rSrcPlex,
-               int srcBindingNdx,
-               const plexT& rTgtPlex,
-               int tgtBindingNdx )
-{
-    bool flipForward, flipBackward;
-
-// Test both the forward and backward maps for compatibility with
-// the given mapping of bindings, noting whether the binding needs
-// to be flipped or not.
-//
-// If the binding needs to be flipped for the forward map, then it
-// should need to be flipped for the backward map, too.  This shows
-// that I'm doing the flip check twice, but it's really a cost-free
-// byproduct the necessary check of consistency of the mol mapping,
-// I think...
-    if ( forward.canMapBinding( rSrcPlex,
-                                srcBindingNdx,
-                                rTgtPlex,
-                                tgtBindingNdx,
-                                flipForward )
-            &&
-            backward.canMapBinding( rTgtPlex,
-                                    tgtBindingNdx,
-                                    rSrcPlex,
-                                    srcBindingNdx,
-                                    flipBackward ) )
+    template<class plexT>
+    bool
+    plexIso::
+    tryMapBinding( const plexT& rSrcPlex,
+                   int srcBindingNdx,
+                   const plexT& rTgtPlex,
+                   int tgtBindingNdx )
     {
-        forward.doMapBinding( rSrcPlex,
-                              srcBindingNdx,
-                              rTgtPlex,
-                              tgtBindingNdx,
-                              flipForward );
-
-        backward.doMapBinding( rTgtPlex,
-                               tgtBindingNdx,
-                               rSrcPlex,
-                               srcBindingNdx,
-                               flipBackward );
-        return true;
+        bool flipForward, flipBackward;
+        
+        // Test both the forward and backward maps for compatibility with
+        // the given mapping of bindings, noting whether the binding needs
+        // to be flipped or not.
+        //
+        // If the binding needs to be flipped for the forward map, then it
+        // should need to be flipped for the backward map, too.  This shows
+        // that I'm doing the flip check twice, but it's really a cost-free
+        // byproduct the necessary check of consistency of the mol mapping,
+        // I think...
+        if ( forward.canMapBinding( rSrcPlex,
+                                    srcBindingNdx,
+                                    rTgtPlex,
+                                    tgtBindingNdx,
+                                    flipForward )
+             &&
+             backward.canMapBinding( rTgtPlex,
+                                     tgtBindingNdx,
+                                     rSrcPlex,
+                                     srcBindingNdx,
+                                     flipBackward ) )
+        {
+            forward.doMapBinding( rSrcPlex,
+                                  srcBindingNdx,
+                                  rTgtPlex,
+                                  tgtBindingNdx,
+                                  flipForward );
+            
+            backward.doMapBinding( rTgtPlex,
+                                   tgtBindingNdx,
+                                   rSrcPlex,
+                                   srcBindingNdx,
+                                   flipBackward );
+            return true;
+        }
+        else return false;
     }
-    else return false;
-}
 }
 
 #endif // CPX_PLEXISOIMPL_H

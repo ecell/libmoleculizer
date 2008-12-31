@@ -36,12 +36,12 @@
 
 namespace nmr
 {
-
-namespace eltName
-{
-extern const std::string namingConvention;
-}
-
+    
+    namespace eltName
+    {
+        extern const std::string namingConvention;
+    }
+    
 }
 
 #endif

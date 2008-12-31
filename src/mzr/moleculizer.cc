@@ -478,46 +478,46 @@ namespace mzr
     {
         extrapolationEnabled = rateExtrapolation;
     }
-
+    
     void 
     moleculizer::getSpeciesInSpeciesStream(const std::string& streamName,
                                            std::vector<const mzr::mzrSpecies*>& speciesVector) const
     {
         fnd::dumpable<fnd::basicDumpable::dumpArg>* ptrDumpable = 
             pUserUnits->pMzrUnit->mustFindDumpable( streamName );
-
-
+        
+        
         mzr::multiSpeciesDumpable<plx::mzrPlexSpecies>* streamPtr;
-
+        
         streamPtr = dynamic_cast< mzr::multiSpeciesDumpable<plx::mzrPlexSpecies>* >( ptrDumpable);
-
+        
         const std::vector<const plx::mzrPlexSpecies*>* theSpecies = streamPtr->getSpeciesInMultiSpeciesStream();
-
-
+        
+        
         if (!streamPtr)
         {
             std::cerr << "Error finding dumpable " << streamName << std::endl;
             exit(1);
         }
-
+        
         BOOST_FOREACH( const plx::mzrPlexSpecies* pSpec, *theSpecies)
         {
             speciesVector.push_back( pSpec );
         }
     }
-
+    
     void 
     moleculizer::getSpeciesStreams( std::vector<std::string>& speciesStreamNames) const
     {
         pUserUnits->pMzrUnit->getListOfDumpables( speciesStreamNames );
     }
-
+    
     int moleculizer::getNumberOfPlexFamilies() const
     {
         return pUserUnits->pPlexUnit->familyCount();
     }
-
-
+    
+    
     
     int moleculizer::DEFAULT_GENERATION_DEPTH = 1;
     

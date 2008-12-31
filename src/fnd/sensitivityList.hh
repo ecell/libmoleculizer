@@ -39,50 +39,50 @@
 
 namespace fnd
 {
-// Template sensitivity list for state variables.
-//
-// An alternative here might be just public inheritance from
-// std::set<sensitiveT*>.
-//
-// In original moleculizer, when a species's population is updated, the
-// species does not directly notify reactions having it as a substrate.  This
-// would result in each reaction's rescheduling once for each of its changed
-// substrates, instead of once when any of its substrates has changed.
-//
-// Instead, the reaction accumulates all the reaction events that need
-// rescheduling into a set, then reschedules them all.  This avoids multiple
-// rescheduling of reactions, at the expense of forming the set.
-//
-// In compartmental moleculizer, reactions don't reschedule, they just
-// recalculate their propensities, a less costly operation. But the same
-// technique is still used.
-template<class sensitiveT>
-class sensitivityList :
-            public std::set<sensitiveT*>
+    // Template sensitivity list for state variables.
+    //
+    // An alternative here might be just public inheritance from
+    // std::set<sensitiveT*>.
+    //
+    // In original moleculizer, when a species's population is updated, the
+    // species does not directly notify reactions having it as a substrate.  This
+    // would result in each reaction's rescheduling once for each of its changed
+    // substrates, instead of once when any of its substrates has changed.
+    //
+    // Instead, the reaction accumulates all the reaction events that need
+    // rescheduling into a set, then reschedules them all.  This avoids multiple
+    // rescheduling of reactions, at the expense of forming the set.
+    //
+    // In compartmental moleculizer, reactions don't reschedule, they just
+    // recalculate their propensities, a less costly operation. But the same
+    // technique is still used.
+    template<class sensitiveT>
+    class sensitivityList :
+        public std::set<sensitiveT*>
     {
-public:
-
+    public:
+        
         typedef sensitiveT sensitiveType;
-
+        
         sensitivityList()
         {}
-
+        
         sensitivityList( const std::set<sensitiveT*> aSet )
-                    :
-                    std::set<sensitiveT*> ( aSet.begin(), aSet.end() )
-            {}
-
-// Here is the reason for using a set here: a reaction can add itself to a
-// reactant's sensitivity list more than once with no subsequent loss of
-// efficiency.
+            :
+            std::set<sensitiveT*> ( aSet.begin(), aSet.end() )
+        {}
+        
+        // Here is the reason for using a set here: a reaction can add itself to a
+        // reactant's sensitivity list more than once with no subsequent loss of
+        // efficiency.
         void
         addSensitive( sensitiveType* pSensitive )
         {
             insert( pSensitive );
         }
-
-// This might be used to elicit immediate responses from the
-// sensitive items.
+        
+        // This might be used to elicit immediate responses from the
+        // sensitive items.
         template<class sensitiveFunction>
         void
         forEachSensitive( const sensitiveFunction& rFunction ) const
@@ -91,12 +91,12 @@ public:
                            this->end(),
                            rFunction );
         }
-
-// For accumulating the union of several sensitivity lists
-// before eliciting the responses from the sensitive items.
-//
-// This is used to accumulate the union of the sensitivity lists
-// of the species whose populations are changed by a reaction event.
+        
+        // For accumulating the union of several sensitivity lists
+        // before eliciting the responses from the sensitive items.
+        //
+        // This is used to accumulate the union of the sensitivity lists
+        // of the species whose populations are changed by a reaction event.
         void
         getSensitives( sensitivityList& rSensitives ) const
         {

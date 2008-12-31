@@ -40,64 +40,64 @@
 
 namespace dimer
 {
-
-// Thrown by decomposeNoExtrap extrapolator when the extrapolator is asked
-// to construct a decomposition rate for site shape pairs that have not been
-// given a nominal rate.
-class missingDecomposeRateXcpt :
-            public utl::xcpt
-{
-    static std::string
-    mkMsg( const std::string& rFirstSiteShapeName,
-           const std::string& rSecondSiteShapeName );
-
-public:
-    missingDecomposeRateXcpt( const std::string& rFirstSiteShapeName,
-                              const std::string& rSecondSiteShapeName ) :
+    
+    // Thrown by decomposeNoExtrap extrapolator when the extrapolator is asked
+    // to construct a decomposition rate for site shape pairs that have not been
+    // given a nominal rate.
+    class missingDecomposeRateXcpt :
+        public utl::xcpt
+    {
+        static std::string
+        mkMsg( const std::string& rFirstSiteShapeName,
+               const std::string& rSecondSiteShapeName );
+        
+    public:
+        missingDecomposeRateXcpt( const std::string& rFirstSiteShapeName,
+                                  const std::string& rSecondSiteShapeName ) :
             utl::xcpt( mkMsg( rFirstSiteShapeName,
                               rSecondSiteShapeName ) )
-    {}
-};
-
-// Thrown by dimerizeMassExtrap extrapolator when the extrapolator is asked
-// to construct rates for site shape pairs that have not been given a
-// nominal rate.
-class missingDimerizeInvariantXcpt :
-            public utl::xcpt
-{
-    static std::string
-    mkMsg( const cpx::cxSite<plx::mzrPlexSpecies, plx::mzrPlexFamily>& cxLeft,
-           const cpx::cxSite<plx::mzrPlexSpecies, plx::mzrPlexFamily>& cxRight );
-
-public:
-    missingDimerizeInvariantXcpt( const cpx::cxSite<plx::mzrPlexSpecies, plx::mzrPlexFamily>& cxLeft,
-                                  const cpx::cxSite<plx::mzrPlexSpecies, plx::mzrPlexFamily>& cxRight )
+        {}
+    };
+    
+    // Thrown by dimerizeMassExtrap extrapolator when the extrapolator is asked
+    // to construct rates for site shape pairs that have not been given a
+    // nominal rate.
+    class missingDimerizeInvariantXcpt :
+        public utl::xcpt
+    {
+        static std::string
+        mkMsg( const cpx::cxSite<plx::mzrPlexSpecies, plx::mzrPlexFamily>& cxLeft,
+               const cpx::cxSite<plx::mzrPlexSpecies, plx::mzrPlexFamily>& cxRight );
+        
+    public:
+        missingDimerizeInvariantXcpt( const cpx::cxSite<plx::mzrPlexSpecies, plx::mzrPlexFamily>& cxLeft,
+                                      const cpx::cxSite<plx::mzrPlexSpecies, plx::mzrPlexFamily>& cxRight )
             :
             utl::xcpt( mkMsg( cxLeft, cxRight ) )
-    {}
-};
-
-
-// Thrown by dimerizeNoExtrap extrapolator when the extrapolator is asked to
-// construct rates for site shape pairs that have not been given a nominal
-// rate.
-class missingDimerizeRateXcpt :
-            public utl::xcpt
-{
-    static std::string
-    mkMsg( const cpx::cxSite<plx::mzrPlexSpecies, plx::mzrPlexFamily>& cxLeft,
-           const cpx::cxSite<plx::mzrPlexSpecies, plx::mzrPlexFamily>& cxRight );
-
-public:
-    missingDimerizeRateXcpt( const cpx::cxSite<plx::mzrPlexSpecies, plx::mzrPlexFamily>& cxLeft,
-                             const cpx::cxSite<plx::mzrPlexSpecies, plx::mzrPlexFamily>& cxRight )
+        {}
+    };
+    
+    
+    // Thrown by dimerizeNoExtrap extrapolator when the extrapolator is asked to
+    // construct rates for site shape pairs that have not been given a nominal
+    // rate.
+    class missingDimerizeRateXcpt :
+        public utl::xcpt
+    {
+        static std::string
+        mkMsg( const cpx::cxSite<plx::mzrPlexSpecies, plx::mzrPlexFamily>& cxLeft,
+               const cpx::cxSite<plx::mzrPlexSpecies, plx::mzrPlexFamily>& cxRight );
+        
+    public:
+        missingDimerizeRateXcpt( const cpx::cxSite<plx::mzrPlexSpecies, plx::mzrPlexFamily>& cxLeft,
+                                 const cpx::cxSite<plx::mzrPlexSpecies, plx::mzrPlexFamily>& cxRight )
             :
             utl::xcpt( mkMsg( cxLeft, cxRight ) )
-    {}
-};
-
-
-
+        {}
+    };
+    
+    
+    
 }
 
 #endif

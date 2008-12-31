@@ -34,15 +34,15 @@
 
 namespace ftr
 {
-std::string
-exchangedModXcpt::
-mkMsg( bnd::mzrMol* pOffendingMol )
-{
-    std::ostringstream msgStream;
-    msgStream << utl::xcpt::mkMsg()
-    << "Expected mod mol for modification exchange, but got mol "
-    << pOffendingMol->getName()
-    << ".";
-    return msgStream.str();
-}
+    std::string
+    exchangedModXcpt::
+    mkMsg( bnd::mzrMol* pOffendingMol )
+    {
+        std::ostringstream msgStream;
+        msgStream << utl::xcpt::mkMsg()
+                  << "Expected mod mol for modification exchange, but got mol "
+                  << pOffendingMol->getName()
+                  << ".";
+        return msgStream.str();
+    }
 }

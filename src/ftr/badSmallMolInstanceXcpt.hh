@@ -36,21 +36,21 @@
 
 namespace ftr
 {
-
-class badSmallMolInstanceXcpt :
-            public utl::xcpt
-{
-    static std::string
-    mkMsg( const std::string& rInstanceName,
-           const xmlpp::Node* pOffendingNode = 0 );
-
-public:
-    badSmallMolInstanceXcpt( const std::string& rInstanceName,
-                             const xmlpp::Node* pOffendingNode = 0 ) :
+    
+    class badSmallMolInstanceXcpt :
+        public utl::xcpt
+    {
+        static std::string
+        mkMsg( const std::string& rInstanceName,
+               const xmlpp::Node* pOffendingNode = 0 );
+        
+    public:
+        badSmallMolInstanceXcpt( const std::string& rInstanceName,
+                                 const xmlpp::Node* pOffendingNode = 0 ) :
             utl::xcpt( mkMsg( rInstanceName,
                               pOffendingNode ) )
-    {}
-};
+        {}
+    };
 }
 
 #endif // FTR_BADSMALLMOLINSTANCEXCPT_H

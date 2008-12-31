@@ -36,17 +36,17 @@
 
 namespace stoch
 {
-class badStochSpeciesTagXcpt :
-            public utl::xcpt
-{
-    std::string
-    mkMsg( xmlpp::Node* pOffendingNode = 0 );
-
-public:
-    badStochSpeciesTagXcpt( xmlpp::Node* pOffendingNode = 0 ) :
+    class badStochSpeciesTagXcpt :
+        public utl::xcpt
+    {
+        std::string
+        mkMsg( xmlpp::Node* pOffendingNode = 0 );
+        
+    public:
+        badStochSpeciesTagXcpt( xmlpp::Node* pOffendingNode = 0 ) :
             utl::xcpt( mkMsg( pOffendingNode ) )
-    {}
-};
+        {}
+    };
 }
 
 #endif // STOCH_BADSTOCHSPECIESTAGXCPT_H

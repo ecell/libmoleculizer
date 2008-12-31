@@ -36,34 +36,34 @@
 
 namespace nmr
 {
-
-// A Complex Output State is an intermediate between a complex species and a mangled
-// name.
-
-DECLARE_CLASS( ComplexOutputState );
-struct ComplexOutputState
-{
-    DECLARE_TYPE( std::string, MolTokenStr );
-    typedef std::pair<std::pair<std::string, std::string>, std::pair<std::string, std::string> > __BindingTokenStr;
-    typedef std::pair<std::string, std::pair<std::string, std::string> > __ModificationTokenStr;
-
-    DECLARE_TYPE( __BindingTokenStr, BindingTokenStr );
-    DECLARE_TYPE( __ModificationTokenStr, ModificationTokenStr );
-
-    std::vector<MolTokenStr> theMolTokens;
-    std::vector<BindingTokenStr> theBindingTokens;
-    std::vector<ModificationTokenStr> theModificationTokens;
-
-    bool operator== ( const ComplexOutputState& other ) const;
-    bool operator!= ( const ComplexOutputState& other ) const;
-
-    void addMolTokenToOutputState( MolTokenStrCref aMolToken );
-    void addBindingTokenToOutputState( BindingTokenStrCref aBindingToken );
-    void addModificationTokenToOutputState( ModificationTokenStrCref aModificationToken );
-
-    void clear();
-    std::string repr() const;
-};
+    
+    // A Complex Output State is an intermediate between a complex species and a mangled
+    // name.
+    
+    DECLARE_CLASS( ComplexOutputState );
+    struct ComplexOutputState
+    {
+        DECLARE_TYPE( std::string, MolTokenStr );
+        typedef std::pair<std::pair<std::string, std::string>, std::pair<std::string, std::string> > __BindingTokenStr;
+        typedef std::pair<std::string, std::pair<std::string, std::string> > __ModificationTokenStr;
+        
+        DECLARE_TYPE( __BindingTokenStr, BindingTokenStr );
+        DECLARE_TYPE( __ModificationTokenStr, ModificationTokenStr );
+        
+        std::vector<MolTokenStr> theMolTokens;
+        std::vector<BindingTokenStr> theBindingTokens;
+        std::vector<ModificationTokenStr> theModificationTokens;
+        
+        bool operator== ( const ComplexOutputState& other ) const;
+        bool operator!= ( const ComplexOutputState& other ) const;
+        
+        void addMolTokenToOutputState( MolTokenStrCref aMolToken );
+        void addBindingTokenToOutputState( BindingTokenStrCref aBindingToken );
+        void addModificationTokenToOutputState( ModificationTokenStrCref aModificationToken );
+        
+        void clear();
+        std::string repr() const;
+    };
 }
 
 std::ostream& operator<< ( std::ostream& os, const nmr::ComplexOutputState& cos );

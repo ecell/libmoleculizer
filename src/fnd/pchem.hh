@@ -34,67 +34,67 @@
 
 namespace fnd
 {
-/*! \defgroup chemGroup Chemistry
-\ingroup mzrGroup
-\brief Formulae and constants for extrapolating reactions. */
-
-/*! \file pchem.hh
-\ingroup chemGroup
-\brief Reaction rate corrections by molecular weight. */
-
-/*! \ingroup chemGroup
-\brief Basic rate correction by molecular weight. */
-double
-reducedMass( double leftMass,
-             double rightMass );
-
-/*! \ingroup chemGroup
-\brief Converts binding rate to weight-invariant form. */
-double
-bindingInvariant( double bindingRate,
-                  double leftMass,
-                  double rightMass );
-
-/*! \ingroup chemGroup
-\brief Converts weight-invariant for binding to rate. */
-double
-bindingRate( double bindingInvariant,
-             double leftMass,
-             double rightMass );
-
-/*! \ingroup chemGroup
-\brief Converts dissociation constant to weight-invariant form.
-
-This is done by following through on the changes in the reaction
-rates to get the change in dissociation constant. */
-double
-dissocInvariant( double dissocConst,
+    /*! \defgroup chemGroup Chemistry
+      \ingroup mzrGroup
+      \brief Formulae and constants for extrapolating reactions. */
+    
+    /*! \file pchem.hh
+      \ingroup chemGroup
+      \brief Reaction rate corrections by molecular weight. */
+    
+    /*! \ingroup chemGroup
+      \brief Basic rate correction by molecular weight. */
+    double
+    reducedMass( double leftMass,
+                 double rightMass );
+    
+    /*! \ingroup chemGroup
+      \brief Converts binding rate to weight-invariant form. */
+    double
+    bindingInvariant( double bindingRate,
+                      double leftMass,
+                      double rightMass );
+    
+    /*! \ingroup chemGroup
+      \brief Converts weight-invariant for binding to rate. */
+    double
+    bindingRate( double bindingInvariant,
                  double leftMass,
                  double rightMass );
-
-/*! \ingroup chemGroup
-\brief Converts weight-invariant to dissociation constant. */
-double
-dissocConst( double dissocInvariant,
-             double leftMass,
-             double rightMass );
-
-/*! \ingroup chemGroup
-\brief Converts Michaelis constant to weight-invariant form.
-
-This is done by following through on the changes in the reaction
-rates to get the change in Michalis constant. */
-double
-michaelisInvariant( double michaelisConst,
+    
+    /*! \ingroup chemGroup
+      \brief Converts dissociation constant to weight-invariant form.
+      
+      This is done by following through on the changes in the reaction
+      rates to get the change in dissociation constant. */
+    double
+    dissocInvariant( double dissocConst,
+                     double leftMass,
+                     double rightMass );
+    
+    /*! \ingroup chemGroup
+      \brief Converts weight-invariant to dissociation constant. */
+    double
+    dissocConst( double dissocInvariant,
+                 double leftMass,
+                 double rightMass );
+    
+    /*! \ingroup chemGroup
+      \brief Converts Michaelis constant to weight-invariant form.
+      
+      This is done by following through on the changes in the reaction
+      rates to get the change in Michalis constant. */
+    double
+    michaelisInvariant( double michaelisConst,
+                        double leftMass,
+                        double rightMass );
+    
+    /*! \ingroup chemGroup
+      \brief Converts weight-invariant to Michaelis constant. */
+    double
+    michaelisConst( double michaelisInvariant,
                     double leftMass,
                     double rightMass );
-
-/*! \ingroup chemGroup
-\brief Converts weight-invariant to Michaelis constant. */
-double
-michaelisConst( double michaelisInvariant,
-                double leftMass,
-                double rightMass );
 }
 
 #endif // FND_PCHEM_H

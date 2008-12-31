@@ -36,13 +36,13 @@
 
 namespace nmr
 {
-namespace manglernames
-{
-extern const std::string basicEncoderName;
-extern const std::string detailedEncoderName;
-extern const std::string compactEncoderName;
-}
-
+    namespace manglernames
+    {
+        extern const std::string basicEncoderName;
+        extern const std::string detailedEncoderName;
+        extern const std::string compactEncoderName;
+    }
+    
 }
 
 #endif

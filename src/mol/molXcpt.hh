@@ -36,28 +36,28 @@
 
 namespace cpx
 {
-class modification;
+    class modification;
 }
 
 namespace bnd
 {
-class mzrBndSite;
-class mzrMol;
-class mzrModMol;
-
-class modMolQueryTargetXcpt :
-            public utl::xcpt
-{
-    static std::string
-    mkMsg( const cpx::modification* pMod,
-           int modNdx );
-public:
-    modMolQueryTargetXcpt( const cpx::modification* pMod,
-                           int modNdx ) :
+    class mzrBndSite;
+    class mzrMol;
+    class mzrModMol;
+    
+    class modMolQueryTargetXcpt :
+        public utl::xcpt
+    {
+        static std::string
+        mkMsg( const cpx::modification* pMod,
+               int modNdx );
+    public:
+        modMolQueryTargetXcpt( const cpx::modification* pMod,
+                               int modNdx ) :
             utl::xcpt( mkMsg( pMod,
                               modNdx ) )
-    {}
-};
+        {}
+    };
 }
 
 #endif // MOLXCPT_H

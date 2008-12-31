@@ -97,7 +97,7 @@ namespace plx
               bnd::molUnit& rMolUnit,
               plexUnit& rPlexUnit,
               parserPlex& rParsedPlex )
-    throw( utl::xcpt );
+        throw( utl::xcpt );
     
     // Parses allosteric-omni element.
     class parseAllostericOmni :

@@ -36,15 +36,15 @@
 
 namespace plx
 {
-class mzrPlexSpecies;
-class mzrPlexFamily;
+    class mzrPlexSpecies;
+    class mzrPlexFamily;
 }
 
 namespace bnd
 {
-typedef
-fnd::feature<cpx::cxSite<plx::mzrPlexSpecies, plx::mzrPlexFamily> >
-siteFeature;
+    typedef
+    fnd::feature<cpx::cxSite<plx::mzrPlexSpecies, plx::mzrPlexFamily> >
+    siteFeature;
 }
 
 #endif // MOL_SITEFEATURE_H

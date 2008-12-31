@@ -36,61 +36,61 @@
 
 namespace utl
 {
-namespace dom
-{
-// Base class for batchAppClass template argument to domBatchJob
-// and twoDomJob templates.
-//
-// It's not clear that this virtual base class is worth the ink, since the
-// application class must also have a certain kind of constructor.
-class domBatchApp
-{
-public:
-    virtual
-    ~domBatchApp( void )
-    {}
-
-    virtual int
-    run( void ) throw( std::exception ) = 0;
-};
-
-// Template batch app that parses one XML input file from standard input,
-// constructs the application from it, and runs it.
-template<class batchAppClass>
-class domBatchJob
-{
-    int argCount;
-    char** argVector;
-
-public:
-    domBatchJob( int argc, char** argv ) :
-            argCount( argc ),
-            argVector( argv )
-    {}
-
-    int
-    parseNrun( void );
-};
-
-// Template batch app that parses one XML input file from standard input,
-// and another named as the first argument.  The application is
-// constructed from the two parsed XML documents, and then run.
-template<class batchAppClass>
-class twoDomJob
-{
-    int argCount;
-    char** argVector;
-
-public:
-    twoDomJob( int argc, char** argv ) :
-            argCount( argc ),
-            argVector( argv )
-    {}
-
-    int
-    parseNrun( void );
-};
-}
+    namespace dom
+    {
+        // Base class for batchAppClass template argument to domBatchJob
+        // and twoDomJob templates.
+        //
+        // It's not clear that this virtual base class is worth the ink, since the
+        // application class must also have a certain kind of constructor.
+        class domBatchApp
+        {
+        public:
+            virtual
+            ~domBatchApp( void )
+            {}
+            
+            virtual int
+            run( void ) throw( std::exception ) = 0;
+        };
+        
+        // Template batch app that parses one XML input file from standard input,
+        // constructs the application from it, and runs it.
+        template<class batchAppClass>
+        class domBatchJob
+        {
+            int argCount;
+            char** argVector;
+            
+        public:
+            domBatchJob( int argc, char** argv ) :
+                argCount( argc ),
+                argVector( argv )
+            {}
+            
+            int
+            parseNrun( void );
+        };
+        
+        // Template batch app that parses one XML input file from standard input,
+        // and another named as the first argument.  The application is
+        // constructed from the two parsed XML documents, and then run.
+        template<class batchAppClass>
+        class twoDomJob
+        {
+            int argCount;
+            char** argVector;
+            
+        public:
+            twoDomJob( int argc, char** argv ) :
+                argCount( argc ),
+                argVector( argv )
+            {}
+            
+            int
+            parseNrun( void );
+        };
+    }
 }
 
 #include "utl/domJobImpl.hh"

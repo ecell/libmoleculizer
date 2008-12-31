@@ -37,97 +37,97 @@
 
 namespace plx
 {
-double
-mzrPlexSpecies::
-getWeight( void ) const
-{
-    return cpx::plexSpeciesMixin<mzrPlexFamily>::getWeight();
-}
-
-void
-mzrPlexSpecies::
-notify( int generateDepth )
-{
-    rFamily.respond( fnd::newSpeciesStimulus<mzrPlexSpecies> ( this,
-                     generateDepth ) );
-}
-
-std::string
-mzrPlexSpecies::
-getName( void ) const
-{
-    if ( nameGenerated )
+    double
+    mzrPlexSpecies::
+    getWeight( void ) const
     {
-        return name;
+        return cpx::plexSpeciesMixin<mzrPlexFamily>::getWeight();
     }
-    else
+    
+    void
+    mzrPlexSpecies::
+    notify( int generateDepth )
     {
-        nameGenerated = true;
-        const nmr::NameAssembler* pNameAssembler = rFamily.getNamingStrategy();
-        name = getCanonicalName( pNameAssembler );
-        return name;
+        rFamily.respond( fnd::newSpeciesStimulus<mzrPlexSpecies> ( this,
+                                                                   generateDepth ) );
     }
-}
-
-xmlpp::Element*
-mzrPlexSpecies::
-insertElt( xmlpp::Element* pExplicitSpeciesElt,
-           double molarFactor ) const
-throw( std::exception )
-{
-// Insert tagged-plex-species element.
-    xmlpp::Element* pTaggedPlexSpeciesElt
-    = pExplicitSpeciesElt->add_child( eltName::taggedPlexSpecies );
-
-    pTaggedPlexSpeciesElt->set_attribute( eltName::taggedPlexSpecies_tagAttr,
-                                          getTag() );
-
-    pTaggedPlexSpeciesElt->set_attribute( eltName::taggedPlexSpecies_nameAttr,
-                                          getName() );
-
-// Insert the paradigm plex.
-    rFamily.getParadigm().insertElt( pTaggedPlexSpeciesElt );
-
-// Insert the non-default instance states.
-//
-// Might be easier and non-harmful to insert all instance states.
-    xmlpp::Element* pInstanceStatesElt
-    = pTaggedPlexSpeciesElt->add_child( eltName::instanceStates );
-
-// I need molNdx to generate a pseudo instance name.
-    for ( int molNdx = 0;
-            molNdx < ( int ) molParams.size();
-            ++molNdx )
+    
+    std::string
+    mzrPlexSpecies::
+    getName( void ) const
     {
-        bnd::mzrMol* pMol = rFamily.getParadigm().mols[molNdx];
-
-        pMol->insertInstanceState( pInstanceStatesElt,
-                                   molNdx,
-                                   molParams[molNdx] );
+        if ( nameGenerated )
+        {
+            return name;
+        }
+        else
+        {
+            nameGenerated = true;
+            const nmr::NameAssembler* pNameAssembler = rFamily.getNamingStrategy();
+            name = getCanonicalName( pNameAssembler );
+            return name;
+        }
     }
-
-//         xmlpp::Element* pPopulationElt
-//         = pTaggedPlexSpeciesElt->add_child (eltName::population);
-
-//         pPopulationElt->set_attribute (eltName::population_countAttr,
-//                                        utl::stringify<int> (getPop() ) );
-
-// Adding redundant concentration element for use by ODE solver.  An
-// alternative would be to convert population to concentration (using
-// Java?)  during translation of state dump for ODE solver.
-//        double concentration = getPop() /molarFactor;
-
-//         xmlpp::Element* pConcentrationElt
-//         = pTaggedPlexSpeciesElt->add_child (eltName::concentration);
-//         pConcentrationElt->set_attribute (eltName::concentration_valueAttr,
-//                                           utl::stringify<double> (concentration) );
-
-// Add the updated flag for use by parametrizer.
-    if ( hasNotified() )
+    
+    xmlpp::Element*
+    mzrPlexSpecies::
+    insertElt( xmlpp::Element* pExplicitSpeciesElt,
+               double molarFactor ) const
+        throw( std::exception )
     {
-        pTaggedPlexSpeciesElt->add_child( eltName::updated );
+        // Insert tagged-plex-species element.
+        xmlpp::Element* pTaggedPlexSpeciesElt
+            = pExplicitSpeciesElt->add_child( eltName::taggedPlexSpecies );
+        
+        pTaggedPlexSpeciesElt->set_attribute( eltName::taggedPlexSpecies_tagAttr,
+                                              getTag() );
+        
+        pTaggedPlexSpeciesElt->set_attribute( eltName::taggedPlexSpecies_nameAttr,
+                                              getName() );
+        
+        // Insert the paradigm plex.
+        rFamily.getParadigm().insertElt( pTaggedPlexSpeciesElt );
+        
+        // Insert the non-default instance states.
+        //
+        // Might be easier and non-harmful to insert all instance states.
+        xmlpp::Element* pInstanceStatesElt
+            = pTaggedPlexSpeciesElt->add_child( eltName::instanceStates );
+        
+        // I need molNdx to generate a pseudo instance name.
+        for ( int molNdx = 0;
+              molNdx < ( int ) molParams.size();
+              ++molNdx )
+        {
+            bnd::mzrMol* pMol = rFamily.getParadigm().mols[molNdx];
+            
+            pMol->insertInstanceState( pInstanceStatesElt,
+                                       molNdx,
+                                       molParams[molNdx] );
+        }
+        
+        //         xmlpp::Element* pPopulationElt
+        //         = pTaggedPlexSpeciesElt->add_child (eltName::population);
+        
+        //         pPopulationElt->set_attribute (eltName::population_countAttr,
+        //                                        utl::stringify<int> (getPop() ) );
+        
+        // Adding redundant concentration element for use by ODE solver.  An
+        // alternative would be to convert population to concentration (using
+        // Java?)  during translation of state dump for ODE solver.
+        //        double concentration = getPop() /molarFactor;
+        
+        //         xmlpp::Element* pConcentrationElt
+        //         = pTaggedPlexSpeciesElt->add_child (eltName::concentration);
+        //         pConcentrationElt->set_attribute (eltName::concentration_valueAttr,
+        //                                           utl::stringify<double> (concentration) );
+        
+        // Add the updated flag for use by parametrizer.
+        if ( hasNotified() )
+        {
+            pTaggedPlexSpeciesElt->add_child( eltName::updated );
+        }
+        
+        return pTaggedPlexSpeciesElt;
     }
-
-    return pTaggedPlexSpeciesElt;
-}
 }

@@ -36,17 +36,17 @@
 
 namespace plx
 {
-class parsedPlexNotConnXcpt :
-            public utl::xcpt
-{
-    static std::string
-    mkMsg( const xmlpp::Node* pPlexNode = 0 );
-
-public:
-    parsedPlexNotConnXcpt( const xmlpp::Node* pPlexNode = 0 ) :
+    class parsedPlexNotConnXcpt :
+        public utl::xcpt
+    {
+        static std::string
+        mkMsg( const xmlpp::Node* pPlexNode = 0 );
+        
+    public:
+        parsedPlexNotConnXcpt( const xmlpp::Node* pPlexNode = 0 ) :
             utl::xcpt( mkMsg( pPlexNode ) )
-    {}
-};
+        {}
+    };
 }
 
 #endif // PLEX_PARSEDPLEXNOTCONNXCPT_H

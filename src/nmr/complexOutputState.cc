@@ -38,112 +38,112 @@
 
 namespace nmr
 {
-bool
-ComplexOutputState::operator== ( ComplexOutputStateCref other ) const
-{
-    return ( theMolTokens == other.theMolTokens &&
-             theBindingTokens == other.theBindingTokens &&
-             theModificationTokens == other.theModificationTokens );
-}
-
-bool
-ComplexOutputState::operator!= ( ComplexOutputStateCref other ) const
-{
-    return !( *this == other );
-}
-
-void
-ComplexOutputState::addMolTokenToOutputState( MolTokenStrCref aMolToken )
-{
-    theMolTokens.push_back( aMolToken );
-}
-
-void
-ComplexOutputState::addBindingTokenToOutputState( BindingTokenStrCref aBindingToken )
-{
-    theBindingTokens.push_back( aBindingToken );
-
-}
-
-void
-ComplexOutputState::addModificationTokenToOutputState( ModificationTokenStrCref aModificationToken )
-{
-    theModificationTokens.push_back( aModificationToken );
-}
-
-void
-ComplexOutputState::clear()
-{
-    theMolTokens.clear();
-    theBindingTokens.clear();
-    theModificationTokens.clear();
-}
-
-std::string
-ComplexOutputState::repr() const
-{
-    std::ostringstream oss;
-    BOOST_FOREACH( ComplexOutputState::MolTokenStrCref molName, theMolTokens )
+    bool
+    ComplexOutputState::operator== ( ComplexOutputStateCref other ) const
     {
-        oss << molName << "-";
+        return ( theMolTokens == other.theMolTokens &&
+                 theBindingTokens == other.theBindingTokens &&
+                 theModificationTokens == other.theModificationTokens );
     }
-
-    BOOST_FOREACH( ComplexOutputState::BindingTokenStrCref bindingName, theBindingTokens )
+    
+    bool
+    ComplexOutputState::operator!= ( ComplexOutputStateCref other ) const
     {
-        oss << '|' ;
-        oss << bindingName.first.first << "-";
-        oss << bindingName.first.second << "-";
-        oss << bindingName.second.first << "-";
-        oss << bindingName.second.second << '|' << '-';
+        return !( *this == other );
     }
-
-    BOOST_FOREACH( ComplexOutputState::ModificationTokenStrCref modificationToken, theModificationTokens )
+    
+    void
+    ComplexOutputState::addMolTokenToOutputState( MolTokenStrCref aMolToken )
     {
-        oss << '|';
-        oss << modificationToken.first
-        << '-'
-        << modificationToken.second.first
-        << '-'
-        << modificationToken.second.second << '|';
+        theMolTokens.push_back( aMolToken );
     }
-
-    return oss.str();
-
-}
+    
+    void
+    ComplexOutputState::addBindingTokenToOutputState( BindingTokenStrCref aBindingToken )
+    {
+        theBindingTokens.push_back( aBindingToken );
+        
+    }
+    
+    void
+    ComplexOutputState::addModificationTokenToOutputState( ModificationTokenStrCref aModificationToken )
+    {
+        theModificationTokens.push_back( aModificationToken );
+    }
+    
+    void
+    ComplexOutputState::clear()
+    {
+        theMolTokens.clear();
+        theBindingTokens.clear();
+        theModificationTokens.clear();
+    }
+    
+    std::string
+    ComplexOutputState::repr() const
+    {
+        std::ostringstream oss;
+        BOOST_FOREACH( ComplexOutputState::MolTokenStrCref molName, theMolTokens )
+        {
+            oss << molName << "-";
+        }
+        
+        BOOST_FOREACH( ComplexOutputState::BindingTokenStrCref bindingName, theBindingTokens )
+        {
+            oss << '|' ;
+            oss << bindingName.first.first << "-";
+            oss << bindingName.first.second << "-";
+            oss << bindingName.second.first << "-";
+            oss << bindingName.second.second << '|' << '-';
+        }
+        
+        BOOST_FOREACH( ComplexOutputState::ModificationTokenStrCref modificationToken, theModificationTokens )
+        {
+            oss << '|';
+            oss << modificationToken.first
+                << '-'
+                << modificationToken.second.first
+                << '-'
+                << modificationToken.second.second << '|';
+        }
+        
+        return oss.str();
+        
+    }
 }
 
 std::ostream& operator<< ( std::ostream& os, const nmr::ComplexOutputState& cos )
 {
-//   os << "Mols:\n";
-//   for(std::vector<nmr::ComplexOutputState::MolTokenStr>::const_iterator iter = cos.theMolTokens.begin();
-//       iter != cos.theMolTokens.end();
-//       ++iter)
-//     {
-//       os << *iter << ", ";
-
-//     }
-//   os << "\nBindings:\n";
-
-//   for(std::vector<nmr::ComplexOutputState::BindingTokenStr>::const_iterator iter = cos.theBindingTokens.begin();
-//       iter != cos.theBindingTokens.end();
-//       ++iter)
-//     {
-//       os << "((" << (*iter).first.first << ", " << (*iter).first.second << "), (" << (*iter).second.first << ", " << (*iter).second.second << ")), ";
-//     }
-
-//   os << "\nModifications:\n";
-
-//   for(std::vector<nmr::ComplexOutputState::ModificationTokenStr>::const_iterator iter = cos.theModificationTokens.begin();
-//       iter != cos.theModificationTokens.end();
-//       ++iter)
-//     {
-//       os << "( " << (*iter).first << ", ( " << (*iter).second.first << ", " << (*iter).second.second << ")), ";
-//     }
-//   if (cos.theModificationTokens.size() == 0) os << "*";
-
-//   os << "\n";
-//   return os;
-
+    //   os << "Mols:\n";
+    //   for(std::vector<nmr::ComplexOutputState::MolTokenStr>::const_iterator iter = cos.theMolTokens.begin();
+    //       iter != cos.theMolTokens.end();
+    //       ++iter)
+    //     {
+    //       os << *iter << ", ";
+    
+    //     }
+    //   os << "\nBindings:\n";
+    
+    //   for(std::vector<nmr::ComplexOutputState::BindingTokenStr>::const_iterator iter = cos.theBindingTokens.begin();
+    //       iter != cos.theBindingTokens.end();
+    //       ++iter)
+    //     {
+    //       os << "((" << (*iter).first.first << ", " << (*iter).first.second << "), (" << (*iter).second.first << ", " << (*iter).second.second << ")), ";
+    //     }
+    
+    //   os << "\nModifications:\n";
+    
+    //   for(std::vector<nmr::ComplexOutputState::ModificationTokenStr>::const_iterator iter = cos.theModificationTokens.begin();
+    //       iter != cos.theModificationTokens.end();
+    //       ++iter)
+    //     {
+    //       os << "( " << (*iter).first << ", ( " << (*iter).second.first << ", " << (*iter).second.second << ")), ";
+    //     }
+    //   if (cos.theModificationTokens.size() == 0) os << "*";
+    
+    //   os << "\n";
+    //   return os;
+    
     os << cos.repr();
     return os;
 }

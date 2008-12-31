@@ -3,7 +3,7 @@
 
 namespace fnd
 {
-class coreRxnGen
+    class coreRxnGen
     {};
 }
 #endif

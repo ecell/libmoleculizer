@@ -34,72 +34,72 @@
 
 namespace cpx
 {
-template<class plexSpeciesT, class plexFamilyT>
-cxSite<plexSpeciesT, plexFamilyT>::
-cxSite( typename cxSite::plexSpeciesType* pPlexSpecies,
-        const siteSpec& rSpec ) :
+    template<class plexSpeciesT, class plexFamilyT>
+    cxSite<plexSpeciesT, plexFamilyT>::
+    cxSite( typename cxSite::plexSpeciesType* pPlexSpecies,
+            const siteSpec& rSpec ) :
         fnd::featureContext<typename cxSite::plexSpeciesType, siteSpec> ( pPlexSpecies,
-                rSpec )
-{}
-
-template<class plexSpeciesT, class plexFamilyT>
-siteSpec
-cxSite<plexSpeciesT, plexFamilyT>::
-getSiteSpec( void ) const
-{
-    return this->getSpec();
-}
-
-template<class plexSpeciesT, class plexFamilyT>
-int
-cxSite<plexSpeciesT, plexFamilyT>::
-getPop( void ) const
-{
-    return this->getSpecies()->getPop();
-}
-
-template<class plexSpeciesT, class plexFamilyT>
-double
-cxSite<plexSpeciesT, plexFamilyT>::
-getPlexWeight( void ) const
-{
-    return this->getSpecies()->getWeight();
-}
-
-template<class plexSpeciesT, class plexFamilyT>
-plexFamilyT&
-cxSite<plexSpeciesT, plexFamilyT>::
-getPlexFamily( void ) const
-{
-    return this->getSpecies()->rFamily;
-}
-
-template<class plexSpeciesT, class plexFamilyT>
-const siteToShapeMap&
-cxSite<plexSpeciesT, plexFamilyT>::
-getSiteToShapeMap( void ) const
-{
-    return this->getSpecies()->siteToShapeMap;
-}
-
-template<class plexSpeciesT, class plexFamilyT>
-const std::vector<molParam>&
-cxSite<plexSpeciesT, plexFamilyT>::
-getMolParams( void ) const
-{
-    return this->getSpecies()->molParams;
-}
-
-template<class plexSpeciesT, class plexFamilyT>
-siteParam
-cxSite<plexSpeciesT, plexFamilyT>::
-getSiteParam( void ) const
-{
-    siteToShapeMap::const_iterator iSpecParam
-    = this->getSpecies()->siteParams.find( getSiteSpec() );
-
-    return iSpecParam->second;
-}
+                                                                          rSpec )
+    {}
+    
+    template<class plexSpeciesT, class plexFamilyT>
+    siteSpec
+    cxSite<plexSpeciesT, plexFamilyT>::
+    getSiteSpec( void ) const
+    {
+        return this->getSpec();
+    }
+    
+    template<class plexSpeciesT, class plexFamilyT>
+    int
+    cxSite<plexSpeciesT, plexFamilyT>::
+    getPop( void ) const
+    {
+        return this->getSpecies()->getPop();
+    }
+    
+    template<class plexSpeciesT, class plexFamilyT>
+    double
+    cxSite<plexSpeciesT, plexFamilyT>::
+    getPlexWeight( void ) const
+    {
+        return this->getSpecies()->getWeight();
+    }
+    
+    template<class plexSpeciesT, class plexFamilyT>
+    plexFamilyT&
+    cxSite<plexSpeciesT, plexFamilyT>::
+    getPlexFamily( void ) const
+    {
+        return this->getSpecies()->rFamily;
+    }
+    
+    template<class plexSpeciesT, class plexFamilyT>
+    const siteToShapeMap&
+    cxSite<plexSpeciesT, plexFamilyT>::
+    getSiteToShapeMap( void ) const
+    {
+        return this->getSpecies()->siteToShapeMap;
+    }
+    
+    template<class plexSpeciesT, class plexFamilyT>
+    const std::vector<molParam>&
+    cxSite<plexSpeciesT, plexFamilyT>::
+    getMolParams( void ) const
+    {
+        return this->getSpecies()->molParams;
+    }
+    
+    template<class plexSpeciesT, class plexFamilyT>
+    siteParam
+    cxSite<plexSpeciesT, plexFamilyT>::
+    getSiteParam( void ) const
+    {
+        siteToShapeMap::const_iterator iSpecParam
+            = this->getSpecies()->siteParams.find( getSiteSpec() );
+        
+        return iSpecParam->second;
+    }
 }
 
 #endif // CPX_CXSITEIMPL_H

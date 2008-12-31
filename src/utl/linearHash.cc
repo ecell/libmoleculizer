@@ -33,42 +33,42 @@
 
 namespace utl
 {
-size_t
-linearHash::operator()( const size_t& rData ) const
-{
-    return ( rData * multiplier ) + summand;
-}
-
-// These will need to be adjusted, I expect.  Or maybe not.
-const size_t linearHash::multiplier = 2897564231ul;
-const size_t linearHash::summand = 3248630751ul;
-
-// This could be somewhat templatized....
-// It also appears to be defined in tauApp.cc.
-class charHashAccum : public std::unary_function<char, void>
-{
-    size_t& rValue;
-    linearHash lh;
-public:
-    charHashAccum( size_t& rHashValue ) :
+    size_t
+    linearHash::operator()( const size_t& rData ) const
+    {
+        return ( rData * multiplier ) + summand;
+    }
+    
+    // These will need to be adjusted, I expect.  Or maybe not.
+    const size_t linearHash::multiplier = 2897564231ul;
+    const size_t linearHash::summand = 3248630751ul;
+    
+    // This could be somewhat templatized....
+    // It also appears to be defined in tauApp.cc.
+    class charHashAccum : public std::unary_function<char, void>
+    {
+        size_t& rValue;
+        linearHash lh;
+    public:
+        charHashAccum( size_t& rHashValue ) :
             rValue( rHashValue )
+        {
+        }
+        
+        void
+        operator()( char c ) const
+        {
+            rValue = lh( rValue + lh(( size_t ) c ) );
+        }
+    };
+    
+    size_t
+    linearHash::operator()( const std::string& rString ) const
     {
+        size_t hashValue;
+        std::for_each( rString.begin(),
+                       rString.end(),
+                       charHashAccum( hashValue ) );
+        return hashValue;
     }
-
-    void
-    operator()( char c ) const
-    {
-        rValue = lh( rValue + lh(( size_t ) c ) );
-    }
-};
-
-size_t
-linearHash::operator()( const std::string& rString ) const
-{
-    size_t hashValue;
-    std::for_each( rString.begin(),
-                   rString.end(),
-                   charHashAccum( hashValue ) );
-    return hashValue;
-}
 }

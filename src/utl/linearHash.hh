@@ -33,39 +33,39 @@
 #define LINEARHASH_H
 
 /*! \file linearHash.hh
-\ingroup mzrGroup
-\brief Defines a linear-congruential hash function class.
-
-I don't think the hash functions given in our STL implementation
-look particularly promising.  Ints, chars, etc all hash to
-themselves, for example.  If I try to hash addresses, they'll all
-come out multiples of 4.  */
+  \ingroup mzrGroup
+  \brief Defines a linear-congruential hash function class.
+  
+  I don't think the hash functions given in our STL implementation
+  look particularly promising.  Ints, chars, etc all hash to
+  themselves, for example.  If I try to hash addresses, they'll all
+  come out multiples of 4.  */
 
 #include <cstddef>
 #include <string>
 
 namespace utl
 {
-/*! \ingroup mzrGroup
-\brief Linear-congruential hash function class.
-
-This really could just as well, maybe better, have been a global
-function.
-
-\todo Use overloading to handle common types transparently.
-Make provision (another class?) to do accumulation of hash values.
-This provision could be used in the "common types" code.
-
-*/
-class linearHash
-{
-// These will need to be adjusted, I expect.  Or maybe not.
-    static const size_t multiplier;
-    static const size_t summand;
-public:
-    size_t operator()( const size_t& rData ) const;
-    size_t operator()( const std::string& rString ) const;
-};
+    /*! \ingroup mzrGroup
+      \brief Linear-congruential hash function class.
+      
+      This really could just as well, maybe better, have been a global
+      function.
+      
+      \todo Use overloading to handle common types transparently.
+      Make provision (another class?) to do accumulation of hash values.
+      This provision could be used in the "common types" code.
+      
+    */
+    class linearHash
+    {
+        // These will need to be adjusted, I expect.  Or maybe not.
+        static const size_t multiplier;
+        static const size_t summand;
+    public:
+        size_t operator()( const size_t& rData ) const;
+        size_t operator()( const std::string& rString ) const;
+    };
 }
 
 #endif

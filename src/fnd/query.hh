@@ -36,69 +36,69 @@
 
 namespace fnd
 {
-// This allows common memory management for all queries.
-class baseQuery
-{
-public:
-    virtual
-    ~baseQuery( void )
-    {}
-};
-
-template<class argT>
-class query :
-            public baseQuery
-{
-public:
-    typedef argT argType;
-
-    virtual
-    ~query( void )
-    {}
-
-    virtual
-    bool
-    operator()( const argT& rArg ) const = 0;
-};
-
-template<class queryT>
-class andQueries :
-            public query<typename queryT::argType>
-{
-// Some descendant classes need access to the vector of queries,
-// e.g. in andPlexQueries::applyTracked.
-protected:
-
-    typename std::vector<const queryT*> queries;
-
-public:
-    ~andQueries( void )
-    {}
-
-    void
-    addQuery( const queryT* pQuery )
+    // This allows common memory management for all queries.
+    class baseQuery
     {
-        queries.push_back( pQuery );
-    }
-
-    bool
-    operator()( const typename queryT::argType& rArg ) const;
-};
-
-template<class objectT>
-class passAllQuery :
-            public query<objectT>
-{
-public:
-    ~passAllQuery( void )
-    {}
-
-    bool
-    operator()( const objectT& rObject ) const
+    public:
+        virtual
+        ~baseQuery( void )
+        {}
+    };
+    
+    template<class argT>
+    class query :
+        public baseQuery
     {
-        return true;
-    }
-};
+    public:
+        typedef argT argType;
+        
+        virtual
+        ~query( void )
+        {}
+        
+        virtual
+        bool
+        operator()( const argT& rArg ) const = 0;
+    };
+    
+    template<class queryT>
+    class andQueries :
+        public query<typename queryT::argType>
+    {
+        // Some descendant classes need access to the vector of queries,
+        // e.g. in andPlexQueries::applyTracked.
+    protected:
+        
+        typename std::vector<const queryT*> queries;
+        
+    public:
+        ~andQueries( void )
+        {}
+        
+        void
+        addQuery( const queryT* pQuery )
+        {
+            queries.push_back( pQuery );
+        }
+        
+        bool
+        operator()( const typename queryT::argType& rArg ) const;
+    };
+    
+    template<class objectT>
+    class passAllQuery :
+        public query<objectT>
+    {
+    public:
+        ~passAllQuery( void )
+        {}
+        
+        bool
+        operator()( const objectT& rObject ) const
+        {
+            return true;
+        }
+    };
 }
 
 #include "fnd/queryImpl.hh"

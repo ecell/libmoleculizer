@@ -34,39 +34,39 @@
 
 namespace ftr
 {
-omniMassExtrap::
-omniMassExtrap( double theRate,
-                const fnd::massive* pDefaultTriggeringSpecies,
-                const fnd::massive* pMassiveAuxiliarySpecies ) :
+    omniMassExtrap::
+    omniMassExtrap( double theRate,
+                    const fnd::massive* pDefaultTriggeringSpecies,
+                    const fnd::massive* pMassiveAuxiliarySpecies ) :
         pMassive( pMassiveAuxiliarySpecies )
-{
-    if ( pMassive )
     {
-        rateOrInvariant
-        = fnd::bindingInvariant( theRate,
-                                 pDefaultTriggeringSpecies->getWeight(),
-                                 pMassive->getWeight() );
+        if ( pMassive )
+        {
+            rateOrInvariant
+                = fnd::bindingInvariant( theRate,
+                                         pDefaultTriggeringSpecies->getWeight(),
+                                         pMassive->getWeight() );
+        }
+        else
+        {
+            rateOrInvariant = theRate;
+        }
     }
-    else
+    
+    double
+    omniMassExtrap::
+    getRate( const cpx::cxOmni<bnd::mzrMol, plx::mzrPlexSpecies, plx::mzrPlexFamily, plx::mzrOmniPlex>& rWrappedContext ) const
     {
-        rateOrInvariant = theRate;
+        // Are we generating unary or binary reactions?
+        if ( pMassive )
+        {
+            return fnd::bindingRate( rateOrInvariant,
+                                     rWrappedContext.getPlexWeight(),
+                                     pMassive->getWeight() );
+        }
+        else
+        {
+            return rateOrInvariant;
+        }
     }
-}
-
-double
-omniMassExtrap::
-getRate( const cpx::cxOmni<bnd::mzrMol, plx::mzrPlexSpecies, plx::mzrPlexFamily, plx::mzrOmniPlex>& rWrappedContext ) const
-{
-// Are we generating unary or binary reactions?
-    if ( pMassive )
-    {
-        return fnd::bindingRate( rateOrInvariant,
-                                 rWrappedContext.getPlexWeight(),
-                                 pMassive->getWeight() );
-    }
-    else
-    {
-        return rateOrInvariant;
-    }
-}
 }

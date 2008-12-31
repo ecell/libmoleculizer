@@ -33,57 +33,57 @@
 
 namespace cpx
 {
-template<class omniPlexT>
-void
-siteToShapeMap::
-setSiteShape( const siteSpec& rPlexSiteSpec,
-              const siteShape* pSiteShape,
-              const subPlexSpec<omniPlexT>& rSubPlexSpec )
-{
-    const plexIso& rInjection
-    = rSubPlexSpec.getInjection();
-
-    siteSpec mappedSpec
-    = rInjection.forward.applyToSiteSpec( rPlexSiteSpec );
-
-    setSiteShape( mappedSpec,
-                  pSiteShape );
-}
-
-template<class omniPlexT>
-class setSiteShapeTracked :
-            public std::unary_function<siteToShapeMap::value_type, void>
-{
-public:
-    typedef subPlexSpec<omniPlexT> subPlexSpecType;
-
-    siteToShapeMap& rTarget;
-    const subPlexSpecType& rSpec;
-public:
-    setSiteShapeTracked( siteToShapeMap& rTargetMap,
-                         const subPlexSpecType& rSubPlexSpec ) :
+    template<class omniPlexT>
+    void
+    siteToShapeMap::
+    setSiteShape( const siteSpec& rPlexSiteSpec,
+                  const siteShape* pSiteShape,
+                  const subPlexSpec<omniPlexT>& rSubPlexSpec )
+    {
+        const plexIso& rInjection
+            = rSubPlexSpec.getInjection();
+        
+        siteSpec mappedSpec
+            = rInjection.forward.applyToSiteSpec( rPlexSiteSpec );
+        
+        setSiteShape( mappedSpec,
+                      pSiteShape );
+    }
+    
+    template<class omniPlexT>
+    class setSiteShapeTracked :
+        public std::unary_function<siteToShapeMap::value_type, void>
+    {
+    public:
+        typedef subPlexSpec<omniPlexT> subPlexSpecType;
+        
+        siteToShapeMap& rTarget;
+        const subPlexSpecType& rSpec;
+    public:
+        setSiteShapeTracked( siteToShapeMap& rTargetMap,
+                             const subPlexSpecType& rSubPlexSpec ) :
             rTarget( rTargetMap ),
             rSpec( rSubPlexSpec )
-    {}
-
+        {}
+        
+        void
+        operator()( const argument_type& rSiteShapePair ) const
+        {
+            rTarget.setSiteShape( rSiteShapePair.first,
+                                  rSiteShapePair.second,
+                                  rSpec );
+        }
+    };
+    
+    template<class omniPlexT>
     void
-    operator()( const argument_type& rSiteShapePair ) const
+    siteToShapeMap::
+    setSiteShapes( const siteToShapeMap& rSiteToShapeMap,
+                   const subPlexSpec<omniPlexT>& rSubPlexSpec )
     {
-        rTarget.setSiteShape( rSiteShapePair.first,
-                              rSiteShapePair.second,
-                              rSpec );
+        std::for_each( rSiteToShapeMap.begin(),
+                       rSiteToShapeMap.end(),
+                       setSiteShapeTracked<omniPlexT> ( *this,
+                                                        rSubPlexSpec ) );
     }
-};
-
-template<class omniPlexT>
-void
-siteToShapeMap::
-setSiteShapes( const siteToShapeMap& rSiteToShapeMap,
-               const subPlexSpec<omniPlexT>& rSubPlexSpec )
-{
-    std::for_each( rSiteToShapeMap.begin(),
-                   rSiteToShapeMap.end(),
-                   setSiteShapeTracked<omniPlexT> ( *this,
-                                                    rSubPlexSpec ) );
-}
 }

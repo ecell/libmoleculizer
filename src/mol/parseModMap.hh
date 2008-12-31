@@ -39,56 +39,56 @@
 
 namespace bnd
 {
-// This class is almost exactly the same as parseModSite;
-// pretty much only the element names change.
-//
-// This is for parseing an allosteric state of a mod-mol.
-class parseModMap : public
-            std::unary_function<xmlpp::Node*,
-            std::pair<std::string, const cpx::modification*> >
-{
-    molUnit& rMolUnit;
-
-public:
-    parseModMap( molUnit& refMolUnit ) :
-            rMolUnit( refMolUnit )
-    {}
-
-    std::pair<std::string, const cpx::modification*>
-    operator()( xmlpp::Node* pModSiteRefNode ) const
-    throw( utl::xcpt )
+    // This class is almost exactly the same as parseModSite;
+    // pretty much only the element names change.
+    //
+    // This is for parseing an allosteric state of a mod-mol.
+    class parseModMap : public
+    std::unary_function<xmlpp::Node*,
+                        std::pair<std::string, const cpx::modification*> >
     {
-        xmlpp::Element* pModSiteRefElt
-        = utl::dom::mustBeElementPtr( pModSiteRefNode );
-
-// Get the mod site name.
-        std::string modSiteName
-        = utl::dom::mustGetAttrString( pModSiteRefElt,
-                                       eltName::modSiteRef_nameAttr );
-
-// Get the mod-ref element that tells what modification is at this
-// modification site.
-        xmlpp::Element* pModRefElt
-        = utl::dom::mustGetUniqueChild( pModSiteRefElt,
-                                        eltName::modRef );
-
-// Get the modification name.
-        std::string modName
-        = utl::dom::mustGetAttrString( pModRefElt,
-                                       eltName::modRef_nameAttr );
-
-// Look up the modification in the BAD BAD BAD static catalog.
-//
-// Once again, testing for success here indicates lack of trust
-// in validation.
-        const cpx::modification* pMod = rMolUnit.getMod( modName );
-        if ( 0 == pMod ) throw unkModXcpt( modName,
+        molUnit& rMolUnit;
+        
+    public:
+        parseModMap( molUnit& refMolUnit ) :
+            rMolUnit( refMolUnit )
+        {}
+        
+        std::pair<std::string, const cpx::modification*>
+        operator()( xmlpp::Node* pModSiteRefNode ) const
+            throw( utl::xcpt )
+        {
+            xmlpp::Element* pModSiteRefElt
+                = utl::dom::mustBeElementPtr( pModSiteRefNode );
+            
+            // Get the mod site name.
+            std::string modSiteName
+                = utl::dom::mustGetAttrString( pModSiteRefElt,
+                                               eltName::modSiteRef_nameAttr );
+            
+            // Get the mod-ref element that tells what modification is at this
+            // modification site.
+            xmlpp::Element* pModRefElt
+                = utl::dom::mustGetUniqueChild( pModSiteRefElt,
+                                                eltName::modRef );
+            
+            // Get the modification name.
+            std::string modName
+                = utl::dom::mustGetAttrString( pModRefElt,
+                                               eltName::modRef_nameAttr );
+            
+            // Look up the modification in the BAD BAD BAD static catalog.
+            //
+            // Once again, testing for success here indicates lack of trust
+            // in validation.
+            const cpx::modification* pMod = rMolUnit.getMod( modName );
+            if ( 0 == pMod ) throw unkModXcpt( modName,
                                                pModRefElt );
-
-        return std::make_pair( modSiteName,
-                               pMod );
-    }
-};
+            
+            return std::make_pair( modSiteName,
+                                   pMod );
+        }
+    };
 }
 
 #endif // MOL_PARSEMODMAP_H

@@ -36,19 +36,19 @@
 
 namespace bnd
 {
-// Excpetion thrown when the same name is given to more than
-// one modification site on a mzrModMol.
-class dupModSiteNameXcpt :
-            public utl::xcpt
-{
-    static std::string
-    mkMsg( const std::string& rBadModSiteName );
-
-public:
-    dupModSiteNameXcpt( const std::string& rBadModSiteName ) :
+    // Excpetion thrown when the same name is given to more than
+    // one modification site on a mzrModMol.
+    class dupModSiteNameXcpt :
+        public utl::xcpt
+    {
+        static std::string
+        mkMsg( const std::string& rBadModSiteName );
+        
+    public:
+        dupModSiteNameXcpt( const std::string& rBadModSiteName ) :
             utl::xcpt( mkMsg( rBadModSiteName ) )
-    {}
-};
+        {}
+    };
 }
 
 #endif // MOL_DUPMODSITENAMEXCPT_H

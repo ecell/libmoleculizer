@@ -33,16 +33,16 @@
 
 namespace cpx
 {
-plexIso
-plexIso::
-makeIdentity( int molCount,
-              int bindingCount )
-{
-    plexIso returnValue;
-    returnValue.forward = plexMap::makeIdentity( molCount,
-                          bindingCount );
-    returnValue.backward = plexMap::makeIdentity( molCount,
-                           bindingCount );
-    return returnValue;
-}
+    plexIso
+    plexIso::
+    makeIdentity( int molCount,
+                  int bindingCount )
+    {
+        plexIso returnValue;
+        returnValue.forward = plexMap::makeIdentity( molCount,
+                                                     bindingCount );
+        returnValue.backward = plexMap::makeIdentity( molCount,
+                                                      bindingCount );
+        return returnValue;
+    }
 }

@@ -33,9 +33,9 @@
 #define PLEX_H
 
 /*! \defgroup plexSpeciesGroup Complexes
-\ingroup plexGroup
-
-\brief Protein complexes and their constituents. */
+  \ingroup plexGroup
+  
+  \brief Protein complexes and their constituents. */
 
 #include <vector>
 #include <map>
@@ -46,14 +46,14 @@
 
 namespace plx
 {
-class mzrPlex :
-            public cpx::basicPlex<bnd::mzrMol>
-{
-public:
-    xmlpp::Element*
-    insertElt( xmlpp::Element* pParentElt ) const
-    throw( std::exception );
-};
+    class mzrPlex :
+        public cpx::basicPlex<bnd::mzrMol>
+    {
+    public:
+        xmlpp::Element*
+        insertElt( xmlpp::Element* pParentElt ) const
+        throw( std::exception );
+    };
 }
 
 #endif

@@ -38,99 +38,99 @@
 
 namespace fnd
 {
-
-class DuplicatedCatalogEntryXcpt : public utl::xcpt
-{
-    static std::string
-    mkMsg( const std::string& ElementName )
+    
+    class DuplicatedCatalogEntryXcpt : public utl::xcpt
     {
-        std::ostringstream msgStream;
-        msgStream << "Internal Error: "
-        << "Object "
-        << "'"
-        << ElementName
-        << "' was already present in the ReactionNetworkDescription.";
-        return msgStream.str();
-    }
-
-public:
-    DuplicatedCatalogEntryXcpt( const std::string& refObjectName )
+        static std::string
+        mkMsg( const std::string& ElementName )
+        {
+            std::ostringstream msgStream;
+            msgStream << "Internal Error: "
+                      << "Object "
+                      << "'"
+                      << ElementName
+                      << "' was already present in the ReactionNetworkDescription.";
+            return msgStream.str();
+        }
+        
+    public:
+        DuplicatedCatalogEntryXcpt( const std::string& refObjectName )
             :
             utl::xcpt( mkMsg( refObjectName ) )
-    {}
-};
-
-class NoSuchSpeciesXcpt : public utl::xcpt
-{
-    static std::string
-    mkMsg( const std::string& speciesName )
+        {}
+    };
+    
+    class NoSuchSpeciesXcpt : public utl::xcpt
     {
-        std::ostringstream msgStream;
-        msgStream << "Internal Error: Species '"
-        << speciesName
-        << "' was not found in ReactionNetworkDescription.";
-        return msgStream.str();
-    }
-
-public:
-    NoSuchSpeciesXcpt( const std::string& speciesName )
+        static std::string
+        mkMsg( const std::string& speciesName )
+        {
+            std::ostringstream msgStream;
+            msgStream << "Internal Error: Species '"
+                      << speciesName
+                      << "' was not found in ReactionNetworkDescription.";
+            return msgStream.str();
+        }
+        
+    public:
+        NoSuchSpeciesXcpt( const std::string& speciesName )
             :
             xcpt( mkMsg( speciesName ) )
-    {}
-
-};
-
-class NoSuchReactionXcpt : public utl::xcpt
-{
-    std::string
-    makeMessage( const std::string& reactionName )
+        {}
+        
+    };
+    
+    class NoSuchReactionXcpt : public utl::xcpt
     {
-        std::ostringstream msgStream;
-        msgStream << "Internal Error: Reaction '"
-        << reactionName
-        << "' was not found in ReactionNetworkDescription.";
-        return msgStream.str();
-    }
-
-public:
-    ~NoSuchReactionXcpt() throw() {}
-
-
-    NoSuchReactionXcpt( const std::string& reactionName )
+        std::string
+        makeMessage( const std::string& reactionName )
+        {
+            std::ostringstream msgStream;
+            msgStream << "Internal Error: Reaction '"
+                      << reactionName
+                      << "' was not found in ReactionNetworkDescription.";
+            return msgStream.str();
+        }
+        
+    public:
+        ~NoSuchReactionXcpt() throw() {}
+        
+        
+        NoSuchReactionXcpt( const std::string& reactionName )
             :
             xcpt( "" ),
             theReactionName( reactionName )
+        {
+            message = this->makeMessage( reactionName );
+        }
+        
+    private:
+        std::string theReactionName;
+    };
+    
+    
+    class badDumpFileXcpt :
+        public utl::xcpt
     {
-        message = this->makeMessage( reactionName );
-    }
-
-private:
-    std::string theReactionName;
-};
-
-
-class badDumpFileXcpt :
-            public utl::xcpt
-{
-    static std::string
-    mkMsg( const std::string& rBadFileName );
-
-public:
-    badDumpFileXcpt( const std::string& rBadFileName ) :
+        static std::string
+        mkMsg( const std::string& rBadFileName );
+        
+    public:
+        badDumpFileXcpt( const std::string& rBadFileName ) :
             utl::xcpt( mkMsg( rBadFileName ) )
-    {}
-};
-
-class speciesNotMassiveXcpt :
-            public utl::xcpt
-{
-    std::string
-    mkMsg( xmlpp::Node* pOffendingNode = 0 );
-public:
-    speciesNotMassiveXcpt( xmlpp::Node* pOffendingNode = 0 );
-};
-
-
+        {}
+    };
+    
+    class speciesNotMassiveXcpt :
+        public utl::xcpt
+    {
+        std::string
+        mkMsg( xmlpp::Node* pOffendingNode = 0 );
+    public:
+        speciesNotMassiveXcpt( xmlpp::Node* pOffendingNode = 0 );
+    };
+    
+    
 }
 
 

@@ -36,90 +36,90 @@
 
 namespace fnd
 {
-// These are possible replacements for the notifier template.
-template<class stimulusType>
-class sensitiveOnce :
-            public sensitive<stimulusType>
-{
-    bool responded;
-
-public:
-    sensitiveOnce( void ) :
+    // These are possible replacements for the notifier template.
+    template<class stimulusType>
+    class sensitiveOnce :
+        public sensitive<stimulusType>
+    {
+        bool responded;
+        
+    public:
+        sensitiveOnce( void ) :
             responded( false )
-    {}
-
-    bool
-    hasResponded( void ) const
-    {
-        return responded;
-    }
-
-    void
-    ensureResponded( const stimulusType& rStimulus )
-    {
-        if ( ! hasResponded() )
+        {}
+        
+        bool
+        hasResponded( void ) const
         {
-            respond( rStimulus );
-            responded = true;
+            return responded;
         }
-    }
-};
-
-template<class stimulusType>
-class sensitiveOnce<stimulustType*> :
-            public sensitive<stimulusType*>
-{
-    bool responded;
-
-public:
-    sensitiveOnce( void ) :
+        
+        void
+        ensureResponded( const stimulusType& rStimulus )
+        {
+            if ( ! hasResponded() )
+            {
+                respond( rStimulus );
+                responded = true;
+            }
+        }
+    };
+    
+    template<class stimulusType>
+    class sensitiveOnce<stimulustType*> :
+        public sensitive<stimulusType*>
+    {
+        bool responded;
+        
+    public:
+        sensitiveOnce( void ) :
             responded( false )
-    {}
-
-    bool
-    hasResponded( void ) const
-    {
-        return responded;
-    }
-
-    void
-    ensureResponded( const stimulusType* pStimulus )
-    {
-        if ( ! hasResponded() )
+        {}
+        
+        bool
+        hasResponded( void ) const
         {
-            respond( pStimulus );
-            responded = true;
+            return responded;
         }
-    }
-};
-
-template<>
-class sensitiveOnce<void> :
-            public sensitive<void>
-{
-    bool responded;
-
-public:
-    sensitiveOnce( void ) :
+        
+        void
+        ensureResponded( const stimulusType* pStimulus )
+        {
+            if ( ! hasResponded() )
+            {
+                respond( pStimulus );
+                responded = true;
+            }
+        }
+    };
+    
+    template<>
+    class sensitiveOnce<void> :
+        public sensitive<void>
+    {
+        bool responded;
+        
+    public:
+        sensitiveOnce( void ) :
             responded( false )
-    {}
-
-    bool
-    hasResponded( void ) const
-    {
-        return responded;
-    }
-
-    void
-    ensureResponded( void )
-    {
-        if ( ! hasResponded() )
+        {}
+        
+        bool
+        hasResponded( void ) const
         {
-            respond();
-            responded = true;
+            return responded;
         }
-    }
-};
+        
+        void
+        ensureResponded( void )
+        {
+            if ( ! hasResponded() )
+            {
+                respond();
+                responded = true;
+            }
+        }
+    };
 }
 
 #endif // FND_SENSITIVEONCE_H

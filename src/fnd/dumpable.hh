@@ -37,27 +37,27 @@
 
 namespace fnd
 {
-// This class represents one column in a tab-separated columnar
-// output file.  The file itself is represented by the dumpStream
-// class.
-template<class dumpArgT>
-class dumpable :
-            public basicDumpable
-{
-public:
-    dumpable( const std::string& rName ) :
-            basicDumpable( rName )
-    {}
-
-    virtual void
-    doDump( const dumpArgT& rDumpArg ) const = 0;
-
-    virtual void
-    dumpHeader( const dumpArgT& rDumpArg ) const
+    // This class represents one column in a tab-separated columnar
+    // output file.  The file itself is represented by the dumpStream
+    // class.
+    template<class dumpArgT>
+    class dumpable :
+        public basicDumpable
     {
-        rDumpArg.getOstream() << getName();
-    }
-};
+    public:
+        dumpable( const std::string& rName ) :
+            basicDumpable( rName )
+        {}
+        
+        virtual void
+        doDump( const dumpArgT& rDumpArg ) const = 0;
+        
+        virtual void
+        dumpHeader( const dumpArgT& rDumpArg ) const
+        {
+            rDumpArg.getOstream() << getName();
+        }
+    };
 }
 
 #endif // FND_DUMPABLE_H

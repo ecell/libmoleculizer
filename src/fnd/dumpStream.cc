@@ -35,76 +35,76 @@
 
 namespace fnd
 {
-dumpStream::
-dumpStream( const std::string& rFileName )
-throw( utl::xcpt ) :
+    dumpStream::
+    dumpStream( const std::string& rFileName )
+        throw( utl::xcpt ) :
         fileName( rFileName )
-{
-// Establish what the output stream is, opening the output file
-// if called for.  Note that this file doesn't get closed until
-// the destruction of the dumpStream.
-    if ( fileName == "-" ) pOs = &std::cout;
-    else if ( fileName == "+" ) pOs = &std::cerr;
-    else
     {
-// Open the file for appending, so that if a simulation is continued,
-// the output will also be continued instead of starting over at the
-// second start time.
-        pFileStream = new std::ofstream( fileName.c_str(),
-                                         std::ios_base::app );
-        if ( !( *pFileStream ) )
-            throw badDumpFileXcpt( fileName );
-
-        pOs = pFileStream;
-    }
-}
-
-void
-dumpStream::
-init( void )
-throw( utl::xcpt )
-{
-    std::ostream& rOs = getOstream();
-
-// The header line is a "comment line" for gnuplot.
-    rOs << "#";
-
-    iterator iEntry = begin();
-    if ( iEntry != end() )
-    {
-        basicDmpColumn* pColumn = *iEntry;
-
-        pColumn->dumpHeader();
-
-        while ( ++iEntry != end() )
+        // Establish what the output stream is, opening the output file
+        // if called for.  Note that this file doesn't get closed until
+        // the destruction of the dumpStream.
+        if ( fileName == "-" ) pOs = &std::cout;
+        else if ( fileName == "+" ) pOs = &std::cerr;
+        else
         {
-            rOs << '\t';
-            pColumn = *iEntry;
+            // Open the file for appending, so that if a simulation is continued,
+            // the output will also be continued instead of starting over at the
+            // second start time.
+            pFileStream = new std::ofstream( fileName.c_str(),
+                                             std::ios_base::app );
+            if ( !( *pFileStream ) )
+                throw badDumpFileXcpt( fileName );
+            
+            pOs = pFileStream;
+        }
+    }
+    
+    void
+    dumpStream::
+    init( void )
+        throw( utl::xcpt )
+    {
+        std::ostream& rOs = getOstream();
+        
+        // The header line is a "comment line" for gnuplot.
+        rOs << "#";
+        
+        iterator iEntry = begin();
+        if ( iEntry != end() )
+        {
+            basicDmpColumn* pColumn = *iEntry;
+            
             pColumn->dumpHeader();
+            
+            while ( ++iEntry != end() )
+            {
+                rOs << '\t';
+                pColumn = *iEntry;
+                pColumn->dumpHeader();
+            }
         }
+        rOs << std::endl;
     }
-    rOs << std::endl;
-}
-
-void
-dumpStream::
-doDump( void )
-{
-    std::ostream& rOs = getOstream();
-
-    iterator iEntry = begin();
-    if ( iEntry != end() )
+    
+    void
+    dumpStream::
+    doDump( void )
     {
-        basicDmpColumn* pColumn = *iEntry;
-        pColumn->doDump();
-
-        while ( ++iEntry != end() )
+        std::ostream& rOs = getOstream();
+        
+        iterator iEntry = begin();
+        if ( iEntry != end() )
         {
-            rOs << '\t';
-            pColumn = *iEntry;
+            basicDmpColumn* pColumn = *iEntry;
             pColumn->doDump();
+            
+            while ( ++iEntry != end() )
+            {
+                rOs << '\t';
+                pColumn = *iEntry;
+                pColumn->doDump();
+            }
         }
+        rOs << std::endl;
     }
-    rOs << std::endl;
-}
 }

@@ -57,7 +57,7 @@ namespace cpx
         typedef plexSpeciesT plexSpeciesType;
         typedef plexFamilyT plexFamilyType;
         typedef omniPlexT omniPlexType;
-
+        
         typedef typename plexSpeciesT::msDumpableType dumpableType;
         
         typedef andPlexQueries<plexSpeciesType,
@@ -86,7 +86,7 @@ namespace cpx
         virtual
         void
         respond( const typename omniPlexFeature::stimulusType& rNewFeatureContext );
-
+        
         // To "turn on" dumping of the species in this omniplex.
         // These aren't query-based dumpables, since the omniplex
         // itself does all the querying.
@@ -125,7 +125,7 @@ namespace cpx
         {
             // Notify reaction generators
             fnd::feature<contextType>::respond( rStim );
-
+            
             // Notify dumpable if any.
             if(pDumpable)
             {
@@ -136,7 +136,7 @@ namespace cpx
                              rStim.getNotificationDepth());
                 
                 pDumpable->respond(dumpStim);
-	  }
+            }
         }
     }
 }

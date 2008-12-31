@@ -412,8 +412,8 @@ namespace dimer
             
             // As of now, this is done elsewhere...
             // Check if the user specified a reaction rate extrapolator.
-//             xmlpp::Attribute* pRateExtrapolatorAttr
-//                 = pDimerizationGenElt->get_attribute( eltName::dimerizationGen_rateExtrapAttr );
+            //             xmlpp::Attribute* pRateExtrapolatorAttr
+            //                 = pDimerizationGenElt->get_attribute( eltName::dimerizationGen_rateExtrapAttr );
             
             // Construct the dimerization reaction rate extrapolator according to
             // the option.  Reaction rate extrapolators are memory-managed by the
@@ -421,12 +421,12 @@ namespace dimer
             dimerizeExtrapolator* pDimerizeExtrap = 0;
             decomposeExtrapolator* pDecompExtrap = 0;
             
-
+            
             if( rMzrUnit.rMolzer.getRateExtrapolation() )
             {
                 pDimerizeExtrap = new dimerizeMassExtrap(leftMolWeight,
                                                          rightMolWeight);
-
+                
                 // What is this?
                 // pDimerizeExtrap = new dimerizeConstantRate();
             }
@@ -434,7 +434,7 @@ namespace dimer
             {
                 pDimerizeExtrap = new dimerizeNoExtrap();
             }
-
+            
             // There is only one option for decomposition rate extrapolation.
             pDecompExtrap = new decomposeNoExtrap();
             

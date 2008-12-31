@@ -36,17 +36,17 @@
 
 namespace plx
 {
-class unkMolInstXcpt :
-            public utl::xcpt
-{
-    static std::string
-    mkMsg( const std::string& rMolInstName,
-           const xmlpp::Node* pOffendingNode = 0 );
-
-public:
-    unkMolInstXcpt( const std::string& rMolInstName,
-                    const xmlpp::Node* pOffendingNode = 0 );
-};
+    class unkMolInstXcpt :
+        public utl::xcpt
+    {
+        static std::string
+        mkMsg( const std::string& rMolInstName,
+               const xmlpp::Node* pOffendingNode = 0 );
+        
+    public:
+        unkMolInstXcpt( const std::string& rMolInstName,
+                        const xmlpp::Node* pOffendingNode = 0 );
+    };
 }
 
 #endif // PLEX_UNKMOLINSTXCPT_H

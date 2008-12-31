@@ -38,35 +38,35 @@
 
 namespace utl
 {
-template<class autoObject>
-class autoVector
-            : public std::vector<autoObject*>
-{
-    class doDelete
-                : public std::unary_function<autoObject*, void>
+    template<class autoObject>
+    class autoVector
+        : public std::vector<autoObject*>
     {
-    public:
-        void operator()( autoObject* pObject ) const
+        class doDelete
+            : public std::unary_function<autoObject*, void>
         {
-            delete pObject;
+        public:
+            void operator()( autoObject* pObject ) const
+            {
+                delete pObject;
+            }
+        };
+        
+    public:
+        ~autoVector( void )
+        {
+            
+            for_each( this->begin(),
+                      this->end(),
+                      doDelete() );
+        }
+        
+        void
+        addEntry( autoObject* pObject )
+        {
+            push_back( pObject );
         }
     };
-
-public:
-    ~autoVector( void )
-    {
-
-        for_each( this->begin(),
-                  this->end(),
-                  doDelete() );
-    }
-
-    void
-    addEntry( autoObject* pObject )
-    {
-        push_back( pObject );
-    }
-};
 }
 
 #endif // UTL_AUTOVECTOR_H

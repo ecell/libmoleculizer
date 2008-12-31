@@ -38,28 +38,28 @@
 
 namespace cpx
 {
-// This mixin adds modifiability to molState.
-//
-// It is also used as the "core" of a query in which modifications
-// match themselves and the null pointer represents a wildcard.
-class modStateMixin :
-            public std::vector<const modification*>
-{
-public:
-    modStateMixin( const modification* pMod,
-                   int count ) :
+    // This mixin adds modifiability to molState.
+    //
+    // It is also used as the "core" of a query in which modifications
+    // match themselves and the null pointer represents a wildcard.
+    class modStateMixin :
+        public std::vector<const modification*>
+    {
+    public:
+        modStateMixin( const modification* pMod,
+                       int count ) :
             std::vector<const modification*> ( count, pMod )
-    {}
-
-    modStateMixin( const std::vector<const modification*>& rModifications ) :
+        {}
+        
+        modStateMixin( const std::vector<const modification*>& rModifications ) :
             std::vector<const modification*> ( rModifications )
-    {}
-
-    double
-    totalWeightDelta( void ) const;
-
-
-};
+        {}
+        
+        double
+        totalWeightDelta( void ) const;
+        
+        
+    };
 }
 
 #endif // CPX_MODSTATEMIXIN_H

@@ -37,37 +37,37 @@
 
 namespace dimer
 {
-/*! \ingroup decompGroup
-\brief Reaction generator decompositions. */
-class decompRxnGen :
-            public fnd::rxnGen<cpx::cxBinding<plx::mzrPlexSpecies, plx::mzrPlexFamily> >
-{
-    utl::autoVector<mzr::mzrReaction>* pFamily;
-    mzr::mzrUnit& rMzrUnit;
-    plx::plexUnit& rPlexUnit;
-    decomposeExtrapolator* pExtrap;
-
-public:
-    // Note that this reaction generator memory manages the rate extrapolator.
-    decompRxnGen( utl::autoVector<mzr::mzrReaction>* pDecompFamily,
-                  mzr::mzrUnit& refMzrUnit,
-                  plx::plexUnit& refPlexUnit,
-                  decomposeExtrapolator* pExtrapolator ) :
+    /*! \ingroup decompGroup
+      \brief Reaction generator decompositions. */
+    class decompRxnGen :
+        public fnd::rxnGen<cpx::cxBinding<plx::mzrPlexSpecies, plx::mzrPlexFamily> >
+    {
+        utl::autoVector<mzr::mzrReaction>* pFamily;
+        mzr::mzrUnit& rMzrUnit;
+        plx::plexUnit& rPlexUnit;
+        decomposeExtrapolator* pExtrap;
+        
+    public:
+        // Note that this reaction generator memory manages the rate extrapolator.
+        decompRxnGen( utl::autoVector<mzr::mzrReaction>* pDecompFamily,
+                      mzr::mzrUnit& refMzrUnit,
+                      plx::plexUnit& refPlexUnit,
+                      decomposeExtrapolator* pExtrapolator ) :
             pFamily( pDecompFamily ),
             rMzrUnit( refMzrUnit ),
             rPlexUnit( refPlexUnit ),
             pExtrap( pExtrapolator )
-    {}
-
-    ~decompRxnGen( void )
-    {
-        delete pExtrap;
-    }
-
-    void
-    respond( const fnd::featureStimulus<cpx::cxBinding<plx::mzrPlexSpecies, plx::mzrPlexFamily> >& rStimulus );
-
-};
+        {}
+        
+        ~decompRxnGen( void )
+        {
+            delete pExtrap;
+        }
+        
+        void
+        respond( const fnd::featureStimulus<cpx::cxBinding<plx::mzrPlexSpecies, plx::mzrPlexFamily> >& rStimulus );
+        
+    };
 }
 
 #endif // DIMER_DECOMPRXNGEN_H

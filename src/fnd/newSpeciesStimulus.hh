@@ -34,34 +34,34 @@
 
 namespace fnd
 {
-// Base class for messages sent out the first time that a generated species
-// is updated.
-template<class speciesType>
-class newSpeciesStimulus
-{
-    speciesType* pSpecies;
-
-    int notifyDepth;
-
-public:
-    newSpeciesStimulus( speciesType* pNewSpecies,
-                        int notificationDepth ) :
+    // Base class for messages sent out the first time that a generated species
+    // is updated.
+    template<class speciesType>
+    class newSpeciesStimulus
+    {
+        speciesType* pSpecies;
+        
+        int notifyDepth;
+        
+    public:
+        newSpeciesStimulus( speciesType* pNewSpecies,
+                            int notificationDepth ) :
             pSpecies( pNewSpecies ),
             notifyDepth( notificationDepth )
-    {}
-
-    speciesType*
-    getSpecies( void ) const
-    {
-        return pSpecies;
-    }
-
-    int
-    getNotificationDepth( void ) const
-    {
-        return notifyDepth;
-    }
-};
+        {}
+        
+        speciesType*
+        getSpecies( void ) const
+        {
+            return pSpecies;
+        }
+        
+        int
+        getNotificationDepth( void ) const
+        {
+            return notifyDepth;
+        }
+    };
 }
 
 #endif // FND_NEWSPECIESSTIMULUS_H

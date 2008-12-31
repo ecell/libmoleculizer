@@ -33,12 +33,12 @@
 
 namespace dimer
 {
-void
-dimerUnit::insertStateElts( xmlpp::Element* pRootElt ) throw( std::exception )
-{
-// Since the dimer unit basically just contributes reaction generators
-// it has nothing to add here.
-}
+    void
+    dimerUnit::insertStateElts( xmlpp::Element* pRootElt ) throw( std::exception )
+    {
+        // Since the dimer unit basically just contributes reaction generators
+        // it has nothing to add here.
+    }
 }
 
 

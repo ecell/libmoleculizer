@@ -37,47 +37,47 @@
 
 namespace mzr
 {
-// Interface for state output of species tags for dumpables
-// that dump one or more species populations.
-class mzrSpeciesStream
-{
-public:
-    virtual
-    ~mzrSpeciesStream( void )
-    {}
-
-    // Alas, uses dumpable::getName, so can't actually
-    // do this here.
-    virtual void
-    insertTaggedSpeciesStreamRef( xmlpp::Element* pParent ) const
-    throw( std::exception ) = 0;
-
-    virtual void
-    insertDumpedSpeciesTags( xmlpp::Element* pParentElt ) const
-    throw( std::exception ) = 0;
-};
-
-// Interface for state output for tabDumpEvent.
-class mzrDumpStream
-{
-protected:
-    std::vector<const mzrSpeciesStream*> speciesStreams;
-
-public:
-    virtual
-    ~mzrDumpStream( void )
-    {}
-
-    void
-    addSpeciesStream( const mzrSpeciesStream* pMzrSpeciesStream )
+    // Interface for state output of species tags for dumpables
+    // that dump one or more species populations.
+    class mzrSpeciesStream
     {
-        speciesStreams.push_back( pMzrSpeciesStream );
-    }
-
-    virtual void
-    insertTaggedDumpStreamElts( xmlpp::Element* pParent ) const
-    throw( std::exception ) = 0;
-};
+    public:
+        virtual
+        ~mzrSpeciesStream( void )
+        {}
+        
+        // Alas, uses dumpable::getName, so can't actually
+        // do this here.
+        virtual void
+        insertTaggedSpeciesStreamRef( xmlpp::Element* pParent ) const
+            throw( std::exception ) = 0;
+        
+        virtual void
+        insertDumpedSpeciesTags( xmlpp::Element* pParentElt ) const
+            throw( std::exception ) = 0;
+    };
+    
+    // Interface for state output for tabDumpEvent.
+    class mzrDumpStream
+    {
+    protected:
+        std::vector<const mzrSpeciesStream*> speciesStreams;
+        
+    public:
+        virtual
+        ~mzrDumpStream( void )
+        {}
+        
+        void
+        addSpeciesStream( const mzrSpeciesStream* pMzrSpeciesStream )
+        {
+            speciesStreams.push_back( pMzrSpeciesStream );
+        }
+        
+        virtual void
+        insertTaggedDumpStreamElts( xmlpp::Element* pParent ) const
+            throw( std::exception ) = 0;
+    };
 }
 
 #endif // MZRSTREAM_H

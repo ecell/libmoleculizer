@@ -34,63 +34,63 @@
 
 namespace bnd
 {
-std::vector<mzrBndSite>
-smallMol::
-makeBindingSites( const std::string& rMolName )
-{
-// Heavyweight in order for pedantry.
-
-    const std::string& bindingSiteName( rMolName );
-
-// Make set of binding site names.
-    const std::string& defaultBindingSiteShapeName( rMolName );
-
-    std::set<std::string> bindingSiteShapeNames;
-    bindingSiteShapeNames.insert( defaultBindingSiteShapeName );
-
-// Make the single binding site.
-    mzrBndSite theSite( bindingSiteName,
-                        bindingSiteShapeNames,
-                        defaultBindingSiteShapeName );
-
-// Return vector just containing the one binding site.
-    return std::vector<mzrBndSite> ( 1, theSite );
-}
-
-std::string
-smallMol::
-genInstanceName( int molInstanceNdx ) const
-{
-    std::ostringstream oss;
-    oss << "small-mol_"
-    << molInstanceNdx;
-    return oss.str();
-}
-
-// Still have to amend state schema to include these elements.
-xmlpp::Element*
-smallMol::insertElt( xmlpp::Element* pMolsElt ) const throw( std::exception )
-{
-// Insert the head element for this smallMol.
-    xmlpp::Element* pSmallMolElt
-    = pMolsElt->add_child( eltName::smallMol );
-
-// Add the smallMol's name to the head element.
-    pSmallMolElt->set_attribute( eltName::smallMol_nameAttr,
-                                 getName() );
-
-// Insert the weight element.
-    xmlpp::Element* pWeightElt
-    = pSmallMolElt->add_child( eltName::weight );
-
-// Add the mol weight in the daltons attribute.
-    const cpx::molState* pDefaultState
-    = getDefaultState();
-    double molWeight
-    = pDefaultState->getMolWeight();
-    pWeightElt->set_attribute( eltName::weight_daltonsAttr,
-                               utl::stringify<double> ( molWeight ) );
-
-    return pSmallMolElt;
-}
+    std::vector<mzrBndSite>
+    smallMol::
+    makeBindingSites( const std::string& rMolName )
+    {
+        // Heavyweight in order for pedantry.
+        
+        const std::string& bindingSiteName( rMolName );
+        
+        // Make set of binding site names.
+        const std::string& defaultBindingSiteShapeName( rMolName );
+        
+        std::set<std::string> bindingSiteShapeNames;
+        bindingSiteShapeNames.insert( defaultBindingSiteShapeName );
+        
+        // Make the single binding site.
+        mzrBndSite theSite( bindingSiteName,
+                            bindingSiteShapeNames,
+                            defaultBindingSiteShapeName );
+        
+        // Return vector just containing the one binding site.
+        return std::vector<mzrBndSite> ( 1, theSite );
+    }
+    
+    std::string
+    smallMol::
+    genInstanceName( int molInstanceNdx ) const
+    {
+        std::ostringstream oss;
+        oss << "small-mol_"
+            << molInstanceNdx;
+        return oss.str();
+    }
+    
+    // Still have to amend state schema to include these elements.
+    xmlpp::Element*
+    smallMol::insertElt( xmlpp::Element* pMolsElt ) const throw( std::exception )
+    {
+        // Insert the head element for this smallMol.
+        xmlpp::Element* pSmallMolElt
+            = pMolsElt->add_child( eltName::smallMol );
+        
+        // Add the smallMol's name to the head element.
+        pSmallMolElt->set_attribute( eltName::smallMol_nameAttr,
+                                     getName() );
+        
+        // Insert the weight element.
+        xmlpp::Element* pWeightElt
+            = pSmallMolElt->add_child( eltName::weight );
+        
+        // Add the mol weight in the daltons attribute.
+        const cpx::molState* pDefaultState
+            = getDefaultState();
+        double molWeight
+            = pDefaultState->getMolWeight();
+        pWeightElt->set_attribute( eltName::weight_daltonsAttr,
+                                   utl::stringify<double> ( molWeight ) );
+        
+        return pSmallMolElt;
+    }
 }

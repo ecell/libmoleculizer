@@ -36,25 +36,25 @@
 
 namespace bnd
 {
-// Internal exception thrown by alloMols when they are asked to intern a
-// state that is not of the right type for the alloMol.
-//
-// In some sense, this exception can't occur yet, since there is only
-// one kind of alloMol, mzrModMol, in Moleculizer at this time.
-class badMolParamXcpt :
-            public utl::xcpt
-{
-    static std::string
-    mkMsg( const std::string& rParamClassName,
-           const std::string& rMolName );
-public:
-    badMolParamXcpt( const std::string& rParamClassName,
-                     const std::string& rMolName ) :
+    // Internal exception thrown by alloMols when they are asked to intern a
+    // state that is not of the right type for the alloMol.
+    //
+    // In some sense, this exception can't occur yet, since there is only
+    // one kind of alloMol, mzrModMol, in Moleculizer at this time.
+    class badMolParamXcpt :
+        public utl::xcpt
+    {
+        static std::string
+        mkMsg( const std::string& rParamClassName,
+               const std::string& rMolName );
+    public:
+        badMolParamXcpt( const std::string& rParamClassName,
+                         const std::string& rMolName ) :
             utl::xcpt( mkMsg( rParamClassName,
                               rMolName ) )
-    {}
-};
-
+        {}
+    };
+    
 }
 
 #endif // MOL_BADMOLPARAMXCPT_H

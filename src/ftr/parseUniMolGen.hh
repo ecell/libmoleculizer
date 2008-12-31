@@ -39,26 +39,26 @@
 
 namespace ftr
 {
-class parseUniMolGen :
-            public std::unary_function<xmlpp::Node*, void>
-{
-    mzr::mzrUnit& rMzrUnit;
-    bnd::molUnit& rMolUnit;
-    plx::plexUnit& rPlexUnit;
-
-public:
-    parseUniMolGen( mzr::mzrUnit& refMzrUnit,
-                    bnd::molUnit& refMolUnit,
-                    plx::plexUnit& refPlexUnit ) :
+    class parseUniMolGen :
+        public std::unary_function<xmlpp::Node*, void>
+    {
+        mzr::mzrUnit& rMzrUnit;
+        bnd::molUnit& rMolUnit;
+        plx::plexUnit& rPlexUnit;
+        
+    public:
+        parseUniMolGen( mzr::mzrUnit& refMzrUnit,
+                        bnd::molUnit& refMolUnit,
+                        plx::plexUnit& refPlexUnit ) :
             rMzrUnit( refMzrUnit ),
             rMolUnit( refMolUnit ),
             rPlexUnit( refPlexUnit )
-    {}
-
-    void
-    operator()( xmlpp::Node* pUniMolGenNode ) const
-    throw( utl::xcpt );
-};
+        {}
+        
+        void
+        operator()( xmlpp::Node* pUniMolGenNode ) const
+            throw( utl::xcpt );
+    };
 }
 
 #endif // FTR_PARSEUNIMOLGEN_H

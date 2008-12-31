@@ -36,24 +36,24 @@
 
 namespace cpx
 {
-class modMixinQuery :
-            public fnd::query<modStateMixin>
-{
-    int modNdx;
-    const modification* pMod;
-public:
-    modMixinQuery( int modificationIndex,
-                   const modification* pModToSee ) :
+    class modMixinQuery :
+        public fnd::query<modStateMixin>
+    {
+        int modNdx;
+        const modification* pMod;
+    public:
+        modMixinQuery( int modificationIndex,
+                       const modification* pModToSee ) :
             modNdx( modificationIndex ),
             pMod( pModToSee )
-    {}
-
-    bool
-    operator()( const modStateMixin& rModStateMixin ) const
-    {
-        return rModStateMixin[modNdx] == pMod;
-    }
-};
+        {}
+        
+        bool
+        operator()( const modStateMixin& rModStateMixin ) const
+        {
+            return rModStateMixin[modNdx] == pMod;
+        }
+    };
 }
 
 #endif // CPX_MODMIXINQUERY_H

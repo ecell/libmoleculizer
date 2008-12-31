@@ -36,51 +36,51 @@
 
 namespace mzr
 {
-
+    
     double getProteinDiffusionCoef()
     {
         // Units returned are in micrometers^2/sec.
         return proteinDiffusionCoeff;
     }
-
+    
     double getSmallMolDiffusionCoef()
     {
         // Units returned are in micrometers^2/sec.
         return smallMolDiffusionCoeff;
     }
-
-
+    
+    
     void setProteinDiffusionCoef(double rate)
     {
         // Units must be in micrometer^2/sec.
         proteinDiffusionCoeff = rate;
     }
-
+    
     void setSmallMolDiffusionCoef(double rate)
     {
         // Units must be in micrometer^2/sec.
         smallMolDiffusionCoeff = rate;
     }
-
+    
     double calculateSumOfRadii( const mzr::mzrReaction* pRxn )
     {
         double theSum = 0.0f;
-
+        
         typedef std::map<mzr::mzrSpecies*, int> multMap;
         BOOST_FOREACH(const multMap::value_type& vt, pRxn->getReactants() )
         {
             // theSum += multiplicity * 
             theSum += vt.second * extrapolateMolecularRadius( vt.first );
         }
-
+        
         return theSum;
     }
-
+    
     double getDiffusionCoeffFromSpecies( const mzr::mzrSpecies* pSpecies)
     {
         // This is kind of hacky but probably works.  I am using 1500 daltons
         // as the cutoff for small molecules and proteins.  
-
+        
         if ( pSpecies->getWeight() > 1500 )
         {
             return getSmallMolDiffusionCoef();
@@ -90,55 +90,55 @@ namespace mzr
             return getProteinDiffusionCoef();
         }
     }
-
+    
     double calculateSumOfDiffusionCoefficients( const mzr::mzrReaction* pRxn )
     {
         double theSum = 0.0f;
-
+        
         typedef std::map<mzr::mzrSpecies*, int> multMap;
         BOOST_FOREACH(const multMap::value_type& vt, pRxn->getReactants() )
         {
             // theSum += multiplicity * particle-type specific diffusion coeff.
             theSum += vt.second * getDiffusionCoeffFromSpecies( vt.first );
         }
-
+        
         return theSum;
     }
-
+    
     double extrapolateIntrinsicReactionRate(const mzr::mzrReaction* pRxn)
     {
         static const double FourPi = 4.0f * 3.141592653859;
-
+        
         // We have to solve the equation 1/k = 1/kA + 1/ kD for kA, where 
         double k = pRxn->getRate();
         double kD = FourPi * calculateSumOfRadii(pRxn) * calculateSumOfDiffusionCoefficients( pRxn );
         
         return ( k * kD ) / ( kD - k );
     }
- 
+    
     double extrapolateMolecularRadius( const mzr::mzrSpecies* pSpecies)
     {
         // This number is obtained by converting to angstroms to m^3 by using the conversion
         // factor 1.22 g/cm^3 and then solving for R in the equation V = 4/3 * Pi * R^3
         const double Factor( 3.0774371428132849e30 );
         const double radical( 1.0 / 3.0 );
-
+        
         double newSpeciesConvertedMass = pSpecies->getWeight() / Factor;
         return std::pow( newSpeciesConvertedMass, radical );
     }
-
-
+    
+    
     double extrapolateMolecularRadius(const double& mass)
     {
         // This number is obtained by converting to angstroms to m^3 by using the conversion
         // factor 1.22 g/cm^3 and then solving for R in the equation V = 4/3 * Pi * R^3
         const double Factor( 3.0774371428132849e30 );
         const double radical( 1.0 / 3.0 );
-
+        
         double newSpeciesConvertedMass = mass / Factor;
         return std::pow( newSpeciesConvertedMass, radical );
-
+        
     }
-
+    
 }
 

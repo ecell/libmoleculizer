@@ -66,15 +66,15 @@ namespace fnd
         doDump( const dumpArgT& rDumpArg ) const
         {
         }
-
+        
         
         const std::vector<const speciesT*>* 
         getSpeciesInMultiSpeciesStream() const
         {
             return &dumpedSpecies;
         }
-
-
+        
+        
         virtual
         void
         respond( const fnd::newSpeciesStimulus<speciesT>& rStimulus )

@@ -36,31 +36,31 @@
 
 namespace cpx
 {
-class siteShape
-{
-    const std::string name;
-
-public:
-
-    siteShape( const std::string& rName ) :
-            name( rName )
-    {}
-
-    ~siteShape( void )
-    {}
-
-    siteShape( const siteShape& rOriginal ) :
-            name( rOriginal.getName() )
-    {}
-
-    const std::string&
-    getName( void ) const
+    class siteShape
     {
-        return name;
-    }
-};
-
-typedef const siteShape* siteParam;
+        const std::string name;
+        
+    public:
+        
+        siteShape( const std::string& rName ) :
+            name( rName )
+        {}
+        
+        ~siteShape( void )
+        {}
+        
+        siteShape( const siteShape& rOriginal ) :
+            name( rOriginal.getName() )
+        {}
+        
+        const std::string&
+        getName( void ) const
+        {
+            return name;
+        }
+    };
+    
+    typedef const siteShape* siteParam;
 }
 
 #endif // CPX_SITESHAPE_H

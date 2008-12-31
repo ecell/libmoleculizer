@@ -40,75 +40,75 @@
 
 namespace fnd
 {
-template<class reactionType>
-class basicSpecies :
-            public onceNotifier
-{
-class negativePopulationXcpt :
-                public utl::xcpt
+    template<class reactionType>
+    class basicSpecies :
+        public onceNotifier
     {
-        static std::string
-        mkMsg( basicSpecies* pBasicSpecies,
-               int delta,
-               int newValue )
+        class negativePopulationXcpt :
+            public utl::xcpt
         {
-            typename std::ostringstream msgStream;
-            msgStream << "Species "
-            << pBasicSpecies
-            << " assumed negative value "
-            << newValue
-            << " after update by delta "
-            << delta
-            << ".";
-            return msgStream.str();
-        }
-    public:
-        negativePopulationXcpt( basicSpecies* pBasicSpecies,
-                                int delta,
-                                int newValue ) :
+            static std::string
+            mkMsg( basicSpecies* pBasicSpecies,
+                   int delta,
+                   int newValue )
+            {
+                typename std::ostringstream msgStream;
+                msgStream << "Species "
+                          << pBasicSpecies
+                          << " assumed negative value "
+                          << newValue
+                          << " after update by delta "
+                          << delta
+                          << ".";
+                return msgStream.str();
+            }
+        public:
+            negativePopulationXcpt( basicSpecies* pBasicSpecies,
+                                    int delta,
+                                    int newValue ) :
                 utl::xcpt( mkMsg( pBasicSpecies,
                                   delta,
                                   newValue ) )
+            {}
+        };
+        
+        static int speciesCount;
+        
+    public:
+        
+        basicSpecies( int initialPop = 0 )
+        {
+            speciesCount++;
+        }
+        
+        virtual
+        ~basicSpecies( void )
         {}
+        
+        static int
+        getSpeciesCount( void )
+        {
+            return speciesCount;
+        }
+        
+        // Gives this address as a hex string.
+        typename std::string
+        getTag( void ) const
+        {
+            return utl::stringify<const basicSpecies*> ( this );
+        }
+        
+        // For possibly getting a more humanly-readable, informative name.
+        virtual typename std::string
+        getName( void ) const
+        {
+            return getTag();
+        }
+        
     };
-
-    static int speciesCount;
-
-public:
-
-    basicSpecies( int initialPop = 0 )
-    {
-        speciesCount++;
-    }
-
-    virtual
-    ~basicSpecies( void )
-    {}
-
-    static int
-    getSpeciesCount( void )
-    {
-        return speciesCount;
-    }
-
-    // Gives this address as a hex string.
-    typename std::string
-    getTag( void ) const
-    {
-        return utl::stringify<const basicSpecies*> ( this );
-    }
-
-    // For possibly getting a more humanly-readable, informative name.
-    virtual typename std::string
-    getName( void ) const
-    {
-        return getTag();
-    }
-
-};
-
-template<class reactionType>
-int basicSpecies<reactionType>::speciesCount = 0;
+    
+    template<class reactionType>
+    int basicSpecies<reactionType>::speciesCount = 0;
 }
 
 #endif // BASICSPECIES_H

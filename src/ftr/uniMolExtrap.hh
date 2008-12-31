@@ -36,60 +36,60 @@
 
 namespace ftr
 {
-class uniMolExtrapolator
-{
-public:
-    virtual
-    ~uniMolExtrapolator( void )
-    {}
-
-    virtual
-    double
-    getRate( const cpx::cxMol<plx::mzrPlexSpecies, plx::mzrPlexFamily>& rContext ) const = 0;
-};
-
-class uniMolNoExtrap :
-            public uniMolExtrapolator
-{
-    double rate;
-public:
-    uniMolNoExtrap( double theRate ) :
-            rate( theRate )
-    {}
-
-    double
-    getRate( const cpx::cxMol<plx::mzrPlexSpecies, plx::mzrPlexFamily>& rContext ) const
+    class uniMolExtrapolator
     {
-        return rate;
-    }
-};
-
-class uniMolMassExtrap :
-            public uniMolExtrapolator
-{
-// Pointer to "massive" part of auxiliary reactant species; null if there
-// is no auxiliary reactant species.
-    const fnd::massive* pMassive;
-
-// The rate if the reaction is unary (0 == pMassive) but the binding
-// invariant if the reaction is binary.
-    double rateOrInvariant;
-
-public:
-// For creating unary reactions.
-    uniMolMassExtrap( double theRate ) :
+    public:
+        virtual
+        ~uniMolExtrapolator( void )
+        {}
+        
+        virtual
+        double
+        getRate( const cpx::cxMol<plx::mzrPlexSpecies, plx::mzrPlexFamily>& rContext ) const = 0;
+    };
+    
+    class uniMolNoExtrap :
+        public uniMolExtrapolator
+    {
+        double rate;
+    public:
+        uniMolNoExtrap( double theRate ) :
+            rate( theRate )
+        {}
+        
+        double
+        getRate( const cpx::cxMol<plx::mzrPlexSpecies, plx::mzrPlexFamily>& rContext ) const
+        {
+            return rate;
+        }
+    };
+    
+    class uniMolMassExtrap :
+        public uniMolExtrapolator
+    {
+        // Pointer to "massive" part of auxiliary reactant species; null if there
+        // is no auxiliary reactant species.
+        const fnd::massive* pMassive;
+        
+        // The rate if the reaction is unary (0 == pMassive) but the binding
+        // invariant if the reaction is binary.
+        double rateOrInvariant;
+        
+    public:
+        // For creating unary reactions.
+        uniMolMassExtrap( double theRate ) :
             pMassive( 0 ),
             rateOrInvariant( theRate )
-    {}
-
-// For creating binary reactions.
-    uniMolMassExtrap( double theRate,
-                      const bnd::mzrModMol* pEnablingMol,
-                      const fnd::massive* pMassiveAuxiliarySpecies );
-
-    double
-    getRate( const cpx::cxMol<plx::mzrPlexSpecies, plx::mzrPlexFamily>& rContext ) const;
-};
+        {}
+        
+        // For creating binary reactions.
+        uniMolMassExtrap( double theRate,
+                          const bnd::mzrModMol* pEnablingMol,
+                          const fnd::massive* pMassiveAuxiliarySpecies );
+        
+        double
+        getRate( const cpx::cxMol<plx::mzrPlexSpecies, plx::mzrPlexFamily>& rContext ) const;
+    };
 }
 
 #endif //  FTR_UNIMOLEXTRAP_H

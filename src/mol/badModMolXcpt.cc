@@ -34,59 +34,59 @@
 
 namespace bnd
 {
-std::string
-badModMolXcpt::
-mkParseMsg( const mzrMol* pMol,
-            const xmlpp::Node* pOffendingNode )
-{
-    std::ostringstream msgStream;
-    msgStream << utl::dom::xcpt::mkMsg( pOffendingNode )
-    << "Mol "
-    << pMol->getName()
-    << " is not a mod-mol.";
-    return msgStream.str();
-}
-
-std::string
-badModMolXcpt::
-mkQueryMsg( const cpx::modification* pMod,
-            int modNdx )
-{
-    std::ostringstream msgStream;
-    msgStream << utl::xcpt::mkMsg()
-    << "Could not test for modification "
-    << pMod->getName()
-    << " at index "
-    << modNdx
-    << " since mol is not a mod-mol.";
-    return msgStream.str();
-}
-
-mzrModMol*
-mustBeModMol( mzrMol* pMol,
-              const xmlpp::Node* pRequestingNode )
-throw( badModMolXcpt )
-{
-    mzrModMol* pModMol
-    = dynamic_cast<mzrModMol*>( pMol );
-
-    if ( ! pModMol )
-        throw badModMolXcpt::inParsing( pMol,
-                                        pRequestingNode );
-    return pModMol;
-}
-
-const mzrModMol*
-mustBeModMol( const mzrMol* pMol,
-              const xmlpp::Node* pRequestingNode )
-throw( badModMolXcpt )
-{
-    const mzrModMol* pModMol
-    = dynamic_cast<const mzrModMol*>( pMol );
-
-    if ( ! pModMol )
-        throw badModMolXcpt::inParsing( pMol,
-                                        pRequestingNode );
-    return pModMol;
-}
+    std::string
+    badModMolXcpt::
+    mkParseMsg( const mzrMol* pMol,
+                const xmlpp::Node* pOffendingNode )
+    {
+        std::ostringstream msgStream;
+        msgStream << utl::dom::xcpt::mkMsg( pOffendingNode )
+                  << "Mol "
+                  << pMol->getName()
+                  << " is not a mod-mol.";
+        return msgStream.str();
+    }
+    
+    std::string
+    badModMolXcpt::
+    mkQueryMsg( const cpx::modification* pMod,
+                int modNdx )
+    {
+        std::ostringstream msgStream;
+        msgStream << utl::xcpt::mkMsg()
+                  << "Could not test for modification "
+                  << pMod->getName()
+                  << " at index "
+                  << modNdx
+                  << " since mol is not a mod-mol.";
+        return msgStream.str();
+    }
+    
+    mzrModMol*
+    mustBeModMol( mzrMol* pMol,
+                  const xmlpp::Node* pRequestingNode )
+        throw( badModMolXcpt )
+    {
+        mzrModMol* pModMol
+            = dynamic_cast<mzrModMol*>( pMol );
+        
+        if ( ! pModMol )
+            throw badModMolXcpt::inParsing( pMol,
+                                            pRequestingNode );
+        return pModMol;
+    }
+    
+    const mzrModMol*
+    mustBeModMol( const mzrMol* pMol,
+                  const xmlpp::Node* pRequestingNode )
+        throw( badModMolXcpt )
+    {
+        const mzrModMol* pModMol
+            = dynamic_cast<const mzrModMol*>( pMol );
+        
+        if ( ! pModMol )
+            throw badModMolXcpt::inParsing( pMol,
+                                            pRequestingNode );
+        return pModMol;
+    }
 }

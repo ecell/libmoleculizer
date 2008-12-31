@@ -2,7 +2,7 @@
 //
 //        This file is part of Libmoleculizer
 //
-//        Copyright (C) 2001-2008 The Molecular Sciences Institute.
+//        Copyright (C) 2001-2009 The Molecular Sciences Institute.
 //
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 //

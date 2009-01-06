@@ -139,6 +139,8 @@ namespace mzr
         return std::pow( newSpeciesConvertedMass, radical );
         
     }
-    
+
+    double proteinDiffusionCoeff = 3.0f;
+    double smallMolDiffusionCoeff = 100.0f;
 }
 

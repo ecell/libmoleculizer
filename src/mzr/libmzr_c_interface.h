@@ -44,11 +44,7 @@ extern "C" {
     {
         char* name;
         double* mass;  /* These are in daltons */
-        
-        int* radiusSet;  
         double* radius; 
-        
-        int* diffusionCoeffSet;
         double* diffusionCoeff;
         
     } species;
@@ -71,20 +67,20 @@ extern "C" {
        freeMoleculizerObject */
     
     moleculizer* createNewMoleculizerObject();
-    
-    int setupSpatialExtrapolation(moleculizer* handle);
-    int setupNonSpatialExtrapolation(moleculizer* handle, int useMassBasedRateExtrapolation);
+
+    int setRateExtrapolation( moleculizer* handle, int extrapolation);
     
     void freeMoleculizerObject( moleculizer* handle);
-    
-    
+
+    void expandNetwork( moleculizer* handle);
+
+
     
     /* This function should be called with a file that contains an xml file describing the rules of the 
        system. See documentation for a description of the rules. */
     
-    int attachRulesFileToMoleculizerObject(moleculizer* handle, char* fileName);
-    int attachRulesStringToMoleculizerObject( moleculizer* handle, char* file);
-    
+    int loadRulesFile(moleculizer* handle, char* fileName);
+    int loadRulesString( moleculizer* handle, char* file);
     
     /* These two functions can be used with a Species Key (it's canonical string representation) to 
        determine what reactions, if any they participate in. These functions return pointers to reaction 
@@ -93,8 +89,16 @@ extern "C" {
     
     int getReactionsBetween(moleculizer* handle, char* speciesName1, char* speciesName2, reaction*** ptrReactionPtrArray, int* numReactions);
     int getUnaryReactions(moleculizer* handle, char* speciesName, reaction*** ptrReactionPtrArray, int* numReactions);
-    
-    
+
+
+    /* These are utility files I still have to write. */
+
+    int getNumberOfSpecies(moleculizer* handle);
+    int getNumberOfReactions(moleculizer* handle);
+
+    int getAllStreamSpecies(moleculizer* handle, char* streamName, species** pSpeciesArray, int* numberSpecies);
+    int getAllSpecies(moleculizer* handle, species*** pSpeciesArray, int* numberSpecies);
+
     
     /* These functions free species and reaction arrays, such as those provided by the getReactionsBetween
        and getUnaryReactions functions.  Usually, a call to freeReaction( reactionArray, *numReactions)

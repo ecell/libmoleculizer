@@ -9,3 +9,17 @@ libmoleculizer.
 
 
 
+\subsection{The C Interface}
+The c interface to libmoleculizer allows users of the C Programming
+language access to the species and reaction capabilities.  Because
+this is an interface written in C which is entirely distinct from the
+standard C++ interface, it's structure and usage is entirely different
+than the typical interface, although its capabilities are similar.  
+
+This interface is used in a C program by including the
+``mzr/libmzr_c_interface.h'' file.  The c interface works by creating
+a pointer to an object of type moleculizer, and by passing this
+pointer along with other parameters into functions which replicate the
+major features of a libmoleculizer object in the c++ interface.
+
+To begin, call the 

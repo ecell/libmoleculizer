@@ -250,7 +250,6 @@ namespace plx
         
         // Construct species dumpable to attach to omniplex.
         // Add it to mzrUnit for memory management and lookup.
-        std::cout << "Creating species stream " << streamName << std::endl;
         mzr::multiSpeciesDumpable<mzrPlexSpecies>* pDumpable
             = new mzr::multiSpeciesDumpable<mzrPlexSpecies> (streamName);
         

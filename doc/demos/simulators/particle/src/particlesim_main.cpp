@@ -76,7 +76,7 @@ void processCommandLineArgs( int argc, char* argv[], std::string& rulesFile, std
 
     bool rulesFound( false );
     bool modelFound( false );
-// Skip the command name
+    // Skip the command name
     argc--;
     argv++;
 

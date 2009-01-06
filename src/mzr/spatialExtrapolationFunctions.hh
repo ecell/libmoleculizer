@@ -32,17 +32,15 @@
 #ifndef SPATIALEXTRAPOLATION_HH
 #define SPATIALEXTRAPOLATION_HH
 
-#include "mzrReaction.hh"
-
 #include <boost/foreach.hpp>
 
 namespace mzr
 {
-    
-    double proteinDiffusionCoeff = 3.0f;
-    double smallMolDiffusionCoeff = 100.0f;
+    class mzrSpecies;
+    class mzrReaction;
     
     // Units returned are in micrometers^2/sec.
+    double getDiffusionCoeffFromSpecies( const mzr::mzrSpecies* pSpecies);
     double getProteinDiffusionCoef();
     double getSmallMolDiffusionCoef();
     
@@ -54,6 +52,11 @@ namespace mzr
     
     double extrapolateMolecularRadius( const mzr::mzrSpecies* pSPecies);
     double extrapolateMolecularRadius(const double& mass);
+
+    extern double proteinDiffusionCoeff;
+    extern double smallMolDiffusionCoeff;
+    
+
     
 }
 

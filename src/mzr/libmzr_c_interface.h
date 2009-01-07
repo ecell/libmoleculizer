@@ -42,10 +42,10 @@ extern "C" {
     
     typedef struct species_type
     {
-        char* name;
-        double* mass;  /* These are in daltons */
-        double* radius; 
-        double* diffusionCoeff;
+      char* name; /* Is this enough? */
+      double* mass;  /* These are in daltons */
+      double* radius; 
+      double* diffusionCoeff;
         
     } species;
     
@@ -86,12 +86,10 @@ extern "C" {
        determine what reactions, if any they participate in. These functions return pointers to reaction 
        arrays, which contain pointers to reactions and species.  Ownership is transfered to the user, 
        who must free them manually. */
-    
+
+
     int getReactionsBetween(moleculizer* handle, char* speciesName1, char* speciesName2, reaction*** ptrReactionPtrArray, int* numReactions);
     int getUnaryReactions(moleculizer* handle, char* speciesName, reaction*** ptrReactionPtrArray, int* numReactions);
-
-
-    /* These are utility files I still have to write. */
 
     int getNumberOfSpecies(moleculizer* handle);
     int getNumberOfReactions(moleculizer* handle);

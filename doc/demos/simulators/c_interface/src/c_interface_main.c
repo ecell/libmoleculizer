@@ -1,25 +1,42 @@
 #include <stdio.h>
 #include "mzr/libmzr_c_interface.h"
 
-int processArgs( int argc, char* argv[], moleculizer* pMzr);
-
 int main(int argc, char* argv[] )
 {
+  moleculizer* pMoleculizer = createNewMoleculizerObject();
 
-    moleculizer* pMoleculizer = createNewMoleculizerObject();
-
-    if (!processArgs( argc, argv, pMoleculizer))
+  if (argc < 3 || strcmp(argv[1], "-f") != 0 )
     {
-        printf("No model file was loaded...\n");
-        return 1;
+      printf("No model file was loaded.\n");
+      return 1;
     }
+  else
+    {
+      int code = loadRulesFile( pMoleculizer, argv[ 2 ] );
+      switch(code)
+	{
+	case 0:
+	  printf("Model loaded successfully.\n");
+	  break;
+	case 1:
+	  printf("Unknown error on load.  Aborting\n");
+	  return 1;
+	case 2:
+	  printf("Document unparsable.  Aborting.\n");
+	  return 1;
+	case 3:
+	  printf("Moleculizer has already loaded rules. Ignoring and continuing.\n");
+	  return 1;
+	}
+    }
+
     setRateExtrapolation( pMoleculizer, 1 );
 
     expandNetwork( pMoleculizer );
 
     printf("Expanded entire network.\n");
 
-    printf("There are %d species and %s reactions.\n", 
+    printf("There are %d species and %d reactions.\n", 
            getNumberOfSpecies(pMoleculizer),
            getNumberOfReactions(pMoleculizer) );
            
@@ -28,30 +45,4 @@ int main(int argc, char* argv[] )
     return 0;
 }
 
-
-
-
-int processArgs( int argc, char* argv[], moleculizer* handle)
-{
-    int loaded = 0;
-    
-    int i;
-    for (i = 1; i < argc; i++)  /* Skip argv[0] (program name). */
-    {
-        /*
-         * Use the 'strcmp' function to compare the argv values
-         * to a string of your choice (here, it's the optional
-         * argument "-q").  When strcmp returns 0, it means that the
-         * two strings are identical.
-         */
-
-        if (strcmp(argv[i], "-f") == 0)  /* Process optional arguments. */
-        {
-            loadRulesFile(handle, argv[i+1]);
-            loaded = 1;
-        }
-    }
-
-    return loaded;
-}
 

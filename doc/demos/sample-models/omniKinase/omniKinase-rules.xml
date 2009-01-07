@@ -299,5 +299,6 @@
           <explicit-reactions>
           </explicit-reactions>
         </model>
+  <streams><species-streams></species-streams></streams>
       </moleculizer-input>
       

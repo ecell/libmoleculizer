@@ -2,22 +2,21 @@
 \label{chap:installingChapter}
 
 \section{Compiling and installing from source}
-The libmoleculizer package uses the gnu autotools and should be
-pretty easy to install on a wide variety of platforms. 
+The libmoleculizer package uses the Gnu Autotools to setup the build
+(this is the familiar configure, make, and make install style
+compilation) and should be fairly easy to install on a wide variety of
+platforms.
 
 \subsection{Prerequisites}
 Libmoleculizer has several prerequisites: 3rd party libraries used by
-libmoleculizer in order to function that are needed in order to
-compile and run libmoleculizer.
+that are used by libmoleculizer and which are necessary to compile and
+run libmoleculizer.
 
 The necessary prerequisites are
 \begin{enumerate}
-\item The Boost C++ libraries, 
-  \emph{http://boost.org}
-\item The Gnu Scientific Libraries, 
-  \emph{http://gnu.org/software/gsl}
-\item Libxml++v2.6, 
-  \emph{http://libxmlplusplus.sourceforge.net/}
+\item The Boost C++ libraries(\emph{http://boost.org})
+\item The Gnu Scientific Libraries(\emph{http://gnu.org/software/gsl})
+\item Libxml++v2.6(\emph{http://libxmlplusplus.sourceforge.net/})
 \end{enumerate}
 
 These libraries can either be installed from source, or by using a
@@ -31,21 +30,31 @@ automatically, in a way that should guarantee proper configuration and
 detection by libmoleculizer.  Once the prerequisites have been
 installed, compilation and installation of libmoleculizer can begin.
 
+
+
 \subsection{Simplest compile/installation Procedure}
 Depending on your system configuration, the following procedure will
-probably be all that is necessary to do.
+probably be all that is necessary to get a working version of
+libmoleculizer onto your system.
 
-Go to \libmzrwebsite and download the latest
-  libmoleculizer.tar.gz source file, and make sure it is unpacked.  
+First, obtain the source.  The best option for this is to go to
+\libmzrwebsite and download the latest libmoleculizer.tar.gz source
+file, and make sure it is unpacked.  Alternatively, you can obtain the
+source code through subversion.  The command to check it out is ``svn
+co''.
 
-%\begin{ShellCommands}
+Assuming everything is setup, and the prerequisites are met, then
+installation will likely be as easy as going into the source directory
+and entering the following commands, which will compile the source
+code into an executable and install it in a place where it is
+globally accessable.  
+
+\begin{Shell}
 ./bootstrap.sh
 ./configure
 make
 sudo make install
-%\end{ShellCommands}
-
-Difficulties, if any, will probably occur in the {\bf ./configure} step.  
+\end{Shell}
 
 \subsection{Can't or Dont want to install libmoleculizer globally}
 By default {\bf ./configure} installs libmoleculizer to a global

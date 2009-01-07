@@ -2,10 +2,10 @@
 \label{chap:interfacesChapter}
 
 Libmoleculizer has multiple wrappings that allow users of different
-languages -- C++, C, or Python -- to use it in their own programs.
-This chapter describes each of these interfaces and how to use them, 
-and is followed by a section discussing how to extend this procedure
-to new languages.  
+languages -- C++, C, or Python -- to use rule-based reaction network
+generation in their own programs.  This chapter describes these
+interfaces and how to use them, and is followed by a section
+discussing how to extend this procedure to new languages.
 
 \subsection{C++ Interface}
 The C++ interface is the standard interface for libmoleculizer, as
@@ -409,7 +409,243 @@ reactions that were generated in that step.
 
 
 \subsection{C Interface}
-  The c interface is a c language version of the full C++ interface.  Using the c interface is as easy as including the file mzr/ 
+The c interface is an api written in the C programming languages
+that exposes the libmoleculizer functionality to users of C.  Using
+libmoleculizer with this interface is accomplished by including the
+appropriate header file, called ``mzr/libmzr_c_interface.h''.
+Functions performed using this interface can be grouped into
+different types of operations.
+
+, using
+its creator method to create an object of type moleculizer, loading a
+rules file into the object, using the other functions about the api to
+work with that object, and finally using the api's functions to free
+the object.  A simple example of how this is done is found in \ref{basiccinterex}.
+
+\begin{ExampleC}[caption=Basic example using the c-interface, label=basiccinterex]
+  int main(){
+    char fileName[] = ``demos/omniKinase-rules.mzr'';
+    
+    moleculizer* the_moleculizer = createNewMoleculizerObject();
+    loadRulesFile( the_moleculizer, fileName);
+
+    /* Work with the moleculizer object here */
+
+    freeMoleculizerObject( the_moleculizer );
+    return 0;
+    }
+\end{ExampleC}
+
+\subsubsection{Creating a moleculizer object}
+In order to use libmoleculizer's species and rule based generation,
+an instance of the fundamental data type - 'moleculizer' - of the
+interface must be created.  This is done using the one and only
+function of this interface, defined as ``moleculizer*
+createNewMoleculizerObject()''.  When this function is called, it
+returns a pointer to a newly created moleculizer object, which is
+often called a handle.  This object is owned by the caller of the
+function and \bf{must} be freed using the freeMoleculizerObject
+function.
+
+\subsubsection{Loading rules into a moleculizer object}
+In order to perform reaction network generation, the moleculizer
+object must be combined with a rules file.  To do this, either a rules
+file, or a string containing the contents of a rules description must
+be added to a moleculizer* object using either the ``int
+loadRulesFile(moleculizer* handle, char* fileName)'', or the ``int
+loadRulesString( moleculizer* handle, char* file)'' function
+respectively.  An example for using a rules file was shown in
+\ref{basiccinterex}.  If this rules file were laoded into a char*
+elsewhere, it could be similarly used with the loadRulesString
+function.
+
+\subsubsection{Fundamental datatypes: reactions and species}
+There are two types of datatypes besides the moleculizer handle that are used
+in this interface: 'species' and 'reactions'.  These are the objects
+passed around in the interface, and their definitions are shown below.
+
+\begin{ExampleC}[caption=Fundamental data-type definitions,
+  label=speciesreactiondef]
+
+  typedef struct species_type
+    {
+      char* name; /* The canonical name of the chemical species */
+      double* mass;  /* In daltons. */
+      double* radius; /* In meters */ 
+      double* diffusionCoeff; /* In ? */
+    } species;
+    
+    typedef struct reaction_type
+    {
+        int numberReactants;
+        species** reactantVector;
+        
+        int numberProducts;
+        species** productVector;
+        
+        double* rate;
+        
+    } reaction;
+
+\end{ExampleC}
+
+These datatypes are typically returned by different functions of the
+interface.  For instance, when requesting the single-substrate
+reactions a species may be involved in, the result is an array of m
+reaction*'s.  To easily free this datastructure, passing it to the
+function ``void freeReactionArray( reaction** pRxnArray, unsigned int
+numArrayElements)'' will free each of the reaction*'s in the array, as
+well as the array itself.  Likewise the function ``void
+freeSpeciesArray( species** pSpeciesArray, unsigned int
+numArrayElements)'' will do the same to a species**, an array of
+species*.  
+
+If needed, functions for removing single reaction and species objects
+are provided in the ``void freeReaction( reaction* pRxn )'' and ``void
+freeSpecies( species* pSpecies )'' functions.  
+
+\subsubsection{Looking up single substrate reactions}
+For any complex species, users will want to know the different
+decomposition reactions that species can undergo, as well as the
+rate of each.  For any species, the set of all reactions such that
+that species is the one and only reactant can be found using the ``int
+getUnaryReactions(moleculizer* handle, char* speciesName, reaction***
+ptrReactionPtrArray, int* numReactions)'' function.  An example of
+it's use can be seen below.  
+
+\begin{ExampleC}
+  char speciesID[256] = ``___5alpha4Ste24Ste4___00121020______'';
+  
+  reaction** reactionArray;
+  int numReactions;
+
+  getUnaryReactions(handle, speciesID, &reactionArray, &numReactions);
+
+  float totalPropensity = 0.0f;
+
+  int iteration = 0;
+  while(iteration != numReactions)
+  {
+    totalPropensity += reactionArray[iteration++];
+  }
+
+  freeReactionArray(reactionArray, numReactions);
+
+\end{ExampleC}
+
+\subsubsection{Looking up two substrate reactions}
+Another common task is to determine whether or not two species can
+react with one another.  This is the basic function used by a spatial
+simulator, for isntance, which manages the positions and movement of
+chemical species, but given that two species have collided, queries
+libmoleculizer to determine what reactions, if any, those two species
+can participate in together as well as the different propensities for
+each reaction, represented as the intrinsic reaction rates of each
+reaction.  
+
+\subsubsection{Looking at global properties of the network}
+There are four relevant functions involved in finding out the
+information about the network as a whole.  The first two are the ``int
+getNumberOfSpecies(moleculizer* hdl)'' and ``int
+getNumberOfReactions(moleculiser* hdl)'' functions.  These will return
+the total number of species and reactions in the reaction network of
+the moleculizer object passed in.  Note that this is only the number
+that has been generated at that point, not the number in the complete
+reaction network.  To find out the complete size of the network, call
+the expandNetwork function, in order to ensure that the entire network
+has been generated.  
+
+Next, all species and reactions can be read out, using either the
+``int getAllSpecies(moleculizer* handle, species*** pSpeciesArray,
+int* numberSpecies)'' or the ``int getAllReactions(moleculizer* handle,
+reaction*** pSpeciesArray, int* numberSpecies)'' functions.  Their
+usage is shown below.
+
+\begin{ExampleC}
+moleculizer* handle = createNewMoleculizerObject();
+loadRulesFile(handle, some_rules_file);
+expandNetwork(handle);
+
+printf(``There are %d species and %d reactions in the entire
+                   %network.\n", getNumberOfSpecies(handle),
+                   %getNumberOfReactions(handle) );
+
+species** speciesArray;
+int numSpecies;
+
+reaction** reactionArray;
+int numReactions;
+
+getAllSpecies(handle, &speciesArray, &numSpecies);
+getAllReactions(handle, &speciesArray, &numSpecies);
+
+if (numSpecies >= 1)
+{
+  printf(``The first species is %s and has approximate radius %f.", speciesArray[0]->name, speciesArray[0]->radius);
+}
+
+freeReactionArray(reactionArray, numReactions);
+freeSpeciesArray(speciesArray, numSpecies);
+
+freeMoleculizerObject(handle);
+
+\end{ExampleC}
+
+\subsubsection{User defined names}
+
+In the explicit species section, users can describe complex species
+and give them user defined names.  To find the corresponding canonical
+id for a user defined species, needed for using the getReactionBetween
+and getUnaryReactions functions, use the function ``int
+convertUserNameToSpeciesKey(moleculizer* handle, char* theUserName, char*
+correspondingSpeciesKey, int numberCharectorsSupplied)''.  Sample
+usage is shown in \ref{userNameCEx}.
+
+\begin{ExampleC}[caption=Example usage of convertUserNameToSpeciesKey,
+  label=userNameCEx]
+
+  char userName[] = ``alpha-ste2 dimer'';
+  char canonicalName[256];
+  
+  int errorCode;
+
+  convertUserNameToSpeciesKey( userName, canonicalName, 256);
+
+  if (errorCode == 0) printf(``The canonical id of %s is %s", userName, canonicalName);
+  if (errorCode == 1) printf(``No complex with the user-name '%s' was
+                                %defined", userName);
+  else if (errorCode == 2) printf(``The char* provided does not have
+  enough memory to store the canonical id.'');
+
+\end{ExampleC}
+
+\subsubsection{Using species streams}
+If a species stream is defined in the rules file, this can be looked
+up using the function ``int getAllStreamSpecies(moleculizer* handle,
+char* streamName, species** pSpeciesArray, int* numberSpecies)''. By
+passing in the name of the species stream given in the rules, as well
+as a pointer to a species** object.  
+
+\begin{ExampleC}
+moleculizer* the_mzr_obj = createNewMoleculizerObject();
+loadRulesFule( the_mzr_obj, file_name );
+expandNetwork( the_mzr_obj );
+
+char streamName[256] = ``alpha-ste2 complex'';
+char** speciesStreamArray;
+int numberOfSpeciesInStream;
+
+getAllStreamSpecies(the_mzr_obj, streamName, &speciesStreamArray,
+&numberOfSpeciesInStream);
+
+int index;
+for( index = 0; index != numberOfSpeciesInStream; ++index)
+{
+  printf(``%s is a %s", speciesStreamArray[index]->name, streamName);
+}
+
+\end{ExampleC}
+
 \subsection{Python Interface}
 
 

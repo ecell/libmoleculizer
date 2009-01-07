@@ -185,13 +185,17 @@ int loadRulesString( moleculizer* handle, char* rulesCstring)
 int getNumberOfSpecies(moleculizer* handle)
 {
     mzr::moleculizer* moleculizerPtr = convertCMzrPtrToMzrPtr( handle );
-    return moleculizerPtr->getTotalNumberSpecies();
+    int numberOfSpecies = moleculizerPtr->getTotalNumberSpecies();
+
+    return numberOfSpecies;
 }
 
 int getNumberOfReactions(moleculizer* handle)
 {
     mzr::moleculizer* moleculizerPtr = convertCMzrPtrToMzrPtr( handle );
-    return moleculizerPtr->getTotalNumberReactions();
+    int numberOfReactions = moleculizerPtr->getTotalNumberReactions();
+
+    return numberOfReactions;
 }
 
 int getAllStreamSpecies(moleculizer* handle, char* cStrStreamName, species*** pSpeciesArray, int* numberSpecies)
@@ -523,9 +527,6 @@ species* createNewCSpeciesFromMzrSpecies( moleculizer* cMzrPtr, const mzr::mzrSp
     // Extrapolate the radius and diffusion coefficient from moleculizer.
     *newSpecies->radius = mzr::extrapolateMolecularRadius( pMzrSpecies );
     *newSpecies->diffusionCoeff = mzr::getDiffusionCoeffFromSpecies( pMzrSpecies );
-    
-
-
     
     // Return the pointer to the newly created and instantiated newSpecies.
     return newSpecies;

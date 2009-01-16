@@ -148,28 +148,7 @@ namespace mzr
                                            xmlpp::Element* pModelElt,
                                            xmlpp::Element* pStreamElt ) throw( std::exception )
     {
-        //  For now, we see if there is an executionParameters portion.  If so, we parse it.
-        xmlpp::Element* pExecutionParameters = utl::dom::getOptionalChild( pRootElt,
-                                                                           eltName::executionParameters );
-        
-        if ( pExecutionParameters )
-        {
-            std::cout << "Found it." << std::endl;
-            configureRuntime( pExecutionParameters );
-        }
-        
-    }
-    
-    void
-    moleculizer::configureRuntime( xmlpp::Element* pExecutionParameters ) throw( std::exception )
-    {
-        // For now, there should be only one reactionNetworkGeneration parameter.
-        xmlpp::Element* pGenerationMode = utl::dom::mustGetUniqueChild( pExecutionParameters,
-                                                                        eltName::reactionNetworkGenerationMode );
-        std::string modeString = utl::dom::mustGetAttrString( pGenerationMode,
-                                                              eltName::modeAttr );
-        
-        return;
+        ; // Do nothing for now.
     }
     
     moleculizer::moleculizer( void )
@@ -227,33 +206,13 @@ namespace mzr
         }
     }
     
-    std::string
-    moleculizer::getRandomSpeciesName() const
-    {
-        // I use pointers here, to save space.
-        // I should make this much more efficient.
-        
-        std::vector<mzrSpecies*> allSpecies;
-        BOOST_FOREACH( SpeciesCatalog::value_type vt, theSpeciesListCatalog )
-        {
-            allSpecies.push_back( vt.second );
-        }
-        
-        int random_index = rand() % allSpecies.size();
-        
-        return allSpecies[random_index]->getName();
-    }
-    
-    
     void moleculizer::attachFileName( const std::string& filename )
     {
         xmlpp::DomParser parser;
         parser.set_validate( false );
         parser.parse_file( filename );
         if ( !parser ) throw utl::dom::noDocumentParsedXcpt();
-        
         this->attachDocument( parser.get_document() );
-        
     }
     
     void moleculizer::attachString( const std::string& documentAsString )
@@ -302,9 +261,8 @@ namespace mzr
             = utl::dom::mustGetUniqueChild( pRootElement,
                                             eltName::model );
         
-        xmlpp::Element* pStreamsElement
-            = utl::dom::mustGetUniqueChild( pRootElement,
-                                            eltName::streams );
+        xmlpp::Element* pStreamsElement = utl::dom::getOptionalChild( pRootElement,
+                                                                      eltName::streams );
         
         // Extract model info.
         constructorCore( pRootElement,
@@ -395,10 +353,12 @@ namespace mzr
         // to convert comments to elements.
         xmlpp::Node::NodeList modelContentNodes
             = pModelElement->get_children();
+
         xmlpp::Node::NodeList::iterator iUnhandledModelContent
             = std::find_if( modelContentNodes.begin(),
                             modelContentNodes.end(),
                             modelNodeNotInCap( inputCap ) );
+
         if ( modelContentNodes.end() != iUnhandledModelContent )
             throw unhandledModelContentXcpt( *iUnhandledModelContent );
         
@@ -440,10 +400,12 @@ namespace mzr
             throw unhandledExplicitSpeciesContentXcpt( *iUnhandledExplicitSpeciesContent );
         
     }
-    
+
     void 
-    moleculizer::generateCompleteNetwork()
+    moleculizer::generateCompleteNetwork() 
     {
+        if ( ! this->getModelHasBeenLoaded() ) throw ModelNotLoadedXcpt("moleculizer::generateCompleteNetwork");
+
         // This function will generate the entire network.  To be used primarily 
         bool nodesUnexpanded = true;
         
@@ -474,11 +436,24 @@ namespace mzr
         return extrapolationEnabled;
     }
     
-    void moleculizer::setRateExtrapolation( bool rateExtrapolation )
+    void moleculizer::setRateExtrapolation( bool rateExtrapolation ) 
     {
+
+        if ( getModelHasBeenLoaded() )
+        {
+            throw utl::modelAlreadyLoadedXcpt();
+        }
+
         extrapolationEnabled = rateExtrapolation;
     }
     
+    int 
+    moleculizer::getNumberOfSpeciesInSpeciesStream(const std::string& streamName) const 
+    {
+        // TODO
+        return 0;
+    }
+
     void 
     moleculizer::getSpeciesInSpeciesStream(const std::string& streamName,
                                            std::vector<const mzr::mzrSpecies*>& speciesVector) const
@@ -504,6 +479,13 @@ namespace mzr
         {
             speciesVector.push_back( pSpec );
         }
+    }
+
+    void 
+    moleculizer::getSpeciesInSpeciesStream(const std::string& streamName,
+                                           std::vector<mzr::mzrSpecies*>& speciesVector)
+    {
+        // Do nothing for now.
     }
     
     void 

@@ -2403,25 +2403,6 @@ phosphorylation by Ste11 to be activated.  There is also the
 </model>
 <streams>
   <species-streams>
-    <omni-species-stream name="alpha-ste2 complex" >
-      <plex>
-	<mol-instance name="the-alpha">
-	  <mol-ref name="alpha" />
-	</mol-instance>
-	<mol-instance name="the-ste2">
-	  <mol-ref name="Ste2" />
-	</mol-instance>
-	<binding>
-	  <mol-instance-ref name="the-alpha">
-	    <binding-site-ref name="to-Ste2" />
-	  </mol-instance-ref>
-	  <mol-instance-ref name="the-ste2">
-	    <binding-site-ref name="to-alpha" />
-	  </mol-instance-ref>
-	</binding>
-      </plex>
-    </omni-species-stream>
-    
   </species-streams>
 </streams>
 </moleculizer-input>

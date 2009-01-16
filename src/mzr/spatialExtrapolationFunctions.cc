@@ -32,31 +32,32 @@
 #include "spatialExtrapolationFunctions.hh"
 #include "mzr/mzrSpecies.hh"
 #include "mzr/mzrReaction.hh"
+#include "mzr/mzrException.hh"
 #include <cmath>
 
 namespace mzr
 {
     
-    double getProteinDiffusionCoef()
+    double getProteinDiffusionCoeff()
     {
         // Units returned are in micrometers^2/sec.
         return proteinDiffusionCoeff;
     }
     
-    double getSmallMolDiffusionCoef()
+    double getSmallMolDiffusionCoeff()
     {
         // Units returned are in micrometers^2/sec.
         return smallMolDiffusionCoeff;
     }
     
     
-    void setProteinDiffusionCoef(double rate)
+    void setProteinDiffusionCoeff(double rate)
     {
         // Units must be in micrometer^2/sec.
         proteinDiffusionCoeff = rate;
     }
     
-    void setSmallMolDiffusionCoef(double rate)
+    void setSmallMolDiffusionCoeff(double rate)
     {
         // Units must be in micrometer^2/sec.
         smallMolDiffusionCoeff = rate;
@@ -75,19 +76,29 @@ namespace mzr
         
         return theSum;
     }
+
+    double getSmallMolProteinCutoff()
+    {
+        return smallMolProteinCutoff;
+    }
+
+    void setSmallMolProteinCutoff(const double& cut) 
+    {
+        smallMolProteinCutoff = cut;
+    }
     
-    double getDiffusionCoeffFromSpecies( const mzr::mzrSpecies* pSpecies)
+    double getDiffusionCoeffForSpecies( const mzr::mzrSpecies* pSpecies)
     {
         // This is kind of hacky but probably works.  I am using 1500 daltons
         // as the cutoff for small molecules and proteins.  
         
-        if ( pSpecies->getWeight() > 1500 )
+        if ( pSpecies->getWeight() > getSmallMolProteinCutoff() )
         {
-            return getSmallMolDiffusionCoef();
+            return getSmallMolDiffusionCoeff();
         }
         else
         {
-            return getProteinDiffusionCoef();
+            return getProteinDiffusionCoeff();
         }
     }
     
@@ -99,7 +110,7 @@ namespace mzr
         BOOST_FOREACH(const multMap::value_type& vt, pRxn->getReactants() )
         {
             // theSum += multiplicity * particle-type specific diffusion coeff.
-            theSum += vt.second * getDiffusionCoeffFromSpecies( vt.first );
+            theSum += vt.second * getDiffusionCoeffForSpecies( vt.first );
         }
         
         return theSum;
@@ -107,6 +118,8 @@ namespace mzr
     
     double extrapolateIntrinsicReactionRate(const mzr::mzrReaction* pRxn)
     {
+        if (pRxn->getArity() < 2) throw badPreconditionXcpt("Error in calculating the intrinsic reaction rate for reaction '" + pRxn->getName() + "'.  Only reactions with exactly two substrates can have an intrinsic reaction rate.");
+
         static const double FourPi = 4.0f * 3.141592653859;
         
         // We have to solve the equation 1/k = 1/kA + 1/ kD for kA, where 
@@ -140,6 +153,7 @@ namespace mzr
         
     }
 
+    double smallMolProteinCutoff = 1500.0f;
     double proteinDiffusionCoeff = 3.0f;
     double smallMolDiffusionCoeff = 100.0f;
 }

@@ -120,21 +120,19 @@ namespace fnd
         
         bool
         findReactionWithSubstrates( SpeciesTypeCptr A,
-                                    std::vector<ReactionTypeCptr>& reactionVector )
+                                    std::vector<ReactionTypeCptr>& reactionVector)
         {
             
             // This is bad.  It feels semantically correct, but probably means something
             // should be refactored.
-            const_cast<SpeciesTypePtr>(A)->expandReactionNetwork();
-            
-            
-            
-            reactionVector.clear();
+            if (!A->hasNotified()) 
+            {
+                const_cast<SpeciesTypePtr>(A)->expandReactionNetwork();
+            }
+
             typename ParticipatingSpeciesRxnMap::const_iterator iter = singleSubstrateRxns.find( const_cast<SpeciesTypePtr>(A) );
             
-            
             while ( iter->first == A )
-                
             {
                 reactionVector.push_back( iter->second );
                 ++iter;
@@ -146,14 +144,20 @@ namespace fnd
         bool
         findReactionWithSubstrates( SpeciesTypeCptr A,
                                     SpeciesTypeCptr B,
-                                    std::vector<ReactionTypeCptr>& reactionVector )
+                                    std::vector<ReactionTypeCptr>& reactionVector)
         {
             // This feels wrong (although semantically, so right), and probably means things 
             // should be refactored.
-            const_cast<SpeciesTypePtr>(A)->expandReactionNetwork();
-            const_cast<SpeciesTypePtr>(B)->expandReactionNetwork();
+            if( ! A->hasNotified() )
+            {
+                const_cast<SpeciesTypePtr>(A)->expandReactionNetwork();
+            }
+
+            if (!B->hasNotified() )
+            {
+                const_cast<SpeciesTypePtr>(B)->expandReactionNetwork();
+            }
             
-            reactionVector.clear();
             
             if ( A == B )
             {
@@ -203,6 +207,18 @@ namespace fnd
         getReactionList() const
         {
             return theCompleteReactionList;
+        }
+
+        const ReactionList&
+        getDeltaReactionList() const
+        {
+            return theDeltaReactionList;
+        }
+
+        const SpeciesList&
+        getDeltaSpeciesList() const
+        {
+            return theDeltaSpeciesList;
         }
         
         // These two functions are the interface that reaction generators use
@@ -255,7 +271,9 @@ namespace fnd
             theCompleteReactionList.push_back( pRxn );
             theDeltaReactionList.push_back( pRxn );
             
-            switch ( pRxn->getNumberOfReactants() )
+            std::cout << pRxn->getArity() << " " << pRxn->getArity() << std::endl;
+
+            switch ( pRxn->getArity() )
             {
                 SpeciesTypePtr theSpeciesPtr;
                 
@@ -369,13 +387,12 @@ namespace fnd
         
         // -- The pointers to the strings in theSpeciesListCatalog ARE memory managed.
         // -- The pointers to the species and reactions ARE NOT memory managed here.
-        
-        
+
         SpeciesCatalog theSpeciesListCatalog;
         ReactionList theCompleteReactionList;
         ReactionList unaryReactionList;
         ReactionList binaryReactionList;
-        
+
         SpeciesList    theDeltaSpeciesList;
         ReactionList    theDeltaReactionList;
         

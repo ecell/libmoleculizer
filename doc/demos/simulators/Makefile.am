@@ -7,8 +7,9 @@ STOCHSIMDIR=$(DEMO_SIMULATION_DIR)/stochastic/src
 PARTICLESIMDIR=$(DEMO_SIMULATION_DIR)/particle/src
 NETEXPANDDIR=$(DEMO_SIMULATION_DIR)/network_expander/src
 CINTERFACEDIR=$(DEMO_SIMULATION_DIR)/c_interface/src
+CPARTICLEDIR=$(DEMO_SIMULATION_DIR)/c_particle/src
 
-bin_PROGRAMS=network_expander_demo stochasticsim_demo particlesim_demo c_interface_demo
+bin_PROGRAMS=network_expander_demo stochasticsim_demo particlesim_demo c_interface_demo 
 
 LIBFND = $(SRC)/fnd/libmoleculizer_fnd.la
 LIBUTL = $(SRC)/utl/libmoleculizer_utl.la
@@ -49,3 +50,6 @@ network_expander_demo_LDADD = $(ALL_MZR_LIBS)
 
 c_interface_demo_SOURCES = $(CINTERFACEDIR)/c_interface_main.c
 c_interface_demo_LDADD = $(ALL_MZR_LIBS)
+
+# c_particle_demo_SOURCES = $(CPARTICLEDIR)/cparticle_main.c
+# c_particle_demo_LDADD = $(ALL_MZR_LIBS)

@@ -94,11 +94,11 @@ namespace mzr
     public:
         // Moleculizer only has basic constructors and destructors.  
         moleculizer( void );
-        ~moleculizer( void );
+        virtual ~moleculizer( void );
         
     public:
         
-        void generateCompleteNetwork();
+        virtual void generateCompleteNetwork();
         
     public:
         
@@ -116,21 +116,36 @@ namespace mzr
         void setRateExtrapolation( bool rateExtrapolation );
         bool getRateExtrapolation() const;
         
-        int getNumberOfPlexFamilies() const;
+        int 
+        getNumberOfPlexFamilies() const;
+
+
+        //////////////////////////////////////////////////
+        // 
+        // Functions for working with species streams
+        //
+        //////////////////////////////////////////////////
+
+        void 
+        getSpeciesStreams( std::vector<std::string>& speciesStreamNames) const;
+        
+        
+        int 
+        getNumberOfSpeciesInSpeciesStream(const std::string& streamName) const;
         
         void 
         getSpeciesInSpeciesStream(const std::string& streamName,
                                   std::vector<const mzr::mzrSpecies*>& speciesVector) const;
+
+        void 
+        getSpeciesInSpeciesStream(const std::string& streamName,
+                                  std::vector<mzr::mzrSpecies*>& speciesVector);
+
         
-        
-        void getSpeciesStreams( std::vector<std::string>& speciesStreamNames) const;
         
     public:
         const mzrSpecies* 
         getSpeciesWithName( const std::string& speciesName ) throw( mzr::IllegalNameXcpt );
-        
-        std::string
-        getRandomSpeciesName() const;
         
     public:
         xmlpp::Document*
@@ -184,9 +199,6 @@ namespace mzr
                                   xmlpp::Element* pModelElt,
                                   xmlpp::Element* pStreamElt )
             throw( std::exception );
-        
-        void
-        configureRuntime( xmlpp::Element* pExecutionParameters ) throw( std::exception );
         
         std::map<std::string, std::string> userNameToSpeciesIDChart;
         

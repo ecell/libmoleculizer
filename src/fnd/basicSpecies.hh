@@ -44,39 +44,11 @@ namespace fnd
     class basicSpecies :
         public onceNotifier
     {
-        class negativePopulationXcpt :
-            public utl::xcpt
-        {
-            static std::string
-            mkMsg( basicSpecies* pBasicSpecies,
-                   int delta,
-                   int newValue )
-            {
-                typename std::ostringstream msgStream;
-                msgStream << "Species "
-                          << pBasicSpecies
-                          << " assumed negative value "
-                          << newValue
-                          << " after update by delta "
-                          << delta
-                          << ".";
-                return msgStream.str();
-            }
-        public:
-            negativePopulationXcpt( basicSpecies* pBasicSpecies,
-                                    int delta,
-                                    int newValue ) :
-                utl::xcpt( mkMsg( pBasicSpecies,
-                                  delta,
-                                  newValue ) )
-            {}
-        };
-        
         static int speciesCount;
-        
+
     public:
         
-        basicSpecies( int initialPop = 0 )
+        basicSpecies()
         {
             speciesCount++;
         }

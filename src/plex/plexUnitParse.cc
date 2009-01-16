@@ -74,54 +74,19 @@ namespace plx
                              xmlpp::Element* pStreamsElt )
         throw( utl::xcpt )
     {
-        // First we pick out a number of elements and lists of elements
-        // for tranversal.
-        
-        // Species streams.
-        xmlpp::Element* pSpeciesStreamsElt
-            = utl::dom::mustGetUniqueChild(pStreamsElt,
-                                           mzr::eltName::speciesStreams);
-        
-        xmlpp::Node::NodeList omniSpeciesStreamNodes
-            = pSpeciesStreamsElt
-            ->get_children(eltName::omniSpeciesStream);
-        
-        xmlpp::Node::NodeList plexSpeciesStreamNodes
-            = pSpeciesStreamsElt
-            ->get_children(eltName::plexSpeciesStream);
-        
-        // Allosteric omnis.
-        xmlpp::Element* pAlloOmnisElt
-            = utl::dom::mustGetUniqueChild( pModelElt,
-                                            eltName::allostericOmnis );
-        xmlpp::Node::NodeList alloOmniNodes
-            = pAlloOmnisElt->get_children( eltName::allostericOmni );
-        
-        // Allosteric plexes.
-        xmlpp::Element* pAlloPlexesElt
-            = utl::dom::mustGetUniqueChild( pModelElt,
-                                            eltName::allostericPlexes );
-        xmlpp::Node::NodeList alloPlexNodes
-            = pAlloPlexesElt->get_children( eltName::allostericPlex );
-        
-        // Explicit plexSpecies.
-        xmlpp::Element* pExplicitSpeciesElt
-            = utl::dom::mustGetUniqueChild( pModelElt,
-                                            mzr::eltName::explicitSpecies );
-        xmlpp::Node::NodeList plexSpeciesNodes
-            = pExplicitSpeciesElt->get_children( eltName::plexSpecies );
-        
+
         // Use Xpaths to omniplex nodes, registered by other modules,
         // to find all the omniplexes in the file.
         //
         // We have to have all the omniplexes in place before we recognize any
         // complexes in the conventional way, thereby creating plexFamilies.
+
         xmlpp::Node::NodeList omniPlexNodes;
         std::for_each( omniXpaths.begin(),
                        omniXpaths.end(),
                        addPathNodesToList( omniPlexNodes,
                                            pRootElt ) );
-        
+
         // "Unify" omniplex families (recognize, but without the usual
         // initializations) and put them on the plexUnit's list of omniplexes.
         // After this is done, plexes and omniplexes can be recognized in the usual
@@ -131,7 +96,7 @@ namespace plx
                        parseOmniPlex( rMzrUnit,
                                       rMolUnit,
                                       *this ) );
-        
+
         // Since the omniplex families have been "unified" in, they won't
         // undergo normal initialization when recognized.  Hence, we
         // run through them all and connect them to their features.
@@ -141,6 +106,20 @@ namespace plx
         std::for_each( omniPlexFamilies.begin(),
                        omniPlexFamilies.end(),
                        std::mem_fun( &mzrPlexFamily::connectToFeatures ) );
+
+        // Allosteric omnis.
+        xmlpp::Element* pAlloOmnisElt
+            = utl::dom::mustGetUniqueChild( pModelElt, eltName::allostericOmnis );
+        
+        xmlpp::Node::NodeList alloOmniNodes = pAlloOmnisElt->get_children( eltName::allostericOmni );
+        
+        // Allosteric plexes.
+        xmlpp::Element* pAlloPlexesElt
+            = utl::dom::mustGetUniqueChild( pModelElt,
+                                            eltName::allostericPlexes );
+
+        xmlpp::Node::NodeList alloPlexNodes
+            = pAlloPlexesElt->get_children( eltName::allostericPlex );
         
         // Parse allosteric omnis.
         //
@@ -149,7 +128,7 @@ namespace plx
                        alloOmniNodes.end(),
                        parseAllostericOmni( rMolUnit,
                                             *this ) );
-        
+
         // Parse allosteric plexes.
         //
         // This must be done before any species of complexes are generated.
@@ -158,24 +137,49 @@ namespace plx
                        parseAllostericPlex( rMolUnit,
                                             *this,
                                             rMzrUnit ) );
+        if (pStreamsElt)
+        {
+
+            // Species streams.
+            xmlpp::Element* pSpeciesStreamsElt
+                = utl::dom::mustGetUniqueChild(pStreamsElt,
+                                               mzr::eltName::speciesStreams);
         
-        // Attach dumpables to families of complexes.  This must be done before
-        // any species of complexes are generated.
+            xmlpp::Node::NodeList omniSpeciesStreamNodes
+                = pSpeciesStreamsElt->get_children(eltName::omniSpeciesStream);
+
         
-        // Parse query-based dumpables for omniplexes.
-        std::for_each(omniSpeciesStreamNodes.begin(),
-                      omniSpeciesStreamNodes.end(),
-                      parseOmniSpeciesStream(rMzrUnit,
-                                             rMolUnit,
-                                             *this));
+            xmlpp::Node::NodeList plexSpeciesStreamNodes
+                = pSpeciesStreamsElt->get_children(eltName::plexSpeciesStream);
+
+            // Attach dumpables to families of complexes.  This must be done before
+            // any species of complexes are generated.
         
-        // Parse query-based dumpables for plexes.
-        //     std::for_each(plexSpeciesStreamNodes.begin(),
-        // 		  plexSpeciesStreamNodes.end(),
-        // 		  parsePlexSpeciesStream(rMzrUnit,
-        // 					 rMolUnit,
-        // 					 *this));
+            // Parse query-based dumpables for omniplexes.
+            std::for_each(omniSpeciesStreamNodes.begin(),
+                          omniSpeciesStreamNodes.end(),
+                          parseOmniSpeciesStream(rMzrUnit,
+                                                 rMolUnit,
+                                                 *this));
         
+            // Parse query-based dumpables for plexes.
+            //     std::for_each(plexSpeciesStreamNodes.begin(),
+            // 		  plexSpeciesStreamNodes.end(),
+            // 		  parsePlexSpeciesStream(rMzrUnit,
+            // 					 rMolUnit,
+            // 					 *this));
+
+        }
+        
+
+        // Explicit plexSpecies.
+        xmlpp::Element* pExplicitSpeciesElt
+            = utl::dom::mustGetUniqueChild( pModelElt,
+                                            mzr::eltName::explicitSpecies );
+
+        xmlpp::Node::NodeList plexSpeciesNodes
+            = pExplicitSpeciesElt->get_children( eltName::plexSpecies );
+
         // Parse explicit plexSpecies, generating species of complexes, but not
         // populating them.  Since this doesn't create the initial population,
         // notification isn't an issue.
@@ -184,7 +188,9 @@ namespace plx
                        parseExplicitPlexSpecies( rMzrUnit,
                                                  rMolUnit,
                                                  *this ) );
+
     }
+
     
     namespace
     {

@@ -38,6 +38,25 @@
 
 namespace mzr
 {
+    class ModelNotLoadedXcpt : public utl::xcpt
+    {
+    public:
+        static std::string
+        mkMsg(const std::string& functionName)
+        {
+            std::ostringstream oss;
+            oss << "Function '" 
+                << functionName 
+                << "' could not be completed because a model has not yet been loaded." ;
+            return oss.str();
+        }
+
+        ModelNotLoadedXcpt(const std::string& funcName)
+            :
+            xcpt( mkMsg(funcName))
+        {}
+    };
+
     class BadRulesDefinitionXcpt : public utl::xcpt
     {
     public:
@@ -317,6 +336,15 @@ namespace mzr
                                        const std::string& missingParamName )
             :
             utl::xcpt( mkMsg( rSpeciesName, missingParamName ) )
+        {}
+    };
+
+    class badPreconditionXcpt : utl::xcpt
+    {
+    public:
+        badPreconditionXcpt( const std::string& msg)
+            :
+            utl::xcpt( msg )
         {}
     };
     

@@ -72,7 +72,7 @@ int main(int argc, char* argv[])
   {
       for ( int iterNdx = 0; iterNdx != number; ++iterNdx)
       {
-          std::cout << "Iteration " << iterNdx << std::endl;
+          std::cout << "Iteration " << iterNdx << "/" << number << std::endl;
 
           std::string name;
           if (getUninitializedSpecies( theMoleculizer, name))

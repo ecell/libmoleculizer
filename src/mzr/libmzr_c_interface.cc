@@ -32,6 +32,7 @@
 #include "libmzr_c_interface.h"
 
 #include "utl/xcpt.hh"
+#include "utl/writeOutputGraph.hh"
 #include "moleculizer.hh"
 #include "mzr/spatialExtrapolationFunctions.hh"
 #include <boost/foreach.hpp>
@@ -54,7 +55,7 @@ reaction*
 createNewCRxnFromMzrReaction( moleculizer* cMzrPtr, const mzr::mzrReaction* pMzrReaction);
 
 int 
-convertUserNameToSpeciesKey( moleculizer* handle, char* theUserName, char* correspondingSpeciesKey);
+convertUserNameToSpeciesID( moleculizer* handle, char* theUserName, char* correspondingSpeciesKey);
 
 
 void 
@@ -82,19 +83,54 @@ moleculizer* createNewMoleculizerObject()
     return newHandle;
 }
 
-void expandNetwork( moleculizer* handle)
+int expandNetwork( moleculizer* handle)
 {
+    enum LOCAL_ERROR_TYPE { SUCCESS = 0,
+                            UNKNOWN_ERROR = 1,
+                            NO_MODEL_LOADED_ERROR = 2};
+
     mzr::moleculizer* underlyingMoleculizerObject = convertCMzrPtrToMzrPtr( handle );
-    underlyingMoleculizerObject->generateCompleteNetwork();
+
+    try
+    {
+        underlyingMoleculizerObject->generateCompleteNetwork();
+    }
+    catch(mzr::ModelNotLoadedXcpt x)
+    {
+        x.what();
+        return NO_MODEL_LOADED_ERROR;
+    }
+    catch(...)
+    {
+        return UNKNOWN_ERROR;
+    }
+
+    return SUCCESS;
 }
 
 int setRateExtrapolation( moleculizer* handle, int extrapolation)
 {
+    enum LOCAL_ERROR_TYPE { SUCCESS = 0,
+                            UNKNOWN_ERROR = 1,
+                            MODEL_ALREADY_LOADED = 2};
+
     mzr::moleculizer* underlyingMoleculizerObject = convertCMzrPtrToMzrPtr( handle );
 
-    underlyingMoleculizerObject->setRateExtrapolation( extrapolation );
+    try
+    {
+        underlyingMoleculizerObject->setRateExtrapolation( extrapolation );
+    }
+    catch(utl::modelAlreadyLoadedXcpt e)
+    {
+        e.warn();
+        return MODEL_ALREADY_LOADED;
+    }
+    catch(...)
+    {
+        return UNKNOWN_ERROR;
+    }
     
-    return 0;
+    return SUCCESS;
 }
 
 void freeMoleculizerObject( moleculizer* handle)
@@ -115,7 +151,8 @@ int loadRulesFile(moleculizer* handle, char* fileName)
     enum LOCAL_ERROR_TYPE { SUCCESS = 0,
                             UNKNOWN_ERROR = 1, 
                             DOCUMENT_UNPARSABLE = 2,
-                            RULES_ALREADY_LOADED = 3};
+                            RULES_ALREADY_LOADED = 3,
+                            FILE_NOT_FOUND = 4};
     
     try
     {
@@ -132,16 +169,96 @@ int loadRulesFile(moleculizer* handle, char* fileName)
         xcpt.warn();
         return RULES_ALREADY_LOADED;
     }
+    catch(utl::dom::xcpt)
+    {
+        return DOCUMENT_UNPARSABLE;
+    }
     catch(utl::xcpt xcpt)
     {
         xcpt.warn();
         return UNKNOWN_ERROR;
+    }
+    catch(xmlpp::internal_error x)
+    {
+        return FILE_NOT_FOUND;
     }
     catch(...)
     {
         return UNKNOWN_ERROR;
     }
     
+}
+
+int getDeltaSpecies( moleculizer* handle, species*** pSpeciesArray, int* pNum)
+{
+    enum LOCAL_ERROR_TYPE { SUCCESS = 0,
+                            UNKNOWN_ERROR = 1 };
+
+    try
+    {
+        mzr::moleculizer* moleculizerPtr = convertCMzrPtrToMzrPtr( handle );
+
+        *pNum = moleculizerPtr->getNumberDeltaSpecies();
+
+        *pSpeciesArray = new species* [ *pNum ];
+
+        int index = 0;
+        BOOST_FOREACH( const mzr::mzrSpecies* specPtr, moleculizerPtr->getDeltaSpeciesList())
+        {
+            (*pSpeciesArray)[index++] = createNewCSpeciesFromMzrSpecies( handle, specPtr);
+        }
+
+        return SUCCESS;
+    }
+    catch(...)
+    {
+        return UNKNOWN_ERROR;
+    }
+}
+
+int getDeltaReactions( moleculizer* handle, reaction*** pReactionArray, int* pNum)
+{
+    enum LOCAL_ERROR_TYPE { SUCCESS = 0,
+                            UNKNOWN_ERROR = 1 };
+    
+    try
+    {
+        mzr::moleculizer* moleculizerPtr = convertCMzrPtrToMzrPtr( handle );
+
+        *pNum = moleculizerPtr->getNumberDeltaReactions();
+    
+        *pReactionArray = new reaction* [*pNum];
+
+        int index = 0;
+        BOOST_FOREACH( const mzr::mzrReaction* rxnPtr, moleculizerPtr->getDeltaReactionList())
+        {
+            (*pReactionArray)[index++] = createNewCRxnFromMzrReaction( handle, rxnPtr );
+        }
+        
+        return SUCCESS;
+    }
+    catch(...)
+    {
+        return UNKNOWN_ERROR;
+    }
+
+}
+
+int clearDeltaState( moleculizer* handle)
+{
+    enum LOCAL_ERROR_TYPE { SUCCESS = 0,
+                            UNKNOWN_ERROR = 1 };
+
+    try
+    {
+        convertCMzrPtrToMzrPtr( handle )->resetCurrentState();
+        return SUCCESS;
+    }
+    catch(...)
+    {
+        return UNKNOWN_ERROR;
+    }
+
 }
 
 int loadRulesString( moleculizer* handle, char* rulesCstring)
@@ -227,8 +344,7 @@ int getAllStreamSpecies(moleculizer* handle, char* cStrStreamName, species*** pS
 int getAllSpecies(moleculizer* handle, species*** pSpeciesArray, int* numberSpecies)
 {
     enum LOCAL_ERROR_TYPE { SUCCESS = 0,
-                            UNKNOWN_ERROR = 1,
-                            STREAM_DOES_NOT_EXIST = 3 };
+                            UNKNOWN_ERROR = 1 };
 
     mzr::moleculizer* moleculizerPtr = convertCMzrPtrToMzrPtr( handle );
 
@@ -239,6 +355,25 @@ int getAllSpecies(moleculizer* handle, species*** pSpeciesArray, int* numberSpec
     BOOST_FOREACH( const mzr::moleculizer::SpeciesCatalog::value_type& refVT, moleculizerPtr->getSpeciesCatalog())
     {
         (*pSpeciesArray)[index++] = createNewCSpeciesFromMzrSpecies( handle, refVT.second );
+    }
+
+    return SUCCESS;
+}
+
+int getAllReactions(moleculizer* handle, reaction*** pReactionArray, int* numberReactions)
+{
+    enum LOCAL_ERROR_TYPE { SUCCESS = 0,
+                            UNKNOWN_ERROR = 1 };
+
+    mzr::moleculizer* moleculizerPtr = convertCMzrPtrToMzrPtr( handle );
+
+    *numberReactions = moleculizerPtr->getTotalNumberReactions();
+    *pReactionArray = new reaction* [ *numberReactions ];
+
+    int index = 0;
+    BOOST_FOREACH( const mzr::moleculizer::ReactionList::value_type& refVT, moleculizerPtr->getReactionList())
+    {
+        (*pReactionArray)[index++] = createNewCRxnFromMzrReaction( handle, refVT );
     }
 
     return SUCCESS;
@@ -399,7 +534,6 @@ void freeSpecies( species* pSpecies)
     delete pSpecies->mass;
     delete pSpecies->radius;
     delete pSpecies->diffusionCoeff;
-    
 }
 
 void constructCSpeciesArrayFromSpeciesMap(moleculizer* cMzrPtr, 
@@ -526,8 +660,103 @@ species* createNewCSpeciesFromMzrSpecies( moleculizer* cMzrPtr, const mzr::mzrSp
     
     // Extrapolate the radius and diffusion coefficient from moleculizer.
     *newSpecies->radius = mzr::extrapolateMolecularRadius( pMzrSpecies );
-    *newSpecies->diffusionCoeff = mzr::getDiffusionCoeffFromSpecies( pMzrSpecies );
+    *newSpecies->diffusionCoeff = mzr::getDiffusionCoeffForSpecies( pMzrSpecies );
     
     // Return the pointer to the newly created and instantiated newSpecies.
     return newSpecies;
 }
+
+int getAllExteriorSpecies(moleculizer* handle, species*** pSpeciesArray, int* numberSpecies)
+{
+    enum LOCAL_ERROR_TYPE { SUCCESS = 0,
+                            UNKNOWN_ERROR = 1 };
+
+    mzr::moleculizer* moleculizerPtr = convertCMzrPtrToMzrPtr( handle );
+
+    std::vector<const mzr::mzrSpecies*> uninitializedSpecies;
+
+    BOOST_FOREACH( const mzr::moleculizer::SpeciesCatalog::value_type& refVT, moleculizerPtr->getSpeciesCatalog() )
+    {
+        if (!refVT.second->hasNotified())
+        {
+            uninitializedSpecies.push_back( refVT.second );
+        }
+    }
+
+    *numberSpecies = uninitializedSpecies.size();
+    *pSpeciesArray = new species* [ *numberSpecies ];
+
+    int index = 0;
+    BOOST_FOREACH( const mzr::mzrSpecies* pSpecies, uninitializedSpecies)
+    {
+        (*pSpeciesArray)[index++] = createNewCSpeciesFromMzrSpecies( handle, pSpecies );
+    }
+
+    return SUCCESS;
+}
+
+int incrementSpecies( moleculizer* handle, char* speciesName)
+{
+    enum LOCAL_ERROR_TYPE { SUCCESS = 0,
+                            UNKNOWN_ERROR = 1,
+                            NON_EXISTANT_SPECIES_NAME = 2};
+    try
+    {
+        mzr::moleculizer* moleculizerPtr = convertCMzrPtrToMzrPtr( handle );
+        std::string strSpeciesName( speciesName );
+        moleculizerPtr->incrementNetworkBySpeciesName( speciesName );
+    }
+    catch( fnd::NoSuchSpeciesXcpt x )
+    {
+        x.warn();
+        return NON_EXISTANT_SPECIES_NAME;
+    }
+    catch(...)
+    {
+        return UNKNOWN_ERROR;
+    }
+
+    return SUCCESS;
+}
+
+int writeDotFile( moleculizer* handle, char* fileName)
+{
+    mzr::moleculizer* moleculizerPtr = convertCMzrPtrToMzrPtr( handle );
+    writeNetworkToDotFile( *moleculizerPtr, fileName);
+
+    return 1;
+}
+
+int convertTagToID( moleculizer* handle, char* speciesTag, char* speciesID, int idSize)
+{
+    enum LOCAL_ERROR_TYPE { SUCCESS = 0,
+                            UNKNOWN_ERROR = 1,
+                            TAG_NOT_FOUND = 2,
+                            UNSUFFICIENT_MEMORY = 3 };
+
+   mzr::moleculizer* moleculizerPtr = convertCMzrPtrToMzrPtr( handle );
+
+
+   return 0;
+}
+
+int convertIDToTag( moleculizer* handle, char* speciesID, char* speciesTag, int tagSize)
+{
+
+    enum LOCAL_ERROR_TYPE { SUCCESS = 0,
+                            UNKNOWN_ERROR = 1, 
+                            SPECIES_ID_UNKNOWN = 2,
+                            NOT_ENOUGH_BUFFER_MEMORY = 3 };
+
+
+
+   mzr::moleculizer* moleculizerPtr = convertCMzrPtrToMzrPtr( handle );
+   
+   std::string ID( speciesID );
+
+   mzr::mzrSpecies* species;
+
+
+   return 0;
+}
+

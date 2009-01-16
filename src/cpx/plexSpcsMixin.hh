@@ -76,16 +76,6 @@ namespace cpx
         // Notification has to be done in the final species.  It should notify
         // rFamily with a fnd::newSpeciesStimulus<finalSpecies>.
         
-        
-        // This would be best, but the getCanonicalName() function heavily
-        // relies on knowing everything about the template parameter, so
-        // g++ gets mad.
-        // virtual std::string
-        // getName() const
-        // {
-        //   return getCanonicalName();
-        // }
-        
         // Generate non-canonical, "informative" name.  Not so sure that this
         // should go here.
         std::string

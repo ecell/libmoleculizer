@@ -1,22 +1,33 @@
-\chapter{Conceptual Overview of libmoleculizer}
+\chapter{Useful Concepts in libmoleculizer}
 \label{chap:conceptualOverviewChapter}
 
 The objective of libmoleculizer is to take in a description of
 proteins and other molecular entities along with a list of rules
 describing various biochemical interactions, and then use this
-information to generate information about the reaction network and
-species that are implicitly described by those rules.
+information to generate information about the species and reactions in
+the reaction network that are implicitly described by those rules.
 
-In order to understand in detail how libmoleculizer generates the
-species and reactions, including kinetics, that makes up the implicit
-reaction networks, it is important to understand some background
-on what libmoleculizer represents, and how it understands and interprets
-rules of interaction.
+In order to understand in detail how libmoleculizer generates species
+and reactions, including kinetics, that makes up the implicit reaction
+networks, there are several key background concepts about what
+libmoleculizer represents, and how it understands and interprets rules
+of interaction.
 
-%% TODO - Write this section in detail 
-%% \section{Combinatorial Reaction Networks}
-%% \subsection{Signal Transduction Pathways}
-%% END TODO
+\section{Combinatorial Reaction Networks}
+TODO Write this section.
+
+This section will discuss how protein-protein interactions can lead
+under the right conditions to a combinatorial explosion, where the
+system size grows combinatorially to the number of rules.  Discuss
+what this means, in terms of not being able to explicitly write the
+system down.
+
+\subsection{Signal Transduction Pathways}
+TODO Write this section.
+
+This section will discuss very quickly what signal transduction
+pathways are and why they are important, and how they usually fall
+into the category of systems which display combinatorial complexity.  
 
 \section{Rule-Based Reaction Network Specifications}
 \label{concRuleBasedSpec}
@@ -155,7 +166,6 @@ might be created on any iterative step of the expansion process.
 
 \section{Specifying Reaction Kinetics} 
 
-%% TODO fix X and Y units for the reaction rate.  
 For any reaction rule, one or more reaction rates must be specified
 that indicate the kinetics of the reaction.  Uni-mol and omni-gen
 reaction rules take a single reaction rate.  A dimerization-gen
@@ -231,16 +241,147 @@ rule, we would also specify the allostery, with an shape-based
 shape ``activated'', then in that case the on- and off-rates should be
 given as the activated kinetic rates.  
 
-%% TODO
-%% \section{Some design rationale in the form of a Philosophical Argument for using shapes with allostery}
+\section{Design rationale for using binding site shapes to describe allostery}
+TODO Write this section
+
+This section will discuss why the designers of this software chose to
+use binding site shapes to describe allostery.  The alternative is to
+use something like the BioNetGen schema for specifying rules.
+Effectively, rather than defining omniplexes that transform certain
+binding sites within them and then defining allostery based on which
+binding sites are participating in a reaction, platforms like
+BioNetGen specify rules in terms of the omniplexes themselves.  This
+is a relatively big difference between the two: this section makes the
+case as to why we believe our method is preferable.  
+
+\section{The Naming of Complex Species}
+One problem that libmoleculizer has had to solve regarding complex
+species is that of automatically generating names.  From names, we
+hope we can get out several features.  These are discussed below.  
+
+The purpose of a name is to uniquely identify a species.  That is, a
+naming process is a function that takes complex species and generates
+corresponding names, which are strings of charectors.  While many
+processes can generate strings from species, what makes naming
+processes naming processes is that the strings have two properties.
+The first is that the process of naming is injective.  That is, two
+species have the same name if and only if they are the same species.  
+The second property is that the naming process is in some sense
+invertible: if you have the name, you can recover the species that
+belongs with that name.  
+
+From this, libmoleculizer has two kinds of names that it can
+generate, tagged names and unique ids.  The difference is the scope
+under which the two conditions listed above work.  Tagged names
+meet the two conditions of being names listed above within a single
+run of the program; unique ids meet the two conditions between
+seperate runs of the program -- we say they are serializable.  
+
+
+\section{Tagged names for naming complex species within a single session
+  of libmoleculizer}
+
+The first method of naming species within libmoleculizer is with
+tagged names.  These names are short, typically 8 charecters long.
+Within a single run of libmoleculizer, tags can be used to compare two
+species: two complex species produced \it{within the same run of
+  libmoleculizer} are structurally the same if and only if their tags
+are identical.  Additionally, given that a tagged name has been
+produced, that tag can be used to recover the species, as long as this
+all occurs within the same run.  However, none of these naming
+guarentees carry over between seperate runs.  Between seperate runs of
+libmoleculizer, identical complex species may generate different tags,
+non-equal species may generate identical tags, and from one run to
+another, it is not possible to take a tag and recover the correct
+species.  
+
+However, within a single run, the advantage of tagged names is that
+they are both much shorter that unique ids and they are also much
+faster to generate.  The tagged name is very quick; basically a
+constant time process. \footnote{When species are generated in
+  libmoleculizer, they are checked to see if they are new.  If they
+  are, they are registered.  If they are not new, they are associated
+  with the first isomorphic complex species that was registered, which
+  stands in as the representative for that isomorphism class of
+  complex.  The tagged name is the ``stringification'' of the pointer
+  to the isomorphism class for the complex species, and as such, is
+  a constant time process.}  As such, if names of species are needed
+for uses within single runs, it is \textbf{always preferable to use
+  tagged names}.  
+
 
 \section{Unique IDs for Naming Complex Species}
- For input and output capabilities, it is important that there is a
- consistent naming scheme for naming complex species.  For instance,
- it is desirable that structurally identical species will produce the
- same name, and that the structure can be determined from the name.
- For the time being, it is out of the scope of this document to
- discuss exactly how these names are generated.  However, it is
- important to know that each complex species has a unique id.  Two
- complexes are structurally identical if and only if the ids produced
- for them by libmoleculizer are the same.  
+Many uses of names involve serialization: that is, uses which
+compare names between one instance of moleculizer and another.  These
+may be for things like comparing the results of different simulation
+runs, \footnote{Of course, libmoleculizer does not simulate anything,
+  and no absolute guarantees can be made about the architectures of
+  programs which use libmoleclizer.  However, we expect that most
+  simulators which use libmoleculizer will create a new libmoleculizer
+  for each simulation run.  Whenever this is the case, unique ids
+  should be used to compare the results of the different runs.},
+putting information into databases, recording names with the desire of
+finding out information about the corresponding species at some future
+date, etc.  For these uses, we need a stronger guarantee for what
+names can give us: we need names that uniquely identify species
+between instances of libmoleculizer; we also need names for which we
+can recover the complex species given a name at any time.  Unique ids
+fulfil these requirements.  
+
+While it is outside the scope of this document to discuss in deep
+detail how these names are produced, we will quickly cover this
+information here.  Any complex species consists of a set of molecules
+that are bound together in some fashion.  Any linear description, such
+as a string, then which describes it, will consist of a list of
+species, and then a list of bindings.  Therefore, for each list of
+molecules in a species (for a complex species consisting of $n$
+molecules, there are $n!$ lists that describe those molecules
+(however, if some of the molecules are identical, some of the lists
+will be the same).  For each of these lists, we can create a set of
+bindings, where each binding represents something like ``the second mol
+in the list binds at its first binding site to the third mol in the
+list at its third binding site''.  For a particular list of species,
+we can say that the correct way to write the binding is to have the
+mol with the smaller mol index listed first and the larger indexed mol
+listed second; then the correct way to write the set of bindings is as
+a list of bindings, where the list of bindings is ordered
+lexicographically. \footnote{ Lexicographically is a fancy way of
+  saying alphabetically.  As discussed before, each binding is a set
+  of four numbers $(a,b,c,d)$, which basically means ``the $a^{th}$ mol in
+  the list binds at its $b^{th}$ site to the $c^{th}$ mol at its
+  $d^{th}$ site''.  To say that a binding $(a_1, b_1, c_1, d_1) <
+  (a_2, b_2, c_2, d_2)$ lexicographically, we mean that $a_1 < a_2$ or
+  $a_1 = a_2$ and $b_1 < b2$ or that $a_1 = a_2$, $b_1 = b_2$, and
+  $c_1 < c_2$, and so on.} Finally, for any list of mols, we can
+create a canonical list of modification states in the same way as we
+created the canonical binding list for a given list of mols.  So for
+any list of the mols in a species, we can use this method to define a
+``correct'' name for the species given that list.  We then can define
+the unique id for that species to be the lexicographically least name
+over all the ``correct'' names for that species.  This unique id is
+``canonical'', which is to say that its identity depends only on the
+structure of the species and nothing else.  
+
+Because of the way in which unique ids are generated, two species will
+have the same unique id if and only if they are structurally
+identical.  Furthermore, because the name is a structural description
+of the species, libmoleculizer can use a name to regenerate and then
+produce the corresponding complex species at any time.  This is the
+advantage of the unique id.  However, the disadvantages are that the
+production of these names takes a relatively long time.  While the
+novel algorithm used to generate the unique id is relatively fast, it
+is much slower than the constant time performance of the tagged
+names.  Additionally, because the unique id contains the structural
+information contained in the species (in order to recreate it), it may
+be quite long.  Arbitrarily large species will have arbitrarily long
+names.  \footnote{In a model run by the authors, a complex of 16 mols
+  and with a name of 658 charecters was produced.  However, if a model
+  file has rules enabling larger complexes, there is the potential for
+  names which are much longer as well.}  
+
+In conclusion, unique ids have the powerful capability that they are
+true names.  Unique ids can always be compared amongst one another,
+and may always be used to regenerate the corresponding complex
+species.  However, because of their size and the time taken to
+generate them, they should not be used unless they are needed, instead
+prefering the use of the tagged names.  

@@ -94,35 +94,17 @@ namespace fnd
         {
             return products;
         }
+
+        const multMap&
+        getDeltas() const
+        {
+            return deltas;
+        }
         
         bool
         isStandardReaction() const
         {
-            // This may be totally inappropriate here, but I anticipate there will only
-            // be a few reaction types
-            
-            unsigned int reactantsSize = getReactants().size();
-            unsigned int productsSize = getProducts().size();
-            
-            if ( reactantsSize == 0 )
-            {
-                // 0->1 is acceptable, everything else is not.
-                return ( productsSize == 1 );
-            }
-            else if ( reactantsSize == 1 )
-            {
-                // 1-> 0, 1, or 2
-                return ( productsSize >= 0 && productsSize <= 2 );
-            }
-            else if ( reactantsSize == 2 )
-            {
-                // 2->1 || 2->2
-                return ( productsSize == 1 || productsSize == 2 );
-            }
-            else
-            {
-                return false;
-            }
+            return ( this->getArity() <= 2 );
         }
         
     protected:
@@ -136,34 +118,6 @@ namespace fnd
         double rate;
         
         const coreRxnGen* ptrParentGen;
-        
-    public:
-        inline int getNumberOfReactants() const
-        {
-            int sum = 0;
-            
-            BOOST_FOREACH( typename multMap::value_type tt, reactants )
-            {
-                sum += tt.second;
-                
-            }
-            
-            return sum;
-        }
-        
-        inline int getNumberOfProducts() const
-        {
-            int sum = 0;
-            
-            BOOST_FOREACH( typename multMap::value_type tt, products )
-            {
-                sum += tt.second;
-                
-            }
-            
-            return sum;
-            
-        }
         
     public:
         basicReaction( double reactionRate = 0.0 ) :

@@ -224,11 +224,11 @@ void SimpleSimulator::initialize()
             if ( ptrSpeciesReactionGenerator->nameIsUserName( thePair.first ) )
             {
                 std::string mangledName( ptrSpeciesReactionGenerator->convertUserNameToGeneratedName( thePair.first ) );
-                ptrSpeciesReactionGenerator->incrementNetworkBySpeciesName( mangledName );
+                ptrSpeciesReactionGenerator->incrementNetworkBySpeciesTag( mangledName );
             }
             else
             {
-                ptrSpeciesReactionGenerator->incrementNetworkBySpeciesName( thePair.first );
+                ptrSpeciesReactionGenerator->incrementNetworkBySpeciesTag( thePair.first );
             }
         }
     }

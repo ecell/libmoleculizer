@@ -38,7 +38,7 @@
 using namespace std;
 
 void
-processCommandLineArgs( int argc, char* argv[], std::string& theFileName, int& number);
+processCommandLineArgs( int argc, char* argv[], std::string& theFileName, int& number, int& printOutput);
 
 void
 displayHelpAndExitProgram();
@@ -51,15 +51,16 @@ void printStreamByName( mzr::moleculizer& refMolzer, const std::string& streamNa
 void printStreamByTag( mzr::moleculizer& refMolzer, const std::string& streamName);
 
 void printAllSpeciesByName(mzr::moleculizer& theMolzer);
-void printAllSpeciesByTag(mzr::moleculizer& theMolzer);
+void printAllSpeciesByID(mzr::moleculizer& theMolzer);
 
 int main(int argc, char* argv[])
 {
 
   std::string fileName;
   int number = -1;
+  int printOutput = 1;
 
-  processCommandLineArgs(argc, argv, fileName, number);
+  processCommandLineArgs(argc, argv, fileName, number, printOutput);
 
   mzr::moleculizer theMoleculizer;
   theMoleculizer.attachFileName( fileName );
@@ -77,7 +78,7 @@ int main(int argc, char* argv[])
           std::string name;
           if (getUninitializedSpecies( theMoleculizer, name))
           {
-              theMoleculizer.incrementNetworkBySpeciesName( name );
+              theMoleculizer.incrementNetworkBySpeciesTag( name );
           }
           else
           {
@@ -88,6 +89,7 @@ int main(int argc, char* argv[])
       }
   }
 
+
   std::cout << "################################################" << '\n';
   std::cout << "After " << number << " iterations," << '\n';
   std::cout << "There are " 
@@ -95,19 +97,23 @@ int main(int argc, char* argv[])
             << theMoleculizer.getTotalNumberSpecies() << " species in " 
             << theMoleculizer.getNumberOfPlexFamilies() << " families in the nework." << std::endl;
 
-  std::cout << "################################################" << '\n';
+  if (printOutput)
+  {
 
-  printAllSpeciesStreams(theMoleculizer);
+      std::cout << "################################################" << '\n';
 
-  std::cout << "################################################" << '\n';
+      printAllSpeciesStreams(theMoleculizer);
 
-  printAllSpeciesByName(theMoleculizer);
+      std::cout << "################################################" << '\n';
 
-  std::cout << "################################################" << '\n';
+      printAllSpeciesByName(theMoleculizer);
 
-  printAllSpeciesByTag(theMoleculizer);
+      std::cout << "################################################" << '\n';
 
-  std::cout << "################################################" << '\n';
+      printAllSpeciesByID(theMoleculizer);
+
+      std::cout << "################################################" << '\n';
+  }
   
   return 0;
   
@@ -174,7 +180,7 @@ bool getUninitializedSpecies( const mzr::moleculizer& moleculizerRef, std::strin
 }
 
 
-void processCommandLineArgs( int argc, char* argv[], std::string& mzrFile, int& number)
+void processCommandLineArgs( int argc, char* argv[], std::string& mzrFile, int& number, int& print)
 {
 
     bool file( false );
@@ -209,6 +215,14 @@ void processCommandLineArgs( int argc, char* argv[], std::string& mzrFile, int& 
             std::string numAsString = utl::mustGetArg( argc, argv);
             number = utl::argMustBeNNInt( numAsString );
         }
+        if( arg == "-v" )
+        {
+            print = 1;
+        }
+        if(arg == "-q")
+        {
+            print = 0;
+        }
     }
 
     if ( !file )
@@ -227,12 +241,12 @@ void printAllSpeciesByName(mzr::moleculizer& theMolzer)
         }
 }
 
-void printAllSpeciesByTag(mzr::moleculizer& theMolzer)
+void printAllSpeciesByID(mzr::moleculizer& theMolzer)
 {
-  BOOST_FOREACH( const mzr::moleculizer::SpeciesCatalog::value_type& vt, theMolzer.theSpeciesListCatalog)
-        {
-            std::cout << "ALL@@" << vt.second->getTag() << std::endl;
-        }
+    BOOST_FOREACH( const mzr::moleculizer::SpeciesCatalog::value_type& vt, theMolzer.theSpeciesListCatalog)
+    {
+        std::cout << "ALL@@" << theMolzer.convertSpeciesTagToSpeciesID( *vt.first ) << std::endl;
+    }
 }
 
 void displayHelpAndExitProgram()

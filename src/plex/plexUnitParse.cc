@@ -230,7 +230,7 @@ namespace plx
                 
                 mzr::moleculizer::SpeciesID newSpecID;
                 rMolzer.recordSpecies( pSpecies, newSpecID );
-                rMolzer.incrementNetworkBySpeciesName( newSpecID );
+                rMolzer.incrementNetworkBySpeciesTag( newSpecID );
             }
         };
     }

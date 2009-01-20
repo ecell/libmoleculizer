@@ -34,7 +34,6 @@
 #define RNHELPERCLASSES
 
 #include "utl/defs.hh"
-#include "fnd/massive.hh"
 
 namespace fnd
 {

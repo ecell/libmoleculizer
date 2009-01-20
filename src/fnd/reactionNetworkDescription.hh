@@ -29,28 +29,21 @@
 //
 //
 
-
 #ifndef RXNNETWORKCATALOG_HH
 #define RXNNETWORKCATALOG_HH
 
 #include "utl/defs.hh"
-
-// Depreciate this file.
-#include "fnd/utility.hh"
-
 #include "fnd/fndXcpt.hh"
 #include "fnd/basicReaction.hh"
 #include "fnd/basicSpecies.hh"
-#include <boost/function.hpp>
 
 namespace fnd
 {
     
-    // I obviously need to add some kind of public API function for expanding by a speciesID.
-    
     // Both speciesType and reactionType must have a public function
-    // void expandReactionNetwork().
-    // That is,  derived from fnd::reactionNetworkComponent.
+    // void expandReactionNetwork() - that is, derived from
+    // fnd::reactionNetworkComponent.
+
     template <typename speciesT,
               typename reactionT>
     class ReactionNetworkDescription
@@ -59,352 +52,130 @@ namespace fnd
         DECLARE_TYPE( speciesT, SpeciesType );
         DECLARE_TYPE( reactionT, ReactionType );
         
-        // Some ReactionNetowrkDescription;
         DECLARE_TYPE( String, SpeciesName );
-        DECLARE_TYPE( String, SpeciesID );
-        
-        typedef const SpeciesID* SpeciesHandle;
-        
-        typedef std::map<SpeciesHandle, SpeciesTypePtr, aux::compareByPtrValue<SpeciesID> > SpeciesCatalog;
+        DECLARE_TYPE( SpeciesName, SpeciesTag );
+        DECLARE_TYPE( SpeciesName, SpeciesID );
+
+       
+        DECLARE_TYPE( const SpeciesTag*, SpeciesHandle);
+
+        typedef std::map<SpeciesHandle, SpeciesTypePtr, utl::aux::compareByPtrValue<SpeciesTag> > SpeciesCatalog;
+
         typedef typename SpeciesCatalog::iterator SpeciesCatalogIter;
         typedef typename SpeciesCatalog::const_iterator SpeciesCatalogCIter;
-        
+
         typedef std::list<SpeciesTypePtr> SpeciesList;
         typedef std::list<ReactionTypePtr> ReactionList;
         
         typedef std::multimap<SpeciesTypePtr, ReactionTypePtr> ParticipatingSpeciesRxnMap;
-        
-        typedef std::list< std::pair<std::string*, SpeciesTypePtr> > SpeciesListCatalog;
-        
-        typedef typename SpeciesListCatalog::iterator SpeciesListCatalogIter;
-        typedef typename SpeciesListCatalog::const_iterator SpeciesListCatalogCIter;
-        
-        typedef typename SpeciesList::iterator SpeciesListIter;
-        typedef typename SpeciesList::const_iterator SpeciesListCIter;
-        
-        typedef typename ReactionList::iterator ReactionListIter;
-        typedef typename ReactionList::const_iterator ReactionListCIter;
-        
-    public:
-        
-        SpeciesTypePtr
-        findSpecies( const std::string& name ) throw( fnd::NoSuchSpeciesXcpt )
-        {
-            SpeciesCatalogIter theIter = theSpeciesListCatalog.find( &name );
-            if ( theIter != theSpeciesListCatalog.end() )
-            {
-                return theIter->second;
-            }
-            else
-            {
-                throw fnd::NoSuchSpeciesXcpt( name );
-            }
-            
-        }
-        
-        SpeciesTypeCptr
-        findSpecies( const std::string& name ) const throw( fnd::NoSuchSpeciesXcpt )
-        {
-            SpeciesCatalogCIter theIter = theSpeciesListCatalog.find( &name );
-            
-            if ( theIter != theSpeciesListCatalog.end() )
-            {
-                return theIter->second;
-            }
-            else
-            {
-                throw fnd::NoSuchSpeciesXcpt( name );
-            }
-        }
-        
-        
-        bool
-        findReactionWithSubstrates( SpeciesTypeCptr A,
-                                    std::vector<ReactionTypeCptr>& reactionVector)
-        {
-            
-            // This is bad.  It feels semantically correct, but probably means something
-            // should be refactored.
-            if (!A->hasNotified()) 
-            {
-                const_cast<SpeciesTypePtr>(A)->expandReactionNetwork();
-            }
+        typedef std::map< SpeciesHandle, const SpeciesID*, utl::aux::compareByPtrValue<SpeciesTag> > SpeciesNameMap;
 
-            typename ParticipatingSpeciesRxnMap::const_iterator iter = singleSubstrateRxns.find( const_cast<SpeciesTypePtr>(A) );
-            
-            while ( iter->first == A )
-            {
-                reactionVector.push_back( iter->second );
-                ++iter;
-            }
-            
-            return ( !reactionVector.empty() );
-        }
-        
-        bool
-        findReactionWithSubstrates( SpeciesTypeCptr A,
-                                    SpeciesTypeCptr B,
-                                    std::vector<ReactionTypeCptr>& reactionVector)
-        {
-            // This feels wrong (although semantically, so right), and probably means things 
-            // should be refactored.
-            if( ! A->hasNotified() )
-            {
-                const_cast<SpeciesTypePtr>(A)->expandReactionNetwork();
-            }
-
-            if (!B->hasNotified() )
-            {
-                const_cast<SpeciesTypePtr>(B)->expandReactionNetwork();
-            }
-            
-            
-            if ( A == B )
-            {
-                BOOST_FOREACH( ReactionTypePtr ptrRxn, theCompleteReactionList )
-                {
-                    if ( ptrRxn->getReactantStochiometry( A ) == 2 )
-                    {
-                        reactionVector.push_back( ptrRxn );
-                    }
-                }
-            }
-            else
-            {
-                BOOST_FOREACH( ReactionTypePtr ptrRxn, theCompleteReactionList )
-                {
-                    if ( ptrRxn->hasReactant( A ) && ptrRxn->hasReactant( B ) )
-                    {
-                        reactionVector.push_back( ptrRxn );
-                    }
-                }
-            }
-            
-            return ( !reactionVector.empty() );
-        }
-        
-        bool
-        checkSpeciesIsKnown( const std::string& speciesName ) const
-        {
-            return !( theSpeciesListCatalog.find( &speciesName ) == theSpeciesListCatalog.end() );
-            
-        }
-        
-        SpeciesCatalog&
-        getSpeciesCatalog()
-        {
-            return theSpeciesListCatalog;
-        }
-        
-        
-        const SpeciesCatalog&
-        getSpeciesCatalog() const
-        {
-            return theSpeciesListCatalog;
-        }
-        
-        const ReactionList&
-        getReactionList() const
-        {
-            return theCompleteReactionList;
-        }
-
-        const ReactionList&
-        getDeltaReactionList() const
-        {
-            return theDeltaReactionList;
-        }
-
-        const SpeciesList&
-        getDeltaSpeciesList() const
-        {
-            return theDeltaSpeciesList;
-        }
-        
-        // These two functions are the interface that reaction generators use
-        // to record their species.  They add the (speciesName, speciesPtr)
-        // and (reactionName, reactionPtr) entries to the catalog respectively.
-        // If the object being recorded is new, we also record it as a hit in the
-        // total number of species/reactions as well as the delta number of species/
-        // reactions.
-        bool
-        recordSpecies( SpeciesTypePtr pSpecies )
-        {
-            SpeciesHandle speciesHandle( new SpeciesID( pSpecies->getName() ) );
-            
-            if ( theSpeciesListCatalog.find( speciesHandle ) == theSpeciesListCatalog.end() )
-            {
-                theSpeciesListCatalog.insert( std::make_pair( speciesHandle, pSpecies ) );
-                theDeltaSpeciesList.push_back( pSpecies );
-                return true;
-            }
-            
-            return false;
-        }
-        
-        bool
-        recordSpecies( SpeciesTypePtr pSpecies, SpeciesID& name )
-        {
-            SpeciesHandle speciesHandle( new SpeciesID( pSpecies->getName() ) );
-            
-            // Put the speciesID into the name.
-            name = *speciesHandle;
-            
-            if ( theSpeciesListCatalog.find( speciesHandle ) == theSpeciesListCatalog.end() )
-            {
-                theSpeciesListCatalog.insert( std::make_pair( speciesHandle, pSpecies ) );
-                theDeltaSpeciesList.push_back( pSpecies );
-                return true;
-            }
-            
-            return false;
-        }
-        
-        bool
-        recordReaction( ReactionTypePtr pRxn )
-        {
-            if ( !pRxn->isStandardReaction() )
-            {
-                throw utl::FatalXcpt("Error in reactionNetworkCatalog::recordReaction.  Reaction passed in is non-standard");
-            }
-            
-            theCompleteReactionList.push_back( pRxn );
-            theDeltaReactionList.push_back( pRxn );
-            
-            std::cout << pRxn->getArity() << " " << pRxn->getArity() << std::endl;
-
-            switch ( pRxn->getArity() )
-            {
-                SpeciesTypePtr theSpeciesPtr;
-                
-            case 0:
-                // Register in the map of creation reactions
-                zeroSubstrateRxns.push_back( pRxn );
-                break;
-                
-            case 1:
-                // Register in a multi map of 1->? reactions
-                theSpeciesPtr = pRxn->getReactants().begin()->first;
-                singleSubstrateRxns.insert( std::make_pair( theSpeciesPtr, pRxn ) );
-                break;
-            case 2:
-                BOOST_FOREACH( typename fnd::basicReaction<SpeciesType>::multMap::value_type vt,
-                               pRxn->getReactants() )
-                {
-                    theSpeciesPtr = vt.first;
-                    doubleSubstrateRxns.insert( std::make_pair( theSpeciesPtr, pRxn ) );
-                }
-                break;
-            default:
-                throw utl::FatalXcpt("Error in reactionNetworkCatalog::recordReaction.  Reaction is non-standard. (jfjhnnnnnfhd348)"  );
-                break;
-            }
-            
-            return true;
-        }
-        
-        // These are not used by anyone at the moment.  It might be better to use them instead
-        // of the plain old recordSpecies/recordReaction functions, but who knows.
-        void mustRecordSpecies( SpeciesTypePtr pSpecies ) throw( utl::xcpt )
-        {
-            if ( !recordSpecies( pSpecies ) )
-            {
-                throw DuplicatedCatalogEntryXcpt( pSpecies->getName() );
-            }
-        }
-        
-        void
-        mustRecordReaction( ReactionTypePtr pRxn ) throw( utl::xcpt )
-        {
-            if ( recordReactions( pRxn ) )
-            {
-                return;
-            }
-            else
-            {
-                throw DuplicatedCatalogEntryXcpt( pRxn->getName() );
-            }
-            
-        }
-        
-        unsigned int
-        getTotalNumberSpecies() const
-        {
-            return theSpeciesListCatalog.size();
-        }
-        
-        unsigned int
-        getTotalNumberReactions() const
-        {
-            return theCompleteReactionList.size();
-        }
-        
-        // The getDeltaNumber(Species|Reactions) functions return the number
-        // of those objects created since the last time the recordCurrentState
-        // funsource ction was source called.
-        unsigned int
-        getNumberDeltaReactions() const
-        {
-            return theDeltaReactionList.size();
-        }
-        
-        unsigned int
-        getNumberDeltaSpecies() const
-        {
-            return theDeltaSpeciesList.size();
-        }
-        
-        void resetCurrentState()
-        {
-            theDeltaSpeciesList.clear();
-            theDeltaReactionList.clear();
-        }
-        
-        void incrementNetworkBySpeciesName( const SpeciesID& rName ) throw( utl::xcpt )
-        {
-            SpeciesCatalogCIter iter = theSpeciesListCatalog.find( &rName );
-            
-            if ( iter != theSpeciesListCatalog.end() )
-            {
-                iter->second->expandReactionNetwork();
-            }
-            else
-            {
-                throw NoSuchSpeciesXcpt( rName );
-            }
-        }
-        
-        ~ReactionNetworkDescription()
-        {
-            // We don't memory manage any SpeciesType* or ReactionType*, but we do memory
-            // manage the string* in theSpeciesListCatalog.
-            
-            BOOST_FOREACH( typename SpeciesCatalog::value_type i, theSpeciesListCatalog )
-            {
-                delete i.first;
-            }
-        }
-        
-        // -- The pointers to the strings in theSpeciesListCatalog ARE memory managed.
-        // -- The pointers to the species and reactions ARE NOT memory managed here.
-
+        // This is a map of SpeciesTag* -> Species*
         SpeciesCatalog theSpeciesListCatalog;
+        SpeciesNameMap speciesTagToSpeciesIDChart;
+        SpeciesNameMap speciesIDToSpeciesTagChart;
+
         ReactionList theCompleteReactionList;
+
+
         ReactionList unaryReactionList;
         ReactionList binaryReactionList;
 
         SpeciesList    theDeltaSpeciesList;
         ReactionList    theDeltaReactionList;
         
-        // 0->1, 1->0, 1->1, 1->2, 2->1
         ReactionList zeroSubstrateRxns;
         ParticipatingSpeciesRxnMap singleSubstrateRxns;
         ParticipatingSpeciesRxnMap doubleSubstrateRxns;
+        ParticipatingSpeciesRxnMap autoDimerizationRxns;
+
+    public:
+
+        ReactionNetworkDescription();
+        ~ReactionNetworkDescription();
+
+        ///////////////////////////////////////////////////////////////////////////
+        // Species Location API
+        // 
+        // The following functions allow for looking up species via their tagged 
+        // names.  
+        ///////////////////////////////////////////////////////////////////////////
         
+        SpeciesTypePtr findSpecies( const SpeciesTag& specTag ) throw( fnd::NoSuchSpeciesXcpt );
+        SpeciesTypeCptr findSpecies( const SpeciesTag& specTag ) const throw( fnd::NoSuchSpeciesXcpt );
+        bool checkSpeciesIsKnown( const std::string& speciesName ) const;
+
+
+        bool
+        findReactionWithSubstrates( SpeciesTypeCptr A,
+                                    std::vector<ReactionTypeCptr>& reactionVector);
+
+        
+        bool
+        findReactionWithSubstrates( SpeciesTypeCptr A,
+                                    SpeciesTypeCptr B,
+                                    std::vector<ReactionTypeCptr>& reactionVector);
+
+        const ReactionList& getReactionList() const;
+
+        SpeciesCatalog& getSpeciesCatalog();
+        const SpeciesCatalog& getSpeciesCatalog() const;
+
+        unsigned int getTotalNumberSpecies() const;
+        unsigned int getTotalNumberReactions() const;
+
+
+
+
+        ///////////////////////////////////////////////////////////////////////////
+        //  Delta species and reactions API
+        //
+        //  The following functions are designed to work on delta species and 
+        //  reactions.  These functions are the way that you determine what portions
+        //  of the network have been generated since the last time resetCurrentState
+        //  was called
+        ///////////////////////////////////////////////////////////////////////////
+
+        unsigned int getNumberDeltaSpecies() const;
+        unsigned int getNumberDeltaReactions() const;
+
+        const SpeciesList& getDeltaSpeciesList() const;
+        const ReactionList& getDeltaReactionList() const;
+
+        void resetCurrentState();
+
+
+        
+        ///////////////////////////////////////////////////////////////////////////
+        //  New species and reaction recording API
+        // 
+        //  The following functions are used for recording new species and reactions.
+        //  The functions beginning "record" that return bools return true if the 
+        //  species/reaction is new and false otherwise.  The mustRecord functions 
+        //  expect to succeed.  They throw an exception otherwise. 
+        bool recordSpecies( SpeciesTypePtr pSpecies );
+        
+        // This function works in exactly the same manner as record species.  However
+        // whether it succeeds or fails, the name under which the species is/has been 
+        // registered is placed in the refName parameter.
+        bool recordSpecies( SpeciesTypePtr pSpecies, SpeciesTag& refName );
+        bool recordReaction( ReactionTypePtr pRxn );
+
+        void mustRecordSpecies( SpeciesTypePtr pSpecies ) throw( utl::xcpt );
+        void mustRecordSpecies( SpeciesTypePtr pSpecies, SpeciesTag& refName ) throw( utl::xcpt );
+        void mustRecordReaction( ReactionTypePtr pRxn ) throw( utl::xcpt );
+
+
+        void incrementNetworkBySpeciesTag( const SpeciesTag& rName ) throw( utl::xcpt );
+        
+        SpeciesID convertSpeciesTagToSpeciesID( const SpeciesTag& rTag ) const throw( utl::xcpt );
+        SpeciesTag convertSpeciesIDToSpeciesTag( const SpeciesID& rID) const throw( utl::xcpt );
+
     };
-    
-    
-    
+
 }
+
+#include "reactionNetworkDescriptionImpl.hh"
+
 #endif // RXNNETWORKCATALOG_HH
 

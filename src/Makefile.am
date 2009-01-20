@@ -79,7 +79,7 @@ AM_CXXFLAGS = $(LIBXML_CFLAGS)
 AM_CFLAGS=-g -O0
 
 if STATIC_BUILD
-AM_LDFLAGS=-static
+AM_LDFLAGS=-all-static
 endif
 
 moleculizer_DEPENDENCIES = $(ALL_MZR_LIBS)

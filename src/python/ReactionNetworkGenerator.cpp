@@ -115,7 +115,7 @@ std::vector<Reaction>
 ReactionNetworkGenerator::getUnaryReactions( const std::string& species1 ) throw( mzr::IllegalNameXcpt )
 {
     
-    ptrMoleculizer->incrementNetworkBySpeciesName( species1 );
+    ptrMoleculizer->incrementNetworkBySpeciesTag( species1 );
     mzr::mzrSpecies* pSpeciesOne = ( *ptrMoleculizer ).theSpeciesListCatalog[&species1];
     std::vector<mzr::mzrReaction*> aVector;
     ptrMoleculizer->findReactionWithSubstrates( pSpeciesOne, aVector );
@@ -162,7 +162,7 @@ ReactionNetworkGenerator::showAllReactions()
 void
 ReactionNetworkGenerator::incrementSpecies( const std::string& species )
 {
-    ptrMoleculizer->incrementNetworkBySpeciesName( species );
+    ptrMoleculizer->incrementNetworkBySpeciesTag( species );
 }
 
 

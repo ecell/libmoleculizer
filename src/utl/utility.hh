@@ -29,14 +29,15 @@
 //
 //
 
+#ifndef UTILITY_HH
+#define UTILITY_HH
+
 #include <string>
 #include <vector>
 #include <sstream>
 
+#include <boost/shared_ptr.hpp>
 #include "utlXcpt.hh"
-
-#ifndef UTILITY_HH
-#define UTILITY_HH
 
 namespace utl
 {
@@ -93,6 +94,56 @@ namespace utl
     bool
     stringIsDouble( const std::string& rString,
                     double& rDouble );
+
+    namespace aux
+    {
+        template <typename T>
+        class compareByPtrValue
+        {
+        public:
+            bool operator()( const T* const a, const T* const b ) const
+            {
+                return *a < *b;
+            }
+            
+            bool operator()( const boost::shared_ptr<const T>  a,
+                             const boost::shared_ptr<const T>  b ) const
+            {
+                return *a < *b;
+            }
+        };
+        
+        template <typename ListCatalogT>
+        class doDeleteStringPtrs
+            : public std::unary_function<typename ListCatalogT::value_type, void>
+        {
+        public:
+            void operator()( const typename doDeleteStringPtrs::argument_type& refPairWithString )
+            {
+                delete refPairWithString.first;
+            }
+        };
+        
+        template <typename ListCatalogT>
+        class findEntryWithName
+            : public std::unary_function<typename ListCatalogT::value_type, bool>
+        {
+        public:
+            findEntryWithName( const std::string& nameToFind )
+                :
+                nameMatchTarget( nameToFind )
+            {}
+            
+            bool operator()( const typename findEntryWithName::argument_type& potentialMatch )
+            {
+                return ( *potentialMatch.first == nameMatchTarget );
+            }
+            
+        private:
+            const std::string& nameMatchTarget;
+        };
+    }
+
     
     
 }

@@ -134,7 +134,7 @@ namespace stoch
             
             mzr::moleculizer::SpeciesID newSpecID;
             rMolzer.recordSpecies( pSpecies, newSpecID );
-            rMolzer.incrementNetworkBySpeciesName( newSpecID );
+            rMolzer.incrementNetworkBySpeciesTag( newSpecID );
             
             
         }

@@ -55,7 +55,7 @@ namespace mzr
             = rMzrUnit.getGenerateDepth();
         
         rMzrUnit.rMolzer.recordSpecies( pSpeciesToCreate );
-        rMzrUnit.rMolzer.incrementNetworkBySpeciesName( pSpeciesToCreate->getName() );
+        rMzrUnit.rMolzer.incrementNetworkBySpeciesTag( pSpeciesToCreate->getName() );
         
         return fnd::go;
     }

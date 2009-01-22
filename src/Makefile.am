@@ -2,10 +2,8 @@
 
 abs_top_builddir=@abs_top_builddir@
 
-## This is the order in which the libraries should be built.
-## (dependencies go from left to right)
-SUBDIRS = fnd \
-	utl \
+SUBDIRS = utl \
+	fnd \
 	mzr \
 	stoch \
 	cpx \
@@ -21,12 +19,6 @@ moleculizerheaderdir=${include_dir}/${MOLECULIZER_DIRNAME}
 
 SRCDIR = $(abs_top_builddir)/src
 
-## This is the local target directory name.
-## I think it has something to do with header dependencies.
-moleculizerdir = $(SRCDIR)
-
-## These are constants defining the different library
-## dependencies (clearly).
 LIBFND = fnd/libmoleculizer_fnd.la
 LIBUTL = utl/libmoleculizer_utl.la
 LIBMZR = mzr/libmoleculizer_mzr.la
@@ -37,16 +29,35 @@ LIBMOL = mol/libmoleculizer_mol.la
 LIBPLEX = plex/libmoleculizer_plex.la
 LIBDIMER = dimer/libmoleculizer_dimer.la
 LIBFTR = ftr/libmoleculizer_ftr.la
+ALL_MZR_LIBS = $(LIBFND) $(LIBUTL) $(LIBMZR) $(LIBSTOCH) $(LIBNMR) $(LIBNMR) $(LIBCPX) $(LIBMOL) $(LIBPLEX) $(LIBDIMER) $(LIBFTR)
 
-ALL_MZR_LIBS = $(LIBFND) $(LIBUTL) $(LIBMZR) $(LIBSTOCH) $(LIBNMR) $(LIBNMR) $(LIBCPX) $(LIBMOL) $(LIBPLEX) $(LIBDIMER) $(LIBFTR) 
-bin_PROGRAMS = moleculizer 
+## This is the local target directory name.
+## I think it has something to do with header dependencies.
+moleculizerdir = $(SRCDIR)
 
-# lib_LTLIBRARIES = libmoleculizer_super.la
+LIBXML_CFLAGS = @LIBXML_CFLAGS@
+LIBXML_LIBS = @LIBXML_LIBS@
 
-# libmoleculizer_super_la_SOURCES =
+AM_CXXFLAGS = $(LIBXML_CFLAGS)
+AM_CFLAGS=-g -O0
 
-# nodist_EXTRA_libmoleculizer_super_la_SOURCES = dummy.cpp
-# libmoleculizer_super_la_LIBADD = \
+lib_LTLIBRARIES = libmoleculizer.la
+libmoleculizer_la_SOURCES =
+nodist_EXTRA_libmoleculizer_la_SOURCES = dummy.cpp
+
+libmoleculizer_la_LIBADD = \
+	$(LIBFND) \
+	$(LIBUTL) \
+	$(LIBMZR) \
+	$(LIBSTOCH) \
+	$(LIBNMR) \
+	$(LIBCPX) \
+	$(LIBMOL) \
+	$(LIBPLEX) \
+	$(LIBDIMER) \
+	$(LIBFTR)
+
+# moleculizer_LDADD = \
 # 	$(LIBFND) \
 # 	$(LIBUTL) \
 # 	$(LIBMZR) \
@@ -59,32 +70,17 @@ bin_PROGRAMS = moleculizer
 # 	$(LIBFTR)
 
 
-moleculizer_LDADD = \
-	$(LIBFND) \
-	$(LIBUTL) \
-	$(LIBMZR) \
-	$(LIBSTOCH) \
-	$(LIBNMR) \
-	$(LIBCPX) \
-	$(LIBMOL) \
-	$(LIBPLEX) \
-	$(LIBDIMER) \
-	$(LIBFTR)
-
-
-LIBXML_CFLAGS = @LIBXML_CFLAGS@
-LIBXML_LIBS = @LIBXML_LIBS@
-
-AM_CXXFLAGS = $(LIBXML_CFLAGS)
-AM_CFLAGS=-g -O0
+bin_PROGRAMS = moleculizer 
 
 if STATIC_BUILD
 AM_LDFLAGS=-all-static
 endif
 
-moleculizer_DEPENDENCIES = $(ALL_MZR_LIBS)
+moleculizer_DEPENDENCIES = libmoleculizer.la
 
 moleculizer_SOURCES=main.cc
+moleculizer_LDADD = libmoleculizer.la \
+	$(LIBXML_LIBS)
 
 
 

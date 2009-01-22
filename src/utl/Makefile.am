@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in.
 
-lib_LTLIBRARIES = libmoleculizer_utl.la
+noinst_LTLIBRARIES = libmoleculizer_utl.la
 
 abs_top_builddir=@abs_top_builddir@
 
@@ -33,7 +33,7 @@ LIBXML_LIBS = @LIBXML_LIBS@
 
 AM_CXXFLAGS = $(LIBXML_CFLAGS) 
 
-libmoleculizer_utl_la_LIBADD = -lstdc++ $(LIBXML_LIBS) 
+# libmoleculizer_utl_la_LIBADD = -lstdc++ $(LIBXML_LIBS) 
 
 libmoleculizer_utl_la_SOURCES =\
 arg.cc \

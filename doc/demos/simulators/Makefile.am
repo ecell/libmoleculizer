@@ -11,18 +11,7 @@ CPARTICLEDIR=$(DEMO_SIMULATION_DIR)/c_particle/src
 
 bin_PROGRAMS=network_expander_demo stochasticsim_demo particlesim_demo c_interface_demo 
 
-LIBFND = $(SRC)/fnd/libmoleculizer_fnd.la
-LIBUTL = $(SRC)/utl/libmoleculizer_utl.la
-LIBMZR = $(SRC)/mzr/libmoleculizer_mzr.la
-LIBSTOCH = $(SRC)/stoch/libmoleculizer_stoch.la
-LIBNMR = $(SRC)/nmr/libmoleculizer_nmr.la
-LIBCPX = $(SRC)/cpx/libmoleculizer_cpx.la
-LIBMOL = $(SRC)/mol/libmoleculizer_mol.la
-LIBPLEX = $(SRC)/plex/libmoleculizer_plex.la
-LIBDIMER = $(SRC)/dimer/libmoleculizer_dimer.la
-LIBFTR = $(SRC)/ftr/libmoleculizer_ftr.la
-
-ALL_MZR_LIBS = $(LIBFND) $(LIBUTL) $(LIBMZR) $(LIBSTOCH) $(LIBNMR) $(LIBNMR) $(LIBCPX) $(LIBMOL) $(LIBPLEX) $(LIBDIMER) $(LIBFTR) 
+LIBMZR = $(SRC)/libmoleculizer.la
 
 LIBXML_CFLAGS = @LIBXML_CFLAGS@
 LIBXML_LIBS = @LIBXML_LIBS@
@@ -37,19 +26,16 @@ stochasticsim_demo_SOURCES=\
 	$(STOCHSIMDIR)/stochasticsim_main.cpp \
 	$(STOCHSIMDIR)/demostochasticsimulator.cpp
 
-stochasticsim_demo_LDADD = $(ALL_MZR_LIBS) libsimbase.a
+stochasticsim_demo_LDADD = $(LIBMZR) libsimbase.a $(LIBXML_LIBS)
 
 particlesim_demo_SOURCES=\
 	$(PARTICLESIMDIR)/particlesim_main.cpp \
 	$(PARTICLESIMDIR)/demoparticlesimulator.cpp
 
-particlesim_demo_LDADD = $(ALL_MZR_LIBS) libsimbase.a
+particlesim_demo_LDADD = $(LIBMZR) libsimbase.a $(LIBXML_LIBS)
 
 network_expander_demo_SOURCES=$(NETEXPANDDIR)/main.cpp
-network_expander_demo_LDADD = $(ALL_MZR_LIBS)
+network_expander_demo_LDADD = $(LIBMZR) $(LIBXML_LIBS)
 
 c_interface_demo_SOURCES = $(CINTERFACEDIR)/c_interface_main.c
-c_interface_demo_LDADD = $(ALL_MZR_LIBS)
-
-# c_particle_demo_SOURCES = $(CPARTICLEDIR)/cparticle_main.c
-# c_particle_demo_LDADD = $(ALL_MZR_LIBS)
+c_interface_demo_LDADD = $(LIBMZR) $(LIBXML_LIBS)

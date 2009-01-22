@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in.
 
-lib_LTLIBRARIES = libmoleculizer_nmr.la
+noinst_LTLIBRARIES = libmoleculizer_nmr.la
 
 abs_top_builddir=@abs_top_builddir@
 

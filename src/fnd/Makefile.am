@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in.
 
-lib_LTLIBRARIES = libmoleculizer_fnd.la
+noinst_LTLIBRARIES = libmoleculizer_fnd.la
 
 abs_top_builddir=@abs_top_builddir@
 
@@ -37,7 +37,7 @@ AM_LDFLAGS= -all-static
 endif
 
 
-libmoleculizer_fnd_la_LIBADD = -lstdc++ 
+# libmoleculizer_fnd_la_LIBADD = -lstdc++ 
 
 libmoleculizer_fnd_la_SOURCES =\
 dumpStream.cc \

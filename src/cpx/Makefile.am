@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in.
 
-lib_LTLIBRARIES = libmoleculizer_cpx.la
+noinst_LTLIBRARIES = libmoleculizer_cpx.la
 
 abs_top_builddir=@abs_top_builddir@
 
@@ -33,7 +33,7 @@ if STATIC_BUILD
 AM_LDFLAGS= -all-static
 endif
 
-libmoleculizer_cpx_la_LIBADD = $(LIBFND)
+# libmoleculizer_cpx_la_LIBADD = $(LIBFND)
 
 libmoleculizer_cpx_la_SOURCES =\
 basicBndSite.cc \

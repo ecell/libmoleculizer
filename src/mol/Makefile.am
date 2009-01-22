@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in.
 
-lib_LTLIBRARIES = libmoleculizer_mol.la
+noinst_LTLIBRARIES = libmoleculizer_mol.la
 
 abs_top_builddir=@abs_top_builddir@
 
@@ -23,7 +23,7 @@ LIBDIMER = ../dimer/libmoleculizer_dimer.la
 LIBFTR = ../ftr/libmoleculizer_ftr.la
 ALL_MZR_LIBS = $(LIBFND) $(LIBUTL) $(LIBMZR) $(LIBSTOCH) $(LIBNMR) $(LIBNMR) $(LIBCPX) $(LIBMOL) $(LIBPLEX) $(LIBDIMER) $(LIBFTR)
 
-libmoleculizer_mol_la_LIBADD = -lstdc++ $(LIBMZR) $(LIBCPX)
+# libmoleculizer_mol_la_LIBADD = -lstdc++ $(LIBMZR) $(LIBCPX)
 
 LIBXML_CFLAGS = @LIBXML_CFLAGS@
 LIBXML_LIBS = @LIBXML_LIBS@

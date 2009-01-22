@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in.
 
-lib_LTLIBRARIES = libmoleculizer_stoch.la
+noinst_LTLIBRARIES = libmoleculizer_stoch.la
 
 abs_top_builddir=@abs_top_builddir@
 
@@ -32,7 +32,7 @@ GSL_LIBS = @GSL_LIBS@
 
 AM_CXXFLAGS = @CXXFLAGS@ -Wall $(LIBXML_CFLAGS)
 
-libmoleculizer_stoch_la_LIBADD = -lstdc++ $(LIBUTL) $(LIBFND) $(LIBMZR)
+# libmoleculizer_stoch_la_LIBADD = -lstdc++ $(LIBUTL) $(LIBFND) $(LIBMZR)
 
 if STATIC_BUILD
 AM_LDFLAGS= -all-static

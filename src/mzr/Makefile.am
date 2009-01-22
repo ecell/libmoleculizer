@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in.
 
-lib_LTLIBRARIES = libmoleculizer_mzr.la
+noinst_LTLIBRARIES = libmoleculizer_mzr.la
 
 abs_top_builddir=@abs_top_builddir@
 
@@ -33,7 +33,7 @@ if STATIC_BUILD
 AM_LDFLAGS= -all-static
 endif
 
-libmoleculizer_mzr_la_LIBADD = -lstdc++ $(LIBUTL)
+# libmoleculizer_mzr_la_LIBADD = -lstdc++ $(LIBUTL)
 
 libmoleculizer_mzr_la_SOURCES =\
 dumpUtils.cc \
@@ -48,10 +48,6 @@ mzrUnitInsert.cc \
 mzrUnitParse.cc \
 spatialExtrapolationFunctions.cc \
 unitsMgr.cc
-
-
-
-# growEvent.cc 
 
 libmoleculizer_mzr_HEADERS=\
 createEvent.hh \

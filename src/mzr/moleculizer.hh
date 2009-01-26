@@ -33,58 +33,17 @@
 #ifndef MOLECULIZER_H
 #define MOLECULIZER_H
 
-/*! \defgroup unitsGroup Moleculizer units.
-  \brief Units and other libraries. */
-
-/*! \defgroup mzrGroup The mzr library.
-  \ingroup unitsGroup
-  \brief Library against which main program and all units are linked.
-  
-  This library is not a moleculizer unit in the same sense as the rest;
-  it cannot be loaded with the load command (loadCmd).  Instead, it contains
-  base code for all moleculizer operations, and it is loaded automatically
-  by the dynamic linker, ld.so.
-  
-  By linking the main executable and all units against this library,
-  their sizes are reduced considerably.  If not linked against this
-  library, the unit .so's are much larger, presumably due to g++'s
-  current (default) template expansion strategy.  I'm not absolutely
-  sure that this bloat would correspondingly increase memory
-  consumption when the libraries are dlopen'ed, but the usual first
-  step in dlopen is to memory map the .so file, I think. */
-
-/*! \file moleculizer.hh
-  \ingroup mzrGroup
-  \brief Defines the main application class. */
-
-/*! \mainpage Moleculizer source code
-  
-  Originally, Moleculizer units were called "modules," but the
-  name was changed to avoid conflict with Doxygen's notion of a
-  module,  a topic-oriented chunk of hierarchical documentation.
-  You can see a hierarchical view of all the modules by using the
-  "Modules" item in the page-top menu.  Most of the modules are
-  in fact Moleculizer units.
-  
-  Quick links:
-  - <A HREF="../../index.html">Up to main index.</A>
-  - \link unitsGroup Moleculizer units. \endlink
-*/
-
 #include "utl/defs.hh"
-#include "fnd/reactionNetworkDescription.hh"
 #include "mzr/mzrException.hh"
 #include "mzr/unit.hh"
+#include "fnd/reactionNetworkDescription.hh"
 #include "mzr/mzrSpecies.hh"
 #include "mzr/mzrReaction.hh"
-#include <boost/foreach.hpp>
+
 
 namespace mzr
 {
     class unitsMgr;
-    
-    /*! \ingroup mzrGroup
-      \brief The main application object. */
     
     // The main bulk of this class can be found in ReactionNetworkDescription.
     class moleculizer :
@@ -98,14 +57,15 @@ namespace mzr
         
     public:
         
-        virtual void generateCompleteNetwork();
+        void generateCompleteNetwork();
+        void generateCompleteNetwork(long maxNumSpecies, long maxNumRxns = -1);
         
     public:
         
         void attachFileName( const std::string& aFileName );
         void attachString( const std::string& documentAsString );
         void attachDocument( xmlpp::Document* pDoc );
-        
+
         bool getModelHasBeenLoaded() const;
         
     public:
@@ -118,7 +78,6 @@ namespace mzr
         
         int 
         getNumberOfPlexFamilies() const;
-
 
         //////////////////////////////////////////////////
         // 
@@ -149,10 +108,14 @@ namespace mzr
         
     public:
         xmlpp::Document*
-        makeDomOutput( void ) throw( std::exception );
+        makeDomOutput( bool verbose ) throw( std::exception );
+
+        void writeOutputFile( const std::string& fileName, bool verbose = false);
         
     protected:
         void setModelHasBeenLoaded( bool value );
+        
+        void insertGeneratedNetwork( xmlpp::Element* generatedNetworkElement, bool verbose );
         
         
     public:
@@ -220,6 +183,9 @@ namespace mzr
         
         bool modelLoaded;
         bool extrapolationEnabled;
+
+        // Now we store a copy of the parser, so that people can get a copy of the rules, at any time.
+        xmlpp::DomParser theParser;
     };
     
 }

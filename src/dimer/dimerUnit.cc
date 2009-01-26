@@ -34,10 +34,9 @@
 namespace dimer
 {
     void
-    dimerUnit::insertStateElts( xmlpp::Element* pRootElt ) throw( std::exception )
+    dimerUnit::insertStateElts( xmlpp::Element* pUnitStatesElt ) throw( std::exception )
     {
-        // Since the dimer unit basically just contributes reaction generators
-        // it has nothing to add here.
+        pUnitStatesElt->add_child("dimer-unit-state");
     }
 }
 

@@ -117,9 +117,11 @@ namespace stoch
     
     void
     stochUnit::
-    insertStateElts( xmlpp::Element* pRootElt ) throw( std::exception )
+    insertStateElts( xmlpp::Element* pUnitStatesElt ) throw( std::exception )
     {
         
+        pUnitStatesElt->add_child("stoch-unit-state");
+
         // Commenting out this function for the time being.  With the new library status of 
         // Moleculizer, it is somewhat unclear what exactly should go in here anyways.
         

@@ -38,7 +38,7 @@
 using namespace std;
 
 void
-processCommandLineArgs( int argc, char* argv[], std::string& theFileName, int& number, int& printOutput);
+processCommandLineArgs( int argc, char* argv[], std::string& theFileName, int& number, int& printOutput, std::string& theOutputFileName);
 
 void
 displayHelpAndExitProgram();
@@ -57,10 +57,11 @@ int main(int argc, char* argv[])
 {
 
   std::string fileName;
+  std::string outputFileName("");
   int number = -1;
   int printOutput = 1;
 
-  processCommandLineArgs(argc, argv, fileName, number, printOutput);
+  processCommandLineArgs(argc, argv, fileName, number, printOutput, outputFileName);
 
   mzr::moleculizer theMoleculizer;
   theMoleculizer.attachFileName( fileName );
@@ -89,7 +90,6 @@ int main(int argc, char* argv[])
       }
   }
 
-
   std::cout << "################################################" << '\n';
   std::cout << "After " << number << " iterations," << '\n';
   std::cout << "There are " 
@@ -114,7 +114,12 @@ int main(int argc, char* argv[])
 
       std::cout << "################################################" << '\n';
   }
-  
+
+  if(outputFileName != "")
+  {
+      theMoleculizer.writeOutputFile(outputFileName, true);
+  }
+
   return 0;
   
 }
@@ -180,7 +185,7 @@ bool getUninitializedSpecies( const mzr::moleculizer& moleculizerRef, std::strin
 }
 
 
-void processCommandLineArgs( int argc, char* argv[], std::string& mzrFile, int& number, int& print)
+void processCommandLineArgs( int argc, char* argv[], std::string& mzrFile, int& number, int& print, std::string& outputFileName)
 {
 
     bool file( false );
@@ -222,6 +227,10 @@ void processCommandLineArgs( int argc, char* argv[], std::string& mzrFile, int& 
         if(arg == "-q")
         {
             print = 0;
+        }
+        if(arg == "-o")
+        {
+            outputFileName = utl::mustGetArg( argc, argv );
         }
     }
 

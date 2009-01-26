@@ -87,10 +87,14 @@ namespace ftr
         
         // The state output routine for this unit.
         void
-        insertStateElts( xmlpp::Element* pRootElt ) throw( std::exception )
+        insertStateElts( xmlpp::Element* pUnitStatesElt ) throw( std::exception )
         {
+            pUnitStatesElt->add_child("ftr-unit-parse");
+
             // For now, this unit just provides reaction generators, which
             // for now I'm not dumping in "state dump."
+
+            
         }
     };
 }

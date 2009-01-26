@@ -55,6 +55,7 @@ namespace mzr
         const std::string model ("model");
         const std::string streams ("streams");
         const std::string events ("events");
+        const std::string generatedNetwork("generated-network");
         
         const std::string explicitSpecies ("explicit-species");
         
@@ -120,7 +121,7 @@ namespace mzr
         const std::string sciNote_exponentAttr ("exponent");
         
         const std::string moleculizerState ("moleculizer-state");
-        const std::string unitsStates ("units-states");
+        const std::string unitsStates ("unit-states");
         
         const std::string explicitSpeciesTags ("explicit-species-tags");
         const std::string explicitSpeciesTag ("explicit-species-tag");

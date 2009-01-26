@@ -34,6 +34,7 @@
 #include <functional>
 
 #include "utl/defs.hh"
+#include "utl/utility.hh"
 #include "utl/utlXcpt.hh"
 #include "utl/dom.hh"
 #include "utl/linearHash.hh"
@@ -154,9 +155,11 @@ namespace mzr
     moleculizer::moleculizer( void )
         :
         modelLoaded( false ),
-        extrapolationEnabled( false )
+        extrapolationEnabled( false ),
+        theParser()
     {
-        
+        theParser.set_validate( false );
+
         pUserUnits = new unitsMgr( *this );
         
         // Now just does the "input capabilities" thing.
@@ -208,21 +211,17 @@ namespace mzr
     
     void moleculizer::attachFileName( const std::string& filename )
     {
-        xmlpp::DomParser parser;
-        parser.set_validate( false );
-        parser.parse_file( filename );
-        if ( !parser ) throw utl::dom::noDocumentParsedXcpt();
-        this->attachDocument( parser.get_document() );
+        theParser.parse_file( filename );
+        if ( !theParser ) throw utl::dom::noDocumentParsedXcpt();
+        this->attachDocument( theParser.get_document() );
     }
     
     void moleculizer::attachString( const std::string& documentAsString )
     {
-        xmlpp::DomParser parser;
-        parser.set_validate( false );
-        parser.parse_memory( documentAsString );
-        if ( !parser ) throw utl::dom::noDocumentParsedXcpt();
+        theParser.parse_memory( documentAsString );
+        if ( !theParser ) throw utl::dom::noDocumentParsedXcpt();
         
-        this->attachDocument( parser.get_document() );
+        this->attachDocument( theParser.get_document() );
     }
     
     bool
@@ -236,13 +235,10 @@ namespace mzr
     {
         modelLoaded = value;
     }
-    
+
     void
     moleculizer::attachDocument( xmlpp::Document* pDoc )
     {
-        // Note that this new pattern here will allow old style moleculizer
-        // files, ie those that contain events, to be parsed and run.
-        
         if ( getModelHasBeenLoaded() )
         {
             throw utl::modelAlreadyLoadedXcpt();
@@ -275,7 +271,6 @@ namespace mzr
                        prepareUnitToRun( pRootElement,
                                          pModelElement,
                                          pStreamsElement ) );
-        
     }
     
     
@@ -307,37 +302,108 @@ namespace mzr
         }
     };
     
-    // State dump, invoked in a dump-state event.
     xmlpp::Document*
-    moleculizer::makeDomOutput( void ) throw( std::exception )
+    moleculizer::makeDomOutput( bool verbose ) throw( std::exception )
     {
         xmlpp::Document* pDoc = new xmlpp::Document();
         
         // Create the moleculizer-state node.
         xmlpp::Element* pRootElt
             = pDoc->create_root_node( eltName::moleculizerState );
+
+        // Copy in the original model and streams stuff...
+        xmlpp::Document* originalDoc = theParser.get_document();
+        xmlpp::Element* originalRoot = originalDoc->get_root_node();
+
+        xmlpp::Element* pInputModelElt = utl::dom::mustGetUniqueChild( originalRoot, eltName::model);
+        xmlpp::Element* pInputStreamsElt = utl::dom::getOptionalChild( originalRoot, eltName::streams);
+
+        pRootElt->import_node( pInputModelElt );
+        if (pInputStreamsElt) pRootElt->import_node( pInputStreamsElt );
         
-        // Add some mandatory elements.
-        xmlpp::Element* pModelElt
-            = pRootElt->add_child( eltName::model );
-        pModelElt->add_child( eltName::unitsStates );
-        pModelElt->add_child( eltName::explicitSpeciesTags );
-        pModelElt->add_child( eltName::taggedSpecies );
-        pModelElt->add_child( eltName::tagReactions );
+        xmlpp::Element* generatedNetworkElt = pRootElt->add_child( eltName::generatedNetwork );
+        xmlpp::Element* unitStatesElement = pRootElt->add_child( eltName::unitsStates );
         
-        // The only reason for inserting these elements here seems
-        // to have been (thought to be?) that various modules would insert
-        // elements under them.
-        pModelElt->add_child( eltName::time );
-        pRootElt->add_child( eltName::streams );
+        // Insert each of the state elements
+        this->insertGeneratedNetwork( generatedNetworkElt, verbose );
         
         // Run through the units, letting each make its complete state
         // contribution, for now.
         std::for_each( pUserUnits->begin(),
                        pUserUnits->end(),
-                       unitInsertStateElements( pRootElt ) );
+                       unitInsertStateElements( unitStatesElement ) );
         
         return pDoc;
+    }
+
+    void moleculizer::writeOutputFile( const std::string& fileName, bool verbose)
+    {
+        xmlpp::Document* outputDocument = makeDomOutput(verbose);
+
+        outputDocument->write_to_file_formatted( fileName );
+
+        delete outputDocument;
+    }
+
+
+    void moleculizer::insertGeneratedNetwork( xmlpp::Element* generatedNetworkElt, bool verbose )
+    {
+        xmlpp::Element* genSpecElt = generatedNetworkElt->add_child("generated-species");
+        xmlpp::Element* genRxnsElt = generatedNetworkElt->add_child("generated-reactions");
+
+        BOOST_FOREACH(const SpeciesCatalog::value_type& refPair, this->getSpeciesCatalog() )
+        {
+            xmlpp::Element* newSpecElt = genSpecElt->add_child( "species");
+            newSpecElt->set_attribute("tag", *refPair.first);
+            newSpecElt->set_attribute("unique-id", convertSpeciesTagToSpeciesID( *refPair.first) );
+
+            if( refPair.second->hasNotified() ) 
+            {
+                newSpecElt->set_attribute("expanded", "true" );
+            }
+            else
+            {
+                newSpecElt->set_attribute("expanded", "false" );
+            }
+        }
+
+        BOOST_FOREACH(const mzr::mzrReaction* pRxn, this->getReactionList() )
+        {
+            xmlpp::Element* newRxnElt = genSpecElt->add_child( "reaction");
+            xmlpp::Element* newSubstratesElt = newRxnElt->add_child("substrates");
+            xmlpp::Element* newProductsElt = newRxnElt->add_child("products");
+            xmlpp::Element* newRateElt = newRxnElt->add_child("rate");
+
+            // newRxnElt->set_attribute( "representation", pRxn->getName() );
+
+            // process each substrate
+            BOOST_FOREACH(const mzr::mzrReaction::multMap::value_type& vt, pRxn->getReactants())
+            {
+                xmlpp::Element* newSubElt = newSubstratesElt->add_child("substrate");
+                newSubElt->set_attribute("multiplicity", utl::stringify(vt.second) );
+                newSubElt->set_attribute("tag", vt.first->getTag() );
+                if(verbose)
+                {
+                    newSubElt->set_attribute("unique-id", vt.first->getName() );
+                }
+            }
+
+            // Process each reactant
+            BOOST_FOREACH(const mzr::mzrReaction::multMap::value_type& vt, pRxn->getProducts())
+            {
+                xmlpp::Element* newProdElt = newProductsElt->add_child("product");
+                newProdElt->set_attribute("multiplicity", utl::stringify(vt.second) );
+                newProdElt->set_attribute("tag", vt.first->getTag() );
+                if(verbose)
+                {
+                    newProdElt->set_attribute("unique-id", vt.first->getName() );
+                }
+            }
+
+            newRateElt->set_attribute("value", utl::stringify(pRxn->getRate() ) );
+            
+        }
+        
     }
     
     void
@@ -428,8 +494,44 @@ namespace mzr
             }
         }
     }
-    
-    
+
+    void moleculizer::generateCompleteNetwork(long maxNumSpecies, long maxNumRxns)
+    {
+        if ( ! this->getModelHasBeenLoaded() ) throw ModelNotLoadedXcpt("moleculizer::generateCompleteNetwork");
+
+        if (maxNumSpecies < 0) maxNumSpecies = std::numeric_limits<long>::max();
+        if (maxNumRxns < 0) maxNumRxns = std::numeric_limits<long>::max();
+
+
+        // This loop has some goofy logic.  Is there a better way to do this?  Seems like there 
+        // has to be...
+        
+        const std::string NULLSTRING("");
+        while( maxNumSpecies > getTotalNumberSpecies() && 
+               maxNumRxns > getTotalNumberReactions() )
+        {
+            std::string speciesToInc("");
+            BOOST_FOREACH(const SpeciesCatalog::value_type& refPair, this->getSpeciesCatalog() )
+            {
+                if (! refPair.second->hasNotified() )
+                {
+                    speciesToInc = *refPair.first;
+                    break;  // Out of the for each loop
+                }
+            }
+
+            if (speciesToInc == NULLSTRING )
+            {
+                // From this we may imply that all species have been notified and hence we return.
+                return;
+            }
+            else
+            {
+                this->incrementNetworkBySpeciesTag( speciesToInc );
+            }
+            
+        }
+    }
     
     bool moleculizer::getRateExtrapolation( void ) const
     {

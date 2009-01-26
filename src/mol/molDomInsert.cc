@@ -97,36 +97,39 @@ namespace bnd
     };
     
     void
-    molUnit::insertStateElts( xmlpp::Element* pRootElt )
+    molUnit::insertStateElts( xmlpp::Element* pUnitStateElt )
         throw( std::exception )
     {
-        // Get the model element
-        xmlpp::Element* pModelElt
-            = utl::dom::mustGetUniqueChild( pRootElt,
-                                            mzr::eltName::model );
+
+        pUnitStateElt->add_child("mol-unit-state");
         
-        // Get the units-states element.
-        xmlpp::Element* pUnitsStatesElt
-            = utl::dom::mustGetUniqueChild( pModelElt,
-                                            mzr::eltName::unitsStates );
+//         // Get the model element
+//         xmlpp::Element* pModelElt
+//             = utl::dom::mustGetUniqueChild( pRootElt,
+//                                             mzr::eltName::model );
         
-        // Insert the modifications element.
-        xmlpp::Element* pModificationsElt
-            = pUnitsStatesElt->add_child( eltName::modifications );
+//         // Get the units-states element.
+//         xmlpp::Element* pUnitsStatesElt
+//             = utl::dom::mustGetUniqueChild( pRootElt,
+//                                             mzr::eltName::unitsStates );
         
-        // Have each modification insert itself into the modifications section.
-        std::for_each( knownMods.begin(),
-                       knownMods.end(),
-                       insertModElt( pModificationsElt ) );
+//         // Insert the modifications element.
+//         xmlpp::Element* pModificationsElt
+//             = pUnitsStatesElt->add_child( eltName::modifications );
         
-        // Insert the mols element.
-        xmlpp::Element* pMolsElt
-            = pUnitsStatesElt->add_child( eltName::mols );
+//         // Have each modification insert itself into the modifications section.
+//         std::for_each( knownMods.begin(),
+//                        knownMods.end(),
+//                        insertModElt( pModificationsElt ) );
         
-        // Have each mol insert itself into the mols section.
-        // At this time, there is actually only one kind of mol.
-        std::for_each( molsByName.begin(),
-                       molsByName.end(),
-                       insertMolElt( pMolsElt ) );
+//         // Insert the mols element.
+//         xmlpp::Element* pMolsElt
+//             = pUnitsStatesElt->add_child( eltName::mols );
+        
+//         // Have each mol insert itself into the mols section.
+//         // At this time, there is actually only one kind of mol.
+//         std::for_each( molsByName.begin(),
+//                        molsByName.end(),
+//                        insertMolElt( pMolsElt ) );
     }
 }

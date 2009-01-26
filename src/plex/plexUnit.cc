@@ -197,9 +197,11 @@ namespace plx
     // For dumping state in XML.
     void
     plexUnit::
-    insertStateElts( xmlpp::Element* pRootElt )
+    insertStateElts( xmlpp::Element* pUnitStatesElt )
         throw( std::exception )
     {
+        pUnitStatesElt->add_child("plex-unit-state");
+
         //         // Get the model element.
         //         xmlpp::Element* pModelElt
         //         = utl::dom::mustGetUniqueChild (pRootElt,

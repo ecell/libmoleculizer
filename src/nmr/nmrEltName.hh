@@ -39,7 +39,9 @@ namespace nmr
     
     namespace eltName
     {
+        extern const std::string nmrUnitState;
         extern const std::string namingConvention;
+        extern const std::string type;
     }
     
 }

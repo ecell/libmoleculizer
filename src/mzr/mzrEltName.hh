@@ -55,6 +55,7 @@ namespace mzr
         extern const std::string model;
         extern const std::string streams;
         extern const std::string events;
+        extern const std::string generatedNetwork;
         
         extern const std::string explicitSpecies;
         

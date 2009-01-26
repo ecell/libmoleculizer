@@ -86,36 +86,39 @@ namespace mzr
     };
     
     void
-    mzrUnit::insertStateElts( xmlpp::Element* pRootElt ) throw( std::exception )
+    mzrUnit::insertStateElts( xmlpp::Element* pUnitStatesElt ) throw( std::exception )
     {
-        // Model elements.
-        xmlpp::Element* pModelElt
-            = utl::dom::mustGetUniqueChild( pRootElt,
-                                            eltName::model );
+
+        pUnitStatesElt->add_child("mzr-unit-state");
+
+//         // Model elements.
+//         xmlpp::Element* pModelElt
+//             = utl::dom::mustGetUniqueChild( pRootElt,
+//                                             eltName::model );
         
-        xmlpp::Element* pExplicitSpeciesTagsElt
-            = utl::dom::mustGetUniqueChild( pModelElt,
-                                            eltName::explicitSpeciesTags );
+//         xmlpp::Element* pExplicitSpeciesTagsElt
+//             = utl::dom::mustGetUniqueChild( pModelElt,
+//                                             eltName::explicitSpeciesTags );
         
-        // Give tags for named species.
-        std::for_each( speciesByName.begin(),
-                       speciesByName.end(),
-                       insertExplicitSpeciesTag( pExplicitSpeciesTagsElt ) );
+//         // Give tags for named species.
+//         std::for_each( speciesByName.begin(),
+//                        speciesByName.end(),
+//                        insertExplicitSpeciesTag( pExplicitSpeciesTagsElt ) );
         
-        // Give all the reactions, using tags to refer to species.
-        xmlpp::Element* pTagReactionsElt
-            = utl::dom::mustGetUniqueChild( pModelElt,
-                                            eltName::tagReactions );
+//         // Give all the reactions, using tags to refer to species.
+//         xmlpp::Element* pTagReactionsElt
+//             = utl::dom::mustGetUniqueChild( pModelElt,
+//                                             eltName::tagReactions );
         
-        // First the reactions that weren't automatically generated.
-        std::for_each( userReactions.begin(),
-                       userReactions.end(),
-                       std::bind2nd( std::mem_fun( &mzrReaction::insertElt ),
-                                     pTagReactionsElt ) );
+//         // First the reactions that weren't automatically generated.
+//         std::for_each( userReactions.begin(),
+//                        userReactions.end(),
+//                        std::bind2nd( std::mem_fun( &mzrReaction::insertElt ),
+//                                      pTagReactionsElt ) );
         
-        // Now the reactions that were automatically generated.
-        std::for_each( reactionFamilies.begin(),
-                       reactionFamilies.end(),
-                       insertFamilyReactions( pTagReactionsElt ) );
+//         // Now the reactions that were automatically generated.
+//         std::for_each( reactionFamilies.begin(),
+//                        reactionFamilies.end(),
+//                        insertFamilyReactions( pTagReactionsElt ) );
     }
 }

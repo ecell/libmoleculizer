@@ -39,6 +39,8 @@ void showUsageAndExit();
 int loadModelFile( moleculizer* handle, int argc, char* argv[]);
 int getNumberOfIterations( int argc, char* argv[]);
 int getVerbose( int argc, char* argv[]);
+int getMaxNumSpecies( int argc, char* argv[]);
+int getMaxNumReactions( int argc, char* argv[]);
 
 int getWriteToFile( int argc, char* argv[], char* name, int size);
 
@@ -63,6 +65,7 @@ int main(int argc, char* argv[] )
 
     moleculizer* pMoleculizer = createNewMoleculizerObject();
 
+    setRateExtrapolation( pMoleculizer, 1 );
     int result = loadModelFile( pMoleculizer, argc, argv);
 
     switch(result)
@@ -82,13 +85,22 @@ int main(int argc, char* argv[] )
     }
 
   int numIter = getNumberOfIterations(argc, argv);
+  int maxSpecies = getMaxNumSpecies( argc, argv);
+  int maxRxns = getMaxNumReactions( argc, argv);
+
+  if (numIter > 0 && (maxSpecies > 0 || maxRxns > 0) )
+  {
+      // ANCHOR
+      printf("Error, if either (max species and/or max rxns) can be set or numIters. ");
+      showUsageAndExit();
+      
+  }
+
   verbose = getVerbose(argc, argv);
   
-  setRateExtrapolation( pMoleculizer, 1 );
-
   if(numIter == -1 )
   {
-      expandNetwork( pMoleculizer );
+      expandNetworkToLimit( pMoleculizer, maxSpecies, maxRxns );
   }
   else
   {
@@ -155,7 +167,7 @@ int main(int argc, char* argv[] )
 void showUsageAndExit()
 {
 
-    printf("Usage: c_interface_demo -f <FILE> [-n NumIters] [-w OUTPUTFILE] \n\n");
+    printf("Usage: c_interface_demo -f <FILE> [-n NumIters] [ -s MAXSPECIES ] [ -r MAXRXNS] [-w OUTPUTFILE] \n\n");
 
     printf("This is a demonstration program that demonstrates how libmoleculizer can be used in \n");
     printf("a program written in c for expanding whole reaction networks and displaying some information.\n\n");
@@ -301,7 +313,6 @@ int getWriteToFile( int argc, char* argv[], char* name, int size)
         {
             if (strlen( argv[num + 1] ) >= size -1 )
             {
-                printf("No write.\n");
                 return 0;
             }
             else
@@ -313,6 +324,38 @@ int getWriteToFile( int argc, char* argv[], char* name, int size)
         }
     }
     
-    printf("No write.\n");
     return 0;
+}
+
+
+int getMaxNumSpecies( int argc, char* argv[])
+{
+    int argNum = 0;
+    
+    for(argNum = 0; argNum != argc; ++argNum)
+    {
+        if (strcmp(argv[argNum], "-s") == 0 && argNum + 1 <= argc - 1)
+        {
+            int maxSpec = atoi( argv[ argNum + 1] );
+            return maxSpec;
+        }
+    }
+
+    return -1;
+}
+
+int getMaxNumReactions( int argc, char* argv[])
+{
+    int argNum = 0;
+    
+    for(argNum = 0; argNum != argc; ++argNum)
+    {
+        if (strcmp(argv[argNum], "-r") == 0 && argNum + 1 <= argc - 1)
+        {
+            int maxRxns = atoi( argv[ argNum + 1] );
+            return maxRxns;
+        }
+    }
+
+    return -1;
 }

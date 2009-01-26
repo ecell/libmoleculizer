@@ -67,42 +67,39 @@ extern "C" {
        freeMoleculizerObject */
     
     moleculizer* createNewMoleculizerObject();
-
-    int setRateExtrapolation( moleculizer* handle, int extrapolation);
-    
     void freeMoleculizerObject( moleculizer* handle);
 
-    int expandNetwork( moleculizer* handle);
+    int setRateExtrapolation( moleculizer* handle, int extrapolation);
 
+    int loadRulesFile(moleculizer* handle, char* fileName);
+    int loadRulesString( moleculizer* handle, char* file);
+
+    int expandNetwork( moleculizer* handle);
+    int expandNetworkToLimit( moleculizer* handle, long maxNumSpecies, long maxNumReactions);
     int incrementSpecies( moleculizer* handle, char* speciesName);
+
+    int getNumberOfSpecies(moleculizer* handle);
+    int getNumberOfReactions(moleculizer* handle);
 
     int getDeltaSpecies( moleculizer* handle, species*** pSpeciesArray, int* pNum);
     int getDeltaReactions( moleculizer* handle, reaction*** pReactionArray, int* pNum);
     int clearDeltaState( moleculizer* handle);
 
-    int writeDotFile( moleculizer* handle, char* fileName);
-    
-    /* This function should be called with a file that contains an xml file describing the rules of the 
-       system. See documentation for a description of the rules. */
-    
-    int loadRulesFile(moleculizer* handle, char* fileName);
-    int loadRulesString( moleculizer* handle, char* file);
+    int convertNameToUniqueID( moleculizer* handle, char* speciesTag, char* speciesID, unsigned int idSize);
+    int convertUniqueIDToName( moleculizer* handle, char* speciesID, char* speciesTag, unsigned int tagSize);
 
-    int convertTagToID( moleculizer* handle, char* speciesTag, char* speciesID, int idSize);
-    int convertIDToTag( moleculizer* handle, char* speciesID, char* speciesTag, int tagSize);
-    
+    int convertUserNameToSpeciesName(moleculizer* handle, char* theUserName, char* correspondingTag, unsigned int bufferSize);
+    int convertUserNameToUniqueID(moleculizer* handle, char* theUserName, char* correspondingSpeciesID, unsigned int bufferSize);
+
     /* These two functions can be used with a Species Key (it's canonical string representation) to 
        determine what reactions, if any they participate in. These functions return pointers to reaction 
 
        arrays, which contain pointers to reactions and species.  Ownership is transfered to the user, 
        who must free them manually. */
 
-    int getReactionsInvolving(moleculizer* handle, char* speciesName, reaction*** ptrReactionPtrArray, int* numReactions);
     int getReactionsBetween(moleculizer* handle, char* speciesName1, char* speciesName2, reaction*** ptrReactionPtrArray, int* numReactions);
     int getUnaryReactions(moleculizer* handle, char* speciesName, reaction*** ptrReactionPtrArray, int* numReactions);
-
-    int getNumberOfSpecies(moleculizer* handle);
-    int getNumberOfReactions(moleculizer* handle);
+    int getReactionsInvolving(moleculizer* handle, char* speciesName, reaction*** ptrReactionPtrArray, int* numReactions);
 
     int getAllStreamSpecies(moleculizer* handle, char* streamName, species** pSpeciesArray, int* numberSpecies);
     int getAllSpecies(moleculizer* handle, species*** pSpeciesArray, int* numberSpecies);
@@ -123,21 +120,15 @@ extern "C" {
     void freeSpecies( species* pSpecies );
     
     
-    /* This function converts a user name to a species key, ie like "X-singleton" to "___1X______" or 
-       whatever.
-       
-       I may have to change this, as I am not certain of the best c-interface here. For the moment, 
-       theUserName must be null terminated.  It returns non-zero if in error (usually it means
-       the name has not been found.. */
-    
-    int convertUserNameToSpeciesID(moleculizer* handle, char* theUserName, char* correspondingSpeciesID, int bufferSize);
-    int convertUserNameToSpeciesTag(moleculizer* handle, char* theUserName, char* correspondingTag, int bufferSize);
-
     int expandSpeciesByTag( moleculizer* handle, char* theTag);
     int expandSpeciesByID( moleculizer* handle, char* theID);
     int expandSpecies( moleculizer* handle, species* mzrSpecies);
 
     int expandReaction(moleculizer* handle, reaction* mzrReaction);
+
+    int writeDotFile( moleculizer* handle, char* fileName);
+    
+
 
     
 

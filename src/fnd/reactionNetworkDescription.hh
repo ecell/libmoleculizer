@@ -81,8 +81,8 @@ namespace fnd
         ReactionList unaryReactionList;
         ReactionList binaryReactionList;
 
-        SpeciesList    theDeltaSpeciesList;
-        ReactionList    theDeltaReactionList;
+        SpeciesList  theDeltaSpeciesList;
+        ReactionList theDeltaReactionList;
         
         ReactionList zeroSubstrateRxns;
         ParticipatingSpeciesRxnMap singleSubstrateRxns;

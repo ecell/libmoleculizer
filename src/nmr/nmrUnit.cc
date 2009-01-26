@@ -112,14 +112,15 @@ namespace nmr
         //         }
     }
     
-    void nmrUnit::insertStateElts( xmlpp::Element* pRootElt )
+
+    void nmrUnit::insertStateElts( xmlpp::Element* pUnitStatesElt )
         throw( std::exception )
     {
-        // TODO: Debug nmrUnit::insertStateElts and make sure it all works.
-        xmlpp::Element* modelElt = utl::dom::mustGetUniqueChild( pRootElt,
-                                                                 mzr::eltName::model );
+
+        pUnitStatesElt->add_child("dimer-unit-state");
         
-        modelElt->set_attribute( eltName::namingConvention,
-                                 getNameEncoder()->getName() );
+        xmlpp::Element* pNamingConvention = pUnitStatesElt->add_child("naming-convention");
+        pNamingConvention->set_attribute("type", getNameEncoder()->getName() );
+
     }
 }

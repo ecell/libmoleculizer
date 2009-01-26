@@ -35,6 +35,8 @@ namespace nmr
 {
     namespace eltName
     {
+        const std::string nmrUnitState( "nmr-unit-state" );
         const std::string namingConvention( "naming-convention" );
+        const std::string type( "type" );
     }
 }

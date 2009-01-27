@@ -9,8 +9,8 @@ SRCDIR = ..
 SUBDIRS = tests
 
 VERSION = @PACKAGE_VERSION@
-MOLECULIZER_DIRNAME = moleculizer-$(VERSION)
-libmoleculizer_nmrdir=$(includedir)/$(MOLECULIZER_DIRNAME)/moleculizer/nmr
+MOLECULIZER_DIRNAME = libmoleculizer-$(VERSION)
+libmoleculizer_nmrdir=$(includedir)/$(MOLECULIZER_DIRNAME)/libmoleculizer/nmr
 
 LIBFND = ../fnd/libmoleculizer_fnd.la
 LIBUTL = ../utl/libmoleculizer_utl.la

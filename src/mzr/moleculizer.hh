@@ -61,6 +61,8 @@ namespace mzr
         void generateCompleteNetwork(long maxNumSpecies, long maxNumRxns = -1);
         
     public:
+
+        void DEBUG_sayHello() const;
         
         void attachFileName( const std::string& aFileName );
         void attachString( const std::string& documentAsString );

@@ -11,7 +11,7 @@ CPARTICLEDIR=$(DEMO_SIMULATION_DIR)/c_particle/src
 
 bin_PROGRAMS=network_expander_demo stochasticsim_demo particlesim_demo c_interface_demo 
 
-LIBMZR = $(SRC)/libmoleculizer.la
+LIBMZR = $(SRC)/libmoleculizer-1.0.la
 
 LIBXML_CFLAGS = @LIBXML_CFLAGS@
 LIBXML_LIBS = @LIBXML_LIBS@

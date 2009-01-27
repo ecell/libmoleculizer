@@ -6,3 +6,7 @@ XMLOPERATOR_DIR=$(abs_top_builddir)/xmloperator_2_3_0
 
 SUBDIRS = src doc
 
+pkgconfigdir = $(libdir)/pkgconfig
+pkgconfig_DATA = libmoleculizer-1.0.pc
+
+

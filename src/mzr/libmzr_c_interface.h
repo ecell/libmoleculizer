@@ -69,6 +69,8 @@ extern "C" {
     moleculizer* createNewMoleculizerObject();
     void freeMoleculizerObject( moleculizer* handle);
 
+    void DEBUG_sayHello( moleculizer* handle);
+    
     int setRateExtrapolation( moleculizer* handle, int extrapolation);
 
     int loadRulesFile(moleculizer* handle, char* fileName);

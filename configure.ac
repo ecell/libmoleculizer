@@ -72,6 +72,7 @@ AC_CONFIG_FILES([Makefile
                 doc/manual/Makefile
                 doc/demos/Makefile
                 doc/demos/simulators/Makefile
+                libmoleculizer-1.0.pc
 		])
 
 

@@ -1,0 +1,12 @@
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+libdir=@libdir@
+includedir=@includedir@
+
+Name: libmoleculizer
+Description: Library for expanding biochemical species/reaction networks from a rules description.
+Requires: libxml++-2.6
+URL: https://sourceforge.net/projects/moleculizer/
+Version: @VERSION@
+Libs: -L${libdir} -lmoleculizer-1.0
+Cflags: -I${includedir}/libmoleculizer-1.0 -I${includedir}/libmoleculizer-1.0/libmoleculizer

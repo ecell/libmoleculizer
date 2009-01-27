@@ -15,6 +15,7 @@ SUBDIRS = utl \
 ## 	python 
 
 MOLECULIZER_DIRNAME = @MOLECULIZER_DIRNAME@
+
 moleculizerheaderdir=${include_dir}/${MOLECULIZER_DIRNAME}
 
 SRCDIR = $(abs_top_builddir)/src
@@ -41,11 +42,11 @@ LIBXML_LIBS = @LIBXML_LIBS@
 AM_CXXFLAGS = $(LIBXML_CFLAGS)
 AM_CFLAGS=-g -O0
 
-lib_LTLIBRARIES = libmoleculizer.la
-libmoleculizer_la_SOURCES =
-nodist_EXTRA_libmoleculizer_la_SOURCES = dummy.cpp
+lib_LTLIBRARIES = libmoleculizer-1.0.la
+libmoleculizer_1_0_la_SOURCES =
+nodist_EXTRA_libmoleculizer_1_0_la_SOURCES = dummy.cpp
 
-libmoleculizer_la_LIBADD = \
+libmoleculizer_1_0_la_LIBADD = \
 	$(LIBFND) \
 	$(LIBUTL) \
 	$(LIBMZR) \
@@ -76,10 +77,10 @@ if STATIC_BUILD
 AM_LDFLAGS=-all-static
 endif
 
-moleculizer_DEPENDENCIES = libmoleculizer.la
+moleculizer_DEPENDENCIES = libmoleculizer-1.0.la
 
 moleculizer_SOURCES=main.cc
-moleculizer_LDADD = libmoleculizer.la \
+moleculizer_LDADD = libmoleculizer-1.0.la \
 	$(LIBXML_LIBS)
 
 

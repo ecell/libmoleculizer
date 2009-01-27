@@ -9,8 +9,8 @@ SUBDIRS = tests
 
 
 VERSION = @PACKAGE_VERSION@
-MOLECULIZER_DIRNAME = moleculizer-$(VERSION)
-libmoleculizer_mzrdir=$(includedir)/$(MOLECULIZER_DIRNAME)/moleculizer/mzr
+MOLECULIZER_DIRNAME = libmoleculizer-$(VERSION)
+libmoleculizer_mzrdir=$(includedir)/$(MOLECULIZER_DIRNAME)/libmoleculizer/mzr
 
 LIBFND = ../fnd/libmoleculizer_fnd.la
 LIBUTL = ../utl/libmoleculizer_utl.la

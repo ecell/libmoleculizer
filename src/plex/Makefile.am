@@ -8,8 +8,8 @@ abs_top_builddir=@abs_top_builddir@
 SRCDIR = ..
 
 VERSION = @PACKAGE_VERSION@
-MOLECULIZER_DIRNAME = moleculizer-$(VERSION)
-libmoleculizer_plexdir=$(includedir)/$(MOLECULIZER_DIRNAME)/moleculizer/plex
+MOLECULIZER_DIRNAME = libmoleculizer-$(VERSION)
+libmoleculizer_plexdir=$(includedir)/$(MOLECULIZER_DIRNAME)/libmoleculizer/plex
 
 LIBFND = ../fnd/libmoleculizer_fnd.la
 LIBUTL = ../utl/libmoleculizer_utl.la

@@ -48,7 +48,12 @@ dnl AC_CHECK_LIB(boost_python,main,,AC_MSG_ERROR([could not find libboost_python
 dnl
 dnl
 dnl PKG_CHECK_MODULES(LIBXML, libxml++-1.0)
-PKG_CHECK_MODULES(LIBXML, libxml++-2.6 >= 2.10)
+
+PKG_CHECK_EXISTS( libxml++-2.6, [PKG_CHECK_MODULES(LIBXML, libxml++-2.6 >= 2.10)], [PKG_CHECK_MODULES(LIBXML, libxml++-1.0)])
+
+dnl PKG_CHECK_MODULES(LIBXML, libxml++-2.6 >= 2.10)
+
+
 AC_SUBST(LIBXML_CFLAGS)
 AC_SUBST(LIBXML_LIBS)
 

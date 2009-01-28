@@ -73,10 +73,6 @@ libmoleculizer_1_0_la_LIBADD = \
 
 bin_PROGRAMS = moleculizer 
 
-if STATIC_BUILD
-AM_LDFLAGS=-all-static
-endif
-
 moleculizer_DEPENDENCIES = libmoleculizer-1.0.la
 
 moleculizer_SOURCES=main.cc

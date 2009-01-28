@@ -32,11 +32,6 @@ GSL_LIBS = @GSL_LIBS@
 
 AM_CXXFLAGS = @CXXFLAGS@ -Wall $(LIBXML_CFLAGS)
 
-if STATIC_BUILD
-AM_LDFLAGS= -all-static
-endif
-
-
 # libmoleculizer_fnd_la_LIBADD = -lstdc++ 
 
 libmoleculizer_fnd_la_SOURCES =\

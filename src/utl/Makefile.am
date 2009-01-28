@@ -23,11 +23,6 @@ LIBDIMER = ../dimer/libmoleculizer_dimer.la
 LIBFTR = ../ftr/libmoleculizer_ftr.la
 ALL_MZR_LIBS = $(LIBFND) $(LIBUTL) $(LIBMZR) $(LIBSTOCH) $(LIBNMR) $(LIBNMR) $(LIBCPX) $(LIBMOL) $(LIBPLEX) $(LIBDIMER) $(LIBFTR)
 
-
-if STATIC_BUILD
-AM_LDFLAGS= -all-static
-endif
-
 LIBXML_CFLAGS = @LIBXML_CFLAGS@
 LIBXML_LIBS = @LIBXML_LIBS@
 

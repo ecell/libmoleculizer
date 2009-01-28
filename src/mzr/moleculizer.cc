@@ -357,6 +357,7 @@ namespace mzr
         xmlpp::Element* genRxnsElt = generatedNetworkElt->add_child("generated-reactions");
 
 
+        // Insert each of the generated species into the network.
         for( SpeciesCatalogCIter specIter = this->getSpeciesCatalog().begin();
              specIter != this->getSpeciesCatalog().end();
              ++specIter)
@@ -375,14 +376,14 @@ namespace mzr
             }
         }
 
-       
+        // Insert each of the generated reactions into the network.
         for( ReactionList::const_iterator rxnIter = this->getReactionList().begin();
              rxnIter != this->getReactionList().end();
              ++rxnIter)
         {
             const mzr::mzrReaction* pRxn( *rxnIter );
 
-            xmlpp::Element* newRxnElt = genSpecElt->add_child( "reaction");
+            xmlpp::Element* newRxnElt = genRxnsElt->add_child( "reaction");
             xmlpp::Element* newSubstratesElt = newRxnElt->add_child("substrates");
             xmlpp::Element* newProductsElt = newRxnElt->add_child("products");
             xmlpp::Element* newRateElt = newRxnElt->add_child("rate");

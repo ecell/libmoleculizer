@@ -29,12 +29,6 @@ GSL_LIBS = @GSL_LIBS@
 
 AM_CXXFLAGS = @CXXFLAGS@ -Wall $(LIBXML_CFLAGS)
 
-if STATIC_BUILD
-AM_LDFLAGS= -all-static
-endif
-
-# libmoleculizer_cpx_la_LIBADD = $(LIBFND)
-
 libmoleculizer_cpx_la_SOURCES =\
 basicBndSite.cc \
 cpxXcpt.cc \

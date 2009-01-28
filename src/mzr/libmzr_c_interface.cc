@@ -493,7 +493,7 @@ int convertUserNameToUniqueID(moleculizer* handle, char* theUserName, char* corr
     
     try
     {
-        mzr::moleculizer* pMoleculizer;
+        mzr::moleculizer* pMoleculizer = convertCMzrPtrToMzrPtr(handle);
 
         std::string userName( theUserName );
         std::string speciesKey = pMoleculizer->convertUserNameToGeneratedName( userName );

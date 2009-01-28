@@ -34,10 +34,6 @@ AM_CXXFLAGS = @CXXFLAGS@ -Wall $(LIBXML_CFLAGS)
 
 # libmoleculizer_stoch_la_LIBADD = -lstdc++ $(LIBUTL) $(LIBFND) $(LIBMZR)
 
-if STATIC_BUILD
-AM_LDFLAGS= -all-static
-endif
-
 libmoleculizer_stoch_la_SOURCES =\
 badStochSpeciesTagXcpt.cc \
 stochDomParse.cc \

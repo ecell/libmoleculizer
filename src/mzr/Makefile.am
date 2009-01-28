@@ -29,12 +29,6 @@ LIBXML_LIBS = @LIBXML_LIBS@
 
 AM_CXXFLAGS = @CXXFLAGS@ -Wall $(LIBXML_CFLAGS)
 
-if STATIC_BUILD
-AM_LDFLAGS= -all-static
-endif
-
-# libmoleculizer_mzr_la_LIBADD = -lstdc++ $(LIBUTL)
-
 libmoleculizer_mzr_la_SOURCES =\
 dumpUtils.cc \
 libmzr_c_interface.cc \

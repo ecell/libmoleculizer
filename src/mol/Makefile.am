@@ -33,10 +33,6 @@ GSL_LIBS = @GSL_LIBS@
 
 AM_CXXFLAGS = @CXXFLAGS@ -Wall $(LIBXML_CFLAGS)
 
-if STATIC_BUILD
-AM_LDFLAGS= -all-static
-endif
-
 libmoleculizer_mol_la_SOURCES =\
 badModMolXcpt.cc \
 badMolParamXcpt.cc \

@@ -130,13 +130,6 @@ extern "C" {
 
     int writeDotFile( moleculizer* handle, char* fileName);
     
-
-
-    
-
-        
-    
-    
 #ifdef __cplusplus
 }
 #endif

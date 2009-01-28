@@ -46,14 +46,8 @@ dnl
 AC_CHECK_LIB(python${PYTHON_VERSION},main,,AC_MSG_ERROR([could not find libpython.]))
 dnl AC_CHECK_LIB(boost_python,main,,AC_MSG_ERROR([could not find libboost_python.]),-lpython${PYTHON_VERSION})
 dnl
-dnl
-dnl PKG_CHECK_MODULES(LIBXML, libxml++-1.0)
 
 PKG_CHECK_EXISTS( libxml++-2.6, [PKG_CHECK_MODULES(LIBXML, libxml++-2.6 >= 2.10)], [PKG_CHECK_MODULES(LIBXML, libxml++-1.0)])
-
-dnl PKG_CHECK_MODULES(LIBXML, libxml++-2.6 >= 2.10)
-
-
 AC_SUBST(LIBXML_CFLAGS)
 AC_SUBST(LIBXML_LIBS)
 
@@ -81,18 +75,20 @@ AC_CONFIG_FILES([Makefile
 		])
 
 
-AC_ARG_ENABLE(static-build,
- [  --enable-static-build  Build the entire project as one monolithic staticly linked program],
- [ static_build=yes
- ])
+AC_ARG_ENABLE([demos],
+  AC_HELP_STRING([--disable-demos],
+                 [build libmoleculizer without the associated demos.]), [],
+  [enable_demos=yes]
+)
 
-AM_CONDITIONAL([STATIC_BUILD], [test "$static_build" = yes])
+AC_MSG_CHECKING([whether to build Demos])
+if test "$enable_demos" = "yes"; then
+  AC_MSG_RESULT([yes])
+else
+  AC_MSG_RESULT([no])
+fi
 
-AC_ARG_ENABLE(index-alphabetically,
-        [ --enable-alphabetic-indexing Causes binding sites in the naming unit to be indexed alphabetically.]
-        [index_alphabetically=yes])
-
-
+AM_CONDITIONAL([ENABLE_DEMOS], [test "$enable_demos" = "yes"])
 
 # Output this header file.
 AC_CONFIG_HEADERS([src/moleculizer_config.hh])

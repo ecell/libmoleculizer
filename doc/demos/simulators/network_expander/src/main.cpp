@@ -32,7 +32,6 @@
 
 #include <string>
 #include <iostream>
-#include <boost/foreach.hpp>
 #include "utl/arg.hh"
 #include "mzr/moleculizer.hh"
 
@@ -131,11 +130,13 @@ void printAllSpeciesStreams(mzr::moleculizer& refMolzer)
     refMolzer.getSpeciesStreams( theStreams );
     std::cout << " There are " << theStreams.size() << " streams." << std::endl;
 
-    BOOST_FOREACH( const std::string& name, theStreams)
+    for( std::vector<std::string>::const_iterator strIter = theStreams.begin();
+         strIter != theStreams.end();
+         ++strIter)
     {
-        printStreamByName( refMolzer, name);
+        printStreamByName( refMolzer, *strIter);
         std::cout << "################################################" << '\n';
-        printStreamByTag( refMolzer, name);
+        printStreamByTag( refMolzer, *strIter);
     }
 }
 
@@ -147,9 +148,11 @@ void printStreamByName( mzr::moleculizer& refMolzer, const std::string& streamNa
 
     refMolzer.getSpeciesInSpeciesStream( streamName, theSpecies);
 
-    BOOST_FOREACH( const mzr::mzrSpecies* ptrSpecies, theSpecies)
+    for( std::vector<const mzr::mzrSpecies*>::const_iterator specIter = theSpecies.begin();
+         specIter != theSpecies.end();
+         ++specIter)
     {
-        std::cout << streamName << "@@" << ptrSpecies->getName() << '\n';
+        std::cout << streamName << "@@" << (*specIter)->getName() << '\n';
     }
 
     std::cout << ']' << std::endl;
@@ -163,9 +166,11 @@ void printStreamByTag( mzr::moleculizer& refMolzer, const std::string& streamNam
 
     refMolzer.getSpeciesInSpeciesStream( streamName, theSpecies);
 
-    BOOST_FOREACH( const mzr::mzrSpecies* ptrSpecies, theSpecies)
+    for( std::vector<const mzr::mzrSpecies*>::const_iterator specIter = theSpecies.begin();
+         specIter != theSpecies.end();
+         ++specIter)
     {
-        std::cout << streamName << "@@" << ptrSpecies->getTag() << '\n';
+        std::cout << streamName << "@@" << (*specIter)->getTag() << '\n';
     }
 
     std::cout << ']' << std::endl;
@@ -173,11 +178,13 @@ void printStreamByTag( mzr::moleculizer& refMolzer, const std::string& streamNam
 
 bool getUninitializedSpecies( const mzr::moleculizer& moleculizerRef, std::string& speciesName)
 {
-    BOOST_FOREACH( const mzr::moleculizer::SpeciesCatalog::value_type& thePair, moleculizerRef.getSpeciesCatalog() )
+    for( mzr::moleculizer::SpeciesCatalog::const_iterator specIter = moleculizerRef.getSpeciesCatalog().begin();
+         specIter != moleculizerRef.getSpeciesCatalog().end();
+         ++specIter)
     {
-        if(!thePair.second->hasNotified())
+        if(!specIter->second->hasNotified())
         {
-            speciesName = *thePair.first;
+            speciesName = *(specIter->first);
             return true;
         }
     }
@@ -245,17 +252,21 @@ void processCommandLineArgs( int argc, char* argv[], std::string& mzrFile, int& 
 
 void printAllSpeciesByName(mzr::moleculizer& theMolzer)
 {
-    BOOST_FOREACH( const mzr::moleculizer::SpeciesCatalog::value_type& vt, theMolzer.theSpeciesListCatalog)
-        {
-            std::cout << "ALL@@" << *vt.first << std::endl;
-        }
+    for( mzr::moleculizer::SpeciesCatalog::const_iterator specIter = theMolzer.theSpeciesListCatalog.begin();
+         specIter != theMolzer.theSpeciesListCatalog.end();
+         ++specIter)
+    {
+        std::cout << "ALL@@" << *specIter->first << std::endl;
+    }
 }
 
 void printAllSpeciesByID(mzr::moleculizer& theMolzer)
 {
-    BOOST_FOREACH( const mzr::moleculizer::SpeciesCatalog::value_type& vt, theMolzer.theSpeciesListCatalog)
+    for( mzr::moleculizer::SpeciesCatalog::const_iterator specIter = theMolzer.theSpeciesListCatalog.begin();
+         specIter != theMolzer.theSpeciesListCatalog.end();
+         ++specIter)
     {
-        std::cout << "ALL@@" << theMolzer.convertSpeciesTagToSpeciesID( *vt.first ) << std::endl;
+        std::cout << "ALL@@" << theMolzer.convertSpeciesTagToSpeciesID( *specIter->first ) << std::endl;
     }
 }
 

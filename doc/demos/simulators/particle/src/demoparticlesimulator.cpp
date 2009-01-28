@@ -38,12 +38,15 @@ void SimpleParticleSimulator::singleStep()
 
     std::vector<std::string> stringPtrVector;
 
-    BOOST_FOREACH( const modelPairType& mpt, theModel )
+    for( std::map<std::string, int>::const_iterator specIter = theModel.begin();
+         specIter != theModel.end();
+         ++specIter)
     {
-        if ( mpt.second > 0 )
+        if ( specIter->second > 0 )
         {
-            stringPtrVector.push_back( mpt.first );
+            stringPtrVector.push_back( specIter->first );
         }
+
     }
 
     // Pick two particles at random.
@@ -97,12 +100,17 @@ void SimpleParticleSimulator::doSingleUnaryReaction()
 {
 
     std::vector<std::string> stringPtrVector;
-    BOOST_FOREACH( const modelPairType& mpt, theModel )
+
+
+    for( std::map<std::string, int>::const_iterator specIter = theModel.begin();
+         specIter != theModel.end();
+         ++specIter)
     {
-        if ( mpt.second > 0 )
+        if ( specIter->second > 0 )
         {
-            stringPtrVector.push_back( mpt.first );
+            stringPtrVector.push_back( specIter->first );
         }
+
     }
 
     std::string particleName = stringPtrVector[rand() % stringPtrVector.size()];

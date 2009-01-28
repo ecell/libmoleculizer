@@ -32,7 +32,6 @@
 
 #include <iostream>
 #include <algorithm>
-#include <boost/foreach.hpp>
 #include "demostochasticsimulator.hpp"
 
 
@@ -65,16 +64,14 @@ void SimpleStochasticSimulator::recordNewReactions()
         std::cout << "Adding to StochasticSimulator: " << std::endl;
     }
 
-    BOOST_FOREACH( mzr::mzrReaction* rxn, ptrSpeciesReactionGenerator->theDeltaReactionList )
+    for( mzr::moleculizer::ReactionList::const_iterator rxnIter = ptrSpeciesReactionGenerator->theDeltaReactionList.begin();
+         rxnIter != ptrSpeciesReactionGenerator->theDeltaReactionList.end();
+         ++rxnIter)
     {
-        printRxn( rxn );
+        printRxn( *rxnIter );
     }
 
     assert( reactions.size() == ptrSpeciesReactionGenerator->theCompleteReactionList.size() );
-
-//     assert( reactions.size() == ptrSpeciesReactionGenerator->zeroSubstrateRxns.size() + \
-//             ptrSpeciesReactionGenerator->singleSubstrateRxns.size() +    \
-//             ptrSpeciesReactionGenerator->doubleSubstrateRxns.size() );
 
     ptrSpeciesReactionGenerator->resetCurrentState();
 }
@@ -107,28 +104,32 @@ void SimpleStochasticSimulator::getReactionsWithPositivePropensity( std::vector<
 {
     okReactions.clear();
 
-    BOOST_FOREACH( mzr::mzrReaction* rxnptr, reactions )
+    for( std::vector<mzr::mzrReaction*>::iterator rxnIter = reactions.begin();
+         rxnIter != reactions.end();
+         ++rxnIter)
     {
-        if ( reactionHasPositiveSubstrates( rxnptr ) )
+        if ( reactionHasPositiveSubstrates( *rxnIter ) )
         {
-            okReactions.push_back( rxnptr );
+            okReactions.push_back( *rxnIter );
         }
     }
 }
 
 bool SimpleStochasticSimulator::reactionHasPositiveSubstrates( const mzr::mzrReaction* rxnPtr )
 {
-    typedef std::pair<mzr::mzrSpecies*, int> PairType;
-    BOOST_FOREACH( const PairType& pr, rxnPtr->getReactants() )
+
+    for( mzr::moleculizer::ReactionType::multMap::const_iterator iter = rxnPtr->getReactants().begin();
+         iter != rxnPtr->getReactants().end();
+         ++iter)
     {
-        std::string substrateName( pr.first->getName() );
+        std::string substrateName( iter->first->getName() );
 
         if ( theModel.find( substrateName ) == theModel.end() )
         {
             return false;
         }
 
-        if ( theModel[ substrateName ] < pr.second ) return false;
+        if ( theModel[ substrateName ] < iter->second ) return false;
     }
 
     return true;

@@ -32,7 +32,6 @@
 #include "demosimulator.hpp"
 #include "mzr/mzrSpecies.hh"
 #include "mzr/mzrReaction.hh"
-#include <boost/foreach.hpp>
 using namespace mzr;
 
 class SimpleParticleSimulator : public SimpleSimulator
@@ -41,15 +40,7 @@ public:
     SimpleParticleSimulator( std::string rulesfile, std::string modelfile )
     {
 
-//        ptrSpeciesReactionGenerator->enableSpatialReactionNetworkGeneration();
         loadRules( rulesfile );
-        
-//         boost::function<void( const mzrSpecies* )> cb1;
-//         cb1 = std::bind1st( std::mem_fun( &SimpleParticleSimulator::displayNewSpeciesMsg ), this );
-
-//         ptrSpeciesReactionGenerator->addNewSpeciesCallback( cb1 );
-
-
         loadModel( modelfile );
 
         initialize();
@@ -71,18 +62,22 @@ public:
     void printAllSpecies() const
     {
 
-         BOOST_FOREACH( const mzr::moleculizer::SpeciesCatalog::value_type& vt, ptrSpeciesReactionGenerator->getSpeciesCatalog() )
-         {
-             printSpec( vt.second );
-         }
+        for( mzr::moleculizer::SpeciesCatalog::const_iterator specIter = ptrSpeciesReactionGenerator->getSpeciesCatalog().begin();
+             specIter != ptrSpeciesReactionGenerator->getSpeciesCatalog().end();
+             ++specIter)
+        {
+            printSpec( specIter->second );
+        }
     }
     
     void printAllRxns() const
     {
 
-        BOOST_FOREACH( const mzr::moleculizer::ReactionList::value_type ptrRxn, ptrSpeciesReactionGenerator->getReactionList() )
+        for( mzr::moleculizer::ReactionList::const_iterator rxnIter = ptrSpeciesReactionGenerator->getReactionList().begin();
+             rxnIter != ptrSpeciesReactionGenerator->getReactionList().end();
+             ++rxnIter)
         {
-            printRxn( ptrRxn );
+            printRxn( *rxnIter );
         }
     }
 

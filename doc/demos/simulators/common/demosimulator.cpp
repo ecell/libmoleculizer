@@ -32,7 +32,6 @@
 #include "demosimulator.hpp"
 #include  "utl/defs.hh"
 #include "utl/utility.hh"
-#include <boost/foreach.hpp>
 #include <fstream>
 #include <stdio.h>
 #include <time.h>
@@ -64,10 +63,14 @@ void SimpleSimulator::createModelFromFile( const std::string& modelFile, std::ma
 
             std::cerr << "Error, bad line '" << current_line << "'.\n";
             int num = 1;
-            BOOST_FOREACH( std::string str, tokenVector )
+
+            for(unsigned int tokenVectorNdx = 0;
+                tokenVectorNdx != tokenVector.size();
+                ++tokenVectorNdx)
             {
-                std::cerr << num++ << ":\t" << str << '\n';
+                std::cerr << num++ << ":\t" << tokenVector[tokenVectorNdx] << '\n';
             }
+            
             assert( tokenVector.size() == 2 );
 
         }
@@ -194,16 +197,18 @@ bool SimpleSimulator::assertModelValidity( const std::map<std::string, int>& mod
         return false;
     }
 
-    BOOST_FOREACH( const modelPairType& thePair, model )
+    for( std::map<std::string, int>::const_iterator modelIter = model.begin();
+         modelIter != model.end();
+         ++modelIter)
     {
         // Find out if this is a legal name.
         try
         {
-            ptrSpeciesReactionGenerator->getSpeciesWithName( thePair.first );
+            ptrSpeciesReactionGenerator->getSpeciesWithName( modelIter->first );
         }
         catch ( mzr::IllegalNameXcpt )
         {
-            std::cerr << "Illegal name: " << thePair.first << std::endl;
+            std::cerr << "Illegal name: " << modelIter->first << std::endl;
             return false;
         }
         catch ( ... )
@@ -211,25 +216,29 @@ bool SimpleSimulator::assertModelValidity( const std::map<std::string, int>& mod
             return false;
         }
     }
-
+    
     return true;
 }
 
 void SimpleSimulator::initialize()
 {
-    BOOST_FOREACH( const modelPairType& thePair, theModel )
+    
+
+    for( std::map<std::string, int>::const_iterator modelIter = theModel.begin();
+         modelIter != theModel.end();
+         ++modelIter)
     {
-        if ( thePair.second > 0 )
+        if ( modelIter->second > 0 )
         {
             // First we assume that the name present is defined in the rules file...
-            if ( ptrSpeciesReactionGenerator->nameIsUserName( thePair.first ) )
+            if ( ptrSpeciesReactionGenerator->nameIsUserName( modelIter->first ) )
             {
-                std::string mangledName( ptrSpeciesReactionGenerator->convertUserNameToGeneratedName( thePair.first ) );
+                std::string mangledName( ptrSpeciesReactionGenerator->convertUserNameToGeneratedName( modelIter->first ) );
                 ptrSpeciesReactionGenerator->incrementNetworkBySpeciesTag( mangledName );
             }
             else
             {
-                ptrSpeciesReactionGenerator->incrementNetworkBySpeciesTag( thePair.first );
+                ptrSpeciesReactionGenerator->incrementNetworkBySpeciesTag( modelIter->first );
             }
         }
     }
@@ -240,28 +249,32 @@ void SimpleSimulator::executeReaction( mzr::moleculizer::ReactionTypePtr ptrRxn 
 {
     std::cout << "Executing: " << ptrRxn->getName() << std::endl;
 
-    BOOST_FOREACH( const mzr::moleculizer::ReactionType::multMap::value_type& vt, ptrRxn->getReactants() )
+    for( mzr::moleculizer::ReactionType::multMap::const_iterator subIter = ptrRxn->getReactants().begin();
+         subIter != ptrRxn->getReactants().end();
+         ++subIter)
     {
-        std::cout << '-' << vt.second << ' ' << vt.first->getName() << '\n';
+        std::cout << '-' << subIter->second << ' ' << subIter->first->getName() << '\n';
 
-        std::string name = vt.first->getName();
-        theModel[ name ] -= vt.second;
+        std::string name = subIter->first->getName();
+        theModel[ name ] -= subIter->second;
     }
 
-    BOOST_FOREACH( const mzr::moleculizer::ReactionType::multMap::value_type& vt, ptrRxn->getProducts() )
+    for( mzr::moleculizer::ReactionType::multMap::const_iterator prodIter = ptrRxn->getProducts().begin();
+         prodIter != ptrRxn->getProducts().end();
+         ++prodIter)
     {
-        std::cout << '+' << vt.second << ' ' << vt.first->getName() << '\n';
+        std::cout << '+' << prodIter->second << ' ' << prodIter->first->getName() << '\n';
 
-        std::string name = vt.first->getName();
+        std::string name = prodIter->first->getName();
 
         if ( theModel.find( name ) == theModel.end() )
         {
             std::cout << "Creating new species '" << name << "'.";
-            theModel[ name ] = vt.second;
+            theModel[ name ] = prodIter->second;
         }
         else
         {
-            theModel[ name ] += vt.second;
+            theModel[ name ] += prodIter->second;
         }
     }
 

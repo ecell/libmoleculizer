@@ -32,6 +32,7 @@
 
 #include <string>
 #include <iostream>
+#include <boost/foreach.hpp>
 #include "utl/arg.hh"
 #include "mzr/moleculizer.hh"
 

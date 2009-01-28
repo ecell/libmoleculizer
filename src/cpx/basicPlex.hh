@@ -35,7 +35,6 @@
 #include "cpx/binding.hh"
 #include "cpx/ftrSpec.hh"
 #include "cpx/plexIso.hh"
-#include <boost/foreach.hpp>
 
 namespace cpx
 {
@@ -107,11 +106,15 @@ namespace cpx
         getName() const
         {
             std::string name( "" );
-            BOOST_FOREACH( molT* pMol, mols )
+
+            for( typename std::vector<molT*>::const_iterator iter = mols.begin();
+                 iter != mols.end();
+                 ++iter)
             {
-                name += pMol->getName();
+                name += (*iter)->getName();
                 name += ", ";
             }
+
             return name;
         }
         

@@ -30,7 +30,6 @@
 //
 
 #include <libxml++/libxml++.h>
-#include <boost/foreach.hpp>
 #include <functional>
 
 #include "utl/defs.hh"
@@ -357,13 +356,16 @@ namespace mzr
         xmlpp::Element* genSpecElt = generatedNetworkElt->add_child("generated-species");
         xmlpp::Element* genRxnsElt = generatedNetworkElt->add_child("generated-reactions");
 
-        BOOST_FOREACH(const SpeciesCatalog::value_type& refPair, this->getSpeciesCatalog() )
+
+        for( SpeciesCatalogCIter specIter = this->getSpeciesCatalog().begin();
+             specIter != this->getSpeciesCatalog().end();
+             ++specIter)
         {
             xmlpp::Element* newSpecElt = genSpecElt->add_child( "species");
-            newSpecElt->set_attribute("tag", *refPair.first);
-            newSpecElt->set_attribute("unique-id", convertSpeciesTagToSpeciesID( *refPair.first) );
+            newSpecElt->set_attribute("tag", *(specIter->first));
+            newSpecElt->set_attribute("unique-id", convertSpeciesTagToSpeciesID( *specIter->first));
 
-            if( refPair.second->hasNotified() ) 
+            if( specIter->second->hasNotified() ) 
             {
                 newSpecElt->set_attribute("expanded", "true" );
             }
@@ -373,8 +375,13 @@ namespace mzr
             }
         }
 
-        BOOST_FOREACH(const mzr::mzrReaction* pRxn, this->getReactionList() )
+       
+        for( ReactionList::const_iterator rxnIter = this->getReactionList().begin();
+             rxnIter != this->getReactionList().end();
+             ++rxnIter)
         {
+            const mzr::mzrReaction* pRxn( *rxnIter );
+
             xmlpp::Element* newRxnElt = genSpecElt->add_child( "reaction");
             xmlpp::Element* newSubstratesElt = newRxnElt->add_child("substrates");
             xmlpp::Element* newProductsElt = newRxnElt->add_child("products");
@@ -383,8 +390,14 @@ namespace mzr
             // newRxnElt->set_attribute( "representation", pRxn->getName() );
 
             // process each substrate
-            BOOST_FOREACH(const mzr::mzrReaction::multMap::value_type& vt, pRxn->getReactants())
+
+            for( mzr::mzrReaction::multMap::const_iterator reactantIter = pRxn->getReactants().begin();
+                 reactantIter != pRxn->getReactants().end();
+                 ++reactantIter )
             {
+                
+                const mzr::mzrReaction::multMap::value_type& vt( *reactantIter );
+
                 xmlpp::Element* newSubElt = newSubstratesElt->add_child("substrate");
                 newSubElt->set_attribute("multiplicity", utl::stringify(vt.second) );
                 newSubElt->set_attribute("tag", vt.first->getTag() );
@@ -395,8 +408,12 @@ namespace mzr
             }
 
             // Process each reactant
-            BOOST_FOREACH(const mzr::mzrReaction::multMap::value_type& vt, pRxn->getProducts())
+            for( mzr::mzrReaction::multMap::const_iterator productIter = pRxn->getProducts().begin();
+                 productIter != pRxn->getProducts().end();
+                 ++productIter )
             {
+                const mzr::mzrReaction::multMap::value_type& vt( *productIter );
+
                 xmlpp::Element* newProdElt = newProductsElt->add_child("product");
                 newProdElt->set_attribute("multiplicity", utl::stringify(vt.second) );
                 newProdElt->set_attribute("tag", vt.first->getTag() );
@@ -407,7 +424,6 @@ namespace mzr
             }
 
             newRateElt->set_attribute("value", utl::stringify(pRxn->getRate() ) );
-            
         }
         
     }
@@ -483,16 +499,20 @@ namespace mzr
         
         while( nodesUnexpanded)
         {
-            // Expand everything 
-            BOOST_FOREACH(const SpeciesCatalog::value_type& refPair, this->getSpeciesCatalog() )
+            for( SpeciesCatalogCIter speciesIter = this->getSpeciesCatalog().begin();
+                 speciesIter != this->getSpeciesCatalog().end();
+                 ++speciesIter)
             {
-                refPair.second->expandReactionNetwork();
+                speciesIter->second->expandReactionNetwork();
             }
             
             nodesUnexpanded = false;
-            BOOST_FOREACH( const SpeciesCatalog::value_type& refPair, this->getSpeciesCatalog() )
+
+            for( SpeciesCatalogCIter speciesIter = this->getSpeciesCatalog().begin();
+                 speciesIter != this->getSpeciesCatalog().end();
+                 ++speciesIter)
             {
-                if (! refPair.second->hasNotified() )
+                if (speciesIter->second->hasNotified() )
                 {
                     nodesUnexpanded = true;
                     break;
@@ -517,11 +537,15 @@ namespace mzr
                maxNumRxns > getTotalNumberReactions() )
         {
             std::string speciesToInc("");
-            BOOST_FOREACH(const SpeciesCatalog::value_type& refPair, this->getSpeciesCatalog() )
+
+
+            for( SpeciesCatalogCIter speciesIter = this->getSpeciesCatalog().begin();
+                 speciesIter != this->getSpeciesCatalog().end();
+                 ++speciesIter)
             {
-                if (! refPair.second->hasNotified() )
+                if (! speciesIter->second->hasNotified() )
                 {
-                    speciesToInc = *refPair.first;
+                    speciesToInc = *(speciesIter->first);
                     break;  // Out of the for each loop
                 }
             }
@@ -583,9 +607,11 @@ namespace mzr
             exit(1);
         }
         
-        BOOST_FOREACH( const plx::mzrPlexSpecies* pSpec, *theSpecies)
+        for( std::vector<const plx::mzrPlexSpecies*>::const_iterator ssIter = theSpecies->begin();
+             ssIter != theSpecies->end();
+             ++ssIter)
         {
-            speciesVector.push_back( pSpec );
+            speciesVector.push_back( *ssIter );
         }
     }
 

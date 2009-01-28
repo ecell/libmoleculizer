@@ -30,7 +30,6 @@
 //
 
 #include "nmr/namedMolecule.hh"
-#include <boost/foreach.hpp>
 
 #ifdef HAVE_CONFIG_H
 #include "moleculizer_config.hh"
@@ -45,20 +44,22 @@ namespace nmr
         std::vector<std::pair<unsigned int, BindingSite> > theBindings;
         
         typedef std::pair<BindingSite, unsigned int> LocalPairType;
-        BOOST_FOREACH( const LocalPairType& aPair, bindingSiteNameToNdxMap )
+        for( std::map<BindingSite, unsigned int>::const_iterator iter = bindingSiteNameToNdxMap.begin();
+             iter != bindingSiteNameToNdxMap.end();
+             ++iter)
         {
-            theBindings.push_back( std::make_pair( aPair.second, aPair.first ) );
+            theBindings.push_back( std::make_pair( iter->second, iter->first ) );
         }
-        
+
         std::sort( theBindings.begin(),
                    theBindings.end() );
         
         std::vector<BindingSite> finalVector;
         
         typedef std::pair<unsigned int, BindingSite> RevLocalPairType;
-        BOOST_FOREACH( const RevLocalPairType& aPair, theBindings )
+        for(unsigned int bndNdx = 0; bndNdx != theBindings.size(); ++bndNdx)
         {
-            finalVector.push_back( aPair.second );
+            finalVector.push_back( theBindings[bndNdx].second );
         }
         
         return finalVector;

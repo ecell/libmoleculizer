@@ -39,7 +39,6 @@
 #include <map>
 #include "utl/xcpt.hh"
 #include "fnd/feature.hh"
-#include <boost/foreach.hpp>
 
 namespace fnd
 {

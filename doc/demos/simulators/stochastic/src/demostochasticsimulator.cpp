@@ -31,8 +31,10 @@
 
 
 #include <iostream>
-#include "demostochasticsimulator.hpp"
 #include <algorithm>
+#include <boost/foreach.hpp>
+#include "demostochasticsimulator.hpp"
+
 
 SimpleStochasticSimulator::SimpleStochasticSimulator( std::string rulesfile, std::string modelfile )
         :

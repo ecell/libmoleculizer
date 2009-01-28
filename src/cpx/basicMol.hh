@@ -36,7 +36,6 @@
 #include <map>
 #include <vector>
 #include <string>
-#include <boost/foreach.hpp>
 #include "utl/xcpt.hh"
 #include "cpx/siteShape.hh"
 #include "cpx/molState.hh"

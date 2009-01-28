@@ -296,10 +296,11 @@ namespace fnd
                 SpeciesTypePtr theSpeciesPtr( NULL );
 
                 // In this case, the reaction is of type A + B -> ? where A != B
-                BOOST_FOREACH( typename fnd::basicReaction<SpeciesType>::multMap::value_type vt,
-                               pRxn->getReactants() )
+                for( typename fnd::basicReaction<SpeciesType>::multMap::const_iterator reactantIter = pRxn->getReactants().begin();
+                     reactantIter != pRxn->getReactants().end();
+                     ++reactantIter)
                 {
-                    theSpeciesPtr = vt.first;
+                    theSpeciesPtr = reactantIter->first;
                     doubleSubstrateRxns.insert( std::make_pair( theSpeciesPtr, pRxn ) );
                 }
             }
@@ -432,10 +433,13 @@ namespace fnd
         // We don't memory manage any SpeciesType* or ReactionType*, but we do memory
         // manage the string* in theSpeciesListCatalog.
             
-        BOOST_FOREACH( typename SpeciesNameMap::value_type i, speciesTagToSpeciesIDChart )
+
+        for( typename SpeciesNameMap::iterator iter = speciesTagToSpeciesIDChart.begin();
+             iter != speciesTagToSpeciesIDChart.end();
+             ++iter)
         {
-            delete i.first;
-            delete i.second;
+            delete iter->first;
+            delete iter->second;
         }
     }
 

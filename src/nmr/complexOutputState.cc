@@ -32,9 +32,6 @@
 
 #include "complexOutputState.hh"
 #include <sstream>
-#include <boost/foreach.hpp>
-
-
 
 namespace nmr
 {
@@ -83,28 +80,29 @@ namespace nmr
     ComplexOutputState::repr() const
     {
         std::ostringstream oss;
-        BOOST_FOREACH( ComplexOutputState::MolTokenStrCref molName, theMolTokens )
+        for( int ndx = 0; ndx != theMolTokens.size(); ++ndx)
         {
-            oss << molName << "-";
+            oss << theMolTokens[ndx] << "-";
         }
         
-        BOOST_FOREACH( ComplexOutputState::BindingTokenStrCref bindingName, theBindingTokens )
+
+        for( int ndx = 0; ndx != theBindingTokens.size(); ++ndx)
         {
             oss << '|' ;
-            oss << bindingName.first.first << "-";
-            oss << bindingName.first.second << "-";
-            oss << bindingName.second.first << "-";
-            oss << bindingName.second.second << '|' << '-';
-        }
-        
-        BOOST_FOREACH( ComplexOutputState::ModificationTokenStrCref modificationToken, theModificationTokens )
+            oss << theBindingTokens[ndx].first.first << "-";
+            oss << theBindingTokens[ndx].first.second << "-";
+            oss << theBindingTokens[ndx].second.first << "-";
+            oss << theBindingTokens[ndx].second.second << '|' << '-';
+        } 
+
+        for( int ndx = 0; ndx != theModificationTokens.size(); ++ndx)
         {
             oss << '|';
-            oss << modificationToken.first
+            oss << theModificationTokens[ndx].first
                 << '-'
-                << modificationToken.second.first
+                << theModificationTokens[ndx].second.first
                 << '-'
-                << modificationToken.second.second << '|';
+                << theModificationTokens[ndx].second.second << '|';
         }
         
         return oss.str();

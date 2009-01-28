@@ -68,12 +68,13 @@ namespace mzr
         double theSum = 0.0f;
         
         typedef std::map<mzr::mzrSpecies*, int> multMap;
-        BOOST_FOREACH(const multMap::value_type& vt, pRxn->getReactants() )
+        for( multMap::const_iterator mmIter = pRxn->getReactants().begin();
+             mmIter != pRxn->getReactants().end();
+             ++mmIter)
         {
-            // theSum += multiplicity * 
-            theSum += vt.second * extrapolateMolecularRadius( vt.first );
+            theSum += (mmIter->second) * extrapolateMolecularRadius( mmIter->first );
         }
-        
+
         return theSum;
     }
 
@@ -107,10 +108,11 @@ namespace mzr
         double theSum = 0.0f;
         
         typedef std::map<mzr::mzrSpecies*, int> multMap;
-        BOOST_FOREACH(const multMap::value_type& vt, pRxn->getReactants() )
+        for( multMap::const_iterator mmIter = pRxn->getReactants().begin();
+             mmIter != pRxn->getReactants().end();
+             ++mmIter)
         {
-            // theSum += multiplicity * particle-type specific diffusion coeff.
-            theSum += vt.second * getDiffusionCoeffForSpecies( vt.first );
+            theSum += (mmIter->second) * getDiffusionCoeffForSpecies( mmIter->first );
         }
         
         return theSum;

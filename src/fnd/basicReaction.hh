@@ -36,8 +36,6 @@
 #include <string>
 #include <vector>
 #include <sstream>
-#include <boost/foreach.hpp>
-
 
 namespace fnd
 {

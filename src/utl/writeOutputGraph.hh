@@ -34,7 +34,6 @@
 #define WRITEOUTPUTGRAPH_HH
 
 #include <fstream>
-#include <boost/foreach.hpp>
 #include "fnd/reactionNetworkDescription.hh"
 
 template <typename speciesT, 
@@ -51,23 +50,27 @@ void writeNetworkToDotFile(const fnd::ReactionNetworkDescription<speciesT, react
 
     const char QUOTE_CHAR='"';
 
-    BOOST_FOREACH( const typename ReactionNetwork::SpeciesCatalog::value_type& vt,
-                   reactionNetwork.getSpeciesCatalog() )
+    for( typename ReactionNetwork::SpeciesCatalog::const_iterator rxnIter = reactionNetwork.getSpeciesCatalog().begin();
+         rxnIter != reactionNetwork.getSpeciesCatalog().end();
+         ++rxnIter)
     {
-        outputFile << getEscapedString(*vt.first) << ';' << std::endl;
+        outputFile << getEscapedString( *rxnIter->first ) << ';' << std::endl;
     }
 
-    BOOST_FOREACH( const typename ReactionNetwork::ReactionList::value_type& pRxn,
-                   reactionNetwork.getReactionList() )
+
+    for( typename ReactionNetwork::ReactionList::const_iterator allRxnsIter = reactionNetwork.getReactionList().begin();
+         allRxnsIter != reactionNetwork.getReactionList().end();
+         ++allRxnsIter)
     {
-        
-        BOOST_FOREACH( const typename ReactionNetwork::ReactionType::multMap::value_type& reactantMult,
-                       pRxn->getReactants() )
+        for( typename ReactionNetwork::ReactionType::multMap::const_iterator reactantIter = (*allRxnsIter)->getReactants().begin();
+             reactantIter != (*allRxnsIter)->getReactants().end();
+             ++reactantIter)
         {
-            BOOST_FOREACH( const typename ReactionNetwork::ReactionType::multMap::value_type& productMult,
-                           pRxn->getProducts() )
+            for( typename ReactionNetwork::ReactionType::multMap::const_iterator productIter = (*allRxnsIter)->getProducts().begin();
+                 productIter != (*allRxnsIter)->getProducts().end();
+                 ++productIter)
             {
-                outputFile << QUOTE_CHAR << getEscapedString(reactantMult.first->getName()) << QUOTE_CHAR << " -> " << QUOTE_CHAR <<getEscapedString(productMult.first->getName()) << QUOTE_CHAR << ';' << std::endl;;
+                outputFile << QUOTE_CHAR << getEscapedString( (*reactantIter).first->getName()) << QUOTE_CHAR << " -> " << QUOTE_CHAR <<getEscapedString((*productIter).first->getName()) << QUOTE_CHAR << ';' << std::endl;;
             }
         }
     }

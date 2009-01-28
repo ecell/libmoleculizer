@@ -201,9 +201,11 @@ namespace mzr
         void
         getListOfDumpables( std::vector<std::string>& streamVec) const
         {
-            BOOST_FOREACH( const utl::autoCatalog<fnd::dumpable<fnd::basicDumpable::dumpArg> >::value_type& vt, dumpables)
+            for(utl::autoCatalog<fnd::dumpable<fnd::basicDumpable::dumpArg> >::const_iterator dumpablesIter = dumpables.begin();
+                dumpablesIter != dumpables.end();
+                ++dumpablesIter)
             {
-                streamVec.push_back( vt.first );
+                streamVec.push_back( dumpablesIter->first );
             }
         }
         

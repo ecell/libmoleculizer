@@ -32,6 +32,7 @@
 #include "demosimulator.hpp"
 #include "mzr/mzrSpecies.hh"
 #include "mzr/mzrReaction.hh"
+#include <boost/foreach.hpp>
 using namespace mzr;
 
 class SimpleParticleSimulator : public SimpleSimulator

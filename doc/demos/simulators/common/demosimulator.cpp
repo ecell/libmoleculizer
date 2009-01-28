@@ -32,6 +32,7 @@
 #include "demosimulator.hpp"
 #include  "utl/defs.hh"
 #include "utl/utility.hh"
+#include <boost/foreach.hpp>
 #include <fstream>
 #include <stdio.h>
 #include <time.h>

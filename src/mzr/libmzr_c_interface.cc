@@ -35,7 +35,6 @@
 #include "utl/writeOutputGraph.hh"
 #include "moleculizer.hh"
 #include "mzr/spatialExtrapolationFunctions.hh"
-#include <boost/foreach.hpp>
 
 // 
 // Declarations for functions locally defined.
@@ -323,9 +322,12 @@ int getDeltaSpecies( moleculizer* handle, species*** pSpeciesArray, int* pNum)
         *pSpeciesArray = new species* [ *pNum ];
 
         int index = 0;
-        BOOST_FOREACH( const mzr::mzrSpecies* specPtr, moleculizerPtr->getDeltaSpeciesList())
+        
+        for( mzr::moleculizer::SpeciesList::const_iterator deltaSpecIter = moleculizerPtr->getDeltaSpeciesList().begin();
+             deltaSpecIter != moleculizerPtr->getDeltaSpeciesList().end();
+             ++deltaSpecIter)
         {
-            (*pSpeciesArray)[index++] = createNewCSpeciesFromMzrSpecies( handle, specPtr);
+            (*pSpeciesArray)[index++] = createNewCSpeciesFromMzrSpecies( handle, *deltaSpecIter);
         }
 
         return SUCCESS;
@@ -350,11 +352,14 @@ int getDeltaReactions( moleculizer* handle, reaction*** pReactionArray, int* pNu
         *pReactionArray = new reaction* [*pNum];
 
         int index = 0;
-        BOOST_FOREACH( const mzr::mzrReaction* rxnPtr, moleculizerPtr->getDeltaReactionList())
-        {
-            (*pReactionArray)[index++] = createNewCRxnFromMzrReaction( handle, rxnPtr );
-        }
         
+        for(mzr::moleculizer::ReactionList::const_iterator deltaRxnIter = moleculizerPtr->getDeltaReactionList().begin();
+            deltaRxnIter != moleculizerPtr->getDeltaReactionList().end();
+            ++deltaRxnIter)
+        {
+            (*pReactionArray)[index++] = createNewCRxnFromMzrReaction( handle, *deltaRxnIter );
+        }
+
         return SUCCESS;
     }
     catch(...)
@@ -654,11 +659,11 @@ int getAllStreamSpecies(moleculizer* handle, char* cStrStreamName, species*** pS
     *pSpeciesArray = new species* [ moleculizerPtr->getTotalNumberSpecies() ];
 
     int index = 0;
-    BOOST_FOREACH( const mzr::mzrSpecies* pSpecies, speciesVector)
+    for(unsigned int ndx = 0; ndx != speciesVector.size(); ++ndx)
     {
-        (*pSpeciesArray)[index] = createNewCSpeciesFromMzrSpecies( handle, pSpecies);
+        (*pSpeciesArray)[index] = createNewCSpeciesFromMzrSpecies( handle, speciesVector[ndx]);
     }
-
+    
     return SUCCESS;
 }
 
@@ -673,9 +678,11 @@ int getAllSpecies(moleculizer* handle, species*** pSpeciesArray, int* numberSpec
     *pSpeciesArray = new species* [ *numberSpecies ];
 
     int index = 0;
-    BOOST_FOREACH( const mzr::moleculizer::SpeciesCatalog::value_type& refVT, moleculizerPtr->getSpeciesCatalog())
+    for( mzr::moleculizer::SpeciesCatalog::const_iterator specIter = moleculizerPtr->getSpeciesCatalog().begin();
+         specIter != moleculizerPtr->getSpeciesCatalog().end();
+         ++specIter)
     {
-        (*pSpeciesArray)[index++] = createNewCSpeciesFromMzrSpecies( handle, refVT.second );
+        (*pSpeciesArray)[index++] = createNewCSpeciesFromMzrSpecies( handle, specIter->second );
     }
 
     return SUCCESS;
@@ -692,9 +699,12 @@ int getAllReactions(moleculizer* handle, reaction*** pReactionArray, int* number
     *pReactionArray = new reaction* [ *numberReactions ];
 
     int index = 0;
-    BOOST_FOREACH( const mzr::moleculizer::ReactionList::value_type& refVT, moleculizerPtr->getReactionList())
+
+    for( mzr::moleculizer::ReactionList::const_iterator rxnIter = moleculizerPtr->getReactionList().begin();
+         rxnIter != moleculizerPtr->getReactionList().end();
+         ++rxnIter)
     {
-        (*pReactionArray)[index++] = createNewCRxnFromMzrReaction( handle, refVT );
+        (*pReactionArray)[index++] = createNewCRxnFromMzrReaction( handle, *rxnIter );
     }
 
     return SUCCESS;
@@ -752,11 +762,13 @@ int getAllExteriorSpecies(moleculizer* handle, species*** pSpeciesArray, int* nu
 
     std::vector<const mzr::mzrSpecies*> uninitializedSpecies;
 
-    BOOST_FOREACH( const mzr::moleculizer::SpeciesCatalog::value_type& refVT, moleculizerPtr->getSpeciesCatalog() )
+    for( mzr::moleculizer::SpeciesCatalog::const_iterator specIter = moleculizerPtr->getSpeciesCatalog().begin();
+         specIter != moleculizerPtr->getSpeciesCatalog().end();
+         ++specIter)
     {
-        if (!refVT.second->hasNotified())
+        if (!specIter->second->hasNotified())
         {
-            uninitializedSpecies.push_back( refVT.second );
+            uninitializedSpecies.push_back( specIter->second );
         }
     }
 
@@ -764,17 +776,16 @@ int getAllExteriorSpecies(moleculizer* handle, species*** pSpeciesArray, int* nu
     *pSpeciesArray = new species* [ *numberSpecies ];
 
     int index = 0;
-    BOOST_FOREACH( const mzr::mzrSpecies* pSpecies, uninitializedSpecies)
+
+    for(std::vector<const mzr::mzrSpecies*>::const_iterator specIter = uninitializedSpecies.begin();
+        specIter != uninitializedSpecies.end();
+        ++specIter)
     {
-        (*pSpeciesArray)[index++] = createNewCSpeciesFromMzrSpecies( handle, pSpecies );
+        (*pSpeciesArray)[index++] = createNewCSpeciesFromMzrSpecies( handle, *specIter );
     }
 
     return SUCCESS;
 }
-
-
-
-
 
 int writeDotFile( moleculizer* handle, char* fileName)
 {
@@ -796,10 +807,13 @@ mzr::moleculizer* convertCMzrPtrToMzrPtr(moleculizer* cMzrPtr)
 int calculateSumOfMultMap( const mzr::mzrReaction::multMap& speciesMap)
 {
     int size = 0;
-    BOOST_FOREACH(const mzr::mzrReaction::multMap::value_type& value, speciesMap)
+    for(mzr::mzrReaction::multMap::const_iterator iter = speciesMap.begin();
+        iter != speciesMap.end();
+        ++iter)
     {
-        size += value.second;
+        size += iter->second;
     }
+
     return size;
 }
 
@@ -859,13 +873,16 @@ void createCSpeciesArrayFromSpeciesMap(moleculizer* cMzrPtr,
     *ptrSpeciesPtrArray = new SpeciesPtr[numberSpeciesInMap] ;
     
     int counter = 0;
-    BOOST_FOREACH( const mzr::mzrReaction::multMap::value_type& value, speciesMap)
+
+    for( mzr::mzrReaction::multMap::const_iterator specIter = speciesMap.begin();
+         specIter != speciesMap.end();
+         ++specIter)
     {
         int specCounter = 0;
-        while(specCounter++ < value.second)
+        while(specCounter++ < specIter->second)
         {
             // This is the index-th species*
-            (*ptrSpeciesPtrArray)[counter++] = createNewCSpeciesFromMzrSpecies(cMzrPtr, value.first);
+            (*ptrSpeciesPtrArray)[counter++] = createNewCSpeciesFromMzrSpecies(cMzrPtr, specIter->first);
         }
     }
     

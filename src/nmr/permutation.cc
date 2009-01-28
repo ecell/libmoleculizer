@@ -40,7 +40,6 @@
 #include <iterator>
 #include <algorithm>
 #include <map>
-#include <boost/foreach.hpp>
 
 namespace nmr
 {
@@ -72,9 +71,10 @@ namespace nmr
     {
         std::vector<int> corePerm( aPermutation.getCorePermutation().begin(),
                                    aPermutation.getCorePermutation().end() );
-        
-        BOOST_FOREACH( int i, bPermutation.getCorePermutation() )
+
+        for( int ndx = 0; ndx != bPermutation.getDimension(); ++ndx)
         {
+            int i = bPermutation[ ndx ];
             corePerm.push_back( i + aPermutation.getDimension() );
         }
         
@@ -453,10 +453,14 @@ namespace nmr
             // std::set<Permutation> tmpSet( setOfPermutations.begin(), setOfPermutations.end() );
             
             std::set< Permutation > tmpSet;
-            BOOST_FOREACH( const Permutation& perm, setOfPermutations )
+
+            for( std::set<Permutation>::const_iterator permIter = setOfPermutations.begin();
+                 permIter != setOfPermutations.end();
+                 ++permIter)
             {
-                tmpSet.insert( Permutation( perm ) );
+                tmpSet.insert( Permutation( *permIter) );
             }
+
             setOfPermutations.clear();
             
             
@@ -526,9 +530,11 @@ namespace nmr
             
             // Copy from prev to here.
             SetOfPermutations originalSet;
-            BOOST_FOREACH( PermutationCref perm, permSet )
+            for( SetOfPermutations::const_iterator permIter = permSet.begin();
+                 permIter != permSet.end();
+                 ++permIter)
             {
-                originalSet.insert( perm );
+                originalSet.insert( *permIter );
             }
             
             permSet.clear();

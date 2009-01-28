@@ -49,7 +49,6 @@
 #include <algorithm>
 #include "cpx/modification.hh"
 #include "cpx/modStateMixin.hh"
-#include <boost/foreach.hpp>
 
 namespace cpx
 {

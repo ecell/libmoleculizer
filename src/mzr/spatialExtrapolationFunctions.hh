@@ -32,8 +32,6 @@
 #ifndef SPATIALEXTRAPOLATION_HH
 #define SPATIALEXTRAPOLATION_HH
 
-#include <boost/foreach.hpp>
-
 namespace mzr
 {
     class mzrSpecies;

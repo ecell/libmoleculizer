@@ -29,7 +29,6 @@
 #include <vector>
 #include <utility>
 #include <string>
-#include <boost/foreach.hpp>
 #include "complexSpeciesOutputMinimizer.hh"
 
 namespace nmr
@@ -205,12 +204,16 @@ namespace nmr
     {
         std::string last_name("");
         
-        BOOST_FOREACH(MolSharedPtr molPtr, aComplexSpecies.getMolList() )
+        for( int molPtrNdx = 0;
+             molPtrNdx != aComplexSpecies.getMolList().size();
+             ++molPtrNdx)
         {
-            if (molPtr->getMolType() == last_name) return false;
+            MinimalMolSharedPtr molPtr = aComplexSpecies.getMolList()[molPtrNdx];
+            
+            if ( molPtr->getMolType() == last_name) return false;
             else last_name = molPtr->getMolType();
         }
-        
+
         return true;
     }
     
@@ -333,22 +336,32 @@ namespace nmr
                 int originalMolNdx( inversePerm.getValueAtPosition( indexToExtend ) );
                 std::vector<ComplexSpecies::Binding> theAppropriateBindings;
                 
-                
-                BOOST_FOREACH( const ComplexSpecies::Binding& theBinding, aComplexSpecies.getBindingList() )
+
+                for(ComplexSpecies::BindingList::const_iterator bindingIter = aComplexSpecies.getBindingList().begin();
+                    bindingIter != aComplexSpecies.getBindingList().end();
+                    ++bindingIter)
                 {
+                    const ComplexSpecies::Binding& theBinding( *bindingIter);
                     if ( theBinding.first.first == indexToExtend || theBinding.second.first == indexToExtend ) 
                     { 
                         theAppropriateBindings.push_back( theBinding );
                     }
                 }
-                
+
+
+               
                 // Sort 'theAppropriateBindings' by the index of the non-participating binding...
                 std::sort( theAppropriateBindings.begin(),
                            theAppropriateBindings.end(),
                            BindingSorterByNdx( originalMolNdx ) );
-                
-                BOOST_FOREACH( const ComplexSpecies::Binding& theBinding, theAppropriateBindings)
+
+
+                for(ComplexSpecies::BindingList::const_iterator bindingIter = theAppropriateBindings.begin();
+                    bindingIter != theAppropriateBindings.end();
+                    ++bindingIter)
                 {
+                    const ComplexSpecies::Binding& theBinding( *bindingIter);
+                
                     int molBindingPartnerNdx;
                     theBinding.first.first == originalMolNdx? 
                         molBindingPartnerNdx = theBinding.second.first :

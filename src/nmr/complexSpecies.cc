@@ -32,7 +32,6 @@
 #include "utl/utility.hh"
 #include "complexSpecies.hh"
 #include "namedMolecule.hh"
-#include <boost/foreach.hpp>
 #include <iostream>
 
 namespace nmr
@@ -51,10 +50,10 @@ namespace nmr
         theMolAliasToNdxMap( aComplexSpecies.theMolAliasToNdxMap.begin(), aComplexSpecies.theMolAliasToNdxMap.end() ),
         theBindings( aComplexSpecies.theBindings.begin(), aComplexSpecies.theBindings.end() )
     {
-        // theMols(aComplexSpecies.theMols.begin(), aComplexSpecies.theMols.end()),
-        
-        BOOST_FOREACH( MinimalMolSharedPtr ptrMol, aComplexSpecies.theMols )
+        for( unsigned int ndx = 0; ndx != aComplexSpecies.theMols.size(); ++ndx)
         {
+            MinimalMolSharedPtr ptrMol = aComplexSpecies.theMols[ndx];
+
             MinimalMolSharedPtr newMolPtr( new MinimalMol( *ptrMol ) );
             theMols.push_back( newMolPtr );
         }
@@ -389,10 +388,11 @@ namespace nmr
 std::ostream&
 operator<< ( std::ostream& stream, nmr::ComplexSpeciesCref aComplexSpecies )
 {
-    BOOST_FOREACH( nmr::MolSharedPtr pMol, aComplexSpecies.getMolList() )
+    for( unsigned int ndx = 0; ndx != aComplexSpecies.getMolList().size(); ++ndx)
     {
-        stream << pMol->getMolType() << " - ";
+        stream << aComplexSpecies.getMolList()[ndx]->getMolType() << " - ";
     }
+
     stream<<'\n';
     return stream;
 }

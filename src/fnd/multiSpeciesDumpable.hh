@@ -37,7 +37,6 @@
 #include "fnd/newSpeciesStimulus.hh"
 #include <vector>
 #include <iostream>
-#include <boost/foreach.hpp>
 
 namespace fnd
 {

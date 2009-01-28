@@ -30,6 +30,9 @@
 */
 
 
+#ifndef __LIBMZR_C_INTERFACE_H__
+#define __LIBMZR_C_INTERFACE_H__
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -132,4 +135,6 @@ extern "C" {
     
 #ifdef __cplusplus
 }
+#endif
+
 #endif

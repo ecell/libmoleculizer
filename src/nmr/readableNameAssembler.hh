@@ -41,6 +41,11 @@ namespace nmr
     {
         
     public:
+      readableNameAssembler( nmrUnit& theNmrUnit )
+	:
+	NameAssembler( "ReadableNameAssebler", theNmrUnit)
+      {}
+      
         std::string createNameFromOutputState( ComplexOutputStateCref aCOS ) const;
     };
     

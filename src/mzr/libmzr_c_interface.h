@@ -132,7 +132,16 @@ extern "C" {
     int expandReaction(moleculizer* handle, reaction* mzrReaction);
 
     int writeDotFile( moleculizer* handle, char* fileName);
-    
+
+    /* These functions are for use with smoldyn's mzroutput code it uses in startup */
+    int getNumModificationDefs( moleculizer* handle);
+    int getNumMolDefs( moleculizer* handle);
+    int getNumReactionRules( moleculizer* handle);
+    int getNumDimerDecompReactionRules( moleculizer* handle);
+    int getNumOmniGenReactionRules( moleculizer* handle);
+    int getNumUniMolGenReactionRules( moleculizer* handle);
+    int getNumSpeciesStreams( moleculizer* handle);
+
 #ifdef __cplusplus
 }
 #endif

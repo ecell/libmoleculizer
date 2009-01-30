@@ -48,8 +48,11 @@ dnl AC_CHECK_LIB(boost_python,main,,AC_MSG_ERROR([could not find libboost_python
 dnl
 
 PKG_CHECK_EXISTS( libxml++-2.6, [PKG_CHECK_MODULES(LIBXML, libxml++-2.6 >= 2.10)], [PKG_CHECK_MODULES(LIBXML, libxml++-1.0)])
+PKG_CHECK_EXISTS( libxml++-2.6, [LIBXMLPP_VERSION="2.6"], [LIBXMLPP_VERSION="1.0"])
+
 AC_SUBST(LIBXML_CFLAGS)
 AC_SUBST(LIBXML_LIBS)
+AC_SUBST(LIBXMLPP_VERSION)
 
 # Checks for libraries.
 AC_CONFIG_FILES([Makefile

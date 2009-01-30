@@ -23,7 +23,7 @@
 // END HEADER
 //
 // Original Author:
-//   Nathan Addy, Scientific Programmer, Molecular Sciences Institute, 2001
+//   Nathan Addy, Scientific Programmer, Molecular Sciences Institute, 2008
 //
 // Modifing Authors:
 //

@@ -54,7 +54,9 @@ namespace ftr
                        rMoleculizer ),
             rMzrUnit( refMzrUnit ),
             rMolUnit( refMolUnit ),
-            rPlexUnit( refPlexUnit )
+            rPlexUnit( refPlexUnit ),
+            numOmniGens( 0 ),
+            numUniMolGens( 0 )
         {
             // Register reaction generator names.  This is used by the parser
             // to verify that all elements appearing in the input file are "claimed"
@@ -93,9 +95,21 @@ namespace ftr
 
             // For now, this unit just provides reaction generators, which
             // for now I'm not dumping in "state dump."
-
-            
         }
+
+        int getNumberOfOmniGenRules() const
+        {
+            return numOmniGens;
+        }
+
+        int getNumberOfUniMolGenRules() const
+        {
+            return numUniMolGens;
+        }
+
+    protected:
+        int numOmniGens;
+        int numUniMolGens;
     };
 }
 

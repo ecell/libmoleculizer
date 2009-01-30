@@ -509,6 +509,7 @@ namespace dimer
             // Attach the dimerization reaction generator the site features.
             rLeftSiteFeature.addSensitive( pDimerizeFam->getLeftRxnGen() );
             rRightSiteFeature.addSensitive( pDimerizeFam->getRightRxnGen() );
+
         }
     };
     
@@ -517,6 +518,7 @@ namespace dimer
                               xmlpp::Element* pModelElement,
                               xmlpp::Element* pStreamElt ) throw( std::exception )
     {
+
         // Get the header node for all reaction generators.
         xmlpp::Element* pReactionGensElt
             = utl::dom::mustGetUniqueChild( pModelElement,
@@ -527,7 +529,8 @@ namespace dimer
         // and other special reactions.
         xmlpp::Node::NodeList dimerizationGens
             = pReactionGensElt->get_children( eltName::dimerizationGen );
-        
+
+
         // Make dimerization and decomposition generators.
         std::for_each( dimerizationGens.begin(),
                        dimerizationGens.end(),
@@ -535,5 +538,10 @@ namespace dimer
                                              rMolUnit,
                                              *this,
                                              rPlexUnit ) );
+
+        // Record how many dimerization/decomposition generators were created.
+        numDimerDecomGens += dimerizationGens.size();
+        
+
     }
 }

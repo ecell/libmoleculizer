@@ -43,6 +43,7 @@ namespace ftr
                             xmlpp::Element* pStreamElt )
         throw( std::exception )
     {
+
         // This unit only adds a reaction generator for now.
         xmlpp::Element* pReactionGensElt
             = utl::dom::mustGetUniqueChild( pModelElement,
@@ -58,6 +59,9 @@ namespace ftr
                        parseOmniGen( rMzrUnit,
                                      rMolUnit,
                                      rPlexUnit ) );
+
+        // Record how many omniGens were processed...
+        numOmniGens += omniGenNodes.size();
         
         // Get the uniMolGen nodes.
         xmlpp::Node::NodeList uniMolGenNodes
@@ -69,5 +73,8 @@ namespace ftr
                        parseUniMolGen( rMzrUnit,
                                        rMolUnit,
                                        rPlexUnit ) );
+
+        // Record how many uni-mol gens were recorded.
+        numUniMolGens += uniMolGenNodes.size();
     }
 }

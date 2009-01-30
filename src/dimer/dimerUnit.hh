@@ -80,7 +80,8 @@ namespace dimer
                        rMoleculizer ),
             rMzrUnit( refMzrUnit ),
             rMolUnit( refMolUnit ),
-            rPlexUnit( refPlexUnit )
+            rPlexUnit( refPlexUnit ),
+            numDimerDecomGens(0)
         {
             // The only thing this unit handles is dimerization/decomposition
             // reactions.
@@ -94,6 +95,12 @@ namespace dimer
         
         void
         insertStateElts( xmlpp::Element* pRootElt ) throw( std::exception );
+
+
+        int getNumberOfDimerDecompRules() const;
+
+    private:
+        int numDimerDecomGens;
     };
 }
 

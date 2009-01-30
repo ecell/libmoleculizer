@@ -208,6 +208,12 @@ namespace mzr
                 streamVec.push_back( dumpablesIter->first );
             }
         }
+
+        int 
+        getNumberOfDumpables() const
+        {
+            return dumpables.size();
+        }
         
         // Throws an exception if there is already a dumpable
         // whose name duplicates that of the given dumpable.

@@ -35,6 +35,8 @@
 #include "utl/writeOutputGraph.hh"
 #include "moleculizer.hh"
 #include "mzr/spatialExtrapolationFunctions.hh"
+#include "unitsMgr.hh"
+#include "mol/molUnit.hh"
 
 // 
 // Declarations for functions locally defined.
@@ -793,6 +795,48 @@ int writeDotFile( moleculizer* handle, char* fileName)
     writeNetworkToDotFile( *moleculizerPtr, fileName);
 
     return 1;
+}
+
+int getNumModificationDefs( moleculizer* handle)
+{
+   mzr::moleculizer* moleculizerPtr = convertCMzrPtrToMzrPtr( handle );
+   return moleculizerPtr->getNumberOfDefinedModifications();
+}
+
+int getNumMolDefs( moleculizer* handle)
+{
+   mzr::moleculizer* moleculizerPtr = convertCMzrPtrToMzrPtr( handle );
+   return moleculizerPtr->getNumberOfDefinedMols();
+}
+
+int getNumReactionRules( moleculizer* handle)
+{
+   mzr::moleculizer* moleculizerPtr = convertCMzrPtrToMzrPtr( handle );
+   return moleculizerPtr->getNumberOfDefinedRules();
+}
+
+int getNumDimerDecompReactionRules( moleculizer* handle)
+{
+   mzr::moleculizer* moleculizerPtr = convertCMzrPtrToMzrPtr( handle );
+   return moleculizerPtr->getNumberOfDimerReactionRules();
+}
+
+int getNumOmniGenReactionRules( moleculizer* handle)
+{
+   mzr::moleculizer* moleculizerPtr = convertCMzrPtrToMzrPtr( handle );
+   return moleculizerPtr->getNumberOfOmniGenReactionRules();
+}
+
+int getNumUniMolGenReactionRules( moleculizer* handle)
+{
+   mzr::moleculizer* moleculizerPtr = convertCMzrPtrToMzrPtr( handle );
+   return moleculizerPtr->getNumberOfUniMolReactionRules();
+}
+
+int getNumSpeciesStreams( moleculizer* handle)
+{
+   mzr::moleculizer* moleculizerPtr = convertCMzrPtrToMzrPtr( handle );
+   return moleculizerPtr->getNumberOfSpeciesStreams();
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////

@@ -42,6 +42,7 @@ utlEltName.cc
 
 libmoleculizer_utl_HEADERS=\
 arg.hh \
+AssocVector.h \
 autoCache.hh \
 autoCatalog.hh \
 autoVector.hh \
@@ -49,6 +50,7 @@ defs.hh \
 dom.hh \
 domJob.hh \
 domJobImpl.hh \
+domXcpt.hh \
 forBoth.hh \
 forceInsert.hh \
 frexp10.hh \
@@ -57,5 +59,8 @@ linearHash.hh \
 message.hh \
 utility.hh \
 utlEltName.hh \
+utlHelper.hh \
+utlXcpt.hh \
 warn.hh \
+writeOutputGraph.hh \
 xcpt.hh

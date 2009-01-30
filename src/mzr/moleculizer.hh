@@ -89,8 +89,9 @@ namespace mzr
 
         void 
         getSpeciesStreams( std::vector<std::string>& speciesStreamNames) const;
-        
-        
+
+        int getNumberOfSpeciesStreams() const;
+                
         int 
         getNumberOfSpeciesInSpeciesStream(const std::string& streamName) const;
         
@@ -142,6 +143,18 @@ namespace mzr
             
             return iter->second;
         }
+
+        int getNumberOfDefinedModifications() const;
+        int getNumberOfDefinedMols() const;
+        int getNumberOfDefinedRules() const;
+
+        int getNumberOfDimerReactionRules() const;
+        int getNumberOfOmniGenReactionRules() const;
+        int getNumberOfUniMolReactionRules() const;
+        int getNumberOfReactionRules() const;
+
+
+        // const unitsMgr* getUnitsMgr() const { return pUserUnits; }
         
     protected:
         void
@@ -166,6 +179,8 @@ namespace mzr
             throw( std::exception );
         
         std::map<std::string, std::string> userNameToSpeciesIDChart;
+
+
         
     private:
         ////////////////////////////////////////////////

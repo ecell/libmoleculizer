@@ -38,6 +38,11 @@ namespace dimer
     {
         pUnitStatesElt->add_child("dimer-unit-state");
     }
+
+    int dimerUnit::getNumberOfDimerDecompRules() const
+    {
+        return numDimerDecomGens;
+    }
 }
 
 

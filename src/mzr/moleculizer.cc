@@ -46,6 +46,8 @@
 #include "mzr/unitsMgr.hh"
 #include "mzr/mzrEltName.hh"
 #include "mzr/inputCapTest.hh"
+#include "dimer/dimerUnit.hh"
+#include "ftr/ftrUnit.hh"
 
 
 namespace mzr
@@ -628,13 +630,48 @@ namespace mzr
     {
         pUserUnits->pMzrUnit->getListOfDumpables( speciesStreamNames );
     }
+
+    int moleculizer::getNumberOfSpeciesStreams() const
+    {
+        return pUserUnits->pMzrUnit->getNumberOfDumpables();
+    }
     
     int moleculizer::getNumberOfPlexFamilies() const
     {
         return pUserUnits->pPlexUnit->familyCount();
     }
-    
-    
+
+
+    int moleculizer::getNumberOfDefinedModifications() const
+    {
+        return pUserUnits->pMolUnit->getNumberKnownMods();
+    }
+
+    int moleculizer::getNumberOfDefinedMols() const
+    {
+        return pUserUnits->pMolUnit->getNumberKnownMols();
+    }
+
+    int moleculizer::getNumberOfDefinedRules() const
+    {
+        return getNumberOfDimerReactionRules() + 
+            getNumberOfOmniGenReactionRules() + 
+            getNumberOfUniMolReactionRules();
+    }
+
+    int moleculizer::getNumberOfDimerReactionRules() const
+    {
+        return pUserUnits->pDimerUnit->getNumberOfDimerDecompRules();
+    }
+
+    int moleculizer::getNumberOfOmniGenReactionRules() const
+    {
+        return pUserUnits->pFtrUnit->getNumberOfOmniGenRules();
+    }
+    int moleculizer::getNumberOfUniMolReactionRules() const
+    {
+        return pUserUnits->pFtrUnit->getNumberOfUniMolGenRules();
+    }
     
     int moleculizer::DEFAULT_GENERATION_DEPTH = 1;
     

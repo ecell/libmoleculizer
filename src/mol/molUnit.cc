@@ -176,4 +176,19 @@ namespace bnd
         
         return modificationVector;
     }
+
+    int 
+    molUnit::
+    getNumberKnownMods() const
+    {
+        return this->knownMods.size();
+    }
+    
+    
+    int 
+    molUnit::
+    getNumberKnownMols() const
+    {
+        return this->molsByName.size();
+    }
 }

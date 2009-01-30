@@ -159,6 +159,9 @@ namespace bnd
         
         std::vector<std::string>
         getAllKnownMods() const;
+
+        int getNumberKnownMods() const;
+        int getNumberKnownMols() const;
     };
 }
 

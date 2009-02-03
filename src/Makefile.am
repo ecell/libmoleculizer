@@ -12,7 +12,6 @@ SUBDIRS = utl \
 	plex \
 	dimer \
 	ftr 
-## 	python 
 
 MOLECULIZER_DIRNAME = @MOLECULIZER_DIRNAME@
 
@@ -58,26 +57,4 @@ libmoleculizer_1_0_la_LIBADD = \
 	$(LIBDIMER) \
 	$(LIBFTR)
 
-# moleculizer_LDADD = \
-# 	$(LIBFND) \
-# 	$(LIBUTL) \
-# 	$(LIBMZR) \
-# 	$(LIBSTOCH) \
-# 	$(LIBNMR) \
-# 	$(LIBCPX) \
-# 	$(LIBMOL) \
-# 	$(LIBPLEX) \
-# 	$(LIBDIMER) \
-# 	$(LIBFTR)
-
-
-bin_PROGRAMS = moleculizer 
-
-moleculizer_DEPENDENCIES = libmoleculizer-1.0.la
-
-moleculizer_SOURCES=main.cc
-moleculizer_LDADD = libmoleculizer-1.0.la \
-	$(LIBXML_LIBS)
-
-
-
+SUBDIRS += python

@@ -141,102 +141,106 @@ public:
         delete ptrMoleculizer;
     }
     
-    void
-    runInteractiveMode()
+    void sayHi()
     {
-        ptrMoleculizer->RunInteractiveDebugMode();
-        return;
+        std::cout << "Hello" << std::endl;
     }
     
-    int
-    getNumUnary() const
-    {
-        ptrMoleculizer->unaryReactionList.size();
-    }
+//     void
+//     runInteractiveMode()
+//     {
+//         return;
+//     }
     
-    int getNumBinary() const
-    {
-        ptrMoleculizer->binaryReactionList.size();
-    }
+//     int
+//     getNumUnary() const
+//     {
+//         ptrMoleculizer->unaryReactionList.size();
+//     }
     
-    void showDeadSpecies() const
-    {
-        ptrMoleculizer->DEBUG_showDeadSpecies();
-    }
+//     int getNumBinary() const
+//     {
+//         ptrMoleculizer->binaryReactionList.size();
+//     }
     
-    void showLiveSpecies() const
-    {
-        ptrMoleculizer->DEBUG_showLiveSpecies();
-    }
+//     void showDeadSpecies() const
+//     {
+
+//     }
     
-    void addRules( const std::string& filename ) throw( mzr::BadRulesDefinitionXcpt )
-    {
-        try
-        {
-            delete ptrMoleculizer;
-            ptrMoleculizer = new mzr::moleculizer;
-            ptrMoleculizer->attachFileName( filename );
-        }
-        catch ( mzr::BadRulesDefinitionXcpt e )
-        {
-            e.warn();
+//     void showLiveSpecies() const
+//     {
+
+//     }
+    
+//     void addRules( const std::string& filename ) throw( mzr::BadRulesDefinitionXcpt )
+//     {
+//         try
+//         {
+//             delete ptrMoleculizer;
+//             ptrMoleculizer = new mzr::moleculizer;
+//             ptrMoleculizer->attachFileName( filename );
+//         }
+//         catch ( mzr::BadRulesDefinitionXcpt e )
+//         {
+//             e.warn();
             
-            if ( ptrMoleculizer )
-            {
-                delete ptrMoleculizer;
-                ptrMoleculizer = NULL;
-            }
+//             if ( ptrMoleculizer )
+//             {
+//                 delete ptrMoleculizer;
+//                 ptrMoleculizer = NULL;
+//             }
             
-            throw e;
-        }
-        catch ( utl::xcpt x )
-        {
-            delete ptrMoleculizer;
-            x.warn();
-            throw mzr::BadRulesDefinitionXcpt();
-        }
-        catch ( ... )
-        {
-            delete ptrMoleculizer;
-            utl::xcpt x( "Unknown Error while adding rules. (FDLLAE)" );
-            x.wailAndBail();
-        }
-    }
+//             throw e;
+//         }
+//         catch ( utl::xcpt x )
+//         {
+//             delete ptrMoleculizer;
+//             x.warn();
+//             throw mzr::BadRulesDefinitionXcpt();
+//         }
+//         catch ( ... )
+//         {
+//             delete ptrMoleculizer;
+//             utl::xcpt x( "Unknown Error while adding rules. (FDLLAE)" );
+//             x.wailAndBail();
+//         }
+//     }
     
-    std::vector<Reaction>
-    getBinaryReactions( const std::string& species1,
-                        const std::string& species2 ) throw( mzr::IllegalNameXcpt );
+//     std::vector<Reaction>
+//     getBinaryReactions( const std::string& species1,
+//                         const std::string& species2 ) throw( mzr::IllegalNameXcpt );
     
-    std::vector<Reaction>
-    getUnaryReactions( const std::string& species1 ) throw( mzr::IllegalNameXcpt );
+//     std::vector<Reaction>
+//     getUnaryReactions( const std::string& species1 ) throw( mzr::IllegalNameXcpt );
     
-    Species
-    getSpecies( const std::string& species ) throw( mzr::IllegalNameXcpt );
+//     Species
+//     getSpecies( const std::string& species ) throw( mzr::IllegalNameXcpt );
     
-    bool
-    checkSpeciesNameLegality( const std::string& species1 ) throw( mzr::IllegalNameXcpt );
+//     bool
+//     checkSpeciesNameLegality( const std::string& species1 ) throw( mzr::IllegalNameXcpt );
     
     
-    // For now I am writing two versions of this function.  This 'stricter' one insists on
-    // molecules in the ComplexRepresentation being a priori defined in the moleculizer
-    // rules.  This is so that "default" modifications that aren't in the complex representation.
-    // But that might just be stupid.
-    std::string
-    generateNameFromBasicComplexRepresentation( const BasicComplexRepresentation& aBCR );
+//     // For now I am writing two versions of this function.  This 'stricter' one insists on
+//     // molecules in the ComplexRepresentation being a priori defined in the moleculizer
+//     // rules.  This is so that "default" modifications that aren't in the complex representation.
+//     // But that might just be stupid.
+//     std::string
+//     generateNameFromBasicComplexRepresentation( const BasicComplexRepresentation& aBCR );
     
-    std::string
-    generateNameFromBasicComplexRepresentationStrict( const BasicComplexRepresentation& aBCR );
+//     std::string
+//     generateNameFromBasicComplexRepresentationStrict( const BasicComplexRepresentation& aBCR );
     
-    void showAllReactions();
-    void incrementSpecies( const std::string& species );
-    int getNumberOfSpecies();
-    int getNumberOfReactions();
+//     void showAllReactions();
+//     void incrementSpecies( const std::string& species );
+//     int getNumberOfSpecies();
+//     int getNumberOfReactions();
     
-    void
-    showAllSpecies()
-    {
-        ptrMoleculizer->DEBUG_showAllSpecies();
-    }
+//     void
+//     showAllSpecies()
+//     {
+//         // ptrMoleculizer->DEBUG_showAllSpecies();
+//     }
     
     
 protected:

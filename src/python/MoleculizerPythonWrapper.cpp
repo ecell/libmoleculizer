@@ -54,23 +54,23 @@ BOOST_PYTHON_MODULE( Moleculizer )
         ;
     
     class_<ReactionNetworkGenerator> ( "ReactionNetworkGenerator" )
-        .def( "runDebugMode", &ReactionNetworkGenerator::runInteractiveMode )
-        .def( "addRules", &ReactionNetworkGenerator::addRules )
-        .def( "getBinaryReactions", &ReactionNetworkGenerator::getBinaryReactions )
-        .def( "getUnaryReactions", &ReactionNetworkGenerator::getUnaryReactions )
-        .def( "getSpecies", &ReactionNetworkGenerator::getSpecies )
-        .def( "checkSpeciesNameLegality", &ReactionNetworkGenerator::checkSpeciesNameLegality )
-        .def( "showAllSpecies", &ReactionNetworkGenerator::showAllSpecies )
-        .def( "incrementSpecies", &ReactionNetworkGenerator::incrementSpecies )
-        .def( "getNumberOfSpecies", &ReactionNetworkGenerator::getNumberOfSpecies )
-        .def( "getNumberOfReactions", &ReactionNetworkGenerator::getNumberOfReactions )
-        .def( "showLiveSpecies", &ReactionNetworkGenerator::showLiveSpecies )
-        .def( "showDeadSpecies", &ReactionNetworkGenerator::showDeadSpecies )
-        .def( "getNumUnaryReactions",&ReactionNetworkGenerator::getNumUnary )
-        .def( "getNumBinary", &ReactionNetworkGenerator::getNumBinary )
-        .def( "generateNameFromBasicComplexRepresentation", &ReactionNetworkGenerator::generateNameFromBasicComplexRepresentationStrict )
-        .def( "printRxns", &ReactionNetworkGenerator::showAllReactions )
-        ;
+        .def( "sayHi", &ReactionNetworkGenerator::sayHi );
+//         .def( "addRules", &ReactionNetworkGenerator::addRules )
+//         .def( "getBinaryReactions", &ReactionNetworkGenerator::getBinaryReactions )
+//         .def( "getUnaryReactions", &ReactionNetworkGenerator::getUnaryReactions )
+//         .def( "getSpecies", &ReactionNetworkGenerator::getSpecies )
+//         .def( "checkSpeciesNameLegality", &ReactionNetworkGenerator::checkSpeciesNameLegality )
+//         .def( "showAllSpecies", &ReactionNetworkGenerator::showAllSpecies )
+//         .def( "incrementSpecies", &ReactionNetworkGenerator::incrementSpecies )
+//         .def( "getNumberOfSpecies", &ReactionNetworkGenerator::getNumberOfSpecies )
+//         .def( "getNumberOfReactions", &ReactionNetworkGenerator::getNumberOfReactions )
+//         .def( "showLiveSpecies", &ReactionNetworkGenerator::showLiveSpecies )
+//         .def( "showDeadSpecies", &ReactionNetworkGenerator::showDeadSpecies )
+//         .def( "getNumUnaryReactions",&ReactionNetworkGenerator::getNumUnary )
+//         .def( "getNumBinary", &ReactionNetworkGenerator::getNumBinary )
+//         .def( "generateNameFromBasicComplexRepresentation", &ReactionNetworkGenerator::generateNameFromBasicComplexRepresentationStrict )
+//         .def( "printRxns", &ReactionNetworkGenerator::showAllReactions )
+//         ;
     
     
     DECLARE_DEFAULT_VECT_OF_TYPE_TO_PYTHON_CONVERTER( Reaction );

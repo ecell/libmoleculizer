@@ -76,8 +76,8 @@ void SimpleParticleSimulator::singleStep()
     std::cout << "Collision between " << speciesNameOne << " and " << speciesNameTwo << std::endl;
 
     // Look up these species in the moleculizer list.
-    mzr::moleculizer::SpeciesTypeCptr speciesPtrOne = ptrSpeciesReactionGenerator->getSpeciesWithName( speciesNameOne );
-    mzr::moleculizer::SpeciesTypeCptr speciesPtrTwo = ptrSpeciesReactionGenerator->getSpeciesWithName( speciesNameTwo );
+    mzr::moleculizer::SpeciesTypeCptr speciesPtrOne = ptrSpeciesReactionGenerator->getSpeciesWithUniqueID( speciesNameOne );
+    mzr::moleculizer::SpeciesTypeCptr speciesPtrTwo = ptrSpeciesReactionGenerator->getSpeciesWithUniqueID( speciesNameTwo );
     
     std::vector<mzr::moleculizer::ReactionTypeCptr> reactionVector;
     ptrSpeciesReactionGenerator->findReactionWithSubstrates( speciesPtrOne,
@@ -118,7 +118,7 @@ void SimpleParticleSimulator::doSingleUnaryReaction()
     std::cout << "Possible unary reaction: " << '\n'
     << '\t' << particleName << std::endl;
 
-    mzr::moleculizer::SpeciesTypeCptr particlePtr = ptrSpeciesReactionGenerator->getSpeciesWithName( particleName );
+    mzr::moleculizer::SpeciesTypeCptr particlePtr = ptrSpeciesReactionGenerator->getSpeciesWithUniqueID( particleName );
 
     std::vector<mzr::moleculizer::ReactionTypeCptr> reactionVector;
     ptrSpeciesReactionGenerator->findReactionWithSubstrates( particlePtr,

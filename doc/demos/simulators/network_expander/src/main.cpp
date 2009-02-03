@@ -32,13 +32,16 @@
 
 #include <string>
 #include <iostream>
+#include <iterator>
 #include "utl/arg.hh"
 #include "mzr/moleculizer.hh"
 
 using namespace std;
 
+
+// This should be refactored, as it is clearly getting idiotic...
 void
-processCommandLineArgs( int argc, char* argv[], std::string& theFileName, int& number, int& printOutput, std::string& theOutputFileName);
+processCommandLineArgs( int argc, char* argv[], std::string& theFileName, int& number, int& printOutput, std::string& theOutputFileName, int& maxSpecies, int& maxRxns);
 
 void
 displayHelpAndExitProgram();
@@ -53,6 +56,12 @@ void printStreamByTag( mzr::moleculizer& refMolzer, const std::string& streamNam
 void printAllSpeciesByName(mzr::moleculizer& theMolzer);
 void printAllSpeciesByID(mzr::moleculizer& theMolzer);
 
+mzr::moleculizer::CachePosition
+createBoundedNetwork(mzr::moleculizer& refMolzer, int maxSpec, int maxRxns);
+
+void createFullNetwork(mzr::moleculizer& refMolzer);
+void doNIterations(mzr::moleculizer& refMolzer, int number);
+
 int main(int argc, char* argv[])
 {
 
@@ -61,80 +70,111 @@ int main(int argc, char* argv[])
   int number = -1;
   int printOutput = 0;
 
-  processCommandLineArgs(argc, argv, fileName, number, printOutput, outputFileName);
+  int maxSpecies = -1;
+  int maxRxns = -1;
+
+  enum RunMode { Full = 0,
+                 BoundedRun = 1,
+                 Iterations = 2 };
+
+  int modeRun = -1;
+
+  processCommandLineArgs(argc, argv, fileName, number, printOutput, outputFileName, maxSpecies, maxRxns);
 
   mzr::moleculizer theMoleculizer;
   theMoleculizer.attachFileName( fileName );
 
   std::cout << "There are initially " << theMoleculizer.getTotalNumberSpecies() << " species and " 
-            << theMoleculizer.getTotalNumberReactions() << "reactions. " << std::endl;
+            << theMoleculizer.getTotalNumberReactions() << " reactions. " << std::endl;
 
-  if (number < 0 )
+
+  mzr::moleculizer::CachePosition pos;
+  if (number < 0)
   {
-      std::cout << "Generating complete network... " << std::endl;
-      theMoleculizer.generateCompleteNetwork();
-      std::cout << "Done!" << std::endl;
+
+      if (maxSpecies > 0 || maxRxns > 0)
+      {
+          
+          modeRun = BoundedRun;
+
+          std::cout << "Creating bounded network with (maxSpec, maxRxn) = ( " ;
+
+          if (maxSpecies > 0 ) std::cout << maxSpecies;
+          else std::cout << "inf";
+
+          std::cout << ", ";
+
+          if (maxRxns > 0 ) std::cout << maxRxns;
+          else std::cout << "inf";
+
+          std::cout << ") " << std::endl;
+
+          pos = createBoundedNetwork( theMoleculizer, maxSpecies, maxRxns );
+      }
+      else
+      {
+
+          modeRun = Full;
+
+          std::cout << "Expanding whole network..." << std::endl;
+          createFullNetwork( theMoleculizer );
+      }
+
   }
   else
   {
-      std::cout << "Expanding up to " << number << " iterations... " << std::endl;
-
-      for ( int iterNdx = 0; iterNdx != number; ++iterNdx)
-      {
-          std::cout << "----------------------------------------" << std::endl;
-          std::cout << "Iteration " << iterNdx + 1 << "/" << number << ": " << std::endl;
-
-          std::string name;
-          int numExpanded = 0;
-          if (getUninitializedSpecies( theMoleculizer, name))
-          {
-              ++numExpanded;
-              std::string uniqueId = theMoleculizer.convertSpeciesTagToSpeciesID( name );
-              std::cout << numExpanded << " expanded! (" << name << " -> " << uniqueId << " ) " << std::endl;
-
-              theMoleculizer.incrementNetworkBySpeciesTag( name );
-          }
-          else
-          {
-              std::cout << "All species incremented." << std::endl;
-              std::cout << "Breaking on iteration " << iterNdx << std::endl;
-              break;
-          }
-
-
-      }
-      std::cout << "----------------------------------------" << std::endl;
+      modeRun = Iterations;
+      doNIterations( theMoleculizer, number );
   }
 
   std::cout << "################################################" << '\n';
-  std::cout << "After " << number << " iterations," << '\n';
-  std::cout << "There are " 
-            << theMoleculizer.getTotalNumberReactions() << " reactions and " 
-            << theMoleculizer.getTotalNumberSpecies() << " species in " 
-            << theMoleculizer.getNumberOfPlexFamilies() << " families in the nework." << std::endl;
+  
+  std::cout << "After processing: \n" ;
 
-  if (printOutput)
-  {
+  if (modeRun == Full || modeRun == Iterations)
+   {
+       std::cout << "There are " 
+                 << theMoleculizer.getTotalNumberReactions() << " reactions and " 
+                 << theMoleculizer.getTotalNumberSpecies() << " species in " 
+                 << theMoleculizer.getNumberOfPlexFamilies() << " families in the network." << std::endl;
+   }
+   else
+   {
+       int numRxns = std::distance(theMoleculizer.theDeltaReactionList.begin(), pos.second);
+       int numSpecies = std::distance(theMoleculizer.theDeltaSpeciesList.begin(), pos.first);
+       std::cout << "There are " 
+                 << numSpecies << " species and " 
+                 << numRxns<< " reactions in the bounded network.  " << '\n'
+                 << "Should be bounded by " << maxSpecies << " species and "
+                 << maxRxns << " reactions."
+                 << std::endl;
+   }
 
-      std::cout << "################################################" << '\n';
+   if (printOutput)
+   {
+       std::cout << "################################################" << '\n';
+       printAllSpeciesStreams(theMoleculizer);
 
-      printAllSpeciesStreams(theMoleculizer);
+       std::cout << "################################################" << '\n';
 
-      std::cout << "################################################" << '\n';
+       printAllSpeciesByName(theMoleculizer);
+       std::cout << "################################################" << '\n';
+       printAllSpeciesByID(theMoleculizer);
 
-      printAllSpeciesByName(theMoleculizer);
+       std::cout << "################################################" << '\n';
+   }
 
-      std::cout << "################################################" << '\n';
-
-      printAllSpeciesByID(theMoleculizer);
-
-      std::cout << "################################################" << '\n';
-  }
-
-  if(outputFileName != "")
-  {
-      theMoleculizer.writeOutputFile(outputFileName, true);
-  }
+   if(outputFileName != "")
+   {
+       if (modeRun != BoundedRun)
+       {
+           theMoleculizer.writeOutputFile(outputFileName, true);
+       }
+       else
+       {
+           theMoleculizer.writeOutputFile( outputFileName, true, pos);
+       }
+   }
 
   return 0;
   
@@ -209,7 +249,7 @@ bool getUninitializedSpecies( const mzr::moleculizer& moleculizerRef, std::strin
 }
 
 
-void processCommandLineArgs( int argc, char* argv[], std::string& mzrFile, int& number, int& print, std::string& outputFileName)
+void processCommandLineArgs( int argc, char* argv[], std::string& mzrFile, int& number, int& print, std::string& outputFileName, int& maxSpec, int& maxRxns)
 {
 
     bool file( false );
@@ -256,6 +296,16 @@ void processCommandLineArgs( int argc, char* argv[], std::string& mzrFile, int& 
         {
             outputFileName = utl::mustGetArg( argc, argv );
         }
+        if(arg == "-s")
+        {
+            std::string numAsString = utl::mustGetArg( argc, argv);
+            maxSpec = utl::argMustBeNNInt( numAsString );
+        }
+        if(arg == "-r")
+        {
+            std::string numAsString = utl::mustGetArg( argc, argv);
+            maxRxns = utl::argMustBeNNInt( numAsString );
+        }
     }
 
     if ( !file )
@@ -300,4 +350,51 @@ void displayHelpAndExitProgram()
     cout << "\tNathan Addy <addy@molsci.org>\n\tSeptember 18, 2008." << endl;
 
     exit( 0 );
+}
+
+
+mzr::moleculizer::CachePosition
+createBoundedNetwork(mzr::moleculizer& refMolzer, int maxSpec, int maxRxns)
+{
+    return refMolzer.generateCompleteNetwork( maxSpec, maxRxns);
+}
+
+void createFullNetwork(mzr::moleculizer& refMolzer)
+{
+    std::cout << "Generating complete network... " << std::endl;
+    refMolzer.generateCompleteNetwork();
+    std::cout << "Done!" << std::endl;
+}
+
+void doNIterations(mzr::moleculizer& refMolzer, int number)
+{
+
+    std::cout << "Expanding network for" << number << " iterations. " << std::endl;
+
+
+      for ( int iterNdx = 0; iterNdx != number; ++iterNdx)
+      {
+          std::cout << "----------------------------------------" << std::endl;
+          std::cout << "Iteration " << iterNdx + 1 << "/" << number << ": " << std::endl;
+
+          std::string tag;
+          int numExpanded = 0;
+          if( getUninitializedSpecies(refMolzer, tag) )
+          {
+              ++numExpanded;
+              std::string uniqueId = refMolzer.convertSpeciesTagToSpeciesID( tag );
+              std::cout << numExpanded << " Expanding (" << tag << " -> " << uniqueId << " ) " << std::endl;
+              refMolzer.incrementNetworkBySpeciesTag( tag );
+
+              std::cout << "(numSpec, numRxns ) = " << "(" << refMolzer.getTotalNumberSpecies() << ", " << refMolzer.getTotalNumberReactions() << ")" << std::endl;
+
+          }
+          else
+          {
+              std::cout << "All species incremented." << std::endl;
+              std::cout << "Breaking on iteration " << iterNdx << std::endl;
+              break;
+          }
+      }
+
 }

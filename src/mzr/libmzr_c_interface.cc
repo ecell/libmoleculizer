@@ -587,8 +587,8 @@ int getReactionsBetween(moleculizer* handle, char* cStrSpeciesName1, char* cStrS
     
     try
     {
-        species1 = moleculizerPtr->getSpeciesWithName( speciesName1 );
-        species2 = moleculizerPtr->getSpeciesWithName( speciesName2 );
+        species1 = moleculizerPtr->getSpeciesWithUniqueID( speciesName1 );
+        species2 = moleculizerPtr->getSpeciesWithUniqueID( speciesName2 );
     }
     catch(mzr::IllegalNameXcpt e)
     {
@@ -638,7 +638,7 @@ int getUnaryReactions(moleculizer* handle, char* speciesName, reaction*** ptrRea
         mzr::moleculizer* moleculizerPtr = convertCMzrPtrToMzrPtr( handle );
         const mzr::mzrSpecies* pSpecies;
         
-        pSpecies = moleculizerPtr->getSpeciesWithName( std::string(speciesName) );
+        pSpecies = moleculizerPtr->getSpeciesWithUniqueID( std::string(speciesName) );
         
         // Just a guess so as to preserve speed when a few reactions are returned;
         std::vector<const mzr::mzrReaction*> unaryReactionContainer;

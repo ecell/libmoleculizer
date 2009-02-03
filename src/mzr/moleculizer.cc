@@ -174,7 +174,7 @@ namespace mzr
     }
     
     const mzrSpecies*
-    moleculizer::getSpeciesWithName( const std::string& speciesName )
+    moleculizer::getSpeciesWithUniqueID( SpeciesIDCref uniqueid )
         throw( mzr::IllegalNameXcpt )
     {
         
@@ -182,24 +182,16 @@ namespace mzr
         mzrSpecies* theMzrSpecies;
         try
         {
-            theMzrSpecies = findSpecies( speciesName );
-            
+            std::string tag = convertSpeciesIDToSpeciesTag( uniqueid );
+            theMzrSpecies = findSpecies( tag );
             return theMzrSpecies;
         }
         catch ( fnd::NoSuchSpeciesXcpt e )
         {}
         
-        // If not, we see if it is a user-name
-        if (nameIsUserName( speciesName ) ) 
-        {
-            std::string mangledName = convertUserNameToGeneratedName( speciesName );
-            return findSpecies( mangledName );
-        }
-        
-        
         try
         {
-            theMzrSpecies = pUserUnits->pNmrUnit->constructSpeciesFromName( speciesName );
+            theMzrSpecies = pUserUnits->pNmrUnit->constructSpeciesFromName( uniqueid );
             // Does mzrSpecies need to be expanded here?
             // theMzrSpecies->expandReactionNetwork();
             
@@ -279,6 +271,32 @@ namespace mzr
                        prepareUnitToRun( pRootElement,
                                          pModelElement,
                                          pStreamsElement ) );
+
+        // Check to see if it has a "generated-network" tag, which would mean
+        // it is an output mzr file being read in.
+        xmlpp::Element* pGeneratedNetworkElmt = utl::dom::getOptionalChild( pRootElement,
+                                                                            "generated-network");
+        if (pGeneratedNetworkElmt)
+        {
+            this->loadGeneratedNetwork( pGeneratedNetworkElmt );
+        }
+    }
+
+    void 
+    moleculizer::loadGeneratedNetwork( xmlpp::Element* pGeneratedNetworkElmt)
+    {
+
+        xmlpp::Element* pGeneratedSpeciesElmt = \
+            utl::dom::mustGetUniqueChild( pGeneratedNetworkElmt, "generated-species" ); 
+
+        xmlpp::Node::NodeList genSpecNodes = pGeneratedSpeciesElmt->get_children("species");
+
+        std::for_each( genSpecNodes.begin(),
+                       genSpecNodes.end(),
+                       restoreGeneratedSpecies( *this ) );
+
+        return;
+
     }
     
     
@@ -311,7 +329,7 @@ namespace mzr
     };
     
     xmlpp::Document*
-    moleculizer::makeDomOutput( bool verbose ) throw( std::exception )
+    moleculizer::makeDomOutput( bool verboseXML ) throw( std::exception )
     {
         xmlpp::Document* pDoc = new xmlpp::Document();
         
@@ -333,7 +351,41 @@ namespace mzr
         xmlpp::Element* unitStatesElement = pRootElt->add_child( eltName::unitsStates );
         
         // Insert each of the state elements
-        this->insertGeneratedNetwork( generatedNetworkElt, verbose );
+        this->insertGeneratedNetwork( generatedNetworkElt, verboseXML );
+        
+        // Run through the units, letting each make its complete state
+        // contribution, for now.
+        std::for_each( pUserUnits->begin(),
+                       pUserUnits->end(),
+                       unitInsertStateElements( unitStatesElement ) );
+        
+        return pDoc;
+    }
+
+    xmlpp::Document*
+    moleculizer::makeDomOutput( bool verboseXML, CachePosition pos ) throw( std::exception )
+    {
+        xmlpp::Document* pDoc = new xmlpp::Document();
+        
+        // Create the moleculizer-state node.
+        xmlpp::Element* pRootElt
+            = pDoc->create_root_node( eltName::moleculizerState );
+
+        // Copy in the original model and streams stuff...
+        xmlpp::Document* originalDoc = theParser.get_document();
+        xmlpp::Element* originalRoot = originalDoc->get_root_node();
+
+        xmlpp::Element* pInputModelElt = utl::dom::mustGetUniqueChild( originalRoot, eltName::model);
+        xmlpp::Element* pInputStreamsElt = utl::dom::getOptionalChild( originalRoot, eltName::streams);
+
+        pRootElt->import_node( pInputModelElt );
+        if (pInputStreamsElt) pRootElt->import_node( pInputStreamsElt );
+        
+        xmlpp::Element* generatedNetworkElt = pRootElt->add_child( eltName::generatedNetwork );
+        xmlpp::Element* unitStatesElement = pRootElt->add_child( eltName::unitsStates );
+        
+        // Insert each of the state elements
+        this->insertGeneratedNetwork( generatedNetworkElt, pos, verboseXML );
         
         // Run through the units, letting each make its complete state
         // contribution, for now.
@@ -347,6 +399,15 @@ namespace mzr
     void moleculizer::writeOutputFile( const std::string& fileName, bool verbose)
     {
         xmlpp::Document* outputDocument = makeDomOutput(verbose);
+
+        outputDocument->write_to_file_formatted( fileName );
+
+        delete outputDocument;
+    }
+
+    void moleculizer::writeOutputFile( const std::string& fileName, bool verbose, CachePosition pos)
+    {
+        xmlpp::Document* outputDocument = makeDomOutput(verbose, pos);
 
         outputDocument->write_to_file_formatted( fileName );
 
@@ -431,6 +492,88 @@ namespace mzr
         }
         
     }
+
+
+    void moleculizer::insertGeneratedNetwork( xmlpp::Element* generatedNetworkElt, CachePosition pos, bool verbose )
+    {
+        xmlpp::Element* genSpecElt = generatedNetworkElt->add_child("generated-species");
+        xmlpp::Element* genRxnsElt = generatedNetworkElt->add_child("generated-reactions");
+
+
+        // Insert each of the generated species into the network.
+
+        for( SpeciesListCIter specIter = this->getDeltaSpeciesList().begin();
+             specIter != pos.first;
+             ++specIter )
+        {
+            xmlpp::Element* newSpecElt = genSpecElt->add_child( "species");
+            
+            newSpecElt->set_attribute("tag", (*specIter)->getTag());
+            newSpecElt->set_attribute("unique-id", convertSpeciesTagToSpeciesID( (*specIter)->getTag()));
+
+            if( (*specIter)->hasNotified() ) 
+            {
+                newSpecElt->set_attribute("expanded", "true" );
+            }
+            else
+            {
+                newSpecElt->set_attribute("expanded", "false" );
+            }
+        }
+
+        // Insert each of the generated reactions into the network.
+        for( ReactionList::const_iterator rxnIter = this->getDeltaReactionList().begin();
+             rxnIter != pos.second;
+             ++rxnIter)
+        {
+            const mzr::mzrReaction* pRxn( *rxnIter );
+
+            xmlpp::Element* newRxnElt = genRxnsElt->add_child( "reaction");
+            xmlpp::Element* newSubstratesElt = newRxnElt->add_child("substrates");
+            xmlpp::Element* newProductsElt = newRxnElt->add_child("products");
+            xmlpp::Element* newRateElt = newRxnElt->add_child("rate");
+
+            // newRxnElt->set_attribute( "representation", pRxn->getName() );
+
+            // process each substrate
+
+            for( mzr::mzrReaction::multMap::const_iterator reactantIter = pRxn->getReactants().begin();
+                 reactantIter != pRxn->getReactants().end();
+                 ++reactantIter )
+            {
+                
+                const mzr::mzrReaction::multMap::value_type& vt( *reactantIter );
+
+                xmlpp::Element* newSubElt = newSubstratesElt->add_child("substrate");
+                newSubElt->set_attribute("multiplicity", utl::stringify(vt.second) );
+                newSubElt->set_attribute("tag", vt.first->getTag() );
+                if(verbose)
+                {
+                    newSubElt->set_attribute("unique-id", vt.first->getName() );
+                }
+            }
+
+            // Process each reactant
+            for( mzr::mzrReaction::multMap::const_iterator productIter = pRxn->getProducts().begin();
+                 productIter != pRxn->getProducts().end();
+                 ++productIter )
+            {
+                const mzr::mzrReaction::multMap::value_type& vt( *productIter );
+
+                xmlpp::Element* newProdElt = newProductsElt->add_child("product");
+                newProdElt->set_attribute("multiplicity", utl::stringify(vt.second) );
+                newProdElt->set_attribute("tag", vt.first->getTag() );
+                if(verbose)
+                {
+                    newProdElt->set_attribute("unique-id", vt.first->getName() );
+                }
+            }
+
+            newRateElt->set_attribute("value", utl::stringify(pRxn->getRate() ) );
+        }
+        
+    }
+
     
     void
     moleculizer::verifyInput( xmlpp::Element const * const pRootElement,

@@ -204,7 +204,7 @@ bool SimpleSimulator::assertModelValidity( const std::map<std::string, int>& mod
         // Find out if this is a legal name.
         try
         {
-            ptrSpeciesReactionGenerator->getSpeciesWithName( modelIter->first );
+            ptrSpeciesReactionGenerator->getSpeciesWithUniqueID( modelIter->first );
         }
         catch ( mzr::IllegalNameXcpt )
         {

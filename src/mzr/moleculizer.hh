@@ -109,17 +109,25 @@ namespace mzr
         
     public:
         const mzrSpecies* 
-        getSpeciesWithName( const std::string& speciesName ) throw( mzr::IllegalNameXcpt );
+        getSpeciesWithUniqueID( SpeciesIDCref uniqueID ) throw( mzr::IllegalNameXcpt );
         
     public:
         xmlpp::Document*
         makeDomOutput( bool verbose ) throw( std::exception );
 
+        xmlpp::Document*
+        makeDomOutput( bool verboseXML, CachePosition networkSizeRange ) throw( std::exception );
+
+    void 
+    loadGeneratedNetwork( xmlpp::Element* pGeneratedNetworkElmt);
+
         void writeOutputFile( const std::string& fileName, bool verbose = false);
+        void writeOutputFile( const std::string& fileName, bool verbose, CachePosition pos);
         
     protected:
         void setModelHasBeenLoaded( bool value );
         
+        void insertGeneratedNetwork( xmlpp::Element* generatedNetworkElt, CachePosition pos, bool verbose );
         void insertGeneratedNetwork( xmlpp::Element* generatedNetworkElement, bool verbose );
         
         
@@ -203,7 +211,42 @@ namespace mzr
         xmlpp::DomParser theParser;
 
     };
-    
+
+    class restoreGeneratedSpecies
+    {
+      
+    public:
+        restoreGeneratedSpecies( mzr::moleculizer& refMolzer )
+            :
+            rMolzer( refMolzer )
+        {}
+        
+        void operator()( const xmlpp::Node* pNode )
+        {
+
+
+            const xmlpp::Element* pElement = dynamic_cast<const xmlpp::Element*>( pNode );
+
+            assert(pElement);
+
+
+            std::string uniqueID = utl::dom::mustGetAttrString( pElement, "unique-id" );
+            std::string isExpanded = utl::dom::mustGetAttrString( pElement, "expanded");
+
+            const mzrSpecies* pSpecies = rMolzer.getSpeciesWithUniqueID( uniqueID );
+
+            std::string tag = pSpecies->getTag();
+            
+            if ( isExpanded == "true" )
+            {
+                rMolzer.incrementNetworkBySpeciesTag( tag );
+            }
+        }
+
+    private:
+        moleculizer& rMolzer;
+        
+    };
 }
 
 #endif

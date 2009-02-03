@@ -56,12 +56,29 @@ namespace nmr
     }
     
     mzr::mzrSpecies*
-    nmrUnit::constructSpeciesFromName( const std::string& encodedSpeciesName )
+    nmrUnit::constructSpeciesFromName( const std::string& uniqueid )
     {
+
+        // We shouldn't have to, but we really should check to make sure the unique id isn't already present.
+        try
+        {
+            rMolzer.convertSpeciesIDToSpeciesTag( uniqueid );
+
+            std::cout << "converted name " << uniqueid << " was found!" << std::endl;
+        }
+        catch(utl::xcpt e)
+        {
+            e.wailAndBail();
+        }
+        catch(...)
+        {
+            std::cout << "HELLLLPPP " << std::endl;
+        }
+
         try
         {
             // 1.  The currently set nameEncoder has the responsibility of decoding the thing into a complexOutputState.
-            ComplexOutputState aCOS = getNameEncoder()->createOutputStateFromName( encodedSpeciesName );
+            ComplexOutputState aCOS = getNameEncoder()->createOutputStateFromName( uniqueid );
             
             // TODO: Ensure that this does  not register the constructed plexSpecies into the reactionCatalog.
             
@@ -74,7 +91,7 @@ namespace nmr
         // I should separate the reasons things went bad here.
         catch ( ... )
         {
-            throw nmr::IllegalNameXcpt( encodedSpeciesName );
+            throw nmr::IllegalNameXcpt( uniqueid );
         }
         
     }

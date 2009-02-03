@@ -59,26 +59,39 @@ int main(int argc, char* argv[])
   std::string fileName;
   std::string outputFileName("");
   int number = -1;
-  int printOutput = 1;
+  int printOutput = 0;
 
   processCommandLineArgs(argc, argv, fileName, number, printOutput, outputFileName);
 
   mzr::moleculizer theMoleculizer;
   theMoleculizer.attachFileName( fileName );
 
+  std::cout << "There are initially " << theMoleculizer.getTotalNumberSpecies() << " species and " 
+            << theMoleculizer.getTotalNumberReactions() << "reactions. " << std::endl;
+
   if (number < 0 )
   {
+      std::cout << "Generating complete network... " << std::endl;
       theMoleculizer.generateCompleteNetwork();
+      std::cout << "Done!" << std::endl;
   }
   else
   {
+      std::cout << "Expanding up to " << number << " iterations... " << std::endl;
+
       for ( int iterNdx = 0; iterNdx != number; ++iterNdx)
       {
-          std::cout << "Iteration " << iterNdx << "/" << number << std::endl;
+          std::cout << "----------------------------------------" << std::endl;
+          std::cout << "Iteration " << iterNdx + 1 << "/" << number << ": " << std::endl;
 
           std::string name;
+          int numExpanded = 0;
           if (getUninitializedSpecies( theMoleculizer, name))
           {
+              ++numExpanded;
+              std::string uniqueId = theMoleculizer.convertSpeciesTagToSpeciesID( name );
+              std::cout << numExpanded << " expanded! (" << name << " -> " << uniqueId << " ) " << std::endl;
+
               theMoleculizer.incrementNetworkBySpeciesTag( name );
           }
           else
@@ -87,7 +100,10 @@ int main(int argc, char* argv[])
               std::cout << "Breaking on iteration " << iterNdx << std::endl;
               break;
           }
+
+
       }
+      std::cout << "----------------------------------------" << std::endl;
   }
 
   std::cout << "################################################" << '\n';

@@ -38,6 +38,9 @@
 #include "unitsMgr.hh"
 #include "mol/molUnit.hh"
 
+#include <iterator>
+
+
 // 
 // Declarations for functions locally defined.
 // 
@@ -233,7 +236,7 @@ int expandNetwork( moleculizer* handle)
     return SUCCESS;
 }
 
-int expandNetworkToLimit( moleculizer* handle, long maxNumSpecies, long maxNumReactions)
+int getBoundedNetwork( moleculizer* handle, long maxNumSpecies, long maxNumReactions, species*** pSpeciesArray, int* pNumSpec, reaction*** pReactionArray, int* pNumRxns)
 {
     enum LOCAL_ERROR_TYPE { SUCCESS = 0,
                             UNKNOWN_ERROR = 1};
@@ -241,7 +244,46 @@ int expandNetworkToLimit( moleculizer* handle, long maxNumSpecies, long maxNumRe
     try
     {
         mzr::moleculizer* underlyingMoleculizerObject = convertCMzrPtrToMzrPtr( handle );
-        underlyingMoleculizerObject->generateCompleteNetwork(maxNumSpecies, maxNumReactions);
+        mzr::moleculizer::CachePosition theMaxNetwork = underlyingMoleculizerObject->generateCompleteNetwork(maxNumSpecies, maxNumReactions);
+
+
+        typedef reaction* reactionPtr;
+        typedef species* speciesPtr;
+
+        int numSpecies = std::distance( underlyingMoleculizerObject->theDeltaSpeciesList.begin(), theMaxNetwork.first);
+        int numRxns = std::distance( underlyingMoleculizerObject->theDeltaReactionList.begin(), theMaxNetwork.second);
+
+
+        species** specArray = new speciesPtr[ numSpecies ];
+        reaction** rxnArray = new reactionPtr[ numRxns ];
+
+        
+        int specNdx = 0;
+        int rxnNdx = 0;
+        for( mzr::moleculizer::SpeciesListIter specIter = underlyingMoleculizerObject->theDeltaSpeciesList.begin();
+             specIter != theMaxNetwork.first;
+             ++specIter)
+        {
+
+            specArray[specNdx] = createNewCSpeciesFromMzrSpecies( handle, *specIter) ;
+            ++specNdx;
+        }
+
+        for( mzr::moleculizer::ReactionListIter rxnIter = underlyingMoleculizerObject->theDeltaReactionList.begin();
+             rxnIter != theMaxNetwork.second;
+             ++rxnIter)
+        {
+            rxnArray[rxnNdx] = createNewCRxnFromMzrReaction( handle, *rxnIter);
+            ++rxnNdx;
+        }
+
+        // Assuming everything has gotten here, copy everything over.
+        pSpeciesArray = &specArray;
+        pReactionArray = &rxnArray;
+
+        *pNumSpec = numSpecies;
+        *pNumRxns = numRxns;
+
         return SUCCESS;
     }
     catch(utl::xcpt x)

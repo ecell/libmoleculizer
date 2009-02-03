@@ -31,6 +31,7 @@
 
 #include <libxml++/libxml++.h>
 #include <functional>
+#include <iterator>
 
 #include "utl/defs.hh"
 #include "utl/utility.hh"
@@ -497,75 +498,123 @@ namespace mzr
     {
         if ( ! this->getModelHasBeenLoaded() ) throw ModelNotLoadedXcpt("moleculizer::generateCompleteNetwork");
 
-        // This function will generate the entire network.  To be used primarily 
-        bool nodesUnexpanded = true;
+        // This function will generate the entire network.  
         
-        while( nodesUnexpanded)
+        // This is a rewrite, because the previous function seemed like it might not be working.
+
+
+        bool foundUnexpandedSpecies = false;
+        mzrSpecies* ptrUnexpandedSpecies = NULL;
+
+        while(true)
         {
-            for( SpeciesCatalogCIter speciesIter = this->getSpeciesCatalog().begin();
-                 speciesIter != this->getSpeciesCatalog().end();
-                 ++speciesIter)
-            {
-                speciesIter->second->expandReactionNetwork();
-            }
-            
-            nodesUnexpanded = false;
+            foundUnexpandedSpecies = false;
 
             for( SpeciesCatalogCIter speciesIter = this->getSpeciesCatalog().begin();
                  speciesIter != this->getSpeciesCatalog().end();
                  ++speciesIter)
             {
-                if (speciesIter->second->hasNotified() )
+                if ( !speciesIter->second->hasNotified() )
                 {
-                    nodesUnexpanded = true;
+                    foundUnexpandedSpecies = true;
+                    ptrUnexpandedSpecies = speciesIter->second;
                     break;
                 }
             }
+
+            if (foundUnexpandedSpecies)
+            {
+                // Expand and continue...
+                ptrUnexpandedSpecies->expandReactionNetwork();
+            }
+            else
+            {
+                // GeneratedCompleteNetwork
+                break;
+            }
         }
+
     }
 
-    void moleculizer::generateCompleteNetwork(long maxNumSpecies, long maxNumRxns)
+    
+    moleculizer::CachePosition
+    moleculizer::generateCompleteNetwork(long maxNumSpecies, long maxNumRxns)
     {
+        // Note when reading this function:
+        // Lists have the property that no iterators are ever invalidated.  It turns out (GOTCHA!)
+        // this means that when you define an iterator as equal to theList.end(), this iterator will
+        // always point to the end(), no matter what is added to the list in the interim.
+
+        // Therefore, this function works by getting the end() and then producing end()--.  This iterator 
+        // will always point to "the last element in the list".  Then I ++ it at various places to get back what
+        // would have been the end() previously.  Again, the decrementing and incrementing is so that I can get a 
+        // never invalidated iterator that has the same value as end() but an absolute position.  
+        // 
+        //It is probably possible and desirable to replace this with end() and then increment it.  
+
+
+        // I don't know how to enforce this at the moment, but it is important that 
+        // neither delta cache has been cleared prior to this function running.  
+
         if ( ! this->getModelHasBeenLoaded() ) throw ModelNotLoadedXcpt("moleculizer::generateCompleteNetwork");
 
         if (maxNumSpecies < 0) maxNumSpecies = std::numeric_limits<long>::max();
         if (maxNumRxns < 0) maxNumRxns = std::numeric_limits<long>::max();
 
+        // This isn't really necessary, but it should be true anyways (there is nothing to expand otherwise), and gets
+        // us away from the concern regarding lists explicated at the beginning of this function.
+        assert( this->getTotalNumberSpecies() > 0 && this->getTotalNumberReactions() > 0);
 
-        // This loop has some goofy logic.  Is there a better way to do this?  Seems like there 
-        // has to be...
-        
-        const std::string NULLSTRING("");
-        while( maxNumSpecies > getTotalNumberSpecies() && 
-               maxNumRxns > getTotalNumberReactions() )
+        if ( this->getTotalNumberSpecies() >= maxNumSpecies || this->getTotalNumberReactions() >= maxNumRxns )
         {
-            std::string speciesToInc("");
+            // We are already too big to know what to do with ourselves.  Throw an exception.
+            throw utl::xcpt("Error in moleculizer::generateCompleteNetwork(long maxNumSpecies, long maxNumRxns).  Network is a priori too large for parameters.");
+        }
 
+        SpeciesListIter specCacheMaxIter = theDeltaSpeciesList.end();
+        ReactionListIter rxnCacheMaxIter = theDeltaReactionList.end();
+        
+        specCacheMaxIter--;
+        rxnCacheMaxIter--;
+
+        bool expandedOne = false;
+
+        // We start out good -- the reaction network is not too big, because we passed the precondition
+        while( true )
+        {
+            expandedOne = false;
 
             for( SpeciesCatalogCIter speciesIter = this->getSpeciesCatalog().begin();
                  speciesIter != this->getSpeciesCatalog().end();
                  ++speciesIter)
             {
-                if (! speciesIter->second->hasNotified() )
+                if ( !speciesIter->second->hasNotified() )
                 {
-                    speciesToInc = *(speciesIter->first);
-                    break;  // Out of the for each loop
+                    expandedOne = true;
+                    speciesIter->second->expandReactionNetwork();
+                    break;
                 }
             }
 
-            if (speciesToInc == NULLSTRING )
+            // The network is too big, since we came into the loop good, return that value of cached stuff.
+            if (getTotalNumberSpecies() > maxNumSpecies || getTotalNumberReactions() > maxNumRxns )
             {
-                // From this we may imply that all species have been notified and hence we return.
-                return;
+                return std::make_pair( ++specCacheMaxIter, ++rxnCacheMaxIter);
             }
-            else
+
+            specCacheMaxIter = theDeltaSpeciesList.end();
+            specCacheMaxIter--;
+            rxnCacheMaxIter = theDeltaReactionList.end();
+            rxnCacheMaxIter--;
+
+            if (!expandedOne)
             {
-                this->incrementNetworkBySpeciesTag( speciesToInc );
+                return std::make_pair( theDeltaSpeciesList.end(), theDeltaReactionList.end() );
             }
-            
+
         }
     }
-    
+             
     bool moleculizer::getRateExtrapolation( void ) const
     {
         return extrapolationEnabled;

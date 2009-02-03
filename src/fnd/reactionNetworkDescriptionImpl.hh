@@ -220,7 +220,10 @@ namespace fnd
 
         if ( theSpeciesListCatalog.find( speciesHandle ) == theSpeciesListCatalog.end() )
         {
+
             SpeciesIDPtr speciesIDPtr( new SpeciesID( pSpecies->getName() ) );
+
+            // std::cout << "Recording species: " << *speciesIDPtr << std::endl;
             
             theSpeciesListCatalog.insert( std::make_pair( speciesHandle, pSpecies ) );
             speciesTagToSpeciesIDChart.insert( std::make_pair( speciesHandle, speciesIDPtr ) );
@@ -424,10 +427,13 @@ namespace fnd
 
     template <typename speciesT, typename reactionT>
     ReactionNetworkDescription<speciesT, reactionT>::ReactionNetworkDescription()
+        :
+        theDeltaSpeciesList(),
+        theDeltaReactionList()
     {}
         
 
-    template <typename speciesT, typename reactionT>
+     template <typename speciesT, typename reactionT>
     ReactionNetworkDescription<speciesT, reactionT>::~ReactionNetworkDescription()
     {
         // We don't memory manage any SpeciesType* or ReactionType*, but we do memory

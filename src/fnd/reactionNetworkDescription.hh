@@ -65,7 +65,14 @@ namespace fnd
         typedef typename SpeciesCatalog::const_iterator SpeciesCatalogCIter;
 
         typedef std::list<SpeciesTypePtr> SpeciesList;
+        typedef typename SpeciesList::iterator SpeciesListIter;
+        typedef typename SpeciesList::const_iterator SpeciesListCIter;
+
         typedef std::list<ReactionTypePtr> ReactionList;
+        typedef typename ReactionList::iterator ReactionListIter;
+        typedef typename ReactionList::const_iterator ReactionListCIter;
+
+        typedef std::pair<SpeciesListIter, ReactionListIter> CachePosition;
         
         typedef std::multimap<SpeciesTypePtr, ReactionTypePtr> ParticipatingSpeciesRxnMap;
         typedef std::map< SpeciesHandle, const SpeciesID*, utl::aux::compareByPtrValue<SpeciesTag> > SpeciesNameMap;
@@ -80,7 +87,7 @@ namespace fnd
 
         ReactionList unaryReactionList;
         ReactionList binaryReactionList;
-
+        
         SpeciesList  theDeltaSpeciesList;
         ReactionList theDeltaReactionList;
         

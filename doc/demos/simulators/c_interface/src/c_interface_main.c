@@ -35,7 +35,20 @@
 #include <time.h>
 #include "mzr/libmzr_c_interface.h"
 
-void showUsageAndExit();
+void showUsageAndExit()
+{
+
+    printf("Usage: c_interface_demo -f <FILE> [-n NumIters] [ -s MAXSPECIES ] [ -r MAXRXNS] [-w OUTPUTFILE] \n\n");
+
+    printf("This is a demonstration program that demonstrates how libmoleculizer can be used in \n");
+    printf("a program written in c for expanding whole reaction networks and displaying some information.\n\n");
+    
+    printf("Libmoleculizer should have come with associated documentation.  Please read it for more details.\n");
+    printf("\tNathan Addy <addy@molsci.org>\n\tJanuary 7, 2009.\n");
+
+    exit(0);
+}
+
 int loadModelFile( moleculizer* handle, int argc, char* argv[]);
 int getNumberOfIterations( int argc, char* argv[]);
 int getVerbose( int argc, char* argv[]);
@@ -100,7 +113,25 @@ int main(int argc, char* argv[] )
   
   if(numIter == -1 )
   {
-      expandNetworkToLimit( pMoleculizer, maxSpecies, maxRxns );
+      int numRxns;
+      int numSpec;
+
+      species** speciesArray;
+      reaction** rxnArray;
+      
+      int errorCode = \
+          getBoundedNetwork( pMoleculizer, maxSpecies, maxRxns, &speciesArray, &numSpec, &rxnArray, &numRxns );
+
+      if (errorCode)
+      {
+          printf("Unknown erorr.  Check error messages for description.  Exiting...\n");
+          exit(1);
+      }
+      else
+      {
+          numIter = 10;
+          printf("Network generated to %d species and %d reactions.\n", numSpec, numRxns);
+      }
   }
   else
   {
@@ -161,21 +192,6 @@ int main(int argc, char* argv[] )
   freeMoleculizerObject( pMoleculizer );
   return 0;
 
-}
-
-
-void showUsageAndExit()
-{
-
-    printf("Usage: c_interface_demo -f <FILE> [-n NumIters] [ -s MAXSPECIES ] [ -r MAXRXNS] [-w OUTPUTFILE] \n\n");
-
-    printf("This is a demonstration program that demonstrates how libmoleculizer can be used in \n");
-    printf("a program written in c for expanding whole reaction networks and displaying some information.\n\n");
-    
-    printf("Libmoleculizer should have come with associated documentation.  Please read it for more details.\n");
-    printf("\tNathan Addy <addy@molsci.org>\n\tJanuary 7, 2009.\n");
-
-    exit(0);
 }
 
 

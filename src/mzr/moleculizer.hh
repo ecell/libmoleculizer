@@ -58,7 +58,9 @@ namespace mzr
     public:
         
         void generateCompleteNetwork();
-        void generateCompleteNetwork(long maxNumSpecies, long maxNumRxns = -1);
+
+        CachePosition
+        generateCompleteNetwork(long maxNumSpecies, long maxNumRxns = -1);
         
     public:
 
@@ -154,8 +156,6 @@ namespace mzr
         int getNumberOfReactionRules() const;
 
 
-        // const unitsMgr* getUnitsMgr() const { return pUserUnits; }
-        
     protected:
         void
         constructorPrelude( void );
@@ -179,8 +179,6 @@ namespace mzr
             throw( std::exception );
         
         std::map<std::string, std::string> userNameToSpeciesIDChart;
-
-
         
     private:
         ////////////////////////////////////////////////
@@ -203,6 +201,7 @@ namespace mzr
 
         // Now we store a copy of the parser, so that people can get a copy of the rules, at any time.
         xmlpp::DomParser theParser;
+
     };
     
 }

@@ -54,6 +54,7 @@ AC_SUBST(LIBXML_CFLAGS)
 AC_SUBST(LIBXML_LIBS)
 AC_SUBST(LIBXMLPP_VERSION)
 
+
 # Checks for libraries.
 AC_CONFIG_FILES([Makefile
                 src/Makefile

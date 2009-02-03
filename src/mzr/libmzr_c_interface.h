@@ -80,7 +80,11 @@ extern "C" {
     int loadRulesString( moleculizer* handle, char* file);
 
     int expandNetwork( moleculizer* handle);
-    int expandNetworkToLimit( moleculizer* handle, long maxNumSpecies, long maxNumReactions);
+
+
+    int getBoundedNetwork( moleculizer* handle, long maxNumSpecies, long maxNumReactions, species*** pSpeciesArray, int* pNumSpec, reaction*** pReactionArrry, int* pNumRxns);
+
+
     int incrementSpecies( moleculizer* handle, char* speciesName);
 
     int getNumberOfSpecies(moleculizer* handle);

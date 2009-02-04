@@ -925,20 +925,22 @@ namespace plx
         pFamily->addAlloQueryAndMap( pAndPlexQueries,
                                      alloSiteMap );
     }
-    
-    //     void
-    //     parsePlexSpeciesStream::
-    //     operator() (xmlpp::Node* pPlexSpeciesStreamNode) const
-    //         throw (utl::xcpt)
-    //     {
-    //         // Make sure that the node is an element, possibly unnecessarily.
-    //         xmlpp::Element* pPlexSpeciesStreamElt
-    //             = utl::dom::mustBeElementPtr (pPlexSpeciesStreamNode);
-    
-    //         // Get the name of the species stream.
-    //         std::string streamName
-    //             = utl::dom::mustGetAttrString
-    //             (pPlexSpeciesStreamElt,
+}
+
+
+//     void
+//     parsePlexSpeciesStream::
+//     operator() (xmlpp::Node* pPlexSpeciesStreamNode) const
+//         throw (utl::xcpt)
+//     {
+//         // Make sure that the node is an element, possibly unnecessarily.
+//         xmlpp::Element* pPlexSpeciesStreamElt
+//             = utl::dom::mustBeElementPtr (pPlexSpeciesStreamNode);
+
+//         // Get the name of the species stream.
+//         std::string streamName
+//             = utl::dom::mustGetAttrString
+//             (pPlexSpeciesStreamElt,
     //              eltName::plexSpeciesStream_nameAttr);
     
     //         // Parse the plex class, to get a plex, mzrPlexFamily, and a state query.
@@ -966,4 +968,4 @@ namespace plx
     //         // Add the dumpable to moleculizer for deletion and access.
     //         rMzrUnit.addSpeciesDumpable (pDumpable);
     //     }
-}
+

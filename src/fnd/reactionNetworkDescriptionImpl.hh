@@ -223,7 +223,7 @@ namespace fnd
 
             SpeciesIDPtr speciesIDPtr( new SpeciesID( pSpecies->getName() ) );
 
-            // std::cout << "Recording species: " << *speciesIDPtr << std::endl;
+            std::cout << "Recording species: " << *speciesIDPtr << std::endl;
             
             theSpeciesListCatalog.insert( std::make_pair( speciesHandle, pSpecies ) );
             speciesTagToSpeciesIDChart.insert( std::make_pair( speciesHandle, speciesIDPtr ) );

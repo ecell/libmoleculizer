@@ -257,6 +257,46 @@ namespace plx
         
         // Attach dumpable to omniplex, where it will be told of all
         // new species satisfying the omniplex's queries.
-        pOmni->getSubPlexFeature()->setDumpable (pDumpable);
+        pOmni->getSubPlexFeature()->setDumpable(pDumpable);
     }
+
+    void 
+    createMonomericPlexesFromMols::operator()( const utl::autoCatalog<bnd::mzrMol>::value_type& vt)
+    {
+
+        // FIX ME!!!
+        // Write me....
+
+        // This will be modeled after parseExplicitPlexSpecies
+        
+        // This function calls parsePlexSpecies to return a pointer
+        // parsePlexSpecies first calls recognize plex element and 
+        // recognizePlexElt calls plexParser on the element and then does it stuff
+
+        parserPlex thePlex;
+
+        std::string molName( vt.first);
+        molName = "the-" + molName;
+
+        thePlex.addMolByName( molName, vt.second );
+
+        // This does unification as well as connection to features. 
+        cpx::plexIso recognitionIsos;
+        mzrPlexFamily* pPlexFamily = rPlexUnit.recognize( thePlex,
+                                                          recognitionIsos );
+
+        std::vector<cpx::molParam> molParams
+            = pPlexFamily->makeDefaultMolParams();
+
+        mzrPlexSpecies* pSpecies = pPlexFamily->getMember( molParams );
+
+        rMzrUnit.addSpecies( vt.first,
+                             pSpecies );
+
+        return;
+        
+
+    }
+
+
 }

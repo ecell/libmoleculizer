@@ -111,7 +111,7 @@ namespace plx
         {}
         
         void
-        operator()( xmlpp::Element* pPlexElt ) const
+         operator()( xmlpp::Element* pPlexElt ) const
             throw( utl::xcpt );
     };
     
@@ -357,6 +357,24 @@ namespace plx
         void
         operator()( xmlpp::Node* pPlexSpeciesStreamNode ) const
             throw( utl::xcpt );
+    };
+
+    class createMonomericPlexesFromMols
+    {
+        mzr::mzrUnit& rMzrUnit;
+        bnd::molUnit& rMolUnit;
+        plexUnit& rPlexUnit;
+
+    public:
+        createMonomericPlexesFromMols(mzr::mzrUnit& refMzrUnit,
+                                      bnd::molUnit& refMolUnit,
+                                      plexUnit& refPlexUnit ) :
+            rMzrUnit( refMzrUnit ),
+            rMolUnit( refMolUnit ),
+            rPlexUnit( refPlexUnit )
+        {}
+
+        void operator()( const utl::autoCatalog<bnd::mzrMol>::value_type& vt);
     };
 }
 

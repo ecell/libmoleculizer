@@ -50,6 +50,12 @@ namespace bnd
         utl::autoCatalog<mzrMol> molsByName;
         
     public:
+
+        const utl::autoCatalog<mzrMol>&
+        getMolsByName() const
+        {
+            return molsByName;
+        }
         
         molUnit( mzr::moleculizer& rMoleculizer );
         

@@ -189,6 +189,14 @@ namespace plx
                                                  rMolUnit,
                                                  *this ) );
 
+        // This is my own addition -- that each mol should its corresponding plex
+        // created if not also notified.  
+        
+
+           std::for_each( rMolUnit.getMolsByName().begin(),
+                          rMolUnit.getMolsByName().end(),
+                          createMonomericPlexesFromMols( rMzrUnit, rMolUnit, *this));
+        
     }
 
     

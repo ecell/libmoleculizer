@@ -68,8 +68,11 @@ namespace fnd
         
         
         const std::vector<const speciesT*>* 
-        getSpeciesInMultiSpeciesStream() const
+        getSpeciesInMultiSpeciesStream()
         {
+            std::cout << "in getSpeciesInMultiSpeciesStream..." << std::endl;
+            sortAndUniqueSelf();
+            std::cout << "return getSpeciesInMultiSpeciesStream..." << std::endl;
             return &dumpedSpecies;
         }
         
@@ -79,6 +82,20 @@ namespace fnd
         respond( const fnd::newSpeciesStimulus<speciesT>& rStimulus )
         {
             dumpedSpecies.push_back( rStimulus.getSpecies() );
+        }
+
+    private:
+        void
+        sortAndUniqueSelf()
+        {
+            std::sort( dumpedSpecies.begin(),
+                       dumpedSpecies.end());
+
+            std::cout << dumpedSpecies.end() - std::unique( dumpedSpecies.begin(), dumpedSpecies.end()) << std::endl;
+
+            dumpedSpecies.erase( std::unique( dumpedSpecies.begin(), dumpedSpecies.end()),
+                                 dumpedSpecies.end());
+                                 
         }
     };
 }

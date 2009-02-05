@@ -1,13 +1,12 @@
-abs_top_builddir=@abs_top_builddir@
 
-SRC=$(abs_top_builddir)/src
-DEMO_SIMULATION_DIR=$(abs_top_builddir)/doc/demos/simulators
+
+SRC=../../../src
+DEMO_SIMULATION_DIR=.
 
 STOCHSIMDIR=$(DEMO_SIMULATION_DIR)/stochastic/src
 PARTICLESIMDIR=$(DEMO_SIMULATION_DIR)/particle/src
 NETEXPANDDIR=$(DEMO_SIMULATION_DIR)/network_expander/src
 CINTERFACEDIR=$(DEMO_SIMULATION_DIR)/c_interface/src
-CPARTICLEDIR=$(DEMO_SIMULATION_DIR)/c_particle/src
 
 bin_PROGRAMS=network_expander_demo stochasticsim_demo particlesim_demo c_interface_demo 
 

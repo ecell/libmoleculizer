@@ -30,10 +30,10 @@ moleculizer_test_SOURCES = moleculizer_tests.cpp
 moleculizer_test_CXXFLAGS= @CXXFLAGS@ -Wall $(LIBXML_CFLAGS)
 moleculizer_test_LDADD = $(ALL_MZR_LIBS)
 
-check_PROGRAMS += c_interface_test
-c_interface_test_SOURCES = c_interface_tests.cpp
-c_interface_test_CXXFLAGS = @CXXFLAGS@ -Wall $(LIBXML_CFLAGS)
-c_interface_test_LDADD = $(ALL_MZR_LIBS)
+# check_PROGRAMS += c_interface_test
+# c_interface_test_SOURCES = c_interface_tests.cpp
+# c_interface_test_CXXFLAGS = @CXXFLAGS@ -Wall $(LIBXML_CFLAGS)
+# c_interface_test_LDADD = $(ALL_MZR_LIBS)
 
 TESTS=$(check_PROGRAMS)
 

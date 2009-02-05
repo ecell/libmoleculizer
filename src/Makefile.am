@@ -2,16 +2,6 @@
 
 abs_top_builddir=@abs_top_builddir@
 
-SUBDIRS = utl \
-	fnd \
-	mzr \
-	stoch \
-	cpx \
-	mol \
-	nmr \
-	plex \
-	dimer \
-	ftr 
 
 MOLECULIZER_DIRNAME = @MOLECULIZER_DIRNAME@
 
@@ -57,4 +47,16 @@ libmoleculizer_1_0_la_LIBADD = \
 	$(LIBDIMER) \
 	$(LIBFTR)
 
-SUBDIRS += python
+SUBDIRS = utl \
+	fnd \
+	mzr \
+	stoch \
+	cpx \
+	mol \
+	nmr \
+	plex \
+	dimer \
+	ftr 
+
+
+# SUBDIRS += python

@@ -27,7 +27,7 @@ ALL_MZR_LIBS = $(LIBFND) $(LIBUTL) $(LIBMZR) $(LIBSTOCH) $(LIBNMR) $(LIBNMR) $(L
 LIBXML_CFLAGS = @LIBXML_CFLAGS@
 LIBXML_LIBS = @LIBXML_LIBS@
 
-AM_CXXFLAGS = @CXXFLAGS@ -Wall $(LIBXML_CFLAGS)
+AM_CXXFLAGS = @CXXFLAGS@ -Wall $(LIBXML_CFLAGS) -I..
 
 libmoleculizer_mzr_la_SOURCES =\
 dumpUtils.cc \
@@ -56,6 +56,8 @@ mzrException.hh \
 mzrHelperFunctions.hh \
 mzrReaction.hh \
 mzrSpecies.hh \
+mzrSpeciesDumpable.hh \
+mzrSpeciesDumpableImpl.hh \
 mzrStream.hh \
 mzrUnit.hh \
 respondReaction.hh \

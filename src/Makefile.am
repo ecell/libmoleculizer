@@ -33,7 +33,7 @@ AM_CFLAGS=-g -O0
 
 lib_LTLIBRARIES = libmoleculizer-1.0.la
 libmoleculizer_1_0_la_SOURCES =
-nodist_EXTRA_libmoleculizer_1_0_la_SOURCES = dummy.cpp
+# nodist_EXTRA_libmoleculizer_1_0_la_SOURCES = dummy.cpp
 
 libmoleculizer_1_0_la_LIBADD = \
 	$(LIBFND) \

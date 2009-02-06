@@ -68,6 +68,7 @@ parsePlex.hh \
 parsedPlexNotConnXcpt.hh \
 parserPlex.hh \
 plexEltName.hh \
+plexExceptions.hh \
 plexUnit.hh \
 unkMolInstXcpt.hh
 

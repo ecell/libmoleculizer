@@ -46,6 +46,7 @@ basicDumpable.hh \
 basicReaction.hh \
 basicSpecies.hh \
 binaryRxnGen.hh \
+coreRxnGen.hh \
 dmpColumn.hh \
 dumpStream.hh \
 dumpable.hh \

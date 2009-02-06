@@ -66,7 +66,6 @@ AC_CONFIG_FILES([Makefile
 		src/mzr/Makefile
 		src/nmr/Makefile
 		src/plex/Makefile
-                src/python/Makefile
 		src/stoch/Makefile
 		src/utl/Makefile
                 src/nmr/tests/Makefile

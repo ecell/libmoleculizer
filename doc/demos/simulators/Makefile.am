@@ -19,17 +19,24 @@ AM_CXXFLAGS = $(LIBXML_CFLAGS) $(GSL_CFLAGS) -Icommon
 
 noinst_LIBRARIES = libsimbase.a 
 
-libsimbase_a_SOURCES=common/demosimulator.cpp
+libsimbase_a_SOURCES=common/demosimulator.cpp common/demosimulator.hpp
+# libsimbase_a_HEADERS=
 
 stochasticsim_demo_SOURCES=\
 	$(STOCHSIMDIR)/stochasticsim_main.cpp \
-	$(STOCHSIMDIR)/demostochasticsimulator.cpp
+	$(STOCHSIMDIR)/demostochasticsimulator.cpp \
+	$(STOCHSIMDIR)/demostochasticsimulator.hpp	
+
+# stochasticsim_demo_HEADERS=
 
 stochasticsim_demo_LDADD = $(LIBMZR) libsimbase.a $(LIBXML_LIBS)
 
 particlesim_demo_SOURCES=\
 	$(PARTICLESIMDIR)/particlesim_main.cpp \
-	$(PARTICLESIMDIR)/demoparticlesimulator.cpp
+	$(PARTICLESIMDIR)/demoparticlesimulator.cpp \
+	$(PARTICLESIMDIR)/demoparticlesimulator.hpp
+
+# particlesim_demo_HEADERS=
 
 particlesim_demo_LDADD = $(LIBMZR) libsimbase.a $(LIBXML_LIBS)
 

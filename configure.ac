@@ -79,10 +79,9 @@ AC_CONFIG_FILES([Makefile
 
 
 AC_ARG_ENABLE([demos],
-  AC_HELP_STRING([--disable-demos],
-                 [build libmoleculizer without the associated demos.]), [],
-  [enable_demos=yes]
-)
+  AC_HELP_STRING([--enable-demos],
+                 [build demo programs along with libmoleculizer]), [enable_demos=yes])
+
 
 AC_MSG_CHECKING([whether to build Demos])
 if test "$enable_demos" = "yes"; then

@@ -1,1 +1,1 @@
-SUBDIRS=simulators
+SUBDIRS=simulators sample-models

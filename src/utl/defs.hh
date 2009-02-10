@@ -43,8 +43,7 @@
 #include <utility>
 #include <iostream>
 #include <sstream>
-
-#include <boost/shared_ptr.hpp>
+#include <cassert>
 
 #include "xcpt.hh"
 
@@ -55,15 +54,13 @@
 
 
 // Acknowledgements:
-// The "DECLARE_XXX" macros (everything but the
-// boost::shared_ptr bits) were copied from stuff written by Koichi
+// The "DECLARE_XXX" macros were copied from stuff written by Koichi
 // Takahashi in his work on the E-Cell Project <http://www.e-cell.org>.
 //
 
 #define DECLARE_TYPE( mydecl, mytype )          \
     typedef mydecl         mytype;                   \
     typedef mytype *       mytype ## Ptr;                      \
-    typedef boost::shared_ptr<mytype>  mytype ## SharedPtr;    \
     typedef const mytype * mytype ## Cptr;                     \
     typedef mytype &       mytype ## Ref;                      \
     typedef const mytype & mytype ## Cref;                     \
@@ -79,7 +76,6 @@
 #define DECLARE_CLASS( tag )         \
     class   tag;                     \
     typedef tag *       tag ## Ptr;            \
-    typedef boost::shared_ptr<tag> tag##SharedPtr;      \
     typedef const tag * tag ## Cptr;                    \
     typedef tag &       tag ## Ref;                     \
     typedef const tag & tag ## Cref;

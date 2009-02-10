@@ -21,10 +21,10 @@ LIBDIMER = ../dimer/libmoleculizer_dimer.la
 LIBFTR = ../ftr/libmoleculizer_ftr.la
 ALL_MZR_LIBS = $(LIBFND) $(LIBUTL) $(LIBMZR) $(LIBSTOCH) $(LIBNMR) $(LIBNMR) $(LIBCPX) $(LIBMOL) $(LIBPLEX) $(LIBDIMER) $(LIBFTR)
 
-LIBXML_CFLAGS = @LIBXML_CFLAGS@
-LIBXML_LIBS = @LIBXML_LIBS@
+LIBXMLPP_CFLAGS = @LIBXMLPP_CFLAGS@
+LIBXMLPP_LIBS = @LIBXMLPP_LIBS@
 
-AM_CXXFLAGS = $(LIBXML_CFLAGS) -I.. -I../../src
+AM_CXXFLAGS = $(LIBXMLPP_CFLAGS) -I.. -I../../src
 
 libmoleculizer_utl_la_SOURCES =\
 arg.cc \

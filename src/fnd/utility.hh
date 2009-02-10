@@ -47,12 +47,6 @@ namespace fnd
             {
                 return *a < *b;
             }
-            
-            bool operator()( const boost::shared_ptr<const T>  a,
-                             const boost::shared_ptr<const T>  b ) const
-            {
-                return *a < *b;
-            }
         };
         
         template <typename ListCatalogT>

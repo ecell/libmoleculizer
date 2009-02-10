@@ -47,13 +47,13 @@ AC_CHECK_LIB(python${PYTHON_VERSION},main,,AC_MSG_ERROR([could not find libpytho
 dnl AC_CHECK_LIB(boost_python,main,,AC_MSG_ERROR([could not find libboost_python.]),-lpython${PYTHON_VERSION})
 dnl
 
-PKG_CHECK_EXISTS( libxml++-2.6, [PKG_CHECK_MODULES(LIBXML, libxml++-2.6 >= 2.10)], [PKG_CHECK_MODULES(LIBXML, libxml++-1.0)])
-PKG_CHECK_EXISTS( libxml++-2.6, [LIBXMLPP_VERSION="2.6"], [LIBXMLPP_VERSION="1.0"])
+PKG_CHECK_EXISTS( libxml++-2.6, [PKG_CHECK_MODULES([LIBXMLPP], libxml++-2.6)], [PKG_CHECK_MODULES([LIBXMLPP], libxml++-1.0)])
 
-AC_SUBST(LIBXML_CFLAGS)
-AC_SUBST(LIBXML_LIBS)
-AC_SUBST(LIBXMLPP_VERSION)
+AC_SUBST(LIBXMLPP_CFLAGS)
+AC_SUBST(LIBXMLPP_LIBS)
 
+# Dummy copying something I saw elsewhere.
+AM_CONDITIONAL(LIBXMLCPP_FALSE,[false])
 
 # Checks for libraries.
 AC_CONFIG_FILES([Makefile
@@ -74,6 +74,7 @@ AC_CONFIG_FILES([Makefile
                 doc/manual/Makefile
                 doc/demos/Makefile
                 doc/demos/simulators/Makefile
+                doc/demos/sample-models/Makefile
                 libmoleculizer-1.0.pc
 		])
 

@@ -12,10 +12,10 @@ bin_PROGRAMS=network_expander_demo stochasticsim_demo particlesim_demo c_interfa
 
 LIBMZR = $(SRC)/libmoleculizer-1.0.la
 
-LIBXML_CFLAGS = @LIBXML_CFLAGS@
-LIBXML_LIBS = @LIBXML_LIBS@
+LIBXMLPP_CFLAGS = @LIBXMLPP_CFLAGS@
+LIBXMLPP_LIBS = @LIBXMLPP_LIBS@
 
-AM_CXXFLAGS = $(LIBXML_CFLAGS) $(GSL_CFLAGS) -Icommon
+AM_CXXFLAGS = $(LIBXMLPP_CFLAGS) $(GSL_CFLAGS) -Icommon
 
 noinst_LIBRARIES = libsimbase.a 
 
@@ -29,7 +29,7 @@ stochasticsim_demo_SOURCES=\
 
 # stochasticsim_demo_HEADERS=
 
-stochasticsim_demo_LDADD = $(LIBMZR) libsimbase.a $(LIBXML_LIBS)
+stochasticsim_demo_LDADD = $(LIBMZR) libsimbase.a $(LIBXMLPP_LIBS)
 
 particlesim_demo_SOURCES=\
 	$(PARTICLESIMDIR)/particlesim_main.cpp \
@@ -38,10 +38,10 @@ particlesim_demo_SOURCES=\
 
 # particlesim_demo_HEADERS=
 
-particlesim_demo_LDADD = $(LIBMZR) libsimbase.a $(LIBXML_LIBS)
+particlesim_demo_LDADD = $(LIBMZR) libsimbase.a $(LIBXMLPP_LIBS)
 
 network_expander_demo_SOURCES=$(NETEXPANDDIR)/main.cpp
-network_expander_demo_LDADD = $(LIBMZR) $(LIBXML_LIBS)
+network_expander_demo_LDADD = $(LIBMZR) $(LIBXMLPP_LIBS)
 
 c_interface_demo_SOURCES = $(CINTERFACEDIR)/c_interface_main.c
-c_interface_demo_LDADD = $(LIBMZR) $(LIBXML_LIBS)
+c_interface_demo_LDADD = $(LIBMZR) $(LIBXMLPP_LIBS)

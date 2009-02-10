@@ -21,13 +21,13 @@ LIBPLEX = ../plex/libmoleculizer_plex.la
 LIBDIMER = ../dimer/libmoleculizer_dimer.la
 LIBFTR = ../ftr/libmoleculizer_ftr.la
 
-LIBXML_CFLAGS = @LIBXML_CFLAGS@
-LIBXML_LIBS = @LIBXML_LIBS@
+LIBXMLPP_CFLAGS = @LIBXMLPP_CFLAGS@
+LIBXMLPP_LIBS = @LIBXMLPP_LIBS@
 
 GSL_CFLAGS = @GSL_CFLAGS@
 GSL_LIBS = @GSL_LIBS@
 
-AM_CXXFLAGS = @CXXFLAGS@ -Wall $(LIBXML_CFLAGS)
+AM_CXXFLAGS = @CXXFLAGS@ -Wall $(LIBXMLPP_CFLAGS)
 
 libmoleculizer_cpx_la_SOURCES =\
 basicBndSite.cc \

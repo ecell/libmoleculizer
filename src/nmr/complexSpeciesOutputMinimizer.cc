@@ -162,10 +162,10 @@ namespace nmr
                 iter->theCorrespondingPartialTokenList = calculatePartialTokenListForPermutation(aComplexSpecies, iter->thePermutation);
             }
             
-            if (theNextIterationsPartialPermutations.size() > 60000)
-            {
-                throw UnboundNamingAlgorithmXcpt(theNextIterationsPartialPermutations.size(), aComplexSpecies);
-            }
+//             if (theNextIterationsPartialPermutations.size() > 60000)
+//             {
+//                 throw UnboundNamingAlgorithmXcpt(theNextIterationsPartialPermutations.size(), aComplexSpecies);
+//             }
             
             std::sort(theNextIterationsPartialPermutations.begin(),
                       theNextIterationsPartialPermutations.end());
@@ -208,7 +208,7 @@ namespace nmr
              molPtrNdx != aComplexSpecies.getMolList().size();
              ++molPtrNdx)
         {
-            MinimalMolSharedPtr molPtr = aComplexSpecies.getMolList()[molPtrNdx];
+            MinimalMol* molPtr = aComplexSpecies.getMolList()[molPtrNdx];
             
             if ( molPtr->getMolType() == last_name) return false;
             else last_name = molPtr->getMolType();
@@ -393,14 +393,6 @@ namespace nmr
             }
         }
     }
-    
-    
-    
-    
-    
-    
-    
-    
     
     PartialTokenList 
     ComplexSpeciesOutputMinimizer::calculatePartialTokenListForPermutation(ComplexSpeciesCref aComplexSpecies, PermutationCref aPerm)

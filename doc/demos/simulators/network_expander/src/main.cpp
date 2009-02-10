@@ -54,7 +54,7 @@ void printStreamByName( mzr::moleculizer& refMolzer, const std::string& streamNa
 void printStreamByTag( mzr::moleculizer& refMolzer, const std::string& streamName);
 
 void printAllSpeciesByName(mzr::moleculizer& theMolzer);
-void printAllSpeciesByID(mzr::moleculizer& theMolzer);
+void printAllSpeciesByID(mzr::moleculizer& theMolzer, std::string str = "");
 
 mzr::moleculizer::CachePosition
 createBoundedNetwork(mzr::moleculizer& refMolzer, int maxSpec, int maxRxns);
@@ -86,6 +86,11 @@ int main(int argc, char* argv[])
 
   std::cout << "There are initially " << theMoleculizer.getTotalNumberSpecies() << " species and " 
             << theMoleculizer.getTotalNumberReactions() << " reactions. " << std::endl;
+
+  if( printOutput )
+  {
+      printAllSpeciesByID(theMoleculizer);
+  }
 
 
   mzr::moleculizer::CachePosition pos;
@@ -326,13 +331,13 @@ void printAllSpeciesByName(mzr::moleculizer& theMolzer)
     }
 }
 
-void printAllSpeciesByID(mzr::moleculizer& theMolzer)
+void printAllSpeciesByID(mzr::moleculizer& theMolzer, std::string str)
 {
     for( mzr::moleculizer::SpeciesCatalog::const_iterator specIter = theMolzer.theSpeciesListCatalog.begin();
          specIter != theMolzer.theSpeciesListCatalog.end();
          ++specIter)
     {
-        std::cout << "ALL@@" << theMolzer.convertSpeciesTagToSpeciesID( *specIter->first ) << std::endl;
+        std::cout << str << theMolzer.convertSpeciesTagToSpeciesID( *specIter->first ) << std::endl;
     }
 }
 
@@ -369,7 +374,7 @@ void createFullNetwork(mzr::moleculizer& refMolzer)
 void doNIterations(mzr::moleculizer& refMolzer, int number)
 {
 
-    std::cout << "Expanding network for" << number << " iterations. " << std::endl;
+    std::cout << "Expanding network for " << number << " iterations. " << std::endl;
 
 
       for ( int iterNdx = 0; iterNdx != number; ++iterNdx)
@@ -386,7 +391,13 @@ void doNIterations(mzr::moleculizer& refMolzer, int number)
               std::cout << numExpanded << " Expanding (" << tag << " -> " << uniqueId << " ) " << std::endl;
               refMolzer.incrementNetworkBySpeciesTag( tag );
 
+              std::cout << "-----------" << std::endl;
+
               std::cout << "(numSpec, numRxns ) = " << "(" << refMolzer.getTotalNumberSpecies() << ", " << refMolzer.getTotalNumberReactions() << ")" << std::endl;
+              printAllSpeciesByID( refMolzer );
+
+              std::cout << "-----------" << std::endl;
+
 
           }
           else

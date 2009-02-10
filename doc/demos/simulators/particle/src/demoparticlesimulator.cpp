@@ -92,7 +92,7 @@ void SimpleParticleSimulator::singleStep()
 
 
     std::cout << "\t!!! reaction." << std::endl;
-//    executeReaction( reactionVector[ rand() % reactionVector.size()] );
+    executeReaction( reactionVector[ rand() % reactionVector.size()] );
 }
 
 
@@ -134,7 +134,7 @@ void SimpleParticleSimulator::doSingleUnaryReaction()
 
     mzr::moleculizer::ReactionTypeCptr rxn = reactionVector[ rand() % reactionVector.size()];
 
-    // executeReaction( rxn );
+    executeReaction( rxn );
 
 }
 

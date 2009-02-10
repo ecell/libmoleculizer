@@ -39,6 +39,7 @@ class SimpleSimulator
 public:
     SimpleSimulator();
     // SimpleSimulator( std::string rulesfile, std::string modelfile );
+    virtual ~SimpleSimulator();
 
     void loadRules(std::string rulesFile);
     void releaseRules();
@@ -68,7 +69,7 @@ protected:
 
     virtual void initialize();
 
-    void executeReaction( mzr::moleculizer::ReactionTypePtr ptrRxn );
+    void executeReaction( const mzr::moleculizer::ReactionType* ptrRxn );
 
 private:
     void attachRuleFile( std::string rulesfile );

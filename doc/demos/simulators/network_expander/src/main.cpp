@@ -391,10 +391,7 @@ void doNIterations(mzr::moleculizer& refMolzer, int number)
               std::cout << numExpanded << " Expanding (" << tag << " -> " << uniqueId << " ) " << std::endl;
               refMolzer.incrementNetworkBySpeciesTag( tag );
 
-              std::cout << "-----------" << std::endl;
-
               std::cout << "(numSpec, numRxns ) = " << "(" << refMolzer.getTotalNumberSpecies() << ", " << refMolzer.getTotalNumberReactions() << ")" << std::endl;
-              printAllSpeciesByID( refMolzer );
 
               std::cout << "-----------" << std::endl;
 

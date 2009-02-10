@@ -96,6 +96,8 @@ mzr::mzrReaction* SimpleStochasticSimulator::calculateReactionToFire()
     int randomIndex = rand() % potentialReactions.size();
     mzr::moleculizer::ReactionTypePtr randomReactionPtr = potentialReactions[ randomIndex ];
 
+    executeReaction( randomReactionPtr );
+
     return randomReactionPtr;
 }
 

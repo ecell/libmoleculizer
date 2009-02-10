@@ -708,7 +708,7 @@ namespace mzr
         // us away from the concern regarding lists explicated at the beginning of this function.
         assert( this->getTotalNumberSpecies() > 0 && this->getTotalNumberReactions() > 0);
 
-        if ( this->getTotalNumberSpecies() >= maxNumSpecies || this->getTotalNumberReactions() >= maxNumRxns )
+        if ( (long) this->getTotalNumberSpecies() >= maxNumSpecies || (long) this->getTotalNumberReactions() >= maxNumRxns )
         {
             // We are already too big to know what to do with ourselves.  Throw an exception.
             throw utl::xcpt("Error in moleculizer::generateCompleteNetwork(long maxNumSpecies, long maxNumRxns).  Network is a priori too large for parameters.");
@@ -740,7 +740,7 @@ namespace mzr
             }
 
             // The network is too big, since we came into the loop good, return that value of cached stuff.
-            if (getTotalNumberSpecies() > maxNumSpecies || getTotalNumberReactions() > maxNumRxns )
+            if ( (long) getTotalNumberSpecies() > maxNumSpecies || (long) getTotalNumberReactions() > maxNumRxns )
             {
                 return std::make_pair( ++specCacheMaxIter, ++rxnCacheMaxIter);
             }

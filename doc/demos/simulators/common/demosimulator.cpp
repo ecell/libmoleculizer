@@ -93,6 +93,11 @@ SimpleSimulator::SimpleSimulator()
     srand( time( NULL ) );
 }
 
+SimpleSimulator::~SimpleSimulator()
+{
+    delete ptrSpeciesReactionGenerator;
+}
+
 
 
 
@@ -245,7 +250,7 @@ void SimpleSimulator::initialize()
 }
 
 
-void SimpleSimulator::executeReaction( mzr::moleculizer::ReactionTypePtr ptrRxn )
+void SimpleSimulator::executeReaction( const mzr::moleculizer::ReactionType* ptrRxn )
 {
     std::cout << "Executing: " << ptrRxn->getName() << std::endl;
 

@@ -54,7 +54,7 @@ int main( int argc, char* argv[] )
 
         SimpleParticleSimulator theSim( rulesfile, modelfile );
 
-        for ( unsigned int ii = 0; ii != numberIters; ++ii )
+        for ( int ii = 0; ii != numberIters; ++ii )
         {
             theSim.singleStep();
         }

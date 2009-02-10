@@ -116,8 +116,6 @@ namespace nmr
                 
                 if ( !partialPermIter->getIsComplete() )
                 {
-                    const Permutation& refPerm = *partialPermIter;
-                    
                     //1. Find the most significant int that hasn't been fixed already.
                     int leastIntNotInPartial = partialPermIter->getLeastValueNotInPermutation();
                     
@@ -204,7 +202,7 @@ namespace nmr
     {
         std::string last_name("");
         
-        for( int molPtrNdx = 0;
+        for( unsigned int molPtrNdx = 0;
              molPtrNdx != aComplexSpecies.getMolList().size();
              ++molPtrNdx)
         {
@@ -333,7 +331,7 @@ namespace nmr
             if( inversePerm.getValueAtPosition(indexToExtend) != Permutation::UNDEF)
             {
                 
-                int originalMolNdx( inversePerm.getValueAtPosition( indexToExtend ) );
+                unsigned int originalMolNdx( inversePerm.getValueAtPosition( indexToExtend ) );
                 std::vector<ComplexSpecies::Binding> theAppropriateBindings;
                 
 
@@ -411,11 +409,7 @@ namespace nmr
         
         std::vector<Binding> aComplexSpeciesPartialTokenListBindings;
         
-        typedef int MolNdx;
-        typedef std::string BindingSite;
-        typedef int BndNdx;
-        typedef std::pair<std::pair<MolNdx, BndNdx>, std::pair<MolNdx, BndNdx> > Binding;
-        typedef std::vector<Binding> BindingList;
+        typedef ComplexSpecies::BindingList BindingList;
         
         const BindingList& theBindings= aComplexSpecies.getBindingList();
         

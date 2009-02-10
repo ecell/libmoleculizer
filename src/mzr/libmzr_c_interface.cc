@@ -680,11 +680,12 @@ int getUnaryReactions(moleculizer* handle, char* speciesName, reaction*** ptrRea
     }
 }
 
-int getReactionsInvolving(moleculizer* handle, char* speciesName, reaction*** ptrReactionPtrArray, int* numReactions)
-{
-    // Write me!!!
-    return 1 / 0;
-}
+// int getReactionsInvolving(moleculizer* handle, char* speciesName, reaction*** ptrReactionPtrArray, int* numReactions);
+// int getReactionsInvolving(moleculizer* handle, char* speciesName, reaction*** ptrReactionPtrArray, int* numReactions)
+// {
+//     // Write me!!!
+//     return 1 / 0;
+// }
  
 int getAllStreamSpecies(moleculizer* handle, char* cStrStreamName, species*** pSpeciesArray, int* numberSpecies)
 {

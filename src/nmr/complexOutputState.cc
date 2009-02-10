@@ -80,13 +80,13 @@ namespace nmr
     ComplexOutputState::repr() const
     {
         std::ostringstream oss;
-        for( int ndx = 0; ndx != theMolTokens.size(); ++ndx)
+        for( unsigned int ndx = 0; ndx != theMolTokens.size(); ++ndx)
         {
             oss << theMolTokens[ndx] << "-";
         }
         
 
-        for( int ndx = 0; ndx != theBindingTokens.size(); ++ndx)
+        for( unsigned int ndx = 0; ndx != theBindingTokens.size(); ++ndx)
         {
             oss << '|' ;
             oss << theBindingTokens[ndx].first.first << "-";
@@ -95,7 +95,7 @@ namespace nmr
             oss << theBindingTokens[ndx].second.second << '|' << '-';
         } 
 
-        for( int ndx = 0; ndx != theModificationTokens.size(); ++ndx)
+        for( unsigned int ndx = 0; ndx != theModificationTokens.size(); ++ndx)
         {
             oss << '|';
             oss << theModificationTokens[ndx].first

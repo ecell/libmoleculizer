@@ -52,9 +52,9 @@ namespace nmr
         
     public:
         DECLARE_TYPE( std::string, Alias );
-        DECLARE_TYPE( int, MolNdx );
+        DECLARE_TYPE( unsigned int, MolNdx );
         DECLARE_TYPE( std::vector<MinimalMol*>, MolList );
-        DECLARE_TYPE( int, BndNdx );
+        DECLARE_TYPE( unsigned int, BndNdx );
         DECLARE_TYPE( MinimalMol::BindingSite,  BindingSite );
         DECLARE_TYPE( MinimalMol::ModificationList, ModificationList )
         typedef std::pair<MolNdx, BndNdx> __HalfBinding;
@@ -119,9 +119,10 @@ namespace nmr
         
         // void constructPartialTokenList( PartialTokenListRef rComplexPartialTokenList ) const;
         void sortBinding( BindingRef aBinding );
-        
+
+
+        MolList theMols;        
         MolMap theMolAliasToNdxMap;
-        MolList theMols;
         BindingList theBindings;
         
     };

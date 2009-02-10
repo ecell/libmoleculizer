@@ -208,8 +208,6 @@ namespace nmr
             const ComplexSpecies::HalfBinding *firstHalfBinding, *secondHalfBinding;
             
             bindingTheFirst.first.first == ndx? firstHalfBinding = &bindingTheFirst.second : firstHalfBinding = &bindingTheFirst.first;
-            
-            
             bindingTheSecond.first.first == ndx? secondHalfBinding = &bindingTheSecond.second : secondHalfBinding = &bindingTheSecond.first;
             
             return *firstHalfBinding < *secondHalfBinding;
@@ -217,7 +215,7 @@ namespace nmr
         }
         
     private:
-        int ndx;
+        unsigned int ndx;
     };
     
     

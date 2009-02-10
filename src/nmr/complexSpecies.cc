@@ -39,8 +39,8 @@ namespace nmr
     
     ComplexSpecies::ComplexSpecies()
         :
-        theMolAliasToNdxMap(),
         theMols(),
+        theMolAliasToNdxMap(),
         theBindings()
     {}
 
@@ -365,12 +365,12 @@ namespace nmr
         theBindings.swap( updatedBindingList );
         
         //Finally update the theMolAliasToNdxMap
-        for ( std::map<Alias, int>::iterator i=theMolAliasToNdxMap.begin();
-              i!=theMolAliasToNdxMap.end();
-              ++i )
+        for ( MolMap::iterator iter =theMolAliasToNdxMap.begin();
+              iter != theMolAliasToNdxMap.end();
+              ++iter )
         {
-            int originalIndex = ( *i ).second;
-            ( *i ).second = aPermutation[originalIndex];
+            int originalIndex = ( *iter ).second;
+            ( *iter ).second = aPermutation[originalIndex];
         }
     }
     

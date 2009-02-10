@@ -1,8 +1,7 @@
 %% Some basic substitution commands I'm defining. 
 \newcommand{\libmzrwebsite}{\emph{http://sourceforge.net/projects/moleculizer/}}
 \newcommand{\myemail}{\emph{addy@molsci.org}}
-\newcommand{\currentversion}{1.0 }
-
+\newcommand{\currentversion}{@VERSION@}
 
 %% The libmoleculizer manual.
 

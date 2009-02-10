@@ -14,7 +14,7 @@ and can be largely understood without difficulties!)
 This mandatory root element of a moleculizer model contains a single
 model subelement.
 
-\begin{LocalRNG}
+\begin{ExampleRNG}
 <?xml version="1.0" encoding="UTF-8"?>
 <grammar
     xmlns="http://relaxng.org/ns/structure/1.0"
@@ -27,14 +27,14 @@ model subelement.
     </element>
   </start>
 </grammar>
-\end{LocalRNG}
+\end{ExampleRNG}
 
 \section{/moleculizer/model}
 
 The model element contains all the biology in the model.  It consists
 of 
 
-\begin{LocalRNG}
+\begin{ExampleRNG}
 <element name="model">
   <element name="modifications">
     <ref name="modifications-content" />
@@ -58,7 +58,7 @@ of
     <ref name="" />
   </element>
 </element>
-\end{LocalRNG}
+\end{ExampleRNG}
 
 
 

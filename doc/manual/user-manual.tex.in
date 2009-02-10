@@ -16,8 +16,8 @@
 %% Some definitions for the listings package.
 \lstloadlanguages{XML, C++, C, Python}
 \lstnewenvironment{ExampleC}{\lstset{language=C}}{}
-\lstnewenvironment{LocalCPP}{\lstset{language=C++,caption=,label=,keywords=}}{}
-\lstnewenvironment{LocalRNG}{\lstset{language=XML, keywords=} }{}
+\lstnewenvironment{ExampleCPP}{\lstset{language=C++,caption=,label=,keywords=}}{}
+\lstnewenvironment{ExampleRNG}{\lstset{language=XML, keywords=} }{}
 \lstnewenvironment{ExampleXML}{\lstset{language=XML, caption=,
     label=,showspaces=false, showtabs=false, keywords=} }{}
 
@@ -38,7 +38,6 @@
 \maketitle
 
 \tableofcontents
-
 
 %% Each of the chapters, in order. 
 \include{Introduction}

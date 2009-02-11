@@ -10,8 +10,8 @@ enzymatic reactions (protein modifications), and using that
 information explicitly generates a network of multi-protein species
 and their reactions that are described by those rules.
 
-The capacity to describe networks implicitly using rules can be be
-very adventageous for modeling biochemical networks.  This is because
+The ability to describe networks implicitly using rules can be be
+very advantageous for modeling biochemical networks.  This is because
 for many common cases, the size of the explicit network grows
 combinatorially relative to the number of protein/molecule types and
 interactions types that network possesses.  For instance, in a particular
@@ -43,21 +43,37 @@ computationally pay for the time to generate huge portions of the
 network they do not care about.  
 
 \section{Manual Overview}
+
+\subsubsection{Disclaimer}
+At the current moment, this manual is highly incomplete.  We expect
+that in the next couple weeks, the next version of libmoleculizer will
+be released which will greatly flesh out this user-manual.  For the
+current release, we have decided to include all, including in
+progress, documentation -- however, certain aspects will be very, very
+roughly sketched out, to the point of being unreadable.  
+
+For the time being, chapters marked with a star are considered highly incomplete
+
+\subsubsection{Overview}
+
 This manual aims to provide introduction to the functionality and use
 of the libmoleculizer library.  
 
-This manual has three major goals.  The first of the manual is to
-describe what Moleculizer does; this is treated in chapters
-\ref{chap:conceptualOverviewChapter} and
-\ref{chap:usingLibmoleculizerChapter}.  The second objective is to
-describe the MZR file format in which reaction rules are specified;
-this is given an overview in chapter \ref{chap:theRulesChapter}, and
-more explicitly in chapter \ref{chap:mzrReference}.  Finally, the
-libmoleculizer API must be learned, in order to understand how to pass
-MZR files into libmoleculizer, expand the network, and read out
-the generated species and reactions.  This topic is dealt with in
-chapters \ref{chap:usingLibmoleculizerChapter},
-\ref{chap:interfacesChapter}, and \ref{chap:apiReference}.
+% This manual has three major goals.  The first of the manual is to
+% describe what Moleculizer does; this is treated in chapters
+% \ref{chap:conceptualOverviewChapter} and
+% \ref{chap:usingLibmoleculizerChapter}.  The second objective is to
+% describe the MZR file format in which reaction rules are specified;
+% this is given an overview in chapter \ref{chap:theRulesChapter}, and
+% more explicitly in chapter \ref{chap:mzrReference}.  Finally, the
+% libmoleculizer API must be learned, in order to understand how to pass
+% MZR files into libmoleculizer, expand the network, and read out
+% the generated species and reactions.  This topic is dealt with in
+% chapters \ref{chap:usingLibmoleculizerChapter},
+% \ref{chap:interfacesChapter}, and \ref{chap:apiReference}.
+
+This manual has three major goals.  The first is to describe what
+libmoleculizer
 
 Finally, although libmoleculizer is a written in standard C++ and C,
 and packaged using standard methods, we cannot guarantee you won't

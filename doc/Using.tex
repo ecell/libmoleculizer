@@ -1,51 +1,29 @@
 \chapter{Using Libmoleculizer}
 \label{chap:usingLibmoleculizerChapter}
 
-Libmoleculizer is used by providing it a list of rules that describe
-proteins and small molecules as well as rules that describe
-protein-protein reactions, enzymatic reactions, protein-small molecule
-interactions, and then using the various functions in its API to tell
-it to generate all or part of the 
+To use libmoleculizer, a libmoleculizer object must be created in
+code, a set of rules that describes a biochemical network must be
+loaded into it, and then various functions in the libmoleculizer
+interface must be called in order to either expand the reaction
+network in a controlled fashion or to read information about the
+portion of the reaction network that has already been generated.  
 
-These rules must be written in either xml format or text file format
-in the mzr format described in chapter \ref{chap:theRulesChapter}.  
+This chapter gives an overview to the various kinds of tasks and
+capabilities of libmoleculizer.  Although it is not an exhaustive list
+of every function in the libmoleculizer interface -- for this, please
+consult chapter \ref{chap:apiReference} -- we hope it will provide a
+kind of bird's eye view to how to use libmoleculizer, providing ideas
+and examples of different patterns.  As extra-credit reading, you may
+also wish to check out the demo programs that use libmoleculize.
+These can be found in the demos/ directory of the code, and can be
+built by passing the configure script an --enable-demos flag.  Please
+see the section ``Enabling the demos'', in chapter
+\ref{chap:installingChapter} for more details. 
 
-Once rules have been provided to libmoleculizer which describe the
-reaction types, there are several ways in which libmoleculizer can be
-used to describe the resulting system.  
+Please note that this chapter only deals with using libmoleculizer in
+the C++ interface.  
 
-Moleculizer has two methods for extrapolating networks (that is to
-say, methods for expanding the reaction network and informing clients
-as to what is in the network) and two methods for extrapolating
-parameters within the network.  
-
-\subsection{Choosing an Extrapolation Method}
-
-Libmoleculizer allows spatial and non-spatial extrapolation methods.
-For the time being, the simplest way to chose an extrapolation method
-is to add a <runtime-info> section to the <moleculizer-input> portion
-of the rules.  Within that section, add one of the following sections: 
-
-1.
-\begin{verbatim}
-<generation-method mode=''non-spatial''\>\<extrapolation-method
-mode=''extrapolate-reaction-rates''/>
-</generation-method>
-\end{verbatim}
-
-
-2.
-<generation-method mode=''non-spatial''><extrapolation-method
-mode=''no-extrapolate-reaction-rates'' /></generation-method>
-
-3.
-<generation-method mode=spatial'' />
-
-
-\subsubsection{Non-spatial Species and Reaction Generation}
-\subsubsection{Spatial Species and Reaction Generation}
-
-Preconditions:
+\section{Expanding Reaction Networks}
 
 
 

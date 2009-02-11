@@ -37,10 +37,10 @@ moleculizer has exactly one constructor: moleculizer::moleculizer().
 All uses of libmoleculizer to expand reaction-networks begin with the
 creation of such an object.
 
-\begin{LocalCPP}[caption=Creating a moleculizer object, label=creatingmzrexample]
+\begin{ExampleCPP}[caption=Creating a moleculizer object, label=creatingmzrexample]
 mzr::moleculizer m; // Note that this takes place in the namespace mzr,
                     // as does all the C++ interface.
-\end{LocalCPP}
+\end{ExampleCPP}
 
 \subsection{Configure}
 Once a mzr::moleculizer instance has been created, parameters can be
@@ -115,33 +115,33 @@ If filePath is a string containing either an absolute or relative path
 to the file, then the function moleculizer::attachFileName can be
 called as follows.  
 
-\begin{LocalCPP}[caption=Loading a MZR file into a running
+\begin{ExampleCPP}[caption=Loading a MZR file into a running
   moleculizer instance]
 mzr::moleculizer m;
 m.setGenerateDepth( 2 );  
 
 // Load the file into the moleculizer object.
 m.attachFileName( filePath );
-\end{LocalCPP}
+\end{ExampleCPP}
 
 2..Model is contained in a string.
 If modelContents is a string containing a model file, then the
 function moleculizer::attachString can be used to load this model file
 as follows
 
-\begin{LocalCPP}[caption=Loading a MZR string into Moleculizer]
+\begin{ExampleCPP}[caption=Loading a MZR string into Moleculizer]
 mzr::moleculizer m; 
 
 m.setRateExtrapolation( true );
 
 // Load the string holding the model file into the moleculizer object.
 m.attachString( modelContents );
-\end{LocalCPP}
+\end{ExampleCPP}
 
 3.  Model has already been parsed and is contained in an
 xmlpp::Document* object called ptrModelDoc.
 
-\begin{LocalCPP}[caption=Loading an XML document into moleculizer]
+\begin{ExampleCPP}[caption=Loading an XML document into moleculizer]
 // Create a new reaction-network generator.
 mzr::moleculizer m;
 
@@ -151,7 +151,7 @@ instance.
 
 // Load the Document* into moleculizer.
 m.attachDocument( ptrModelDocument );
-\end{LocalCPP}
+\end{ExampleCPP}
 
 Any of these will load the necessary information into a model
 instance. Note however, that information can only be added into
@@ -185,7 +185,7 @@ map, information can be gained for each species, using the relevant
 'getKDForSpecies', 'getRadiusForSpecies', 'getMassForSpecies'
 functions.  
 
-\begin{LocalCPP}[caption=Finding spatial properties of a species
+\begin{ExampleCPP}[caption=Finding spatial properties of a species
   using moleculizer]
 mzr::moculizer m;
 m.enableSpatialReactionNetworkGeneration();
@@ -199,7 +199,7 @@ const mzr::mzrSpecies pSpecies = speciesPair.second;
 Real speciesMass = m.getKDForSpecies( pSpecies );
 Real speciesRadius = m.getRadiusForSpecies( pSpecies );
 Real speciesKd = m.getKDForSpecies( pSpecies );
-\end{LocalCPP}
+\end{ExampleCPP}
 
 Note that every configuration of libmoleculizer generates masses for
 newly generated species, and so ''getMassForSpecies'' works under all
@@ -208,7 +208,7 @@ only generated when spatial extrapolation mode is configured by
 calling the ''configureSpatialGenerationMode'' prior to loading the
 model.  
 
-\begin{LocalCPP}[caption=Finding out information about species in
+\begin{ExampleCPP}[caption=Finding out information about species in
   non-spatial mode]
 mzr::moculizer m;
 m.enableNonSpatialReactionNetworkGeneration( false );
@@ -224,7 +224,7 @@ Real speciesMass = m.getKDForSpecies( pSpecies ); // ok
 // This raises a BadModeXcpt exception, because this parameter is 
 // not generated for this mode.
 Real speciesRadius = m.getRadiusForSpecies( pSpecies ); 
-\end{LocalCPP}
+\end{ExampleCPP}
 
 Likewise, for determining parameters associated with the reaction,
 functions ''
@@ -287,7 +287,7 @@ support reactions involving three or greater substrates at this time),
 the same idea is followed, except involving two species.  
 
 Example:
-\begin{LocalCPP}
+\begin{ExampleCPP}
 m = mzr::moleculizer();
 m.attachFile(``Simpledemo-rules.xml'');
 std::vector<const mzr::mzrReaction*> binaryRxns;;
@@ -306,7 +306,7 @@ on the state of the generated network through several functions:
 unsigned int getTotalNumberSpecies() const, 
 unsigned int getTotalNumberReactions() const,
 bool checkSpeciesIsKnow( const std::string& speciesName) const.
-\end{LocalCPP}
+\end{ExampleCPP}
 
 These functions all provide information about the state of the
 generated network.  The first two tell how large it is, and the third

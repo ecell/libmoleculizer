@@ -11,7 +11,6 @@ AC_CONFIG_SRCDIR([src/mzr/moleculizer.hh])
 ACLOCAL="aclocal"
 AC_SUBST( ACLOCAL )
 
-# Do I need to add somethng about dynamic linking?
 AC_PROG_CC			
 AC_PROG_CXX
 AC_PROG_CPP
@@ -34,16 +33,7 @@ AC_CHECK_FUNCS([floor modf pow sqrt strtol])
 
 dnl
 dnl
-dnl
-AM_PATH_PYTHON(2.3)
-AC_CHECK_PROGS(PYCHECKER, [pychecker], [no])
-if test "$PYCHECKER" == no ; then
-   AC_MSG_WARN([pychecker not found.]) 
-fi
-
-dnl
-dnl
-AC_CHECK_LIB(python${PYTHON_VERSION},main,,AC_MSG_ERROR([could not find libpython.]))
+dnl AC_CHECK_LIB(python${PYTHON_VERSION},main,,AC_MSG_ERROR([could not find libpython.]))
 dnl AC_CHECK_LIB(boost_python,main,,AC_MSG_ERROR([could not find libboost_python.]),-lpython${PYTHON_VERSION})
 dnl
 
@@ -51,9 +41,6 @@ PKG_CHECK_EXISTS( libxml++-2.6, [PKG_CHECK_MODULES([LIBXMLPP], libxml++-2.6)], [
 
 AC_SUBST(LIBXMLPP_CFLAGS)
 AC_SUBST(LIBXMLPP_LIBS)
-
-# Dummy copying something I saw elsewhere.
-AM_CONDITIONAL(LIBXMLCPP_FALSE,[false])
 
 # Checks for libraries.
 AC_CONFIG_FILES([Makefile
@@ -71,12 +58,11 @@ AC_CONFIG_FILES([Makefile
                 src/nmr/tests/Makefile
                 src/mzr/tests/Makefile
                 doc/Makefile
-                doc/manual/Makefile
-                doc/demos/Makefile
-                doc/demos/simulators/Makefile
-                doc/demos/sample-models/Makefile
+                demos/Makefile
+                demos/simulators/Makefile
+                demos/sample-models/Makefile
                 libmoleculizer-1.0.pc
-                doc/manual/user-manual.tex
+                doc/user-manual.tex
 		])
 
 

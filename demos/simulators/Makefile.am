@@ -1,6 +1,4 @@
-
-
-SRC=../../../src
+SRC=../../src
 DEMO_SIMULATION_DIR=.
 
 STOCHSIMDIR=$(DEMO_SIMULATION_DIR)/stochastic/src

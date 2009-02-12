@@ -1,14 +1,12 @@
 libmoleculizer-1.0 NEWS -- a history of user visible changes
 
-Copyright (C) 2008 The Molecular Sciences Institute.
+Copyright (C) 2001-2009 The Molecular Sciences Institute.
 
 Copying and distribution of this file, with or without modification,
 are permitted in any medium without royalty provided the copyright
 notice and this notice are preserved.
 
-
 Please send bug reports to <addy@molsci.org>.
 
-Version 1.0 (February 1, 2008)
-* Initial release, based on the compartmentalizer code written by Larry Lok.
-  Changed the build to automake.
+Version 1.0.0 (February 9, 2009)
+* Initial release.

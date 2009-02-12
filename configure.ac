@@ -1,4 +1,4 @@
-AC_INIT([libmoleculizer], [0.9], [addy@molsci.org])
+AC_INIT([libmoleculizer], [1.0], [addy@molsci.org])
 AM_INIT_AUTOMAKE([-Wall -Werror])
 
 # Ensure this file is present for sanity.

@@ -52,7 +52,7 @@
 
 %% Print the glossary, the index, and then the bibliography.
 % \printglossary
-\printindex
+% \printindex
 
 \bibliographystyle{plain}
 \bibliography{references}

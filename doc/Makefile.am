@@ -1,5 +1,8 @@
 ../user-manual.pdf:
-	latex user-manual.tex
+	latex user-manual
+	bibtex user-manual
+	latex user-manual
+	latex user-manual
 	dvipdf user-manual.dvi
 	mv user-manual.pdf ..
 

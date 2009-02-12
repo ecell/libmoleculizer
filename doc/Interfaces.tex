@@ -71,7 +71,7 @@ a value of 1, when a species is expanded (that's the 1), its products
 are not expanded.  With a value of 2, the products are expanded, but
 any new species that are created as a result of the 2nd expansion will
 not be expanded, and so on.  The generation depth can be checked with
-the function ``int moleculizer::getGenerationDepth() const''.  \bf{The
+the function ``int moleculizer::getGenerationDepth() const''.  {\bf The
   default generation depth is 1.}
 
 The second configuration parameter that can be set is whether
@@ -82,20 +82,20 @@ once this is complete.  If its value is set to true, moleculizer will
 use the reduced-mass proportionality constant model, as discussed in
 chapter XXX, to modify the rates of newly created binary reactions.
 This is done by taking $k_{rxn} = M^* * k_{rule}$, where $M^*$ is the
-reduced-mass, $M^*=\sqrt{\over{m_{sub_1} * m_{sub_2}}{m_{sub_1} +
+reduced-mass, $M^*=\sqrt{\frac{m_{sub_1} * m_{sub_2}}{m_{sub_1} +
     m_{sub_2}} }$,  If it's value is set to false, moleculizer will
 not extrapolate reaction rates, instead setting $k_{rxn} = k_{rule}$.
 Read and write this property using the functions ``void
 moleculizer::setRateExtrapolation( bool rateExtrapolation )'' and 
-``bool moleculizer::getRateExtrapolation() const''.  \bf{By default
+``bool moleculizer::getRateExtrapolation() const''.  {\bf By default
   this value is set to false.}  
 
 \subsection{Loading}
 Once configuration parameters have been set up as needed, a rules file
 can be loaded.  This can be accomplished using one of three functions:
-\lstinline@attachFileName( const std::string& aFileName )@.
-\lstinline@attachString( const std::string& documentAsString )@, or
-\lstinline@attachDocument( xmlpp::Document* pDoc )@.  Each of these
+attachFileName( const std::string\& aFileName ), attachString( const
+std::string\& documentAsString ), or 
+attachDocument( xmlpp::Document* pDoc ).  Each of these
 takes a model, in one form or another, loads it and parses it,
 preparing Moleculizer for species and reaction generation.
 
@@ -269,6 +269,7 @@ unique pointer to every unary reaction involving that species as a
 substrate, returning true if any exist.  
 
 For instance:
+\begin{ExampleCPP}
 m = mzr::molecuculizer();
 m.attachFile( ``Simpledemo-rules.xml''); 
 
@@ -281,6 +282,7 @@ const mzr::mzrSpecies* species = m.getSpeciesWithName(``A-B-dimer'');
 // When this function returns, speciesDecompositionRxns will contain
 // one element, corresponding to the ``AB -> A + B'' reaction.  
 m.findReactionWithSubstrates( species, speciesDecompositionRxns);
+\end{ExampleCPP}
 
 For reactions involving two substrates (libmoleculizer does not
 support reactions involving three or greater substrates at this time),
@@ -385,7 +387,7 @@ function of this interface, defined as ``moleculizer*
 createNewMoleculizerObject()''.  When this function is called, it
 returns a pointer to a newly created moleculizer object, which is
 often called a handle.  This object is owned by the caller of the
-function and \bf{must} be freed using the freeMoleculizerObject
+function and {\bf must} be freed using the freeMoleculizerObject
 function.
 
 \subsection{Loading rules into a moleculizer object}

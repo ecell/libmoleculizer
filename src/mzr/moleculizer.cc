@@ -230,12 +230,6 @@ namespace mzr
         modelLoaded = value;
     }
 
-    void 
-    moleculizer::DEBUG_sayHello() const
-    {
-        std::cout << "Hello from Libmoleculizer!!!" << std::endl;
-    }
-
     void
     moleculizer::attachDocument( xmlpp::Document* pDoc )
     {

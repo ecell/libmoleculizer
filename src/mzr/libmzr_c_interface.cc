@@ -64,17 +64,10 @@ createCSpeciesArrayFromSpeciesMap(moleculizer* cMzrPtr,
                                   species*** speciesList, int& numberInList);
 
 
-void DEBUG_sayHello(moleculizer* handle)
-{
-    mzr::moleculizer* underlyingMoleculizerObject = convertCMzrPtrToMzrPtr( handle );
-    underlyingMoleculizerObject->DEBUG_sayHello();
-}
-
 //
 // The interface presented in the header file -- the c-interface.
 //
 // 
-
 
 moleculizer* createNewMoleculizerObject()
 {

@@ -1,4 +1,4 @@
-AC_INIT([libmoleculizer], [1.0], [addy@molsci.org])
+AC_INIT([libmoleculizer], [0.9], [addy@molsci.org])
 AM_INIT_AUTOMAKE([-Wall -Werror])
 
 # Ensure this file is present for sanity.
@@ -39,8 +39,12 @@ dnl
 
 PKG_CHECK_EXISTS( libxml++-2.6, [PKG_CHECK_MODULES([LIBXMLPP], libxml++-2.6)], [PKG_CHECK_MODULES([LIBXMLPP], libxml++-1.0)])
 
+# This is needed to properly create the pc file.  Don't remove it this time!!!
+PKG_CHECK_EXISTS( libxml++-2.6, [LIBXMLPP_VERSION="2.6"], [LIBXMLPP_VERSION="1.0"])
+
 AC_SUBST(LIBXMLPP_CFLAGS)
 AC_SUBST(LIBXMLPP_LIBS)
+AC_SUBST(LIBXMLPP_VERSION)
 
 # Checks for libraries.
 AC_CONFIG_FILES([Makefile

@@ -1,9 +1,12 @@
-(C) 2001 Walter Lawrence (Larry) Lok
+(C) 2001-2009 The Molecular Sciences Institute
 
  Copying and distribution of this file, with or without modification,
  are permitted in any medium without royalty provided the copyright
  notice and this notice are preserved.
 
+2009-02-11	Nathan Addy 
+	* Release of libmoleculizer 1.0
+	
 2008-01-31	Nathan Addy	<addy@molsci.org>
 
 	* Changed the build system to automake from Gnu Make.
@@ -14,4 +17,5 @@
 	  the Gillespie simlator.
 
 2005-10-1 	Larry Lok	<lok@molsci.org>
-	* 
+	* Wrote original version of Moleculizer (not enough credit can be
+	given here)

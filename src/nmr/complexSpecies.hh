@@ -46,19 +46,15 @@
 namespace nmr
 {
     
-    // April 20 - I am proceeding to change the Mols that ComplexSpecies have to
-    // boost::shared_ptr<Mol> in the hopes of more efficient memory management
-    // shoon/eventually.
-    
     DECLARE_CLASS( ComplexSpecies );
     class ComplexSpecies
     {
         
     public:
         DECLARE_TYPE( std::string, Alias );
-        DECLARE_TYPE( int, MolNdx );
-        DECLARE_TYPE( std::vector<MinimalMolSharedPtr>, MolList );
-        DECLARE_TYPE( int, BndNdx );
+        DECLARE_TYPE( unsigned int, MolNdx );
+        DECLARE_TYPE( std::vector<MinimalMol*>, MolList );
+        DECLARE_TYPE( unsigned int, BndNdx );
         DECLARE_TYPE( MinimalMol::BindingSite,  BindingSite );
         DECLARE_TYPE( MinimalMol::ModificationList, ModificationList )
         typedef std::pair<MolNdx, BndNdx> __HalfBinding;
@@ -73,12 +69,11 @@ namespace nmr
         ComplexSpecies( ComplexSpeciesCref aComplexSpecies );
         ComplexSpecies( ComplexOutputStateCref aComplexOutputState );
         
-        ~ComplexSpecies()
-        {}
+        ~ComplexSpecies();
         
         ComplexSpecies& operator= ( const ComplexSpecies& crefComplexSpecies );
         
-        void addMolToComplex( MinimalMolSharedPtr ptrMol, AliasCref anAlias )
+        void addMolToComplex( MinimalMol* ptrMol, AliasCref anAlias )
             throw( DuplicateMolAliasXcpt );
         
         void addBindingToComplex( AliasCref firstMolAlias,
@@ -122,11 +117,12 @@ namespace nmr
         DECLARE_TYPE( ComplexOutputState::BindingTokenStr, BindingTokenStr );
         DECLARE_TYPE( ComplexOutputState::ModificationTokenStr, ModificationTokenStr );
         
-        void constructPartialTokenList( PartialTokenListRef rComplexPartialTokenList ) const;
+        // void constructPartialTokenList( PartialTokenListRef rComplexPartialTokenList ) const;
         void sortBinding( BindingRef aBinding );
-        
+
+
+        MolList theMols;        
         MolMap theMolAliasToNdxMap;
-        MolList theMols;
         BindingList theBindings;
         
     };

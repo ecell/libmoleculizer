@@ -11,12 +11,33 @@ Therefore to use libmoleculizer, either a ``using namespace mzr''
 directive must be used, or the ``mzr::'' namespace must be appended to
 certain commands.  
 
+\subsection{A short word on including, compiling, and linking}
+To use this software, the file libmoleculizer/mzr/moleculizer.hh must
+be included.  However, all header files are installed to
+\${Prefix}/libmoleculizer-\currentversion, where \${Prefix} is the
+base installation directory, e.g /usr or /usr/local.  Therefore you will have to
+add the compiler flags ``-I\${Prefix}/libmoleculizer-\currentversion''
+to your compiler flags.  While this can be done manually, a much, much
+easier method is to use pkg-config.  While you should consult the
+pkg-config man page for more information, if you simply add the
+results of ``pkg-config libmoleculizer-\currentversion --cflags'' to
+your compilation step, and ``pkg-config libmoleculizer-\currentversion
+--libs'' to your linking step, everything will be taken care of
+automatically.  
+
+
+Conclusion: add \#include ``libmoleculizer/mzr/moleculizer.hh'' to any
+files that use libmoleculizer, add the flags listed in ``pkg-config
+libmoleculizer-\currentversion --cflags'' to your compilation steps,
+and add the flags listed in ``pkg-config
+libmoleculizer-\currentversion --libs'' to your linking steps.  
+
 \subsection{The moleculizer class}
 The major object of libmoleculizer is the moleculizer class, which
 represents a reaction network defined by a set of rules.  
 
 \subsubsection{moleculizer::moleculizer(void)}
-This is the one and only constructor of moleculizer.  
+This is the one and only constructor of moleculizer.
 
 \subsubsection{void moleculizer::setGenerateDepth( unsigned int
   generateDepth )}
@@ -52,7 +73,6 @@ two species: $\sqrt{ \frac{ m_1 * m_2}{m_1 * m_2}}$.  Please see
 \ref{chap:conceptualOverviewChapter} for more details.  The default
 property of moleculizer is to not use reaction rate extrapolation.
 
-
 \subsubsection{bool moleculizer::getRateExtrapolation() const}
 This function returns the current value of the rate extrapolation.
 
@@ -78,7 +98,7 @@ exception.
 \subsubsection{void moleculizer::attachDocument( xmlpp::Document*
   pDoc)}
 Calling this function with a document that has already been parsed
-using libxml++ will load it into the model.  \em{It is not expected
+using libxml++ will load it into the model.  {\em It is not expected
   that this function will be generally used by users}.  If a model has
 already been loaded into moleculizer, this function will throw a
 utl::dom::noDocumentParsedXcpt. 
@@ -91,6 +111,22 @@ according to the rules).  If a model has not yet been loaded, this
 function will throw a mzr::ModelNotLoadedXcpt exception.
 \textbf{Beware that this function may take a very long time to run, if
   it returns at all.}  
+
+\subsubsection{ CachePosition
+        generateCompleteNetwork(long maxNumSpecies, long maxNumRxns =
+        -1) }
+
+Use this function to generate a network that is bounded by
+maxNumSpecies and maxNumRxns (if a maxNumRxns parameter is
+specified).  This function returns a CachePosition, which is a
+std::pair, where the first entry is an iterator to a position
+in the deltaSpeciesList of type std::list<mzr::mzrSpecies*>::iterator
+and the second entry is an iterator to a position in the
+deltaReactionList of type std::list<mzr::mzrReaction*>::iterator.  By
+iterating from theDeltaSpeciesList.begin() to the CachePosition.first,
+and by iterating from the DeltaReactionList.end() to the
+CachePosition.second, a complete network which possesses fewer than
+maxNumSpecies and (if specified) fewer than maxNumRxns.
 
 \subsubsection{bool moleculizer::getModelHasBeenLoaded() const}
 This function returns true if a model has been loaded into the
@@ -113,6 +149,12 @@ streams) that have been defined in the rules files.
 
 \subsubsection{int moleculizer::getNumberOfSpeciesInSpeciesStream(
   const std::string\& speciesStream) const}
+
+This function returns the number of species that are present in a
+particular species stream.  I.e. if a species stream ``Species
+containing an A bound to B'' has been defined in the rules file,
+calling getNumberOfSpeciesInSpeciesStream(``Species containing an A
+bound to B'') will return the number of species matching that criterion.
 
 \subsubsection{void moleculizer::getSpeciesInSpeciesStream(const
   std::string\& streamName, std::vector<const mzr::mzrSpecies*>\&
@@ -940,4 +982,4 @@ moleculizer object as well as a pointer to a reaction.
 This function returns the following error codes: 0 for success, 1 to
 indicate an unknown error.
 
-\section{The Python API} 
+% \section{The Python API} 

@@ -24,10 +24,10 @@ LIBDIMER = ../dimer/libmoleculizer_dimer.la
 LIBFTR = ../ftr/libmoleculizer_ftr.la
 ALL_MZR_LIBS = $(LIBFND) $(LIBUTL) $(LIBMZR) $(LIBSTOCH) $(LIBNMR) $(LIBNMR) $(LIBCPX) $(LIBMOL) $(LIBPLEX) $(LIBDIMER) $(LIBFTR)
 
-LIBXML_CFLAGS = @LIBXML_CFLAGS@
-LIBXML_LIBS = @LIBXML_LIBS@
+LIBXMLPP_CFLAGS = @LIBXMLPP_CFLAGS@
+LIBXMLPP_LIBS = @LIBXMLPP_LIBS@
 
-AM_CXXFLAGS = @CXXFLAGS@ -Wall $(LIBXML_CFLAGS)
+AM_CXXFLAGS = @CXXFLAGS@ -Wall $(LIBXMLPP_CFLAGS) -I..
 
 libmoleculizer_mzr_la_SOURCES =\
 dumpUtils.cc \
@@ -56,6 +56,8 @@ mzrException.hh \
 mzrHelperFunctions.hh \
 mzrReaction.hh \
 mzrSpecies.hh \
+mzrSpeciesDumpable.hh \
+mzrSpeciesDumpableImpl.hh \
 mzrStream.hh \
 mzrUnit.hh \
 respondReaction.hh \

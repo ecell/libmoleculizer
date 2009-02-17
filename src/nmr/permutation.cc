@@ -72,7 +72,7 @@ namespace nmr
         std::vector<int> corePerm( aPermutation.getCorePermutation().begin(),
                                    aPermutation.getCorePermutation().end() );
 
-        for( int ndx = 0; ndx != bPermutation.getDimension(); ++ndx)
+        for( unsigned int ndx = 0; ndx != bPermutation.getDimension(); ++ndx)
         {
             int i = bPermutation[ ndx ];
             corePerm.push_back( i + aPermutation.getDimension() );
@@ -125,7 +125,7 @@ namespace nmr
         throw( nmr::BadPermutationIndexXcpt, nmr::DuplicateValueXcpt )
     {
         
-        CorePermutationType::const_iterator foundLocation = find( thePermutation.begin(),thePermutation.end(), val );
+        CorePermutationType::const_iterator foundLocation = find( thePermutation.begin(),thePermutation.end(), (int) val );
         CorePermutationType::const_iterator locationInQuestion = thePermutation.begin() + pos;
         CorePermutationType::const_iterator PermutationEnd = thePermutation.end();
         
@@ -485,7 +485,7 @@ namespace nmr
                 // Copy this first permutation in....
                 setOfPermutations.insert( Permutation( constructedCorePermutation ) );
                 
-                int index = 1;
+                unsigned int index = 1;
                 while ( index != constructedCorePermutation.size() )
                 {
                     std::swap( constructedCorePermutation[index-1],

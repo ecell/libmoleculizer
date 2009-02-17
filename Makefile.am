@@ -5,10 +5,10 @@ abs_top_builddir=@abs_top_builddir@
 XMLOPERATOR_DIR=$(abs_top_builddir)/xmloperator_2_3_0
 
 
-SUBDIRS = src
+SUBDIRS = src doc
 
 if ENABLE_DEMOS
-SUBDIRS += doc 
+SUBDIRS += demos
 endif
 
 pkgconfigdir = $(libdir)/pkgconfig

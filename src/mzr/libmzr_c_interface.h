@@ -72,8 +72,6 @@ extern "C" {
     moleculizer* createNewMoleculizerObject();
     void freeMoleculizerObject( moleculizer* handle);
 
-    void DEBUG_sayHello( moleculizer* handle);
-    
     int setRateExtrapolation( moleculizer* handle, int extrapolation);
 
     int loadRulesFile(moleculizer* handle, char* fileName);
@@ -108,7 +106,6 @@ extern "C" {
 
     int getReactionsBetween(moleculizer* handle, char* speciesName1, char* speciesName2, reaction*** ptrReactionPtrArray, int* numReactions);
     int getUnaryReactions(moleculizer* handle, char* speciesName, reaction*** ptrReactionPtrArray, int* numReactions);
-    int getReactionsInvolving(moleculizer* handle, char* speciesName, reaction*** ptrReactionPtrArray, int* numReactions);
 
     int getAllStreamSpecies(moleculizer* handle, char* streamName, species** pSpeciesArray, int* numberSpecies);
     int getAllSpecies(moleculizer* handle, species*** pSpeciesArray, int* numberSpecies);

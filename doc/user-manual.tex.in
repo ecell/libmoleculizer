@@ -1,8 +1,7 @@
 %% Some basic substitution commands I'm defining. 
 \newcommand{\libmzrwebsite}{\emph{http://sourceforge.net/projects/moleculizer/}}
 \newcommand{\myemail}{\emph{addy@molsci.org}}
-\newcommand{\currentversion}{1.0 }
-
+\newcommand{\currentversion}{@VERSION@}
 
 %% The libmoleculizer manual.
 
@@ -17,8 +16,8 @@
 %% Some definitions for the listings package.
 \lstloadlanguages{XML, C++, C, Python}
 \lstnewenvironment{ExampleC}{\lstset{language=C}}{}
-\lstnewenvironment{LocalCPP}{\lstset{language=C++,caption=,label=,keywords=}}{}
-\lstnewenvironment{LocalRNG}{\lstset{language=XML, keywords=} }{}
+\lstnewenvironment{ExampleCPP}{\lstset{language=C++,caption=,label=,keywords=}}{}
+\lstnewenvironment{ExampleRNG}{\lstset{language=XML, keywords=} }{}
 \lstnewenvironment{ExampleXML}{\lstset{language=XML, caption=,
     label=,showspaces=false, showtabs=false, keywords=} }{}
 
@@ -26,7 +25,7 @@
 
 \author{Nathan Addy\\The Molecular Sciences Institute}
 
-\title{Libmoleculizer \currentversion User's Manual}
+\title{Libmoleculizer \currentversion\ User's Manual}
 
 % I'm told these must be in the preamble.
 \makeindex
@@ -39,7 +38,6 @@
 \maketitle
 
 \tableofcontents
-
 
 %% Each of the chapters, in order. 
 \include{Introduction}
@@ -54,7 +52,7 @@
 
 %% Print the glossary, the index, and then the bibliography.
 % \printglossary
-\printindex
+% \printindex
 
 \bibliographystyle{plain}
 \bibliography{references}

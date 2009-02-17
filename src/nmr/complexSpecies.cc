@@ -39,10 +39,20 @@ namespace nmr
     
     ComplexSpecies::ComplexSpecies()
         :
-        theMolAliasToNdxMap(),
         theMols(),
+        theMolAliasToNdxMap(),
         theBindings()
     {}
+
+    ComplexSpecies::~ComplexSpecies()
+    {
+        for(unsigned int molPtrNdx = 0;
+            molPtrNdx != theMols.size();
+            ++molPtrNdx)
+        {
+            delete theMols[molPtrNdx];
+        }
+    }
     
     ComplexSpecies::ComplexSpecies( ComplexSpeciesCref aComplexSpecies )
         :
@@ -52,9 +62,9 @@ namespace nmr
     {
         for( unsigned int ndx = 0; ndx != aComplexSpecies.theMols.size(); ++ndx)
         {
-            MinimalMolSharedPtr ptrMol = aComplexSpecies.theMols[ndx];
+            MinimalMol* ptrMol = aComplexSpecies.theMols[ndx];
 
-            MinimalMolSharedPtr newMolPtr( new MinimalMol( *ptrMol ) );
+            MinimalMol* newMolPtr = new MinimalMol( *ptrMol );
             theMols.push_back( newMolPtr );
         }
     }
@@ -73,7 +83,7 @@ namespace nmr
     }
     
     void
-    ComplexSpecies::addMolToComplex( MinimalMolSharedPtr someMol, AliasCref anAlias ) throw( DuplicateMolAliasXcpt )
+    ComplexSpecies::addMolToComplex( MinimalMol* someMol, AliasCref anAlias ) throw( DuplicateMolAliasXcpt )
     {
         // If the alias already exists throw an Exception.
         if ( theMolAliasToNdxMap.find( anAlias ) != theMolAliasToNdxMap.end() ) throw DuplicateMolAliasXcpt( someMol->getMolType(), anAlias );
@@ -274,38 +284,38 @@ namespace nmr
     }
     
     
-    void ComplexSpecies::constructPartialTokenList( PartialTokenList& rComplexPartialTokenList ) const
-    {
-        for ( MolList::const_iterator index = theMols.begin();
-              index != theMols.end();
-              ++index )
-        {
-            rComplexPartialTokenList.theMols.push_back( *index );
-        }
-        for ( BindingList::const_iterator index = theBindings.begin();
-              index != theBindings.end();
-              ++index )
-        {
-            rComplexPartialTokenList.theBindings.push_back( *index );
-        }
+//     void ComplexSpecies::constructPartialTokenList( PartialTokenList& rComplexPartialTokenList ) const
+//     {
+//         for ( MolList::const_iterator index = theMols.begin();
+//               index != theMols.end();
+//               ++index )
+//         {
+//             rComplexPartialTokenList.theMols.push_back( *index );
+//         }
+//         for ( BindingList::const_iterator index = theBindings.begin();
+//               index != theBindings.end();
+//               ++index )
+//         {
+//             rComplexPartialTokenList.theBindings.push_back( *index );
+//         }
         
-        for ( unsigned int molNdx = 0; molNdx != theMols.size(); ++molNdx )
-        {
-            ModificationList currentModNdxMolList = theMols[molNdx]->getModificationList();
+//         for ( unsigned int molNdx = 0; molNdx != theMols.size(); ++molNdx )
+//         {
+//             ModificationList currentModNdxMolList = theMols[molNdx]->getModificationList();
             
-            for ( ModificationList::const_iterator i = currentModNdxMolList.begin();
-                  i != currentModNdxMolList.end();
-                  ++i )
-            {
-                std::pair<int, std::pair<std::string, std::string> > unambiguousModification;
-                unambiguousModification.first = molNdx;
-                unambiguousModification.second = *i;
-                rComplexPartialTokenList.theModifications.push_back( unambiguousModification );
-            }
+//             for ( ModificationList::const_iterator i = currentModNdxMolList.begin();
+//                   i != currentModNdxMolList.end();
+//                   ++i )
+//             {
+//                 std::pair<int, std::pair<std::string, std::string> > unambiguousModification;
+//                 unambiguousModification.first = molNdx;
+//                 unambiguousModification.second = *i;
+//                 rComplexPartialTokenList.theModifications.push_back( unambiguousModification );
+//             }
             
-        }
+//         }
         
-    }
+//     }
     
     
     
@@ -355,12 +365,12 @@ namespace nmr
         theBindings.swap( updatedBindingList );
         
         //Finally update the theMolAliasToNdxMap
-        for ( std::map<Alias, int>::iterator i=theMolAliasToNdxMap.begin();
-              i!=theMolAliasToNdxMap.end();
-              ++i )
+        for ( MolMap::iterator iter =theMolAliasToNdxMap.begin();
+              iter != theMolAliasToNdxMap.end();
+              ++iter )
         {
-            int originalIndex = ( *i ).second;
-            ( *i ).second = aPermutation[originalIndex];
+            int originalIndex = ( *iter ).second;
+            ( *iter ).second = aPermutation[originalIndex];
         }
     }
     

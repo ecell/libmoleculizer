@@ -30,6 +30,7 @@
 //
 
 #include "utl/linearHash.hh"
+#include <algorithm>
 
 namespace utl
 {

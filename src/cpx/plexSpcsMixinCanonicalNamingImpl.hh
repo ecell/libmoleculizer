@@ -59,7 +59,7 @@ namespace cpx
         {
             typename plexFamilyT::molType* pMol = rMols[molNdx];
             
-            nmr::MinimalMolSharedPtr aMol( new nmr::MinimalMol( pMol->getName() ) );
+            nmr::MinimalMol* aMol = new nmr::MinimalMol( pMol->getName() );
             
             // Create all the binding sites to this mol.
             for ( typename plexFamilyT::molType::bindingSiteIterator iter = pMol->getBindingSitesBegin();

@@ -32,6 +32,7 @@
 #ifndef UTL_XCPT_H
 #define UTL_XCPT_H
 
+#include <cstdlib>
 #include <sstream>
 #include <iostream>
 #include <string>

@@ -40,7 +40,7 @@ namespace mzr
     void
     mzrSpecies::expandReactionNetwork()
     {
-        this->expandReactionNetwork( 1 );
+        this->expandReactionNetwork( 0 );
     }
     
     void

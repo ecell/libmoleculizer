@@ -35,7 +35,6 @@
 #include <string>
 #include <vector>
 #include <sstream>
-#include <boost/shared_ptr.hpp>
 #include "utlXcpt.hh"
 
 namespace utl
@@ -101,12 +100,6 @@ namespace utl
         {
         public:
             bool operator()( const T* const a, const T* const b ) const
-            {
-                return *a < *b;
-            }
-            
-            bool operator()( const boost::shared_ptr<const T>  a,
-                             const boost::shared_ptr<const T>  b ) const
             {
                 return *a < *b;
             }

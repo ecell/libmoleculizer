@@ -8,10 +8,9 @@ AC_CONFIG_SRCDIR([src/mzr/moleculizer.hh])
 # AC_CONFIG_TESTDIR([tests])
 
 # This should be be greatly improved.
-ACLOCAL="aclocal"
-AC_SUBST( ACLOCAL )
+#ACLOCAL="aclocal"
+#AC_SUBST( ACLOCAL )
 
-# Do I need to add somethng about dynamic linking?
 AC_PROG_CC			
 AC_PROG_CXX
 AC_PROG_CPP
@@ -34,26 +33,18 @@ AC_CHECK_FUNCS([floor modf pow sqrt strtol])
 
 dnl
 dnl
-dnl
-AM_PATH_PYTHON(2.3)
-AC_CHECK_PROGS(PYCHECKER, [pychecker], [no])
-if test "$PYCHECKER" == no ; then
-   AC_MSG_WARN([pychecker not found.]) 
-fi
-
-dnl
-dnl
-AC_CHECK_LIB(python${PYTHON_VERSION},main,,AC_MSG_ERROR([could not find libpython.]))
+dnl AC_CHECK_LIB(python${PYTHON_VERSION},main,,AC_MSG_ERROR([could not find libpython.]))
 dnl AC_CHECK_LIB(boost_python,main,,AC_MSG_ERROR([could not find libboost_python.]),-lpython${PYTHON_VERSION})
 dnl
 
-PKG_CHECK_EXISTS( libxml++-2.6, [PKG_CHECK_MODULES(LIBXML, libxml++-2.6 >= 2.10)], [PKG_CHECK_MODULES(LIBXML, libxml++-1.0)])
+PKG_CHECK_EXISTS( libxml++-2.6, [PKG_CHECK_MODULES([LIBXMLPP], libxml++-2.6)], [PKG_CHECK_MODULES([LIBXMLPP], libxml++-1.0)])
+
+# This is needed to properly create the pc file.  Don't remove it this time!!!
 PKG_CHECK_EXISTS( libxml++-2.6, [LIBXMLPP_VERSION="2.6"], [LIBXMLPP_VERSION="1.0"])
 
-AC_SUBST(LIBXML_CFLAGS)
-AC_SUBST(LIBXML_LIBS)
+AC_SUBST(LIBXMLPP_CFLAGS)
+AC_SUBST(LIBXMLPP_LIBS)
 AC_SUBST(LIBXMLPP_VERSION)
-
 
 # Checks for libraries.
 AC_CONFIG_FILES([Makefile
@@ -66,24 +57,23 @@ AC_CONFIG_FILES([Makefile
 		src/mzr/Makefile
 		src/nmr/Makefile
 		src/plex/Makefile
-                src/python/Makefile
 		src/stoch/Makefile
 		src/utl/Makefile
                 src/nmr/tests/Makefile
                 src/mzr/tests/Makefile
                 doc/Makefile
-                doc/manual/Makefile
-                doc/demos/Makefile
-                doc/demos/simulators/Makefile
+                demos/Makefile
+                demos/simulators/Makefile
+                demos/sample-models/Makefile
                 libmoleculizer-1.0.pc
+                doc/user-manual.tex
 		])
 
 
 AC_ARG_ENABLE([demos],
-  AC_HELP_STRING([--disable-demos],
-                 [build libmoleculizer without the associated demos.]), [],
-  [enable_demos=yes]
-)
+  AC_HELP_STRING([--enable-demos],
+                 [build demo programs along with libmoleculizer]), [enable_demos=yes])
+
 
 AC_MSG_CHECKING([whether to build Demos])
 if test "$enable_demos" = "yes"; then

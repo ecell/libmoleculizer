@@ -116,8 +116,6 @@ namespace nmr
                 
                 if ( !partialPermIter->getIsComplete() )
                 {
-                    const Permutation& refPerm = *partialPermIter;
-                    
                     //1. Find the most significant int that hasn't been fixed already.
                     int leastIntNotInPartial = partialPermIter->getLeastValueNotInPermutation();
                     
@@ -162,10 +160,10 @@ namespace nmr
                 iter->theCorrespondingPartialTokenList = calculatePartialTokenListForPermutation(aComplexSpecies, iter->thePermutation);
             }
             
-            if (theNextIterationsPartialPermutations.size() > 60000)
-            {
-                throw UnboundNamingAlgorithmXcpt(theNextIterationsPartialPermutations.size(), aComplexSpecies);
-            }
+//             if (theNextIterationsPartialPermutations.size() > 60000)
+//             {
+//                 throw UnboundNamingAlgorithmXcpt(theNextIterationsPartialPermutations.size(), aComplexSpecies);
+//             }
             
             std::sort(theNextIterationsPartialPermutations.begin(),
                       theNextIterationsPartialPermutations.end());
@@ -204,11 +202,11 @@ namespace nmr
     {
         std::string last_name("");
         
-        for( int molPtrNdx = 0;
+        for( unsigned int molPtrNdx = 0;
              molPtrNdx != aComplexSpecies.getMolList().size();
              ++molPtrNdx)
         {
-            MinimalMolSharedPtr molPtr = aComplexSpecies.getMolList()[molPtrNdx];
+            MinimalMol* molPtr = aComplexSpecies.getMolList()[molPtrNdx];
             
             if ( molPtr->getMolType() == last_name) return false;
             else last_name = molPtr->getMolType();
@@ -333,7 +331,7 @@ namespace nmr
             if( inversePerm.getValueAtPosition(indexToExtend) != Permutation::UNDEF)
             {
                 
-                int originalMolNdx( inversePerm.getValueAtPosition( indexToExtend ) );
+                unsigned int originalMolNdx( inversePerm.getValueAtPosition( indexToExtend ) );
                 std::vector<ComplexSpecies::Binding> theAppropriateBindings;
                 
 
@@ -394,14 +392,6 @@ namespace nmr
         }
     }
     
-    
-    
-    
-    
-    
-    
-    
-    
     PartialTokenList 
     ComplexSpeciesOutputMinimizer::calculatePartialTokenListForPermutation(ComplexSpeciesCref aComplexSpecies, PermutationCref aPerm)
     {
@@ -419,11 +409,7 @@ namespace nmr
         
         std::vector<Binding> aComplexSpeciesPartialTokenListBindings;
         
-        typedef int MolNdx;
-        typedef std::string BindingSite;
-        typedef int BndNdx;
-        typedef std::pair<std::pair<MolNdx, BndNdx>, std::pair<MolNdx, BndNdx> > Binding;
-        typedef std::vector<Binding> BindingList;
+        typedef ComplexSpecies::BindingList BindingList;
         
         const BindingList& theBindings= aComplexSpecies.getBindingList();
         

@@ -57,8 +57,6 @@ namespace nmr
     DECLARE_CLASS( PartialTokenList );
     struct PartialTokenList
     {
-        typedef boost::shared_ptr<Mol> spMol; // smart pointer
-        
         typedef int MolNdx;
         typedef int MolBindingSite;
         typedef std::pair<MolNdx, MolBindingSite> BindingSite;
@@ -70,8 +68,7 @@ namespace nmr
         typedef std::pair<MolNdx, std::pair<ModificationSite, ModificationValue> > Modification;
         typedef Modification ModificationToken;
         
-        // TODO: Change these to boost::shared_ptr sometime.
-        typedef std::vector<spMol> MolList;
+        typedef std::vector<MolPtr> MolList;
         typedef std::vector<Binding> BindingList;
         typedef BindingList::iterator BindingListIter;
         typedef BindingList::const_iterator ConstBindingListIter;

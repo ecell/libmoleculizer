@@ -2,13 +2,11 @@
 
 noinst_LTLIBRARIES = libmoleculizer_utl.la
 
-abs_top_builddir=@abs_top_builddir@
-
-## SRCDIR = $(abs_top_builddir)/src
 SRCDIR = ..
 
 VERSION = @PACKAGE_VERSION@
 MOLECULIZER_DIRNAME = libmoleculizer-$(VERSION)
+
 libmoleculizer_utldir=$(includedir)/$(MOLECULIZER_DIRNAME)/libmoleculizer/utl
 
 LIBFND = ../fnd/libmoleculizer_fnd.la
@@ -23,12 +21,10 @@ LIBDIMER = ../dimer/libmoleculizer_dimer.la
 LIBFTR = ../ftr/libmoleculizer_ftr.la
 ALL_MZR_LIBS = $(LIBFND) $(LIBUTL) $(LIBMZR) $(LIBSTOCH) $(LIBNMR) $(LIBNMR) $(LIBCPX) $(LIBMOL) $(LIBPLEX) $(LIBDIMER) $(LIBFTR)
 
-LIBXML_CFLAGS = @LIBXML_CFLAGS@
-LIBXML_LIBS = @LIBXML_LIBS@
+LIBXMLPP_CFLAGS = @LIBXMLPP_CFLAGS@
+LIBXMLPP_LIBS = @LIBXMLPP_LIBS@
 
-AM_CXXFLAGS = $(LIBXML_CFLAGS) 
-
-# libmoleculizer_utl_la_LIBADD = -lstdc++ $(LIBXML_LIBS) 
+AM_CXXFLAGS = $(LIBXMLPP_CFLAGS) -I.. -I../../src
 
 libmoleculizer_utl_la_SOURCES =\
 arg.cc \

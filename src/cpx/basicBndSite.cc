@@ -30,6 +30,7 @@
 //
 
 #include <sstream>
+#include <algorithm>
 #include "cpx/basicBndSite.hh"
 
 namespace cpx

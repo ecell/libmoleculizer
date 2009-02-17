@@ -25,15 +25,15 @@ ALL_MZR_LIBS = $(LIBFND) $(LIBUTL) $(LIBMZR) $(LIBSTOCH) $(LIBNMR) $(LIBNMR) $(L
 ## I think it has something to do with header dependencies.
 moleculizerdir = $(SRCDIR)
 
-LIBXML_CFLAGS = @LIBXML_CFLAGS@
-LIBXML_LIBS = @LIBXML_LIBS@
+LIBXMLPP_CFLAGS = @LIBXMLPP_CFLAGS@
+LIBXMLPP_LIBS = @LIBXMLPP_LIBS@
 
-AM_CXXFLAGS = $(LIBXML_CFLAGS)
+AM_CXXFLAGS = $(LIBXMLPP_CFLAGS)
 AM_CFLAGS=-g -O0
 
 lib_LTLIBRARIES = libmoleculizer-1.0.la
 libmoleculizer_1_0_la_SOURCES =
-nodist_EXTRA_libmoleculizer_1_0_la_SOURCES = dummy.cpp
+# nodist_EXTRA_libmoleculizer_1_0_la_SOURCES = dummy.cpp
 
 libmoleculizer_1_0_la_LIBADD = \
 	$(LIBFND) \

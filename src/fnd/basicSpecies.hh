@@ -76,6 +76,16 @@ namespace fnd
         {
             return getTag();
         }
+
+        virtual typename std::string
+        getTaggedName( void ) const
+        {
+            return getTag();
+        }
+
+
+
+
         
     };
     

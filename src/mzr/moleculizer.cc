@@ -859,6 +859,19 @@ namespace mzr
     {
         return pUserUnits->pFtrUnit->getNumberOfUniMolGenRules();
     }
+
+    void 
+    moleculizer::getUserNames(std::vector<std::string>& refVector) const
+    {
+        refVector.reserve( userNameToSpeciesIDChart.size() );
+        for(std::map<std::string, std::string>::const_iterator iter = userNameToSpeciesIDChart.begin();
+            iter != userNameToSpeciesIDChart.end();
+            ++iter)
+        {
+            refVector.push_back( iter->first );
+        }
+                
+    }
     
     int moleculizer::DEFAULT_GENERATION_DEPTH = 1;
     

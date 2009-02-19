@@ -54,6 +54,8 @@ extern "C" {
     
     typedef struct reaction_type
     {
+        char* name;
+
         int numberReactants;
         species** reactantVector;
         
@@ -73,6 +75,7 @@ extern "C" {
     void freeMoleculizerObject( moleculizer* handle);
 
     int setRateExtrapolation( moleculizer* handle, int extrapolation);
+    // int debug_sayHello( moleculizer* handle);
 
     int loadRulesFile(moleculizer* handle, char* fileName);
     int loadRulesString( moleculizer* handle, char* file);
@@ -98,6 +101,8 @@ extern "C" {
     int convertUserNameToSpeciesName(moleculizer* handle, char* theUserName, char* correspondingTag, unsigned int bufferSize);
     int convertUserNameToUniqueID(moleculizer* handle, char* theUserName, char* correspondingSpeciesID, unsigned int bufferSize);
 
+    int getExplicitSpeciesList(moleculizer* handle, char** theExplicitSpeciesNames, unsigned int* numSpecies);
+
     /* These two functions can be used with a Species Key (it's canonical string representation) to 
        determine what reactions, if any they participate in. These functions return pointers to reaction 
 
@@ -121,7 +126,7 @@ extern "C" {
     
     void freeReactionArray( reaction** pRxnArray, unsigned int numArrayElements);
     void freeSpeciesArray( species** pSpeciesArray, unsigned int numArrayElements);
-    
+
     void freeReaction( reaction* pRxn );
     void freeSpecies( species* pSpecies );
     

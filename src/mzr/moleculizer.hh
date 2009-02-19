@@ -152,6 +152,9 @@ namespace mzr
             return iter->second;
         }
 
+        void 
+        getUserNames(std::vector<std::string>& refVector) const;
+
         int getNumberOfDefinedModifications() const;
         int getNumberOfDefinedMols() const;
         int getNumberOfDefinedRules() const;

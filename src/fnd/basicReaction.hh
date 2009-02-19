@@ -163,7 +163,179 @@ namespace fnd
         {
             return arity;
         }
-        
+
+        virtual 
+        std::string 
+        getTaggedName() const
+        {
+               std::vector< std::pair<speciesType*, int> > theReactants( reactants.begin(),
+                                                                         reactants.end() );
+            
+            std::vector< std::pair<speciesType*, int> > theProducts( products.begin(),
+                                                                     products.end() );
+            
+            std::sort( theReactants.begin(),
+                       theReactants.end(),
+                       CompareSpeciesEntries()
+                );
+            
+            
+            std::sort( theProducts.begin(),
+                       theProducts.end(),
+                       CompareSpeciesEntries()
+                );
+            
+            std::ostringstream reactionName;
+            
+            reactionName << "(" << reactants.size() << ", " << products.size() <<  ") -- ";
+            
+            // This is sort of goofy because of the following
+            // vector = first| a, b, c| last
+            // " a + b + c" => add a " + " iff ndx of what we've just added
+            
+            for ( unsigned int ii = 0;
+                  ii != theReactants.size();
+                  ++ii )
+            {
+                
+                if ( theReactants[ii].second > 1 )
+                {
+                    
+                    reactionName << theReactants[ii].second
+                                 << " "
+                                 << theReactants[ii].first->getTaggedName();
+                }
+                else
+                {
+                    reactionName << theReactants[ii].first->getTaggedName();
+                }
+                
+                // I don't like this condition as it seems error-prone.
+                // However
+                // if size == 4 and
+                // NDX: 0  1  2  3
+                //      a  b  c  d
+                // We want to add pluses for everything up to and including 2
+                if ( ii != theReactants.size() - 1 )
+                {
+                    reactionName << " + ";
+                }
+                
+            }
+            
+            reactionName << " -> ";
+            
+            for ( unsigned int ii = 0;
+                  ii != theProducts.size();
+                  ++ii )
+            {
+                if ( theProducts[ii].second > 1 )
+                {
+                    reactionName << theProducts[ii].second
+                                 << " "
+                                 << theProducts[ii].first->getTaggedName();
+                }
+                else
+                {
+                    reactionName << theProducts[ii].first->getTaggedName();
+                }
+                
+                if ( ii != ( theProducts.size() - 1 ) )
+                {
+                    reactionName << " + ";
+                }
+                
+            }
+            
+            return reactionName.str();
+        }
+
+        virtual 
+        std::string
+        getUniqueName() const
+        {
+            std::vector< std::pair<speciesType*, int> > theReactants( reactants.begin(),
+                                                                      reactants.end() );
+            
+            std::vector< std::pair<speciesType*, int> > theProducts( products.begin(),
+                                                                     products.end() );
+            
+            std::sort( theReactants.begin(),
+                       theReactants.end(),
+                       CompareSpeciesEntries()
+                );
+            
+            
+            std::sort( theProducts.begin(),
+                       theProducts.end(),
+                       CompareSpeciesEntries()
+                );
+            
+            std::ostringstream reactionName;
+            
+            reactionName << "(" << reactants.size() << ", " << products.size() <<  ") -- ";
+            
+            // This is sort of goofy because of the following
+            // vector = first| a, b, c| last
+            // " a + b + c" => add a " + " iff ndx of what we've just added
+            
+            for ( unsigned int ii = 0;
+                  ii != theReactants.size();
+                  ++ii )
+            {
+                
+                if ( theReactants[ii].second > 1 )
+                {
+                    
+                    reactionName << theReactants[ii].second
+                                 << " "
+                                 << theReactants[ii].first->getName();
+                }
+                else
+                {
+                    reactionName << theReactants[ii].first->getName();
+                }
+                
+                // I don't like this condition as it seems error-prone.
+                // However
+                // if size == 4 and
+                // NDX: 0  1  2  3
+                //      a  b  c  d
+                // We want to add pluses for everything up to and including 2
+                if ( ii != theReactants.size() - 1 )
+                {
+                    reactionName << " + ";
+                }
+                
+            }
+            
+            reactionName << " -> ";
+            
+            for ( unsigned int ii = 0;
+                  ii != theProducts.size();
+                  ++ii )
+            {
+                if ( theProducts[ii].second > 1 )
+                {
+                    reactionName << theProducts[ii].second
+                                 << " "
+                                 << theProducts[ii].first->getName();
+                }
+                else
+                {
+                    reactionName << theProducts[ii].first->getName();
+                }
+                
+                if ( ii != ( theProducts.size() - 1 ) )
+                {
+                    reactionName << " + ";
+                }
+                
+            }
+            
+            return reactionName.str();
+        }
+
         virtual
         std::string
         getName() const

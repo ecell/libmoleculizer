@@ -272,8 +272,8 @@ int getBoundedNetwork( moleculizer* handle, long maxNumSpecies, long maxNumReact
         }
 
         // Assuming everything has gotten here, copy everything over.
-        pSpeciesArray = &specArray;
-        pReactionArray = &rxnArray;
+        *pSpeciesArray = specArray;
+        *pReactionArray = rxnArray;
 
         *pNumSpec = numSpecies;
         *pNumRxns = numRxns;
@@ -560,6 +560,39 @@ int convertUserNameToUniqueID(moleculizer* handle, char* theUserName, char* corr
 
 }
 
+int getExplicitSpeciesList(moleculizer* handle, char*** explicitNamesArray, unsigned int* numSpecies)
+{
+    enum LOCAL_ERROR_TYPE { SUCCESS = 0,
+                            UNKNOWN_ERROR = 1 };
+
+    try
+    {
+
+        mzr::moleculizer* moleculizerPtr = convertCMzrPtrToMzrPtr( handle );
+
+        std::vector<std::string> explicitSpeciesNamesVect;
+        moleculizerPtr->getUserNames(explicitSpeciesNamesVect);
+
+
+        typedef char* charPtr;
+
+        *explicitNamesArray = new charPtr[ explicitSpeciesNamesVect.size() ];
+        *numSpecies = explicitSpeciesNamesVect.size();
+        
+        for( unsigned int nameNdx = 0; nameNdx != explicitSpeciesNamesVect.size(); ++nameNdx)
+        {
+            (*explicitNamesArray)[nameNdx] = new char[ explicitSpeciesNamesVect[nameNdx].size() + 1];
+            strcpy( (*explicitNamesArray)[nameNdx], explicitSpeciesNamesVect[nameNdx].c_str());
+        }
+
+        return SUCCESS;
+    }
+    catch(...)
+    {
+        return UNKNOWN_ERROR;
+    }
+}
+
 
 int getReactionsBetween(moleculizer* handle, char* cStrSpeciesName1, char* cStrSpeciesName2, reaction*** ptrReactionPtrArray, int* numReactions)
 {
@@ -607,7 +640,6 @@ int getReactionsBetween(moleculizer* handle, char* cStrSpeciesName1, char* cStrS
     
     typedef reaction* reactionPtr;
     *ptrReactionPtrArray = new reactionPtr[ reactionsBetweenContainer.size() ];
-    
     int size = reactionsBetweenContainer.size();
     *numReactions = size;
     
@@ -779,6 +811,7 @@ void freeReaction( reaction* pRxn)
     freeSpeciesArray( pRxn->reactantVector, pRxn->numberReactants);
     freeSpeciesArray( pRxn->productVector, pRxn->numberProducts);
     
+    delete [] pRxn->name;
     delete pRxn->rate;
 }
 
@@ -932,7 +965,21 @@ species* createNewCSpeciesFromMzrSpecies( moleculizer* cMzrPtr, const mzr::mzrSp
 
 reaction* createNewCRxnFromMzrReaction( moleculizer* cMzrPtr, const mzr::mzrReaction* pMzrReaction)
 {
+//     std::cout << "================================================== " << std::endl;
+//     std::cout << "(LIBMZR) Creating reaction with name " << pMzrReaction->getName() << std::endl;
+//     std::cout << "(LIBMZR) Creating reaction with tagged name " << pMzrReaction->getTaggedName() << std::endl;
+//     std::cout << "(LIBMZR) Creating reaction with unique name " << pMzrReaction->getUniqueName() << std::endl;
+
+    std::string reactionName( pMzrReaction->getName() );
+    
     reaction* theNewRxn = new reaction;
+
+    // This is for Smoldyn, which doesn't care for super long names...
+    assert( reactionName.size() + 1 < 256 );
+
+    theNewRxn->name = new char[ reactionName.size() + 1] ;
+    strcpy( theNewRxn->name, reactionName.c_str() );
+
     theNewRxn->rate = new double;
     
     *(theNewRxn->rate) = pMzrReaction->getRate();

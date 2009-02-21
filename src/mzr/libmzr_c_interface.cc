@@ -424,7 +424,7 @@ int clearDeltaState( moleculizer* handle)
 
 }
 
-int convertNameToUniqueID( moleculizer* handle, char* speciesTag, char* speciesID, unsigned int idSize)
+int convertTaggedNameToUniqueID( moleculizer* handle, char* speciesTag, char* speciesID, unsigned int idSize)
 {
     enum LOCAL_ERROR_TYPE { SUCCESS = 0,
                             UNKNOWN_ERROR = 1,
@@ -455,7 +455,7 @@ int convertNameToUniqueID( moleculizer* handle, char* speciesTag, char* speciesI
 
 }
 
-int convertUniqueIDToName( moleculizer* handle, char* speciesID, char* speciesTag, unsigned int tagSize)
+int convertUniqueIDToTaggedName( moleculizer* handle, char* speciesID, char* speciesTag, unsigned int tagSize)
 {
 
     enum LOCAL_ERROR_TYPE { SUCCESS = 0,
@@ -487,7 +487,7 @@ int convertUniqueIDToName( moleculizer* handle, char* speciesID, char* speciesTa
 }
 
 
-int convertUserNameToSpeciesName(moleculizer* handle, char* theUserName, char* correspondingTag, unsigned int bufferSize)
+int convertUserNameToTaggedName(moleculizer* handle, char* theUserName, char* correspondingTag, unsigned int bufferSize)
 {
     
     enum LOCAL_ERROR_TYPE { SUCCESS = 0,
@@ -498,7 +498,7 @@ int convertUserNameToSpeciesName(moleculizer* handle, char* theUserName, char* c
     try
     {
         std::string userName( theUserName );
-        std::string speciesKey = convertCMzrPtrToMzrPtr(handle)->convertUserNameToGeneratedName( userName );
+        std::string speciesKey = convertCMzrPtrToMzrPtr(handle)->convertUserNameToTaggedName( userName );
         
         if (speciesKey.size() + 1 > bufferSize) return NEED_A_BIGGER_BUFFER;
         strcpy(correspondingTag, speciesKey.c_str() );
@@ -534,12 +534,11 @@ int convertUserNameToUniqueID(moleculizer* handle, char* theUserName, char* corr
         mzr::moleculizer* pMoleculizer = convertCMzrPtrToMzrPtr(handle);
 
         std::string userName( theUserName );
-        std::string speciesKey = pMoleculizer->convertUserNameToGeneratedName( userName );
-        std::string speciesUniqueID = pMoleculizer->convertSpeciesTagToSpeciesID( speciesKey );
+        std::string speciesID = pMoleculizer->convertUserNameToSpeciesID( userName );
 
-        if (speciesUniqueID.size() + 1 > bufferSize) return NEED_A_BIGGER_BUFFER;
+        if (speciesID.size() + 1 > bufferSize) return NEED_A_BIGGER_BUFFER;
         
-        strcpy(correspondingSpeciesID, speciesKey.c_str() );
+        strcpy(correspondingSpeciesID, speciesID.c_str() );
         return SUCCESS;
         
     }
@@ -793,6 +792,16 @@ void freeReactionArray( reaction** pRxnArray, unsigned int numElements)
     delete [] pRxnArray;
 }
 
+void freeCharPtrArray( char** pCharArray, unsigned int numElements)
+{
+    for( unsigned int num = 0; num != numElements; ++num)
+    {
+        delete pCharArray[num];
+    }
+
+    delete [] pCharArray;
+}
+
 void freeSpeciesArray( species** speciesArray, unsigned int numElements)
 {
     for(unsigned int num = 0; num != numElements; ++num)
@@ -965,11 +974,6 @@ species* createNewCSpeciesFromMzrSpecies( moleculizer* cMzrPtr, const mzr::mzrSp
 
 reaction* createNewCRxnFromMzrReaction( moleculizer* cMzrPtr, const mzr::mzrReaction* pMzrReaction)
 {
-//     std::cout << "================================================== " << std::endl;
-//     std::cout << "(LIBMZR) Creating reaction with name " << pMzrReaction->getName() << std::endl;
-//     std::cout << "(LIBMZR) Creating reaction with tagged name " << pMzrReaction->getTaggedName() << std::endl;
-//     std::cout << "(LIBMZR) Creating reaction with unique name " << pMzrReaction->getUniqueName() << std::endl;
-
     std::string reactionName( pMzrReaction->getName() );
     
     reaction* theNewRxn = new reaction;

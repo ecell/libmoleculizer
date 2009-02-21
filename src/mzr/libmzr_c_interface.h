@@ -95,13 +95,13 @@ extern "C" {
     int getDeltaReactions( moleculizer* handle, reaction*** pReactionArray, int* pNum);
     int clearDeltaState( moleculizer* handle);
 
-    int convertNameToUniqueID( moleculizer* handle, char* speciesTag, char* speciesID, unsigned int idSize);
-    int convertUniqueIDToName( moleculizer* handle, char* speciesID, char* speciesTag, unsigned int tagSize);
+    int convertTaggedNameToUniqueID( moleculizer* handle, char* speciesTag, char* speciesID, unsigned int idSize);
+    int convertUniqueIDToTaggedName( moleculizer* handle, char* speciesID, char* speciesTag, unsigned int tagSize);
 
-    int convertUserNameToSpeciesName(moleculizer* handle, char* theUserName, char* correspondingTag, unsigned int bufferSize);
+    int convertUserNameToTaggedName(moleculizer* handle, char* theUserName, char* correspondingTag, unsigned int bufferSize);
     int convertUserNameToUniqueID(moleculizer* handle, char* theUserName, char* correspondingSpeciesID, unsigned int bufferSize);
 
-    int getExplicitSpeciesList(moleculizer* handle, char** theExplicitSpeciesNames, unsigned int* numSpecies);
+    int getExplicitSpeciesList(moleculizer* handle, char*** theExplicitSpeciesNames, unsigned int* numSpecies);
 
     /* These two functions can be used with a Species Key (it's canonical string representation) to 
        determine what reactions, if any they participate in. These functions return pointers to reaction 
@@ -126,11 +126,11 @@ extern "C" {
     
     void freeReactionArray( reaction** pRxnArray, unsigned int numArrayElements);
     void freeSpeciesArray( species** pSpeciesArray, unsigned int numArrayElements);
+    void freeCharPtrArray( char** pCharArray, unsigned int numCharPtrElements);
 
     void freeReaction( reaction* pRxn );
     void freeSpecies( species* pSpecies );
-    
-    
+
     int expandSpeciesByTag( moleculizer* handle, char* theTag);
     int expandSpeciesByID( moleculizer* handle, char* theID);
     int expandSpecies( moleculizer* handle, species* mzrSpecies);

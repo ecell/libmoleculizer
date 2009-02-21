@@ -54,7 +54,7 @@ namespace mzr
         // Moleculizer only has basic constructors and destructors.  
         moleculizer( void );
         virtual ~moleculizer( void );
-        
+
     public:
         
         void generateCompleteNetwork();
@@ -143,13 +143,26 @@ namespace mzr
         }
         
         std::string
-        convertUserNameToGeneratedName(const std::string& possibleUserName) const 
+        convertUserNameToSpeciesID(const std::string& possibleUserName) const 
             throw( utl::xcpt )
         {
             std::map<std::string, std::string>::const_iterator iter( userNameToSpeciesIDChart.find(possibleUserName) );
             if (iter == userNameToSpeciesIDChart.end() ) throw mzr::unknownUserNameXcpt( "Error, UserName doesn't exist and thus cannot be converted to a user name.");
             
             return iter->second;
+        }
+
+        std::string
+        convertUserNameToTaggedName( const std::string& possibleUserName) const
+            throw( utl::xcpt)
+        {
+
+            std::map<std::string, std::string>::const_iterator iter( userNameToSpeciesIDChart.find(possibleUserName) );
+            if (iter == userNameToSpeciesIDChart.end() ) throw mzr::unknownUserNameXcpt( "Error, UserName doesn't exist and thus cannot be converted to a user name.");
+            
+            std::string speciesID(iter->second);
+
+            return convertSpeciesIDToSpeciesTag(speciesID);
         }
 
         void 

@@ -238,7 +238,7 @@ void SimpleSimulator::initialize()
             // First we assume that the name present is defined in the rules file...
             if ( ptrSpeciesReactionGenerator->nameIsUserName( modelIter->first ) )
             {
-                std::string mangledName( ptrSpeciesReactionGenerator->convertUserNameToGeneratedName( modelIter->first ) );
+                std::string mangledName( ptrSpeciesReactionGenerator->convertUserNameToSpeciesID( modelIter->first ) );
                 ptrSpeciesReactionGenerator->incrementNetworkBySpeciesTag( mangledName );
             }
             else

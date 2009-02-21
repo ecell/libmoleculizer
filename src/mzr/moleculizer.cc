@@ -105,7 +105,7 @@ namespace mzr
                                  pStreamsElt );
         }
     };
-    
+
     void
     moleculizer::constructorPrelude( void )
     {
@@ -701,7 +701,8 @@ namespace mzr
 
         // This isn't really necessary, but it should be true anyways (there is nothing to expand otherwise), and gets
         // us away from the concern regarding lists explicated at the beginning of this function.
-        assert( this->getTotalNumberSpecies() > 0 && this->getTotalNumberReactions() > 0);
+        assert( this->getTotalNumberSpecies() > 0);
+        // assert( this->getTotalNumberSpecies() > 0 && this->getTotalNumberReactions() > 0);
 
         if ( (long) this->getTotalNumberSpecies() >= maxNumSpecies || (long) this->getTotalNumberReactions() >= maxNumRxns )
         {

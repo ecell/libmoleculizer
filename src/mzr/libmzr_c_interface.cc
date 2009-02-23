@@ -240,18 +240,15 @@ int getBoundedNetwork( moleculizer* handle, long maxNumSpecies, long maxNumReact
         mzr::moleculizer* underlyingMoleculizerObject = convertCMzrPtrToMzrPtr( handle );
         mzr::moleculizer::CachePosition theMaxNetwork = underlyingMoleculizerObject->generateCompleteNetwork(maxNumSpecies, maxNumReactions);
 
-
         typedef reaction* reactionPtr;
         typedef species* speciesPtr;
 
         int numSpecies = std::distance( underlyingMoleculizerObject->theDeltaSpeciesList.begin(), theMaxNetwork.first);
         int numRxns = std::distance( underlyingMoleculizerObject->theDeltaReactionList.begin(), theMaxNetwork.second);
 
-
         species** specArray = new speciesPtr[ numSpecies ];
         reaction** rxnArray = new reactionPtr[ numRxns ];
 
-        
         int specNdx = 0;
         int rxnNdx = 0;
         for( mzr::moleculizer::SpeciesListIter specIter = underlyingMoleculizerObject->theDeltaSpeciesList.begin();

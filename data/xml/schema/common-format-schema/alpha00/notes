@@ -26,3 +26,13 @@
   on its initial state.
   
   
+-----------------------------------
+
+1. the value element in parameterContent is defined
+      ( xsd:float | 
+         element math
+         {
+            text
+         }
+      )
+   The text here refers to a whole mathml element.  How can we properly specify this?

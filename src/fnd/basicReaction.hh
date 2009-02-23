@@ -273,8 +273,6 @@ namespace fnd
             
             std::ostringstream reactionName;
             
-            reactionName << "(" << reactants.size() << ", " << products.size() <<  ") -- ";
-            
             // This is sort of goofy because of the following
             // vector = first| a, b, c| last
             // " a + b + c" => add a " + " iff ndx of what we've just added

@@ -79,7 +79,7 @@ extern "C" {
 
     int loadRulesFile(moleculizer* handle, char* fileName);
     int loadRulesString( moleculizer* handle, char* file);
-
+  
     int expandNetwork( moleculizer* handle);
 
 

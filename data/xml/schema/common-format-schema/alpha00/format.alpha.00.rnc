@@ -54,7 +54,9 @@ parameterContent =
       # in the model, which is why we cannot use "valueElement" 
       # to define this.
 
+
       ( xsd:float | 
+         #??? This is supposed to be a mathml element... How can we specify this?
          element math
          {
             text
@@ -62,9 +64,10 @@ parameterContent =
       )
    }
 
-
 realValueContent =
    ( xsd:float | 
+      #??? Is theref a way to enforce the fact that this should be a reference to a parameter
+      #??? element.
       element parameter-ref{ attribute name{ xsd:token } }
    )
 
@@ -78,6 +81,8 @@ modificationContent =
 
 modificationGroupContent = 
    element name{ xsd:token },
+   #??? Again, should the default-value be one of the values or should it
+   #??? be listed again in the values section?
    element default-value{ xsd:token },
    element value{ xsd:token }+
 
@@ -86,6 +91,8 @@ molContent =
    element weight{ realValueContent },
    element states
    {
+      # I think that it would be best if the default-state element had to be found
+      # in the list of states.
       element default-state{ element name{ xsd:token } },
       element state{ element name{ xsd:token } }+
 

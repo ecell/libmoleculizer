@@ -59,28 +59,25 @@ class MoleculizerMol:
         ndx = min([ x for x in [firstComma, firstSemiColon, firstParen] if x > 0])
 
         name = line[:ndx]
-        print "line '%s' gives name %s" % (line, name)
         return name
 
     @classmethod
     def calculateParams(cls, line):
-        pdb.set_trace()
         if (isModMol(line)):
             firstParen = line.find(")")
-            paramList = line[firstParen:]
+            paramList = line[firstParen + 1:]
             paramList = paramList.strip()
-            firstComma = line.find(",")
+            firstComma = paramList.find(",")
             if firstComma < 0: return ""
-            print "line '%s' gives paramList '%s'" % (line, paramList)
-            paramList = paramList[firstComma:].strip()
+
+            paramList = paramList[firstComma + 1:].strip()
             return paramList
 
         else:
             firstComma = line.find(",")
             if firstComma < 0: return ""
             else:
-                paramList = line[firstComma:].strip()
-                print "line '%s' gives paramList '%s'" % (line, paramList)
+                paramList = line[firstComma + 1:].strip()
                 return paramList
 
         return paramList

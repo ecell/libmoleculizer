@@ -1,0 +1,28 @@
+This project is to come up with a parser that will input a BioNetGen
+model file and will return a Moleculizer model file.  This should be
+quite useful for at least 3 reasons.
+
+1.  It would be useful for the alpha wiki modeling efforts.
+    Currently, because of the way that experimentation on this system
+    is perfomed, the alpha pathway is modeled in more of a raw form
+    that maps more directly to a BNG file.  However, I beleive that
+    the more geometric information required by Moleculizer can be
+    generated from this information.  This program would therefore
+    allow them to use both these programs for the price of one.
+
+2.  It will be useful for E-Cell/Moleculizer integration.  E-Cell will
+    be using the Moleculizer engine, but at the current moment, it
+    would undoubtably be better for E-Cell to use a more
+    human-readable format that is converted into Moelculizer format.
+    This can perhaps be used as the basis for that work.
+
+3.  SBML is coming up.  Currently I am not 100% sure of all of the
+    ramifications between the different modeling systems.  Hopefully
+    this will help make many of these issues clear to me.
+
+To run, type make.
+
+   	-- NJA, 2/23/2007 --
+
+	   *note* This work actually began earlier, sometime after the
+            2006 ICSB conference in Yokohama, Japan.  

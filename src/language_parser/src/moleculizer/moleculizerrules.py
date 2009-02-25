@@ -1,27 +1,9 @@
 ###############################################################################
-# BNGMZRConverter - A utility program for converting bngl input files to mzr
-#		    input files.
 # Copyright (C) 2007, 2008, 2009 The Molecular Sciences Institute
-#
-# Moleculizer is free software; you can redistribute it and/or modify
-# it under the terms of the GNU Lesser General Public License as published by
-# the Free Software Foundation; either version 3 of the License, or
-# (at your option) any later version.
-#
-# Moleculizer is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU Lesser General Public License for more details.
-#
-# You should have received a copy of the GNU Lesser General Public License
-# along with Moleculizer; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-#
 # Original Author:
 #   Nathan Addy, Scientific Programmer	Email: addy@molsci.org
-#   The Molecular Sciences Institute    Email: addy@molsci.org  
-#                     
-#   
+#   The Molecular Sciences Institute    
+#
 ###############################################################################
 
 import re, pdb
@@ -30,15 +12,12 @@ import util
 # import mzrexceptions as MzrExceptions
 # from expressionevaluation import SymbolicExpressionEvaluator
 # from moleculeinterpreter import MoleculeDictionary
+# from seedspeciesinterpreter import SeedSpecies
+# from reactionrulesinterpreter import ReactionRules
 
 from moleculizermol import BasicMol, ModMol, SmallMol
 
-
-
-from seedspeciesinterpreter import SeedSpecies
-from reactionrulesinterpreter import ReactionRules
 from xmlobject import XmlObject
-
 
 class MoleculizerRulesFile:
     """
@@ -46,7 +25,6 @@ class MoleculizerRulesFile:
     suitable for processing internally by a mzr::moleculizer instance."""
 
     def __init__(self, filename):
-        # Self explanatory...
 
         self.outputFileName = filename
 
@@ -138,11 +116,10 @@ class MoleculizerRulesFile:
         # from the parameters section, as well as evaluate mathematical expressions using 
         # lazy evaluation.
 	self.parameterEE = SymbolicExpressionEvaluator( self.parameterBlock )
- 	self.molsSection = MoleculeDictionary(moleculeBlock, self.parameterEE)
 
+        MoleculizerSection.setParameterEvaluator( self.parameterEE )
 
-
-
+ 	self.molsSection = MolsSection( moleculeBlock )
 
         self.allostericPlexesSection = AllostericPlexes( self.allostericPlexes, self.molsSection)
 
@@ -150,32 +127,13 @@ class MoleculizerRulesFile:
 
         self.reactionGensSection = ReactionGens( self.reactionRulesBlock, self.dimerizationGenBlock, \
                                                  self.omniGenBlock, self.uniMolGenBlock, \
-                                                 self.molsSections, self.parameterEE)
+                                                 self.molsSections)
 
         self.explicitSpeciesSection = ExplicitSpecies( self.explicitSpecies, self.mols )
         
         self.speciesStreams = SpeciesStreams( self.speciesStreams, self.mols)
-                                                 
-
-self.molsSection)
-        self.explicitSpecies = 
-        self.speciesStream = 
-
-#         self.allostericData = self.__processAllostericRulesBlocks(self.allostericPlexes, self.allostericOmnis)
-#         self.reactionRules = self.__processReactionRulesBlocks( self.reactionRulesBlock, self.dimerizationGenBlock, self.omniGenBlock, self.uniMolGenBlock)
-#         self.explicitSpecies = self.__processExplicitSpeciesBlock( self.explicitSpeciesBlock)
-#         self.speciesStreams = self.__processSpeciesStreamBlock( self.speciesStreamBlock)
         return
 
-
-    def __processMolsBlock(self, moleculeBlock):
-        ## This function works by taking instantiating a MoleculeDictionary with a
-        ## moleculeDescriptionBlock and a SymbolicExpressionEvaluator and returns the object,
-        ## which can then be passed to other objects.
-         assert(self.parameterEE)
-
- 	moleculeDictionary = MoleculeDictionary(moleculeBlock, self.parameterEE)
-         return moleculeDictionary
 
 #     def __processAllostericRulesBlocks( self, allostericPlexBlock, allostericOmniBlock):
 #         return 0

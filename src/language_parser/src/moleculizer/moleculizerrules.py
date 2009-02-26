@@ -6,17 +6,12 @@
 #
 ###############################################################################
 
-import re, pdb
+import pdb
+
+import re
+
 import util
-
-# import mzrexceptions as MzrExceptions
-# from expressionevaluation import SymbolicExpressionEvaluator
-# from moleculeinterpreter import MoleculeDictionary
-# from seedspeciesinterpreter import SeedSpecies
-# from reactionrulesinterpreter import ReactionRules
-
-from moleculizermol import BasicMol, ModMol, SmallMol
-
+from moleculizer_xcpt import *
 from xmlobject import XmlObject
 
 class MoleculizerRulesFile:
@@ -24,12 +19,26 @@ class MoleculizerRulesFile:
     This object acts as an parsing thing that outputs moleculizer files xml,
     suitable for processing internally by a mzr::moleculizer instance."""
 
+    @staticmethod
+    def block_posses_sanity_checks( linearray ):
+        everyLineEndsWithSemiColon = [ x[-1] == ";" for x in linearray]
+        noWhiteSpace = [ (x.count("\n") + x.count(" ") + x.count("\t") == 0) for x in linearray]
+
+        return reduce(util.And, everyLineEndsWithSemiColon) and reduce(util.And, noWhiteSpace)
+
+    @staticmethod
+    def snip_block_lines( linearray ):
+        everyLineEndsWithSemiColon = [ x[-1] == ";" for x in linearray]
+        assert( reduce(util.And, everyLineEndsWithSemiColon) )
+
+        return [x[:-1] for x in linearray]
+    
+
     def __init__(self, filename):
 
         self.outputFileName = filename
 
-        # The data which will be parsed and used to create the 
-        # moleculizer file.
+        # These are the lines of input, in one statement per line form 
         self.parameterBlock = []
         self.molsBlock = []
         self.allostericPlexes = []
@@ -44,12 +53,21 @@ class MoleculizerRulesFile:
         # These are the objects that will be used to process the parsed 
         # data.
 
-	self.parameterEE = 0 
-	self.moleculeDictionary = 0
-        self.allostericData = 0
-	self.reactionRules = 0
-        self.explicitSpecies = 0
-        self.speciesStreams = 0
+        # A section is an intermediate between a rules file (they have lines, for example,
+        # and can answer questions about what has been parsed ) and an xml section (it can
+        # write out an xml section -
+        # Parameters doesn't write anything out currently, but easily could
+        # moleculeSection --- <modifications> and <mols>
+        # allosterySection --- <allosteric-plexes> and <allosteric-omnis>
+        # reactionRulesSection -- <reaaction-gens>?
+        # explicitSpeciesSection -- <explicit-species>
+        # speciesStreamSection -- <species-streams>
+	self.parameterSection = 0 
+	self.moleculeSection = 0
+        self.allosterySection = 0
+	self.reactionRulesSection = 0
+        self.explicitSpeciesSection = 0
+        self.speciesStreamSection = 0
 
     # output_file = property( getOutputFileName )
     @property
@@ -71,59 +89,102 @@ class MoleculizerRulesFile:
         self.__processBlocksData()
 
     def addParameterBlock(self, parameterBlock, overwrite = False):
-	if self.parameterBlock and not overwrite: raise MzrExceptions.MoleculizerException("Error: Cannot add a parameter block twice.")
+	if self.parameterBlock and not overwrite: 
+            raise MzrExceptions.MoleculizerException("Error: Cannot add a parameter block twice.")
+
+        if not self.block_passes_sanity_checks( parameterBlock ):
+            raise InsaneBlockOnTheLooseException(parameterBlock, "parameter block")
+
 	self.parameterBlock = parameterBlock[:]
+        self.parameterEE = SymbolicExpressionEvaluator( self.parameterBlock )
 
     def addMolsBlock(self, molsBlock):
-        if self.molsBlock and not overwrite: raise MzrExceptions.MoleculizerException("Error: Cannot add a mols block twice.")
+        if self.molsBlock and not overwrite: 
+            raise MzrExceptions.MoleculizerException("Error: Cannot add a mols block twice.")
+
+        if not self.block_passes_sanity_checks( molsBlock ):
+            raise InsaneBlockOnTheLooseException(molsBlock, "mols block")
+
         self.molsBlock = molsBlock[:]
+        self.molsSection = MolsSection( moleculeBlock )
 
     def addAllostericPlexesBlock(self, apBlock, overwrite = False):
-        if self.allostericPlexes and not overwrite: raise MzrExceptions.MoleculizerException("Error: Cannot add an allosteric plexes block twice.")
+        if self.allostericPlexes and not overwrite: 
+            raise MzrExceptions.MoleculizerException("Error: Cannot add an allosteric plexes block twice.")
+
+        if not self.block_passes_sanity_checks( apBlock ):
+            raise InsaneBlockOnTheLooseException(apBlock, "allosteric plexes block")
+
         self.allostericPlexes = apBlock[:]
+        self.allostericPlexesSection = AllostericPlexes( self.allostericPlexes )
 
     def addAllostericOmnisBlock(self, aoBlock, overwrite = False):
         if self.allostericOmnis and not overwrite: raise MzrExceptions.MoleculizerException("Error: Cannot add an allosteric omnis block twice.")
+        
+        if not self.block_passes_sanity_checks( aoBlock ):
+            raise InsaneBlockOnTheLooseException( aoBlock, "allosteric omnis block")
         self.allostericOmnis = aoBlock[:]
+        self.allostericOmnisSection = AllostericOmnis( self.allostericOmnis )
 
     def addReactionRulesBlock( self, rrBlock, overwrite = False):
-        if self.reactionRulesBlock and not overwrite: raise MzrExceptions.MoleculizerException("Error: Cannot add a reaction rules block twice.")
+        if self.reactionRulesBlock and not overwrite: 
+            raise MzrExceptions.MoleculizerException("Error: Cannot add a reaction rules block twice.")
+
+
+        if not self.block_passes_sanity_checks( rrBlock ):
+            raise InsaneBlockOnTheLooseException(rrBlock, "reaction rules")
+
+        if not self.block_passes_sanity_checks( dgBlock ):
+            raise InsaneBlockOnTheLooseException(dgBlock, "dimerization gen block")
+
+        if not self.block_passes_sanity_checks( omniGenBlock ):
+            raise InsaneBlockOnTheLooseException(omniGenBlock, "omni-gen block")
+
+        if not self.block_passes_sanity_checks( uniMolGenBlock ):
+            raise InsaneBlockOnTheLooseException(uniMolGenBlock, "uni-mol-gen block")
+
         self.reactionRulesBlock = rrBlock[:]
-
-    def addDimerizationGensBlock( self, dgBlock, overwrite = False):
-        if self.dimerizationGenBlock and not overwrite: raise MzrExceptions.MoleculizerException("Error: Cannot add a dimerization gen block twice.")
         self.dimerizationGenBlock = dgBlock[:]
-
-    def addOmniGensBlock(self, ogBlock, overwrite = False):
-        if self.omniGenBlock and not overwrite: raise MzrExceptions.MoleculizerException("Error: Cannot add a omni gen block twice.")
         self.omniGenBlock=ogBlock[:]
-
-    def addUniMolGensBlock( self, umBlock, overwrite = False):
-        if self.uniMolGenBlock and not overwrite: raise MzrExceptions.MoleculizerException("Error: Cannot add a unimol block twice.")
         self.uniMolGenBlock = umBlock[:]
 
+
+        self.reactionGensSection = ReactionGens( self.reactionRulesBlock, 
+                                                 self.dimerizationGenBlock, 
+                                                 self.omniGenBlock, 
+                                                 self.uniMolGenBlock,
+                                                 self.molsSections)
+
     def addExplicitSpeciesBlock( self, esBlock, overwrite = False):
-        if self.explicitSpeciesBlock and not overwrite: raise MzrExceptions.MoleculizerException("Error: Cannot add an explicit species block twice.")
+        if self.explicitSpeciesBlock and not overwrite: 
+            raise MzrExceptions.MoleculizerException("Error: Cannot add an explicit species block twice.")
+        
+        if not self.block_passes_sanity_checks( esBlock  ):
+            raise InsaneBlockOnTheLooseException(esBlock, "explicit-species")
+        
         self.explicitSpeciesBlock = esBlock[:]
+        self.explicitSpeciesSection = ExplicitSpecies( self.explicitSpecies )
+
 
     def addSpeciesStreamsBlock(self, ssBlock, overwrite = False):
-        if self.speciesStreamBlock and not overwrite: raise MzrExceptions.MoleculizerException("Error: Cannot add a species stream block twice.")
+        if self.speciesStreamBlock and not overwrite: 
+            raise MzrExceptions.MoleculizerException("Error: Cannot add a species stream block twice.")
+        
+        if not self.block_passes_sanity_checks( ssBlock ):
+            raise InsaneBlockOnTheLooseException(ssBlock, "")
+        
         self.speciesStreamBlock = ssBlock[:]
+        self.speciesStreamSection = SpeciesStream( self.speciesStreamBlock )
 
     def __processBlockData(self):
-
         # The parameterEE (parameter expression evaluator can report on calculated values
         # from the parameters section, as well as evaluate mathematical expressions using 
         # lazy evaluation.
-	self.parameterEE = SymbolicExpressionEvaluator( self.parameterBlock )
 
+	self.parameterEE = SymbolicExpressionEvaluator( self.parameterBlock )
         MoleculizerSection.setParameterEvaluator( self.parameterEE )
 
  	self.molsSection = MolsSection( moleculeBlock )
-
-        self.allostericPlexesSection = AllostericPlexes( self.allostericPlexes, self.molsSection)
-
-        self.allostericOmnisSection = AllostericOmnis( self.allostericOmnis, self.molsSection)
 
         self.reactionGensSection = ReactionGens( self.reactionRulesBlock, self.dimerizationGenBlock, \
                                                  self.omniGenBlock, self.uniMolGenBlock, \

@@ -24,4 +24,6 @@
 #   
 ###############################################################################
 
-from moleculizerobject import MoleculizerObject
+from moleculizerrules import MoleculizerRulesFile
+
+

@@ -1,4 +1,4 @@
-import util
+import util, pdb
 from parsedmzrtoken import ParsedMzrToken
 from parsedbindingsite import ParsedBindingSite, ParsedHalfBindingSpecification
 from parsedmodificationsite import ParsedModificationSite
@@ -112,6 +112,7 @@ class ParsedMoleculizerMol( ParsedMzrToken ):
 
 
     def __parseSmallMol(self):
+        pdb.set_trace()
         # Parse 
         smallMolTokenToParse = self.getOriginalLine()
 
@@ -129,7 +130,6 @@ class ParsedMoleculizerMol( ParsedMzrToken ):
         
         modMolTokenToParse = self.getOriginalLine()
 
-        print self.getOriginalLine()
 #        assert( modMolTokenToParse.count("(") == 1 and modMolTokenToParse.count(")") == 1)
 #             print "Error in string %s: modMolTokenToParse.count(\"(\") == 1 != modMolTokenToParse.count(\")\") == 1" % self.getOriginalLine()
 #             raise Exception()

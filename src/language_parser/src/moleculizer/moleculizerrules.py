@@ -21,24 +21,15 @@ class MoleculizerRulesFile:
 
     @staticmethod
     def block_posses_sanity_checks( linearray ):
-        everyLineEndsWithSemiColon = [ x[-1] == ";" for x in linearray]
+        everyLineEndsWithSemiColon = [ x[-1] == ";" and x.count(";") == 1for x in linearray]
         noWhiteSpace = [ (x.count("\n") + x.count(" ") + x.count("\t") == 0) for x in linearray]
-
         return reduce(util.And, everyLineEndsWithSemiColon) and reduce(util.And, noWhiteSpace)
-
-    @staticmethod
-    def snip_block_lines( linearray ):
-        everyLineEndsWithSemiColon = [ x[-1] == ";" for x in linearray]
-        assert( reduce(util.And, everyLineEndsWithSemiColon) )
-
-        return [x[:-1] for x in linearray]
-    
 
     def __init__(self, filename):
 
         self.outputFileName = filename
 
-        # These are the lines of input, in one statement per line form 
+        # These are the lines of input, in one statement per line form, with no whitespace
         self.parameterBlock = []
         self.molsBlock = []
         self.allostericPlexes = []
@@ -196,50 +187,17 @@ class MoleculizerRulesFile:
         return
 
 
-#     def __processAllostericRulesBlocks( self, allostericPlexBlock, allostericOmniBlock):
-#         return 0
+    def __processAllostericRulesBlocks( self, allostericPlexBlock, allostericOmniBlock):
+        return 0
+    def __processReactionRulesBlocks( self, rxnRulesBlock, dimerBlock, omniGenBlock, uniGenBlock):
+        return 0
 
-#     def __processReactionRulesBlocks( self, rxnRulesBlock, dimerBlock, omniGenBlock, uniGenBlock):
-#         return 0
+    def __processExplicitSpeciesBlock( self, explicitSpeciesBlock):
+        return 0
 
-#     def __processExplicitSpeciesBlock( self, explicitSpeciesBlock):
-#         return 0
-
-#     def __processSpeciesStreamBlock( self, ssBlock):
-#         return 0
+    def __processSpeciesStreamBlock( self, ssBlock):
+        return 0
     
-#     def __processMoleculeTypeBlock(self, moleculeBlock):
-#         ## This function works by taking instantiating a MoleculeDictionary with a
-#         ## moleculeDescriptionBlock and a SymbolicExpressionEvaluator and returns the object,
-#         ## which can then be passed to other objects.
-#         assert(self.parameterEE)
-
-# 	moleculeDictionary = MoleculeDictionary(moleculeBlock, self.parameterEE)
-#         return moleculeDictionary
-
-#     def __processSeedSpeciesBlock(self, seedSpeciesBlock):
-#         ## This works by instantiating a SeedSpecies object, by passing it a seed species block,
-#         ## a MoleculeDictionary, and a SymbolicExpressionEvaluator.  It will return a
-#         ## seedSpecies object.
-
-#         assert(self.parameterEE)
-#         assert(self.moleculeDictionary)
-# 	seedSpeciesObj = SeedSpecies(seedSpeciesBlock, self.moleculeDictionary, self.parameterEE)
-
-#         return seedSpeciesObj
-
-#     def __processReactionRulesBlock(self, rxnRulesBlock):
-#         ## This does the same thing: pass it a reaction rules block, a MoleculeDictionary,
-#         ## and a SymbolicExpressionEvaluator and it will return a ReactionRules object.
-
-#         assert(self.parameterEE)
-#         assert(self.moleculeDictionary)
-        
-# 	reactionRules = ReactionRules(rxnRulesBlock, self.moleculeDictionary, self.parameterEE)
-#         return reactionRules
-
-
-
     def __writeOutput(self, openXMLFile):
         xmlobject = self.__constructXMLRepresentation()
         xmlobject.writeall(openXMLFile)
@@ -260,43 +218,26 @@ class MoleculizerRulesFile:
         return rootNode
 
     def __addModifications(self, parentObject):
-        modificationListElmt = XmlObject("modifications")
-        modificationListElmt.attachToParent(parentObject)
-        self.moleculeDictionary.addModifications(modificationListElmt)
+        return
 
     def __addMols(self, parentObject):
-        molsElmt = XmlObject("mols")
-        molsElmt.attachToParent(parentObject)
-        self.moleculeDictionary.addMols(molsElmt)
+        return 
 
     def __addAllostericPlexes(self, parentObject):
-        allostericPlexesElmt = XmlObject("allosteric-plexes")
-        allostericPlexesElmt.attachToParent(parentObject)
+        return 
 
     def __addAllostericOmnis(self, parentObject):
-        allostericOmnisElmt = XmlObject("allosteric-omnis")
-        allostericOmnisElmt.attachToParent(parentObject)
-        self.reactionRules.addAllostericOmnis(allostericOmnisElmt)
+        return
 
     def __addReactionGens(self, parentObject):
-        rxnGenElmt = XmlObject("reaction-gens")
-        rxnGenElmt.attachToParent(parentObject)
-        self.reactionRules.writeReactionGensElement(rxnGenElmt)
+        return 
 
     def __addExplicitSpecies(self, parentObject):
-        explicitSpeciesElmt = XmlObject("explicit-species")
-        explicitSpeciesElmt.attachToParent(parentObject)
-        self.seedSpecies.writeExplicitSpecies(explicitSpeciesElmt)
+        return
 
     def __addExplicitReactions(self, parentObject):
-        explicitRxnElmt = XmlObject("explicit-reactions")
-        parentObject.addSubElement(explicitRxnElmt)
+        return
 
-    def __addVolume(self, parentObject):
-        ## So far, there is a parameter "Cell_volume" that does this.
-        volumeElement = XmlObject("volume")
-        volumeElement.addAttribute("liters", self.parameterEE.getVariableValue("Cell_volume"))
-        parentObject.addSubElement(volumeElement)
 
 
     

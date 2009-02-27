@@ -40,6 +40,13 @@ class MoleculizerSection( object ) :
             return value
         else:
             MissingExpressionEvaluatorException()
-                
+
+    @staticmethod
+    def snip_block_lines( linearray ):
+        everyLineEndsWithSemiColon = [ x[-1] == ";" for x in linearray]
+        assert( reduce(util.And, everyLineEndsWithSemiColon) )
+
+        return [x[:-1] for x in linearray]
+    
     def parse(self):
         raise UnimplementedParceFunction( "Unimplemented parse function in class '%s'" % str( self.__class__ ).split("'")[1] )

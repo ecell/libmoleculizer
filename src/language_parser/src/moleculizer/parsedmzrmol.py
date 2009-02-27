@@ -1,50 +1,95 @@
-from parsedbindingsite.py import ParsedBindindSite
-from parsedmodificationsite.py import ParsedBindindSite
+import util
+from parsedmzrtoken import ParsedMzrToken
+from parsedbindingsite import ParsedBindingSite, ParsedHalfBindingSpecification
+from parsedmodificationsite import ParsedModificationSite
 
 class ParsedMoleculizerMol( ParsedMzrToken ):
+    @staticmethod
+    def MolTokenPassesSanityChecks( line ):
+        return True
+
+
     def __init__(self, molDefinition ):
         ParsedMzrToken.__init__(self, molDefinition )
 
         # I want to be strict about forbidding bindings
         # Parsing of complexes must factor them out first
 
-        self.isSmallMol = True
+        self.is_small_mol = False
+        self.has_small_mol_binding = False
+        self.small_mol_binding = 0
 
-        self.molName = ""
+        self.mol_name = ""
 
-        self.theParsedBindings = []
-        self.theParsedModificationSites = []
+        self.the_parsed_bindings = []
+        self.the_parsed_modification_sites = []
 
         self.parse()
 
     def isSmallMol(self):
-        return self.isSmallMol;
+        return self.is_small_mol;
 
     def isModMol(self):
-        return not self.isSmallMol
+        return not self.is_small_mol
 
-    def getBindingList(self):
+    def getName(self):
+        return self.mol_name
+
+    def getBindingSiteList(self):
         if self.isSmallMol():
+            raise SmallMolSemanticException(self.mol_name, "Binding sites requested for small mol")
+
+        return [parsed_binding.getName() for parsed_binding in self.the_parsed_bindings]
+
+    def representsBoundMolecule(self):
+        if self.isSmallMol():
+            return self.has_small_mol_binding
+
+        elif self.isModMol():
+            for binding in self.the_parsed_bindings:
+                if binding.hasBindingSiteSpecification() and binding.getBindingSiteSpecification().hasHalfBindingSpecification():
+                    return True
+            else:
+                return False
+        else:
             raise Exception()
 
-        return [parsed_binding.getName() for parsed_binding in self.theParsedBindings]
-
-    def getModificationList(self):
-        if self.isSmallMol():
+    def getSmallMolBindingToken(self):
+        if not self.isSmallMol():
             raise Exception()
 
-        return [ parsed_modification.getName() for parsed_modification in self.theParsedModificationSites]
+        if not self.representsBoundMolecule():
+            raise Exception()
+        
+        return self.small_mol_binding.getBindingToken()
+
+    def getModificationSiteList(self):
+        if self.isSmallMol():
+            raise SmallMolSemanticException(self.mol_name, "Modification sites requested for small mol")
+
+        return [ parsed_modification.getName() for parsed_modification in self.the_parsed_modification_sites]
         
     def getBindingSiteWithName(self, bindingName ):
-        # Should I return the one bindng
         if self.isSmallMol():
-            raise Exception()
+            raise SmallMolSemanticException(self.mol_name, "Binding sites requested for small mol")
+
+        for bindingSite in self.the_parsed_bindings:
+            if bindingSite.getName() == bindingName:
+                return bindingSite
+        else:
+            raise ParsedModMolSemanticException("Binding site with name '%s' not found" % bindingName )
 
         return
 
     def getModificationSiteWithName(self, modificationSite ):
         if self.isSmallMol():
-            raise Exception()
+            raise SmallMolSemanticException(self.mol_name, "Binding sites requested for small mol")
+
+        for modSite in self.the_parsed_modification_sites:
+            if modSite.getName() == modificationSite:
+                return modSite
+        else:
+            raise ParsedModMolException("Modification site not found")
 
         return 
 
@@ -53,43 +98,57 @@ class ParsedMoleculizerMol( ParsedMzrToken ):
         # Token here means a single mol definition alpha, or alpha(first,second), or whatever.
         tokenToParse = self.getOriginalLine()
         
-        if not self.pre_parse_sanity_checks():
-            raise ParsedMolSyntacticalException( tokenToParse )
+        if not self.MolTokenPassesSanityChecks( tokenToParse ):
+            raise Exception()
 
-        if "(" in tokenToParse:
-            self.__parseModMol()
-        else:
+        # The only time a small mol will have a ( in it is if it is "mol_name(!"
+        if "(" not in tokenToParse:
             self.__parseSmallMol()
+        elif "(!" in tokenToParse:
+            self.__parseSmallMol()
+        else:
+            self.__parseModMol()
 
-        if not self.post_parse_sanity_checks:
-            raise ParsedMolSemanticException( self.getOriginalLine() )
 
 
     def __parseSmallMol(self):
         # Parse 
         smallMolTokenToParse = self.getOriginalLine()
-        
-        self.molName = smallMolTokenToParse
+
+        if "(" in smallMolTokenToParse:
+            self.mol_name = smallMolTokenToParse.split("(")[0]
+            self.has_small_mol_binding = True
+            self.small_mol_binding = ParsedHalfBindingSpecification( smallMolTokenToParse.split("(")[1][:-1] )
+        else:
+            self.mol_name = smallMolTokenToParse
 
     def __parseModMol(self):
         # The Token is a Mod Mol, parse it
+
+        self.is_small_mol =False
         
         modMolTokenToParse = self.getOriginalLine()
-        assert( modMolTokenToParse.count("(") == 1 and modMolTokenToParse.count(")") ==2 )
+
+        print self.getOriginalLine()
+#        assert( modMolTokenToParse.count("(") == 1 and modMolTokenToParse.count(")") == 1)
+#             print "Error in string %s: modMolTokenToParse.count(\"(\") == 1 != modMolTokenToParse.count(\")\") == 1" % self.getOriginalLine()
+#             raise Exception()
 
         toks = modMolTokenToParse.split("(")
-        self.molName = toks[0]
+        self.mol_name = toks[0]
         
         structTokensStr = toks[1][:-1] # The last charector is the last ")" at the end of the mol.
         
         structTmpTokens = structTokensStr.split(",")
-        structTokens = []
+        structTmpTokens = [x + "," for x in structTmpTokens]
+        structTmpTokens = util.getBalancedArray( structTmpTokens )
+        structTmpTokens = [ x[:-1] for x in structTmpTokens ]
         
-        for struct_token in structTokens:
-            if struct_token.starts_with("*"):
-                self.theParsedModificationSites.append( ParsedModificationSite(struct_token) )
+        for struct_token in structTmpTokens:
+            if struct_token.startswith("*"):
+                self.the_parsed_modification_sites.append( ParsedModificationSite(struct_token) )
             else:
-                self.theParsedBindings.append( ParsedBindingsSite( struct_token ))
+                self.the_parsed_bindings.append( ParsedBindingSite( struct_token ))
         
 
 

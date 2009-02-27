@@ -1,8 +1,173 @@
+import pdb
+from parsedmzrtoken import ParsedMzrToken
+
+class ParsedBindingShapeSpecification( ParsedMzrToken ):
+    @staticmethod
+    def BindingShapeTokenPassesSanityCheck( bindingShapeToken ):
+        if bindingShapeToken[0] == "{" and bindingShapeToken[-1] == "}" and bindingShapeToken.count("{")==1 and bindingShapeToken.count("}")==1:
+            return True
+        else:
+            return Fale
+
+    def __init__(self, bindingShapeSpecification):
+        ParsedMzrToken.__init__(self, bindingShapeSpecification)
+        
+        self.the_list = []
+        
+        self.parse()
+
+    def parse( self ):
+        if not self.BindingShapeTokenPassesSanityCheck( self.getOriginalLine() ):
+            raise Exception()
+
+        tokenToParse = self.getOriginalLine()[1:-1]
+        self.the_list.extend( tokenToParse.split(",") )
+
+        # Check for the degenerate case
+        if len(self.the_list) == 1 and self.the_list[0] == "":
+            self.the_list = []
+        
+
+    def getShapeList(self):
+        return self.the_list[:]
+
+
+
+
+class ParsedHalfBindingSpecification( ParsedMzrToken ):
+    @staticmethod 
+    def HalfBindingTokenPassesSanityCheck( line):
+        return line[0] == "!" and line.count("!") == 1
+
+    def __init__(self, halfBinding):
+        ParsedMzrToken.__init__(self, halfBinding)
+        
+        self.is_bound = False
+        self.binding_token = 0
+
+        self.parse()
+
+    def parse(self):
+        if not self.HalfBindingTokenPassesSanityCheck( self.getOriginalLine() ):
+            print "Half Binding Token Insane: %s" % self.getOriginalLine()
+            raise Exception()
+
+        self.is_bound = True
+        self.binding_token = self.getOriginalLine()[1:]
+        
+    def isBound(self):
+        return self.is_bound
+    
+    def getBindingToken(self):
+        if not self.isBound():
+            raise Exception
+
+        return self.binding_token
+
+
+class ParsedBindingSiteSpecification( ParsedMzrToken ):
+    def __init__(self, bindingSiteSpec):
+        ParsedMzrToken.__init__(self, bindingSiteSpec)
+
+        self.has_half_binding = False
+        self.half_binding = 0
+
+        self.has_shape_specification = False
+        self.shape_specification = 0
+        
+        self.parse()
+
+    def hasHalfBindingSpecification(self):
+        return self.has_half_binding
+
+    def getHalfBindingSpecification(self):
+        if not self.hasHalfBindingSpecification():
+            raise Exception()
+
+        return self.half_binding
+
+    def hasShapeSpecification(self):
+        return self.has_shape_specification
+    
+    def getShapeSpecification(self):
+        if not self.hasShapeSpecification():
+            raise Exception()
+        
+        return self.shape_specification
+
+    def parse(self):
+        token = self.getOriginalLine()
+
+        if token.startswith("!"):
+            if token.count("{") == 0:
+                # The whole thing is only a half-binding
+                self.has_half_binding = True
+                self.has_shape_specification = False
+                
+                self.half_binding = ParsedHalfBindingSpecification(token)
+
+            else:
+                # We have !Token{List}
+                self.has_half_binding = True
+                self.has_shape_specification = True
+                
+                halfBindingToken = token.split("{")[0]
+                shapeSpecificationToken  = "{" + token.split("{")[1]
+
+                self.half_binding = ParsedHalfBindingSpecification( halfBindingToken )
+                self.shape_specification = ParsedBindingShapeSpecification( shapeSpecificationToken )
+
+        elif token.startswith("{"):
+            if token.count("!") == 0:
+                # The whole thing is a list
+                self.has_half_binding = False
+                self.has_shape_specification = True
+
+                self.shape_specification = ParsedBindingShapeSpecification(token)
+            else:
+                # We have {list}!1
+                self.has_half_binding = True
+                self.has_shape_specification = True
+
+                halfBindingToken = "!" + token.split("!")[1]
+                shapeSpecificationToken = token.split("!")[0]
+
+                self.half_binding = ParsedHalfBindingSpecification( halfBindingToken )
+                self.shape_specification = ParsedBindingShapeSpecification( shapeSpecificationToken )
+        
 class ParsedBindingSite( ParsedMzrToken ):
     def __init__(self, bindingDefinition ):
         ParsedMzrToken.__init__(self, bindingDefinition)
 
-        self.bindingSiteName = ""
+        self.binding_site_name = ""
         
-        self.has
+        self.has_specification = False
+        self.binding_site_specification = 0
         
+        self.parse()
+        
+    def parse(self):
+        token = self.getOriginalLine()
+
+        if "!" in token or "{" in token:
+            minimum = min([ token.index(x) for x in ["!", "{" ] if token.count(x) > 0])
+
+            self.binding_site_name = token[:minimum]
+
+            self.has_specification = True
+            self.binding_site_specification = ParsedBindingSiteSpecification( token[minimum:] )
+
+        else:
+            self.binding_site_name = token
+
+    def getName(self):
+        return self.binding_site_name
+
+    def hasBindingSiteSpecification(self):
+        return self.has_specification
+
+    def getBindingSiteSpecification(self):
+        if not self.hasBindingSiteSpecification():
+            raise Exception()
+
+        return self.binding_site_specification

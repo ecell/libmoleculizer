@@ -5,3 +5,12 @@
 #   The Molecular Sciences Institute    
 #
 ###############################################################################
+
+from sectionmzr import MoleculizerSection
+from xmlobject import XmlObject
+from section_xcpt import *
+
+class SpeciesStreamsSection( MoleculizerSection ):
+    def __init__(self, speciesStreamBlock):
+        MoleculizerSection.__init__(self, "SpeciesStreamsSection", speciesStreamBlock)
+        return 

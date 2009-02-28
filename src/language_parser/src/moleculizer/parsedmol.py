@@ -3,7 +3,7 @@ from parsedmzrtoken import ParsedMzrToken
 from parsedbindingsite import ParsedBindingSite, ParsedHalfBindingSpecification
 from parsedmodificationsite import ParsedModificationSite
 
-class ParsedMoleculizerMol( ParsedMzrToken ):
+class ParsedMol( ParsedMzrToken ):
     @staticmethod
     def MolTokenPassesSanityChecks( line ):
         return True
@@ -112,8 +112,7 @@ class ParsedMoleculizerMol( ParsedMzrToken ):
 
 
     def __parseSmallMol(self):
-        pdb.set_trace()
-        # Parse 
+        self.is_small_mol = True
         smallMolTokenToParse = self.getOriginalLine()
 
         if "(" in smallMolTokenToParse:

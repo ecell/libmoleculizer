@@ -78,24 +78,21 @@ def main():
     print "ExplicitSpecies:\n\t", explicitSpeciesBlock
     print "Species Streams:\n\t", speciesStreamBlock
 
-
-    outputFile = moleculizer.MoleculizerObject( options["outputfile"] )
+    outputFile = moleculizer.MoleculizerRulesFile( options["outputfile"] )
 
     outputFile.addParameterBlock( parameterBlock )
     outputFile.addMolsBlock( molsBlock )
     outputFile.addAllostericPlexesBlock( allostericPlexes )
     outputFile.addAllostericOmnisBlock( allostericOmnis )
-    outputFile.addReactionRulesBlock( reactionRulesBlock )
-    outputFile.addDimerizationGensBlock( dimerizationGenBlock )
-    outputFile.addOmniGensBlock( omniGenBlock )
-    outputFile.addUniMolGensBlock( uniMolGenBlock )
+    outputFile.addReactionRulesBlock( reactionRulesBlock, dimerizationGenBlock, \
+                                          omniGenBlock, uniMolGenBlock )
     outputFile.addExplicitSpeciesBlock( explicitSpeciesBlock )
     outputFile.addSpeciesStreamsBlock( speciesStreamBlock )
 
-    outputFile.initialize_DEBUG()
+#    outputFile.initialize_DEBUG()
 
-#    outputFile.write()
-#    outputFile.close()
+    outputFile.write()
+    outputFile.close()
 
 def processOptions(optionsDict):
     try:
@@ -178,8 +175,8 @@ def version():
 def parseBlockTypesFromRulesFile(textRulesFile):
     textRulesFile = [re.sub("#.*$", "", x) for x in textRulesFile] # Delete all comments
     # textRulesFile = [re.sub("//.*$", "", x) for x in textRulesFile] # Delete all comments
-
-    textRulesFile = [x.strip() for x in textRulesFile]
+    textRulesFile = [re.sub(r"\s*", "", x) for x in textRulesFile] # Delete all whitespace
+    textRulesFile = [x.strip() for x in textRulesFile] # Strip it for good measure
     textRulesFile = [x for x in textRulesFile if x != ""] # This must be last, because line.strip() results in some empty lines.
 
 # This will attach lines connected with "\"
@@ -230,9 +227,10 @@ def parseBlockTypesFromRulesFile(textRulesFile):
         else:
             currentDmp.append(line)
 
-    return parameterBlock, molsBlock, allostericPlexes, allostericOmnis, \
-        reactionRulesBlock, dimerizationGenBlock, omniGenBlock, uniMolGenBlock, \
-        explicitSpeciesBlock, speciesStreamBlock
+
+    return getFormattedArray(parameterBlock), getFormattedArray(molsBlock), getFormattedArray(allostericPlexes), getFormattedArray(allostericOmnis), \
+        getFormattedArray(reactionRulesBlock), getFormattedArray(dimerizationGenBlock), getFormattedArray(omniGenBlock), getFormattedArray(uniMolGenBlock), \
+        getFormattedArray(explicitSpeciesBlock), getFormattedArray(speciesStreamBlock)
 
 def returnNewIndex(lineOfText, currentNdx, blockObjData):
     key = lineOfText.strip().strip("=").strip()
@@ -245,11 +243,6 @@ def returnNewIndex(lineOfText, currentNdx, blockObjData):
 
     return -1
 
-    
-
-
-
-
 def barf(msg):
     sys.stderr.write(msg + '\n')
     sys.stderr.write("Crashing....\n")
@@ -259,5 +252,60 @@ def printerror(msg):
     sys.stderr.write(msg + '\n')
     return
 
+def getFormattedArray( arrayToFormat ):
+    tmpArray = getBalancedArray( arrayToFormat )
+    tmpString = "".join( tmpArray )
+    if tmpString == "": 
+        return []
+
+    assert( tmpString[-1] == ";" )
+    tmpArray = tmpString.split(";") 
+    tmpArray.pop() # Last entry is blank
+    tmpArray = [tok + ";" for tok in tmpArray]
+    
+    return tmpArray
+    
+
+def getBalancedArray( arrayToBalance ):
+    if not EachEntryIsParenBalanced( arrayToBalance ):
+    # Combine the ..., ndx_i, ndx_(i+1) where ndx_i is the smallest i not balanced
+        return getBalancedArray( GetIncrementallyBetterArray( arrayToBalance ) )
+    else:
+        return arrayToBalance
+
+def GetIncrementallyBetterArray( anArray ):
+
+    values = [ StringIsParenBalenced(x) for x in anArray]
+
+    # This is correct: this function should only be used if the array does not pass
+    # EachEntryIsParenBalanced.
+    assert( False in values)
+
+    badNdx = values.index( False )
+    
+    combinedTokens = anArray[badNdx] + anArray[badNdx + 1]
+
+    returnArray = anArray[ : badNdx]
+    returnArray.append( combinedTokens )
+    returnArray.extend( anArray[badNdx + 2 : ] )
+    
+    return returnArray
+    
+def EachEntryIsParenBalanced( array ):
+    entries = [ StringIsParenBalenced(x) for x in array ]
+    
+    returnVal = True
+    for val in entries:
+        returnVal = returnVal and val
+
+    return returnVal
+
+def StringIsParenBalenced(line):
+    return ( line.count("(") == line.count(")") and 
+             line.count("[") == line.count("]") and 
+             line.count("{") == line.count("}") )
+
 if __name__ == "__main__":
     main()
+
+

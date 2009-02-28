@@ -1,6 +1,6 @@
 import pdb
 from parsedmzrtoken import ParsedMzrToken
-from parsedmol import ParsedMoleculizerMol
+from parsedmol import ParsedMol
 
 class ParsedComplex( ParsedMzrToken ):
     def __init__(self, complexTxt):
@@ -16,15 +16,13 @@ class ParsedComplex( ParsedMzrToken ):
         individualMolTokens = complexToken.split(".")
 
         for molToken in individualMolTokens:
-            self.parsed_mols_in_complex.append(ParsedMoleculizerMol(molToken))
+            self.parsed_mols_in_complex.append(ParsedMol(molToken))
 
         for parsedMolNdx in range(len(self.parsed_mols_in_complex)):
             parsedMol = self.parsed_mols_in_complex[parsedMolNdx]
             if parsedMol.representsBoundMolecule():
                 # Register it's binding sites
                 if parsedMol.isSmallMol():
-                    # It will only have one
-                    pdb.set_trace()
                     bindingID = parsedMol.getSmallMolBindingToken()
                     self.__addMolNdxToBoundMap( bindingID, parsedMolNdx)
                 elif parsedMol.isModMol():
@@ -39,7 +37,17 @@ class ParsedComplex( ParsedMzrToken ):
                     raise Exception()
 
         connectivityCheck = [ len(self.parsed_bindings_in_complex[k]) for k in self.parsed_bindings_in_complex.keys() ]
-        print( len(connectivityCheck)== 0 or (min(connectivityCheck) == max(connectivityCheck) == 2) )
+        if len(connectivityCheck) == 0:
+            return 
+
+        try:
+            assert( connectivityCheck ) 
+        except:
+            pdb.set_trace()
+            a = 1
+            b = 2
+            raise Exception()
+            
 
     def getNumberMolsInComplex(self):
         return len(self.parsed_mols_in_complex)
@@ -58,4 +66,8 @@ class ParsedComplex( ParsedMzrToken ):
             self.parsed_bindings_in_complex[ bindingNdx ] = []
 
         self.parsed_bindings_in_complex[bindingNdx].append( molNdx )
+
+
+    def isComplex(self):
+        return True
 

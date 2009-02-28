@@ -33,7 +33,9 @@ def GetIncrementallyBetterArray( anArray ):
 
     values = [ StringIsParenBalenced(x) for x in anArray]
 
-    assert( False in values )
+    # This is correct: this function should only be used if the array does not pass
+    # EachEntryIsParenBalanced.
+    assert( False in values)
 
     badNdx = values.index( False )
     

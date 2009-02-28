@@ -25,10 +25,13 @@
 ###############################################################################
 
 class XmlObject:
-    def __init__(self, elementName):
+    def __init__(self, elementName, parent = 0):
         self.elementName = elementName
         self.attributeList = []
         self.subelementList = []
+
+        if parent:
+            self.attachToParent( parent )
 
     def attachToParent(self, parentElement):
         parentElement.addSubElement(self)

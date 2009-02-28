@@ -11,3 +11,11 @@ class ParsedMzrToken( object ):
 
             
         
+    def isReaction(self):
+        return False
+
+    def isAssignment(self):
+        return False
+
+    def isComplex(self):
+        return False

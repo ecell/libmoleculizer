@@ -7,7 +7,7 @@ class ParsedBindingShapeSpecification( ParsedMzrToken ):
         if bindingShapeToken[0] == "{" and bindingShapeToken[-1] == "}" and bindingShapeToken.count("{")==1 and bindingShapeToken.count("}")==1:
             return True
         else:
-            return Fale
+            return False
 
     def __init__(self, bindingShapeSpecification):
         ParsedMzrToken.__init__(self, bindingShapeSpecification)
@@ -18,6 +18,7 @@ class ParsedBindingShapeSpecification( ParsedMzrToken ):
 
     def parse( self ):
         if not self.BindingShapeTokenPassesSanityCheck( self.getOriginalLine() ):
+            print "BindingShapeToken is insane %s " % self.getOriginalLine()
             raise Exception()
 
         tokenToParse = self.getOriginalLine()[1:-1]
@@ -171,3 +172,6 @@ class ParsedBindingSite( ParsedMzrToken ):
             raise Exception()
 
         return self.binding_site_specification
+
+    def hasBindingToken( self, bindingToken):
+        return self.hasBindingSiteSpecification() and self.getBindingSiteSpecification().hasHalfBindingSpecification() and self.getBindingSiteSpecification().getHalfBindingSpecification().getBindingToken() == bindingToken

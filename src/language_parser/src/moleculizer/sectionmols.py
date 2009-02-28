@@ -1,107 +1,93 @@
-from moleculizersectionparser import MoleculizerSection
-from xmlobject import Xmlobject
-from exceptions import *
+from sectionmzr import MoleculizerSection
+from xmlobject import XmlObject
+from section_xcpt import *
 
 class MolsSection( MoleculizerSection ) :
-    
     def __init__(self, molsBlockToInterpret):
-        MoleculizerSection.__init__(self)
-
-        # This had better be a bunch of commands, one per entry.
-        self.original_block=molsBlockToInterpret[:]
-        self.parsedTextRuleLines = []
-
-        self.molNameToMolDefinition = {}
-        self.theMolsDefinitions = []
-
-        self.parse()
-
+        MoleculizerSection.__init__(self, "Mols", molsBlockToInterpret)
         return
-    
-
-    def parse(self):
-        self.parsed_lines = [ MzrParsedLine(line) for line in self.original_block ]
-        self.parsedMols = [ parsedMol(line[0]) for line in self.parsed ]
-
-        return 
 
     def writeMolsSection(self, modelXmlObject):
-        
+
         molsElmt = XmlObject("mols")
         molsElmt.attachToParent(modelXmlObject)
 
-        for molName, molDefinition in self.molNameToMolDefinition:
-            if molNameToMolDefinition.isSmallMol():
-                self.addSmollMolToXml(modelXmlObject, molName, molDefinition)
-            else:
-                self.addModMolToXml(modelXmlObject, molName, molDefinition)
+        for parsedLine in self.getParsedLines():
+            self.assertParsedLineSanityAsMolDefinition( parsedLine )
+            self.writeParsedLineAsXmlMol( parsedLine, molsElmt )
+
+    def assertParsedLineSanityAsMolDefinition(self, parsedLine):
+        # We should check and make sure only the first thing
+
+        if not parsedLine.getParsedComponents()[0].isComplex():
+           raise Exception()
+
+        if not len(parsedLine.getParsedComponents()[0].getMols()) == 1:
+            raise Exception()
+        
+        theComplexes = [x.isComplex() for x in parsedLine.getParsedComponents()]
+
+        if not theComplexes.count(True) == 1:
+            raise Exception
+
+        if not parsedLine.hasAssignment("mass") and MoleculizerSection.translation_mode == "STRICT":
+            raise Exception()
+
+    def writeParsedLineAsXmlMol(self, parsedLine, xmlobject):
+        parsedComplex = parsedLine.getParsedComponents()[0]
+        assert( len( parsedComplex.getMols() ) == 1)
+
+        parsedMol = parsedComplex.getMols()[0]
+
+        newMolElement = 0
+        if parsedMol.isSmallMol():
+            newMolElement = self.addSmallMolToXml( parsedMol, xmlobject )
+        else:
+            newMolElement = self.addModMolToXml( parsedMol, xmlobject)
+
+
+        # Now add the mass element to the thing.
+
+        mass = 0.0
+
+        if ( parsedLine.hasAssignment("mass") ):
+            mass = parsedLine.getAssignment("mass")
+        elif self.getTranslationLevel == self.STRICT:
+            raise Exception()
+
+        
+        weightElmt = XmlObject("weight")
+        weightElmt.addAttribute("daltons", mass)
+
+        newMolElement.addSubElement( weightElmt )
             
 
-    def addSmallMolToMolsElement( self, molsObject, molName, molDefinition, parsed_line):
-        assert( molName == molDefinition.getMolName() )
-
-        # Get the weight
-        mass = 0.0f
-        if parsed_line.hasAssignment("mass"):
-            mass = parsed_line.getValueAtAssignment( "mass" )
-
-        if ( mass <= 0.0f and self.InterpretationMode == MoleculizerSection.STRICT ):
-            raise InterpretationModeXcpt( "Either no mass or mass <= 0.0" )
-
+    def addSmallMolToXml( self, parsedSmallMol, xmlElement ):
         smallMolElt = XmlObject("small-mol")
-        smallMolElt.addAttribute( "name", molName )
+        smallMolElt.addAttribute( "name", parsedSmallMol.getName() )
 
-        weightElmt = XmlObject("weight")
-        weightElmnt.addAttribute("daltons", mass)
+        smallMolElt.attachToParent( xmlElement)
 
-        weightElmnt.attachToParent( smallMolElt, xmlObject )
-
-        return
-
-    def addModMolToXml( self, xmlObject, molName, molDefinition, parsed_line):
-        assert( molName == molDefinition.getMolName() )
-        if ( not molDefinition.isModMol() ):
-            raise "Something"
-
-        # Get the weight
-        mass = -1
-        if parsed_line.hasAssignment("mass"):
-            mass = parsed_line.getValueAtAssignment( "mass" )
-
-        if ( mass <= 0.0f and self.InterpretationMode == MoleculizerSection.STRICT ):
-            raise InterpretationModeXcpt( "Either no mass or mass <= 0.0" )
+        return smallMolElt
 
 
+    def addModMolToXml( self, parsedMol, xmlObject):
         modMolElmt = XmlObject( "mod-mol")
-        modMolElmt.setAttribute( "name", molName )
+        modMolElmt.attachToParent(xmlObject)
+        modMolElmt.addAttribute( "name",  parsedMol.getName() )
 
-        # Add a weight element
-        # Add the bindings Element
-        
-        weightElmnt = XmlObject("weight")
-        weightElmnt.addAttribute("daltons", mass)
-        weightElmnt.attachToParent(modMolElmt)
-        
-        for bindingSiteName in molDefinition.getBindingSiteNames():
+        for bindingSiteName in parsedMol.getBindingSiteList():
 
             bindingSiteElmt = XmlObject("binding-site")
+            bindingSiteElmt.attachToParent( modMolElmt)
             bindingSiteElmt.addAttribute("name", bindingSiteName)
             
-            parsedBindingSite = molDefinition.getBindingSite( bindingSiteName )
+            parsedBindingSite = parsedMol.getBindingSiteWithName( bindingSiteName )
 
-            if( parsedBindingSite.hasShapeInformation() ):
-                # If it has shape information, get the list of shapes
-                # as an array of names, add the first one as the default,
-                # and then add each of them as shapes
-                #
-                # <binding-site name="to-Kin">
-                #           <default-shape-ref name="default">
-                #           </default-shape-ref>
-                #           <site-shape name="default">
-                #           </site-shape>
-                #         </binding-site>
-                
-                bindingShapeNames = parsedBindingSite.getShapeNames()
+            if( parsedBindingSite.hasBindingSiteSpecification() and parsedBindingSite.getBindingSiteSpecification().hasShapeSpecification()):
+
+                bindingShapeNames = parsedBindingSite.getBindingSiteSpecification().getShapeSpecification().getShapeList()
+
                 assert( len(bindingShapeNames) > 0 )
                 
                 defaultShapeElmt = XmlObject("default-shape-ref")
@@ -113,27 +99,28 @@ class MolsSection( MoleculizerSection ) :
                     newShapeElmt.addAttribute("name", shape_name)
                     newShapeElmt.attachToParent( bindingSiteElmt )
             else:
-                defaultShapeElmt = XmlObject( "defaultShapeElmt" )
+                defaultShapeElmt = XmlObject( "default-shape" )
                 defaultShapeElmt.addAttribute( "name", "default")
+                defaultShapeElmt.attachToParent( bindingSiteElmt )
                 
                 shapeElmt = XmlObject("site-shape")
                 shapeElmt.addAttribute("name", "default")
-
-                defaultShapeElmt.attachToParent( bindingSiteElmt )
                 shapeElmt.attachToParent( bindingSiteElmt )
                     
-        for modSiteName in molDefinition.getModificationSiteNames():
+
+        for modSiteName in parsedMol.getModificationSiteList():
             modSiteElmt = XmlObject("mod-site")
             modSiteElmt.addAttribute("name", modSiteName)
+            modSiteElmt.attachToParent( xmlObject )
 
-            parsedModificationSite = molDefinition.getModificationSite( modSiteName )
-            if not parsedModificationSite.hasModificationSpecification():
+            parsedModificationSite = parsedMol.getModificationSiteWithName( modSiteName )
+            if not parsedModificationSite.hasModificationSiteSpecification():
                 defaultModElmt = XmlObject("default-mod-ref")
                 defaultModElmt.addAttribute("name", "none")
                 defaultModElmt.attachToParent( modSiteElmt )
             else:
-                modValueArray = parsedModificationSite.getModificationList()
-                assert( len(modValueArray) == 0)
+                modValueArray = parsedModificationSite.getModificationSiteSpecification().getList()
+                assert( len(modValueArray) == 1)
                 defaultModification = modValueArray[0]
 
                 defaultModElmt = XmlObject("default-mod-ref")
@@ -142,7 +129,7 @@ class MolsSection( MoleculizerSection ) :
                                             
                 
                 
-
+        return modMolElmt
             
             
             

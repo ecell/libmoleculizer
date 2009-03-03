@@ -24,7 +24,7 @@ class SpeciesStreamsSection( MoleculizerSection ):
         return
 
     def assertSanityOfSpeciesStreamLine(self, line):
-        if not line[0].isComplex(): 
+        if not line.getParsedComponents()[0].isComplex(): 
             raise Exception()
 
         if not line.hasAssignment( "name" ):
@@ -36,7 +36,7 @@ class SpeciesStreamsSection( MoleculizerSection ):
         omniSpeciesStreamElmt = XmlObject("omni-species-stream", parentElmt)
         omniSpeciesStreamElmt.addAttribute("name", line.getAssignment("name"))
 
-        self.omniSpeciesStreamElmt.writeParsedComplexAsPlex( line[0], omniSpeciesStreamElmt)
+        self.writeParsedComplexAsPlex( line.getParsedComponents()[0], omniSpeciesStreamElmt)
         
         return
         

@@ -7,7 +7,6 @@ import pdb
 
 class ModificationsSection( MoleculizerSection ):
     def __init__(self, modificationsBlock):
-        pdb.set_trace()
         MoleculizerSection.__init__(self, "modifications", modificationsBlock)
         return
 
@@ -26,6 +25,6 @@ class ModificationsSection( MoleculizerSection ):
         modElmt.addAttribute( "name", modLine.getAssignment( "name" ))
         
         weightDeltaElmt = XmlObject("weight-delta", modElmt)
-        weightDeltaElmt.addAttribute("daltons", modLine.getAssignment("weight"))
+        weightDeltaElmt.addAttribute("daltons", modLine.getAssignment("mass"))
 
         return 

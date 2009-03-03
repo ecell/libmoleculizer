@@ -156,10 +156,10 @@ class OmniGenSection( MoleculizerSection ):
             if mol.isSmallMol():
                 continue
 
-            for mod_site in mol.getModificationSiteList():
+            for mod_site in mol.getModificationSites():
                 if not written_mod_exchanges:
                     written_mod_exchanges = True
-                    XmlObject("modification-exchanges", parElmt)
+                    modExchanges = XmlObject("modification-exchanges", parElmt)
                 
                 modExchange = XmlObject("modification-exchange", modExchanges)
                 modMolInstance = XmlObject("mod-mol-instance-ref", modExchanges)
@@ -220,7 +220,7 @@ class OmniGenSection( MoleculizerSection ):
             if mol.isSmallMol():
                 continue
 
-            for modSite in mol.getModificationSiteList():
+            for modSite in mol.getModificationSites():
                 if modSite.hasModificationSiteSpecification() and modSite.getModificationSiteSpecification().isList():
                     if not written_instance_states:
                         instStatesElmt = XmlObject( "instance-states",  enablingOmniplexElmt)        
@@ -234,8 +234,8 @@ class OmniGenSection( MoleculizerSection ):
 
         modMapElmt = XmlObject("mod-map", modMolInstanceRefElmt)
         
-        for modSite in parsedMol.getModificationSiteList():
-            modSiteRefElmt = XmlObject("mod-site-ref")
+        for modSite in parsedMol.getModificationSites():
+            modSiteRefElmt = XmlObject("mod-site-ref", modMapElmt)
             modSiteRefElmt.addAttribute("name", modSite.getName())
 
             modRefElmt = XmlObject("mod-ref", modSiteRefElmt)

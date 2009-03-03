@@ -208,7 +208,6 @@ class MoleculizerRulesFile:
         modelElmt = XmlObject("model")
         modelElmt.attachToParent(rootNode)
 
-        pdb.set_trace()
         self.__addModifications( modelElmt )
 
         self.__addMols( modelElmt )
@@ -222,10 +221,10 @@ class MoleculizerRulesFile:
 
     def __addModifications(self, parentObject):
         # Write me!!!
-        modificationSection = XmlObject("modifications", parentObject)
+        modificationsSection = XmlObject("modifications", parentObject)
         
         if self.modificationsSection:
-            self.modificationsSection.writeModificationsSections( parentObject )
+            self.modificationsSection.writeModificationsSections( modificationsSection )
         return
 
     def __addMols(self, parentObject):

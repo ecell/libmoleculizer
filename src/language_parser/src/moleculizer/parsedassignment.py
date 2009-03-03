@@ -19,6 +19,7 @@ class ParsedAssignment( ParsedMzrToken ):
         else:
             MissingExpressionEvaluatorException()
 
+
     @staticmethod
     def AssignmentPassesSanityCheck( token):
         return "=" in token and not "->" in token and not "<-" in token
@@ -61,7 +62,7 @@ class ParsedAssignment( ParsedMzrToken ):
 
     def getValue(self):
         if self.has_value:
-            self.rhs_value
+            return self.rhs_value
         
         # I need to tie the parameter evaluator into this thing real quick.
         elif self.has_expression:

@@ -97,7 +97,7 @@ class ParsedLine( ParsedMzrToken):
         num = self.getAssignmentNdx( variableName, idx)
 
         if num < 0:
-            raise Exception()
+            raise Exception( "Error, assignment '%s' cannot be found in line '%s'" %(variableName, self.getOriginalLine()))
 
         assignmentToken = self.getParsedComponents()[num]
 

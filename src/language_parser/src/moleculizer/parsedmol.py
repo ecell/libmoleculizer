@@ -74,6 +74,13 @@ class ParsedMol( ParsedMzrToken ):
             raise SmallMolSemanticException(self.mol_name, "Modification sites requested for small mol")
 
         return [ parsed_modification.getName() for parsed_modification in self.the_parsed_modification_sites]
+
+    def getModificationSites(self):
+        if self.isSmallMol():
+            raise SmallMolSemanticException( self.mol_name, "Modification sites requested for small mol '%s'" % self.getName())
+        
+        return self.the_parsed_modification_sites
+
         
     def getBindingSiteWithName(self, bindingName ):
         if self.isSmallMol():

@@ -1,6 +1,7 @@
 from sectionmzr import MoleculizerSection
 from xmlobject import XmlObject
 from section_xcpt import *
+import pdb
 
 class MolsSection( MoleculizerSection ) :
     def __init__(self, molsBlockToInterpret):
@@ -27,7 +28,8 @@ class MolsSection( MoleculizerSection ) :
             raise Exception
 
         if not parsedLine.hasAssignment("mass") and MoleculizerSection.translation_mode == "STRICT":
-            raise Exception()
+            pdb.set_trace()
+            raise Exception("Parsed line '%s' should have a mass component, but it cannot be found." % parsedLine.getOriginalLines() )
 
     def writeParsedLineAsXmlMol(self, parsedLine, xmlobject):
         parsedComplex = parsedLine.getParsedComponents()[0]
@@ -105,25 +107,20 @@ class MolsSection( MoleculizerSection ) :
                     
 
         for modSiteName in parsedMol.getModificationSiteList():
-            modSiteElmt = XmlObject("mod-site")
+            modSiteElmt = XmlObject("mod-site", modMolElmt)
             modSiteElmt.addAttribute("name", modSiteName)
-            modSiteElmt.attachToParent( xmlObject )
 
             parsedModificationSite = parsedMol.getModificationSiteWithName( modSiteName )
             if not parsedModificationSite.hasModificationSiteSpecification():
-                defaultModElmt = XmlObject("default-mod-ref")
+                defaultModElmt = XmlObject("default-mod-ref", modSiteElmt)
                 defaultModElmt.addAttribute("name", "none")
-                defaultModElmt.attachToParent( modSiteElmt )
             else:
                 modValueArray = parsedModificationSite.getModificationSiteSpecification().getList()
                 assert( len(modValueArray) == 1)
                 defaultModification = modValueArray[0]
 
-                defaultModElmt = XmlObject("default-mod-ref")
+                defaultModElmt = XmlObject("default-mod-ref", modSiteElmt)
                 defaultModElmt.addAttribute("name", defaultModification )
-                defaultModElmt.attachToParent( modSiteElmt )
-                                            
-                
                 
         return modMolElmt
             

@@ -8,6 +8,7 @@
 
 from parsedline import ParsedLine
 from xmlobject import XmlObject
+import pdb
 
 class MoleculizerSection( object ) :
     translation_mode = "STRICT"
@@ -18,7 +19,7 @@ class MoleculizerSection( object ) :
         self.parsed_lines = [ ParsedLine(line) for line in self.original_block ]
 
     def getMolName(self, molName, ndx):
-        return molName + "-mol-" + str(ndx)
+        return molName + "-" + str(ndx)
         
     def getParsedLines(self):
         return self.parsed_lines
@@ -44,8 +45,12 @@ class MoleculizerSection( object ) :
         for bindingID in complex.getBindings().keys():
             # Find the two bindings with that 
             newBindingElmt = XmlObject("binding-site", plexElmt)
-            
-            molNdx1, molNdx2 = complex.getBindings()[bindingID]
+
+            try:
+                molNdx1, molNdx2 = complex.getBindings()[bindingID]
+            except ValueError:
+                pdb.set_trace()
+                raise Exception("Error unpacking bindings '%s' associated with complex '%s' -- Binding ID only has one value." % (repr(complex.getBindings()[bindingID]), complex.getOriginalLine(), bindingID))
             
             parsedMol1 = complex.getMols()[molNdx1]
             parsedMol2 = complex.getMols()[molNdx2]

@@ -21,7 +21,7 @@ class ExplicitSpeciesSection( MoleculizerSection ):
             self.writeExplicitSpeciesLineToXml( line, xmlobject )
 
     def assertSanityOfExplicitSpeciesLine( self, line):
-        if not line[0].isComplex(): 
+        if not line.getParsedComponents()[0].isComplex(): 
             raise Exception()
 
         if not line.hasAssignment( "name" ):
@@ -30,7 +30,7 @@ class ExplicitSpeciesSection( MoleculizerSection ):
         return 
 
     def writeExplicitSpeciesLineToXml( self, parsedLine, parentObject):
-        parsedComplex = parsedLine[0]
+        parsedComplex = parsedLine.getParsedComponents()[0]
         name = parsedLine.getAssignment("name")
 
         plexSpeciesElmt = XmlObject( "plex-species", parentObject)

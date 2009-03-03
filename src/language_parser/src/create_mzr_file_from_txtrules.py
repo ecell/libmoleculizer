@@ -1,35 +1,9 @@
 #!/usr/bin/python
 
-###############################################################################
-# BNGMZRConverter - A utility program for converting bngl input files to mzr
-#		    input files.
-# Copyright (C) 2007, 2008, 2009 The Molecular Sciences Institute
-#
-# Moleculizer is free software; you can redistribute it and/or modify
-# it under the terms of the GNU Lesser General Public License as published by
-# the Free Software Foundation; either version 3 of the License, or
-# (at your option) any later version.
-#
-# Moleculizer is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU Lesser General Public License for more details.
-#
-# You should have received a copy of the GNU Lesser General Public License
-# along with Moleculizer; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-#
-# Original Author:
-#   Nathan Addy, Scientific Programmer	Email: addy@molsci.org
-#   The Molecular Sciences Institute    Email: addy@molsci.org  
-#                     
-#   
-###############################################################################
-
 import getopt, sys, re, pdb
 import moleculizer
 
-
+PROGRAM_NAME = "MzrRulesToXmlConverter"
 CURRENT_VERSION = 1.0
 CURRENT_VERSION_STR = str( CURRENT_VERSION )
 
@@ -38,7 +12,7 @@ def main():
     options = {}
     options["inputfile"] = ""
     options["outputfile"] = "moleculizer-rules-output.mzr"
-    options["verbose"] = True
+    options["verbose"] = False
 
     processOptions(options)
 
@@ -104,7 +78,7 @@ def main():
 
 def processOptions(optionsDict):
     try:
-	options, arguments = getopt.getopt(sys.argv[1:], "hf:o:v:m:", ["help", "file=", "output=", "version", "mixin="])
+	options, arguments = getopt.getopt(sys.argv[1:], "hf:o:vm:", ["help", "file=", "output=", "verbose", "version", "mixin="])
     except getopt.error, msg:
 	print msg
 	print "For help, use --help"
@@ -115,10 +89,12 @@ def processOptions(optionsDict):
 	if opt in ("--help", "-h"):
 	    usage()
             sys.exit(0)
-	if opt in ("--version", "-v"):
+	if opt in ("--version",):
 	    version()
             sys.exit(0)
 
+        if opt in ("--verbose", "-v"):
+            optionsDict["verbose"] = True
 	if opt in ("--file", "-f"):
 	    optionsDict["inputfile"] = atr
 	    fileRequired = True
@@ -134,30 +110,28 @@ def ensureAppropriateOptions(options):
         return True
 
 def usage():
-    print "create_mzr_file_from_txtrules.py version %s" % CURRENT_VERSION
-    print "\t-- Creates a Moleculizer input file from a BioNetGen input file"
+    print "%s version %s" % (PROGRAM_NAME, CURRENT_VERSION)
+    print "\t-- Creates a Moleculizer XML input file from a human-readable text version of biochemical network rules."
     print
     print "Usage:"
-    print "create_moleculizer_file_from_bngl_file.py -f inputfile [-o outputfile] [-m eventsandstreamsmixin]"
-    print "create_moleculizer_file_from_bngl_file.py [-h] or [--help]"
+    print "create_mzr_file_from_txtrules.py -f inputfile [-o outputfile] [-m eventsandstreamsmixin]"
+    print "create_mzr_file_from_txtrules.py [-h] or [--help]"
     print 
     print "Nathan Addy (addy@molsci.org)"
     print "Molecular Sciences Institute, Berkeley, CA"
-    print "June 22, 2007"
+    print "March 3, 2009"
     print
     print 
-    print "This is a preliminary version made for converting the bngl models produced through the alpha wiki."
-    print "A major limitation of this version is that it requires a 'molecule types' block as well as a 'seed species'"
-    print "block.  It then parses both 'species' and 'seed species' blocks in the same way.  I.e. implicit"
-    print "molecule declaration is not allowed."
+    print "This is a parser that takes in a moleculizer rules file in text file format and writes it to a moleculizer xml file"
+    print "for input into a moleculizer run."
 
 def version():
-    print "BNGMZRConverter 0.5"
-    print "Nathan Addy (addy@molsci.org)"
+    print "%s %s" % (PROGRAM_NAME, CURRENT_VERSION)
+    print "Nathan Addy (nathan.addy@gmail.com)"
     print "Molecular Sciences Institute, Berkeley, CA"
     print "June 22, 2007"
     print 
-    print "Licensed under GPL v2."
+    print "Licensed under LGPL v2."
     print 
 
     print "Moleculizer is free software; you can redistribute it and/or modify"
@@ -227,12 +201,12 @@ def parseBlockTypesFromRulesFile(textRulesFile):
 
     currentDmp = []
 
-    assert( textRulesFile[0].startswith("==="))
+    assert( textRulesFile[0].startswith("="))
 
     blockObjNdx = -1
     for line in textRulesFile:
-        if line.startswith("==="):
-            blockObjNdx = returnNewIndex(line, blockObjNdx, blockDataObj)
+        if line.startswith("="):
+            blockObjNdx = returnNewIndex(line, blockDataObj)
             currentDmp = blockDataObj[blockObjNdx][1]
         else:
             currentDmp.append(line)
@@ -242,14 +216,13 @@ def parseBlockTypesFromRulesFile(textRulesFile):
         getFormattedArray(reactionRulesBlock), getFormattedArray(dimerizationGenBlock), getFormattedArray(omniGenBlock), getFormattedArray(uniMolGenBlock), \
         getFormattedArray(explicitSpeciesBlock), getFormattedArray(speciesStreamBlock)
 
-def returnNewIndex(lineOfText, currentNdx, blockObjData):
+def returnNewIndex(lineOfText, blockObjData):
     key = lineOfText.strip().strip("=").strip()
 
-    while currentNdx < len(blockObjData):
-        currentNdx += 1
-
-        if key == blockObjData[currentNdx][0]:
-            return currentNdx
+    for ndx in range(len(blockObjData)):
+        if key == blockObjData[ndx][0]:
+            return ndx
+    raise Exception("Section title '%s' cannot be found" % key)
 
     return -1
 

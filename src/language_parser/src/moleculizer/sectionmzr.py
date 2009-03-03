@@ -44,7 +44,7 @@ class MoleculizerSection( object ) :
 
         for bindingID in complex.getBindings().keys():
             # Find the two bindings with that 
-            newBindingElmt = XmlObject("binding-site", plexElmt)
+            newBindingElmt = XmlObject("binding", plexElmt)
 
             try:
                 molNdx1, molNdx2 = complex.getBindings()[bindingID]

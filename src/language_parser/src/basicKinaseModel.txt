@@ -1,68 +1,80 @@
 # This is a translation of the omniKinase-rules.mzr from the original moleculizer.
 
 === Modifications ===
-    name = none, mass = 42;
-    name = Phosphorylated, mass = 0;
+    name = none, mass = 0.0;
+    name = phosphorylated, mass = 42.0;
 
 === Mols ============
     ATP, mass =100;
     ADP, mass = 100;
 
-    A(kinase-target, *phos-site ),
+    Sub(to-Kin, *phos-site ),
          mass = 1000.0;
 
-    Kinase( A-docking-site, AxP-site, to-X),
+    Kin( to-Sub, to-AXP, to-X),
             mass = 1000.0;
 
-    X(to-Kinase, *phos-site),
+    X(to-Kin, *phos-site),
                  mass = 1000;
 
 === Explicit-Species ========
 
-A(kinase-target!1, *phos-site {none} ).
-Kinase(A-docking-site!1, to-X!2, AxP!3).
-X(to-Kinase!2, *phos-site { Phosphorylated} ).
+Sub(to-Kin!1, *phos-site {none} ).
+Kin(to-Sub!1, to-X!2, to-AXP!3).
+X(to-Kin!2, *phos-site { phosphorylated} ).
 ATP(!3),
 	name = PreEnzymeActionComplex;
 
 
-A(kinase-target!1, *phos-site {Phosphorylated} ).
-Kinase(A-docking-site!1, to-X!2, AxP!3).
-X(to-Kinase!2, *phos-site { none} ).
+Sub(to-Kin!1, *phos-site {phosphorylated} ).
+Kin(to-Sub!1, to-X!2, to-AXP!3).
+X(to-Kin!2, *phos-site { none} ).
 ADP(!3),
 	name = PostEnzymeActionComplex;
 
 
 === Species-Streams =========
 
-Kinase( AxP-site!1).ADP(!1),
-	name=Inactive_Kinase;
+ Kin( to-AXP!1).ADP(!1),
+ 	name=Inactive_Kinase;
 
-Kinase( AxP-site!1).ATP(!1),
-	name=Active_Kinase;
+ Kin( to-AXP!1).ATP(!1),
+ 	name=Active_Kinase;
 
 === Reaction-Rules ========
 === Dimerization-Gens ===
 
-A(kinase-target) + Kinase( A-docking-site)-> A(kinase-target!1).Kinase( A-docking-site!1),
+Kin(to-AXP) + ADP() -> Kin(to-AXP!1).ADP(!1),
+                 kon=0.0,
+                 koff=0.0;
+
+Kin(to-AXP) + ATP() -> Kin(to-AXP!1).ATP(!1),
+                 kon=0.0,
+                 koff=0.0;
+
+Sub(to-Kin) + Kin( to-Sub)
+  -> 
+    Sub(to-Kin!1).Kin( to-Sub!1),
                  kon= 5000,
                  koff = 30;
 
-Kinase(to-X) + X(to-Kinase) -> Kinase(to-X!1).X(to-Kinase!1),
+Kin(to-X) + X(to-Kin) 
+  -> 
+   Kin(to-X!1).X(to-Kin!1),
              kon = 5000,
              koff = 30;
 
 === Omni-Gens ======
 
 
-A(kinase-target!1, *phos-site { None }).
-Kinase(A-docking-site!1, AxP-site!2, to-X!3).
-X(to-Kinase!3, *phos-site {Phosphorylated}).
+Sub(to-Kin!1, *phos-site { none }).
+Kin(to-Sub!1, to-AXP!2, to-X!3).
+X(to-Kin!3, *phos-site {phosphorylated}).
 ATP(!2) 
   ->
-    A(kinase-target!1, *phos-site { Phosphorylated }).
-    Kinase(A-docking-site!1, AxP-site!2, to-X!3).
-    X(to-Kinase!3, *phos-site {None}).
+    Sub(to-Kin!1, *phos-site { phosphorylated }).
+    Kin(to-Sub!1, to-AXP!2, to-X!3).
+    X(to-Kin!3, *phos-site {none}).
     ADP(!2),
     k = 1.0e5;
                               

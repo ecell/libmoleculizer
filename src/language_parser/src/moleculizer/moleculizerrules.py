@@ -208,14 +208,18 @@ class MoleculizerRulesFile:
         modelElmt = XmlObject("model")
         modelElmt.attachToParent(rootNode)
 
+        streamsElmt = XmlObject("streams", rootNode)
+
         self.__addModifications( modelElmt )
 
         self.__addMols( modelElmt )
         self.__addAllostericPlexes( modelElmt )
         self.__addAllostericOmnis( modelElmt )
         self.__addReactionGens( modelElmt )
-        self.__addSpeciesStreams( modelElmt )
         self.__addExplicitSpecies( modelElmt )
+        self.__addExplicitReactions( modelElmt )
+
+        self.__addSpeciesStreams( streamsElmt )
 
         return rootNode
 
@@ -262,8 +266,8 @@ class MoleculizerRulesFile:
         return 
 
     def __addSpeciesStreams( self, parentObject):
-        streamsElement = XmlObject("streams", parentObject)
-        speciesStreamsElement = XmlObject("species-streams", streamsElement)
+
+        speciesStreamsElement = XmlObject("species-streams", parentObject)
 
         if self.speciesStreamSection:
             self.speciesStreamSection.writeSpeciesStreamSection( speciesStreamsElement )
@@ -276,7 +280,9 @@ class MoleculizerRulesFile:
 
         return
 
-
+    def __addExplicitReactions( self, modelElmt ):
+        explicitReactionsElmt = XmlObject("explicit-reactions", modelElmt)
+        return 
 
 
 

@@ -114,10 +114,11 @@ def usage():
     print "\t-- Creates a Moleculizer XML input file from a human-readable text version of biochemical network rules."
     print
     print "Usage:"
-    print "create_mzr_file_from_txtrules.py -f inputfile [-o outputfile] [-m eventsandstreamsmixin]"
-    print "create_mzr_file_from_txtrules.py [-h] or [--help]"
+    print "mzrrulestoxmlconverter.py -f inputfile [-o outputfile] [-m eventsandstreamsmixin]"
+    print "mzrrulestoxmlconverter.py [-h] or [--help]"
     print 
-    print "Nathan Addy (addy@molsci.org)"
+    print "Author:"
+    print "Nathan Addy (nathan.addy@gmail.com)"
     print "Molecular Sciences Institute, Berkeley, CA"
     print "March 3, 2009"
     print
@@ -126,12 +127,14 @@ def usage():
     print "for input into a moleculizer run."
 
 def version():
-    print "%s %s" % (PROGRAM_NAME, CURRENT_VERSION)
+    print "%s %s -- Copyright (C) 2009 The Moleculizer Sciences Institute" % (PROGRAM_NAME, CURRENT_VERSION)
+    print
+    print "Author:"
     print "Nathan Addy (nathan.addy@gmail.com)"
     print "Molecular Sciences Institute, Berkeley, CA"
-    print "June 22, 2007"
+    print "March 3, 2009"
     print 
-    print "Licensed under LGPL v2."
+    print "Licensed under LGPL v3."
     print 
 
     print "Moleculizer is free software; you can redistribute it and/or modify"
@@ -148,11 +151,6 @@ def version():
     print "along with Moleculizer; if not, write to the Free Software"
     print "Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA"
     print 
-    print "Original Author:"
-    print "Nathan Addy, Scientific Programmer"
-    print "The Molecular Sciences Institute"
-    print "                  Email: addy@molsci.org"
-    print ""
 
 def parseBlockTypesFromRulesFile(textRulesFile):
     textRulesFile = [re.sub("#.*$", "", x) for x in textRulesFile] # Delete all comments

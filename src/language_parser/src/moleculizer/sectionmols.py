@@ -97,7 +97,7 @@ class MolsSection( MoleculizerSection ) :
                     newShapeElmt.addAttribute("name", shape_name)
                     newShapeElmt.attachToParent( bindingSiteElmt )
             else:
-                defaultShapeElmt = XmlObject( "default-shape" )
+                defaultShapeElmt = XmlObject( "default-shape-ref" )
                 defaultShapeElmt.addAttribute( "name", "default")
                 defaultShapeElmt.attachToParent( bindingSiteElmt )
                 

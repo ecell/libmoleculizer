@@ -142,6 +142,9 @@ class OmniGenSection( MoleculizerSection ):
 
         self.__writeModificationExchanges( reaction, omniGenElment)
         self.__writeSmallMolExchange( reaction, omniGenElment)
+
+        rateElmt = XmlObject("rate", omniGenElment)
+        rateElmt.addAttribute("value", line.getAssignment("k"))
         
         return
 
@@ -162,14 +165,14 @@ class OmniGenSection( MoleculizerSection ):
                     modExchanges = XmlObject("modification-exchanges", parElmt)
                 
                 modExchange = XmlObject("modification-exchange", modExchanges)
-                modMolInstance = XmlObject("mod-mol-instance-ref", modExchanges)
+                modMolInstance = XmlObject("mod-mol-instance-ref", modExchange)
 
                 modMolInstance.addAttribute("name", self.getMolName( mol.getName(), ndx))
                 
                 modSiteRefElmt = XmlObject("mod-site-ref", modMolInstance)
                 modSiteRefElmt.addAttribute("name", mod_site.getName())
 
-                installedModRefElmt = XmlObject("installed-mod-ref", modExchanges)
+                installedModRefElmt = XmlObject("installed-mod-ref", modExchange)
                 installedModRefElmt.addAttribute("name", mod_site.getModificationSiteSpecification().getList()[0])
                     
         return 
@@ -223,8 +226,9 @@ class OmniGenSection( MoleculizerSection ):
             for modSite in mol.getModificationSites():
                 if modSite.hasModificationSiteSpecification() and modSite.getModificationSiteSpecification().isList():
                     if not written_instance_states:
-                        instStatesElmt = XmlObject( "instance-states",  enablingOmniplexElmt)        
-                    self.__writeModMolInstanceToInstanceStates(mol, ndx, instStatesElmt)
+                        instStatesElmt = XmlObject( "instance-states",  enablingOmniplexElmt)
+                        written_instance_states = True
+                self.__writeModMolInstanceToInstanceStates(mol, ndx, instStatesElmt)
                     
             
 

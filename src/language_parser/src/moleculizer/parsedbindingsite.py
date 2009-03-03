@@ -13,6 +13,10 @@ class ParsedBindingShapeSpecification( ParsedMzrToken ):
         ParsedMzrToken.__init__(self, bindingShapeSpecification)
         
         self.the_list = []
+        self.the_transformation = 0
+
+        self.is_transformation = False
+        self.is_shape_list = False
         
         self.parse()
 
@@ -21,15 +25,37 @@ class ParsedBindingShapeSpecification( ParsedMzrToken ):
             print "BindingShapeToken is insane %s " % self.getOriginalLine()
             raise Exception()
 
+
         tokenToParse = self.getOriginalLine()[1:-1]
-        self.the_list.extend( tokenToParse.split(",") )
+
+        if "<-" in tokenToParse:
+            self.is_transformation = True
+            self.the_transformation = tokenToParse.split("<-")[0]
+        else:
+            self.is_shape_list = True
+            self.the_list.extend( tokenToParse.split(",") )
 
         # Check for the degenerate case
         if len(self.the_list) == 1 and self.the_list[0] == "":
             self.the_list = []
         
 
+    def isTransformation(self):
+        return self.is_transformation
+
+    def getTransformation(self):
+        if not self.isTransformation():
+            raise Exception()
+        
+        return self.the_transformation
+
+    def isShapeList(self):
+        return self.is_shape_list
+
     def getShapeList(self):
+        if not self.isShapeList():
+            raise Exception()
+
         return self.the_list[:]
 
 

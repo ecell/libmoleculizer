@@ -35,6 +35,12 @@ class ParsedMol( ParsedMzrToken ):
     def getName(self):
         return self.mol_name
 
+    def getBindingSites(self):
+        if self.isSmallMol():
+            raise SmallMolSemanticException(self.mol_name, "Binding sites requested for small mol")
+
+        return self.the_parsed_bindings
+
     def getBindingSiteList(self):
         if self.isSmallMol():
             raise SmallMolSemanticException(self.mol_name, "Binding sites requested for small mol")
@@ -106,6 +112,8 @@ class ParsedMol( ParsedMzrToken ):
             self.__parseSmallMol()
         elif "(!" in tokenToParse:
             self.__parseSmallMol()
+        elif "()" in tokenToParse:
+            self.__parseSmallMol()
         else:
             self.__parseModMol()
 
@@ -117,8 +125,10 @@ class ParsedMol( ParsedMzrToken ):
 
         if "(" in smallMolTokenToParse:
             self.mol_name = smallMolTokenToParse.split("(")[0]
-            self.has_small_mol_binding = True
-            self.small_mol_binding = ParsedHalfBindingSpecification( smallMolTokenToParse.split("(")[1][:-1] )
+
+            if "()" not in smallMolTokenToParse:
+                self.has_small_mol_binding = True
+                self.small_mol_binding = ParsedHalfBindingSpecification( smallMolTokenToParse.split("(")[1][:-1] )
         else:
             self.mol_name = smallMolTokenToParse
 

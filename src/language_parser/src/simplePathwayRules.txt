@@ -1,0 +1,14 @@
+# This is a model of the alpha pathway, partly based on 
+
+=== Modifications ===
+    name = None, weight = 0;
+    name = P, weight = 42;
+    name = PP, weight = 84;
+    
+=== Mols ============
+    
+
+=== Reaction Rules ========
+=== Dimerization-Gens ===
+=== Omni-Gen ============
+=== Uni-Mol-Gen =========

@@ -1,0 +1,27 @@
+# This is a model for a simple oligmerization network.
+
+==== Modifications ===========
+==== Mols          ===========
+A(left, right),
+        weight = Default_Mol_Weight; 
+
+==== Allosteric-Plexes  ======
+# This is to control the size of the network.
+     
+==== Allosteric-Omnis   ======
+A(left, right!1).A(left!1, right!2 {occluded <-* } ).A(left!2 {occluded <-* }, right!3).A(left!3, right!4).A(left!4, right)
+
+==== Reaction Rules ==========
+
+==== DimerizationGens ========
+
+A(left) + A(right) -> A(left!1).A(right!1),
+        kon = 1000,
+        koff = 10,
+
+        A(left {occluded} ) + A(right {occluded} ) -> A(left!1).A(right!1),
+        kon = 0,
+        koff = 10000;
+
+==== Omni-Gens ===============
+    

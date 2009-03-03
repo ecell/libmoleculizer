@@ -60,11 +60,15 @@ class ParsedAssignment( ParsedMzrToken ):
         return self.lhs
 
     def getValue(self):
-        # For now, don't worry about expressions.
-        if not self.has_value:
-            raise Exception()
+        if self.has_value:
+            self.rhs_value
         
-        return self.rhs_value
+        # I need to tie the parameter evaluator into this thing real quick.
+        elif self.has_expression:
+            return self.rhs_expression
+            
+        
+        return 
 
     def isAssignment(self):
         return True

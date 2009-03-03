@@ -14,3 +14,29 @@ class SpeciesStreamsSection( MoleculizerSection ):
     def __init__(self, speciesStreamBlock):
         MoleculizerSection.__init__(self, "SpeciesStreamsSection", speciesStreamBlock)
         return 
+
+
+    def writeSpeciesStreamSection( self, parentElmt):
+        for line in self.getParsedLines():
+            self.assertSanityOfSpeciesStreamLine( line )
+            self.writeSpeciesStreamLineToParent( line, parentElmt)
+
+        return
+
+    def assertSanityOfSpeciesStreamLine(self, line):
+        if not line[0].isComplex(): 
+            raise Exception()
+
+        if not line.hasAssignment( "name" ):
+            raise Exception()
+        
+        return 
+    
+    def writeSpeciesStreamLineToParent( self, line, parentElmt):
+        omniSpeciesStreamElmt = XmlObject("omni-species-stream", parentElmt)
+        omniSpeciesStreamElmt.addAttribute("name", line.getAssignment("name"))
+
+        self.omniSpeciesStreamElmt.writeParsedComplexAsPlex( line[0], omniSpeciesStreamElmt)
+        
+        return
+        

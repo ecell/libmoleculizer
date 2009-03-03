@@ -1,0 +1,45 @@
+# This is a translation of the omniKinase-rules.mzr from the original moleculizer.
+
+=== Modifications ===
+    name = none, weight = 0;
+    name = Phosphorylated, weight = 42;
+
+=== Mols ============
+    ATP, weight =100;
+    ADP, weight = 100;
+
+    A(kinase-target, *phos-site),
+         weight = 1000.0;
+
+    Kinase( A-docking-site, AxP-site, to-X),
+            weight = 1000.0;
+
+    X(to-Kinase, *phos-site),
+                 weight = 1000;
+
+
+=== Reaction Rules ========
+=== Dimerization-Gens ===
+
+A(kinase-target) + Kinase( A-docking-site)-> A(kinase-target!1).Kinase( A-docking-site!1),
+                 kon= 5000,
+                 koff = 30;
+
+Kinase(to-X) + X(to-Kinase) -> Kinase(to-X!1).X(to-Kinase!1),
+             kon = 5000,
+             koff = 30;
+
+=== Omni-Gen ======
+Kinase(AxP-site!1).ADP(!1) -> Kinase(AxP-site!1).ATP(!1), k = 100;
+
+A(kinase-target!1, *phos-site { None }).
+Kinase(A-docking-site!1, AxP-site!2, to-X!3).
+X(to-Kinase!3, *phos-site {Phosphorylated}).
+ATP(!2) 
+  ->
+    A(kinase-target!1, *phos-site { Phosphorylated }).
+    Kinase(A-docking-site!1, AxP-site!2, to-X!3).
+    X(to-Kinase!3, *phos-site {None}).
+    ADP(!2),
+    k=1.0e5;
+                              

@@ -38,6 +38,7 @@ def main():
     options = {}
     options["inputfile"] = ""
     options["outputfile"] = "moleculizer-rules-output.mzr"
+    options["verbose"] = True
 
     processOptions(options)
 
@@ -47,19 +48,20 @@ def main():
 
     rulesFile = open(options["inputfile"]).readlines()
 
-    parameterBlock=[]
-    molsBlock=[]
-    allostericPlexes=[]
-    allostericOmnis=[]
-    reactionRulesBlock=[]
-    dimerizationGenBlock=[]
-    omniGenBlock=[]
-    uniMolGenBlock=[]
-    explicitSpeciesBlock=[]
-    speciesStreamBlock=[]
+    parameterBlock = []
+    modificationsBlock  =  []
+    molsBlock = []
+    allostericPlexes = []
+    allostericOmnis = []
+    reactionRulesBlock = []
+    dimerizationGenBlock = []
+    omniGenBlock = []
+    uniMolGenBlock = []
+    explicitSpeciesBlock = []
+    speciesStreamBlock = []
 
     try:
-        parameterBlock, molsBlock, allostericPlexes, allostericOmnis, \
+        parameterBlock, modificationsBlock, molsBlock, allostericPlexes, allostericOmnis, \
         reactionRulesBlock, dimerizationGenBlock, omniGenBlock, uniMolGenBlock, \
         explicitSpeciesBlock, speciesStreamBlock = parseBlockTypesFromRulesFile( rulesFile )
         
@@ -67,20 +69,24 @@ def main():
         print e.message
         barf("Error, Text rules file could not be parsed.")
 
-    print "Parameters:\n\t", parameterBlock
-    print "Mols:\n\t", molsBlock
-    print "Allosteric Plexes:\n\t", allostericPlexes
-    print "allosteric omnis:\n\t", allostericOmnis
-    print "Reaction Rules:\n\t", reactionRulesBlock
-    print "Dimerization Gens:\n\t", dimerizationGenBlock
-    print "OmniGens:\n\t", omniGenBlock
-    print "UniMols:\n\t", uniMolGenBlock
-    print "ExplicitSpecies:\n\t", explicitSpeciesBlock
-    print "Species Streams:\n\t", speciesStreamBlock
+
+    if options["verbose"]:
+        print "Parameters:\n\t", parameterBlock
+        print "Modifications:\n\t", modificationsBlock
+        print "Mols:\n\t", molsBlock
+        print "Allosteric Plexes:\n\t", allostericPlexes
+        print "allosteric omnis:\n\t", allostericOmnis
+        print "Reaction Rules:\n\t", reactionRulesBlock
+        print "Dimerization Gens:\n\t", dimerizationGenBlock
+        print "OmniGens:\n\t", omniGenBlock
+        print "UniMols:\n\t", uniMolGenBlock
+        print "ExplicitSpecies:\n\t", explicitSpeciesBlock
+        print "Species Streams:\n\t", speciesStreamBlock
 
     outputFile = moleculizer.MoleculizerRulesFile( options["outputfile"] )
 
     outputFile.addParameterBlock( parameterBlock )
+    outputFile.addModicationsBlock( modificationsBlock )
     outputFile.addMolsBlock( molsBlock )
     outputFile.addAllostericPlexesBlock( allostericPlexes )
     outputFile.addAllostericOmnisBlock( allostericOmnis )
@@ -93,6 +99,8 @@ def main():
 
     outputFile.write()
     outputFile.close()
+    
+    print("Done.")
 
 def processOptions(optionsDict):
     try:
@@ -185,6 +193,7 @@ def parseBlockTypesFromRulesFile(textRulesFile):
 #     bngFile = bngFile.split("\n")
 
     parameterBlock = []
+    modificationsBlock = []
     molsBlock = []
     allostericPlexes = []
     allostericOmnis = []
@@ -199,21 +208,22 @@ def parseBlockTypesFromRulesFile(textRulesFile):
 #     textRulesFile = re.sub(r"\\\s*\n\s*", " ", textRulesFile)
 #     textRulesFile = textRulesFile.split("\n")
 
-    blockCodes = ["Parameters", "Mols", "Allosteric-Plexes", "Allosteric-Omnis", 
+    blockCodes = ["Parameters", "Modifications", "Mols", "Allosteric-Plexes", "Allosteric-Omnis", 
                   "Reaction-Rules", "Dimerization-Gens", "Omni-Gens", "Uni-Mol-Gens", 
                   "Explicit-Species", "Species-Streams" ] 
 
     blockObjNdx = -1
     blockDataObj = [ (blockCodes[0], parameterBlock), \
-                     (blockCodes[1], molsBlock), \
-                     (blockCodes[2], allostericPlexes), 
-                     (blockCodes[3], allostericOmnis), 
-                     (blockCodes[4], reactionRulesBlock), \
-                     (blockCodes[5], dimerizationGenBlock), \
-                     (blockCodes[6], omniGenBlock), \
-                     (blockCodes[7], uniMolGenBlock), \
-                     (blockCodes[8], explicitSpeciesBlock),\
-                     (blockCodes[9], speciesStreamBlock) ]
+                     (blockCodes[1], modificationsBlock), \
+                     (blockCodes[2], molsBlock), \
+                     (blockCodes[3], allostericPlexes), 
+                     (blockCodes[4], allostericOmnis), 
+                     (blockCodes[5], reactionRulesBlock), \
+                     (blockCodes[6], dimerizationGenBlock), \
+                     (blockCodes[7], omniGenBlock), \
+                     (blockCodes[8], uniMolGenBlock), \
+                     (blockCodes[9], explicitSpeciesBlock),\
+                     (blockCodes[10], speciesStreamBlock) ]
 
     currentDmp = []
 
@@ -228,7 +238,7 @@ def parseBlockTypesFromRulesFile(textRulesFile):
             currentDmp.append(line)
 
 
-    return getFormattedArray(parameterBlock), getFormattedArray(molsBlock), getFormattedArray(allostericPlexes), getFormattedArray(allostericOmnis), \
+    return getFormattedArray(parameterBlock), getFormattedArray(modificationsBlock), getFormattedArray(molsBlock), getFormattedArray(allostericPlexes), getFormattedArray(allostericOmnis), \
         getFormattedArray(reactionRulesBlock), getFormattedArray(dimerizationGenBlock), getFormattedArray(omniGenBlock), getFormattedArray(uniMolGenBlock), \
         getFormattedArray(explicitSpeciesBlock), getFormattedArray(speciesStreamBlock)
 

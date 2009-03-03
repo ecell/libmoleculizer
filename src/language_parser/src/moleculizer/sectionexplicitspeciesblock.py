@@ -15,3 +15,28 @@ class ExplicitSpeciesSection( MoleculizerSection ):
         MoleculizerSection.__init__(self, "ExplicitSpeciesSection", explicitSpeciesBlock)
         return
         
+    def writeExplicitSpeciesSection(self, xmlobject):
+        for line in self.getParsedLines():
+            self.assertSanityOfExplicitSpeciesLine( line )
+            self.writeExplicitSpeciesLineToXml( line, xmlobject )
+
+    def assertSanityOfExplicitSpeciesLine( self, line):
+        if not line[0].isComplex(): 
+            raise Exception()
+
+        if not line.hasAssignment( "name" ):
+            raise Exception()
+        
+        return 
+
+    def writeExplicitSpeciesLineToXml( self, parsedLine, parentObject):
+        parsedComplex = parsedLine[0]
+        name = parsedLine.getAssignment("name")
+
+        plexSpeciesElmt = XmlObject( "plex-species", parentObject)
+        plexSpeciesElmt.addAttribute( "name", name)
+
+        self.writeParsedComplexAsPlex( parsedComplex, plexSpeciesElmt)
+        
+        
+        

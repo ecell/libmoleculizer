@@ -4,14 +4,10 @@ from section_xcpt import *
 
 class MolsSection( MoleculizerSection ) :
     def __init__(self, molsBlockToInterpret):
-        MoleculizerSection.__init__(self, "Mols", molsBlockToInterpret)
+        MoleculizerSection.__init__(self, "mols", molsBlockToInterpret)
         return
 
-    def writeMolsSection(self, modelXmlObject):
-
-        molsElmt = XmlObject("mols")
-        molsElmt.attachToParent(modelXmlObject)
-
+    def writeMolsSection(self, molsElmt):
         for parsedLine in self.getParsedLines():
             self.assertParsedLineSanityAsMolDefinition( parsedLine )
             self.writeParsedLineAsXmlMol( parsedLine, molsElmt )

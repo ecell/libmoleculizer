@@ -1,6 +1,7 @@
 from sectionmzr import MoleculizerSection
 from xmlobject import XmlObject
 from section_xcpt import *
+import pdb
 
 class AllosterySection( MoleculizerSection ):
     def __init__(self, name, allosterySection):
@@ -32,8 +33,14 @@ class AllosterySection( MoleculizerSection ):
                                          x.getBindingSiteSpecification().hasShapeSpecification()  and \
                                          x.getBindingSiteSpecification().getShapeSpecification().isTransformation() ]:
 
-                
-                transformation = x.getBindingSiteSpecification().getShapeSpecification().getTransformation()
+
+                try:
+                    transformation = bndSiteWithTrans.getBindingSiteSpecification().getShapeSpecification().getTransformation()
+                except:
+                    pdb.set_trace()
+                    a = 10
+                    raise e
+                    
                 
                 molElmt = XmlObject("mol-instance-ref", allostericSitesElmt)
                 molElmt.addAttribute("name", self.getMolName( mol.getName(), ndx) )

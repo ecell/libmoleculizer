@@ -239,7 +239,11 @@ def getFormattedArray( arrayToFormat ):
     if tmpString == "": 
         return []
 
-    assert( tmpString[-1] == ";" )
+    try:
+        assert( tmpString[-1] == ";" )
+    except:
+        raise Exception("Error parsing block '%s'.  Line does not end in ';'." % repr(arrayToFormat))
+
     tmpArray = tmpString.split(";") 
     tmpArray.pop() # Last entry is blank
     tmpArray = [tok + ";" for tok in tmpArray]

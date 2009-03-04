@@ -29,7 +29,7 @@ class MolsSection( MoleculizerSection ) :
 
         if not parsedLine.hasAssignment("mass") and MoleculizerSection.translation_mode == "STRICT":
             pdb.set_trace()
-            raise Exception("Parsed line '%s' should have a mass component, but it cannot be found." % parsedLine.getOriginalLines() )
+            raise Exception("Parsed line '%s' should have a mass component, but it cannot be found." % parsedLine.getOriginalLine() )
 
     def writeParsedLineAsXmlMol(self, parsedLine, xmlobject):
         parsedComplex = parsedLine.getParsedComponents()[0]

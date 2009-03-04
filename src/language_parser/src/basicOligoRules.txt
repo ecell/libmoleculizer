@@ -2,18 +2,32 @@
 
 ==== Modifications ===========
 ==== Mols          ===========
-A(left, right),
-        weight = Default_Mol_Weight; 
+A(left{default, occluded}, right{default, occluded}),
+        mass = 1000.0;
 
 ==== Allosteric-Plexes  ======
 # This is to control the size of the network.
      
 ==== Allosteric-Omnis   ======
-A(left, right!1).A(left!1, right!2 {occluded <-* } ).A(left!2 {occluded <-* }, right!3).A(left!3, right!4).A(left!4, right)
+A(left{occluded <-* }, right!1).A(left!1, right!2 ).A(left!2, right!3).A(left!3, right!4).A(left!4, right {occluded <- *});
 
-==== Reaction Rules ==========
+==== Reaction-Rules ==========
 
-==== DimerizationGens ========
+==== Explicit-Species ========
+
+A(left,right!1).A(left!1,right),
+        name = AA;
+
+A(left,right!1).A(left!1,right!2).A(left!2,right),
+        name = AAA;
+
+A(left,right!1).A(left!1,right!2).A(left!2,right!3).A(left!3,right),
+        name = AAAA;
+        
+A(left,right!1).A(left!1,right!2).A(left!2,right!3).A(left!3,right!4).A(left!4,right),
+        name = AAAAA;
+
+==== Dimerization-Gens ========
 
 A(left) + A(right) -> A(left!1).A(right!1),
         kon = 1000,
@@ -23,5 +37,4 @@ A(left) + A(right) -> A(left!1).A(right!1),
         kon = 0,
         koff = 10000;
 
-==== Omni-Gens ===============
     

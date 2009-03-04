@@ -9,9 +9,11 @@
 from sectionmzr import MoleculizerSection
 from xmlobject import XmlObject
 from section_xcpt import *
+import pdb
 
 class ExplicitSpeciesSection( MoleculizerSection ):
     def __init__(self, explicitSpeciesBlock ):
+        pdb.set_trace()
         MoleculizerSection.__init__(self, "ExplicitSpeciesSection", explicitSpeciesBlock)
         return
         

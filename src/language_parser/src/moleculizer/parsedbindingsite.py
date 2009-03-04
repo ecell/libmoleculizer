@@ -118,7 +118,7 @@ class ParsedBindingSiteSpecification( ParsedMzrToken ):
     
     def getShapeSpecification(self):
         if not self.hasShapeSpecification():
-            raise Exception()
+            raise Exception("Error.  getShapeSpecification was called on parsed line '%s', which has no shape specification" % self.getOriginalLine())
         
         return self.shape_specification
 

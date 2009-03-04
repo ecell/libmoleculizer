@@ -28,7 +28,7 @@ class MoleculizerSection( object ) :
         return self.section_name
 
     def getOriginalBlock(self):
-        return self.original_lines[:]
+        return self.original_block[:]
         
     def writeParsedComplexAsPlex( self, complex, xmlobject):
         plexElmt = XmlObject( "plex", xmlobject)

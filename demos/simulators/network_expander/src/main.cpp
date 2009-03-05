@@ -55,6 +55,7 @@ void printStreamByTag( mzr::moleculizer& refMolzer, const std::string& streamNam
 
 void printAllSpeciesByName(mzr::moleculizer& theMolzer);
 void printAllSpeciesByID(mzr::moleculizer& theMolzer, std::string str = "");
+void printAllReactions( mzr::moleculizer& refMolzer);
 
 mzr::moleculizer::CachePosition
 createBoundedNetwork(mzr::moleculizer& refMolzer, int maxSpec, int maxRxns);
@@ -159,13 +160,12 @@ int main(int argc, char* argv[])
    {
        std::cout << "################################################" << '\n';
        printAllSpeciesStreams(theMoleculizer);
-
        std::cout << "################################################" << '\n';
-
        printAllSpeciesByName(theMoleculizer);
        std::cout << "################################################" << '\n';
        printAllSpeciesByID(theMoleculizer);
-
+       std::cout << "################################################" << '\n';
+       printAllReactions(theMoleculizer);
        std::cout << "################################################" << '\n';
    }
 
@@ -198,6 +198,16 @@ void printAllSpeciesStreams(mzr::moleculizer& refMolzer)
         printStreamByName( refMolzer, *strIter);
         std::cout << "################################################" << '\n';
         printStreamByTag( refMolzer, *strIter);
+    }
+}
+
+void printAllReactions( mzr::moleculizer& refMolzer)
+{
+    for( std::list<mzr::mzrReaction*>::const_iterator iter = refMolzer.getReactionList().begin();
+         iter != refMolzer.getReactionList().end();
+         ++iter)
+    {
+        std::cout << (*iter)->getName()  << '\t' << (*iter)->getRate() << std::endl;
     }
 }
 

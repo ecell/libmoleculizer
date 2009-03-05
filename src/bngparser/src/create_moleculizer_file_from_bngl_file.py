@@ -3,7 +3,7 @@
 ###############################################################################
 # BNGMZRConverter - A utility program for converting bngl input files to mzr
 #		    input files.
-# Copyright (C) 2007, 2008 The Molecular Sciences Institute
+# Copyright (C) 2007, 2008, 2009 The Molecular Sciences Institute
 #
 # Moleculizer is free software; you can redistribute it and/or modify
 # it under the terms of the GNU Lesser General Public License as published by
@@ -20,7 +20,7 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 # Original Author:
-#   Nathan Addy, Scientific Programmer	Voice: 510-981-8748
+#   Nathan Addy, Scientific Programmer	Email: addy@molsci.org
 #   The Molecular Sciences Institute    Email: addy@molsci.org  
 #                     
 #   
@@ -34,9 +34,10 @@ def main():
     options = {}
     options["inputfile"] = ""
     options["outputfile"] = "default.xml"
-    options["events_and_streams_mixin"] = False
+
 
     processOptions(options)
+
     if not ensureAppropriateOptions(options):
         usage()
 

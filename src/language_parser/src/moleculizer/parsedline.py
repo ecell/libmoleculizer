@@ -53,7 +53,7 @@ class ParsedLine( ParsedMzrToken):
         
         tmpLine = lineToken[ :-1]
 
-
+        tmp_unprocessed_tokens = tmpLine.split(",")
         tmp_unprocessed_tokens = [x.strip() + "," for x in tmp_unprocessed_tokens if x.strip() != ""]
          
         tmp_array = getBalancedArray( tmp_unprocessed_tokens )

@@ -1,7 +1,7 @@
 ###############################################################################
 # BNGMZRConverter - A utility program for converting bngl input files to mzr
 #		    input files.
-# Copyright (C) 2007, 2008 The Molecular Sciences Institute
+# Copyright (C) 2007, 2008, 2009 The Molecular Sciences Institute
 #
 # Moleculizer is free software; you can redistribute it and/or modify
 # it under the terms of the GNU Lesser General Public License as published by
@@ -18,7 +18,7 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 # Original Author:
-#   Nathan Addy, Scientific Programmer	Voice: 510-981-8748
+#   Nathan Addy, Scientific Programmer	Email: addy@molsci.org
 #   The Molecular Sciences Institute    Email: addy@molsci.org  
 #                     
 #   
@@ -29,7 +29,7 @@ import util
 
 import mzrexceptions as MzrExceptions
 
-from expressionevaluation import AlphaWikiSymbolicExpressionEvaluator
+from expressionevaluation import SymbolicExpressionEvaluator
 from moleculeinterpreter import MoleculeDictionary
 from seedspeciesinterpreter import SeedSpecies
 from reactionrulesinterpreter import ReactionRules
@@ -44,18 +44,26 @@ class MoleculizerObject:
 
         # The data which will be parsed and used to create the 
         # moleculizer file.
-	self.parameterBlock = []
-	self.moleculeTypeBlock = []
-	self.seedSpeciesBlock = []
-	self.reactionRuleBlock = []
-        self.streamsAndEventsFile = 0
+        self.parameterBlock = []
+        self.molsBlock = []
+        self.allostericPlexes = []
+        self.allostericOmnis = []
+        self.reactionRulesBlock = []
+        self.dimerizationGenBlock = []
+        self.omniGenBlock = []
+        self.uniMolGenBlock = []
+        self.explicitSpeciesBlock = []
+        self.speciesStreamBlock = []
 
         # These are the objects that will be used to process the parsed 
         # data.
+
 	self.parameterEE = 0 
 	self.moleculeDictionary = 0
-	self.seedSpecies = 0
+        self.allostericData = 0
 	self.reactionRules = 0
+        self.explicitSpecies = 0
+        self.speciesStreams = 0
 
     def getOutputFileName(self):
         return self.outputFileName
@@ -69,38 +77,65 @@ class MoleculizerObject:
 	self.__writeOutput(self.openXmlFile)
 	return
 
+    def initialize_DEBUG(self):
+        self.__processData()
+
     def close(self):
         self.openXmlFile.close()
 
-    def addParameterBlock(self, parameterBlock):
-	if self.parameterBlock: raise MzrExceptions.MoleculizerException("Error: Cannot add a parameter block twice.")
+    def addParameterBlock(self, parameterBlock, overwrite = False):
+	if self.parameterBlock and not overwrite: raise MzrExceptions.MoleculizerException("Error: Cannot add a parameter block twice.")
 	self.parameterBlock = parameterBlock[:]
 
-    def addMoleculeTypeBlock(self, moleculeTypeBlock):
-	if self.moleculeTypeBlock: raise MzrExceptions.MoleculizerException("Error: Cannot add a molecule types block twice")
-	self.moleculeTypeBlock = moleculeTypeBlock[:]
+    def addMolsBlock(self, molsBlock):
+        if self.molsBlock and not overwrite: raise MzrExceptions.MoleculizerException("Error: Cannot add a mols block twice.")
+        self.molsBlock = molsBlock[:]
 
-    def addSeedSpeciesBlock(self, seedSpeciesBlock):
-	if self.seedSpeciesBlock: raise MzrExceptions.MoleculizerException("Error:  Cannot add a Seed Species block twice.")
-	self.seedSpeciesBlock = seedSpeciesBlock[:]
+    def addAllostericPlexesBlock(self, apBlock, overwrite = False):
+        if self.allostericPlexes and not overwrite: raise MzrExceptions.MoleculizerException("Error: Cannot add an allosteric plexes block twice.")
+        self.allostericPlexes = apBlock[:]
 
-    def addReactionRuleBlock(self, reactionRuleBlock):
-	if self.reactionRuleBlock: raise MzrExceptions.MoleculizerException("Error: Cannot add a Reaction Rule Block twice.")
-	self.reactionRuleBlock = reactionRuleBlock[:]
+    def addAllostericOmnisBlock(self, aoBlock, overwrite = False):
+        if self.allostericOmnis and not overwrite: raise MzrExceptions.MoleculizerException("Error: Cannot add an allosteric omnis block twice.")
+        self.allostericOmnis = aoBlock[:]
 
-    def addStreamsAndEventsMixin(self, streamsAndEventsFile):
-        self.streamsAndEventsFile = streamsAndEventsFile
+    def addReactionRulesBlock( self, rrBlock, overwrite = False):
+        if self.reactionRulesBlock and not overwrite: raise MzrExceptions.MoleculizerException("Error: Cannot add a reaction rules block twice.")
+        self.reactionRulesBlock = rrBlock[:]
+
+    def addDimerizationGensBlock( self, dgBlock, overwrite = False):
+        if self.dimerizationGenBlock and not overwrite: raise MzrExceptions.MoleculizerException("Error: Cannot add a dimerization gen block twice.")
+        self.dimerizationGenBlock = dgBlock[:]
+
+    def addOmniGensBlock(self, ogBlock, overwrite = False):
+        if self.omniGenBlock and not overwrite: raise MzrExceptions.MoleculizerException("Error: Cannot add a omni gen block twice.")
+        self.omniGenBlock=ogBlock[:]
+
+    def addUniMolGensBlock( self, umBlock, overwrite = False):
+        if self.uniMolGenBlock and not overwrite: raise MzrExceptions.MoleculizerException("Error: Cannot add a unimol block twice.")
+        self.uniMolGenBlock = umBlock[:]
+
+    def addExplicitSpeciesBlock( self, esBlock, overwrite = False):
+        if self.explicitSpeciesBlock and not overwrite: raise MzrExceptions.MoleculizerException("Error: Cannot add an explicit species block twice.")
+        self.explicitSpeciesBlock = esBlock[:]
+
+    def addSpeciesStreamsBlock(self, ssBlock, overwrite = False):
+        if self.speciesStreamBlock and not overwrite: raise MzrExceptions.MoleculizerException("Error: Cannot add a species stream block twice.")
+        self.speciesStreamBlock = ssBlock[:]
 
     def __processData(self):
         ## "And for what you are about to see next, we must enter, quietly, into the
         ##  realm of genius..."
 
 	self.parameterEE = self.__processParameterBlock(self.parameterBlock)
- 	self.moleculeDictionary = self.__processMoleculeTypeBlock(self.moleculeTypeBlock)
-        self.seedSpecies = self.__processSeedSpeciesBlock(self.seedSpeciesBlock)
-        self.reactionRules = self.__processReactionRulesBlock(self.reactionRuleBlock)
+ 	self.moleculeDictionary = self.__processMolsBlock(self.molsBlock )
+        self.allostericData = self.__processAllostericRulesBlocks(self.allostericPlexes, self.allostericOmnis)
+        self.reactionRules = self.__processReactionRulesBlocks( self.reactionRulesBlock, self.dimerizationGenBlock, self.omniGenBlock, self.uniMolGenBlock)
+        self.explicitSpecies = self.__processExplicitSpeciesBlock( self.explicitSpeciesBlock)
+        self.speciesStreams = self.__processSpeciesStreamBlock( self.speciesStreamBlock)
 
         return
+
 
     def __processParameterBlock(self, parameterBlock):
         ## This function works by instantiating a SymbolicExpressionEvaluator with a
@@ -108,10 +143,10 @@ class MoleculizerObject:
         ## It's "evaluateExpression" function will take an expression and return a numerical
         ## value.
 
-	tmpSEE = AlphaWikiSymbolicExpressionEvaluator(self.parameterBlock)
+	tmpSEE = SymbolicExpressionEvaluator(self.parameterBlock)
 	return tmpSEE
-    
-    def __processMoleculeTypeBlock(self, moleculeBlock):
+
+    def __processMolsBlock(self, moleculeBlock):
         ## This function works by taking instantiating a MoleculeDictionary with a
         ## moleculeDescriptionBlock and a SymbolicExpressionEvaluator and returns the object,
         ## which can then be passed to other objects.
@@ -120,26 +155,55 @@ class MoleculizerObject:
 	moleculeDictionary = MoleculeDictionary(moleculeBlock, self.parameterEE)
         return moleculeDictionary
 
-    def __processSeedSpeciesBlock(self, seedSpeciesBlock):
-        ## This works by instantiating a SeedSpecies object, by passing it a seed species block,
-        ## a MoleculeDictionary, and a SymbolicExpressionEvaluator.  It will return a
-        ## seedSpecies object.
+    def __processAllostericRulesBlocks( self, allostericPlexBlock, allostericOmniBlock):
+        return 0
 
-        assert(self.parameterEE)
-        assert(self.moleculeDictionary)
-	seedSpeciesObj = SeedSpecies(seedSpeciesBlock, self.moleculeDictionary, self.parameterEE)
+    def __processReactionRulesBlocks( self, rxnRulesBlock, dimerBlock, omniGenBlock, uniGenBlock):
+        return 0
 
-        return seedSpeciesObj
+    def __processExplicitSpeciesBlock( self, explicitSpeciesBlock):
+        return 0
 
-    def __processReactionRulesBlock(self, rxnRulesBlock):
-        ## This does the same thing: pass it a reaction rules block, a MoleculeDictionary,
-        ## and a SymbolicExpressionEvaluator and it will return a ReactionRules object.
+    def __processSpeciesStreamBlock( self, ssBlock):
+        return 0
 
-        assert(self.parameterEE)
-        assert(self.moleculeDictionary)
+    
+#     def __processMoleculeTypeBlock(self, moleculeBlock):
+#         ## This function works by taking instantiating a MoleculeDictionary with a
+#         ## moleculeDescriptionBlock and a SymbolicExpressionEvaluator and returns the object,
+#         ## which can then be passed to other objects.
+#         assert(self.parameterEE)
+
+# 	moleculeDictionary = MoleculeDictionary(moleculeBlock, self.parameterEE)
+#         return moleculeDictionary
+
+#     def __processSeedSpeciesBlock(self, seedSpeciesBlock):
+#         ## This works by instantiating a SeedSpecies object, by passing it a seed species block,
+#         ## a MoleculeDictionary, and a SymbolicExpressionEvaluator.  It will return a
+#         ## seedSpecies object.
+
+#         assert(self.parameterEE)
+#         assert(self.moleculeDictionary)
+# 	seedSpeciesObj = SeedSpecies(seedSpeciesBlock, self.moleculeDictionary, self.parameterEE)
+
+#         return seedSpeciesObj
+
+#     def __processReactionRulesBlock(self, rxnRulesBlock):
+#         ## This does the same thing: pass it a reaction rules block, a MoleculeDictionary,
+#         ## and a SymbolicExpressionEvaluator and it will return a ReactionRules object.
+
+#         assert(self.parameterEE)
+#         assert(self.moleculeDictionary)
         
-	reactionRules = ReactionRules(rxnRulesBlock, self.moleculeDictionary, self.parameterEE)
-        return reactionRules
+# 	reactionRules = ReactionRules(rxnRulesBlock, self.moleculeDictionary, self.parameterEE)
+#         return reactionRules
+
+
+
+
+
+
+
 
     def __writeOutput(self, openXMLFile):
         xmlobject = self.__constructXMLRepresentation()

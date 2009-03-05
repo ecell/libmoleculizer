@@ -77,12 +77,19 @@ class DimerGenSection( MoleculizerSection ):
             offRate = XmlObject("off-rate", alloRatesElmt)
 
             if alloReactants[0].getMols()[0].isModMol():
-                siteShapeRef1.addAttribute("name", alloReactants[0].getMols()[0].getBindingSites()[0].getBindingSiteSpecification().getShapeSpecification().getShapeList()[0])
+                if alloReactants[0].getMols()[0].getBindingSites()[0].hasBindingSiteSpecification():
+                    siteShapeRef1.addAttribute("name", alloReactants[0].getMols()[0].getBindingSites()[0].getBindingSiteSpecification().getShapeSpecification().getShapeList()[0])
+                else:
+                    siteShapeRef1.addAttribute("name", "default")
+
             else:
                 siteShapeRef1.addAttribute("name", "default")
 
             if alloReactants[1].getMols()[0].isModMol():
-                siteShapeRef2.addAttribute("name", alloReactants[1].getMols()[0].getBindingSites()[0].getBindingSiteSpecification().getShapeSpecification().getShapeList()[0])
+                if alloReactants[1].getMols()[0].getBindingSites()[0].hasBindingSiteSpecification():
+                    siteShapeRef2.addAttribute("name", alloReactants[1].getMols()[0].getBindingSites()[0].getBindingSiteSpecification().getShapeSpecification().getShapeList()[0])
+                else:
+                    siteShapeRef2.addAttribute("name", "default")
             else:
                 siteShapeRef2.addAttribute("name", "default")
 

@@ -1021,3 +1021,62 @@ void createCSpeciesArrayFromSpeciesMap(moleculizer* cMzrPtr,
 }
 
 
+int checkSpeciesTagIsInSpeciesStream( moleculizer* handle, char* speciesTag, char* speciesStream)
+{
+    const int UNKNOWN_ERROR = -1;
+    const int NO_SUCH_SPECIES = -2;
+    const int NO_SUCH_STREAM = -3;
+
+    try
+    {
+        std::string speciesTagStr( speciesTag );
+        std::string speciesStreamStr( speciesStream );
+
+        mzr::moleculizer* underlyingMoleculizerObject = convertCMzrPtrToMzrPtr( handle );
+
+        if ( underlyingMoleculizerObject->speciesWithTagIsInSpeciesStream(speciesTagStr, speciesStreamStr) )
+        {
+            return 1;
+        }
+        else
+        {
+            return 0;
+        }
+    }
+    catch(...)
+    {
+        return UNKNOWN_ERROR;
+    }
+}
+
+
+int checkSpeciesIDIsInSpeciesStream( moleculizer* handle, char* speciesID, char* speciesStream)
+{
+
+    const int UNKNOWN_ERROR = -1;
+    const int NO_SUCH_SPECIES = -2;
+    const int NO_SUCH_STREAM = -3;
+
+    try
+    {
+        std::string speciesIDStr( speciesID );
+        std::string speciesStreamStr( speciesStream );
+
+        mzr::moleculizer* underlyingMoleculizerObject = convertCMzrPtrToMzrPtr( handle );
+
+        if ( underlyingMoleculizerObject->speciesWithUniqueIDIsInSpeciesStream(speciesIDStr, speciesStreamStr) )
+        {
+            return 1;
+        }
+        else
+        {
+            return 0;
+        }
+    }
+    catch(...)
+    {
+        return UNKNOWN_ERROR;
+    }
+}
+
+

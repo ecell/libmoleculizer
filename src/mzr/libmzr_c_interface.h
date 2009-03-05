@@ -116,6 +116,9 @@ extern "C" {
     int getAllSpecies(moleculizer* handle, species*** pSpeciesArray, int* numberSpecies);
     int getAllReactions(moleculizer* handle, reaction*** pReactionArray, int* numberReactions);
 
+    int checkSpeciesTagIsInSpeciesStream( moleculizer* handle, char* speciesID, char* speciesStream);
+    int checkSpeciesIDIsInSpeciesStream( moleculizer* handle, char* speciesID, char* speciesStream);
+
     /* This function returns all species that have not been expanded yet. */
     int getAllExteriorSpecies(moleculizer* handle, species*** pSpeciesArray, int* numberSpecies);
 

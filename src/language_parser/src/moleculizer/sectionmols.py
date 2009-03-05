@@ -24,8 +24,8 @@ class MolsSection( MoleculizerSection ) :
         
         theComplexes = [x.isComplex() for x in parsedLine.getParsedComponents()]
 
-        if not theComplexes.count(True) == 1:
-            raise Exception
+        if not theComplexes.count( True ) == 1:
+            raise Exception()
 
         if not parsedLine.hasAssignment("mass") and MoleculizerSection.translation_mode == "STRICT":
             pdb.set_trace()

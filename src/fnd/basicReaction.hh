@@ -37,6 +37,7 @@
 #include <vector>
 #include <sstream>
 #include <algorithm>
+#include "notifier.hh"
 
 namespace fnd
 {
@@ -44,7 +45,8 @@ namespace fnd
     class coreRxnGen;
     
     template<class speciesType>
-    class basicReaction
+    class basicReaction :
+        public onceNotifier
     {
         class CompareSpeciesEntries
         {
@@ -58,7 +60,7 @@ namespace fnd
     public:
         
         typedef typename std::map<speciesType*, int> multMap;
-        
+
         bool
         hasReactant( const speciesType* species ) const
         {
@@ -357,8 +359,6 @@ namespace fnd
                 );
             
             std::ostringstream reactionName;
-            
-            reactionName << "(" << reactants.size() << ", " << products.size() <<  ") -- ";
             
             // This is sort of goofy because of the following
             // vector = first| a, b, c| last

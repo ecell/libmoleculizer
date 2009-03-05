@@ -1,7 +1,7 @@
 ###############################################################################
 # BNGMZRConverter - A utility program for converting bngl input files to mzr
 #		    input files.
-# Copyright (C) 2007, 2008 The Molecular Sciences Institute
+# Copyright (C) 2007, 2008, 2009 The Molecular Sciences Institute
 #
 # Moleculizer is free software; you can redistribute it and/or modify
 # it under the terms of the GNU Lesser General Public License as published by
@@ -18,7 +18,7 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 # Original Author:
-#   Nathan Addy, Scientific Programmer	Voice: 510-981-8748
+#   Nathan Addy, Scientific Programmer	Email: addy@molsci.org
 #   The Molecular Sciences Institute    Email: addy@molsci.org  
 #                     
 #   
@@ -150,16 +150,6 @@ class SymbolicExpressionEvaluator:
     def evaluateExpression(self, expression):
         if isinstance(expression, float):
             return expression
-
-        if expression.startswith("Sat("):
-            # This is very broken.
-            expression = expression.strip()
-            saturation_components = expression[4:-1].split(',')
-            if len(saturation_components) != 2: 
-                raise SymbolicExpressionEvaluator.BadExpressionException("Saturation Kinetics with %s paramaters cannot be evaluated" % len(saturation_components))
-            else:
-                comp1, comp2 = saturation_components
-                expression = self.__constructSaturationExpression(comp1, comp2)
 
         try:
             ans = self.processLine(expression)

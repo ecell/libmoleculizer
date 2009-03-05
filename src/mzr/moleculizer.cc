@@ -699,11 +699,6 @@ namespace mzr
         if (maxNumSpecies < 0) maxNumSpecies = std::numeric_limits<long>::max();
         if (maxNumRxns < 0) maxNumRxns = std::numeric_limits<long>::max();
 
-        // This isn't really necessary, but it should be true anyways (there is nothing to expand otherwise), and gets
-        // us away from the concern regarding lists explicated at the beginning of this function.
-        assert( this->getTotalNumberSpecies() > 0);
-        // assert( this->getTotalNumberSpecies() > 0 && this->getTotalNumberReactions() > 0);
-
         if ( (long) this->getTotalNumberSpecies() >= maxNumSpecies || (long) this->getTotalNumberReactions() >= maxNumRxns )
         {
             // We are already too big to know what to do with ourselves.  Throw an exception.
@@ -722,18 +717,37 @@ namespace mzr
         while( true )
         {
             expandedOne = false;
-
-            for( SpeciesCatalogCIter speciesIter = this->getSpeciesCatalog().begin();
-                 speciesIter != this->getSpeciesCatalog().end();
-                 ++speciesIter)
+            
+            if ( this->getReactionList().size() == 0)
             {
-                if ( !speciesIter->second->hasNotified() )
+                for( SpeciesCatalogCIter speciesIter = this->getSpeciesCatalog().begin();
+                     speciesIter != this->getSpeciesCatalog().end();
+                     ++speciesIter)
                 {
-                    expandedOne = true;
-                    speciesIter->second->expandReactionNetwork();
-                    break;
+                    if ( !speciesIter->second->hasNotified() )
+                    {
+                        expandedOne = true;
+                        speciesIter->second->expandReactionNetwork();
+                        break;
+                    }
                 }
             }
+            else
+            {
+                for ( ReactionListCIter rxnIter = this->getReactionList().begin();
+                      rxnIter != this->getReactionList().end();
+                      ++rxnIter)
+                {
+                    if (! (*rxnIter)->hasNotified() && (*rxnIter)->getRate() > 0.0f)
+                    {
+                        expandedOne = true;
+                        (*rxnIter)->expandReactionNetwork();
+                        break;
+                    }
+                }
+            }
+
+            
 
             // The network is too big, since we came into the loop good, return that value of cached stuff.
             if ( (long) getTotalNumberSpecies() > maxNumSpecies || (long) getTotalNumberReactions() > maxNumRxns )
@@ -781,7 +795,7 @@ namespace mzr
     moleculizer::getSpeciesInSpeciesStream(const std::string& streamName,
                                            std::vector<const mzr::mzrSpecies*>& speciesVector) const
     {
-        fnd::dumpable<fnd::basicDumpable::dumpArg>* ptrDumpable = 
+      fnd::dumpable<fnd::basicDumpable::dumpArg>* ptrDumpable = 
             pUserUnits->pMzrUnit->mustFindDumpable( streamName );
         
         
@@ -806,12 +820,37 @@ namespace mzr
         }
     }
 
-    void 
-    moleculizer::getSpeciesInSpeciesStream(const std::string& streamName,
-                                           std::vector<mzr::mzrSpecies*>& speciesVector)
-    {
-        // Do nothing for now.
-    }
+  bool 
+  moleculizer::speciesWithTagIsInSpeciesStream( const std::string speciesTag, const std::string& speciesStream ) const
+  {
+    const mzr::mzrSpecies* pSpecies = this->findSpecies( speciesTag);
+    const plx::mzrPlexSpecies* pPlexSpecies = dynamic_cast<const plx::mzrPlexSpecies*>( pSpecies );
+    
+    fnd::dumpable<fnd::basicDumpable::dumpArg>* ptrDumpable = pUserUnits->pMzrUnit->mustFindDumpable( speciesStream );
+    
+    mzr::multiSpeciesDumpable<plx::mzrPlexSpecies>* streamPtr;
+    streamPtr = dynamic_cast< mzr::multiSpeciesDumpable<plx::mzrPlexSpecies>* >( ptrDumpable);    
+
+    return streamPtr->speciesInSpeciesStream( pPlexSpecies );
+  }
+  
+  bool 
+  moleculizer::speciesWithUniqueIDIsInSpeciesStream(const std::string speciesID, const std::string& speciesStream ) const
+  {
+
+    const mzr::mzrSpecies* pSpecies = this->findSpecies( convertSpeciesIDToSpeciesTag(speciesID) );
+    const plx::mzrPlexSpecies* pPlexSpecies = dynamic_cast<const plx::mzrPlexSpecies*>( pSpecies );
+    
+
+    fnd::dumpable<fnd::basicDumpable::dumpArg>* ptrDumpable = pUserUnits->pMzrUnit->mustFindDumpable( speciesStream );
+
+    mzr::multiSpeciesDumpable<plx::mzrPlexSpecies>* streamPtr;
+    streamPtr = dynamic_cast< mzr::multiSpeciesDumpable<plx::mzrPlexSpecies>* >( ptrDumpable);
+
+    return streamPtr->speciesInSpeciesStream( pPlexSpecies );
+  }
+
+
     
     void 
     moleculizer::getSpeciesStreams( std::vector<std::string>& speciesStreamNames) const
@@ -874,6 +913,6 @@ namespace mzr
                 
     }
     
-    int moleculizer::DEFAULT_GENERATION_DEPTH = 1;
+    int moleculizer::DEFAULT_GENERATION_DEPTH = 0;
     
 }

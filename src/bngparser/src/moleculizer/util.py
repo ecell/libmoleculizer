@@ -1,7 +1,7 @@
 ###############################################################################
 # BNGMZRConverter - A utility program for converting bngl input files to mzr
 #		    input files.
-# Copyright (C) 2007, 2008 The Molecular Sciences Institute
+# Copyright (C) 2007, 2008, 2009 The Molecular Sciences Institute
 #
 # Moleculizer is free software; you can redistribute it and/or modify
 # it under the terms of the GNU Lesser General Public License as published by
@@ -18,7 +18,7 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 # Original Author:
-#   Nathan Addy, Scientific Programmer	Voice: 510-981-8748
+#   Nathan Addy, Scientific Programmer	Email: addy@molsci.org
 #   The Molecular Sciences Institute    Email: addy@molsci.org  
 #                     
 #   
@@ -28,6 +28,28 @@ from reaction import *
 import pdb
 
 N_Avagadro = 6.0221415e23
+
+
+def DataUnifier( anArray):
+    # This function takes an array that is a bunch of comma ended and semicolon ended 
+    # lines, and combines lines so that there is one statement per line.
+
+    # ['GDP,', 'mass = 100.0;', 'GTP,', 'mass = 110.0;', 'Ste2(to-Ste4,  to-alpha),', 'mass = 100.0,', 'preferred_state = top, front;', 'Ste4(to-Ste2, to-Gpa1, to-Ste5 {default, obstructed}, to-Fus3, *ModSite {None, Phosphorylated, DoublyPhosphorylated} ),', 'mass = 100.0;', 'Ste5( to-Ste4, to-Ste11, to-Ste7, to-Fus3),', 'mass = 100.0;', 'Gpa1( to-Ste4 { default, GTP-bound-shape}, to-GXP { default, bound-shape} ),', 'mass = 100.0;', 'alpha,', 'mass = 100.0;']
+    
+    if (len(anArray) <= 1): return anArray
+
+    newArray = []
+
+    current_string = ""
+
+    for ndx in range(len(anArray)):
+        current_string += anArray[ndx].strip()
+        current_string = current_string.strip()
+        if current_string[-1] == ";":
+            newArray.append(current_string)
+            current_string = ""
+
+    return newArray
 
 def sort(sequence, func = 0):
     if func:

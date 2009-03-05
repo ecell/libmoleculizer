@@ -65,6 +65,13 @@ namespace fnd
         doDump( const dumpArgT& rDumpArg ) const
         {
         }
+
+      bool speciesInSpeciesStream( const speciesT* speciesPtr)
+      {
+	return std::find( dumpedSpecies.begin(),
+			  dumpedSpecies.end(),
+			  speciesPtr) != dumpedSpecies.end();
+      }
         
         
         const std::vector<const speciesT*>* 

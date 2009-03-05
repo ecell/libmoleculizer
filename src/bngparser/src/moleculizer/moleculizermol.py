@@ -1,7 +1,7 @@
 ###############################################################################
 # BNGMZRConverter - A utility program for converting bngl input files to mzr
 #		    input files.
-# Copyright (C) 2007, 2008 The Molecular Sciences Institute
+# Copyright (C) 2007, 2008, 2009 The Molecular Sciences Institute
 #
 # Moleculizer is free software; you can redistribute it and/or modify
 # it under the terms of the GNU Lesser General Public License as published by
@@ -18,25 +18,80 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 # Original Author:
-#   Nathan Addy, Scientific Programmer	Voice: 510-981-8748
+#   Nathan Addy, Scientific Programmer	Email: addy@molsci.org
 #   The Molecular Sciences Institute    Email: addy@molsci.org  
 #                     
 #   
 ###############################################################################
 
-
 import pdb
+
+def isModMol(line):
+    # If there is a ( and a ) before the first comma, it is
+    firstParenNdx = line.find("(")
+    commaNdx = line.find(",")
+
+    if (firstParenNdx >= 0 and firstParenNdx < commaNdx):
+        return True
+    else:
+        return False
+
+def isSmallMol(line):
+    # If there is no ( or ) before the first comma, it is
+    firstParenNdx = line.find("(")
+    commaNdx = line.find(",")
+
+    if (firstParenNdx < 0):
+        return True
+    elif (commaNdx < firstParenNdx):
+        return True
+    else:
+        return False
+
+
 class MoleculizerMol:
 
+    @classmethod
+    def calculateName(cls, line):
+        firstComma = line.find(",")
+        firstSemiColon = line.find(";")
+        firstParen = line.find("(")
+        ndx = min([ x for x in [firstComma, firstSemiColon, firstParen] if x > 0])
+
+        name = line[:ndx]
+        print "line '%s' gives name %s" % (line, name)
+        return name
+
+    @classmethod
+    def calculateParams(cls, line):
+        if (isModMol(line)):
+            firstParen = line.find(")")
+            paramList = line[firstParen + 1:]
+            paramList = paramList.strip()
+            firstComma = line.find(",")
+
+            if firstComma < 0: return ""
+            print "line '%s' gives paramList '%s'" % (line, paramList)
+            paramList = paramList[firstComma + 1:].strip()
+            return paramList
+
+        else:
+            firstComma = line.find(",")
+            if firstComma < 0: return ""
+            else:
+                paramList = line[firstComma + 1:].strip()
+                print "line '%s' gives paramList '%s'" % (line, paramList)
+                return paramList
+
+        return paramList
+
     class BadMolDefinitionException(Exception): pass
-    
+
     modificationStates = []
-    
+
     def __init__(self, aLine):
-	self.name = ""
-	self.bindingSites = {}
-	self.modificationSites = []
-	self.parseMolLine(aLine)
+	self.name = self.calculateName( aLine )
+        self.molParametersLine = self.calculateParams( aLine )
 
     def setName(self, aName):
 	self.name = aName
@@ -46,6 +101,25 @@ class MoleculizerMol:
 	    raise MoleculizerMol.BadMolDefinitionException("Error: Mol has no name")
 	else:
 	    return self.name
+
+    def processMolParameters(self, line):
+        self.parameters = []
+        
+
+class MoleculizerSmallMol( MoleculizerMol ):
+    def __init__(self, line):
+        MoleculizerMol.__init__(self, line)
+        return 
+
+class MoleculizerModMol( MoleculizerMol ):
+    def __init__(self, line):
+        MoleculizerMol.__init__(self, line)
+        
+	self.bindingSites = {}
+	self.modificationSites = []
+	# self.parseMolLine(aLine)
+        return 
+
     def addBindingSite(self, bindingSite):
         ## A binding site consists only of its name -- ie "Ste11_site" or some such.
 	if not bindingSite in self.bindingSites:
@@ -75,13 +149,15 @@ class MoleculizerMol:
 		MoleculizerMol.modificationStates.append(mod)
 	self.modificationSites.append( (modificationName, modificationArray[0]))
 	
-    def parseMolLine(self, theLine):
-    
+
+
+    def parseModMolLine(self, theLine):
 	moleculeString = theLine.strip().split()[-1]
 	
 	nameIndex = moleculeString.find('(')
+
 	if nameIndex == -1:
-	    self.setName(moleculeString.strip())
+            raise "Error, this is a small mol"
 	    return
 
 	moleculeName, bindings = moleculeString[:nameIndex], moleculeString[nameIndex:]
@@ -99,3 +175,4 @@ class MoleculizerMol:
 
 	for x in modificationSites:
 	    self.addModificationSite(x)
+

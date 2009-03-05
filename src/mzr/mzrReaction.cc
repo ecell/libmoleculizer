@@ -95,14 +95,12 @@ namespace mzr
     mzrReaction::expandReactionNetwork()
     {
         int generateDepth = getGenerateDepth();
-        if ( generateDepth != 1 )
-        {
-            std::cerr << "(WARN) Generate depth is set to " << generateDepth << ".  Is this intentional?" << std::endl;
-        }
+
+        this->ensureNotified( generateDepth );
         
-        std::for_each( deltas.begin(),
-                       deltas.end(),
-                       notifyOneSpecies( generateDepth ) );
+//         std::for_each( products.begin(),
+//                        produ.end(),
+//                        notifyOneSpecies( generateDepth ) );
     }
     
     // What a reaction event does, given what the reaction does.
@@ -286,6 +284,21 @@ namespace mzr
     mzrReaction::setGenerateDepth( unsigned int newDepth )
     {
         mzrReaction::reactionDepth = newDepth;
+    }
+
+    void mzrReaction::notify( int generateDepth )
+    {
+        // Notify each of the species in the products
+        for( multMap::const_iterator prodIter = products.begin();
+             prodIter != products.end();
+             ++prodIter)
+        {
+            if (!prodIter->first->hasNotified())
+            {
+                prodIter->first->notify( generateDepth);
+            }
+        }
+                 
     }
     
     // Reaction related dumpable globals.

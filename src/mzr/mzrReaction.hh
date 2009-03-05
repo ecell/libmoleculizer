@@ -149,6 +149,10 @@ namespace mzr
         // reactants has changed population
         void
         respond( const mzrReactionStimulus& rStimulus );
+
+        // This fulfills the pure virtual function in the ancestor class
+        // cpx::notifier.
+        void notify( int generateDepth );
         
         /*! \brief What a reaction does. */
         fnd::eventResult

@@ -91,6 +91,9 @@ namespace mzr
         getSpeciesStreams( std::vector<std::string>& speciesStreamNames) const;
 
         int getNumberOfSpeciesStreams() const;
+
+      bool speciesWithTagIsInSpeciesStream(const std::string speciesTag, const std::string& speciesStream ) const;
+      bool speciesWithUniqueIDIsInSpeciesStream(const std::string speciesTag, const std::string& speciesStream ) const;
                 
         int 
         getNumberOfSpeciesInSpeciesStream(const std::string& streamName) const;
@@ -99,12 +102,6 @@ namespace mzr
         getSpeciesInSpeciesStream(const std::string& streamName,
                                   std::vector<const mzr::mzrSpecies*>& speciesVector) const;
 
-        void 
-        getSpeciesInSpeciesStream(const std::string& streamName,
-                                  std::vector<mzr::mzrSpecies*>& speciesVector);
-
-        
-        
     public:
         const mzrSpecies* 
         getSpeciesWithUniqueID( SpeciesIDCref uniqueID ) throw( mzr::IllegalNameXcpt );

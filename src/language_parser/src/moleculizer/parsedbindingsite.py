@@ -195,7 +195,7 @@ class ParsedBindingSite( ParsedMzrToken ):
 
     def getBindingSiteSpecification(self):
         if not self.hasBindingSiteSpecification():
-            raise Exception()
+            raise Exception("Binding site '%s' was requested for a binding site specification, but has none." % self.getOriginalLine())
 
         return self.binding_site_specification
 

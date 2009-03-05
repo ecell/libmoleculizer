@@ -43,7 +43,6 @@ def main():
         print e.message
         barf("Error, Text rules file could not be parsed.")
 
-
     if options["verbose"]:
         print "Parameters:\n\t", parameterBlock
         print "Modifications:\n\t", modificationsBlock

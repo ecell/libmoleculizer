@@ -1,0 +1,47 @@
+# This is a model for a simple oligmerization network.
+
+==== Modifications ===========
+==== Mols          ===========
+A(left{default, occluded}, right{default, occluded}),
+        mass = 1000.0;
+
+==== Allosteric-Plexes  ======
+# This is to control the size of the network.
+     
+==== Allosteric-Omnis   ======
+A(left{occluded <-* }, right!1).A(left!1, right!2 ).A(left!2, right!3).A(left!3, right!4).A(left!4, right {occluded <- *});
+
+
+=== Species-Streams =========
+
+A(left, right!1).A(left!1, right!2).A(left!2, right),
+	name = length_three_plus;
+
+A(left, right!1).A(left!1, right!2).A(left!2, right!3).A(left!3, right!4).A(left!4, right!5).A(left!5, right),
+	name = lenth_six_plus;
+
+==== Explicit-Species ========
+
+A(left,right!1).A(left!1,right),
+        name = AA;
+
+==== Dimerization-Gens ========
+
+A(left) + A(right) -> A(left!1).A(right!1),
+        kon = 1000,
+        koff = 10,
+
+        A(left {occluded} ) + A(right ) -> A(left!1).A(right!1),
+        kon = 0,
+        koff = 10000,
+
+        A(left ) + A(right {occluded} ) -> A(left!1).A(right!1),
+        kon = 0,
+        koff = 10000,
+
+        A(left {occluded} ) + A(right {occluded} ) -> A(left!1).A(right!1),
+        kon = 0,
+        koff = 10000;
+
+
+

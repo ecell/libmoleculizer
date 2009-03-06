@@ -39,6 +39,7 @@
 #include "fnd/reactionNetworkDescription.hh"
 #include "mzr/mzrSpecies.hh"
 #include "mzr/mzrReaction.hh"
+#include "mzr/pythonRulesManager.hh"
 
 
 namespace mzr
@@ -217,6 +218,8 @@ namespace mzr
         
         bool modelLoaded;
         bool extrapolationEnabled;
+
+      PythonRulesManager rulesManager;
 
         // Now we store a copy of the parser, so that people can get a copy of the rules, at any time.
         xmlpp::DomParser theParser;

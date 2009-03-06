@@ -27,7 +27,7 @@ ALL_MZR_LIBS = $(LIBFND) $(LIBUTL) $(LIBMZR) $(LIBSTOCH) $(LIBNMR) $(LIBNMR) $(L
 LIBXMLPP_CFLAGS = @LIBXMLPP_CFLAGS@
 LIBXMLPP_LIBS = @LIBXMLPP_LIBS@
 
-AM_CXXFLAGS = @CXXFLAGS@ -Wall $(LIBXMLPP_CFLAGS) -I..
+AM_CXXFLAGS = @CXXFLAGS@ -Wall $(LIBXMLPP_CFLAGS) -I.. @PYTHON_CPPFLAGS@
 
 libmoleculizer_mzr_la_SOURCES =\
 dumpUtils.cc \
@@ -40,6 +40,7 @@ mzrSpecies.cc \
 mzrUnit.cc \
 mzrUnitInsert.cc \
 mzrUnitParse.cc \
+pythonRulesManager.cc \
 spatialExtrapolationFunctions.cc \
 unitsMgr.cc
 
@@ -60,6 +61,7 @@ mzrSpeciesDumpable.hh \
 mzrSpeciesDumpableImpl.hh \
 mzrStream.hh \
 mzrUnit.hh \
+pythonRulesManager.hh \
 respondReaction.hh \
 rxnDescriptionInterface.hh \
 spatialExtrapolationFunctions.hh \

@@ -21,15 +21,13 @@ LIBDIMER = dimer/libmoleculizer_dimer.la
 LIBFTR = ftr/libmoleculizer_ftr.la
 ALL_MZR_LIBS = $(LIBFND) $(LIBUTL) $(LIBMZR) $(LIBSTOCH) $(LIBNMR) $(LIBNMR) $(LIBCPX) $(LIBMOL) $(LIBPLEX) $(LIBDIMER) $(LIBFTR)
 
-## This is the local target directory name.
-## I think it has something to do with header dependencies.
 moleculizerdir = $(SRCDIR)
 
 LIBXMLPP_CFLAGS = @LIBXMLPP_CFLAGS@
 LIBXMLPP_LIBS = @LIBXMLPP_LIBS@
 
 AM_CXXFLAGS = $(LIBXMLPP_CFLAGS)
-AM_CFLAGS=-g -O0
+AM_LDFLAGS = @PYTHON_LDFLAGS@ @PYTHON_EXTRA_LDFLAGS@ 
 
 lib_LTLIBRARIES = libmoleculizer-1.0.la
 libmoleculizer_1_0_la_SOURCES =

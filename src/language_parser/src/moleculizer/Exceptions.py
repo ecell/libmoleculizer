@@ -1,2 +1,0 @@
-class UnimplementedParceFunction( Exception ):
-    pass

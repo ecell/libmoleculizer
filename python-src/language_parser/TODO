@@ -1,7 +1,0 @@
-1. Update the reaction write-outs to make use of moleculizer's new bound-site structural queries.
-
-2. Get this thing handling molecule synthesis/degradation reactions.
-
-3. Fix saturation kinetics bits.  This is currently VERY broken.
-
-4. Handle the "BadReactions" -- see reactionrulesinterpreter.py and util.classifyReaction()

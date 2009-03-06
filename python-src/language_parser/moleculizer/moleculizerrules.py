@@ -37,6 +37,9 @@ class MoleculizerRulesFile:
         noWhiteSpace = [ (x.count("\n") + x.count(" ") + x.count("\t") == 0) for x in linearray]
         return reduce(util.And, everyLineEndsWithSemiColon) and reduce(util.And, noWhiteSpace)
 
+    def DEBUGPRINT(self):
+        print "Hello, from moleculizer!!!!!!"
+
     def __init__(self, filename):
 
         self.outputFileName = filename

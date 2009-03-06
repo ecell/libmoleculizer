@@ -13,4 +13,3 @@ class SmallMolSemanticException( ParsedMolSemanticException ):
     def __init__(self, molName, message):
         ParsedMolSemanticException.__init__(molName, message)
 
-class 

@@ -1,4 +1,9 @@
+#ifndef __PYTHON_RULES_MANAGER_HH
+#define __PYTHON_RULES_MANAGER_HH
+
+#include <Python.h>
 #include <string>
+
 
 namespace mzr
 {
@@ -20,7 +25,15 @@ namespace mzr
     void addUniMolGenStatement(const std::string& uniMolGenLine);
     void addSpeciesStreamStatement(const std::string& speciesStreamLine);
 
+    bool isInitialized() const
+    {
+      return _isInitialized;
+    }
+
   private:
+
+    bool _isInitialized;
+    PyObject* mzrFileConverterClassInst;
 
     void DEBUG_doInterestingStuff();
 
@@ -28,3 +41,6 @@ namespace mzr
 
 
 }
+
+
+#endif

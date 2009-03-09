@@ -28,11 +28,27 @@ namespace mzr
     bool isInitialized() const
     {
       return _isInitialized;
+
+
     }
 
   private:
 
-    bool _isInitialized;
+      bool _isInitialized;
+
+      char* paramPythonFunctionName;
+      char* modPythonFunctionName;
+      char* molPythonFunctionName;
+      char* alloPlexPythonFunctionName;
+      char* alloOmniPythonFunctionName;
+      char* dimerGenPythonFunctionName;
+      char* omniGenPythonFunctionName;
+      char* uniMolGenPythonFunctionName;
+      char* speciesStreamPythonFunctionName;
+
+
+
+
     PyObject* mzrFileConverterClassInst;
 
     void DEBUG_doInterestingStuff();

@@ -70,6 +70,18 @@ namespace mzr
         void attachDocument( xmlpp::Document* pDoc );
 
         bool getModelHasBeenLoaded() const;
+
+
+    public:
+      void addParameterStatement(const std::string& statement );
+      void addModificationStatement( std::string& statement);
+      void addMolsStatement( std::string& statement);
+      void addAllostericPlexStatement( std::string& statement);
+      void addAllostericOmniStatement( std::string& statement);
+      void addDimerizationGenStatement( std::string& statement);
+      void addOmniGenStatement( std::string& statement);
+      void addUniMolGenStatement( std::string& statement);
+      void addSpeciesStreamStatement( std::string& statement);
         
     public:
         

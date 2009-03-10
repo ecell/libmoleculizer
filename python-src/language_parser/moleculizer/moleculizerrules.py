@@ -13,6 +13,7 @@ import re
 import util
 
 from xmlobject import XmlObject
+import StringIO
 
 from sectionparameter import SymbolicExpressionEvaluator
 from sectionmodifications import ModificationsSection
@@ -39,6 +40,122 @@ class MoleculizerRulesFile:
 
     def DEBUGPRINT(self):
         print "Hello, from moleculizer!!!!!!"
+
+    def addWholeRulesFile(self, rulesFile):
+        pdb.set_trace()
+
+        parameterBlock, modificationsBlock, molsBlock, allostericPlexes, allostericOmnis, \
+                        reactionRulesBlock, dimerizationGenBlock, omniGenBlock, uniMolGenBlock, \
+                        explicitSpeciesBlock, speciesStreamBlock = parseBlockTypesFromRulesFile( open(rulesFile).readlines() )
+
+        self.addParameterBlock( parameterBlock )
+        self.addModicationsBlock( modificationsBlock )
+        self.addMolsBlock( molsBlock )
+        self.addAllostericPlexesBlock( allostericPlexes )
+        self.addAllostericOmnisBlock( allostericOmnis )
+        self.addReactionRulesBlock( reactionRulesBlock, dimerizationGenBlock, \
+                                          omniGenBlock, uniMolGenBlock )
+        self.addExplicitSpeciesBlock( explicitSpeciesBlock )
+        self.addSpeciesStreamsBlock( speciesStreamBlock )
+
+        return
+
+    def addParameterStatement(self, paramStatement):
+        paramStatement = self.PreProcessStatement( paramStatement )
+
+        print "Adding param line: '%s'" % paramStatement
+
+        self.parameterBlock.append( paramStatement)
+        self.parameterEE = SymbolicExpressionEvaluator( self.parameterBlock )
+
+        return
+
+    def addModificationStatement(self, modLine):
+        modLine = self.PreProcessStatement( modLine )
+
+        print "Adding mod line: '%s'" % modLine
+
+        self.modificationsBlock.append( modLine)
+        self.modificationsSection = ModificationsSection( self.modificationsBlock )
+        
+        return
+
+    def addMolsStatement(self, molsLine):
+        molsLine = self.PreProcessStatement( molsLine )
+
+        self.molsBlock.append( molsLine )
+        self.molsSection = MolsSection( molsBlock )
+
+        return 
+
+    def addAllostericPlexStatement(self, alloPlexLine):
+        alloPlexLine = self.PreProcessStatement( alloPlexLine )
+
+        self.allostericPlexes.append( alloPlexLine )
+        self.allostericPlexesSection = AllostericPlexesSection( self.allostericPlexes )
+        
+        return
+
+    def addAllostericOmniStatement(self, alloOmniLine):
+
+        alloOmniLine = self.PreProcessStatement( alloOmniLine )
+
+        self.allostericOmnis.append( alloOmniLine )
+        self.allostericOmnisSection = AllostericOmnisSection( self.allostericOmnis )
+
+        return 
+
+    def addDimerizationGenStatement(self, dimerGenLine):
+        dimerGenLine = self.PreProcessStatement( dimerGenLine )
+
+        self.dimerizationGenBlock.append(dimerGenLine)
+
+        self.reactionGensSection = ReactionRulesSection( self.reactionRulesBlock, 
+                                                         self.dimerizationGenBlock, 
+                                                         self.omniGenBlock, 
+                                                         self.uniMolGenBlock)
+        
+        return 
+
+    def addOmniGenStatement(self, omniGenLine):
+        omniGenLine = self.PreProcessStatement( omniGenLine )
+
+        self.omniGenLine.append( omniGenLine )
+
+        self.reactionGensSection = ReactionRulesSection( self.reactionRulesBlock, 
+                                                         self.dimerizationGenBlock, 
+                                                         self.omniGenBlock, 
+                                                         self.uniMolGenBlock)        
+
+        return 
+
+    def addUniMolGenStatement(self, uniMolGenLine):
+        uniMolGenLine = self.PreProcessStatement( uniMolGenLine )
+
+        self.uniMolGenBlock.append( uniMolGenLine )
+
+        self.reactionGensSection = ReactionRulesSection( self.reactionRulesBlock, 
+                                                         self.dimerizationGenBlock, 
+                                                         self.omniGenBlock, 
+                                                         self.uniMolGenBlock)        
+        
+        return
+
+    def addExplicitSpeciesStatement(self, explicitSpeciesStatement):
+        explicitSpeciesStatement = self.PreProcessStatement( explicitSpeciesStatement )
+
+        self.explicitSpeciesBlock.append( explicitSpeciesStatement )
+        self.explicitSpeciesSection = ExplicitSpeciesSection( self.explicitSpeciesBlock )
+
+        return 
+
+    def addSpeciesStreamStatement(self, speciesStreamLine):
+        speciesStreamLine = self.PreProcessStatement( speciesStreamLine )
+
+        self.speciesStreamBlock.append( speciesStreamLine )
+        self.speciesStreamSection = SpeciesStreamsSection( self.speciesStreamBlock  )
+        
+        return
 
     def __init__(self, filename):
 
@@ -84,6 +201,13 @@ class MoleculizerRulesFile:
 	self.__writeOutput(self.openXmlFile)
 
 	return
+
+    def writeToString(self):
+
+        myString = StringIO.StringIO()
+        self.__writeOutput( myString )
+
+        return myString.getvalue()
 
     def close(self):
         self.openXmlFile.close()
@@ -187,7 +311,7 @@ class MoleculizerRulesFile:
             raise InsaneBlockOnTheLooseException(ssBlock, "")
         
         self.speciesStreamBlock = ssBlock[:]
-        self.speciesStreamSection = SpeciesStreamsSection( ssBlock  )
+        self.speciesStreamSection = SpeciesStreamsSection( self.speciesStreamBlock  )
 
 
     def __processAllostericRulesBlocks( self, allostericPlexBlock, allostericOmniBlock):
@@ -289,3 +413,148 @@ class MoleculizerRulesFile:
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+def parseBlockTypesFromRulesFile(textRulesFile):
+    textRulesFile = [re.sub("#.*$", "", x) for x in textRulesFile] # Delete all comments
+    # textRulesFile = [re.sub("//.*$", "", x) for x in textRulesFile] # Delete all comments
+    textRulesFile = [re.sub(r"\s*", "", x) for x in textRulesFile] # Delete all whitespace
+    textRulesFile = [x.strip() for x in textRulesFile] # Strip it for good measure
+    textRulesFile = [x for x in textRulesFile if x != ""] # This must be last, because line.strip() results in some empty lines.
+
+    parameterBlock = []
+    modificationsBlock = []
+    molsBlock = []
+    allostericPlexes = []
+    allostericOmnis = []
+    reactionRulesBlock = []
+    dimerizationGenBlock = []
+    omniGenBlock = [] 
+    uniMolGenBlock = [] 
+    explicitSpeciesBlock = [] 
+    speciesStreamBlock = []
+
+#     textRulesFile = '\n'.join(textRulesFile)
+#     textRulesFile = re.sub(r"\\\s*\n\s*", " ", textRulesFile)
+#     textRulesFile = textRulesFile.split("\n")
+
+    blockCodes = ["Parameters", "Modifications", "Mols", "Allosteric-Plexes", "Allosteric-Omnis", 
+                  "Reaction-Rules", "Dimerization-Gens", "Omni-Gens", "Uni-Mol-Gens", 
+                  "Explicit-Species", "Species-Streams" ] 
+
+    blockObjNdx = -1
+    blockDataObj = [ (blockCodes[0], parameterBlock), \
+                     (blockCodes[1], modificationsBlock), \
+                     (blockCodes[2], molsBlock), \
+                     (blockCodes[3], allostericPlexes), 
+                     (blockCodes[4], allostericOmnis), 
+                     (blockCodes[5], reactionRulesBlock), \
+                     (blockCodes[6], dimerizationGenBlock), \
+                     (blockCodes[7], omniGenBlock), \
+                     (blockCodes[8], uniMolGenBlock), \
+                     (blockCodes[9], explicitSpeciesBlock),\
+                     (blockCodes[10], speciesStreamBlock) ]
+
+    currentDmp = []
+
+    assert( textRulesFile[0].startswith("="))
+
+    blockObjNdx = -1
+    for line in textRulesFile:
+        if line.startswith("="):
+            blockObjNdx = returnNewIndex(line, blockDataObj)
+            currentDmp = blockDataObj[blockObjNdx][1]
+        else:
+            currentDmp.append(line)
+
+
+    return getFormattedArray(parameterBlock), getFormattedArray(modificationsBlock), getFormattedArray(molsBlock), getFormattedArray(allostericPlexes), getFormattedArray(allostericOmnis), \
+        getFormattedArray(reactionRulesBlock), getFormattedArray(dimerizationGenBlock), getFormattedArray(omniGenBlock), getFormattedArray(uniMolGenBlock), \
+        getFormattedArray(explicitSpeciesBlock), getFormattedArray(speciesStreamBlock)
+
+def returnNewIndex(lineOfText, blockObjData):
+    key = lineOfText.strip().strip("=").strip()
+
+    for ndx in range(len(blockObjData)):
+        if key == blockObjData[ndx][0]:
+            return ndx
+    raise Exception("Section title '%s' cannot be found" % key)
+
+    return -1
+
+def barf(msg):
+    sys.stderr.write(msg + '\n')
+    sys.stderr.write("Crashing....\n")
+    sys.exit(1)
+
+def printerror(msg):
+    sys.stderr.write(msg + '\n')
+    return
+
+def getFormattedArray( arrayToFormat ):
+    tmpArray = getBalancedArray( arrayToFormat )
+    tmpString = "".join( tmpArray )
+    if tmpString == "": 
+        return []
+
+    try:
+        assert( tmpString[-1] == ";" )
+    except:
+        raise Exception("Error parsing block '%s'.  Line does not end in ';'." % repr(arrayToFormat))
+
+    tmpArray = tmpString.split(";") 
+    tmpArray.pop() # Last entry is blank
+    tmpArray = [tok + ";" for tok in tmpArray]
+    
+    return tmpArray
+    
+
+def getBalancedArray( arrayToBalance ):
+    if not EachEntryIsParenBalanced( arrayToBalance ):
+    # Combine the ..., ndx_i, ndx_(i+1) where ndx_i is the smallest i not balanced
+        return getBalancedArray( GetIncrementallyBetterArray( arrayToBalance ) )
+    else:
+        return arrayToBalance
+
+def GetIncrementallyBetterArray( anArray ):
+
+    values = [ StringIsParenBalenced(x) for x in anArray]
+
+    # This is correct: this function should only be used if the array does not pass
+    # EachEntryIsParenBalanced.
+    assert( False in values)
+
+    badNdx = values.index( False )
+    
+    combinedTokens = anArray[badNdx] + anArray[badNdx + 1]
+
+    returnArray = anArray[ : badNdx]
+    returnArray.append( combinedTokens )
+    returnArray.extend( anArray[badNdx + 2 : ] )
+    
+    return returnArray
+    
+def EachEntryIsParenBalanced( array ):
+    entries = [ StringIsParenBalenced(x) for x in array ]
+    
+    returnVal = True
+    for val in entries:
+        returnVal = returnVal and val
+
+    return returnVal
+
+def StringIsParenBalenced(line):
+    return ( line.count("(") == line.count(")") and 
+             line.count("[") == line.count("]") and 
+             line.count("{") == line.count("}") )

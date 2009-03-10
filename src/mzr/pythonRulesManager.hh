@@ -12,9 +12,12 @@ namespace mzr
   {
   public:
     PythonRulesManager();
+    ~PythonRulesManager();
 
     std::string getXmlString() const;
 
+    std::string 
+    addRulesFile( const std::string& rulesFile);
     void addParameterStatement(const std::string& paramLine);
     void addModificationStatement(const std::string& modLine);
     void addMolsStatement(const std::string& molsLIne);
@@ -28,26 +31,26 @@ namespace mzr
     bool isInitialized() const
     {
       return _isInitialized;
-
-
     }
 
   private:
 
-      bool _isInitialized;
+    bool _isInitialized;
 
-      char* paramPythonFunctionName;
-      char* modPythonFunctionName;
-      char* molPythonFunctionName;
-      char* alloPlexPythonFunctionName;
-      char* alloOmniPythonFunctionName;
-      char* dimerGenPythonFunctionName;
-      char* omniGenPythonFunctionName;
-      char* uniMolGenPythonFunctionName;
-      char* speciesStreamPythonFunctionName;
+    char* getFileStringFunctionName;
+    char* addWholeRulesFileFunctionName;
 
-
-
+    char* paramPythonFunctionName;
+    char* modPythonFunctionName;
+    char* molPythonFunctionName;
+    char* alloPlexPythonFunctionName;
+    char* alloOmniPythonFunctionName;
+    char* dimerGenPythonFunctionName;
+    char* omniGenPythonFunctionName;
+    char* uniMolGenPythonFunctionName;
+    char* speciesStreamPythonFunctionName;
+    char* explicitSpeciesPythonFunctionName;
+    char* singleStringTuple;
 
     PyObject* mzrFileConverterClassInst;
 

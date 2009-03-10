@@ -9,68 +9,26 @@ namespace mzr
 
   void PythonRulesManager::DEBUG_doInterestingStuff()
   {
-    PyObject *pName, *pModule, *pDict, *pFunc, *pValue;
-    PyObject *pFileName, *pArgs;
-
-    Py_Initialize();
-
-    pName = PyString_FromString( "moleculizer" );
-    pModule = PyImport_Import( pName );
-    pDict = PyModule_GetDict( pModule );
-    pFunc = PyDict_GetItemString( pDict, "MoleculizerRulesFile" );
     
-    pFileName = PyString_FromString("FOO");
-
-     if (PyCallable_Check( pFunc ) )
-       {
-
-	 PyErr_Print();
-	 // This shoudl be an instance of MoleculizerRulesFile
-
-	 pArgs = PyTuple_New(1);
-	 PyTuple_SetItem(pArgs, 0, pFileName);
-
-	 pValue = PyObject_CallObject(pFunc, pArgs);
-	 PyErr_Print();
-	 
-	 PyObject_CallMethod(pValue, "DEBUGPRINT", NULL);
-	 PyErr_Print();
-
-	 
-       }
-     else
-       {
-	 std::cout << "Nope!!!" << std::endl;
-       }
-
-
-     Py_DECREF( pName );
-     Py_DECREF( pFileName );
-     Py_DECREF( pArgs );
-     Py_DECREF( pValue );
-
-
-//       {
-// 	pValue = PyObject_CallObject( pFunc, pValue);
-// 	std::cout << "Tan of 100 is " << PyFloat_As( pValue ) << std::endl;
-
-// 	// Py_DECREF(pValue);
-	
-//       }
-//     else
-//       {
-// 	std::cout << "Error!" << std::endl;
-// 	PyErr_Print();
-//       }
-    
-
-    // Py_DECREF( pModule );
-    // Py_DECREF( pName);
-
-    //    Py_Finalize();
-    
+    PyObject_CallMethod(mzrFileConverterClassInst, "DEBUGPRINT", NULL);
     return;
+  }
+
+  PythonRulesManager::~PythonRulesManager()
+  {
+    delete paramPythonFunctionName;
+    delete molPythonFunctionName;
+    delete alloPlexPythonFunctionName;
+    delete alloOmniPythonFunctionName;
+    delete dimerGenPythonFunctionName;
+    delete omniGenPythonFunctionName;
+    delete uniMolGenPythonFunctionName;
+    delete speciesStreamPythonFunctionName;
+    delete singleStringTuple;
+    delete getFileStringFunctionName;
+    delete addWholeRulesFileFunctionName;
     
+    // PyDecref( mzrFileConverterClassInst );
   }
 
 
@@ -78,56 +36,89 @@ namespace mzr
     :
     _isInitialized( true )
   {
-      paramPythonFunctionName = new char[256];
-      molPythonFunctionName = new char[256];
-      alloPlexPythonFunctionName = new char[256];
-      alloOmniPythonFunctionName = new char[256];
-      dimerGenPythonFunctionName = new char[256];
-      omniGenPythonFunctionName = new char[256];
-      uniMolGenPythonFunctionName = new char[256];
-      speciesStreamPythonFunctionName = new char[256];
+    paramPythonFunctionName = new char[256];
+    modPythonFunctionName = new char[256];
+    molPythonFunctionName = new char[256];
+    alloPlexPythonFunctionName = new char[256];
+    alloOmniPythonFunctionName = new char[256];
+    dimerGenPythonFunctionName = new char[256];
+    omniGenPythonFunctionName = new char[256];
+    uniMolGenPythonFunctionName = new char[256];
+    speciesStreamPythonFunctionName = new char[256];
+    singleStringTuple = new char[256];
+    getFileStringFunctionName = new char[256];
+    addWholeRulesFileFunctionName = new char[256];
+    explicitSpeciesPythonFunctionName = new char[256];
 
-      strcpy( paramPythonFunctionName, "addParameterStatement");
-      strcpy( modPythonFunctionName, "addModificationStatement");
-      strcpy( molPythonFunctionName, "addMolStatement");
-      strcpy( alloPlexPythonFunctionName, "addAllostericPlexStatement");
-      strcpy( alloOmniPythonFunctionName, "addOmniGenStatement");
-      strcpy( dimerGenPythonFunctionName, "addDimerizationGenStatement");
-      strcpy( omniGenPythonFunctionName, "addOmniGenStatement");
-      strcpy( uniMolGenPythonFunctionName, "addUniMolGenStatement");
-      strcpy( speciesStreamPythonFunctionName, "addSpeciesStreamStatement");
+    strcpy( paramPythonFunctionName, "addParameterStatement");
+    strcpy( modPythonFunctionName, "addModificationStatement");
+    strcpy( molPythonFunctionName, "addMolStatement");
+    strcpy( alloPlexPythonFunctionName, "addAllostericPlexStatement");
+    strcpy( alloOmniPythonFunctionName, "addOmniGenStatement");
+    strcpy( dimerGenPythonFunctionName, "addDimerizationGenStatement");
+    strcpy( omniGenPythonFunctionName, "addOmniGenStatement");
+    strcpy( uniMolGenPythonFunctionName, "addUniMolGenStatement");
+    strcpy( speciesStreamPythonFunctionName, "addSpeciesStreamStatement");
+    strcpy( getFileStringFunctionName, "writeToString");
+    strcpy( addWholeRulesFileFunctionName, "addWholeRulesFile");
+    strcpy( explicitSpeciesPythonFunctionName, "addExplicitSpeciesStatement" );
+    strcpy (singleStringTuple, "s");
 
-    std::cout << "Hello from the Python Rules Manager" << std::endl;
-    std::cout << "Begin executing python experiments in the constructor()..." << std::endl;
-    std::cout << "##############################" << std::endl;
+    PyObject *pName, *pModule, *pDict, *pFunc, *pArgs, *pFileName;
+
+    Py_Initialize();
+
+    pName = PyString_FromString( "moleculizer" );
+    pFileName = PyString_FromString( "dmp_tmp_out" );
+
+    pModule = PyImport_Import( pName );
+    pDict = PyModule_GetDict( pModule );
+    pFunc = PyDict_GetItemString( pDict, "MoleculizerRulesFile" );
+
+    pArgs = PyTuple_New(1);
+    PyTuple_SetItem(pArgs, 0, pFileName);
+
+    mzrFileConverterClassInst = PyObject_CallObject(pFunc, pArgs);
 
     this->DEBUG_doInterestingStuff();
-
-
-    std::cout << "##############################" << std::endl;
-
   }
 
   std::string
   PythonRulesManager::getXmlString() const
   {
-    return std::string("");
+
+    PyErr_Print();
+
+    PyObject* fileAsString;
+
+    if (!isInitialized() ) throw std::exception();
+    fileAsString = PyObject_CallMethod(mzrFileConverterClassInst, getFileStringFunctionName, NULL);
+
+    return std::string(PyString_AsString(fileAsString));
   }
 
-
+  std::string 
+  PythonRulesManager::addRulesFile( const std::string& rulesFile)
+  {
+    if( !isInitialized() ) throw std::exception();
+    PyErr_Print();
+    PyObject_CallMethod( mzrFileConverterClassInst, addWholeRulesFileFunctionName, singleStringTuple, rulesFile.c_str());
+    PyErr_Print();
+    return getXmlString();
+  }
 
   void PythonRulesManager::addParameterStatement(const std::string& paramLine)
   {
     if (!isInitialized() ) throw std::exception();
 
-    PyObject_CallMethod(mzrFileConverterClassInst, paramPythonFunctionName, "s", paramLine);
+    PyObject_CallMethod(mzrFileConverterClassInst, paramPythonFunctionName, singleStringTuple, paramLine.c_str());
   }
 
   void PythonRulesManager::addModificationStatement(const std::string& modLine)
   {
     if (!isInitialized() ) throw std::exception();
 
-    PyObject_CallMethod(mzrFileConverterClassInst, modPythonFunctionName, "addModificationStatement", "s", modLine);
+    PyObject_CallMethod(mzrFileConverterClassInst, modPythonFunctionName, singleStringTuple, modLine.c_str());
 
   }
 
@@ -135,7 +126,7 @@ namespace mzr
   {
     if (!isInitialized() ) throw std::exception();
 
-    PyObject_CallMethod(mzrFileConverterClassInst, molPythonFunctionName, "s", molsLIne);
+    PyObject_CallMethod(mzrFileConverterClassInst, molPythonFunctionName, singleStringTuple, molsLIne.c_str());
 
   }
 
@@ -143,7 +134,7 @@ namespace mzr
   {
     if (!isInitialized() ) throw std::exception();
 
-    PyObject_CallMethod(mzrFileConverterClassInst, alloPlexPythonFunctionName, "s", alloPlexLine);
+    PyObject_CallMethod(mzrFileConverterClassInst, alloPlexPythonFunctionName, singleStringTuple, alloPlexLine.c_str());
 
   }
 
@@ -152,7 +143,7 @@ namespace mzr
 
     if (!isInitialized() ) throw std::exception();
 
-    PyObject_CallMethod(mzrFileConverterClassInst, alloOmniPythonFunctionName, "s", alloOmniLine);
+    PyObject_CallMethod(mzrFileConverterClassInst, alloOmniPythonFunctionName, singleStringTuple, alloOmniLine.c_str());
 
   }
 
@@ -160,28 +151,28 @@ namespace mzr
   {
     if (!isInitialized() ) throw std::exception();
 
-    PyObject_CallMethod(mzrFileConverterClassInst, dimerGenPythonFunctionName, "s", dimerGenLine);
+    PyObject_CallMethod(mzrFileConverterClassInst, dimerGenPythonFunctionName, singleStringTuple, dimerGenLine.c_str());
   }
 
   void PythonRulesManager::addOmniGenStatement(const std::string& omniGenLine)
   {
     if (!isInitialized() ) throw std::exception();
 
-    PyObject_CallMethod(mzrFileConverterClassInst, omniGenPythonFunctionName, "s", omniGenLine);
+    PyObject_CallMethod(mzrFileConverterClassInst, omniGenPythonFunctionName, singleStringTuple, omniGenLine.c_str());
   }
 
   void PythonRulesManager::addUniMolGenStatement(const std::string& uniMolGenLine)
   {
     if (!isInitialized() ) throw std::exception();
 
-    PyObject_CallMethod(mzrFileConverterClassInst, uniMolGenPythonFunctionName, "s", uniMolGenLine);
+    PyObject_CallMethod(mzrFileConverterClassInst, uniMolGenPythonFunctionName, singleStringTuple, uniMolGenLine.c_str());
   }
 
   void PythonRulesManager::addSpeciesStreamStatement(const std::string& speciesStreamLine)
   {
     if (!isInitialized() ) throw std::exception();
 
-    PyObject_CallMethod(mzrFileConverterClassInst, speciesStreamPythonFunctionName, "s", speciesStreamLine );
+    PyObject_CallMethod(mzrFileConverterClassInst, speciesStreamPythonFunctionName, singleStringTuple, speciesStreamLine.c_str() );
   }
 
 

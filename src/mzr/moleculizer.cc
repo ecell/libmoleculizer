@@ -206,7 +206,11 @@ namespace mzr
     
     void moleculizer::attachFileName( const std::string& filename )
     {
-        theParser.parse_file( filename );
+
+      std::string file = rulesManager.addRulesFile(filename );
+
+      // theParser.parse_file( filename );
+      theParser.parse_memory( file);
         if ( !theParser ) throw utl::dom::noDocumentParsedXcpt();
         this->attachDocument( theParser.get_document() );
     }
@@ -912,7 +916,62 @@ namespace mzr
         }
                 
     }
+
+  
+  void 
+  moleculizer::addParameterStatement(const std::string& statement )
+  {
+    rulesManager.addParameterStatement( statement );
+  }
+
+  void 
+  moleculizer::addModificationStatement( std::string& statement)
+  {
+    rulesManager.addModificationStatement( statement );
+  }
+
+  void 
+  moleculizer::addMolsStatement( std::string& statement)
+  {
+    rulesManager.addMolsStatement( statement );
+  }
+  
+  void 
+  moleculizer::addAllostericPlexStatement( std::string& statement)
+  {
+    rulesManager.addAllostericPlexStatement( statement );
+  }
+
+  void 
+  moleculizer::addAllostericOmniStatement( std::string& statement)
+  {
+    rulesManager.addAllostericOmniStatement( statement );
+  }
+
+  void 
+  moleculizer::addDimerizationGenStatement( std::string& statement)
+  {
+    rulesManager.addDimerizationGenStatement( statement );
+  }
+  
+  void 
+  moleculizer::addOmniGenStatement( std::string& statement)
+  {
+    rulesManager.addOmniGenStatement( statement );
+  }
+  
+  void 
+  moleculizer::addUniMolGenStatement( std::string& statement)
+  {
+    rulesManager.addUniMolGenStatement( statement );
+  }
+  
+  void 
+  moleculizer::addSpeciesStreamStatement( std::string& statement)
+  {
+    rulesManager.addSpeciesStreamStatement( statement );
+  }
     
-    int moleculizer::DEFAULT_GENERATION_DEPTH = 0;
+  int moleculizer::DEFAULT_GENERATION_DEPTH = 0;
     
 }

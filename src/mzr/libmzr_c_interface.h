@@ -77,10 +77,15 @@ extern "C" {
     int setRateExtrapolation( moleculizer* handle, int extrapolation);
     // int debug_sayHello( moleculizer* handle);
 
-    int loadRulesFile(moleculizer* handle, char* fileName);
-    int loadRulesString( moleculizer* handle, char* file);
   
-    int expandNetwork( moleculizer* handle);
+    int loadXMLRulesFile(moleculizer* handle, char* fileName);
+    int loadXMLRulesString( moleculizer* handle, char* file);
+
+    int loadCommonRulesFile(moleculizer* handle, char* fileName);
+    int loadCommonRulesString( moleculizer* handle, char* file);
+  
+
+  int expandNetwork( moleculizer* handle);
 
 
     int getBoundedNetwork( moleculizer* handle, long maxNumSpecies, long maxNumReactions, species*** pSpeciesArray, int* pNumSpec, reaction*** pReactionArrry, int* pNumRxns);

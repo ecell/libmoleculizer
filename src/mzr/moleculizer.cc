@@ -204,30 +204,45 @@ namespace mzr
         }
     }
     
-    void moleculizer::attachFileName( const std::string& filename )
-    {
 
-      std::string file = rulesManager.addRulesFile(filename );
 
-      // theParser.parse_file( filename );
-      theParser.parse_memory( file);
-        if ( !theParser ) throw utl::dom::noDocumentParsedXcpt();
-        this->attachDocument( theParser.get_document() );
-    }
+
+  void moleculizer::loadXmlFileName( const std::string& filename )
+  {
+
+    theParser.parse_file( filename );
+    if ( !theParser ) throw utl::dom::noDocumentParsedXcpt();
+    this->loadParsedDocument( theParser.get_document() );
+  }
+
+  void moleculizer::loadCommonRulesFileName( const std::string& filename)
+  {
+    std::string parsedXmlFileAsString = rulesManager.addRulesFile( filename );
+    this->loadXmlString( parsedXmlFileAsString );
+  }
+  
+  void moleculizer::loadCommonRulesString( const std::string& commonRulesString)
+  {
     
-    void moleculizer::attachString( const std::string& documentAsString )
-    {
-        theParser.parse_memory( documentAsString );
-        if ( !theParser ) throw utl::dom::noDocumentParsedXcpt();
+    std::string parsedXmlFileAsString = rulesManager.addRulesFile( commonRulesString );
+    this->loadXmlString( parsedXmlFileAsString );
+
+    return;
+  }
+    
+  void moleculizer::loadXmlString( const std::string& documentAsString )
+  {
+    theParser.parse_memory( documentAsString );
+    if ( !theParser ) throw utl::dom::noDocumentParsedXcpt();
         
-        this->attachDocument( theParser.get_document() );
-    }
-    
-    bool
-    moleculizer::getModelHasBeenLoaded() const
-    {
-        return modelLoaded;
-    }
+    this->loadParsedDocument( theParser.get_document() );
+  }
+
+  bool
+  moleculizer::getModelHasBeenLoaded() const
+  {
+    return modelLoaded;
+  }
     
     void
     moleculizer::setModelHasBeenLoaded( bool value )
@@ -236,7 +251,7 @@ namespace mzr
     }
 
     void
-    moleculizer::attachDocument( xmlpp::Document* pDoc )
+    moleculizer::loadParsedDocument( xmlpp::Document* pDoc )
     {
         if ( getModelHasBeenLoaded() )
         {

@@ -27,6 +27,7 @@ namespace mzr
     delete singleStringTuple;
     delete getFileStringFunctionName;
     delete addWholeRulesFileFunctionName;
+    delete addWholeRulesStringFunctionName;
     
     // PyDecref( mzrFileConverterClassInst );
   }
@@ -48,6 +49,7 @@ namespace mzr
     singleStringTuple = new char[256];
     getFileStringFunctionName = new char[256];
     addWholeRulesFileFunctionName = new char[256];
+    addWholeRulesStringFunctionName = new char[256];
     explicitSpeciesPythonFunctionName = new char[256];
 
     strcpy( paramPythonFunctionName, "addParameterStatement");
@@ -61,6 +63,7 @@ namespace mzr
     strcpy( speciesStreamPythonFunctionName, "addSpeciesStreamStatement");
     strcpy( getFileStringFunctionName, "writeToString");
     strcpy( addWholeRulesFileFunctionName, "addWholeRulesFile");
+    strcpy( addWholeRulesFileFunctionName, "addWholeRulesString");
     strcpy( explicitSpeciesPythonFunctionName, "addExplicitSpeciesStatement" );
     strcpy (singleStringTuple, "s");
 
@@ -97,6 +100,8 @@ namespace mzr
     return std::string(PyString_AsString(fileAsString));
   }
 
+
+
   std::string 
   PythonRulesManager::addRulesFile( const std::string& rulesFile)
   {
@@ -106,6 +111,20 @@ namespace mzr
     PyErr_Print();
     return getXmlString();
   }
+
+
+  std::string
+  PythonRulesManager::addRulesString( const std::string& rulesString)
+  {
+    if( !isInitialized() ) throw std::exception();
+
+    PyErr_Print();
+    PyObject_CallMethod( mzrFileConverterClassInst, addWholeRulesStringFunctionName, singleStringTuple, rulesString.c_str());
+    PyErr_Print();
+
+    return getXmlString();
+  }
+
 
   void PythonRulesManager::addParameterStatement(const std::string& paramLine)
   {

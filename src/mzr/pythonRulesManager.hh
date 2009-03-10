@@ -18,6 +18,10 @@ namespace mzr
 
     std::string 
     addRulesFile( const std::string& rulesFile);
+    
+    std::string 
+    addRulesString( const std::string& rulesString);
+
     void addParameterStatement(const std::string& paramLine);
     void addModificationStatement(const std::string& modLine);
     void addMolsStatement(const std::string& molsLIne);
@@ -39,6 +43,7 @@ namespace mzr
 
     char* getFileStringFunctionName;
     char* addWholeRulesFileFunctionName;
+    char* addWholeRulesStringFunctionName;
 
     char* paramPythonFunctionName;
     char* modPythonFunctionName;

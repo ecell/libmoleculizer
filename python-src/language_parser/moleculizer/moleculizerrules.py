@@ -41,6 +41,25 @@ class MoleculizerRulesFile:
     def DEBUGPRINT(self):
         print "Hello, from moleculizer!!!!!!"
 
+    def addWholeRulesString( self, rulesString):
+        lines = rulesString.split("\n")
+
+        parameterBlock, modificationsBlock, molsBlock, allostericPlexes, allostericOmnis,\
+                        reactionRulesBlock, dimerizationGenBlock, omniGenBlock, uniMolGenBlock, \
+                        explicitSpeciesBlock, speciesStreamBlock = parseBlockTypesFromRulesFile( lines )
+
+        self.addParameterBlock( parameterBlock )
+        self.addModicationsBlock( modificationsBlock )
+        self.addMolsBlock( molsBlock )
+        self.addAllostericPlexesBlock( allostericPlexes )
+        self.addAllostericOmnisBlock( allostericOmnis )
+        self.addReactionRulesBlock( reactionRulesBlock, dimerizationGenBlock, \
+                                          omniGenBlock, uniMolGenBlock )
+        self.addExplicitSpeciesBlock( explicitSpeciesBlock )
+        self.addSpeciesStreamsBlock( speciesStreamBlock )
+
+        return
+
     def addWholeRulesFile(self, rulesFile):
         pdb.set_trace()
 

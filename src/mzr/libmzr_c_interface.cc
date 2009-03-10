@@ -120,7 +120,8 @@ int setRateExtrapolation( moleculizer* handle, int extrapolation)
     return SUCCESS;
 }
 
-int loadRulesFile(moleculizer* handle, char* fileName)
+
+int loadCommonRulesFile(moleculizer* handle, char* fileName)
 {
     // This function takes a string to a file containing an xml rules 
     // description for the system and loads it into mzr::moleculizer.
@@ -135,7 +136,7 @@ int loadRulesFile(moleculizer* handle, char* fileName)
     
     try
     {
-        convertCMzrPtrToMzrPtr( handle )->attachFileName( std::string(fileName) );
+        convertCMzrPtrToMzrPtr( handle )->loadCommonRulesFileName( std::string(fileName) );
         return SUCCESS;
     }
     catch(utl::dom::noDocumentParsedXcpt xcpt)
@@ -168,7 +169,7 @@ int loadRulesFile(moleculizer* handle, char* fileName)
     
 }
 
-int loadRulesString( moleculizer* handle, char* rulesCstring)
+int loadCommonRulesString( moleculizer* handle, char* rulesCstring)
 {
     // This function takes a string containing a rules definition of the file and loads 
     // it into the provided moleculizer object.
@@ -181,7 +182,93 @@ int loadRulesString( moleculizer* handle, char* rulesCstring)
     std::string rules( rulesCstring );
     try
     {
-        convertCMzrPtrToMzrPtr( handle )->attachString( rules );
+        convertCMzrPtrToMzrPtr( handle )->loadCommonRulesString( rules );
+        return SUCCESS;
+    }
+    catch(utl::dom::noDocumentParsedXcpt xcpt)
+    {
+        xcpt.warn();
+        return DOCUMENT_UNPARSABLE;
+    }
+    catch(utl::modelAlreadyLoadedXcpt xcpt)
+    {
+        xcpt.warn();
+        return RULES_ALREADY_LOADED;
+    }
+    catch(utl::xcpt xcpt)
+    {
+        xcpt.warn();
+        return UNKNOWN_ERROR;
+    }
+    catch(...)
+    {
+        return UNKNOWN_ERROR;
+    }
+    
+}
+
+int loadXMLRulesFile(moleculizer* handle, char* fileName)
+{
+    // This function takes a string to a file containing an xml rules 
+    // description for the system and loads it into mzr::moleculizer.
+    // See documentation for a specification of model files as well as
+    // examples.
+    
+    enum LOCAL_ERROR_TYPE { SUCCESS = 0,
+                            UNKNOWN_ERROR = 1, 
+                            DOCUMENT_UNPARSABLE = 2,
+                            RULES_ALREADY_LOADED = 3,
+                            FILE_NOT_FOUND = 4};
+    
+    try
+    {
+        convertCMzrPtrToMzrPtr( handle )->loadXmlFileName( std::string(fileName) );
+        return SUCCESS;
+    }
+    catch(utl::dom::noDocumentParsedXcpt xcpt)
+    {
+        xcpt.warn();
+        return DOCUMENT_UNPARSABLE;
+    }
+    catch(utl::modelAlreadyLoadedXcpt xcpt)
+    {
+        xcpt.warn();
+        return RULES_ALREADY_LOADED;
+    }
+    catch(utl::dom::xcpt)
+    {
+        return DOCUMENT_UNPARSABLE;
+    }
+    catch(utl::xcpt xcpt)
+    {
+        xcpt.warn();
+        return UNKNOWN_ERROR;
+    }
+    catch(xmlpp::internal_error x)
+    {
+        return FILE_NOT_FOUND;
+    }
+    catch(...)
+    {
+        return UNKNOWN_ERROR;
+    }
+    
+}
+
+int loadXMLRulesString( moleculizer* handle, char* rulesCstring)
+{
+    // This function takes a string containing a rules definition of the file and loads 
+    // it into the provided moleculizer object.
+    
+    enum LOCAL_ERROR_TYPE { SUCCESS = 0,
+                            UNKNOWN_ERROR=1,
+                            DOCUMENT_UNPARSABLE = 2,
+                            RULES_ALREADY_LOADED = 3};
+    
+    std::string rules( rulesCstring );
+    try
+    {
+        convertCMzrPtrToMzrPtr( handle )->loadXmlString( rules );
         return SUCCESS;
     }
     catch(utl::dom::noDocumentParsedXcpt xcpt)

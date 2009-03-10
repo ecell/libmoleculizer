@@ -65,9 +65,15 @@ namespace mzr
         
     public:
 
-        void attachFileName( const std::string& aFileName );
-        void attachString( const std::string& documentAsString );
-        void attachDocument( xmlpp::Document* pDoc );
+        void loadXmlFileName( const std::string& aFileName );
+        void loadXmlString( const std::string& documentAsString );
+
+        void loadCommonRulesFileName(const std::string& aFileName );
+        void loadCommonRulesString(const std::string& commonRulesAsString);
+
+        void loadParsedDocument( xmlpp::Document* pDoc );
+
+
 
         bool getModelHasBeenLoaded() const;
 

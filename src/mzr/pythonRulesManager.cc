@@ -63,7 +63,7 @@ namespace mzr
     strcpy( speciesStreamPythonFunctionName, "addSpeciesStreamStatement");
     strcpy( getFileStringFunctionName, "writeToString");
     strcpy( addWholeRulesFileFunctionName, "addWholeRulesFile");
-    strcpy( addWholeRulesFileFunctionName, "addWholeRulesString");
+    strcpy( addWholeRulesStringFunctionName, "addWholeRulesString");
     strcpy( explicitSpeciesPythonFunctionName, "addExplicitSpeciesStatement" );
     strcpy (singleStringTuple, "s");
 

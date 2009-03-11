@@ -42,6 +42,8 @@ class MoleculizerRulesFile:
         print "Hello, from moleculizer!!!!!!"
 
     def addWholeRulesString( self, rulesString):
+
+        print "Reading file '%s' " % rulesString
         lines = rulesString.split("\n")
 
         parameterBlock, modificationsBlock, molsBlock, allostericPlexes, allostericOmnis,\
@@ -61,8 +63,8 @@ class MoleculizerRulesFile:
         return
 
     def addWholeRulesFile(self, rulesFile):
-        pdb.set_trace()
-
+        print "reading file name '%s'" % rulesFile
+        
         parameterBlock, modificationsBlock, molsBlock, allostericPlexes, allostericOmnis, \
                         reactionRulesBlock, dimerizationGenBlock, omniGenBlock, uniMolGenBlock, \
                         explicitSpeciesBlock, speciesStreamBlock = parseBlockTypesFromRulesFile( open(rulesFile).readlines() )
@@ -490,7 +492,11 @@ def parseBlockTypesFromRulesFile(textRulesFile):
 
     currentDmp = []
 
-    assert( textRulesFile[0].startswith("="))
+    try:
+        assert( textRulesFile[0].startswith("="))
+    except:
+        raise Exception("Line '%s' should start with a '=', but does not." % textRulesFile[0])
+       
 
     blockObjNdx = -1
     for line in textRulesFile:

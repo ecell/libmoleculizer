@@ -224,7 +224,7 @@ namespace mzr
   void moleculizer::loadCommonRulesString( const std::string& commonRulesString)
   {
     
-    std::string parsedXmlFileAsString = rulesManager.addRulesFile( commonRulesString );
+    std::string parsedXmlFileAsString = rulesManager.addRulesString( commonRulesString );
     this->loadXmlString( parsedXmlFileAsString );
 
     return;

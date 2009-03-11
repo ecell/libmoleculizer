@@ -132,11 +132,11 @@ namespace mzr
         xmlpp::Document*
         makeDomOutput( bool verboseXML, CachePosition networkSizeRange ) throw( std::exception );
 
-    void 
-    loadGeneratedNetwork( xmlpp::Element* pGeneratedNetworkElmt);
+      void 
+      loadGeneratedNetwork( xmlpp::Element* pGeneratedNetworkElmt);
 
-        void writeOutputFile( const std::string& fileName, bool verbose = false);
-        void writeOutputFile( const std::string& fileName, bool verbose, CachePosition pos);
+      void writeOutputFile( const std::string& fileName, bool verbose = false);
+      void writeOutputFile( const std::string& fileName, bool verbose, CachePosition pos);
         
     protected:
         void setModelHasBeenLoaded( bool value );

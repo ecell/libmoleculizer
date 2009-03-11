@@ -38,10 +38,50 @@
 
 using namespace std;
 
+enum RunMode { Full = 0,
+               BoundedRun = 1,
+               Iterations = 2 };
 
-// This should be refactored, as it is clearly getting idiotic...
+
+struct inputArgsStruct
+{
+    bool fileDefined;
+    bool fileIsXml;
+    bool fileIsRules;
+    std::string fileName;
+
+    bool hasOutputFile;
+    std::string outputFile;
+
+    int maxSpecies;
+    int maxRxns;
+    int numberIters;
+
+    bool verbose;
+    bool quiet;
+
+    int runMode;
+
+
+    inputArgsStruct()
+        :
+        fileDefined( false ),
+        fileIsXml( false ),
+        fileIsRules(false ),
+        fileName( "" ),
+        hasOutputFile( false ),
+        outputFile( "" ),
+        maxSpecies( -1 ),
+        maxRxns( -1 ),
+        verbose( false ),
+        quiet( false ),
+        runMode( Full )
+    {}
+};
+
+
 void
-processCommandLineArgs( int argc, char* argv[], std::string& theFileName, int& number, int& printOutput, std::string& theOutputFileName, int& maxSpecies, int& maxRxns);
+processCommandLineArgs( int argc, char* argv[], inputArgsStruct& inputArgs);
 
 void
 displayHelpAndExitProgram();
@@ -49,6 +89,11 @@ displayHelpAndExitProgram();
 bool getUninitializedSpecies( const mzr::moleculizer& moleculizerRef, std::string& speciesName);
 
 void printAllSpeciesStreams(mzr::moleculizer& theMolzer);
+
+void runFullRunMoleculizer( mzr::moleculizer& mzr, const inputArgsStruct& inputArgsStruct);
+void runIterationsMoleculizer( mzr::moleculizer& mzr, const inputArgsStruct& inputArgsStruct);
+void runBoundedRunMoleculizer( mzr::moleculizer& mzr, const inputArgsStruct& inputArgsStruct);
+
 
 void printStreamByName( mzr::moleculizer& refMolzer, const std::string& streamName);
 void printStreamByTag( mzr::moleculizer& refMolzer, const std::string& streamName);
@@ -63,123 +108,117 @@ createBoundedNetwork(mzr::moleculizer& refMolzer, int maxSpec, int maxRxns);
 void createFullNetwork(mzr::moleculizer& refMolzer);
 void doNIterations(mzr::moleculizer& refMolzer, int number);
 
+void ensureConsistentInputArgs( const inputArgsStruct& inputArgs)
+{
+    return;
+}
+
+// Nasty little global variable.
+mzr::moleculizer::CachePosition pos;
+
 int main(int argc, char* argv[])
 {
 
-  std::string fileName;
-  std::string outputFileName("");
-  int number = -1;
-  int printOutput = 0;
-
-  int maxSpecies = -1;
-  int maxRxns = -1;
-
-  enum RunMode { Full = 0,
-                 BoundedRun = 1,
-                 Iterations = 2 };
-
-  int modeRun = -1;
-
-  processCommandLineArgs(argc, argv, fileName, number, printOutput, outputFileName, maxSpecies, maxRxns);
+  inputArgsStruct inputArgs;
+  processCommandLineArgs(argc, argv, inputArgs);
+  ensureConsistentInputArgs( inputArgs );
 
   mzr::moleculizer theMoleculizer;
-  theMoleculizer.loadXmlFileName( fileName );
+  
+  if (inputArgs.fileIsXml)
+  {
+      theMoleculizer.loadXmlFileName( inputArgs.fileName );
+  }
+  else if (inputArgs.fileIsRules)
+  {
+      theMoleculizer.loadCommonRulesFileName( inputArgs.fileName );
+  }
+  else
+  {
+      throw std::exception();
+  }
 
-  std::cout << "There are initially " << theMoleculizer.getTotalNumberSpecies() << " species and " 
-            << theMoleculizer.getTotalNumberReactions() << " reactions. " << std::endl;
 
-  if( printOutput )
+  if ( ! inputArgs.quiet )
+  {
+      std::cout << "There are initially " << theMoleculizer.getTotalNumberSpecies() << " species and " 
+                << theMoleculizer.getTotalNumberReactions() << " reactions. " << std::endl;
+  }
+
+  
+  if( !inputArgs.quiet && inputArgs.verbose )
   {
       printAllSpeciesByID(theMoleculizer);
   }
 
-
-  mzr::moleculizer::CachePosition pos;
-  if (number < 0)
+  if (inputArgs.runMode == Full)
   {
-
-      if (maxSpecies > 0 || maxRxns > 0)
-      {
-          
-          modeRun = BoundedRun;
-
-          std::cout << "Creating bounded network with (maxSpec, maxRxn) = ( " ;
-
-          if (maxSpecies > 0 ) std::cout << maxSpecies;
-          else std::cout << "inf";
-
-          std::cout << ", ";
-
-          if (maxRxns > 0 ) std::cout << maxRxns;
-          else std::cout << "inf";
-
-          std::cout << ") " << std::endl;
-
-          pos = createBoundedNetwork( theMoleculizer, maxSpecies, maxRxns );
-      }
-      else
-      {
-
-          modeRun = Full;
-
-          std::cout << "Expanding whole network..." << std::endl;
-          createFullNetwork( theMoleculizer );
-      }
-
+      runFullRunMoleculizer( theMoleculizer, inputArgs);
+  }
+  else if (inputArgs.runMode == Iterations )
+  {
+      runIterationsMoleculizer( theMoleculizer, inputArgs);
+  }
+  else if (inputArgs.runMode == BoundedRun )
+  {
+      runBoundedRunMoleculizer( theMoleculizer, inputArgs);
   }
   else
   {
-      modeRun = Iterations;
-      doNIterations( theMoleculizer, number );
+      std::cerr << "Unknown run mode in input arguments." <<std::endl;
+      throw std::exception();
   }
 
-  std::cout << "################################################" << '\n';
-  
-  std::cout << "After processing: \n" ;
 
-  if (modeRun == Full || modeRun == Iterations)
-   {
-       std::cout << "There are " 
-                 << theMoleculizer.getTotalNumberReactions() << " reactions and " 
-                 << theMoleculizer.getTotalNumberSpecies() << " species in " 
-                 << theMoleculizer.getNumberOfPlexFamilies() << " families in the network." << std::endl;
-   }
-   else
-   {
-       int numRxns = std::distance(theMoleculizer.theDeltaReactionList.begin(), pos.second);
-       int numSpecies = std::distance(theMoleculizer.theDeltaSpeciesList.begin(), pos.first);
-       std::cout << "There are " 
-                 << numSpecies << " species and " 
-                 << numRxns<< " reactions in the bounded network.  " << '\n'
-                 << "Should be bounded by " << maxSpecies << " species and "
-                 << maxRxns << " reactions."
-                 << std::endl;
-   }
+  if (!inputArgs.quiet)
+  {
+      std::cout << "################################################" << '\n';
+      std::cout << "After processing: \n" ;
 
-   if (printOutput)
-   {
-       std::cout << "################################################" << '\n';
-       printAllSpeciesStreams(theMoleculizer);
-       std::cout << "################################################" << '\n';
-       printAllSpeciesByName(theMoleculizer);
-       std::cout << "################################################" << '\n';
-       printAllSpeciesByID(theMoleculizer);
-       std::cout << "################################################" << '\n';
-       printAllReactions(theMoleculizer);
-       std::cout << "################################################" << '\n';
-   }
+      if (inputArgs.runMode == Full || inputArgs.runMode == Iterations)
+      {
+          std::cout << "There are " 
+                    << theMoleculizer.getTotalNumberReactions() << " reactions and " 
+                    << theMoleculizer.getTotalNumberSpecies() << " species in " 
+                    << theMoleculizer.getNumberOfPlexFamilies() << " families in the network." << std::endl;
+      }
+      else
+      {
+          int numRxns = std::distance(theMoleculizer.theDeltaReactionList.begin(), pos.second);
+          int numSpecies = std::distance(theMoleculizer.theDeltaSpeciesList.begin(), pos.first);
+          std::cout << "There are " 
+                    << numSpecies << " species and " 
+                    << numRxns<< " reactions in the bounded network.  " << '\n'
+                    << "Should be bounded by " << inputArgs.maxSpecies << " species and "
+                    << inputArgs.maxRxns << " reactions."
+                    << std::endl;
+      }
 
-   if(outputFileName != "")
-   {
-       if (modeRun != BoundedRun)
-       {
-           theMoleculizer.writeOutputFile(outputFileName, true);
-       }
-       else
-       {
-           theMoleculizer.writeOutputFile( outputFileName, true, pos);
-       }
-   }
+      if (inputArgs.verbose)
+      {
+          std::cout << "################################################" << '\n';
+          printAllSpeciesStreams(theMoleculizer);
+          std::cout << "################################################" << '\n';
+          printAllSpeciesByName(theMoleculizer);
+          std::cout << "################################################" << '\n';
+          printAllSpeciesByID(theMoleculizer);
+          std::cout << "################################################" << '\n';
+          printAllReactions(theMoleculizer);
+          std::cout << "################################################" << '\n';
+      }
+  }
+
+  if ( inputArgs.hasOutputFile )
+  {
+        if (inputArgs.runMode != BoundedRun)
+        {
+            theMoleculizer.writeOutputFile(inputArgs.outputFile, true);
+        }
+        else
+        {
+            theMoleculizer.writeOutputFile(inputArgs.outputFile, true, pos);
+        }
+  }
 
   return 0;
   
@@ -264,7 +303,8 @@ bool getUninitializedSpecies( const mzr::moleculizer& moleculizerRef, std::strin
 }
 
 
-void processCommandLineArgs( int argc, char* argv[], std::string& mzrFile, int& number, int& print, std::string& outputFileName, int& maxSpec, int& maxRxns)
+
+void processCommandLineArgs( int argc, char* argv[], inputArgsStruct& theInputArgs)
 {
 
     bool file( false );
@@ -280,6 +320,15 @@ void processCommandLineArgs( int argc, char* argv[], std::string& mzrFile, int& 
 
     while ( 0 < argc )
     {
+        // Must have exactly one of -x/--xml or -f/--rulesfile
+        // -v/--verbose is verbose output
+        // -d/--dump  dump intermediate file (for rules->xml conversion)
+        // -q/--quiet quiet mode
+        // -o/--output write to an output file
+        // -s/--maxspecies Bound the generated network by s species
+        // -r/--maxreactions  Bound the generated network by r reactions
+        // -n Perform number of iterations on the network
+        
         std::string arg( *argv );
         argv++;
         argc--;
@@ -289,47 +338,115 @@ void processCommandLineArgs( int argc, char* argv[], std::string& mzrFile, int& 
             displayHelpAndExitProgram();
         }
 
-        if ( arg == "-f" || arg == "--file")
+        if ( arg == "-x" || arg == "--xml")
         {
-          mzrFile = utl::mustGetArg( argc, argv );
-	  file = true;
+
+            std::string xmlFileName;
+            xmlFileName = utl::mustGetArg( argc, argv );
+
+            if(theInputArgs.fileDefined)
+            {
+                std::cerr << "A rules file can only be added once..." << std::endl;
+                if (theInputArgs.fileIsXml)
+                {
+                    std::cerr << "XML rules file " << theInputArgs.fileName << " already defined." << std::endl;
+                }
+                else if (theInputArgs.fileIsRules )
+                {
+                    std::cerr << "MZR rules file " << theInputArgs.fileName << " already defined." << std::endl;
+                }
+                else
+                {
+                    std::cerr << "Inconsistant internal data. Unknown error." << std::endl;
+                }
+                
+                throw std::exception();
+                
+            }
+           
+            theInputArgs.fileDefined = true;
+            theInputArgs.fileIsXml = true;
+            theInputArgs.fileName = xmlFileName;
         }
-        if( arg == "-n" )
+
+
+
+        if ( arg == "-f" || arg == "--rulesfile")
+        {
+            std::string rulesFileName;
+            rulesFileName = utl::mustGetArg( argc, argv );
+
+
+            if(theInputArgs.fileDefined)
+            {
+                std::cerr << "A rules file can only be added once..." << std::endl;
+                if (theInputArgs.fileIsXml)
+                {
+                    std::cerr << "XML rules file " << theInputArgs.fileName << " already defined." << std::endl;
+                }
+                else if (theInputArgs.fileIsRules )
+                {
+                    std::cerr << "MZR rules file " << theInputArgs.fileName << " already defined." << std::endl;
+                }
+                else
+                {
+                    std::cerr << "Inconsistant internal data. Unknown error." << std::endl;
+                }
+                
+                throw std::exception();
+                
+            }
+
+            theInputArgs.fileDefined = true;
+            theInputArgs.fileIsRules = true;
+            theInputArgs.fileName = rulesFileName;
+        }
+
+        if( arg == "-n" || arg == "--numiters")
         {
             std::string numAsString = utl::mustGetArg( argc, argv);
-            number = utl::argMustBeNNInt( numAsString );
+            theInputArgs.numberIters = utl::argMustBeNNInt( numAsString );
+            theInputArgs.runMode = Iterations;
         }
-        if( arg == "-v" )
+
+        if( arg == "-v" || arg == "--verbose")
         {
-            print = 1;
+            theInputArgs.verbose = true;
+            theInputArgs.quiet = false;
         }
-        if(arg == "-q")
+        if(arg == "-q" || arg == "--quiet")
         {
-            print = 0;
+            theInputArgs.verbose = false;
+            theInputArgs.quiet = true;
         }
         if(arg == "-o")
         {
-            outputFileName = utl::mustGetArg( argc, argv );
+            theInputArgs.hasOutputFile = true;
+            theInputArgs.outputFile = utl::mustGetArg( argc, argv );
         }
-        if(arg == "-s")
+        if(arg == "-s" || arg == "--maxspecies" )
         {
-            std::string numAsString = utl::mustGetArg( argc, argv);
-            maxSpec = utl::argMustBeNNInt( numAsString );
-        }
-        if(arg == "-r")
-        {
-            std::string numAsString = utl::mustGetArg( argc, argv);
-            maxRxns = utl::argMustBeNNInt( numAsString );
-        }
-    }
 
-    if ( !file )
-    {
-      std::cerr << "Error, a file must be specified with an -f <FILE> parameter." << std::endl;
-      exit( 1 );
+            std::string numAsString = utl::mustGetArg( argc, argv);
+            int maxSpec = utl::argMustBeNNInt( numAsString );
+            
+            theInputArgs.maxSpecies = maxSpec;
+            theInputArgs.runMode = BoundedRun;
+        }
+        if(arg == "-r" || arg == "--maxreactions" )
+        {
+            std::string numAsString = utl::mustGetArg( argc, argv);
+            int maxRxns = utl::argMustBeNNInt( numAsString );
+
+            theInputArgs.maxRxns = maxRxns;
+            theInputArgs.runMode = BoundedRun;
+        }
     }
 
 }
+
+
+
 
 void printAllSpeciesByName(mzr::moleculizer& theMolzer)
 {
@@ -415,4 +532,39 @@ void doNIterations(mzr::moleculizer& refMolzer, int number)
           }
       }
 
+}
+
+
+void runFullRunMoleculizer( mzr::moleculizer& mzr, const inputArgsStruct& inputArgsStruct)
+{
+
+    std::cout << "Expanding whole network..." << std::endl;
+    createFullNetwork( mzr );
+}
+
+
+void runIterationsMoleculizer( mzr::moleculizer& mzr, const inputArgsStruct& inputArgsStruct)
+{
+    doNIterations( mzr, inputArgsStruct.numberIters );
+}
+
+void runBoundedRunMoleculizer( mzr::moleculizer& mzr, const inputArgsStruct& inputArgsStruct)
+{
+
+    if(!inputArgsStruct.quiet)
+    {
+        std::cout << "Creating bounded network with (maxSpec, maxRxn) = ( " ;
+
+        if ( inputArgsStruct.maxSpecies > 0 ) std::cout << inputArgsStruct.maxSpecies;
+        else std::cout << "inf";
+    
+        std::cout << ", ";
+
+        if (inputArgsStruct.maxRxns > 0 ) std::cout << inputArgsStruct.maxRxns;
+        else std::cout << "inf";
+
+        std::cout << ") " << std::endl;
+    }
+
+    pos = createBoundedNetwork( mzr, inputArgsStruct.maxSpecies, inputArgsStruct.maxRxns );
 }

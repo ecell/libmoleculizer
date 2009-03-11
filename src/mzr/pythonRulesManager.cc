@@ -72,7 +72,7 @@ namespace mzr
     Py_Initialize();
 
     pName = PyString_FromString( "moleculizer" );
-    pFileName = PyString_FromString( "dmp_tmp_out" );
+    pFileName = PyString_FromString( "/home/naddy/dmp_tmp_out" );
 
     pModule = PyImport_Import( pName );
     pDict = PyModule_GetDict( pModule );
@@ -96,6 +96,8 @@ namespace mzr
 
     if (!isInitialized() ) throw std::exception();
     fileAsString = PyObject_CallMethod(mzrFileConverterClassInst, getFileStringFunctionName, NULL);
+
+    PyErr_Print();
 
     return std::string(PyString_AsString(fileAsString));
   }

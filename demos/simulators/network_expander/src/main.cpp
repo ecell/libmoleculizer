@@ -83,7 +83,7 @@ int main(int argc, char* argv[])
   processCommandLineArgs(argc, argv, fileName, number, printOutput, outputFileName, maxSpecies, maxRxns);
 
   mzr::moleculizer theMoleculizer;
-  theMoleculizer.attachFileName( fileName );
+  theMoleculizer.loadXmlFileName( fileName );
 
   std::cout << "There are initially " << theMoleculizer.getTotalNumberSpecies() << " species and " 
             << theMoleculizer.getTotalNumberReactions() << " reactions. " << std::endl;

@@ -116,7 +116,11 @@ class MolsSection( MoleculizerSection ) :
                 defaultModElmt.addAttribute("name", "none")
             else:
                 modValueArray = parsedModificationSite.getModificationSiteSpecification().getList()
-                assert( len(modValueArray) == 1)
+                try:
+                    assert( len(modValueArray) > 1)
+                except:
+                    print "Error, in sectionmols::addModMolToXml for mol with line '%s'.  Mod Value Array '%s' should have more than one component..." % ( parsedMol.getOriginalLine(), str(modValueArray) )
+                    
                 defaultModification = modValueArray[0]
 
                 defaultModElmt = XmlObject("default-mod-ref", modSiteElmt)

@@ -203,7 +203,7 @@ int loadModelFile( moleculizer* handle, int argc, char* argv[])
     {
         if (strcmp( argv[argNum], "-f") == 0 && argNum + 1 <= argc - 1)
         {
-            int code = loadRulesFile( handle, argv[ argNum + 1 ] );
+            int code = loadXMLRulesFile( handle, argv[ argNum + 1 ] );
             return code;
         }
     }

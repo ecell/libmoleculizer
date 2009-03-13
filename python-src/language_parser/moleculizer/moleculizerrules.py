@@ -38,9 +38,6 @@ class MoleculizerRulesFile:
         noWhiteSpace = [ (x.count("\n") + x.count(" ") + x.count("\t") == 0) for x in linearray]
         return reduce(util.And, everyLineEndsWithSemiColon) and reduce(util.And, noWhiteSpace)
 
-    def DEBUGPRINT(self):
-        print "Hello, from moleculizer!!!!!!"
-
     def addWholeRulesString( self, rulesString):
 
         print "Reading file '%s' " % rulesString

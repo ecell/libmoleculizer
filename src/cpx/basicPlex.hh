@@ -105,7 +105,7 @@ namespace cpx
         std::string
         getName() const
         {
-            std::string name( "" );
+            std::string name( "(" );
 
             for( typename std::vector<molT*>::const_iterator iter = mols.begin();
                  iter != mols.end();
@@ -114,6 +114,7 @@ namespace cpx
                 name += (*iter)->getName();
                 name += ", ";
             }
+            name += ")";
 
             return name;
         }

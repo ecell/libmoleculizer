@@ -113,6 +113,15 @@ namespace cpx
         typedef queryAllosteryList<plexSpeciesType, omniPlexType> queryAlloListType;
         
         typedef andPlexQueries<plexSpeciesType, omniPlexType> queryType;
+
+
+        std::string getPlexFamilyName() const
+        {
+            // This is from the a mzrPlex, NOT a mzrPlexSpecies, so the name
+            // is informative, and not canonical.
+            return paradigm.getName();
+        }
+
     protected:
         
         class doBehaviorizeSite;

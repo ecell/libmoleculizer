@@ -34,7 +34,9 @@
 #include <iostream>
 #include <iterator>
 #include "utl/arg.hh"
+#include "mzr/unitsMgr.hh"
 #include "mzr/moleculizer.hh"
+#include "plex/mzrPlexFamily.hh"
 
 using namespace std;
 
@@ -101,6 +103,7 @@ void printStreamByTag( mzr::moleculizer& refMolzer, const std::string& streamNam
 void printAllSpeciesByName(mzr::moleculizer& theMolzer);
 void printAllSpeciesByID(mzr::moleculizer& theMolzer, std::string str = "");
 void printAllReactions( mzr::moleculizer& refMolzer);
+void printAllPlexFamilies( mzr::moleculizer& theMolzer, std::string str = "");
 
 mzr::moleculizer::CachePosition
 createBoundedNetwork(mzr::moleculizer& refMolzer, int maxSpec, int maxRxns);
@@ -142,14 +145,21 @@ int main(int argc, char* argv[])
   if ( ! inputArgs.quiet )
   {
       std::cout << "There are initially " << theMoleculizer.getTotalNumberSpecies() << " species and " 
-                << theMoleculizer.getTotalNumberReactions() << " reactions. " << std::endl;
+                << theMoleculizer.getTotalNumberReactions() << " reactions in " << theMoleculizer.getNumberOfPlexFamilies() << " plex families." << std::endl;
+
+      if( inputArgs.verbose )
+      {
+          std::cout << "########################################" << std::endl;
+          printAllSpeciesByID(theMoleculizer);
+          std::cout << "########################################" << std::endl;
+          printAllPlexFamilies( theMoleculizer );
+          std::cout << "########################################" << std::endl;
+      }
+
   }
 
   
-  if( !inputArgs.quiet && inputArgs.verbose )
-  {
-      printAllSpeciesByID(theMoleculizer);
-  }
+
 
   if (inputArgs.runMode == Full)
   {
@@ -466,6 +476,16 @@ void printAllSpeciesByID(mzr::moleculizer& theMolzer, std::string str)
     {
         std::cout << str << theMolzer.convertSpeciesTagToSpeciesID( *specIter->first ) << std::endl;
     }
+}
+
+void printAllPlexFamilies( mzr::moleculizer& theMolzer, std::string str)
+{
+    for( std::multimap<int, plx::mzrPlexFamily*>::const_iterator citer= theMolzer.pUserUnits->pPlexUnit->recognize.plexHasher.begin();
+         citer != theMolzer.pUserUnits->pPlexUnit->recognize.plexHasher.end();
+         ++citer)
+        {
+            std::cout << citer->second->getPlexFamilyName() << std::endl;
+        }
 }
 
 void displayHelpAndExitProgram()

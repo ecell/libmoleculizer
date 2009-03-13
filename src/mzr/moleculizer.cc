@@ -656,9 +656,8 @@ namespace mzr
         if ( ! this->getModelHasBeenLoaded() ) throw ModelNotLoadedXcpt("moleculizer::generateCompleteNetwork");
 
         // This function will generate the entire network.  
-        
-        // This is a rewrite, because the previous function seemed like it might not be working.
 
+        // This is a rewrite, because the previous function seemed like it might not be working.
 
         bool foundUnexpandedSpecies = false;
         mzrSpecies* ptrUnexpandedSpecies = NULL;
@@ -731,13 +730,17 @@ namespace mzr
         rxnCacheMaxIter--;
 
         bool expandedOne = false;
+        //      int numExpansions = 0;
 
         // We start out good -- the reaction network is not too big, because we passed the precondition
         while( true )
         {
+            
             expandedOne = false;
             
-            if ( this->getReactionList().size() == 0)
+//            numExpansions++;
+//            if ( this->getReactionList().size() == 0)
+            if ( true)
             {
                 for( SpeciesCatalogCIter speciesIter = this->getSpeciesCatalog().begin();
                      speciesIter != this->getSpeciesCatalog().end();
@@ -771,16 +774,38 @@ namespace mzr
             // The network is too big, since we came into the loop good, return that value of cached stuff.
             if ( (long) getTotalNumberSpecies() > maxNumSpecies || (long) getTotalNumberReactions() > maxNumRxns )
             {
-                return std::make_pair( ++specCacheMaxIter, ++rxnCacheMaxIter);
+                // Iterate them to put them in the correct end.
+                ++specCacheMaxIter;
+                ++rxnCacheMaxIter;
+
+//                 std::cout << "Returning...." << std::endl;
+
+//                 std::cout << "(DEBUG) NUMSPEC\tNUMRXNS\tExpansions - " << numExpansions << "\n";
+//                 std::cout << "(DEBUG) "<< getTotalNumberSpecies() << "\t" << getTotalNumberReactions() << "\tTOT" << std::endl;
+//                 std::cout << "(DEBUG) " << std::distance( theDeltaSpeciesList.begin(), specCacheMaxIter) << "\t" << std::distance( theDeltaReactionList.begin(), rxnCacheMaxIter) << "\tCALC" << std::endl;
+
+                return std::make_pair( specCacheMaxIter, rxnCacheMaxIter);
             }
 
             specCacheMaxIter = theDeltaSpeciesList.end();
-            specCacheMaxIter--;
             rxnCacheMaxIter = theDeltaReactionList.end();
+
+            specCacheMaxIter--;
             rxnCacheMaxIter--;
+
+//             std::cout << "(DEBUG) NUMSPEC\tNUMRXNS\tExpansions - " << numExpansions << "\n";
+//             std::cout << "(DEBUG) "<< getTotalNumberSpecies() << "\t" << getTotalNumberReactions() <<  "\tTOTAL" << std::endl;
+
+//             // The +1's here reflect that the iterators are one back of the end.
+//             std::cout << "(DEBUG) " << std::distance( theDeltaSpeciesList.begin(), specCacheMaxIter) + 1<< "\t" << std::distance( theDeltaReactionList.begin(), rxnCacheMaxIter) + 1<< "\tCALC" << std::endl;
 
             if (!expandedOne)
             {
+//                 std::cout << "Returning..." << std::endl;
+
+//                 std::cout << "(DEBUG) NUMSPEC\tNUMRXNS\tExpansions - " << numExpansions << "\n";
+//                 std::cout << "(DEBUG) "<< getTotalNumberSpecies() << "\t" << getTotalNumberReactions() <<  "\tTOT" << std::endl;
+//                 std::cout << "(DEBUG) " << std::distance( theDeltaSpeciesList.begin(), theDeltaSpeciesList.end()) << "\t" << std::distance( theDeltaReactionList.begin(), theDeltaReactionList.end()) << "\tCALC" << std::endl;
                 return std::make_pair( theDeltaSpeciesList.end(), theDeltaReactionList.end() );
             }
 

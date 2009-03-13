@@ -7,13 +7,6 @@
 namespace mzr
 {
 
-  void PythonRulesManager::DEBUG_doInterestingStuff()
-  {
-    
-    PyObject_CallMethod(mzrFileConverterClassInst, "DEBUGPRINT", NULL);
-    return;
-  }
-
   PythonRulesManager::~PythonRulesManager()
   {
     delete paramPythonFunctionName;
@@ -83,7 +76,6 @@ namespace mzr
 
     mzrFileConverterClassInst = PyObject_CallObject(pFunc, pArgs);
 
-    this->DEBUG_doInterestingStuff();
   }
 
   std::string

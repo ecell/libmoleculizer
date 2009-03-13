@@ -193,6 +193,16 @@ namespace mzr
         int getNumberOfUniMolReactionRules() const;
         int getNumberOfReactionRules() const;
 
+        ////////////////////////////////////////////////
+        // Units loaded by the user, waiting for destruction.
+        //
+        // This class is the manager for units, and the place that new units
+        // can be installed.  It's public because units need to get to
+        // each other.
+        unitsMgr* pUserUnits;
+        
+
+
 
     protected:
         void
@@ -217,15 +227,11 @@ namespace mzr
             throw( std::exception );
         
         std::map<std::string, std::string> userNameToSpeciesIDChart;
-        
+
+
+
     private:
-        ////////////////////////////////////////////////
-        // Units loaded by the user, waiting for destruction.
-        //
-        // This class is the manager for units, and the place that new units
-        // can be installed.  It's public because units need to get to
-        // each other.
-        unitsMgr* pUserUnits;
+
         
         // Codes the input capabilities of moleculizer, including its parsing
         // routine.

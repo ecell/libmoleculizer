@@ -606,6 +606,34 @@ int convertUserNameToTaggedName(moleculizer* handle, char* theUserName, char* co
     }
 }
 
+int convertSomeNameToTaggedName( moleculizer* handle, char* theName, char* taggedNameBuffer, unsigned int bufferSize)
+{
+    enum LOCAL_ERROR_TYPE { SUCCESS = 0,
+                            UNKNOWN_ERROR = 1,
+                            NONEXISTANT_NAME = 2,
+                            NEED_A_BIGGER_BUFFER = 3};
+
+    try
+    {
+        mzr::moleculizer* moleculizerPtr = convertCMzrPtrToMzrPtr( handle );
+        std::string randomName( theName );
+
+        std::string taggedName = moleculizerPtr->convertSomeNameToTaggedName( randomName );
+
+        if (bufferSize < taggedName.size() + 1) return NEED_A_BIGGER_BUFFER;
+        
+        strcpy( taggedNameBuffer, taggedName.c_str());
+        return SUCCESS;
+
+    }
+    catch(...)
+    {
+        return NONEXISTANT_NAME;
+    }
+
+
+}
+
 int convertUserNameToUniqueID(moleculizer* handle, char* theUserName, char* correspondingSpeciesID, unsigned int bufferSize)
 {
     enum LOCAL_ERROR_TYPE { SUCCESS = 0,
@@ -918,6 +946,27 @@ void freeSpecies( species* pSpecies)
     delete pSpecies->diffusionCoeff;
 }
 
+
+void getAllSpeciesStreams( moleculizer* handle, char*** speciesStreamArray, int* numberSpeciesStreams)
+{
+    mzr::moleculizer* moleculizerPtr = convertCMzrPtrToMzrPtr( handle );
+    std::vector<std::string> speciesStreams;
+
+    moleculizerPtr->getSpeciesStreams( speciesStreams );
+
+    *numberSpeciesStreams = speciesStreams.size();
+
+    typedef char* charPtr;
+    *speciesStreamArray = new charPtr[ speciesStreams.size() ];
+    for(unsigned int ndx = 0; ndx != speciesStreams.size(); ++ndx)
+    {
+        (*speciesStreamArray)[ ndx ] = new char[ speciesStreams[ndx].size() + 1];
+        strcpy( (*speciesStreamArray)[ ndx ], speciesStreams[ndx].c_str() );
+    }
+
+    return;
+}
+
 int getAllExteriorSpecies(moleculizer* handle, species*** pSpeciesArray, int* numberSpecies)
 {
     enum LOCAL_ERROR_TYPE { SUCCESS = 0,
@@ -1108,7 +1157,7 @@ void createCSpeciesArrayFromSpeciesMap(moleculizer* cMzrPtr,
 }
 
 
-int checkSpeciesTagIsInSpeciesStream( moleculizer* handle, char* speciesTag, char* speciesStream)
+int checkSpeciesTagIsInSpeciesStream( moleculizer* handle, const char* speciesTag, char* speciesStream)
 {
     const int UNKNOWN_ERROR = -1;
     const int NO_SUCH_SPECIES = -2;

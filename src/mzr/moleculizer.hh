@@ -54,135 +54,113 @@ namespace mzr
     public:
         // Moleculizer only has basic constructors and destructors.  
         moleculizer( void );
-        virtual ~moleculizer( void );
+        ~moleculizer( void );
 
     public:
-        
-        void generateCompleteNetwork();
 
-        CachePosition
-        generateCompleteNetwork(long maxNumSpecies, long maxNumRxns = -1);
-        
-    public:
-
-        void loadXmlFileName( const std::string& aFileName );
-        void loadXmlString( const std::string& documentAsString );
+        //////////////////////////////////////////////////
+        // 
+        // Functions for working with Input
+        //
+        //////////////////////////////////////////////////
 
         void loadCommonRulesFileName(const std::string& aFileName );
         void loadCommonRulesString(const std::string& commonRulesAsString);
-
+        void loadXmlFileName( const std::string& aFileName );
+        void loadXmlString( const std::string& documentAsString );
+        void loadGeneratedNetwork( xmlpp::Element* pGeneratedNetworkElmt);
         void loadParsedDocument( xmlpp::Document* pDoc );
-
-
-
         bool getModelHasBeenLoaded() const;
 
+        // These functions are used for reading in rules statements, one at a time.
+        void addParameterStatement(const std::string& statement );
+        void addModificationStatement( std::string& statement);
+        void addMolsStatement( std::string& statement);
+        void addAllostericPlexStatement( std::string& statement);
+        void addAllostericOmniStatement( std::string& statement);
+        void addDimerizationGenStatement( std::string& statement);
+        void addOmniGenStatement( std::string& statement);
+        void addUniMolGenStatement( std::string& statement);
+        void addSpeciesStreamStatement( std::string& statement);
 
-    public:
-      void addParameterStatement(const std::string& statement );
-      void addModificationStatement( std::string& statement);
-      void addMolsStatement( std::string& statement);
-      void addAllostericPlexStatement( std::string& statement);
-      void addAllostericOmniStatement( std::string& statement);
-      void addDimerizationGenStatement( std::string& statement);
-      void addOmniGenStatement( std::string& statement);
-      void addUniMolGenStatement( std::string& statement);
-      void addSpeciesStreamStatement( std::string& statement);
-        
-    public:
-        
+
+        //////////////////////////////////////////////////
+        // 
+        // Functions for working with Output
+        //
+        //////////////////////////////////////////////////
+
+        xmlpp::Document* makeDomOutput( bool verbose ) throw( std::exception );
+        xmlpp::Document* makeDomOutput( bool verboseXML, CachePosition networkSizeRange ) 
+            throw( std::exception );
+
+        void writeOutputFile( const std::string& fileName, bool verbose = false);
+        void writeOutputFile( const std::string& fileName, bool verbose, CachePosition pos);
+
+
+        //////////////////////////////////////////////////
+        // 
+        // Functions for Setup
+        //
+        //////////////////////////////////////////////////
+
         int getGenerationDepth( void ) const;
         void setGenerateDepth( unsigned int generateDepth );
         
         void setRateExtrapolation( bool rateExtrapolation );
         bool getRateExtrapolation() const;
-        
-        int 
-        getNumberOfPlexFamilies() const;
+
 
         //////////////////////////////////////////////////
         // 
-        // Functions for working with species streams
+        // Functions for expanding the nework
+        //
+        //////////////////////////////////////////////////
+
+        void generateCompleteNetwork();
+        CachePosition generateCompleteNetwork(long maxNumSpecies, long maxNumRxns = -1);
+
+
+        //////////////////////////////////////////////////
+        // 
+        // Functions for working with names.
         //
         //////////////////////////////////////////////////
 
         void 
-        getSpeciesStreams( std::vector<std::string>& speciesStreamNames) const;
-
-        int getNumberOfSpeciesStreams() const;
-
-      bool speciesWithTagIsInSpeciesStream(const std::string speciesTag, const std::string& speciesStream ) const;
-      bool speciesWithUniqueIDIsInSpeciesStream(const std::string speciesTag, const std::string& speciesStream ) const;
-                
-        int 
-        getNumberOfSpeciesInSpeciesStream(const std::string& streamName) const;
-        
-        void 
-        getSpeciesInSpeciesStream(const std::string& streamName,
-                                  std::vector<const mzr::mzrSpecies*>& speciesVector) const;
-
-    public:
-        const mzrSpecies* 
-        getSpeciesWithUniqueID( SpeciesIDCref uniqueID ) throw( mzr::IllegalNameXcpt );
-        
-    public:
-        xmlpp::Document*
-        makeDomOutput( bool verbose ) throw( std::exception );
-
-        xmlpp::Document*
-        makeDomOutput( bool verboseXML, CachePosition networkSizeRange ) throw( std::exception );
-
-      void 
-      loadGeneratedNetwork( xmlpp::Element* pGeneratedNetworkElmt);
-
-      void writeOutputFile( const std::string& fileName, bool verbose = false);
-      void writeOutputFile( const std::string& fileName, bool verbose, CachePosition pos);
-        
-    protected:
-        void setModelHasBeenLoaded( bool value );
-        
-        void insertGeneratedNetwork( xmlpp::Element* generatedNetworkElt, CachePosition pos, bool verbose );
-        void insertGeneratedNetwork( xmlpp::Element* generatedNetworkElement, bool verbose );
-        
-        
-    public:
-        void recordUserNameToGeneratedNamePair( const std::string& userName,
-                                                const std::string& genName )
-        {
-            userNameToSpeciesIDChart.insert( std::make_pair( userName, genName ) );
-        }
-        
-        bool
-        nameIsUserName(const std::string& possibleUserName) const
-        {
-            return (userNameToSpeciesIDChart.find( possibleUserName) != userNameToSpeciesIDChart.end());
-        }
-        
-        std::string
-        convertUserNameToSpeciesID(const std::string& possibleUserName) const 
-            throw( utl::xcpt )
-        {
-            std::map<std::string, std::string>::const_iterator iter( userNameToSpeciesIDChart.find(possibleUserName) );
-            if (iter == userNameToSpeciesIDChart.end() ) throw mzr::unknownUserNameXcpt( "Error, UserName doesn't exist and thus cannot be converted to a user name.");
-            
-            return iter->second;
-        }
-
-        std::string
-        convertUserNameToTaggedName( const std::string& possibleUserName) const
-            throw( utl::xcpt)
-        {
-
-            std::map<std::string, std::string>::const_iterator iter( userNameToSpeciesIDChart.find(possibleUserName) );
-            if (iter == userNameToSpeciesIDChart.end() ) throw mzr::unknownUserNameXcpt( "Error, UserName doesn't exist and thus cannot be converted to a user name.");
-            
-            std::string speciesID(iter->second);
-
-            return convertSpeciesIDToSpeciesTag(speciesID);
-        }
-
-        void 
         getUserNames(std::vector<std::string>& refVector) const;
+        
+        void recordUserNameToSpeciesIDPair( const std::string& userName,
+                                            const std::string& genName );
+        
+        bool nameIsUserName(const std::string& possibleUserName) const;
+
+
+
+        // I don't know if these two functions are good or bad, but they
+        // are intended for Smoldyn and others that may have a name,
+        // but don't want to keep track of how they got it.
+        std::string convertSomeNameToTaggedName(const std::string& name) const;
+        const mzrSpecies* getSpeciesWithSomeName(const std::string& name) const;
+
+        const mzrSpecies* getSpeciesWithTaggedName();
+        const mzrSpecies* getSpeciesWithUniqueID( SpeciesIDCref uniqueID ) throw( mzr::IllegalNameXcpt );
+
+        std::string convertUserNameToSpeciesID(const std::string& possibleUserName) const 
+            throw( utl::xcpt );
+
+        std::string convertUserNameToTaggedName( const std::string& possibleUserName) const
+            throw( utl::xcpt);
+
+
+
+
+
+        //////////////////////////////////////////////////
+        // 
+        // Functions for working with state
+        //
+        //////////////////////////////////////////////////
 
         int getNumberOfDefinedModifications() const;
         int getNumberOfDefinedMols() const;
@@ -193,6 +171,40 @@ namespace mzr
         int getNumberOfUniMolReactionRules() const;
         int getNumberOfReactionRules() const;
 
+        int getNumberOfPlexFamilies() const;
+
+
+        //////////////////////////////////////////////////
+        // 
+        // Functions for working with species streams
+        //
+        //////////////////////////////////////////////////
+
+        void getSpeciesStreams( std::vector<std::string>& speciesStreamNames) const;
+        int getNumberOfSpeciesStreams() const;
+        int getNumberOfSpeciesInSpeciesStream(const std::string& streamName) const;
+        void getSpeciesInSpeciesStream(const std::string& streamName, std::vector<const mzr::mzrSpecies*>& speciesVector) const;
+
+        bool speciesWithTagIsInSpeciesStream(const std::string speciesTag, const std::string& speciesStream ) const;
+        bool speciesWithUniqueIDIsInSpeciesStream(const std::string speciesTag, const std::string& speciesStream ) const;
+
+
+        
+
+
+
+    protected:
+        void setModelHasBeenLoaded( bool value );
+        
+        void insertGeneratedNetwork( xmlpp::Element* generatedNetworkElt, CachePosition pos, bool verbose );
+        void insertGeneratedNetwork( xmlpp::Element* generatedNetworkElement, bool verbose );
+        
+        
+
+    public:
+
+
+
         ////////////////////////////////////////////////
         // Units loaded by the user, waiting for destruction.
         //
@@ -201,7 +213,6 @@ namespace mzr
         // each other.
         unitsMgr* pUserUnits;
         
-
 
 
     protected:

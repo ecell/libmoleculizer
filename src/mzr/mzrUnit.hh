@@ -124,7 +124,7 @@ namespace mzr
             rMolzer.recordSpecies( pSpecies );
             
             // We also add into moleculizer a map of user-names to their generated names.
-            rMolzer.recordUserNameToGeneratedNamePair( rSpeciesName, pSpecies->getName() );
+            rMolzer.recordUserNameToSpeciesIDPair( rSpeciesName, pSpecies->getName() );
             
             return speciesByName.addEntry( rSpeciesName, ( mzrSpecies* ) pSpecies );
             

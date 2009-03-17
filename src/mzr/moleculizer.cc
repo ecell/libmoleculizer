@@ -1011,6 +1011,76 @@ namespace mzr
   {
     rulesManager.addSpeciesStreamStatement( statement );
   }
+
+        void moleculizer::recordUserNameToSpeciesIDPair( const std::string& userName,
+                                                const std::string& genName )
+        {
+            userNameToSpeciesIDChart.insert( std::make_pair( userName, genName ) );
+        }
+        
+        bool
+        moleculizer::nameIsUserName(const std::string& possibleUserName) const
+        {
+            return (userNameToSpeciesIDChart.find( possibleUserName) != userNameToSpeciesIDChart.end());
+        }
+        
+        std::string
+        moleculizer::convertUserNameToSpeciesID(const std::string& possibleUserName) const 
+            throw( utl::xcpt )
+        {
+            std::map<std::string, std::string>::const_iterator iter( userNameToSpeciesIDChart.find(possibleUserName) );
+            if (iter == userNameToSpeciesIDChart.end() ) throw mzr::unknownUserNameXcpt( "Error, UserName doesn't exist and thus cannot be converted to a user name.");
+            
+            return iter->second;
+        }
+
+        std::string
+        moleculizer::convertUserNameToTaggedName( const std::string& possibleUserName) const
+            throw( utl::xcpt)
+        {
+
+            std::map<std::string, std::string>::const_iterator iter( userNameToSpeciesIDChart.find(possibleUserName) );
+            if (iter == userNameToSpeciesIDChart.end() ) throw mzr::unknownUserNameXcpt( "Error, UserName doesn't exist and thus cannot be converted to a user name.");
+            
+            std::string speciesID(iter->second);
+
+            return convertSpeciesIDToSpeciesTag(speciesID);
+        }
+
+
+    std::string 
+    moleculizer::convertSomeNameToTaggedName(const std::string& name) const
+    {
+        return getSpeciesWithSomeName(name)->getTag();
+    }
+
+    const mzrSpecies* 
+    moleculizer::getSpeciesWithSomeName(const std::string& name) const
+    {
+
+        std::map<std::string, std::string>::const_iterator uniqueIDIter = userNameToSpeciesIDChart.find( name );
+
+        if (uniqueIDIter != userNameToSpeciesIDChart.end())
+        {
+            
+            std::string speciesTag = convertSpeciesIDToSpeciesTag( uniqueIDIter->second );
+            return this->findSpecies( speciesTag);            
+        }
+        else
+        {
+            
+            try
+            {
+                std::string taggedName = convertSpeciesIDToSpeciesTag( name );
+                return this->findSpecies( taggedName );            
+            }
+            catch(...)
+            {
+            }
+
+            return this->findSpecies( name );
+        }
+    }
     
   int moleculizer::DEFAULT_GENERATION_DEPTH = 0;
     

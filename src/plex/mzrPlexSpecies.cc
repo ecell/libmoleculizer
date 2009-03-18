@@ -51,6 +51,14 @@ namespace plx
         rFamily.respond( fnd::newSpeciesStimulus<mzrPlexSpecies> ( this,
                                                                    generateDepth ) );
     }
+
+    void 
+    mzrPlexSpecies::
+    inform()
+    {
+        rFamily.dumpablesRespond( fnd::newSpeciesStimulus<mzrPlexSpecies> ( this,
+                                                                            0 ) );
+    }
     
     std::string
     mzrPlexSpecies::

@@ -220,6 +220,9 @@ namespace cpx
         // Notify the features, dumpables of a new species.
         void
         respond( const fnd::newSpeciesStimulus<plexSpeciesType>& rStim );
+
+        void 
+        dumpablesRespond( const fnd::newSpeciesStimulus<plexSpeciesType>& rStim );
         
         void
         accumulateSpecies( std::vector<plexSpeciesType*>& rAllSpecies );
@@ -284,7 +287,8 @@ namespace cpx
         // been put through passes 1 and 2.
         void
         connectToFeatures( void );
-        
+
+
         // Makes the vector of default molParams, which is useful as a starting
         // point for constructing the molParams of a new species.
         std::vector<molParam>

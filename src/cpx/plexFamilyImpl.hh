@@ -73,6 +73,26 @@ namespace cpx
         molFeatures.respond( rStim );
         omniFeatures.respond( rStim );
     }
+
+
+    template<class molT,
+             class plexT,
+             class plexSpeciesT,
+             class plexFamilyT,
+             class omniPlexT>
+    void
+    plexFamily<molT,
+               plexT,
+               plexSpeciesT,
+               plexFamilyT,
+               omniPlexT>::
+    dumpablesRespond( const fnd::newSpeciesStimulus<plexSpeciesType>& rStim )
+    {
+        freeSiteFeatures.dumpablesRespond( rStim );
+        bindingFeatures.dumpablesRespond( rStim );
+        molFeatures.dumpablesRespond( rStim );
+        omniFeatures.dumpablesRespond( rStim );
+    }
     
     // For accumulating all the plexSpecies in order to update them
     // by zero when regenerating reaction network.

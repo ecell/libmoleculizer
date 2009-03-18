@@ -73,6 +73,32 @@ namespace fnd
                 pFeature->respond( stim );
             }
         };
+
+
+        class dumpableNotifyFeature :
+            std::unary_function<typename featureMap::value_type, void>
+        {
+            const typename featureMap::stimulusType& rStimulus;
+            
+        public:
+            dumpableNotifyFeature( const typename featureMap::stimulusType& rNewSpeciesStimulus ) :
+                rStimulus( rNewSpeciesStimulus )
+            {}
+            
+            void operator()( const typename featureMap::value_type& rEntry ) const
+            {
+                const typename contextT::contextSpec& rSpec = rEntry.first;
+                feature<contextT>* pFeature = rEntry.second;
+                
+                contextT newContext( rStimulus.getSpecies(),
+                                     rSpec );
+                
+                newContextStimulus<contextT> stim( newContext,
+                                                   rStimulus.getNotificationDepth() );
+                
+                pFeature->dumpablesRespond( stim );
+            }
+        };
         
     public:
         int
@@ -99,6 +125,15 @@ namespace fnd
             std::for_each( this->begin(),
                            this->end(),
                            notifyFeature( rStimulus ) );
+        }
+
+
+        void
+        dumpablesRespond( const typename featureMap::stimulusType& rStimulus )
+        {
+            std::for_each( this->begin(),
+                           this->end(),
+                           dumpableNotifyFeature( rStimulus ) );
         }
     };
     

@@ -89,6 +89,13 @@ namespace fnd
             forEachSensitive( respondRxnGen( rStimulus,
                                              *this ) );
         }
+
+        // This is part of the refactoring of things.
+        virtual void
+        dumpablesRespond( const newContextStimulus<contextT>& rStimulus )
+        {
+            return;
+        }
     };
 }
 

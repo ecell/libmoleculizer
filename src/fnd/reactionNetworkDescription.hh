@@ -160,12 +160,12 @@ namespace fnd
         //  The functions beginning "record" that return bools return true if the 
         //  species/reaction is new and false otherwise.  The mustRecord functions 
         //  expect to succeed.  They throw an exception otherwise. 
-        bool recordSpecies( SpeciesTypePtr pSpecies );
+        virtual bool recordSpecies( SpeciesTypePtr pSpecies );
         
         // This function works in exactly the same manner as record species.  However
         // whether it succeeds or fails, the name under which the species is/has been 
         // registered is placed in the refName parameter.
-        bool recordSpecies( SpeciesTypePtr pSpecies, SpeciesTag& refName );
+        virtual bool recordSpecies( SpeciesTypePtr pSpecies, SpeciesTag& refName );
         bool recordReaction( ReactionTypePtr pRxn );
 
         void mustRecordSpecies( SpeciesTypePtr pSpecies ) throw( utl::xcpt );

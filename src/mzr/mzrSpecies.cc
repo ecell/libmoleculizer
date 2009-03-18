@@ -61,6 +61,6 @@ namespace mzr
     {
         return mzrSpecies::generateDepth;
     }
-    
+
     unsigned int mzrSpecies::generateDepth = 1;
 }

@@ -189,7 +189,18 @@ namespace mzr
         bool speciesWithUniqueIDIsInSpeciesStream(const std::string speciesTag, const std::string& speciesStream ) const;
 
 
-        
+        //////////////////////////////////////////////////
+        // 
+        // Overloads of fnd::reactionNetworkDescription
+        //
+        //////////////////////////////////////////////////
+
+        // These overload the base reaction network description names.
+        virtual bool
+        recordSpecies( mzrSpecies*);
+
+        virtual bool
+        recordSpecies( mzrSpecies*, SpeciesID&);
 
 
 

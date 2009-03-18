@@ -70,10 +70,10 @@ extern "C" {
     
 
 /*************************************************
-/* 
-/* Allocators/Memory Management
-/*
-/************************************************/
+** 
+** Allocators/Memory Management
+**
+*************************************************/
 
     /* These fuctions create a new moleculizer object and release it after being used.
        A call to createNewMoleculizerObject should always be paired with a call to 
@@ -83,19 +83,19 @@ extern "C" {
 
 
 /*************************************************
-/* 
-/* Setup
-/*
-/************************************************/
+** 
+** Setup
+**
+*************************************************/
 
     int setRateExtrapolation( moleculizer* handle, int extrapolation);
 
 
 /*************************************************
-/* 
-/* Functions for working with input.
-/*
-/************************************************/
+** 
+** Functions for working with input.
+**
+*************************************************/
   
     int loadXMLRulesFile(moleculizer* handle, char* fileName);
     int loadXMLRulesString( moleculizer* handle, char* file);
@@ -105,19 +105,19 @@ extern "C" {
 
 
 /*************************************************
-/* 
-/* Functions for working with output
-/*
-/************************************************/
+** 
+** Functions for working with output
+**
+*************************************************/
 
     int writeDotFile( moleculizer* handle, char* fileName);
 
 
 /*************************************************
-/* 
-/* Functions for expanding the network
-/*
-/************************************************/
+** 
+** Functions for expanding the network
+**
+*************************************************/
 
     int expandNetwork( moleculizer* handle);
     int getBoundedNetwork( moleculizer* handle, long maxNumSpecies, long maxNumReactions, species*** pSpeciesArray, int* pNumSpec, reaction*** pReactionArrry, int* pNumRxns);
@@ -129,10 +129,10 @@ extern "C" {
     int expandReaction(moleculizer* handle, reaction* mzrReaction);
 
 /*************************************************
-/* 
-/* Functions for viewing state
-/*
-/************************************************/
+** 
+** Functions for viewing state
+**
+*************************************************/
 
     int getNumberOfSpecies(moleculizer* handle);
     int getNumberOfReactions(moleculizer* handle);
@@ -152,10 +152,10 @@ extern "C" {
     int getNumSpeciesStreams( moleculizer* handle);
     
 /*************************************************
-/* 
-/* Functions for working with reactions
-/*
-/************************************************/
+** 
+** Functions for working with reactions
+**
+*************************************************/
     /* These two functions can be used with a Species Key (it's canonical string representation) to 
        determine what reactions, if any they participate in. These functions return pointers to reaction 
 
@@ -167,20 +167,20 @@ extern "C" {
 
 
 /*************************************************
-/* 
-/* Functions for working with species
-/*
-/************************************************/
+** 
+** Functions for working with species
+**
+*************************************************/
 
     /* This function returns all species that have not been expanded yet. */
     int getAllExteriorSpecies(moleculizer* handle, species*** pSpeciesArray, int* numberSpecies);
 
 
 /*************************************************
-/* 
-/* Functions for working with species streams
-/*
-/************************************************/
+** 
+** Functions for working with species streams
+**
+*************************************************/
 
     int getAllStreamSpecies(moleculizer* handle, char* streamName, species** pSpeciesArray, int* numberSpecies);
     void getAllSpeciesStreams( moleculizer* handle, char*** speciesStreamArray, int* numberSpeciesStreams);
@@ -189,10 +189,10 @@ extern "C" {
 
 
 /*************************************************
-/* 
-/* Functions for working with names
-/*
-/************************************************/
+ **
+ ** Functions for working with names
+ **
+ ************************************************/
 
     int convertTaggedNameToUniqueID( moleculizer* handle, char* speciesTag, char* speciesID, unsigned int idSize);  
     int convertUniqueIDToTaggedName( moleculizer* handle, char* speciesID, char* speciesTag, unsigned int tagSize);
@@ -206,10 +206,10 @@ extern "C" {
 
 
 /*************************************************
-/* 
-/* Functions for memory management
-/*
-/************************************************/
+** 
+** Functions for memory management
+**
+*************************************************/
 
     /* These functions free species and reaction arrays, such as those provided by the getReactionsBetween
        and getUnaryReactions functions.  Usually, a call to freeReaction( reactionArray, *numReactions)

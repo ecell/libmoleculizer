@@ -1081,6 +1081,21 @@ namespace mzr
             return this->findSpecies( name );
         }
     }
+
+
+    bool
+    moleculizer::recordSpecies( mzrSpecies* pSpec)
+    {
+        fnd::ReactionNetworkDescription<mzrSpecies, mzrReaction>::recordSpecies(pSpec);
+        pSpec->inform();
+    }
+
+    bool
+    moleculizer::recordSpecies( mzrSpecies* pSpec, SpeciesID& theID)
+    {
+        fnd::ReactionNetworkDescription<mzrSpecies, mzrReaction>::recordSpecies(pSpec, theID);
+        pSpec->inform();
+    }
     
   int moleculizer::DEFAULT_GENERATION_DEPTH = 0;
     

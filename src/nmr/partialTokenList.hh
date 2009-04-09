@@ -101,7 +101,8 @@ namespace nmr
         
         bool operator< ( const PartialTokenList& aPns ) const;
         bool operator== ( const PartialTokenList& aPns ) const;
-        
+
+	std::string repr() const;
         
     public:
         
@@ -114,9 +115,5 @@ namespace nmr
         bool isComplete;
     };
 }
-
-std::ostream&
-operator<< ( std::ostream& os, const nmr::PartialTokenList& ptl );
-
 
 #endif

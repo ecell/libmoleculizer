@@ -19,7 +19,9 @@ LIBMOL = mol/libmoleculizer_mol.la
 LIBPLEX = plex/libmoleculizer_plex.la
 LIBDIMER = dimer/libmoleculizer_dimer.la
 LIBFTR = ftr/libmoleculizer_ftr.la
-ALL_MZR_LIBS = $(LIBFND) $(LIBUTL) $(LIBMZR) $(LIBSTOCH) $(LIBNMR) $(LIBNMR) $(LIBCPX) $(LIBMOL) $(LIBPLEX) $(LIBDIMER) $(LIBFTR)
+LIBNAUTY = nauty/libmoleculizer_nauty.la
+
+ALL_MZR_LIBS = $(LIBFND) $(LIBUTL) $(LIBMZR) $(LIBSTOCH) $(LIBNMR) $(LIBNMR) $(LIBCPX) $(LIBMOL) $(LIBPLEX) $(LIBDIMER) $(LIBFTR) $(LIBNAUTY)	
 
 moleculizerdir = $(SRCDIR)
 
@@ -43,9 +45,11 @@ libmoleculizer_1_0_la_LIBADD = \
 	$(LIBMOL) \
 	$(LIBPLEX) \
 	$(LIBDIMER) \
-	$(LIBFTR)
+	$(LIBFTR) \
+	$(LIBNAUTY)
 
-SUBDIRS = utl \
+SUBDIRS = nauty \
+	utl \
 	fnd \
 	mzr \
 	stoch \

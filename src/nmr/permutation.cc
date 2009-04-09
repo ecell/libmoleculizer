@@ -97,6 +97,19 @@ namespace nmr
         
         setValueAtPosition( pos, value );
     }
+
+    const Permutation& Permutation::operator=(const Permutation& perm)
+    {
+	this->thePermutation = perm.thePermutation;
+	this->theDimension = perm.theDimension;
+
+	return *this;
+
+    }
+
+    Permutation::~Permutation()
+    {
+    }
     
     int
     Permutation::getValueAtPosition( BindingNdx pos ) const

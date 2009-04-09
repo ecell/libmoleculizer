@@ -84,7 +84,11 @@ namespace plx
         // cpx::notifier.
         void
         notify( int generateDepth );
-        
+
+        // This is the thing that does the informing.
+        virtual void
+        inform();
+
         // This overrides basicSpecies::getName(), which just returns a tag.
         virtual std::string
         getName( void ) const;

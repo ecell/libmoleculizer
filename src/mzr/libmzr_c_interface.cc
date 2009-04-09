@@ -817,12 +817,6 @@ int getUnaryReactions(moleculizer* handle, char* speciesName, reaction*** ptrRea
     }
 }
 
-// int getReactionsInvolving(moleculizer* handle, char* speciesName, reaction*** ptrReactionPtrArray, int* numReactions);
-// int getReactionsInvolving(moleculizer* handle, char* speciesName, reaction*** ptrReactionPtrArray, int* numReactions)
-// {
-//     // Write me!!!
-//     return 1 / 0;
-// }
  
 int getAllStreamSpecies(moleculizer* handle, char* cStrStreamName, species*** pSpeciesArray, int* numberSpecies)
 {
@@ -1001,6 +995,22 @@ int getAllExteriorSpecies(moleculizer* handle, species*** pSpeciesArray, int* nu
     return SUCCESS;
 }
 
+
+int getMolCountInTaggedSpecies(moleculizer* handle, const char* molName, const char* speciesTag)
+{
+    mzr::moleculizer* moleculizerPtr = convertCMzrPtrToMzrPtr( handle );
+    try
+    {
+	int count = moleculizerPtr->getMolCountInTaggedSpecies( molName, speciesTag);
+	return count;
+    }
+    catch(...)
+    {
+	return -1;
+    }
+
+}
+
 int writeDotFile( moleculizer* handle, char* fileName)
 {
     mzr::moleculizer* moleculizerPtr = convertCMzrPtrToMzrPtr( handle );
@@ -1112,10 +1122,38 @@ reaction* createNewCRxnFromMzrReaction( moleculizer* cMzrPtr, const mzr::mzrReac
     reaction* theNewRxn = new reaction;
 
     // This is for Smoldyn, which doesn't care for super long names...
-    assert( reactionName.size() + 1 < 256 );
+    // assert( reactionName.size() + 1 < 256 );
 
-    theNewRxn->name = new char[ reactionName.size() + 1] ;
-    strcpy( theNewRxn->name, reactionName.c_str() );
+
+    if (reactionName.size() + 1 >= 256)
+    {
+	theNewRxn->name = new char[256];
+	int ndx;
+	for(ndx = 0; ndx != 250; ++ndx)
+	{
+	    theNewRxn->name[ndx] = reactionName[ndx];
+	}
+	for(ndx = 250; ndx != 256; ++ndx)
+	{
+	    theNewRxn->name[ndx] = '\0';
+	}
+
+	std::ostringstream oss;
+	oss << rand() % 10000;
+
+	strcat( theNewRxn->name, oss.str().c_str() );
+	
+
+	printf("NAMELONGERTHAN256 Results in %s\n", theNewRxn->name);
+	
+    }
+    else
+    {
+	theNewRxn->name = new char[ reactionName.size() + 1] ;
+	strcpy( theNewRxn->name, reactionName.c_str() );
+    }
+
+
 
     theNewRxn->rate = new double;
     
@@ -1189,11 +1227,7 @@ int checkSpeciesTagIsInSpeciesStream( moleculizer* handle, const char* speciesTa
 int checkSpeciesIDIsInSpeciesStream( moleculizer* handle, char* speciesID, char* speciesStream)
 {
 
-    const int UNKNOWN_ERROR = -1;
-    const int NO_SUCH_SPECIES = -2;
-    const int NO_SUCH_STREAM = -3;
-
-    try
+   try
     {
         std::string speciesIDStr( speciesID );
         std::string speciesStreamStr( speciesStream );
@@ -1211,8 +1245,31 @@ int checkSpeciesIDIsInSpeciesStream( moleculizer* handle, char* speciesID, char*
     }
     catch(...)
     {
-        return UNKNOWN_ERROR;
+        return -1;
     }
 }
 
+
+int expandSpeciesByTag( moleculizer* handle, char* theTag) {
+    try {
+        mzr::moleculizer* underlyingMoleculizerObject = convertCMzrPtrToMzrPtr( handle );
+        underlyingMoleculizerObject->findSpecies(theTag)->expandReactionNetwork();
+        return 0;
+    }
+    catch(...) {
+        return 1;
+    }
+}
+
+
+int expandSpeciesByID( moleculizer* handle, char* theID) {
+    try {
+        mzr::moleculizer* underlyingMoleculizerObject = convertCMzrPtrToMzrPtr( handle );
+        underlyingMoleculizerObject->getSpeciesWithUniqueID(theID)->expandReactionNetwork();
+        return 0;
+    }
+    catch(...) {
+        return 1;
+    }
+}
 

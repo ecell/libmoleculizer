@@ -60,6 +60,8 @@ namespace nmr
         {
             return ( thePermutation == anotherPermutationName.thePermutation );
         }
+
+	void print() const;
         
         
         bool operator< ( PermutationNameCref aPermutationName ) const;

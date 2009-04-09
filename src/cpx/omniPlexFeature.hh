@@ -86,6 +86,11 @@ namespace cpx
         virtual
         void
         respond( const typename omniPlexFeature::stimulusType& rNewFeatureContext );
+
+
+        virtual 
+        void 
+        dumpablesRespond( const typename omniPlexFeature::stimulusType& rStim );
         
         // To "turn on" dumping of the species in this omniplex.
         // These aren't query-based dumpables, since the omniplex
@@ -126,18 +131,67 @@ namespace cpx
             // Notify reaction generators
             fnd::feature<contextType>::respond( rStim );
             
-            // Notify dumpable if any.
-            if(pDumpable)
+//             // Notify dumpable if any.
+//             if(pDumpable)
+//             {
+//                 // Note that this just gets back the newSpeciesStimulus.
+//                 // This really stinks.
+//                 fnd::newSpeciesStimulus<plexSpeciesType>
+//                     dumpStim(pSpecies,
+//                              rStim.getNotificationDepth());
+                
+//                 pDumpable->respond(dumpStim);
+//             }
+        }
+    }
+
+    template<class molT,
+             class plexSpeciesT,
+             class plexFamilyT,
+             class omniPlexT>
+    void
+    omniPlexFeature<molT,
+                    plexSpeciesT,
+                    plexFamilyT,
+                    omniPlexT>::
+    dumpablesRespond( const typename omniPlexFeature::stimulusType& rStim )
+    {
+
+        // Notify dumpable if any.
+        if(pDumpable)
+        {
+            const typename omniPlexFeature::contextType& rNewContext
+                = rStim.getContext();
+        
+            // Does the new species satisfy the omni's state query?
+            omniPlexType* pOmni = rNewContext.getOmni();
+            const typename omniPlexFeature::stateQueryType& rQuery
+                = * ( pOmni->getStateQuery() );
+        
+            plexSpeciesType* pSpecies
+                = rNewContext.getSpecies();
+            const subPlexSpec<omniPlexType>& rSpec
+                = rNewContext.getSpec();
+            if ( rQuery.applyTracked( *pSpecies,
+                                      rSpec ) )
             {
+//             Notify reaction generators
+//            fnd::feature<contextType>::respond( rStim );
+            
+
                 // Note that this just gets back the newSpeciesStimulus.
                 // This really stinks.
                 fnd::newSpeciesStimulus<plexSpeciesType>
                     dumpStim(pSpecies,
                              rStim.getNotificationDepth());
-                
+
                 pDumpable->respond(dumpStim);
             }
         }
+
+
+
+
     }
 }
 

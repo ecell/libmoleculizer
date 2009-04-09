@@ -49,6 +49,7 @@ AC_SUBST(LIBXMLPP_VERSION)
 # Checks for libraries.
 AC_CONFIG_FILES([Makefile
                 src/Makefile
+		src/nauty/Makefile
                 src/cpx/Makefile
 		src/dimer/Makefile
 		src/fnd/Makefile
@@ -63,7 +64,7 @@ AC_CONFIG_FILES([Makefile
                 src/mzr/tests/Makefile
                 doc/Makefile
                 demos/Makefile
-                demos/simulators/Makefile
+                demos/demo-programs/Makefile
                 demos/sample-models/Makefile
                 libmoleculizer-1.0.pc
                 doc/user-manual.tex

@@ -37,6 +37,13 @@ namespace nmr
     {
         return ( theCorrespondingPartialTokenList < aPermutationName.theCorrespondingPartialTokenList );
     }
+
+    void PermutationName::print() const
+    {
+	std::cout << this->thePermutation.repr() << std::endl;
+	std::cout << this->theCorrespondingPartialTokenList.repr() << std::endl;
+	
+    }
     
     int PermutationName::counter = 0;
 }

@@ -43,6 +43,7 @@ namespace mzr
     
     class mzrSpecies :
         public fnd::basicSpecies<mzrReaction>,
+        public fnd::onceInformer,
         public fnd::massive,
         public fnd::reactionNetworkComponent
     {
@@ -58,6 +59,8 @@ namespace mzr
         
         static unsigned int
         getGenerateDepth();
+
+        virtual void inform(){}
         
         static unsigned int generateDepth;
         

@@ -212,6 +212,7 @@ namespace fnd
     // total number of species/reactions as well as the delta number of species/
     // reactions.
 
+    
     template <typename speciesT, typename reactionT>
     bool
     ReactionNetworkDescription<speciesT, reactionT>::recordSpecies( typename ReactionNetworkDescription<speciesT, reactionT>::SpeciesTypePtr pSpecies )

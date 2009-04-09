@@ -51,20 +51,38 @@ namespace plx
         rFamily.respond( fnd::newSpeciesStimulus<mzrPlexSpecies> ( this,
                                                                    generateDepth ) );
     }
+
+    void 
+    mzrPlexSpecies::
+    inform()
+    {
+        rFamily.dumpablesRespond( fnd::newSpeciesStimulus<mzrPlexSpecies> ( this,
+                                                                            0 ) );
+    }
     
     std::string
     mzrPlexSpecies::
     getName( void ) const
     {
+
         if ( nameGenerated )
         {
             return name;
         }
         else
         {
+
+#ifdef TMP_DEBUGGING
+	std::cout << "Generating name for " << getInformativeName() << std::endl;
+#endif
+        if ( nameGenerated )
             nameGenerated = true;
             const nmr::NameAssembler* pNameAssembler = rFamily.getNamingStrategy();
             name = getCanonicalName( pNameAssembler );
+
+#ifdef TMP_DEBUGGING
+	    std::cout << "Done!" << std::endl;
+#endif
             return name;
         }
     }

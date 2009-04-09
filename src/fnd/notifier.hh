@@ -54,6 +54,19 @@ namespace fnd
         void
         notify( int notifyDepth ) = 0;
     };
+
+
+    class informer
+    {
+    public:
+        virtual
+        ~informer( void )
+        {}
+        
+        virtual
+        void
+        inform() = 0;
+    };
     
     // This is used in the population update routine of species that participate
     // in automatic species generation. The species wants to notify the reaction
@@ -103,6 +116,45 @@ namespace fnd
             }
         }
     };
+
+    class onceInformer :
+        public informer
+    {
+        bool informed;
+        
+    public:
+        onceInformer( void ) :
+            informed( false )
+        {}
+        
+        bool
+        hasInformed( void ) const
+        {
+            return informed;
+        }
+        
+        void
+        ensureInfomed()
+        {
+            // Here I'm checking the notifyDepth because of a trick I'm trying in
+            // the compartmental version to keep new species/reaction from being
+            // created just because of diffusion.
+            if (!informed)
+            {
+                // Must set notified to true because notification could
+                // recurse back to this notifier.
+                //
+                // When a species notifies, it is likely to bring about the creation
+                // of reactions that have that very species as a product, causing
+                // notification of this species when the reaction occurs.
+                informed= true;
+                
+                inform();
+            }
+        }
+    };
+
+
 }
 
 #endif // CPT_NOTIFIER_H

@@ -1,14 +1,312 @@
 \chapter{The MZR Language for expressing rule-based models}
 \label{chap:theRulesChapter}
 A libmoleculizer input file (Moleculizer Rule File, or MZR
-file) is an xml document in a particular syntax, representing a set
-of molecule and species definitions as well as a set of reaction rule
-descriptions.
+file) is an text file that describes a set of molecule and species
+definitions, a set of reaction rules describing interactions amongst
+those molecular types, as well as other information describing the
+biochemical system.
 
 This chapter talks about MZR file syntax, and discusses how to express
-sets of rules representing a variety of biological pathways within it.
+sets of rules representing a variety of biological pathways within
+it.  
 
 \section{MZR File Overview}
+
+A MZR file consists of several sections, each of which describes a
+portion of the network.  There are sections for describing acceptible
+modifications within the system, the different mol types in the
+system, allosteric conditions, reactions, families of species and
+more.  This file is compiled by libmoleculizer into an xml file format
+which is actually interpreted and run by libmoleculizer internally.  
+
+
+
+
+\section{MZR File Syntax}
+A MZR rules file consists of one or more of the following sections:
+Modifications, Mols, Allosteric-Omnis, Dimerization-Gens, Omni-Gens,
+Uni-Mol-Gens, Species-Streams, and Explicit-Species.  Most of these
+sections are optional.
+
+Each of these sections begins with a header declaring the name of that
+section.  A header is a line that begins with the string ``==='' and
+contains the name of the appropriate section.  Although this sounds
+strange, this enables opening sections like:
+
+\begin{ExampleXML}
+===== Modifications =====
+  Modifications instructions...
+
+===== Mols ==============
+  Mols instructives...
+
+=====  Dimerization-Gens =====
+  Dimerizations Rules....
+
+etc...
+
+\end{ExampleXML}
+
+Each section consists of one more more statements.  Each statement
+ends with a semi-colon, but ignores all other white-space including
+newlines.  Each statment consists of a comma seperated lists of
+statements, which can either describe complexes or parts of complexes,
+assigmenets, or reaction rules.  What this actually means and what it
+actually looks like will hopefully become clear over the next few
+sections.  For now, understand that every statement ends with a
+semi-colon, and consists of one or more comma-seperated components.  
+
+Finally, comments are permitted using the comment-start character
+``#''.  Comments extend from their beginning to the end of the line on
+which they appear.
+
+\subsection{Modifications}
+The modifications section consists of zero or more statements, each of
+which define a modification.  Each statement in this section must
+consist of several assigments.  Mandatory is a name assigment of the
+form ``name=MODIFICATION_NAME''.  If mass-based reaction rate
+extrapolation is used, an additional assigment of
+``mass=MASS_OF_MODIFICATION'' is needed.  The first example gives an
+example of a modification section in a model that uses reaction rate
+extrapolation (the default); the second example gives an example of
+the same modification section, only this time not using reaction rate
+extrapolation.
+
+\begin{ExampleXML}
+=== Modifications =====================
+     name = None, mass = 0.0;
+     name = Phosphorylated, mass = 42.0;
+     name = DoublyPhosphorylated, mass = 84.0;
+     name = GDP, mass = 100.0;
+     name = GTP, mass = 110.0;
+\end{ExampleXML}
+
+\begin{ExampleXML}
+=== Modifications =====================
+     name = None;
+     name = Phosphorylated;
+     name = DoublyPhosphorylated;
+     name = GDP;
+     name = GTP;
+\end{ExampleXML}
+
+\subsection{Mols}
+
+The mols section consists of one or more statements (technically the
+Mols section can have no statements, but then everything else, save
+perhaps the modifications section, will have to be empty as well),
+each of which defines either a mod-mol or a small-mol.  Mod-mols are
+structural molecules that have one or more binding sites and zero or
+more modification sites; they also have masses if mass-based reaction
+rate extrapolation is used.  Small-mols are mols that participate in
+binding reactions with other mols, but which do not themselves have
+differential binding sites or modiification sites. However, like
+ordinary Mols, they may have a mass if mass based reaction rate
+extrapolation is used.  
+
+
+\subsubsection{Defining Mod-Mols}
+Each statement defining mod-mols consists of writing out the
+complex-form of that molecule, as well as providing a weight
+assignment.  Each complex-form statement consists of the mol name and
+a parenthesis enclosed description of the structure of that mol -- its
+binding sites and its modification sites. 
+
+Each binding site simply consists of that binding site name.  If so,
+the binding site is given the default binding-site shape of
+``default''.  If the binding site is allosteric, that is, if it can
+take multiple states depending on various conditions (for instance, a
+binding site may be more or less active depending on whether or not
+other binding sites are bound or not, or depending on the state of a
+particular modification site on that mod-mol, or depending on what
+kind of complex the mod-mol might be in).   If this is the case, all
+the legal binding site shapes are declared in a comma seperated list
+inside a pair of braces.  The first is assumed to be the default shape
+for the molecule.
+
+Each modification site consists of the modification site's name,
+proceeded by a * character (see example 4 in Fig
+\ref{examplemodmolssec}) for an example).  The name of the
+modification site must be immediately followed (with no comma
+seperating) by a pair of braces containing a list of modifications
+the modification site can have.  The first in the list is assumed to
+be the default.  Moreover, each modification name in the list must
+have a corresponding modification definition in the modifications
+section. 
+
+\begin{ExampleXML}[label=examplemodmolssec]
+==== Mols ==============
+    # 1. Defines a mol named Ste20 with a single binding site named
+    # 'to-Ste4'. 
+    Ste20(to-Ste4),
+        mass = 100.0;
+
+    # 2. Defines a mol with four binding sites.
+    Ste5( to-Ste4, to-Ste11, to-Ste7, to-Fus3),
+         mass = 100.0;
+
+    # 3. Defines a mol with three binding sites.  The third binding site,
+    # to-Ste20, is defined with two possible shapes: the default
+    # shape, named 'default' and a second shape called 'obstructed'
+    Ste4(to-Gpa1, to-Ste5, to-Ste20 { default, obstructed} ),
+         mass = 100.0;
+
+    # 4. Defines a mol with a single binding site and a single
+    # modification site (modification sites begin with *'s). The
+    # modification site, called ``PhosSite'' can have three different
+    # modifications, a default modification named ``None'', as well as
+    # modifications called Phosphorylated and DoublyPhosphorylated.
+    # These modifications must be defined in the modifications section.
+    Ste7( to-Ste5, *PhosSite { None, Phosphorylated, DoublyPhosphorylated } ),
+         mass = 100.0;
+
+    # 5. Defines a mod-mol with two binding sites, the first of with with
+    # shape information, and one modification site.
+    ReceptorGpa1Complex(to-Ste4 { GDP-bound-shape, GTP-bound-shape},  to-alpha, *GXP-site { GDP, GTP} ), 
+   	mass = 100.0;
+\end{ExampleXML}
+
+
+\subsubsection{Defining Small-Mols}
+Each small-mol statement consists of a name assignment for the new
+small-mol, as well as a mass assignment (although only needed if
+mass-based reaction rate extrapolation is used).  
+
+Several examples of small-mol statements are provided below.  
+\begin{ExampleXML}
+  ==== Mols ==============
+     alpha
+
+\end{ExampleXML}
+
+\section{Explicit-Species Section}
+The explicit-species section is where user specified names are
+assigned to different non-trivial (more than one mol component)
+complex species.  Each statement in this section corresponds to a
+single such association.
+
+The first component in an explicit-species statement is a complex-form
+that specifies the complex-species in question.  This is a short
+string that gives (in this context; in other sections the same
+complex-form can be interpreted to be a {\bf component} of a species,
+rather than the entire species itself).  
+
+To write the complex-form that represents the species in question,
+join the mols with periods.  For any binding between two species,
+append a binding id, consisting of a ! followed by an index unique to
+that binding, to the name of that binding site.  Finally each
+modification site that exists in the complex must be written along
+with its modification.  An example is given in Fig \ref{exampleexplicitspecies}.
+
+\begin{ExampleXML}[label=exampleexplicitspecies]
+=== Explicit-Species ====================
+
+    # The following explicit-species statement represents a
+    # ReceptorGpa1Complex bound to a Ste4, from the
+    # ReceptorGpa1Complex's to-Ste4 site to the Ste4's to-Gpa1 site.
+    # Additionally, the ReceptorGpa1Complex's GXP modification site
+    # should be bound to GDP.
+    ReceptorGpaComplex(to-Ste4!1, *GXP-site { GDP } ).Ste4(to-Gpa1!1), 
+        name = ReceptorBoundGpa;
+
+\end{ExampleXML}
+
+
+The only slight addendum to this is specifying how small-mols
+participate in complex formation.  Because small-mols can only
+participate in a single binding at any time, to use a small-mol in a
+complex-form its entire parenthesis enclosed structural information
+should consist of a half-binding specification.  An example is shown
+in Fig. \ref{smallmolbindingexplicitspecies}.
+
+\begin{ExampleXML}[label=smallmolbindingexplicitspecies]
+=== Explicit-Species ====================
+    # The following shows how to represent a small-mol binding as part
+    # of a threeway complex.
+    
+    alpha(!1).ReceptorGpa1Complex(to-alpha!1, to-Ste4!2, *GXP-site {GDP} ).Ste4(to-Gpa1!2),
+        name = alpha-receptor-ste4-complex;
+
+\end{ExampleXML}
+
+\section{Species-Streams}
+
+Each statement in the species stream section defines a species stream:
+a family of complexes releated by having a specific sub-complex in
+common.  The syntax and form of a species stream statement is exactly
+the same as defining an explicit-species, except that the semantics
+are different.  A species stream is associated with every species that
+has the complex-form as a subcomplex.  
+
+\section{Allosteric-Plexes}
+An allosteric-plex is a rule that tells how when an exact complex
+occurs, certain binding site shapes within that complex will change
+their shapes.  This is used for specifying allosteric binding rates
+within the dimerization-gens section.  
+
+Each statement in this section consists of exactly one complex-form
+specification, that includes special syntax to describe how binding
+site shapes update.  
+
+Each complex is specified using complex-form syntax.  However, to
+specify that a particular binding site has a shape change when present
+in this complex, add a binding shape update component, in the form ``{
+  NEW_SHAPE <- * }'', immediately after the binding site in question
+(which may be bound or unbound).  
+
+Please see the examples below, in Fig \ref{allostericplexesexamples}.  
+
+\begin{ExampleXML}
+=== Allosteric-Plexes =======
+
+  # This rule states that when there is a ReceptorGpa1Complex bound to
+  # an alpha and also bound a Ste4 exactly, then the to-Ste20 site on
+  # the Ste4 in that complex takes the shape obstructed.
+  ReceptorGpa1Complex(to-alpha!1, to-Ste4!2).alpha(!1).Ste4(to-Gpa1!2,to-Ste20 { obstructed <- * });
+
+  # This rule says that when there is an B-A-B complex, the
+  # primary-site binding sites on the B's become active
+  A(left!1, right!2).B(to-A!1, primary-site {active <-} ).B(to-A!2, primary-site { active <- *);
+\end{ExampleXML}
+
+
+\section{Allosteric-Omnis}
+This section is virtually identical to the allosteric-plexes section,
+with only one conceptual difference.  In the allosteric-omnis, the
+binding site shape changes are applied to any complex which has the
+complex-form as a subcomplex.  Because of this reason, these commands
+tend to be more useful that allosteric-plex statement.  
+
+\section{Dimerization-Gens}
+The dimerization gens section consists of zero or more statements,
+each of which specifies a binding that may occur between 
+
+\section{Omni-Gens}
+\section{Uni-Mol-Gens}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 A MZR file consists of a 'moleculizer-input' root tag that contains a
 single 'model' element.  The model element contains several mandatory
 subelements, which contain all of the description of the model:

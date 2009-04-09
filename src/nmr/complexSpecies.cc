@@ -403,6 +403,18 @@ operator<< ( std::ostream& stream, nmr::ComplexSpeciesCref aComplexSpecies )
         stream << aComplexSpecies.getMolList()[ndx]->getMolType() << " - ";
     }
 
-    stream<<'\n';
+    for(unsigned int ndx = 0; ndx != aComplexSpecies.getBindingList().size(); ++ ndx)
+    {
+	stream << aComplexSpecies.getBindingList()[ndx].first.first 
+	       << aComplexSpecies.getBindingList()[ndx].first.second
+	       << "(" << aComplexSpecies.getMolList()[ aComplexSpecies.getBindingList()[ndx].first.first  ]->getBindingList()[ aComplexSpecies.getBindingList()[ndx].first.second ] << ")" 
+	       << aComplexSpecies.getBindingList()[ndx].second.first 
+	       << aComplexSpecies.getBindingList()[ndx].second.second
+	       << "(" << aComplexSpecies.getMolList()[ aComplexSpecies.getBindingList()[ndx].second.first  ]->getBindingList()[ aComplexSpecies.getBindingList()[ndx].second.second ] << ")" 
+	       << ", "; 
+    }
+
+    stream<< '\n';
+
     return stream;
 }

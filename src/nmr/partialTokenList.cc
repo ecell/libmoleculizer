@@ -151,5 +151,38 @@ namespace nmr
             return false;
         }
     }
+
+
+    std::string PartialTokenList::repr() const
+    {
+	std::ostringstream oss;
+
+	oss << theMols.size()  << ", " << theBindings.size() << '\n';
+
+	for( MolList::const_iterator iter = theMols.begin(); 
+	     iter != theMols.end();
+	     ++iter)
+	{
+	    oss << (*iter)->getMolType() << ":";
+	}
+	
+	oss << "\n";
+
+	for( BindingList::const_iterator bndIter = theBindings.begin();
+	     bndIter != theBindings.end();
+	     ++bndIter)
+	{
+	    oss << "(" << (*bndIter).first.first
+		<< "," << (*bndIter).first.second 
+		<< "," << (*bndIter).second.first 
+		<< "," << (*bndIter).second.second << ")";
+		
+	}
+	oss << "\n";
+
+	return oss.str();
+	
+    }
+
 }
 

@@ -81,6 +81,10 @@ namespace nmr
         Permutation( Dimension dim = 0 );
         Permutation( PermutationCref aPermutation );
         Permutation( CorePermutationTypeCref aPermutationVector );
+	~Permutation();
+
+ 	const Permutation&
+ 	operator=(const Permutation& aPerm);
         
         // This constructor copies aPermutation, and then adds the point perm(pos)=value to it.
         Permutation( PermutationCref aPermutation, BindingNdx pos, int value )

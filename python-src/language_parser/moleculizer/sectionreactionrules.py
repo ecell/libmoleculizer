@@ -156,8 +156,7 @@ class OmniGenSection( MoleculizerSection ):
         return
 
     def __writeModificationExchanges( self, reaction, parElmt):
-        written_mod_exchanges = False
-        modExchanges = 0
+        modExchanges = XmlObject("modification-exchanges", parElmt)
 
         omniplex = reaction.getProducts()[0]
 
@@ -167,10 +166,6 @@ class OmniGenSection( MoleculizerSection ):
                 continue
 
             for mod_site in mol.getModificationSites():
-                if not written_mod_exchanges:
-                    written_mod_exchanges = True
-                    modExchanges = XmlObject("modification-exchanges", parElmt)
-                
                 modExchange = XmlObject("modification-exchange", modExchanges)
                 modMolInstance = XmlObject("mod-mol-instance-ref", modExchange)
 
@@ -185,8 +180,7 @@ class OmniGenSection( MoleculizerSection ):
         return 
 
     def __writeSmallMolExchange(self, reaction, parElmt):
-        has_written_small_mol_exchanges = False
-        smallMolExchangesElmt = 0
+        smallMolExchangesElmt = XmlObject("small-mol-exchanges", parElmt)
 
         reactant_omniplex = reaction.getReactants()[0]
         product_omniplex = reaction.getProducts()[0]
@@ -195,10 +189,6 @@ class OmniGenSection( MoleculizerSection ):
         for ndx in range(len(reactant_omniplex.getMols())):
             if reactant_omniplex.getMols()[ndx].getName() != product_omniplex.getMols()[ndx].getName():
                 assert( reactant_omniplex.getMols()[ndx].isSmallMol() )
-
-                if not has_written_small_mol_exchanges:
-                    smallMolExchangesElmt = XmlObject("small-mol-exchanges", parElmt)
-                    has_written_small_mol_exchanges = True
 
                 smallMolExchangeElmt = XmlObject("small-mol-exchage", smallMolExchangesElmt)
 

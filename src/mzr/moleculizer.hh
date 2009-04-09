@@ -70,6 +70,7 @@ namespace mzr
         void loadXmlString( const std::string& documentAsString );
         void loadGeneratedNetwork( xmlpp::Element* pGeneratedNetworkElmt);
         void loadParsedDocument( xmlpp::Document* pDoc );
+	void writeInternalData(const std::string& data );
         bool getModelHasBeenLoaded() const;
 
         // These functions are used for reading in rules statements, one at a time.
@@ -143,8 +144,11 @@ namespace mzr
         std::string convertSomeNameToTaggedName(const std::string& name) const;
         const mzrSpecies* getSpeciesWithSomeName(const std::string& name) const;
 
-        const mzrSpecies* getSpeciesWithTaggedName();
-        const mzrSpecies* getSpeciesWithUniqueID( SpeciesIDCref uniqueID ) throw( mzr::IllegalNameXcpt );
+        mzrSpecies* getSpeciesWithTaggedName( SpeciesTagCref taggedName) throw( fnd::NoSuchSpeciesXcpt );
+        const mzrSpecies* getSpeciesWithTaggedName( SpeciesTagCref taggedName) const throw( fnd::NoSuchSpeciesXcpt );
+
+        mzrSpecies* getSpeciesWithUniqueID( SpeciesIDCref uniqueID ) throw( mzr::IllegalNameXcpt );
+        const mzrSpecies* getSpeciesWithUniqueID( SpeciesIDCref uniqueID ) const throw( mzr::IllegalNameXcpt );
 
         std::string convertUserNameToSpeciesID(const std::string& possibleUserName) const 
             throw( utl::xcpt );
@@ -203,6 +207,14 @@ namespace mzr
         recordSpecies( mzrSpecies*, SpeciesID&);
 
 
+        //////////////////////////////////////////////////
+        // 
+        // Functions for making structural queries about species.
+        //
+        //////////////////////////////////////////////////
+	
+	int getMolCountInSpecies(const std::string& molName, const mzr::mzrSpecies* pSpec) const;
+	int getMolCountInTaggedSpecies(const std::string& molName, const std::string& taggedName) const;
 
     protected:
         void setModelHasBeenLoaded( bool value );

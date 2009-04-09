@@ -5,8 +5,9 @@ STOCHSIMDIR=$(DEMO_SIMULATION_DIR)/stochastic/src
 PARTICLESIMDIR=$(DEMO_SIMULATION_DIR)/particle/src
 NETEXPANDDIR=$(DEMO_SIMULATION_DIR)/network_expander/src
 CINTERFACEDIR=$(DEMO_SIMULATION_DIR)/c_interface/src
+RULEPARSERDIR=$(DEMO_SIMULATION_DIR)/rule_parser/src
 
-bin_PROGRAMS=network_expander_demo stochasticsim_demo particlesim_demo c_interface_demo 
+bin_PROGRAMS=network_expander_demo stochasticsim_demo particlesim_demo c_interface_demo rule_parser_demo
 
 LIBMZR = $(SRC)/libmoleculizer-1.0.la
 
@@ -43,3 +44,7 @@ network_expander_demo_LDADD = $(LIBMZR) $(LIBXMLPP_LIBS)
 
 c_interface_demo_SOURCES = $(CINTERFACEDIR)/c_interface_main.c
 c_interface_demo_LDADD = $(LIBMZR) $(LIBXMLPP_LIBS)
+
+
+rule_parser_demo_SOURCES = $(RULEPARSERDIR)/ruleparsermain.cpp
+rule_parser_demo_LDADD = $(LIBMZR) $(LIBXMLPP_LIBS)

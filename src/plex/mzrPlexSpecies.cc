@@ -64,15 +64,25 @@ namespace plx
     mzrPlexSpecies::
     getName( void ) const
     {
+
         if ( nameGenerated )
         {
             return name;
         }
         else
         {
+
+#ifdef TMP_DEBUGGING
+	std::cout << "Generating name for " << getInformativeName() << std::endl;
+#endif
+        if ( nameGenerated )
             nameGenerated = true;
             const nmr::NameAssembler* pNameAssembler = rFamily.getNamingStrategy();
             name = getCanonicalName( pNameAssembler );
+
+#ifdef TMP_DEBUGGING
+	    std::cout << "Done!" << std::endl;
+#endif
             return name;
         }
     }

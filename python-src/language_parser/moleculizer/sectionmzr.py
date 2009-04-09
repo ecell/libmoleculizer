@@ -16,7 +16,12 @@ class MoleculizerSection( object ) :
     def __init__(self, sectionName, sectionBlock):
         self.section_name = sectionName
         self.original_block = sectionBlock[:]
-        self.parsed_lines = [ ParsedLine(line) for line in self.original_block ]
+        self.parsed_lines = []
+        for line in self.original_block:
+            try:
+                self.parsed_lines.append( ParsedLine(line) )
+            except:
+                print "Error in parsing line %s" % line
 
     def getMolName(self, molName, ndx):
         return molName + "-" + str(ndx)

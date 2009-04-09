@@ -290,6 +290,7 @@ def StringIsParenBalenced(line):
              line.count("{") == line.count("}") )
 
 if __name__ == "__main__":
+    pdb.set_trace()
     main()
 
 

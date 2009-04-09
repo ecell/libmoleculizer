@@ -51,6 +51,8 @@
 #include "dimer/dimerUnit.hh"
 #include "ftr/ftrUnit.hh"
 
+#include "plex/mzrPlexFamily.hh"
+
 
 namespace mzr
 {
@@ -173,8 +175,57 @@ namespace mzr
     {
         delete pUserUnits;
     }
+
+
+    mzrSpecies*
+    moleculizer::getSpeciesWithTaggedName( SpeciesTagCref taggedName)
+        throw( fnd::NoSuchSpeciesXcpt )
+    {
+        mzrSpecies* theMzrSpecies = this->findSpecies( taggedName );
+        return theMzrSpecies;
+        
+    }
+
+    const mzrSpecies*
+    moleculizer::getSpeciesWithTaggedName( SpeciesTagCref taggedName) const
+        throw( fnd::NoSuchSpeciesXcpt )
+    {
+        const mzrSpecies* theMzrSpecies = this->findSpecies( taggedName );
+        return theMzrSpecies;
+        
+    }
     
     const mzrSpecies*
+    moleculizer::getSpeciesWithUniqueID( SpeciesIDCref uniqueid ) const
+        throw( mzr::IllegalNameXcpt )
+    {
+        
+        // First we check to see if it is a mangled name.
+        const mzrSpecies* theMzrSpecies;
+        try
+        {
+            std::string tag = convertSpeciesIDToSpeciesTag( uniqueid );
+            theMzrSpecies = findSpecies( tag );
+            return theMzrSpecies;
+        }
+        catch ( fnd::NoSuchSpeciesXcpt e )
+        {}
+        
+        try
+        {
+            theMzrSpecies = pUserUnits->pNmrUnit->constructSpeciesFromName( uniqueid );
+            // Does mzrSpecies need to be expanded here?
+            // theMzrSpecies->expandReactionNetwork();
+            
+            return theMzrSpecies;
+        }
+        catch ( nmr::IllegalNameXcpt xcpt )
+        {
+            throw mzr::IllegalNameXcpt( xcpt.getName() );
+        }
+    }
+
+    mzrSpecies*
     moleculizer::getSpeciesWithUniqueID( SpeciesIDCref uniqueid )
         throw( mzr::IllegalNameXcpt )
     {
@@ -237,6 +288,11 @@ namespace mzr
         
     this->loadParsedDocument( theParser.get_document() );
   }
+
+    void moleculizer::writeInternalData(const std::string& fileName) 
+    {
+	this->theParser.get_document()->write_to_file_formatted( fileName );
+    }
 
   bool
   moleculizer::getModelHasBeenLoaded() const
@@ -1086,16 +1142,54 @@ namespace mzr
     bool
     moleculizer::recordSpecies( mzrSpecies* pSpec)
     {
-        fnd::ReactionNetworkDescription<mzrSpecies, mzrReaction>::recordSpecies(pSpec);
-        pSpec->inform();
+        bool doNotify;
+        doNotify = fnd::ReactionNetworkDescription<mzrSpecies, mzrReaction>::recordSpecies(pSpec);
+        if(doNotify) pSpec->inform();
+
+        return doNotify;
     }
 
     bool
     moleculizer::recordSpecies( mzrSpecies* pSpec, SpeciesID& theID)
     {
-        fnd::ReactionNetworkDescription<mzrSpecies, mzrReaction>::recordSpecies(pSpec, theID);
-        pSpec->inform();
+        bool doNotify;
+        doNotify = fnd::ReactionNetworkDescription<mzrSpecies, mzrReaction>::recordSpecies(pSpec, theID);
+        if(doNotify) pSpec->inform();
+
+        return doNotify;
     }
+
+
+    int moleculizer::getMolCountInSpecies(const std::string& molName, const mzr::mzrSpecies* pSpec) const 
+    {
+	const plx::mzrPlexSpecies* pModMolSpec = dynamic_cast<const plx::mzrPlexSpecies*>( pSpec );
+ 	if (!pModMolSpec) throw 10;
+
+
+	const bnd::mzrMol* pMol = pUserUnits->pMolUnit->mustFindMol( molName );
+
+ 	const plx::mzrPlexFamily& thePlexFamily = pModMolSpec->rFamily;
+ 	const plx::mzrPlex& theParadigm = thePlexFamily.getParadigm();
+
+	int mol_count = 0;
+	for( unsigned int molNdx = 0; molNdx != theParadigm.mols.size(); ++molNdx)
+	{
+	    if (theParadigm.mols[molNdx] == pMol)
+	    {
+		++mol_count;
+	    }
+	}
+
+	return mol_count;
+    }
+
+    int moleculizer::getMolCountInTaggedSpecies(const std::string& molName, const std::string& taggedName) const
+    {
+
+	return getMolCountInSpecies( molName, this->findSpecies(taggedName));
+    }
+
+
     
   int moleculizer::DEFAULT_GENERATION_DEPTH = 0;
     

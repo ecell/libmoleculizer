@@ -125,8 +125,8 @@ extern "C" {
 
     int expandSpeciesByTag( moleculizer* handle, char* theTag);
     int expandSpeciesByID( moleculizer* handle, char* theID);
-    int expandSpecies( moleculizer* handle, species* mzrSpecies);
-    int expandReaction(moleculizer* handle, reaction* mzrReaction);
+//     int expandSpecies( moleculizer* handle, species* mzrSpecies);
+//     int expandReaction(moleculizer* handle, reaction* mzrReaction);
 
 /*************************************************
 ** 
@@ -174,7 +174,8 @@ extern "C" {
 
     /* This function returns all species that have not been expanded yet. */
     int getAllExteriorSpecies(moleculizer* handle, species*** pSpeciesArray, int* numberSpecies);
-
+    int getMolCountInTaggedSpecies(moleculizer* handle, const char* molName, const char* speciesTag);
+    
 
 /*************************************************
 ** 

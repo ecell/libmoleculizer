@@ -3,6 +3,7 @@
 noinst_LTLIBRARIES = libmoleculizer_ftr.la
 
 abs_top_builddir=@abs_top_builddir@
+abs_top_srcdir=@abs_top_srcdir@
 
 SRCDIR = ..
 
@@ -29,7 +30,7 @@ MOLECULIZER_INCLUDE_DIR=${includedir}/moleculizer
 LIBXMLPP_CFLAGS = @LIBXMLPP_CFLAGS@
 LIBXMLPP_LIBS = @LIBXMLPP_LIBS@
 
-AM_CXXFLAGS = @CXXFLAGS@ -Wall $(LIBXMLPP_CFLAGS) @PYTHON_CPPFLAGS@
+AM_CXXFLAGS = @CXXFLAGS@ -Wall $(LIBXMLPP_CFLAGS) @PYTHON_CPPFLAGS@ -I$(abs_top_srcdir)/src
 
 libmoleculizer_ftr_la_SOURCES =\
 badModMolInstanceXcpt.cc \

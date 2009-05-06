@@ -1,4 +1,5 @@
-SRC=../../src
+abs_top_srcdir=@abs_top_srcdir@
+SRC=$(abs_top_srcdir)/src
 DEMO_SIMULATION_DIR=.
 
 STOCHSIMDIR=$(DEMO_SIMULATION_DIR)/stochastic/src
@@ -14,7 +15,7 @@ LIBMZR = $(SRC)/libmoleculizer-1.0.la
 LIBXMLPP_CFLAGS = @LIBXMLPP_CFLAGS@
 LIBXMLPP_LIBS = @LIBXMLPP_LIBS@
 
-AM_CXXFLAGS = $(LIBXMLPP_CFLAGS) $(GSL_CFLAGS) -Icommon @PYTHON_CPPFLAGS@
+AM_CXXFLAGS = $(LIBXMLPP_CFLAGS) $(GSL_CFLAGS) -Icommon @PYTHON_CPPFLAGS@ -I$(SRC)
 
 noinst_LIBRARIES = libsimbase.a 
 

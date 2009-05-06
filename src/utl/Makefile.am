@@ -1,5 +1,7 @@
 ## Process this file with automake to produce Makefile.in.
 
+
+abs_top_srcdir=@abs_top_srcdir@
 noinst_LTLIBRARIES = libmoleculizer_utl.la
 
 SRCDIR = ..
@@ -24,7 +26,7 @@ ALL_MZR_LIBS = $(LIBFND) $(LIBUTL) $(LIBMZR) $(LIBSTOCH) $(LIBNMR) $(LIBNMR) $(L
 LIBXMLPP_CFLAGS = @LIBXMLPP_CFLAGS@
 LIBXMLPP_LIBS = @LIBXMLPP_LIBS@
 
-AM_CXXFLAGS = $(LIBXMLPP_CFLAGS) -I.. -I../../src @PYTHON_CPPFLAGS@
+AM_CXXFLAGS = $(LIBXMLPP_CFLAGS) -I.. -I../../src @PYTHON_CPPFLAGS@ -I$(abs_top_srcdir)/src
 
 libmoleculizer_utl_la_SOURCES =\
 arg.cc \

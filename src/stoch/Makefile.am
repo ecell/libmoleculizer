@@ -3,6 +3,7 @@
 noinst_LTLIBRARIES = libmoleculizer_stoch.la
 
 abs_top_builddir=@abs_top_builddir@
+abs_top_srcdir=@abs_top_srcdir@
 
 ## SRCDIR = $(abs_top_builddir)/src
 SRCDIR = ..
@@ -30,7 +31,7 @@ LIBXMLPP_LIBS = @LIBXMLPP_LIBS@
 GSL_CFLAGS = @GSL_CFLAGS@
 GSL_LIBS = @GSL_LIBS@
 
-AM_CXXFLAGS = @CXXFLAGS@ -Wall $(LIBXMLPP_CFLAGS) @PYTHON_CPPFLAGS@
+AM_CXXFLAGS = @CXXFLAGS@ -Wall $(LIBXMLPP_CFLAGS) @PYTHON_CPPFLAGS@ -I$(abs_top_srcdir)/src
 
 # libmoleculizer_stoch_la_LIBADD = -lstdc++ $(LIBUTL) $(LIBFND) $(LIBMZR)
 

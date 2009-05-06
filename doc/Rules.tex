@@ -1,140 +1,182 @@
 \chapter{The MZR Language for expressing rule-based models}
 \label{chap:theRulesChapter}
-A libmoleculizer input file (Moleculizer Rule File, or MZR
-file) is an text file that describes a set of molecule and species
-definitions, a set of reaction rules describing interactions amongst
-those molecular types, as well as other information describing the
-biochemical system.
+A libmoleculizer input file is called a Moleculizer Rule File (MZR).
+MZR files are text files that contain a model of a particular
+biochemical network, written in a language that describes a set of
+molecule types, a set of reaction rules describing interactions
+between those molecular types, along with other information needed to
+describe these types of systems.  This rule-based representation is
+used by libmoleculizer to create the explicit species and reactions
+that make up the expanded network.
 
-This chapter talks about MZR file syntax, and discusses how to express
-sets of rules representing a variety of biological pathways within
-it.  
+This chapter describes the MZR file syntax, and tells how to use it to
+write rule-based models representing virtually any biological pathway
+that can be expanded into explicit lists of species and reactions that
+comprise the pathway.  
 
 \section{MZR File Overview}
+A MZR file consists of multiple sections, each of which describes a
+portion of the information needed to represent a biochemical reaction
+network in libmoleculizer.  There are sections for describing
+different molecule types, types of relevant post-translational protein
+modifications, kinds of reaction families, allosteric conditions,
+families of species and more.
 
-A MZR file consists of several sections, each of which describes a
-portion of the network.  There are sections for describing acceptible
-modifications within the system, the different mol types in the
-system, allosteric conditions, reactions, families of species and
-more.  This file is compiled by libmoleculizer into an xml file format
-which is actually interpreted and run by libmoleculizer internally.  
-
-
-
+When a MZR file is supplied to libmoleculizer, it is compiled into an
+intermediate xml format, which is subsequently used internally by
+libmoleculizer.  For more information on the internal format either
+consult other parts of this manual (the information should be in here
+somewhere), or consult the original moleculizer documentation, which
+has a full discussion of it.
 
 \section{MZR File Syntax}
 A MZR rules file consists of one or more of the following sections:
-Modifications, Mols, Allosteric-Omnis, Dimerization-Gens, Omni-Gens,
-Uni-Mol-Gens, Species-Streams, and Explicit-Species.  Most of these
-sections are optional.
+``Modifications'', ``Mols'', ``Allosteric-Omnis'',
+``Dimerization-Gens'', ``Omni-Gens'', ``Species-Streams'', and
+``Explicit-Species''.  Most of these sections are optional.
 
-Each of these sections begins with a header declaring the name of that
-section.  A header is a line that begins with the string ``==='' and
-contains the name of the appropriate section.  Although this sounds
-strange, this enables opening sections like:
+Each section must begin with a header declaring the name of that
+section.  A header is any line that begins with the string ``==='' and
+contains the exact type-sensitive name of that section somewhere in
+the line.  Although this format may sound unusual, the end result is
+that a typical MZR file will have a top-down structure that looks like
+the following example.
 
-\begin{ExampleXML}
+\begin{ExampleMZR}[title={the caption}, caption={a caption}]
 ===== Modifications =====
-  Modifications instructions...
+  # Modification definitions...
 
 ===== Mols ==============
-  Mols instructives...
+  # Molecule definition...
 
 =====  Dimerization-Gens =====
-  Dimerizations Rules....
+  # Dimerization type reaction definitions....
 
-etc...
+# And so on....
+\end{ExampleMZR}
+ 
+Each section is comprised of one or more statements, each of which
+adds a single piece of information to the biochemical network
+model. (There is a technical exception: many statements are not truly
+standalone, beause they implicitly require the existance of another
+standalone statement in the model in order to be complete.  An example
+could be a rule defining a protein interaction resulting in a
+posttranslational modification to a target protein.  While the
+reaction rule itself is essentially standalone, it requires a
+statement defining the modification in question to be located in the
+Modifications section in order for the reaction rule to be completely
+understood by libmoleculizer.)
 
-\end{ExampleXML}
+In a MZR file, statements are seperated by semi-colons; all other
+white-space within them, including newlines is ignored.  Each statment
+consists of a comma-seperated list of substatements, which can either
+describe complexes or parts of complexes (what are referred to herein
+as complex forms), give assignments, or define reaction rules
+patterns.  What this actually means and how it is used will
+become clear over the next few sections.  For now, understand that
+every statement ends with a semi-colon, and consists of one or more
+comma-seperated components.
 
-Each section consists of one more more statements.  Each statement
-ends with a semi-colon, but ignores all other white-space including
-newlines.  Each statment consists of a comma seperated lists of
-statements, which can either describe complexes or parts of complexes,
-assigmenets, or reaction rules.  What this actually means and what it
-actually looks like will hopefully become clear over the next few
-sections.  For now, understand that every statement ends with a
-semi-colon, and consists of one or more comma-seperated components.  
-
-Finally, comments are permitted using the comment-start character
-``#''.  Comments extend from their beginning to the end of the line on
+Finally, comments are permitted, and use the comment-start character
+``\#''.  Comments extend from their beginning to the end of the line on
 which they appear.
 
 \subsection{Modifications}
-The modifications section consists of zero or more statements, each of
-which define a modification.  Each statement in this section must
-consist of several assigments.  Mandatory is a name assigment of the
-form ``name=MODIFICATION_NAME''.  If mass-based reaction rate
-extrapolation is used, an additional assigment of
-``mass=MASS_OF_MODIFICATION'' is needed.  The first example gives an
-example of a modification section in a model that uses reaction rate
-extrapolation (the default); the second example gives an example of
-the same modification section, only this time not using reaction rate
-extrapolation.
+The modifications section consists of a set of statements that each
+defines a unique modification that can be used and referred to within
+the model.  Each such definition consists of either one or two
+components, each of which takes the form of an assignment.  The first
+assignment is mandatory and gives the modification being defined a
+name; it takes the form ``name=MODIFICATION\_NAME''.  If mass-based
+reaction rate extrapolation is used, an additional, otherwise
+optional, assigment of ``mass=MASS\_OF\_MODIFICATION'' is needed as a
+part of the modification definition statement as well.
 
-\begin{ExampleXML}
-=== Modifications =====================
-     name = None, mass = 0.0;
-     name = Phosphorylated, mass = 42.0;
-     name = DoublyPhosphorylated, mass = 84.0;
-     name = GDP, mass = 100.0;
-     name = GTP, mass = 110.0;
-\end{ExampleXML}
+The first example gives an example of a modification section in a
+model that does not use reaction rate extrapolation (the default).
 
-\begin{ExampleXML}
+\begin{ExampleMZR}
 === Modifications =====================
      name = None;
      name = Phosphorylated;
      name = DoublyPhosphorylated;
      name = GDP;
      name = GTP;
-\end{ExampleXML}
+\end{ExampleMZR}
+
+The next example gives an example of the same modification section,
+but which now supplies mass assignments as well.  Notice how within
+each statement, the two component substatements (the name assignments
+and the mass assignments) are only seperated with commas.
+
+\begin{ExampleMZR}
+=== Modifications =====================
+     # If these modifications are to be used in reactions using mass-based
+     # rate extrapolation, then must be given masses.
+     name = None, mass = 0.0;
+     name = Phosphorylated, mass = 42.0;
+     name = DoublyPhosphorylated, mass = 84.0;
+     name = GDP, mass = 100.0;
+     name = GTP, mass = 110.0;
+\end{ExampleMZR}
+
 
 \subsection{Mols}
+The mols section consists statements that each defines either a
+mod-mol or a small-mol in the model.  Both types of mols correspond to
+types of indivisible physical units that participate in reactions; the
+difference between the mod- and small- mol types lies in the level of
+resolution of structural detail they are given, and resultingly in the
+kinds of reactions they can participate in. Mod-mols are structural
+molecules that have one or more binding sites and zero or more
+modification sites; they also may have masses, which can be used for
+mass-based reaction rate extrapolation if desired.  Small-mols are
+mols that participate in binding reactions with other mols, but which
+do not themselves have differentiated binding sites or any
+modiification sites at all. However, like mod-mols, they may have
+a mass if mass based reaction rate extrapolation is used.
 
-The mols section consists of one or more statements (technically the
-Mols section can have no statements, but then everything else, save
-perhaps the modifications section, will have to be empty as well),
-each of which defines either a mod-mol or a small-mol.  Mod-mols are
-structural molecules that have one or more binding sites and zero or
-more modification sites; they also have masses if mass-based reaction
-rate extrapolation is used.  Small-mols are mols that participate in
-binding reactions with other mols, but which do not themselves have
-differential binding sites or modiification sites. However, like
-ordinary Mols, they may have a mass if mass based reaction rate
-extrapolation is used.  
+Typically mod-mols are used to represent biochemically active
+proteins, whereas small-mols are used to represent small molecules.  
 
+\subsubsection{Statements defining Mod-Mols}
+Each statement that defines a mod-mol is made up of a complex-form
+specification that defines it, followed by an optional weight
+assignment (as always, weights are only mandatory if mass-based
+reaction rate extrapolation is used).
 
-\subsubsection{Defining Mod-Mols}
-Each statement defining mod-mols consists of writing out the
-complex-form of that molecule, as well as providing a weight
-assignment.  Each complex-form statement consists of the mol name and
-a parenthesis enclosed description of the structure of that mol -- its
-binding sites and its modification sites. 
+The meat of the definition occurs in the specification of the mol's
+complex-form statement: a complex form that defines a mod-mol consists
+of the mol's name followed by a parenthesis enclosed description of the
+structure of that mol -- its binding sites and its modification sites.
 
-Each binding site simply consists of that binding site name.  If so,
-the binding site is given the default binding-site shape of
-``default''.  If the binding site is allosteric, that is, if it can
-take multiple states depending on various conditions (for instance, a
+Within a complex-form, each binding site can simply be defined by
+writing the name of that binding site in the parenthesis.  If this is
+all the information provided, the binding site will be created with
+one and only one binding site shape, called ``default''.  If the
+binding site exhibits biochemically allosteric behavior (if it
+displays multiple distinct profiles of kinetic behavior, depending on
+conditions, allosteric states must be specified here (for instance, a
 binding site may be more or less active depending on whether or not
 other binding sites are bound or not, or depending on the state of a
 particular modification site on that mod-mol, or depending on what
-kind of complex the mod-mol might be in).   If this is the case, all
-the legal binding site shapes are declared in a comma seperated list
-inside a pair of braces.  The first is assumed to be the default shape
-for the molecule.
+kind of complex the mod-mol might be in).  To do this, all the legal
+binding site shapes are declared in a comma seperated list inside a
+pair of braces immediately following the name of the site.  The first
+value is assumed to be the default shape for the binding site.
 
 Each modification site consists of the modification site's name,
 proceeded by a * character (see example 4 in Fig
 \ref{examplemodmolssec}) for an example).  The name of the
-modification site must be immediately followed (with no comma
-seperating) by a pair of braces containing a list of modifications
-the modification site can have.  The first in the list is assumed to
-be the default.  Moreover, each modification name in the list must
-have a corresponding modification definition in the modifications
-section. 
+modification site must be immediately followed by a pair of braces
+containing a list of modifications the modification site can have.
+The first in the list is assumed to be the default modification value
+for that modification site.  Moreover, each modification type referred
+to by the list must have a corresponding definition in the
+modifications section.  These references, like everything else in
+these files, are case-sensitive.
 
-\begin{ExampleXML}[label=examplemodmolssec]
+\begin{ExampleMZR}[label=examplemodmolssec]
 ==== Mols ==============
     # 1. Defines a mol named Ste20 with a single binding site named
     # 'to-Ste4'. 
@@ -147,7 +189,11 @@ section.
 
     # 3. Defines a mol with three binding sites.  The third binding site,
     # to-Ste20, is defined with two possible shapes: the default
-    # shape, named 'default' and a second shape called 'obstructed'
+    # shape, named 'default' and a second shape called 'obstructed'.
+    # In the allosteric sections, conditions under which the binding
+    # site can be in either state can be described, and reaction rules
+    # involving the to-Ste20 binding site can be given different rates
+    # depending on the state of to-Ste20
     Ste4(to-Gpa1, to-Ste5, to-Ste20 { default, obstructed} ),
          mass = 100.0;
 
@@ -162,10 +208,10 @@ section.
 
     # 5. Defines a mod-mol with two binding sites, the first of with with
     # shape information, and one modification site.
-    ReceptorGpa1Complex(to-Ste4 { GDP-bound-shape, GTP-bound-shape},  to-alpha, *GXP-site { GDP, GTP} ), 
+    ReceptorGpa1Complex(to-Ste4 { GDP-bound-shape, GTP-bound-shape},  
+                        to-alpha, *GXP-site { GDP, GTP} ), 
    	mass = 100.0;
-\end{ExampleXML}
-
+\end{ExampleMZR}
 
 \subsubsection{Defining Small-Mols}
 Each small-mol statement consists of a name assignment for the new
@@ -173,32 +219,274 @@ small-mol, as well as a mass assignment (although only needed if
 mass-based reaction rate extrapolation is used).  
 
 Several examples of small-mol statements are provided below.  
-\begin{ExampleXML}
+\begin{ExampleMZR}
   ==== Mols ==============
-     alpha
+     # If no mass is specified
+     massless_alpha; 
+     alpha, mass = 42.3;
 
-\end{ExampleXML}
+\end{ExampleMZR}
+
+Mod-mol defining statements and small-mol defining statements can be
+freely mixed within the Mols section.
+
+\section{Defining Allosteric Conditions}
+Allosteric behavior is represented in libmoleculizer as differering
+rates of interaction within dimerization reactions, conditional on the
+specific shapes of interacting binding sites.  Specification of the
+conditions under which allosteric binding sites transition between
+their different shapes occurs in the two allosteric sections:
+allosteric-plexes and allosteric-omnis.  Both these sections are used
+for the same purpose: to give structural conditions such that binding
+sites of interaction change state.  (The different states on a binding
+site of interaction are used in the rules defining those interactions
+to specify different interaction strengths depending on what shapes
+the binding sites have).  The difference between the two sections is
+in where libmoleculizer looks for the structural conditions.  That is,
+in both sections statements are given that describe two things: a
+biochemical entity in a specific enabling state, and one or more
+resulting binding site shape changes the binding sites within that
+entity.  The difference between the two is that in the
+allosteric-plexes section, the structural entity specified much match
+exactly; in the allosteric-omnis section, the structural entity
+specified matches all complexes which contain the specified entity.
+(They may either match it exactly or the specified entity may be a
+subcomplex of the biochemical entity being matched.)
+
+\section{Allosteric-Plexes}
+An allosteric-plex is a rule that tells how the binding sites within
+specific complexes (specific up to state of its unspecified
+modification) have their shapes changed.  Binding site shape
+information may then be used for specifying allosteric binding rates
+within the dimerization-gens section.
+
+Each statement in this section consists of a single complex-form
+specification of a whole complex, that includes special syntax to
+describe how the binding sites in that complex change their shape.
+
+The first step in the construction of the appropriate
+allosteric-statement is the construction of the complex-form that
+describes the relevant complex.  This is done by specifying the
+complex as a set of mols, with binding-site binding information
+joining binding sites between mols.  
+
+
+These are just examples of complex-forms.  Because they do not yet use
+the specical allosteric syntax that describes updated binding sites,
+they are not yet valid allosteric-plex statements.
+
+\begin{ExampleMZR}
+
+A;  # This is the complex form that describes a particular singleton
+    # mol.
+
+A(first!1).B(second!1); # This is a complex form that describes a
+                        # particular dimer of an A bound to a B, from
+                        # the A's ``first'' binding site to B's
+                        # ``second'' binding site.
+
+# This complex describes a B-A-C trimer.  Looking at the binding
+# information, we see that A is bound at its ``first'' site to B at 
+# its ``b-site''.  Likewise A is bound at its ``third'' site to the C 
+# at the C's ``c-site.''
+A(first!1, third!2).B(b-site!2).C(c-site!1);
+
+\end{ExampleMZR}
+
+
+Although these complex-forms are syntactically correct (although they
+do not yet contain enough information to be valid allosteric
+statements, or any other valid statement at this moment), they may not
+be valid complex-forms.  To be valid, the objects referred to be be
+consistent with other parts of the model.  By referring to A, B, and C
+mols, these each must be defined in the ``Mols'' section of the
+model.  Furthermore, all three must be mod-mols and be defined with
+the appropriate binding sites: A must have ``first'' and ``third''
+binding sites and so forth.  
+
+By getting this far, in the context of an allosteric-plex, we have
+completely specified a complex type.  (In the examples, these are A
+singletons, AB dimers, or ABC trimers respectively).  That is, they
+completely specify the {\bf the binding state} of the complex, they
+are so far silent on the modification state of the complex.  If, for
+instance, the A molecule has a single modification site, which can
+either be phosphorylated or not, then AB dimers (complex-type) can
+have two forms of corresponding species: the AB dimer with the A
+phosphorylated and the AB dimer with the A unphosphorylated.  To
+specify further conditions on the modification state of the specified
+complex, further modification site information must be known.  
+
+\begin{ExampleMZR}
+  === Modifications ===
+  name = None;
+  name = P;
+
+  ==== Mols  =====
+
+  A(to-b,*M{None,P}};
+  AP( to-b, *M1{None,P}, *M2{None,P});
+  B(b);
+
+  ==== Allosteric-Plexes =====
+  
+  # Because no mention is made of A's modification site ``M'' here, 
+  # this allosteric-plex will match AB dimers in which A is both 
+  # phosphorylated and non-phosphorylated.
+  1.  A(to-b!1).B(b!1);
+  
+  # Because this complex specifies a state for the modification site
+  # in the A mol, this complex will only match AB dimers in which the
+  # A is unphosphorylated.
+  2.  A(to-b!1, *M{None}).B(b!1);
+
+  # Like 2, but will match only AB dimers in which the A is
+  # phosphorlated.  
+  3.  A(to-b!1, *M{P}).B(b!1);
+
+  # Partial specification is allowed (as well as full and no
+  # specification), this will identify all AP.B dimers in which 
+  # the M2 phosphorylation site on the AP is phosphorylated.  The 
+  # M1 site may be in either phosphorylation state to match.
+  4.  AP( to-b!1, *M2{P}).B(b!2);
+
+\end{ExampleMZR}
+
+At this point, any specific structural form can be spefified, with any
+level of selection on the modification state of that complex.  To
+completely specify an allosteric-plex, only one thing remains: to
+specify the binding-site shape changes that occur for complexes that
+match the specification.  
+
+This is accomplished by specifying the binding-sites in question by
+making sure to include them in the complex form specification and then
+following them with the allosteric sections' special syntax:
+``{FinishingState <- *}'', where FinishingState is the specific name
+shape the associated binding site ends up in.  
+
+\begin{ExampleMZR}
+=== Allosteric-Plexes =======
+
+  # 1. This rule says that when there is an AB dimer, the ``to-c''
+  # site on the A will be occluded.
+  A(to-b!1, to-c {occluded<-*}).B(to-B!1)
+
+  # 2. This rule states that when an A is doubly phosphorylated, its
+  # ``binding-site'' ends up in the active shape/state.
+  A(*M1{P}, *M2{P}, binding-site {active<-*});
+
+  # 3. This rule states that when there is a ReceptorGpa1Complex bound to
+  # an alpha and also bound a Ste4 exactly, then the to-Ste20 site on
+  # the Ste4 in that complex takes the shape obstructed.
+  ReceptorGpa1Complex(to-alpha!1, to-Ste4!2).alpha(!1).Ste4(to-Gpa1!2,to-Ste20 { obstructed <- * });
+
+  # 4. This rule says that when there is an B-A-B complex, the
+  # primary-site binding sites on the B's become active.
+  A(left!1, right!2).B(to-A!1, primary-site {active <-} ).B(to-A!2, primary-site { active <- *);
+
+\end{ExampleMZR}
+
+
+\section{Allosteric-Omnis}
+This section is virtually identical to the allosteric-plexes section,
+with one key conceptual difference.  In the allosteric-plexes section
+the complex forms specified correspond to structurally identical
+(consisting of the same mols in the same binding configuration)
+complexes.  In the allosteric-omnis section, the complex forms match
+classes of complexes who possess the subcomplexes specified.  See the
+example below for more examples.
+
+
+\begin{ExampleMZR}
+
+# As an allosteric-plex, the following phrase will match singleton
+# A's.  As an allosteric-omni, the following phrase will match all
+# complexes that contain an A mol.
+A; 
+
+# As an allosteric-plex, the follwing phrase will match all A-B dimers 
+# with a phosphorylated A.  As an allosteric-omni, the following will
+match all complexes that contain a phosphorlyated A bound with a B.
+A(to-b!1, *M{Phos}).B(to-a!1);
+
+\end{ExampleMZR}
+
+Essentially that is the only difference between an allosteric-plex
+statements and allosteric-omni statements: that of how to interpret
+them (which is also why they need seperate sections).  However,
+because complex-forms in allosteric-omnis select for classes of
+structural complex, there are two additional minor forms of
+specifiers allosteric-omni complex-forms can use, that allow specifying
+whether a binding site is or is not bound.  
+
+To specify a site is explicitly unbound, simply list the binding site in the
+complex form specification.
+
+\begin{ExampleMZR}
+==== Allosteric-Omnis =====
+  # This specifies all complexes that contain an A bound to B.
+  A(to-b!1).B(to-a!1);
+
+  # By adding an otherwise empty binding site ``to-c'' in the
+  # structural specification, we indicate that this specifies all
+  # complexes that contain an A bound to B whether the A has an unbound
+  # ``to-c'' site.
+  A(to-b!1, to-c).B(to-a!1);
+
+
+  # By adding a partial binding specification(an exclamation point
+  # indicating a bound state, followed by a * which matches anything),
+  # this specification will select all complexes that contain an A
+  # bound to a B where the A's binding site ``to-c'' is also bound.
+  A(to-b!1, to-c!*).B(to-a!1);
+
+  # Note that by default the following complete rule does not require
+  # that the ``to-c'' site which changes shape must be unbound.  
+  A(to-b!1, to-c {occluded <- *}).B(to-A!1);
+
+  # If we wish to force this constraint, we must explicitly force the
+  ``to-c'' site to be unbound, using the ``!-'' syntax..
+  A(to-b!1, to-c!- {occluded <- *}).B(to-A!1);
+
+  # We can also combine syntaxes.  This example shows how binding-site
+  # shapes can be updated on bound-and-specified(the !1 on A),
+  # bound-and-not-specified (the to-something) on C, unbound (unbound on
+  # B), or unspecified (default) on B) within a rule.
+
+  A(to-b!1 {state1<-*}, to-c!2, fizzy) 
+  .B(to-a!1,unbound!- {state2 <-* }, default {state3<-*} ) 
+  .C(to-b!2, to-something!* {state4});
+
+\end{ExampleMZR}
+
+One final note is that all specified alloseric-omni complexes must be
+simply connected.  That is, everything specified must form one contiguous
+subcomplex in which every mol specified is unique.
+
 
 \section{Explicit-Species Section}
 The explicit-species section is where user specified names are
 assigned to different non-trivial (more than one mol component)
-complex species.  Each statement in this section corresponds to a
-single such association.
+complex species.  Each statement within this section assigns a
+specific complex a name.  These names are recorded by libmoleculizer
+and can subsequently be looked up and referred to.
 
-The first component in an explicit-species statement is a complex-form
-that specifies the complex-species in question.  This is a short
-string that gives (in this context; in other sections the same
-complex-form can be interpreted to be a {\bf component} of a species,
-rather than the entire species itself).  
+The first component of an explicit-species statement is a complex-form
+that specifies the complex-species in question.  Because
+explicit-species must be specifies completely this means that every
+modification state for every modification site on every mol must be
+specified.  
 
 To write the complex-form that represents the species in question,
 join the mols with periods.  For any binding between two species,
 append a binding id, consisting of a ! followed by an index unique to
-that binding, to the name of that binding site.  Finally each
-modification site that exists in the complex must be written along
-with its modification.  An example is given in Fig \ref{exampleexplicitspecies}.
+that binding, to the name of that binding site.  If one of the mols is
+a small-mol, simply write the associated binding syntax inside its
+structural specification (the parentheses).  Finally each modification
+site that exists in the complex must be written along with its
+modification.  An example is given in Fig
+\ref{exampleexplicitspecies}.
 
-\begin{ExampleXML}[label=exampleexplicitspecies]
+\begin{ExampleMZR}[label=exampleexplicitspecies]
 === Explicit-Species ====================
 
     # The following explicit-species statement represents a
@@ -209,832 +497,342 @@ with its modification.  An example is given in Fig \ref{exampleexplicitspecies}.
     ReceptorGpaComplex(to-Ste4!1, *GXP-site { GDP } ).Ste4(to-Gpa1!1), 
         name = ReceptorBoundGpa;
 
-\end{ExampleXML}
-
-
-The only slight addendum to this is specifying how small-mols
-participate in complex formation.  Because small-mols can only
-participate in a single binding at any time, to use a small-mol in a
-complex-form its entire parenthesis enclosed structural information
-should consist of a half-binding specification.  An example is shown
-in Fig. \ref{smallmolbindingexplicitspecies}.
-
-\begin{ExampleXML}[label=smallmolbindingexplicitspecies]
-=== Explicit-Species ====================
-    # The following shows how to represent a small-mol binding as part
+    # The following shows how to represent a small-mol (alpha) binding as part
     # of a threeway complex.
-    
     alpha(!1).ReceptorGpa1Complex(to-alpha!1, to-Ste4!2, *GXP-site {GDP} ).Ste4(to-Gpa1!2),
         name = alpha-receptor-ste4-complex;
+\end{ExampleMZR}
 
-\end{ExampleXML}
 
 \section{Species-Streams}
+Statements within species-stream section have a similar relationship
+to statements in the explicit-species section as statements in the
+allosteric-omnis section have to those within the allosteric-plexes section.
 
-Each statement in the species stream section defines a species stream:
-a family of complexes releated by having a specific sub-complex in
-common.  The syntax and form of a species stream statement is exactly
-the same as defining an explicit-species, except that the semantics
-are different.  A species stream is associated with every species that
-has the complex-form as a subcomplex.  
+In the explicit-species section, statements give an exact
+specification for a complex and associate a name with that exact
+complex.  In the species-streams section, statements describe classes
+of complex and associate a name with the class.
 
-\section{Allosteric-Plexes}
-An allosteric-plex is a rule that tells how when an exact complex
-occurs, certain binding site shapes within that complex will change
-their shapes.  This is used for specifying allosteric binding rates
-within the dimerization-gens section.  
+As before, the first component of the statement is a complex-form
+specification.  However, the additional syntax and meaning that was
+allowed and present in the allosteric-omnis section tends to apply
+here.  For instance, to require a binding site as being unbound as a
+condition of class membership, write that binding site out in the mol
+it is contained in.  To specify that a binding site is bound as a part
+of an unknown binding, write out the name of that binding site
+followed by the ``!*'' syntax. Likewise, modification values at
+modification sites may be specified or not, depending on user
+preferences.  
 
-Each statement in this section consists of exactly one complex-form
-specification, that includes special syntax to describe how binding
-site shapes update.  
+The species-stream complex-form specifier should be followed by an assignment
+``name=YOUR\_NAME\_HERE''.
 
-Each complex is specified using complex-form syntax.  However, to
-specify that a particular binding site has a shape change when present
-in this complex, add a binding shape update component, in the form ``{
-  NEW_SHAPE <- * }'', immediately after the binding site in question
-(which may be bound or unbound).  
+\begin{ExampleMZR}
+===== Species-Streams ============
+# This will select for all complexes that contain a phosphorylated A.
+A(*M{Phos}), 
+       name=withaphosphorylated\_A;
 
-Please see the examples below, in Fig \ref{allostericplexesexamples}.  
-
-\begin{ExampleXML}
-=== Allosteric-Plexes =======
-
-  # This rule states that when there is a ReceptorGpa1Complex bound to
-  # an alpha and also bound a Ste4 exactly, then the to-Ste20 site on
-  # the Ste4 in that complex takes the shape obstructed.
-  ReceptorGpa1Complex(to-alpha!1, to-Ste4!2).alpha(!1).Ste4(to-Gpa1!2,to-Ste20 { obstructed <- * });
-
-  # This rule says that when there is an B-A-B complex, the
-  # primary-site binding sites on the B's become active
-  A(left!1, right!2).B(to-A!1, primary-site {active <-} ).B(to-A!2, primary-site { active <- *);
-\end{ExampleXML}
+A(*M{Phos}), 
+       name=withaphosphorylated\_A;
 
 
-\section{Allosteric-Omnis}
-This section is virtually identical to the allosteric-plexes section,
-with only one conceptual difference.  In the allosteric-omnis, the
-binding site shape changes are applied to any complex which has the
-complex-form as a subcomplex.  Because of this reason, these commands
-tend to be more useful that allosteric-plex statement.  
+A(*M{Phos}), 
+       name=withaphosphorylated\_A;
+
+
+A(*M{Phos}), 
+       name=withaphosphorylated\_A;
+
+
+A(*M{Phos}), 
+       name=withaphosphorylated\_A;
+
+\end{ExampleMZR}
+
 
 \section{Dimerization-Gens}
-The dimerization gens section consists of zero or more statements,
-each of which specifies a binding that may occur between 
+The dimerization gens section consists of a set of statements, each of
+which describes an association/decomposition reaction between specific
+binding sites on specified mols.  In addition to having default on and
+off rates, the association and decomposition rates may be made
+dependent on the states of the specified binding sites.  This
+allosteric behavioral information is specified as further
+subcomponents of the main rule statement.  
 
-\section{Omni-Gens}
-\section{Uni-Mol-Gens}
+A dimerization-gen statement consists of one or more components.  The
+first section describes the specific form of the reaction followed by
+default on and off rate information.  Subsequent components describe
+allosteric behavior and, for each allosteric condition, add three
+components. In these cases, the first portion describes allosteric
+states of binding sites participating in the first, master reaction
+and the second and third portions describe the on and off rates for
+that allosteric case, and so on.
+
+As always, components referred to within dimerization-gens statements
+must have corresponding definitions in other parts of the model.  For
+instance, Mols referred to in the reaction specification must be
+defined in the Mols section, along with the binding sites and binding
+shapes referred to in the rules.  
+
+\begin{ExampleMZR}
+
+  # Basic Dimerization.
+  A(to-B) + B(to-A) -> A(to-B!1).B(to-A!1),
+       kon = 100.0,
+       koff = 10.0;
+
+    #
+    # alpha/Receptor Binding.  This reaction shows how a binding of a
+    mod-mol to a small-mol works
+    alpha() + Receptor(to-alpha) -> alpha(!1).Receptor(to-alpha!1),
+    	   kon = 100.0,
+	   koff = 10.0;
+
+    # The receptor@oligo-1 + receptor@oligo-1 reaction has on and off
+    # rates of 10.0 when both receptors are in their default states.
+    # When one of them is in state {enabled} and the other is in state
+    # {default}, the on rate is 75 and the off rate is 10.0; when both
+    # participating binding sites have shape {enabled}, the on rate
+    # becomes 50.0.
+    Receptor(oligo-1) + Receptor(oligo-1) -> Receptor(oligo-1!1).Receptor(oligo-1),
+          kon = 10.0,
+	  koff = 10.0,
+       Receptor(oligo-1 { default} ) + Receptor(oligo-1 {enabled } )
+         -> 
+           Receptor(oligo-1!1).Receptor(oligo-1),
+             kon = 75.0,
+	     koff = 10.0,
+       Receptor(oligo-1 { enabled } ) + Receptor(oligo-1 { enabled} ) 
+         -> 
+           Receptor(oligo-1!1).Receptor(oligo-1),
+             kon = 50.0,
+	     koff = 10.0;
+
+\end{ExampleMZR}
 
 
+ \section{Omni-Gens}
+ The dimerization-gens section deals with all binding site interactions that bind
+ or unbind proteins together.  A second important class of
+ protein-protein reactions are the generic enzymatic reactions.  These
+ are reactions in
+ which post-translational modifications can be made and small mols are
+ exchanged, possibly with the aid of a helper molecule, and possibly
+ resulting in an additional final product as well.
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-A MZR file consists of a 'moleculizer-input' root tag that contains a
-single 'model' element.  The model element contains several mandatory
-subelements, which contain all of the description of the model:
-'modifications', 'mols', 'allosteric-plexes', 'allosteric-omnis',
-'reaction-gens', 'explicit-species', and 'explicit-reactions'. 
-
-\begin{ExampleXML}[caption=Overall structure of a MZR file, label=overallmzrstruct]
-<!-- Overall structure of a MZR file -->
-<moleculizer-input>
-  <model>
-    <modifications />
-    <mols />
-    <allosteric-plexes />
-    <allosteric-omnis />
-    <reaction-gens />
-    <explicit-species />
-    <explicit-reactions />
-  </model>
-</moleculizer-input>
-\end{ExampleXML}
-
-Generally speaking, the information in the modifications section
-describes and defines each of the legal modification values, typically
-different chemical groups, that can be used within the model.  
-
-The elements in the 'mols' section correspond to molecule definitions for
-the different molecules that can be used within the model.
-
-Allosteric-plexes and allosteric-omnis both contain information that
-describes how specific binding sites in a complex change their shape
-relative to features of the containing complex (such as specific
-binding sites being bound, specific regulatory sites being modified in
-specific ways, presence of specific mols in complex, or other
-conditions).  
-
-The reaction-gens element contains each of the different reaction
-rules in the model; each of these corresponds to a single biochemical
-interaction between different combinations of functional and
-regulatory sites.  Typically these will correspond to dimerization
-reactions, decomposition reactions, and more complicated enzymatic
-reactions. 
+ The omni-gen rule represents a generic reaction that can generate,
+ for each complex species containing a particular omniplex, a reaction
+ with flexible characteristics. The generated reactions can change any
+ small-mol component of the omniplex into another small-mol, if
+ desired. The generated reactions can change the modification at
+ modification site on any one mod-mol component of the omniplex, if
+ desired. The generated reactions can be binary, if desired, requiring
+ any explicit reactant species as a co-reactant with the species that
+ is recognized as containing the omniplex. The generated reactions can
+ produce an arbitrary explicit product species, in addition to the
+ transformed primary reactant, if desired. 
  
-The explicit-species section is where complexes can be specified and
-given names, names that can be used later in reactions or within
-libmoleculizer to refer to those complexes.  The explicit-reactions
-section containts so called explicit reactions, reactions where all
-substrates, all products, and all kinetics are explicity stated.  
-
-For more information on the any section, including the all-important
-question of how to write it, please consult the appropriate section in
-this chyapter.  For further information, please check out the chapter
-'API Reference'.  
-
-\section{The 'modifications' Section -
-  /moleculizer-input/model/modifications } 
-\label{sec:modifications}
-\index{modifications}
-
-The modifications section consists of zero or more modification elements,
-each of which represents a particular modification that may be present
-on a protein, e.g. 'none', 'phosphorylated', 'ubiquitinated', at one
-of its modification sites.
-
-Each modification must have a unique name attribute and a weight-delta
-subelement, representing the weight that that modification adds to the
-basic molecular weight of the mol that it appears on.  
-
-\lstset{language=XML}
-\begin{lstlisting}[caption=A Sample Modifications Section, label=modifications ]
-<modifications>
-  <modification name="none">
-    <weight-delta daltons="0.0" />
-  </modification>
-  <modification name="phosphorylated">
-    <weight-delta daltons="42.0" />
-  </modification>
-  <modification name="doubly-phosphorylated">
-    <weight-delta daltons="84.0" />
-  </modification>
-</modifications>
-\end{lstlisting}
-
-Each of the modifications that will be used and referred to in the
-model must be defined here. 
-
-\section{The 'mols' section - /moleculizer-input/model/mols}
-
-Complex species in libmoleculizer are combinations of molecules bound
-together between different binding sites, along with modifications
-associated with each modification site for each molecule in the complex.  
-
-In the mols section, each of the molecule types that can occur in
-complexes within the model are specified.
-
-Libmoleculizer supports two kinds of molecules in its networks:
-structural molecules, typically representing proteins, that have some
-number of binding and modification sites, and small molecules, which
-represent small particles that participate in reactions amongst
-complex species, but do not have any structure themselves.
-
-These two kinds of molecules correspond to the two kinds of
-subelements that may go in the mols section: 'mod-mol' elements and
-'small-mol' elements.   
-
-\subsection{Defining 'mod-mol' elements}
-Each mod-mol element defines a single protein type in the reaction 
-network.  A mod-mol is defined with a unique name, a weight, and any number
-of binding and modification sites. Mod-mols and their structural
-components (binding sites, modification sites) are the basic entities 
-referred to by reaction rules in the reaction-gens section of the MZR
-file, and are the basic element of multi-protein complexes.
-
-A single mod-mol element corresponds to a single protein definition
-and has a mandatory name attribute that corresponds to the protein's
-id.  This name must be unique amongst mols in the model.  
-
-A mod mol element has a mandatory weight subelement with a mandatory
-'daltons' attribute, which takes the default, unmodified weight of
-that mod-mol.
-
-\lstset{language=XML}
-\begin{lstlisting}[caption=Basic mod-mol structure, label=basicmodmolstructure ]
-
-<!-- Example of a mod-mol definition with mandatory name attribute -->
-<!-- and mandatory weight subelement -->
-<mod-mol name="Gpa1">
-  <weight daltons="54075.9"/>
-  <!-- binding-site and mod-site elements -->
-</mod-mol>
-
-\end{lstlisting}
-
-Finally a mod-mol element has zero or more binding-site subelements
-and zero or more mod-site subelements.  
-
-\subsubsection{Defining 'binding-site' elements}
-Mod-mols can have one or more binding sites, each one described by a
-binding-site subelement, that represents a location of iteraction
-where the mod-mol can complex with other proteins.  
-
-Each binding site is associated with a list of legal binding
-site states, called 'shapes' in libmoleculizer, an idea that
-encompasses binding site conformation as well as other physical
-charectoristics, such as occlusion, to binding-sites.  The use of
-binding site shapes, particularly to express allosteric protein
-interaction behavior and reaction kinetics is a critical property of
-the way libmoleculizer works, and must be understood.  
-
-Each binding site element must be given a mandatory name attribute
-that must be unique among all the parent mod-mol's binding sites. Each
-site must also have one or more site-shape subelements (at least one must be
-specified in order to specify the default site-shape for this binding
-site), representing the different conformational shapes the binding
-site may possess at any given time.  Finally, a single subelement
-'default-shape-ref' with a mandatory name attribute must be present,
-which must take as its value the name of some site-shape defined for
-the same binding site.
-
-\lstset{language=XML}
-\begin{lstlisting}[caption=Defining binding sites in a mod-mol,
-  label=bindingsitedefinitions,
-  keywords=]
-<mod-mol name='Gpa1'>
-  <weight daltons='101.1' />
-  <binding-site name="to-GXP">
-    <site-shape name="default"/>
-    <default-shape-ref name="default" />
-  </binding-site>
-  <binding-site name="to-Ste2">
-    <!-- The ordering of site-shapes and default-shape-ref can come -->
-    <!-- in any order.  -->
-    <default-shape-ref name="default" />
-    <site-shape name="default" />
-    <site-shape name="occluded" />
-  </binding-site>
-  <binding-site name="to-Ste4">
-    <default-shape-ref name="inactive" />
-    <site-shape name="inactive" />
-    <site-shape name="partially-active" />
-    <site-shape name="fully-active" />
-  </binding-site>
-</mod-mol>
-\end{lstlisting}
-
-
-\subsubsection{'A note on the binding-shape state constraint of
-  libmoleculizer'}
-As mentioned elsewhere in this manual, one of the primary modeling
-metaphors used by libmoleculizer is to enforce each binding site in
-complex has a site-specific shape at all times and that the specific
-shapes of interacting components determine allosteric kinetics.  
-
-For instance, suppose two mod-mols: Fus3 and Ste5 are defined in the
-mols section of the MZR rules file.  Fus3 has one binding site
-'to-Ste5' that has only one state possible: 'default'.  Ste5 has two
-binding sites, 'X' and 'to-Fus3', and 'to-Fus3' can be in either a
-'default' state or an 'occluded' state.  This information is specified
-in Fus3 and Ste5's mod-mol element definitions.
-
-In an appropriate place (either the allosteric-plexes or
-allosteric-omnis sections of the model, or in an allosteric-state
-subelement of the mod-mol itself -- please see documentation on these
-sections elsewhere in the chapter for more information), conditions
-under which different binding sites obtain different shapes can be
-specified.  For instance, in the previous example, a rule that states
-that when Ste5 is complexed with a mod-mol 'Ste11' at its 'X' site,
-then its 'to-Fus3' site has the shape 'occluded' could be added to the
-allosteric-omnis section of the model.
-
-Finally, in the specific reaction-gen (reaction rule) they apply to,
-reaction kinetics are specified for each grouping of relevant of
-binding site-states (for instance, in a dimerization reaction, a
-reaction rate must be given for each pair of binding-site shapes that
-can occur in the two participating binding sites).  
-
-\subsubsection{'mod-site'}
-A mod-site element represents single modification site on the mod-mol;
-i.e. a site where the protein can undergo post-translational 
-modifications as a part of the reaction network.  
-
-Each mod-site-element has a mandatory 'name' attribute, and a
-mantatory default-mod-ref subelement, which itselfhas a mandatory 'name' attribute.
-The default-mod-ref name must be identical to one of the modification elements in
-the modifications section.
-
-\lstset{language=XML}
-\begin{lstlisting}[caption=Defining a modification site in a mod-mol, label=modsiteexample]
-<modifications>
-  <modification name="none">
-    <weight-delta daltons="0.0"/>
-  </modification>
-  <modification name="phosphorylated">
-    <weight-delta daltons="42.0"/>
-  </modification>
-</modifications>
-
-<mols>
-  <mod-mol name="Gpa1">
-    <mod-site name="phosphorylation-site-1">
-      <default-mod-ref name="none"/>
-    </mod-site>
-    <mod-site name="phosphorylation-site-2">
-      <default-mod-ref name="none"/>
-    </mod-site>
-  </mod-mol>
-</mols>
-\end{lstlisting}
-
-\subsubsection{'allosteric-state'}
-A mod-mol may contain zero or more 'allosteric-state' elements.  Each
-of these elements describes a mapping of modification sites to
-modification values that, when realized, induces a particular set of
-binding-sites to be in particular binding site shapes.  <<<DOES THIS
-MAPPING OF MODIFICATION SITES HAVE TO BE COMPLETE?  I THINK IT DOES
-NOT...>>> For example, assume that we have defined a protein Fic2 with
-a binding site 'func-site-1' that can have a shape 'active' or
-'inactive', but is in default shape 'inactive'.  Suppose then that
-Fic2 also has 2 regulatory sites 'phosphorylation-site-1' and
-'phosphorylation-site-2', and suppose we would like to represent that
-when both these sites are phosphorylated site 'func-site-1' becomes
-active.  We could represent this using an 'allosteric-state' element.
-
-Each allosteric state element has two mandatory elements, a mod-map
-subelement and a site-shape-map subelement.  The mod-map element
-consists of one or more 'mode-site-ref' elements, each with a name
-attribute that names a mod-site on the mod-mol along with a single
-'mod-ref-name' subelement, whose name attribute is the name of a
-particular modification value.  
-
-The second mandatory subelement of allosteric state is an element
-called 'site-shape-map', which consists of one or more subelements
-that each corresponds to a shape change to a binding site in that
-mol.  Specifically, each subelement is a 'binding-site-ref' element,
-with a name attribute that corresponds to the name of a binding site
-in that mod-mol.  Each binding site-ref element contains a single
-subelement called 'site-shape-ref', with a name that corresponds to
-one of the predefined sites shapes for that site.  
-
-For instance, suppose we have mod-mol called 'Fic3' defined as having
-a binding site 'site-1' which by default has shape 'inactive' but
-which is also defined as having an active shape 'active' and a single
-modification site 'phos-site' with a default modification value of
-'none'.  Suppose we would like to express that 'site-1' takes the
-shape 'active' when 'phos-site' has a 'phosphorylation' modification
-attached to it.  We would do this by adding an allosteric-state
-element to this mod-mol.
-
-\lstset{language=XML}
-\begin{lstlisting}[caption=An example of an allosteric-state element, label=allostericstateexample]
-<allosteric-state>
-  <mod-map>
-    <mod-site-ref name='phos-site'>
-      <mod-ref name='phosphorylated' />
-    </mod-site-ref>
-  </mod-map>
-  <site-shape-map>
-    <binding-site-ref name='site-1'>
-      <site-shape-ref name='active' />
-    </binding-site-ref>
-  </site-shape-map>
-</allosteric-state>
-\end{lstlisting}
-
-If additional constrains need to be checked, these are specified as
-additional mod-site-ref subelements of mod map.  Each of the
-modification site conditions described in a mod-map must be satisfied
-for the binding-site changes described in the site-shape-map to be
-appled.  If additional binding shape changes need to be added for a
-particular set of modification values, each additional change is added
-as another binding-site-ref child element of site-shape-map.  Finally,
-if an entirely different allosteric condition needs to be expressed,
-it is added as an additional allosteric-state element.  In conclusion,
-each mod-mol may be defined with any number of allosteric-state
-elements.  Each allosteric-state of a mod-mol corresponds to a set of
-modification states that when realized, induce a set of binding-site
-shape changes.
-
-\subsubsection{A More Extensive Mod-mol example.'}
-
-To end this section, it may be helpful to define a basic protein in
-its entirety using mod-mol syntax.
-
-To do this, let us model the hypothetical protein Fic1.  In a
-literature review, we see that it binds to a scafold protein where it
-acts as the target of a kinase cascade.  When phosphorylated, Fic1
-will dissociate from the scaffold and go and bind to a target.  IT is
-found based on the literature review that Fic1 does not activate the
-target in its off space, and that single phosphorylation partially
-activates the pathway, although at lower levels then it does in its
-doubly phosphorylated state.  
-
-To represent this protein as a mod-mol, we must give it a name and
-weight, a list of binding sites, and a list of modification sites.  We
-must also define the various shapes that can be associated with each
-binding in order to induce allosteric effects.  Here is an example of
-how such a mod-mol could be defined.
-
-\lstset{language=XML}
-\begin{lstlisting}[caption=A complete mod-mol example, label=completemodmolexample]
-<mod-mol name='Fic1'>
-  <weight daltons='413.7' />
-  <binding-site name='to-scaffold'>
-    <site-shape name='default' />
-    <site-shape name='half-inactive' />
-    <site-shape name='inactive' />
-    <default-shape-ref name='default' />
-  </binding-site>
-  <binding-site name='to-target'>
-    <site-shape name='inactive' />
-    <site-shape name='partially-active' />
-    <site-shape name='active' />
-  </binding-site>
-  <mod-site name='phos-site-1'>
-    <default-mod-ref name="none" />
-  </mod-site>
-  <mod-site name='phos-site-2'>
-    <default-mod-ref name="none" />
-  </mod-site>
-
-  <!-- This represents the allosteric state when phos-site-1 -->
-  <!-- is phosphorylated and phos-site-2 is not.             -->
-  <allosteric-state>
-    <mod-map>
-      <mod-site-ref name='phos-site-1'>
-	<mod-ref name='phosphorylated' />
-      </mod-site-ref>
-    </mod-map>
-    <site-shape-map>
-      <binding-site-ref name='to-scaffold'>
-	<site-shape-ref name='half-inactive' />
-      </binding-site-ref>
-      <binding-site-ref name='to-target'>
-	<site-shape-ref name='paritally-inactive' />
-      </binding-site-ref>
-    </site-shape-map>
-  </allosteric-state>
-
-  <!-- This represents the allosteric state when phos-site-1 -->
-  <!-- is phosphorylated and phos-site-2 is not.             -->
-  <allosteric-state>
-    <mod-map>
-      <mod-site-ref name='phos-site-2'>
-	<mod-ref name='phosphorylated' />
-      </mod-site-ref>
-    </mod-map>
-    <site-shape-map>
-      <binding-site-ref name='to-scaffold'>
-	<site-shape-ref name='half-inactive' />
-      </binding-site-ref>
-      <binding-site-ref name='to-target'>
-	<site-shape-ref name='paritally-inactive' />
-      </binding-site-ref>
-    </site-shape-map>
-  </allosteric-state>
-
-  <!-- This represents the allosteric state both phos-sites  -->
-  <!-- are phosphorylated. -->
-  <allosteric-state>
-    <mod-map>
-      <mod-site-ref name='phos-site-1'>
-	<mod-ref name='phosphorylated'>
-      </mod-site-ref>
-      <mod-site-ref name='phos-site-2'>
-	<mod-ref name='phosphorylated'>
-      </mod-site-ref>
-    </mod-map>
-    <site-shape-map>
-      <binding-site-ref name='to-scaffold'>
-	<site-shape-ref name='inactive' />
-      </binding-site-ref>
-      <binding-site-ref name='to-target'>
-	<site-shape-ref name='active' />
-      </binding-site-ref>
-    </site-shape-map>
-  </allosteric-state>
-  
-</mod-mol>
-\end{lstlisting}
-
-\subsection{'small-mol'}
-A small-mol element represents a small molecule - typically an organic
-molecule that participates in pathway reactions.  ADP/ATP are perhaps
-the most common examples.
-
-The most defining semantic charecteristic of the small molecule as
-well as the small-mol, is a lack of structural information.  Small 
-molecules participate in chemical reactions in toto.  They do not have
-binding sites, nor do they have modification sites. 
-
-The definition for a small-mol element is a mandatory name attibute
-and a mandatory weight child with a mandatory daltons attribute.
-
-\lstset{language=XML}
-\begin{lstlisting}[caption=Examples of small-mol definitions, label=smallmolex]
-<mols>
-  <small-mol name="ADP">
-    <weight daltons="427.20"/>
-  </small-mol>
-  <small-mol name="ATP">
-    <weight daltons="507.181"/>
-  </small-mol>
-</mols>
-\end{lstlisting}
-
-\section{Defining 'allosteric-plex' elements}
-
-This section is used to specify allostery in a similar method to
-allosteric-omnis (see next section).  For now, it should probably be
-ignored, as it has been virtually entirely subsumed by
-allosteric-omnis (I think).  
-
-\section{Defining 'allosteric-omni' elements}
-
-In the mod-mol section, we learned how we could easily specify
-allosteric changes to binding site shape using allosteric-state
-elements, which tell moleculizer how binding-site states on a mod-mol
-may be changed by the states of different modification sites on that
-same mod-mol.  This is well and good, but how can we specify more
-complicated types of allostery.
-
-For instance, Cdk proteins typically have multiple regulatory sites
-and multiple binding sites where the activation of a functional site
-depends on multiple regulatory sites being phosphorylated, as well as
-a specific binding site being bound to a cyclin.  For the functional
-site to be activated, all three - both regulatory sites being
-phosphorylated and the appropriate binding site must be bound to
-cyclin.  Because of the third binding condition, this type of binding
-site shape change cannot be listed in relation to a specific molecule
-in a specific regulatory state; instead it must be specified relative
-to a complex (in this case a Cdk-cyclin dimer) complex.  This is where
-allosteric-omnis come in.
-
-Each allosteric-omni subelement of allosteric-omnis represents a
-generalized form of binding-site shape allostery.  
-
-An allosteric-omni element has two mandatory subelements, a plex
-subelement and a allosteric-sites subelement.
-
-The plex element describes a subcomplex that, if found present in a
-complex species, will induce allosteric shape changes to binding sites
-within that subcomplex.  
-
-\subsection{Defining the plex element}
-
-\subsubsection{Defining the allosteric-sites element}
-
-
-
-\section{'reaction-gen'}
-
-The reaction-gens section is where all of the rules for extrapolating
-reactions go.  Currently, there are two
-reaction-generators: dimerization-gen\glossary{name={modification},
-  description={A modification is a changable part of the mols.}}, which represents a
-protein-protein binding interaction as well its reverse decomposition
-reaction, and the omni-gen, which represents a generic reaction that
-can express unary and binary enzymatic reactions and other reaction
-forms.  
-
-\section{'dimerization-gen'}
-A dimerization-gen reaction generator represents a generic
-dimerization/decomposition reaction between a pair of modular binding
-domains belonging to two proteins.  
-
-The first information needed by a dimerization-gen is two mol-ref
-elements, each with a site-ref subelement, which each specify one of
-the binding sites that participates in this dimerization reaction.
-For instance, if the model has defined (in the mod-mol section) a
-protein named 'Substrate' that has a binding site 'to-Enzyme', the
-proper way to specify this binding site is by writing 
-
-\begin{lstlisting}
-<mol-ref name=''Substrate''>
-  <site-ref name="to-Enzyme" />
-</mol-ref>
-\end{lstlisting}
-
-Following two of these elements, two elements: default-on-rate-value
-and default-off-rate value must be provided.  Each must have a value
-element, which corresponds to the basic reaction rate.  Units of this
-are (Hz)(l)/mol.  See /ref{simpleDimerizationExample} for a basic
-example of a dimerization reaction between two proteins.
-
-\begin{lstlisting}
-<dimerization-gen>
-  <mol-ref name="Substrate">
-    <site-ref name="to-Enzyme" />
-  </mol-ref>
-  <mol-ref name="Enzyme">
-    <site-ref name="to-Substrate" />
-  </mol-ref>
-  <default-on-rate value="1.0e12" />
-  <default-off-rate value="1.0" />
-</dimerization-gen>
-\end{lstlisting}
-
-Each allosteric form of the reaction can be listed in its own
-allo-rates element.  Each allo-rates element consists of two
-site-shape-ref elements, and on-rate and off-rate elements.  When the
-first binding-site in the dimerization reaction has the first
-binding-site shape, and the second binding-site has the second shape,
-then the allo-rates on and off rates are used instead.  So in
-/ref{alloRatesExample}, Substrate will bind at its 'to-Enzyme' site
-with Enzyme at its 'to-Substrate' site at a rate of of 1.0e12 (Hz) (l)
-/ sec, unless the 'to-Enzyme' site has the shape 'occluded', in which
-case the binding rate is 0.0.
-
-\begin{lstlisting} 
-<dimerization-gen>
-  <mol-ref name="Substrate">
-    <site-ref name="to-Enzyme" />
-  </mol-ref>
-  <mol-ref name="Enzyme">
-    <site-ref name="to-Substrate" />
-  </mol-ref>
-  <default-on-rate value="1.0e12" />
-  <default-off-rate value="1.0" />
-  <allo-rates>
-    <site-shape-ref name="Obstructed" />
-    <site-shape-ref name="default" />
-    <on-rate value = 0.0 />
-    <off-rate value = 1.0e12 />
-  </allo-rates>
-</dimerization-gen>
- \end{lstlisting}
-
-
-\section{uni-mol-gen}
-A uni-mol-gen is a reaction generator which responds to the presence
-of a single enabling mod-mol.  By adding enabling modification, you
-can arrange that the reaction generator only creates reactions whose
-enabling substrate is in a particular modification state.  The
-generated reaction can ghange the modification state of the mol by
-adding modification-exchanges.  This reaction can be made
-binary by adding additional product species.  Users can likewise add
-additional product species in the 'additional-product-species'
-section.  
-
-\begin{lstlisting}[caption='A simple uni-mol-gen that represents a protein
-  with two phosphorylation sites that is ubiquitinated']
-<uni-mol-gen>
-  <enabling-mol name='Protein' />
-  <enabling-modifications>
-    <mod-site-ref name='PhosphorylationSite_1'>
-      <mod-ref name='phosphorylated' />
-    </mod-site-ref>
-    <mod-site-ref name='PhosphorylationSite_2'>
-      <mod-ref name='phosphorylated' />
-    </mod-site-ref>
-  </enabling-modifications>
-  <modification-exchanges>
-    <modification-exchange>
-      <mod-site-ref name='UbiquitinationSite' />
-      <installed-mod-ref name='Ubiquitinated' />
-    </modification-exchange>
-  </modification-exchanges>
-  <rate value='1e10' />
-</uni-mol-gen>  
-\end{lstlisting}
-
-\section{'omni-gen'}
-
-An omni-gen is a generic reaction generator that can generate, for
-each complex species containing a particular omniplex, a reaction with
-flexible characteristics. The generated reactions can change any one
-small-mol component of the omniplex into another small-mol, if
-desired. The generated reactions can change the modification at any
-one modification site on any one mod-mol component of the omniplex, if
-desired. The generated reactions can be binary, if desired, requiring
-any explicit reactant species as a co-reactant with the species that
-is recognized as containing the omniplex. The generated reactions can
-produce an arbitrary explicit product species, in addition to the
-transformed primary reactant, if desired. Each of these separate
-activities on the part of the generated reactions is engaged simply by
-including the appropriate optional elements in this reaction generator
-specification. 
-
-\begin{lstlisting}
-\end{1stlisting}
-
-\section{'explicit-species'}
-
-This section is where users describe species explicitly because you
-want to create molecules of the species at some point during the
-simulation, because you want to track the population of the species
-through the simulation, or because you want to define explict
-reactions involving the species. Some things that you might think
-would be explicit species, such as a monomeric protein, may not be;
-rather, they are constituents of species of complexes. (The monomeric
-protein is a "mol" but you can define an explicit plex-species that
-contains just the one mol.)
-
-\begin{lstlisting}
-<explicit-species>
-  <plex-species name='AA_Dimer'>
-    <mol-instance name='First_A'>
-      <mol-ref name='A' />
-    </mol-instance>
-    <mol-instance name='Second_A'>
-      <mol-ref name='A' />
-    </mol-instance>
-    <binding>
-      <mol-instance-ref name='First_A'>
-        <binding-site-ref name='to-A' />
-      </mol-instance-ref>
-      <mol-instance-ref name='Second_A'>
-        <binding-site-ref name='to-A' />
-      </mol-instance-ref>
-    </binding>
-  </plex-species>
-</explicit-species>
-\end{1stlisting}
-
-\section{'explicit-reactions'}
-
-Most of the reactions that libmoleculizer works with are generated
-automatically by reaction generators, but you can enter reactions
-one-at-a-time, too. The participants in an explicit reaction have to
-be explicit species, so that they have names and you therefore have a
-way to refer to them in the explicit reaction's definition. 
-
-
-\begin{lstlisting}
-<explicit-species>
-
-  <plex-species name='A-singleton'>
-    <mol-instance name='the-A'>
-      <mol-ref name='A' />
-    </mol-instance>
-  </plex-species>
-
-  <plex-species name='B-singleton'>
-    <mol-instance name='the-B'>
-      <mol-ref name='B' />
-    </mol-instance>
-  </plex-species>
-
-  <plex-species name='AA_Dimer'>
-    <mol-instance name='First_A'>
-      <mol-ref name='A' />
-    </mol-instance>
-    <mol-instance name='Second_A'>
-      <mol-ref name='A' />
-    </mol-instance>
-    <binding>
-      <mol-instance-ref name='First_A'>
-        <binding-site-ref name='to-A' />
-      </mol-instance-ref>
-      <mol-instance-ref name='Second_A'>
-        <binding-site-ref name='to-A' />
-      </mol-instance-ref>
-    </binding>
-  </plex-species>
-
-  <plex-species name='AB_Dimer'>
-    <mol-instance name='the-A'>
-      <mol-ref name='A' />
-    </mol-instance>
-    <mol-instance name='the-B'>
-      <mol-ref name='B' />
-    </mol-instance>
-    <binding>
-      <mol-instance-ref name='the-A'>
-        <binding-site-ref name='to-B' />
-      </mol-instance-ref>
-      <mol-instance-ref name='the-B'>
-        <binding-site-ref name='to-A' />
-      </mol-instance-ref>
-    </binding>
-  </plex-species>
-
-</explicit-species>
-
-<explicit-reactions>
-
-  <reaction>
-    <substrate-species-ref name='A-singleton' multiplicity='2' />
-    <product-species-ref name='AA_Dimer' />
-  </reaction>
-
-  <reaction>
-    <substrate-species-ref name='A-singleton' multiplicity='1' />
-    <substrate-species-ref name='B-singleton' multiplicity='1' />
-    <product-species-ref name='AB_Dimer' />
-  </reaction>
-
-</explicit-reactions>  
-\end{lstlisting}
+ Each of these separate activities on the part of the generated
+ reactions is engaged simply by including the appropriate elements in
+ this reaction generator specification.
+ 
+ The first half of an omni-gens statement, the reaction specification
+ should be written in the form ``Omniplex + (optional\_explicit\_reactant) ->
+ Transformed\_Omniplex + (optional\_explicit\_product)''.  Examples follow:
+
+\begin{ExampleMZR}
+
+==== Explicit-Species =====
+
+A(to-b!1).B(to-a!1), name = AB_dimer;
+
+
+==== Omni-Gens ============
+
+# A simple phosphorylation reaction
+E(b1!1).S(b1!1, *Mod{ None }) -> E(b1!1).S(b1!1, *Mod{ Phosphorylated }),
+     k = 100.0;
+
+# By listing a site, such as the b2 site on E here, and leaving it
+# empty, this specification will only apply to those complexes with
+# that site free.
+E(b1!1, b2).S(b1!1, *Mod{ None }) -> E(b1!1).S(b1!1, *Mod{ Phosphorylated }),
+     k = 100.0;
+
+# Likewise, by adding the !+ syntax, you can force that a binding site
+# simply must be bound.
+E(b1!1, b2!+).S(b1!1, *Mod{ None }) -> E(b1!1).S(b1!1, *Mod{ Phosphorylated }),
+     k = 100.0;
+
+# The same phosphorylation, but this time adding a GTP -> GDP
+# hydralization.  
+E(b1!1,to-GxP!2).S(Sb1!1, *Mod{ None }).GTP(!2) ->
+  E(b1!1,to-GxP!2).S(Sb1!1, *Mod{ Phosphorylated }).GDP(!2),
+    k = 100.0;
+
+# Multiple small molecules can be exchanged at once.
+E(b1!1, b2!2).GTP(!1).GTP(!2) -> E(b1!1, b2!2).GDP(!1).GDP(!2), k = 100;
+
+# Multiple phosphorylations can be done at once.  
+A(b1!1, *M1{none}).B(b2!1, *M1{none}) -> A(b1!1, *M1{none}).B(b2!1, *M1{none}),
+   k = 100.0;
+
+# The same, but this time adding an additional optional
+# explicit-species. 
+E(b1!1,to-GxP!2).S(Sb1!1, *Mod{ None }).GTP(!2) + AB\_dimer->
+  E(b1!1,to-GxP!2).S(Sb1!1, *Mod{ Phosphorylated }).GDP(!2),
+   k = 100.0;
+
+# an optional product species....
+E(b1!1,to-GxP!2).S(Sb1!1, *Mod{ None }).GTP(!2) ->
+  E(b1!1,to-GxP!2).S(Sb1!1, *Mod{ Phosphorylated }).GDP(!2)  + AB\_dimer,
+    k = 100.0;
+
+# With both an optional reactant and an optional product.  Remember,
+# the names of singleton species (the singleton A mol) can be used as
+# explicit names.  
+E(b1!1,to-GxP!2).S(Sb1!1, *Mod{ None }).GTP(!2) + A ->
+  E(b1!1,to-GxP!2).S(Sb1!1, *Mod{ Phosphorylated }).GDP(!2)  + AB\_dimer,
+    k = 100;
+\end{ExampleMZR}
+
+\section{A simple modeling example}
+
+\subsection{Two enzyme coversion of A->A*}
+In this section, we will give as an example a two-enzyme, single
+substrate reaction amongst hypothetical proteins.  Let us suppose we
+have a system with a target protein Y, a protein with two enzyme
+binding domains (E1 and E2) and a phosphorylation site and two enzymes
+A and B.  A has a binding domain that binds to E2 and a small-mol
+binding site ``to-Gxp'' that is bound to either GDP or GTP..  B has a
+binding domain that bindings to E1 as well as a phosphorylatable
+modification site.  
+
+Suppose that the pathway under consideration is one in
+which Y becomes bound by a GTP-possessing A and phosphorlated B,
+whence A hydrolizes its GTP and B transfers its P03 group to Ys
+unphosphorylated site.  To model this system we must define the 3
+proteins, along with GTP and GDP (these are the 5 molecules involved
+in the system), modification states of none and phosphorylated, along
+with 2 dimerization rules (the rules that govern binding and unbinding
+of A+Y and of A+B) and a single omni-gen rule (the rule that describes
+the transformation of the A.B.Y trimer).
+
+\begin{ExampleMZR}
+===== Modifications ==========
+# Note that this model, for the sake of using little space, does not
+# use mass-based extrapolation, so no masses are included in the
+# modifications or in the mol definitions.
+
+name = none;
+name = phosphorylated;
+
+
+===== Mols ===============
+name = GTP;
+name = GDP;
+name = A(to-Y, to-Gxp);
+
+# Note that by default, Bs start out phosphorylated.  We also could
+# have had the default be none, although we would have either had to
+# then explicitly create phosphorylated Bs, or provide another rule
+# telling how Bs get phosphorylated.
+
+name = B(to-Y, *mod-site {phosphorylated, none} );
+name = Y( to-A, to-B, *mod-site {none, phosphorylated});
+
+===== Dimer-Gens ===========
+
+B(to-Y) + Y(to-A) -> B(to-Y!1).Y(to-A!1),
+   kon = 50.0;
+   koff = 500;
+
+A(to-Y) + Y(to-A) -> A(to-Y!1).Y(to-A!1),
+   kon = 50.0;
+   koff = 500;
+
+===== Omni-Gens =============
+
+A(to-Y!1, to-GxP!2).B(to-Y!3, *mod-site {phosphorylated} ).Y(to-A!1, to-B!3, *mod-site {none}).GTP(!2) ->
+  A(to-Y!1, to-GxP!2).B(to-Y!3, *mod-site {none} ).Y(to-A!1, to-B!3, *mod-site {phosphorylated}).GDP(!2),
+  k = 100.0;
+
+
+\end{ExampleMZR}
+
+
+Suppose we wish to extend the model slightly to include dynamics that
+say that upon phosphorylation of Y, A and B will dissociate
+extra-quick.  To do this, we would add one new allostery rule (which
+could either be an allosteric-omni or an allosteric-plex, depending on
+what our intentions are) as well as new allosteric sections to both
+dimerization-gens that describe speedy unbinding in the presence of
+phosphorylated Y.  That example is shown below.  
+
+
+
+\begin{ExampleMZR}
+===== Modifications ==========
+# Note that this model, for the sake of using little space, does not
+# use mass-based extrapolation, so no masses are included in the
+# modifications or in the mol definitions.
+
+name = none;
+name = phosphorylated;
+
+
+===== Mols ===============
+name = GTP;
+name = GDP;
+name = A(to-Y, to-Gxp);
+
+# Note that by default, Bs start out phosphorylated.  We also could
+# have had the default be none, although we would have either had to
+# then explicitly create phosphorylated Bs, or provide another rule
+# telling how Bs get phosphorylated.
+
+name = B(to-Y, *mod-site {phosphorylated, none} );
+name = Y( to-A, to-B, *mod-site {none, phosphorylated});
+
+===== Allosteric-Omni =========
+# This must be an omni, as opposed to a plex, because these kinetics
+# should apply to all complexes Y occurs in: AY, BY, and ABY - any of
+# them should quickly dissociate.
+
+Y(to-A {inactive <-*}, to-B {inactive <-*}, *mod-site {phosphorylated});
+
+
+===== Dimer-Gens ===========
+
+# Both these rules say that by default B and Y (or A and Y) bind
+# together, but when Y is phosphorylated, they practically fly apart. 
+
+B(to-Y) + Y(to-A) -> B(to-Y!1).Y(to-A!1),
+   kon = 50.0;
+   koff = 5.0,
+  B(to-Y {default} ) + Y(to-A {inactive} ) -> B(to-Y!1).Y(to-A!1),
+     kon = 1.0;
+     koff = 500.0;
+
+A(to-Y) + Y(to-A) -> A(to-Y!1).Y(to-A!1),
+   kon = 50.0;
+   koff = 5.0,
+  A(to-Y {default} ) + Y(to-A {inactive} ) -> A(to-Y!1).Y(to-A!1),
+     kon = 1.0;
+     koff = 500.0;
+
+===== Omni-Gens =============
+
+A(to-Y!1, to-GxP!2).B(to-Y!3, *mod-site {phosphorylated} ).Y(to-A!1, to-B!3, *mod-site {none}).GTP(!2) 
+ ->
+  A(to-Y!1, to-GxP!2).B(to-Y!3, *mod-site {none} ).Y(to-A!1, to-B!3, *mod-site {phosphorylated}).GDP(!2),
+  k = 100.0; 
+
+\end{ExampleMZR}
+
+
 
 %%% Local Variables: 
 %%% mode: latex

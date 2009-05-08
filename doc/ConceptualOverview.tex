@@ -1,387 +1,119 @@
 \chapter{Useful Concepts in libmoleculizer}
 \label{chap:conceptualOverviewChapter}
 
-The objective of libmoleculizer is to take in a description of
-proteins and other molecular entities along with a list of rules
-describing various biochemical interactions, and then use this
-information to generate information about the species and reactions in
-the reaction network that are implicitly described by those rules.
-
-In order to understand in detail how libmoleculizer generates species
-and reactions, including kinetics, that makes up the implicit reaction
-networks, there are several key background concepts about what
-libmoleculizer represents, and how it understands and interprets rules
-of interaction.
-
-\section{Combinatorial Reaction Networks}
-TODO Write me
-
-This section will discuss how protein-protein interactions can lead
-under the right conditions to a combinatorial explosion, where the
-system size grows combinatorially to the number of rules.  Discuss
-what this means, in terms of not being able to explicitly write the
-system down.
-
-\subsection{Signal Transduction Pathways}
-TODO Write this section.
-
-This section will discuss very quickly what signal transduction
-pathways are and why they are important, and how they usually fall
-into the category of systems which display combinatorial complexity.  
-
-\section{Rule-Based Reaction Network Specifications}
-\label{concRuleBasedSpec}
-\index{rule-based modeling}
-
-The fundamental principle underlying libmoleculizer is that reaction
-networks can be specified by describing the basic constituents of
-chemical species, such as types of proteins and other biochemical molecules
-(including small-molecules, but also including other larger molecules
-such as DNA) that exist in the network, along with a set of
-rules, each of with describes an individual biochemical interaction
-amongst those types.  We call this type of modeling rule-based
-modeling.  
-
-
-\subsection{Species are made from structural bindings between
-  structural molecules}
-
-In libmoleculizer, the physical objects that participate in reactions
-are called species. Species are different structural orientations of
-objects called mols. Each mol represents a variety of indivisible
-biochemical entity; typically the types of mols will be various kinds
-of proteins, but also can mean different small molecules, DNA, and
-potentially even objects such as organelles as well.
-
-Each mol has its own name and is defined with a set of modular binding
-sites.  Each of these binding sites has its own uniquely identifying
-name, as well as a collection of shapes, which represent the different
-conformational states that binding site may be, thus affecting binding
-kinetics.  
-
-Mols bind together between their binding sites in order to form
-species.  This includes the special case where a complex species
-consists of only a single mol that is bound to nothing else.
-
-Mols also may be defined with modification sites, which are different
-locations on the mol are associated with different modifications,
-post-translational modifications such as phosphorylation groups, that
-are relevant to the state of the mol, but which do involve a binding
-between two mols.  
-
-\subsection{Species have structural features based on their
- constituent mols}
-
-The relevance of species is that they have structural features based
-on the structural features of the mols that make them up.  For
-instance, if a species is composed of an A protein and a B protein,
-and the A protein has a modification site that is phosphorylated, then
-when we bind that A protein together with the B protein, in a
-molecular binding between two of their binding sites, the complex
-species, the A-B dimer, will also posess a modification site that is
-phosphorylated. Likewise, the dimer will posess all the same binding
-sites as did the individual mols before they were bound.
-
-Features in libmoleculizer refer to specific structural features,
-defined in terms of either mols or sets of mols, that individiual
-species may or may not possess. For instance, a feature might be the
-condition that a particular modification site on a specific type of
-mol has a certain modification state -- e.g. that a particular
-modification site on a Ste11 protein kinase must be
-phosphorylated. Any complex species containing one or more a Ste11
-mols with that modification site phosphorylated will match that
-feature.
-
-Another structural feature, this time concerning two mols, would be
-the presence of a particular binding between two mols at two binding
-sites - e.g. the condition that there is a binding that joins a Ste5
-to a Ste11. Any complex that contains a Ste11 bound to a Ste5 between
-the correct binding sites will match that feature.
-
-There is no limit in principle to the complexity that features in
-libmoleculizer can have. It is possible to talk about a feature which
-is the condition of possessing a complicated sub-complex (called an
-omni-plex in libmoleculizer), with a particular pattern of
-modification states on it.  
-
-\subsection{Rules are amongst features}
-As stated before, rules in libmoleculizer specify the different types
-of biochemical interactions in a MZR model.  These rules are then used
-to generate new species and new reactions between them based upon an
-initial set of initial species. The underlying metaphor in how
-libmoleculizer specifies interaction rules is to say that all
-interactions can be specified in terms of features and the features
-react together.  Reaction rules specify features, and reactions
-between the features.  Libmoleculizer applies the feature reaction
-transformations specified in the rules to any sets of species
-possessing the relevent features.  This process is applied
-iteratively and thus, a network of species and reactions is generated.  
-
-The features that are required by each type of rule is rule-specific
-to the three kinds of rules.  The first type of rule, called a
-dimerization-gen, which specifies a particular binding interaction -
-it looks for two features, one matching a free binding site on a
-particular mol type and the other with another free binding site on
-another type of mol, and when two species are found that match these
-features, the two free sites are bound together.  The second type of
-rule is an omni-gen, which looks for a particular omni-plex, a mol
-sub-complex of species, with any portion of its modification state
-specified.  When it finds this omni-plex, any number of small molecule
-exchanges or modification exchanges may be performed on that
-omni-plex.  Finally, the uni-mol-gen, which looks for a specific type
-of mol with a potentially partially specified modification state; on
-this mol any number of small molecule exchanges or modification
-exchanges may be specified.  Note that this is a special case of the
-omni-gen, and will likely be depreciated in the next version.
-
-Each of these three types of rule, dimerization-gen by looking for two
-free site features, omni-gen looking for an omni-plex feature, and
-uni-mol, looking for a single mol matching feature behaves similarly:
-it looks for features, and when finding them, has a specified
-transformation it applies to the species.  The dimerization-gen joins
-the two free binding sites together, and both the omni-gen and the
-uni-mol-gen perform some kind of state change - a small mol exchange
-or a modification exchanage - on the matching structural feature.
-
-\subsection{Reaction rules create species and reactions from an
-  initial list of species}
-
-Either in the set of rules or by using the libmoleculizer API, the
-user must specify a list of initial species that exist within the
-model. For sets of species containing the features needed for the
-different rules, libmoleculizer will apply the rule's transformation
-to the matching substrate species, in order to create a set of product
-species, which may or may not be new.  This mapping of substrate
-species to product species is added as a reaction to the list of
-reactions.  In addition, kinetics are generated based on the reaction
-rule and added to the reaction, a topic to be discussed later in this
-chapter. At this point, the reaction rules have been applied to the
-initial set of species, which, when applied, create a new reaction
-with potentially new product species.  If any of the product species
-are new, they are checked for features, which may set off the
-application of rules, causing more new reactions with potentially new
-product species to be formed.  The whole reaction network relative to
-a set of initial species includes all species and all reactions that
-might be created on any iterative step of the expansion process.  
-
-\section{Specifying Reaction Kinetics} 
-
-For any reaction rule, one or more reaction rates must be specified
-that indicate the kinetics of the reaction.  Uni-mol and omni-gen
-reaction rules take a single reaction rate.  A dimerization-gen
-reaction rule takes two: dimerization reactions are assumed to be
-reversible by default.  Irreversible reaction rules are expressed as a
-reversible reaction with an off rate of 0.  
-
-There are two ways this kinetic parameter can be interpreted.  If no
-reaction rate extrapolation is used, then the on-rates supplied in the
-rule are passed into the generated reaction directly.  Using this
-method, users can use whatever units they would like.
-
-Libmoleculizer also has the potential to extrapolate a reaction rate
-from the kinetics provided based on the masses of the substrate
-species involved. 
-
-%% TODO figure this out and get a reference in here.
-This assumption is used because of a particular equation suggested in
-Gillespie.
-
-%% Figure out these units here.
-When reaction rate extrapolation is used, the rate associated with a
-binary reaction is multiplied by the reduced-mass of the the substrate
-species, in order to better approximate the way that the masses of the
-species affect the collisions due to collisions that underly the
-reaction.  In this interpretation, units must be in either X or Y.
-
-\section{Allosteric Kinetics are Based on Binding Shape}
-\label{sec:allosterickinetics}
-
-Biochemical reaction networks, particularly signal transduction
-pathways, often use allosteric proteins to regulate their
-behavior. Allosteric proteins are proteins whose shape, and
-consequently behavior, with regards to different interactions can
-change into one of multiple different forms depending upon the state
-of certain modifications on that protein as well as what entities that
-protein is bound to.  One example would be a model in which a protein
-Fic10 can bind to another Sca3, after it has been activated by being
-doubly phosphorylated on two of its modification sites.  
-
-How does libmoleculizer treat an allosteric reaction?  Say we would
-like to express the above reaction: Sca3 binds with Fic10, say from
-the ``to-Fic10'' and ``to-Sca3'' sites respectively, but only when
-Sca3 has been doubly phosphorylated, say at it's ``phos-site-one'' and
-``phos-site-two'' sites; how can this be done?  Libmoleculizer
-decomposes a reaction like that into defining the charectoristics that
-cause the behavior of that molecule binding site (in this case the
-``to-Fic10'' site of Sca3) to change.  These charectoristics, another
-feature that can be tested for in new species, are associated with
-binding shape changes.  In this case, the binding site ``to-Fic10''
-may have been defined with the mandatory default-binding-site-shape
-parameter equal to ``half-activated''; specifying the feature that
-a Sca3 has both of its phos-sites phosphorylated would be associated
-with the binding-site-shape change that when this feature is matched
-the matching Sca3 mol's ``to-Fic10'' site is updated to the shape
-``fully-activated''.  Second, in the applicable reaction rule the
-allostery applies to, describe the allosteric kinetic rates in terms
-of the binding site shapes that supply the allostery. 
-
-For instance, to represent above reaction describing the doubly
-phosphorylated Sca3-Fic10 dimerization, we start by providing
-information that the Sca3 binding site has default shape ``inactive''
-and define that when it is doubly phosphorylated at its
-``phos-site-one'' and ``-two'' sites, that shape becomes ``active''.
-Next, we define the dimerization rule representing Sca3 and Fic10
-dimerization with a dimerization-gen.  The default kinetics described
-in that reaction rule applywhen the two binding sites are have their
-default shapes.  In this case, we would want to express that that
-reaction does not occur, so we give the on-rate as 0, and the off-rate
-as a very high number to indicate that does not happen.  Inside that
-rule, we would also specify the allostery, with an shape-based
-'exception' to the default kinetics: i.e. if the ``to-Fic10'' site has
-shape ``activated'', then in that case the on- and off-rates should be
-given as the activated kinetic rates.  
-
-\section{Design rationale for using binding site shapes to describe allostery}
-TODO Write this section
-
-This section will discuss why the designers of this software chose to
-use binding site shapes to describe allostery.  The alternative is to
-use something like the BioNetGen schema for specifying rules.
-Effectively, rather than defining omniplexes that transform certain
-binding sites within them and then defining allostery based on which
-binding sites are participating in a reaction, platforms like
-BioNetGen specify rules in terms of the omniplexes themselves.  This
-is a relatively big difference between the two: this section makes the
-case as to why we believe our method is preferable.  
-
-\section{The Naming of Complex Species}
-One problem that libmoleculizer has had to solve regarding complex
-species is that of automatically generating names.  From names, we
-hope we can get out several features.  These are discussed below.  
-
-The purpose of a name is to uniquely identify a species.  That is, a
-naming process is a function that takes complex species and generates
-corresponding names, which are strings of charectors.  While many
-processes can generate strings from species, what makes naming
-processes naming processes is that the strings have two properties.
-The first is that the process of naming is injective.  That is, two
-species have the same name if and only if they are the same species.  
-The second property is that the naming process is in some sense
-invertible: if you have the name, you can recover the species that
-belongs with that name.  
-
-From this, libmoleculizer has two kinds of names that it can
-generate, tagged names and unique ids.  The difference is the scope
-under which the two conditions listed above work.  Tagged names
-meet the two conditions of being names listed above within a single
-run of the program; unique ids meet the two conditions between
-seperate runs of the program -- we say they are serializable.  
-
-
-\section{Tagged names for naming complex species within a single session
-  of libmoleculizer}
-
-The first method of naming species within libmoleculizer is with
-tagged names.  These names are short, typically 8 charecters long.
-Within a single run of libmoleculizer, tags can be used to compare two
-species: two complex species produced {\it within the same run of
-  libmoleculizer} are structurally the same if and only if their tags
-are identical.  Additionally, given that a tagged name has been
-produced, that tag can be used to recover the species, as long as this
-all occurs within the same run.  However, none of these naming
-guarentees carry over between seperate runs.  Between seperate runs of
-libmoleculizer, identical complex species may generate different tags,
-non-equal species may generate identical tags, and from one run to
-another, it is not possible to take a tag and recover the correct
+In the introduction, you should have learned what libmoleculizer is
+exactly: a computer system that models complicated biochemical
+pathways such as signal transduction pathways by representing chemical
+species as being composed of one or more indivisible molecule types
+bound together and reactions between species as being special cases of
+local interactions between the component molecules that make up a
 species.  
 
-However, within a single run, the advantage of tagged names is that
-they are both much shorter that unique ids and they are also much
-faster to generate.  The tagged name is very quick; basically a
-constant time process. \footnote{When species are generated in
-  libmoleculizer, they are checked to see if they are new.  If they
-  are, they are registered.  If they are not new, they are associated
-  with the first isomorphic complex species that was registered, which
-  stands in as the representative for that isomorphism class of
-  complex.  The tagged name is the ``stringification'' of the pointer
-  to the isomorphism class for the complex species, and as such, is
-  a constant time process.}  As such, if names of species are needed
-for uses within single runs, it is \textbf{always preferable to use
-  tagged names}.  
+This chapter gives an overview of these key concepts.  
+
+\section{Biochemical networks consist of chemical species and sets of
+  chemical  reactions between them}
+Libmoleculizer takes in models that represent an abstraction of a
+biochemical network and explicitly generates that network.  What this
+means is that libmoleculizer generates a complete list of species
+along with all reactions those species can participate in.  This list
+of species and reaction can be sent to another simulator, as a list of
+variable names and reaction equations between them, and can be used to
+simulate the entire network.  
+
+\section{Species consist of one or more indivisible units in complex}
+
+Species in libmoleculizer are constructed by combining together one or
+more indivisible reaction units, called mols.  Mols have binding
+sites, and are joined together between their binding sites.  By taking
+one or more mols and joining them together, a structurally unique
+complex species is formed, which is a member of the set of biochemical
+species in that reaction network.  
+
+\section{Molecules represent indivisible units of reaction}
+As discussed previously, molecules are the indivisible components of
+species.  No submolecular reactions can take place in a moleculizer
+biochemical network.  The smallest level of interaction is at the
+molecule level.  
+
+\subsection{Molecules have a structure consisting of binding sites and
+  modification sites}
+
+Molecules themselves have internal structure.  Moleculizer recognizes
+two types of molecules: modifiable-molecules, which may have any
+number of unique binding sites that may participate to bind the
+molecule into a larger complex , as well as any number of modification
+sites that can accept different post-translational modifications.
+
+There are also small-molecules, which are molecules that can
+participate in reactions but which do not have differentiable binding
+sites, or modification sites.  These molecules can be a part of a
+complex species, but only in a simple way: they can only participate
+in a single binding event at one time.  This level of resolution is
+appropriate for modeling biological small molecules, which can be
+considered a modular molecular component of species in which that
+occur, but for which it would be innapropriate to model at higher
+degrees of detail.
+
+\section{Association and dissociation reactions between complex
+  species are caused by the associations and dissociations on the
+  binding sites belonging to the mols that make up that complex}
+
+Association interactions are specified in terms of specific binding
+sites on specific molecules (modifiable-molecules as well as
+small-molecules). 
 
 
-\section{Unique IDs for Naming Complex Species}
-Many uses of names involve serialization: that is, uses which
-compare names between one instance of moleculizer and another.  These
-may be for things like comparing the results of different simulation
-runs, \footnote{Of course, libmoleculizer does not simulate anything,
-  and no absolute guarantees can be made about the architectures of
-  programs which use libmoleclizer.  However, we expect that most
-  simulators which use libmoleculizer will create a new libmoleculizer
-  for each simulation run.  Whenever this is the case, unique ids
-  should be used to compare the results of the different runs.},
-putting information into databases, recording names with the desire of
-finding out information about the corresponding species at some future
-date, etc.  For these uses, we need a stronger guarantee for what
-names can give us: we need names that uniquely identify species
-between instances of libmoleculizer; we also need names for which we
-can recover the complex species given a name at any time.  Unique ids
-fulfil these requirements.  
 
-While it is outside the scope of this document to discuss in deep
-detail how these names are produced, we will quickly cover this
-information here.  Any complex species consists of a set of molecules
-that are bound together in some fashion.  Any linear description, such
-as a string, then which describes it, will consist of a list of
-species, and then a list of bindings.  Therefore, for each list of
-molecules in a species (for a complex species consisting of $n$
-molecules, there are $n!$ lists that describe those molecules
-(however, if some of the molecules are identical, some of the lists
-will be the same).  For each of these lists, we can create a set of
-bindings, where each binding represents something like ``the second mol
-in the list binds at its first binding site to the third mol in the
-list at its third binding site''.  For a particular list of species,
-we can say that the correct way to write the binding is to have the
-mol with the smaller mol index listed first and the larger indexed mol
-listed second; then the correct way to write the set of bindings is as
-a list of bindings, where the list of bindings is ordered
-lexicographically. \footnote{ Lexicographically is a fancy way of
-  saying alphabetically.  As discussed before, each binding is a set
-  of four numbers $(a,b,c,d)$, which basically means ``the $a^{th}$ mol in
-  the list binds at its $b^{th}$ site to the $c^{th}$ mol at its
-  $d^{th}$ site''.  To say that a binding $(a_1, b_1, c_1, d_1) <
-  (a_2, b_2, c_2, d_2)$ lexicographically, we mean that $a_1 < a_2$ or
-  $a_1 = a_2$ and $b_1 < b2$ or that $a_1 = a_2$, $b_1 = b_2$, and
-  $c_1 < c_2$, and so on.} Finally, for any list of mols, we can
-create a canonical list of modification states in the same way as we
-created the canonical binding list for a given list of mols.  So for
-any list of the mols in a species, we can use this method to define a
-``correct'' name for the species given that list.  We then can define
-the unique id for that species to be the lexicographically least name
-over all the ``correct'' names for that species.  This unique id is
-``canonical'', which is to say that its identity depends only on the
-structure of the species and nothing else.  
+\section{Species transformation reactions are made possible by the
+  species possessing a ``transformation-enabling'' subcomplex}
 
-Because of the way in which unique ids are generated, two species will
-have the same unique id if and only if they are structurally
-identical.  Furthermore, because the name is a structural description
-of the species, libmoleculizer can use a name to regenerate and then
-produce the corresponding complex species at any time.  This is the
-advantage of the unique id.  However, the disadvantages are that the
-production of these names takes a relatively long time.  While the
-novel algorithm used to generate the unique id is relatively fast, it
-is much slower than the constant time performance of the tagged
-names.  Additionally, because the unique id contains the structural
-information contained in the species (in order to recreate it), it may
-be quite long.  Arbitrarily large species will have arbitrarily long
-names.  \footnote{In a model run by the authors, a complex of 16 mols
-  and with a name of 658 charecters was produced.  However, if a model
-  file has rules enabling larger complexes, there is the potential for
-  names which are much longer as well.}  
 
-In conclusion, unique ids have the powerful capability that they are
-true names.  Unique ids can always be compared amongst one another,
-and may always be used to regenerate the corresponding complex
-species.  However, because of their size and the time taken to
-generate them, they should not be used unless they are needed, instead
-prefering the use of the tagged names.  
+\section{Allosteric reaction rates are differing rates of association
+  and dissassociation amongst molecules, conditional on the states of
+  the complexes the reaction molecules are found in}  
+
+\section{There are many names that can be given to a particular
+  complex species, but only one UniqueID}  
+
+\section{}
+\section{}
+
+
+1. A biochemical reaction network consists of a set of chemical
+species and a set of reactions between them
+
+2. chemical species consist of one or more indivisible units in complex
+
+3. Molecules represent indivisible units of interaction
+  a) Molecules have internal structure, consisting of binding sites
+and modification sites.
+  b) Binding sites can be defined as having multiple states/shapes.
+
+4.  The law of moleculizer:  Interactions between molecules are caused
+by interactions between the structural elements of those molecules.
+Reactions between species are a result of interactions between the
+molecules that make up the participating species.
+
+XXXX -- MAKING A LIBMOLECULIZER MODEL MEANS DEFINING A SET OF
+MOLECULES (indivisible reacting elements) AND A SET OF INTERACTIONS
+BETWEEN THEM
+
+4. Association and dissociation reactions between complex species are
+caused by the associations and dissociations of binding sites
+belonging to the mols that make up that complex.
+
+5. Species transformation reactions are made possible by the species
+possessing a ``transformation-enabling'' subcomplex.
+
+6.  Allosteric reaction rates are differing rates of association and
+dissassociation amongst molecules, conditional on the states of the
+complexes the reaction molecules are found in.
+a)  By specifying conditions under which participating binding sites
+may take on different shapes/states, as well as specifying alternate
+kinetics for association reactions based on the states of the
+participating binding sites, any allosteric profile can be
+represented.
+
+7.  There are many names that can be given to a particular complex
+species, but only one UniqueID.

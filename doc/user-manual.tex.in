@@ -42,10 +42,12 @@
 \tableofcontents
 
 %% Each of the chapters, in order. 
+
+\include{ConceptualOverview}
 \include{Rules}
 
 % \include{Introduction}
-% \include{ConceptualOverview}
+
 % \include{Installing}
 % \include{Using}
 % \include{Interfaces}

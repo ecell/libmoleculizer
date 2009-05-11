@@ -46,15 +46,14 @@ def main():
     if options["verbose"]:
         print "Parameters:\n\t", parameterBlock
         print "Modifications:\n\t", modificationsBlock
-        print "Mols:\n\t", molsBlock
-        print "Allosteric Plexes:\n\t", allostericPlexes
-        print "allosteric omnis:\n\t", allostericOmnis
+        print "Molecules:\n\t", molsBlock
+        print "Explicit-Allostery:\n\t", allostericPlexes
+        print "Allostery-Classes omnis:\n\t", allostericOmnis
         print "Reaction Rules:\n\t", reactionRulesBlock
-        print "Dimerization Gens:\n\t", dimerizationGenBlock
-        print "OmniGens:\n\t", omniGenBlock
-        print "UniMols:\n\t", uniMolGenBlock
-        print "ExplicitSpecies:\n\t", explicitSpeciesBlock
-        print "Species Streams:\n\t", speciesStreamBlock
+        print "Association-Reactions:\n\t", dimerizationGenBlock
+        print "Transformation-Reactionws:\n\t", omniGenBlock
+        print "Explicit-Species:\n\t", explicitSpeciesBlock
+        print "Species-Classes:\n\t", speciesStreamBlock
 
     outputFile = moleculizer.MoleculizerRulesFile( options["outputfile"] )
 
@@ -179,9 +178,9 @@ def parseBlockTypesFromRulesFile(textRulesFile):
 #     textRulesFile = re.sub(r"\\\s*\n\s*", " ", textRulesFile)
 #     textRulesFile = textRulesFile.split("\n")
 
-    blockCodes = ["Parameters", "Modifications", "Mols", "Allosteric-Plexes", "Allosteric-Omnis", 
-                  "Reaction-Rules", "Dimerization-Gens", "Omni-Gens", "Uni-Mol-Gens", 
-                  "Explicit-Species", "Species-Streams" ] 
+    blockCodes = ["Parameters", "Modifications", "Molecules", "Explicit-Allostery", "Allostery-Classes", 
+                  "Reaction-Rules", "Association-Reactions", "Transformation-Reactions", 
+                  "Explicit-Species", "Species-Classes" ] 
 
     blockObjNdx = -1
     blockDataObj = [ (blockCodes[0], parameterBlock), \

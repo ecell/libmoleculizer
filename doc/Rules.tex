@@ -2,6 +2,7 @@
 \label{chap:theRulesChapter}
 A libmoleculizer input file is called a Moleculizer Rule File (MZR).
 MZR files are text files that contain a model of a particular
+
 biochemical network, written in a language that describes a set of
 molecule types, a set of reaction rules describing interactions
 between those molecular types, along with other information needed to
@@ -31,8 +32,8 @@ has a full discussion of it.
 
 \section{MZR File Syntax}
 A MZR rules file consists of one or more of the following sections:
-``Modifications'', ``Mols'', ``Allosteric-Omnis'',
-``Dimerization-Gens'', ``Omni-Gens'', ``Species-Streams'', and
+``Modifications'', ``Molecules'', ``Explicit-Allostery, ``Allosteric-Classes,
+``Association-Reactions'', ``Transformation-Reactions'', ``Species-Classes'', and
 ``Explicit-Species''.  Most of these sections are optional.
 
 Each section must begin with a header declaring the name of that
@@ -46,10 +47,10 @@ the following example.
 ===== Modifications =====
   # Modification definitions...
 
-===== Mols ==============
+===== Molecules ==============
   # Molecule definition...
 
-=====  Dimerization-Gens =====
+=====  Association-Reactions =====
   # Dimerization type reaction definitions....
 
 # And so on....
@@ -121,25 +122,25 @@ and the mass assignments) are only seperated with commas.
 \end{ExampleMZR}
 
 
-\subsection{Mols}
-The mols section consists statements that each defines either a
-mod-mol or a small-mol in the model.  Both types of mols correspond to
+\subsection{Molecules}
+The molecules section consists statements that each defines either a
+mod-mol or a small-mol in the model.  Both types of molecules correspond to
 types of indivisible physical units that participate in reactions; the
 difference between the mod- and small- mol types lies in the level of
 resolution of structural detail they are given, and resultingly in the
-kinds of reactions they can participate in. Mod-mols are structural
+kinds of reactions they can participate in. Mod-molecules are structural
 molecules that have one or more binding sites and zero or more
 modification sites; they also may have masses, which can be used for
-mass-based reaction rate extrapolation if desired.  Small-mols are
-mols that participate in binding reactions with other mols, but which
+mass-based reaction rate extrapolation if desired.  Small-molecules are
+molecules that participate in binding reactions with other molecules, but which
 do not themselves have differentiated binding sites or any
-modiification sites at all. However, like mod-mols, they may have
+modiification sites at all. However, like mod-molecules, they may have
 a mass if mass based reaction rate extrapolation is used.
 
-Typically mod-mols are used to represent biochemically active
-proteins, whereas small-mols are used to represent small molecules.  
+Typically mod-molecules are used to represent biochemically active
+proteins, whereas small-molecules are used to represent small molecules.  
 
-\subsubsection{Statements defining Mod-Mols}
+\subsubsection{Statements defining Mod-Molecules}
 Each statement that defines a mod-mol is made up of a complex-form
 specification that defines it, followed by an optional weight
 assignment (as always, weights are only mandatory if mass-based
@@ -177,7 +178,7 @@ modifications section.  These references, like everything else in
 these files, are case-sensitive.
 
 \begin{ExampleMZR}[label=examplemodmolssec]
-==== Mols ==============
+==== Molecules ==============
     # 1. Defines a mol named Ste20 with a single binding site named
     # 'to-Ste4'. 
     Ste20(to-Ste4),
@@ -213,14 +214,14 @@ these files, are case-sensitive.
    	mass = 100.0;
 \end{ExampleMZR}
 
-\subsubsection{Defining Small-Mols}
+\subsubsection{Defining Small-Molecules}
 Each small-mol statement consists of a name assignment for the new
 small-mol, as well as a mass assignment (although only needed if
 mass-based reaction rate extrapolation is used).  
 
 Several examples of small-mol statements are provided below.  
 \begin{ExampleMZR}
-  ==== Mols ==============
+  ==== Molecules ==============
      # If no mass is specified
      massless_alpha; 
      alpha, mass = 42.3;
@@ -228,7 +229,7 @@ Several examples of small-mol statements are provided below.
 \end{ExampleMZR}
 
 Mod-mol defining statements and small-mol defining statements can be
-freely mixed within the Mols section.
+freely mixed within the Molecules section.
 
 \section{Defining Allosteric Conditions}
 Allosteric behavior is represented in libmoleculizer as differering
@@ -253,7 +254,7 @@ specified matches all complexes which contain the specified entity.
 (They may either match it exactly or the specified entity may be a
 subcomplex of the biochemical entity being matched.)
 
-\section{Allosteric-Plexes}
+\section{Allosteric-Complexes}
 An allosteric-plex is a rule that tells how the binding sites within
 specific complexes (specific up to state of its unspecified
 modification) have their shapes changed.  Binding site shape
@@ -267,8 +268,8 @@ describe how the binding sites in that complex change their shape.
 The first step in the construction of the appropriate
 allosteric-statement is the construction of the complex-form that
 describes the relevant complex.  This is done by specifying the
-complex as a set of mols, with binding-site binding information
-joining binding sites between mols.  
+complex as a set of molecules, with binding-site binding information
+joining binding sites between molecules.  
 
 
 These are just examples of complex-forms.  Because they do not yet use
@@ -299,8 +300,8 @@ do not yet contain enough information to be valid allosteric
 statements, or any other valid statement at this moment), they may not
 be valid complex-forms.  To be valid, the objects referred to be be
 consistent with other parts of the model.  By referring to A, B, and C
-mols, these each must be defined in the ``Mols'' section of the
-model.  Furthermore, all three must be mod-mols and be defined with
+molecules, these each must be defined in the ``Molecules'' section of the
+model.  Furthermore, all three must be mod-molecules and be defined with
 the appropriate binding sites: A must have ``first'' and ``third''
 binding sites and so forth.  
 
@@ -321,13 +322,13 @@ complex, further modification site information must be known.
   name = None;
   name = P;
 
-  ==== Mols  =====
+  ==== Molecules  =====
 
   A(to-b,*M{None,P}};
   AP( to-b, *M1{None,P}, *M2{None,P});
   B(b);
 
-  ==== Allosteric-Plexes =====
+  ==== Allosteric-Complexes =====
   
   # Because no mention is made of A's modification site ``M'' here, 
   # this allosteric-plex will match AB dimers in which A is both 
@@ -364,7 +365,7 @@ following them with the allosteric sections' special syntax:
 shape the associated binding site ends up in.  
 
 \begin{ExampleMZR}
-=== Allosteric-Plexes =======
+=== Allosteric-Complexes =======
 
   # 1. This rule says that when there is an AB dimer, the ``to-c''
   # site on the A will be occluded.
@@ -386,11 +387,11 @@ shape the associated binding site ends up in.
 \end{ExampleMZR}
 
 
-\section{Allosteric-Omnis}
+\section{Allosteric-Omniplexes}
 This section is virtually identical to the allosteric-plexes section,
 with one key conceptual difference.  In the allosteric-plexes section
 the complex forms specified correspond to structurally identical
-(consisting of the same mols in the same binding configuration)
+(consisting of the same molecules in the same binding configuration)
 complexes.  In the allosteric-omnis section, the complex forms match
 classes of complexes who possess the subcomplexes specified.  See the
 example below for more examples.
@@ -422,7 +423,7 @@ To specify a site is explicitly unbound, simply list the binding site in the
 complex form specification.
 
 \begin{ExampleMZR}
-==== Allosteric-Omnis =====
+==== Allosteric-Omniplexes =====
   # This specifies all complexes that contain an A bound to B.
   A(to-b!1).B(to-a!1);
 
@@ -477,9 +478,9 @@ modification state for every modification site on every mol must be
 specified.  
 
 To write the complex-form that represents the species in question,
-join the mols with periods.  For any binding between two species,
+join the molecules with periods.  For any binding between two species,
 append a binding id, consisting of a ! followed by an index unique to
-that binding, to the name of that binding site.  If one of the mols is
+that binding, to the name of that binding site.  If one of the molecules is
 a small-mol, simply write the associated binding syntax inside its
 structural specification (the parentheses).  Finally each modification
 site that exists in the complex must be written along with its
@@ -504,7 +505,7 @@ modification.  An example is given in Fig
 \end{ExampleMZR}
 
 
-\section{Species-Streams}
+\section{Explicit-Species-Class}
 Statements within species-stream section have a similar relationship
 to statements in the explicit-species section as statements in the
 allosteric-omnis section have to those within the allosteric-plexes section.
@@ -529,7 +530,7 @@ The species-stream complex-form specifier should be followed by an assignment
 ``name=YOUR\_NAME\_HERE''.
 
 \begin{ExampleMZR}
-===== Species-Streams ============
+===== Explicit-Species-Class ============
 # This will select for all complexes that contain a phosphorylated A.
 A(*M{Phos}), 
        name=withaphosphorylated\_A;
@@ -552,10 +553,10 @@ A(*M{Phos}),
 \end{ExampleMZR}
 
 
-\section{Dimerization-Gens}
+\section{Association-Reactions}
 The dimerization gens section consists of a set of statements, each of
 which describes an association/decomposition reaction between specific
-binding sites on specified mols.  In addition to having default on and
+binding sites on specified molecules.  In addition to having default on and
 off rates, the association and decomposition rates may be made
 dependent on the states of the specified binding sites.  This
 allosteric behavioral information is specified as further
@@ -572,8 +573,8 @@ that allosteric case, and so on.
 
 As always, components referred to within dimerization-gens statements
 must have corresponding definitions in other parts of the model.  For
-instance, Mols referred to in the reaction specification must be
-defined in the Mols section, along with the binding sites and binding
+instance, Molecules referred to in the reaction specification must be
+defined in the Molecules section, along with the binding sites and binding
 shapes referred to in the rules.  
 
 \begin{ExampleMZR}
@@ -613,12 +614,12 @@ shapes referred to in the rules.
 \end{ExampleMZR}
 
 
- \section{Omni-Gens}
+ \section{Transformation-Reactions}
  The dimerization-gens section deals with all binding site interactions that bind
  or unbind proteins together.  A second important class of
  protein-protein reactions are the generic enzymatic reactions.  These
  are reactions in
- which post-translational modifications can be made and small mols are
+ which post-translational modifications can be made and small molecules are
  exchanged, possibly with the aid of a helper molecule, and possibly
  resulting in an additional final product as well.
 
@@ -649,7 +650,7 @@ shapes referred to in the rules.
 A(to-b!1).B(to-a!1), name = AB_dimer;
 
 
-==== Omni-Gens ============
+==== Transformation-Reactions ============
 
 # A simple phosphorylation reaction
 E(b1!1).S(b1!1, *Mod{ None }) -> E(b1!1).S(b1!1, *Mod{ Phosphorylated }),
@@ -730,7 +731,7 @@ name = none;
 name = phosphorylated;
 
 
-===== Mols ===============
+===== Molecules ===============
 name = GTP;
 name = GDP;
 name = A(to-Y, to-Gxp);
@@ -753,7 +754,7 @@ A(to-Y) + Y(to-A) -> A(to-Y!1).Y(to-A!1),
    kon = 50.0;
    koff = 500;
 
-===== Omni-Gens =============
+===== Transformation-Reactions =============
 
 A(to-Y!1, to-GxP!2).B(to-Y!3, *mod-site {phosphorylated} ).Y(to-A!1, to-B!3, *mod-site {none}).GTP(!2) ->
   A(to-Y!1, to-GxP!2).B(to-Y!3, *mod-site {none} ).Y(to-A!1, to-B!3, *mod-site {phosphorylated}).GDP(!2),
@@ -783,7 +784,7 @@ name = none;
 name = phosphorylated;
 
 
-===== Mols ===============
+===== Molecules ===============
 name = GTP;
 name = GDP;
 name = A(to-Y, to-Gxp);
@@ -823,7 +824,7 @@ A(to-Y) + Y(to-A) -> A(to-Y!1).Y(to-A!1),
      kon = 1.0;
      koff = 500.0;
 
-===== Omni-Gens =============
+===== Transformation-Reactions =============
 
 A(to-Y!1, to-GxP!2).B(to-Y!3, *mod-site {phosphorylated} ).Y(to-A!1, to-B!3, *mod-site {none}).GTP(!2) 
  ->

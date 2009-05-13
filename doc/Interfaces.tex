@@ -1,4 +1,4 @@
-\chapter{Libmoleculizer Interfaces}
+n\chapter{Libmoleculizer Interfaces}
 \label{chap:interfacesChapter}
 
 Libmoleculizer is primarily a library.  It expeses its capabilities
@@ -77,7 +77,7 @@ rate by taking $k_{rxn} = M^*
 * k_{rule}$, where $M^*$ is the reduced-mass,
 $M^*=\sqrt{\frac{m_{sub_1} * m_{sub_2}}{m_{sub_1} + m_{sub_2}} }$.
 
-\subsection{Loading a Rule fils}
+\subsection{Loading a Rule file}
 Once a moleculizer object has been created and configured, it must be
 given a rules file to load.  There are two options here.  The first
 option is to load in a standard MZR rules file; the second option is
@@ -108,8 +108,7 @@ versions.
 Users can determine whether a model has been loaded by calling
 the ''bool moleculizer::getModelHasBeenLoaded() const'' function.  
 
-
- \subsection{Running}
+ \subsection{Running libmoleculizer}
 Once a Moleculizer object has been created, configured, and a
 rules-file has been loaded, there are several things that can be done.
 
@@ -120,24 +119,238 @@ network, inspecting the portion of the species and reaction network
 that were created during the most recent expansion phase, and
 searching for species and reactions match certain properties.  
 
-The most basic operation that can be performed on a species and
-reaction network is simply inspecting its contents.  These can be done
-using the interface functions ''getSpeciesCatalog'' and
-''getReactionList'' functions.  The 'getSpeciesCatalog' function
+\subsection{Looking at the full list of species}
+Perhaps the easiest and most direct thing that can be done in a
+libmoleculizer simulation run is to get the full list of species.  The
+species are recorded in a map of std::string* to mzrSpecies*.  Use
+moleculizer's member function getSpeciesCatalog to obtain a reference
+to this map.  This map contains pointers to the tagged name of the
+species and has values which are the pointers to the species
+themselves.  
 
-returns a map<std::string*, mzr::mzrSpecies*>.  (Please
-note that this map compares pointers based on their dereferenced
-values rather than the pointer values themselves.)  By scanning
-through this map, users can find out the identities of every species
-that has been created, organized by tagged name.  
+\subsection{Looking at the full list of reactions}
+Another basic capability of libmoleculizer is to be able to obtain and
+read a list of all the reactions that have been registered by
+libmoleculizer.  This can be accomplished using moleculizer's
+getReactionList() member function.  This function returns either a
+const or a non-const reference to a list of mzr::mzrReaction*.  This
+list can be walked though be the user, and information about reactions
+can be read out this way.
 
-Using this map, information can be obtained for each species, using the
-relevant 'getKDForSpecies', 'getRadiusForSpecies', 'getMassForSpecies'
-functions.
+\subsection{Finding the size of the network}
+An obvious question to ask about a generated network is ``how large is
+it?''  The getTotalNumberSpecies() and getTotalNumberReactions()
+moleculizer member functions answer these questions.  
+
+\subsection{Looking up information about a species}
+So, you have a mzrSpecies* for a species that libmoleculizer has
+generated. Perhaps you got it walking through the complete list of
+species (via getSpeciesCatalog()); perhaps you got it walking through
+the list of recently created species (via the getDeltaSpeciesList()
+functions); perhaps it is a species belonging to a named structural
+class and you wish to find out more; maybe you actually looking it up
+directly by name and now have a pointer.  Neverthless, you have a
+pointer to a species and want to get information from it.
+
+\subsubsection{Getting a name from a species}
+
+Perhaps the most basic information about a species is its name.  As
+discussed before, species have two kinds of names: tagged names, which
+are unique within a particular libmoleculizer session, and unique ids,
+which are completely unique, amongst various sessions.  To get a
+tagged name use mzrSpecies::getTaggedName(); to get a unique ID use
+mzrSpecies::getUniqueID().  Both will return a std::string containing
+the name of that species.  
+
+Remember that getTaggedName() is fairly fast, while the
+getUniqueID() function is relatively slow.  (although they can be
+interconverted at any given time).  Also, getTaggedName() is
+guaranteed to be bounded, with a constant length on any system
+(usually around 10 characters).  getUniqueID() is not; depending on
+the complex, the unique ID has the potentially to have unbounded
+size.  For these reasons, we recommend using getTaggedName over
+getUniqueID for most purposes.  
+
+\subsubsection{Getting other species information}
+
+Species have other major properties that we might wish to check.
+First, we may be interested in the mass of the species.  All species
+have masses, although this information will not be valid unless the
+rule file was supplied with information (every mass will equal 0.0
+otherwise).  If appropriate, find the mass by calling mzrSpecies'
+member function getWeight().  This will return the weight of the
+species in the same units as the ones used to give the masses in the
+model file.  
+
+Another property we may wish the check regarding species is whether or
+not they belong to any structural species class that may have been
+defined in the rules.  For a specific species (there is also a method
+to get the list of all species within a species class), either the
+moleculizer member functions speciesWithTagIsInSpeciesStream or
+speciesWithUniqueIDIsInSpeciesStream.  Both functions take a string as
+the first parameter, representing either the tagged name or the unique
+id of the species in question respectively; both functions take a
+string containing the name of the species class as a second
+parameter.  They both return ``true'' if the species is a member of
+the class and ``false'' otherwise.  
+
+\subsection{Looking up species by name}
+Suppose you have either a tagged name or a unique id that corresponds
+to a species name and wish to look it up (perhaps you are interested
+in which structural classes such a species might belong to).  There
+are two functions which could be of interest.  They are the
+moleculizer member functions getSpeciesWithTaggedName and
+getSpeciesWithUniqueID.  Both of them return either a const
+mzrSpecies* or a plain old mzrSpecies*, depending on context.
+
+\subsection{Looking up information about a reaction}
+Suppose you have a mzrReaction*.  You could have gotten this pointer
+by either scanning through the list of all reactions ( using
+moleculizer::getReactionList() ); or you could have got it by looking
+at the list of recently created reactions
+(moleclizer::getDeltaReactionList()); you could have gotten the
+mzrReaction* by calling one of the findReactionWithSubstrates on one
+or two mzrSpecies*'s, thereby finding all unary or binary reactions
+that species or those species participate in.  Nevertheless, now you
+have a reaction.  What can be done with it?
+
+A reaction is basically a map of reactants paired with a map of
+products, that has a rate.  The function getReactants() returns a map
+of mzrSpecies* to ints; each mzrSpecies* that occurs as a key is a
+substrate of that reaction; each associated value is the reactant
+stochiometry of that reaction.  Likewise, the function getProducts()
+returns a map of mzrSpecies* to ints; here each mzrSpecies* is a
+product of the reaction; each value is the associated product
+stochiometry.  
+
+Finally, the function getDeltas() returns another map
+of mzrSpecies* to int.  In this function each mzrSpecies* that is
+affected by the reaction is a key in the map.  Each associated integer
+is the stochiometry change of that reactant.  That is, negative values
+represent substrates to the reaction; the value is the number of
+substrate molecules used up in the reaction.  Positive values
+represent products to the reaction; the value is the number of that
+product generated in the reaction.  
+
+You can get a name for that reaction by calling either its
+getTaggedName() or its getUniqueName() functions.  Like the name
+functions relating to species, the getTaggedName() function returns a
+string containing a name that is valid for the current run only; for
+all comparisons of names that must take place during a specific run
+use getTaggedName().  getTaggedName() is also human readable, so it
+can be used for those purposes as well.  When a unique name is needed,
+use getUniqueID(), which forms the reaction name by calling
+getUniqueID() on the species that take part in it.  
+
+Finally, use the member function getRate() to find out the rate of the
+reaction.  In normal mode, the rate for a generated reaction is simply
+the same rate that was supplied in the rules file along with the
+interaction.  When libmoleculizer is configured to use mass-based
+reaction rate extrapolation, the supplied rate is multiplied by the
+reduced mass of the products in order to approximate the way that
+masses affect reaction rates.  
+
+Finally, the getArity() function returns the stochiometry, or number
+of substrates molecules that are involved on the left hand side of the
+equation.
+
+\subsection{ Finding out information about the System}
+
+\subsubsection{Finding out about the model being run}
+
+One thing that can be done in a libmoleculizer session is to use
+various functions to find out whether or not a model file has been
+loaded, and if so, to find out some more infomration about it.
+Moleculizer's member function getModelHasBeenLoaded() does this,
+returning true if a model has been loaded and false otherwise.  
+
+Given that a model file has been loaded, the moleculizer object
+exposes several functions to recover information about the loaded
+model.  
+
+The getNumberOfDefinedModifications() function returns an int
+representing the number of statements defining modifications occurred
+within the model.  
+
+The getNumberOfDefinedMols() function returns an int representing the
+number of molecule types that were defined in the loaded model.  
+
+The getNumberOfDefinedRules() function returns an int representing the
+number of reaction rules defined in the local model.
+
+The getNumberOfDimerReactionRules() function returns an integer
+representing the number of association reaction rules in the local model.
+
+The getNumberOfOmniGenReactionRules() function returns an integer
+representing the number of transformation reactions defined whose ``enabling
+subcomplex'' is composed of more than one molecule.
+
+The getNumberOfUniMolReactionRules() returns an integer representing
+the number of transformation reactions defined whose enabling
+subcomplex consists of exactly one molecule.  
+
+\subsection{Inpecting the Species Classes}
+
+One major feature used by moleculizer is that of species classes.
+Defined in the MZR model file, species classes are named sets of
+species, that contain every species that posesses the structural
+features that define that property.  Accordingly, there are many
+functions in libmoleculizer which deal with these species classes.  
+
+The first thing to do is to find out how many species streams there
+are.  This can be determined using the moleculizer function
+getNumberOfSpeciesStreams().  
+
+Following this, it remains to actually find out what the names of
+those species streams are (the names are needed to go further and find
+out what species are in a particular class, for instance).  To do
+this, the function getSpeciesStreams is used.  This function, a member
+function of moleculizer's, takes a single parameter of type
+std::vector<std::string>\&.  To use this, create a new vector<string>
+object, and pass it as a parameter to the function.  The function call
+will insert each of the species stream names into that vector.
+
+So now we have the specific name of one or more species classes and
+wish to find out more about them.  Given a species class, two general
+things we might like to determine are how many species are in that
+class, and which species are in that species class. 
+
+To answer the former question, how large is a particular species
+class, use moleculizer's member function
+getNumberOfSpeciesInSpeciesStream by calling it with a string
+parameter containing the name of the species class.  
+
+To get a list of species contained in a particular species class, use
+the getSpeciesInSpeciesStream member function.  This function takes
+two parameters: the first is a string parameter that should contain a
+reference to a species class name; the second is a reference to a
+vector<const mzrSpecies*>\&.  The result of the function is that all
+the species which are contained in the species class named by the
+first parameter are inserted into the second parameter.  
+
+Finally, it is possible to check to see whether a species belongs to a
+species class or not, using one of three different functions.  A
+mzrSpecies* can be checked using the moleculizer member function
+speciesIsInSpeciesStream.  A tagged name can be checked using the
+member function speciesWithTagIsInSpeciesStream; a unique id can be
+checked using the member function
+speciesWithUniqueIDIsInSpeciesStream.  All three of these functions
+take a string containing the name of the class as the first parameter;
+all three take the species representation( either a mzrSpecies*, a
+string containing the tagged name, or a string containing the unique
+id).
+
+\subsection{Expanding the network}
+\subsection{Viewing the expanded parts}
+
+
+
+
+
 
 
 generateCompleteNetwork()
-generateCompleteNetwork(long maxNumSpecies, long maxNumRxns = -1);
+ngenerateCompleteNetwork(long maxNumSpecies, long maxNumRxns = -1);
 getUserNames
 recordUserNameToSpeciesIDPair
 nameIsUserName
@@ -155,10 +368,6 @@ convertUserNameToTaggedName
         int getNumberOfDefinedMols() const;
         int getNumberOfDefinedRules() const;
 
-        int getNumberOfDimerReactionRules() const;
-        int getNumberOfOmniGenReactionRules() const;
-        int getNumberOfUniMolReactionRules() const;
-        int getNumberOfReactionRules() const;
 
         int getNumberOfPlexFamilies() const;
 
@@ -171,8 +380,6 @@ convertUserNameToTaggedName
         bool speciesWithTagIsInSpeciesStream(const std::string speciesTag, const std::string& speciesStream ) const;
         bool speciesWithUniqueIDIsInSpeciesStream(const std::string
         speciesTag, const std::string& speciesStream ) const;
-
-
 
         findReactionWithSubstrates
         getTotalNumberSpecies

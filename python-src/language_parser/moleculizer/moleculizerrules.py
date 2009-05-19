@@ -44,7 +44,7 @@ class MoleculizerRulesFile:
         lines = rulesString.split("\n")
 
         parameterBlock, modificationsBlock, molsBlock, allostericPlexes, allostericOmnis,\
-                        reactionRulesBlock, dimerizationGenBlock, omniGenBlock, uniMolGenBlock, \
+                        reactionRulesBlock, dimerizationGenBlock, omniGenBlock, \
                         explicitSpeciesBlock, speciesStreamBlock = parseBlockTypesFromRulesFile( lines )
 
         self.addParameterBlock( parameterBlock )
@@ -470,9 +470,9 @@ def parseBlockTypesFromRulesFile(textRulesFile):
 #     textRulesFile = re.sub(r"\\\s*\n\s*", " ", textRulesFile)
 #     textRulesFile = textRulesFile.split("\n")
 
-    blockCodes = ["Parameters", "Modifications", "Mols", "Allosteric-Plexes", "Allosteric-Omnis", 
-                  "Reaction-Rules", "Dimerization-Gens", "Omni-Gens", "Uni-Mol-Gens", 
-                  "Explicit-Species", "Species-Streams" ] 
+    blockCodes = ["Parameters", "Modifications", "Molecules", "Explicit-Allostery", "Allosteric-Classes", 
+                  "Reaction-Rules", "Association-Reactions", "Transformation-Reactions", 
+                  "Explicit-Species", "Species-Classes" ] 
 
     blockObjNdx = -1
     blockDataObj = [ (blockCodes[0], parameterBlock), \
@@ -483,9 +483,8 @@ def parseBlockTypesFromRulesFile(textRulesFile):
                      (blockCodes[5], reactionRulesBlock), \
                      (blockCodes[6], dimerizationGenBlock), \
                      (blockCodes[7], omniGenBlock), \
-                     (blockCodes[8], uniMolGenBlock), \
-                     (blockCodes[9], explicitSpeciesBlock),\
-                     (blockCodes[10], speciesStreamBlock) ]
+                     (blockCodes[8], explicitSpeciesBlock),\
+                     (blockCodes[9], speciesStreamBlock) ]
 
     currentDmp = []
 
@@ -505,7 +504,7 @@ def parseBlockTypesFromRulesFile(textRulesFile):
 
 
     return getFormattedArray(parameterBlock), getFormattedArray(modificationsBlock), getFormattedArray(molsBlock), getFormattedArray(allostericPlexes), getFormattedArray(allostericOmnis), \
-        getFormattedArray(reactionRulesBlock), getFormattedArray(dimerizationGenBlock), getFormattedArray(omniGenBlock), getFormattedArray(uniMolGenBlock), \
+        getFormattedArray(reactionRulesBlock), getFormattedArray(dimerizationGenBlock), getFormattedArray(omniGenBlock), 
         getFormattedArray(explicitSpeciesBlock), getFormattedArray(speciesStreamBlock)
 
 def returnNewIndex(lineOfText, blockObjData):

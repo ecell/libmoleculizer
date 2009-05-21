@@ -367,7 +367,7 @@ fi[]dnl
 # this or PKG_CHECK_MODULES is called, or make sure to call
 # PKG_CHECK_EXISTS manually
 # --------------------------------------------------------------
-AC_DEFUN([PPKG_CHECK_EXISTS],
+AC_DEFUN([PKG_CHECK_EXISTS],
 [AC_REQUIRE([PKG_PROG_PKG_CONFIG])dnl
 if test -n "$PKG_CONFIG" && \
     AC_RUN_LOG([$PKG_CONFIG --exists --print-errors "$1"]); then

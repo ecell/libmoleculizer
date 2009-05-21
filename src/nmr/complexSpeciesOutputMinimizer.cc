@@ -32,7 +32,6 @@
 
 #include "nauty/nauty.h"
 #include "complexSpeciesOutputMinimizer.hh"
-#include <boost/foreach.hpp>
 #include <iostream>
 
 namespace nmr
@@ -75,10 +74,19 @@ ComplexSpeciesOutputMinimizer::setupDataStructuresForCalculation( ComplexSpecies
 
 void ComplexSpeciesOutputMinimizer::setupComplexEdgeMap( ComplexSpeciesCref aComplexSpecies )
 {
-    BOOST_FOREACH( std::set<int>* ptrSet, complexGraphEdgeMap )
+
+    for(GraphEdgeList::iterator i = complexGraphEdgeMap.begin();
+	i != complexGraphEdgeMap.end();
+	++i)
     {
-        delete ptrSet;
+	delete (*i);
     }
+
+
+//     BOOST_FOREACH( std::set<int>* ptrSet, complexGraphEdgeMap )
+//     {
+//         delete ptrSet;
+//     }
 
     for ( unsigned int ii = 0; ii != aComplexSpecies.getNumberOfMolsInComplex(); ++ii )
     {

@@ -504,7 +504,7 @@ def parseBlockTypesFromRulesFile(textRulesFile):
 
 
     return getFormattedArray(parameterBlock), getFormattedArray(modificationsBlock), getFormattedArray(molsBlock), getFormattedArray(allostericPlexes), getFormattedArray(allostericOmnis), \
-        getFormattedArray(reactionRulesBlock), getFormattedArray(dimerizationGenBlock), getFormattedArray(omniGenBlock), 
+        getFormattedArray(reactionRulesBlock), getFormattedArray(dimerizationGenBlock), getFormattedArray(omniGenBlock), \
         getFormattedArray(explicitSpeciesBlock), getFormattedArray(speciesStreamBlock)
 
 def returnNewIndex(lineOfText, blockObjData):

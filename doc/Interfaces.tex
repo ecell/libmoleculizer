@@ -341,7 +341,41 @@ string containing the tagged name, or a string containing the unique
 id).
 
 \subsection{Expanding the network}
+When a moleculizer model is loaded, every individual molecule is
+created as a species type along with every explicit-species within the
+model.  Following this, every one of these species is expanded.  What
+this means is that they are presented to the set of all expanded
+species and all reactions that can be created between the newly
+expanded species and the set of already expanded species is created. 
+
+However, at this point, the network is static.  In order to expand it
+further, unexpanded species in the list of species must be expanded.
+This expansion process can happen in a variety of ways.
+
+The simplest way is to expand a single mzrSpecies at a time.  This is
+done by calling mzrSpecies' member function expandReactionNetwork().
+If the mzrSpecies has been previously expanded, this will have no
+effect ( you can check whether or not a specific species has been
+expanded using the mzrSpecies member function hasNotified(), which
+returns a bool depending on the answer). 
+
+If the mzrSpecies has not been expanded, look out!, here comes the
+magic.  When this occurs, moleculizer will present that species to
+every already expanded species, in order to look for combinations of
+features (features are the subspecies components, a particular binding
+between two binding sites on two molecules for example, that define
+what it means for a species to be able to participate in a reaction).
+The result (and please review the Concepts chapter for more details
+into how this process works) is that any reactions that species can
+participate in, potentially with other expanded species as well, are
+created.  Any new products of those reactions are added as unexpanded
+species (unless moleculizer has been configured to expand multiple
+levels using the setGenerateDepth function).  
+
+
+=======
 Here is is; what libmoleculizer is all about.  
+
 
 
 \subsection{Viewing the expanded parts}

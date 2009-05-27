@@ -50,7 +50,7 @@ def main():
         print "Allostery-Classes omnis:\n\t", allostericOmnis
         print "Reaction Rules:\n\t", reactionRulesBlock
         print "Association-Reactions:\n\t", dimerizationGenBlock
-        print "Transformation-Reactionws:\n\t", omniGenBlock
+        print "Transformation-Reactions:\n\t", omniGenBlock
         print "Explicit-Species:\n\t", explicitSpeciesBlock
         print "Species-Classes:\n\t", speciesStreamBlock
 

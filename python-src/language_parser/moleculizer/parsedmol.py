@@ -4,9 +4,10 @@ from parsedbindingsite import ParsedBindingSite, ParsedHalfBindingSpecification
 from parsedmodificationsite import ParsedModificationSite
 
 class ParsedMol( ParsedMzrToken ):
-    @staticmethod
     def MolTokenPassesSanityChecks( line ):
         return True
+
+    MolTokenPassesSanityChecks = staticmethod( MolTokenPassesSanityChecks )
 
 
     def __init__(self, molDefinition ):

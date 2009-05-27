@@ -2,12 +2,12 @@ import pdb
 from parsedmzrtoken import ParsedMzrToken
 
 class ParsedBindingShapeSpecification( ParsedMzrToken ):
-    @staticmethod
     def BindingShapeTokenPassesSanityCheck( bindingShapeToken ):
         if bindingShapeToken[0] == "{" and bindingShapeToken[-1] == "}" and bindingShapeToken.count("{")==1 and bindingShapeToken.count("}")==1:
             return True
         else:
             return False
+    BindingShapeTokenPassesSanityCheck = staticmethod( BindingShapeTokenPassesSanityCheck )
 
     def __init__(self, bindingShapeSpecification):
         ParsedMzrToken.__init__(self, bindingShapeSpecification)
@@ -62,9 +62,10 @@ class ParsedBindingShapeSpecification( ParsedMzrToken ):
 
 
 class ParsedHalfBindingSpecification( ParsedMzrToken ):
-    @staticmethod 
     def HalfBindingTokenPassesSanityCheck( line):
         return line[0] == "!" and line.count("!") == 1
+
+    HalfBindingTokenPassesSanityCheck = staticmethod( HalfBindingTokenPassesSanityCheck )
 
     def __init__(self, halfBinding):
         ParsedMzrToken.__init__(self, halfBinding)

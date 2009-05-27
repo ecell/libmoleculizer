@@ -1,12 +1,14 @@
 from parsedmzrtoken import ParsedMzrToken
 
 class ParsedModificationSiteSpecification( ParsedMzrToken ):
-    @staticmethod
     def ModSiteSpecificationPassesSanityCheck(ParsedMzrToken):
         if ParsedMzrToken[0] == "{" and ParsedMzrToken[-1] == "}" and ParsedMzrToken.count("{") == 1 and ParsedMzrToken.count("}"):
             return True
         else:
             return False
+
+    ModSiteSpecificationPassesSanityCheck = staticmethod( ModSiteSpecificationPassesSanityCheck )
+
     
     def __init__(self, modSiteSpecToken):
         ParsedMzrToken.__init__(self, modSiteSpecToken)
@@ -63,10 +65,11 @@ class ParsedModificationSiteSpecification( ParsedMzrToken ):
         self.mod_value_list.extend( theTokens )
 
 class ParsedModificationSite( ParsedMzrToken ):
-    @staticmethod
     def ModificationTokenPassesSanityCheck( token ):
         # Starts with a *, there are as many rbraces as lbraces, and no more than 1 of either.
         return token.startswith("*") and token.count("{") <= 1 and token.count("}") <= 1 and (token.count("{") - token.count("}") == 0)
+
+    ModificationTokenPassesSanityCheck = staticmethod(ModificationTokenPassesSanityCheck)
 
     def __init__(self, modificationSiteToken):
         ParsedMzrToken.__init__(self, modificationSiteToken)

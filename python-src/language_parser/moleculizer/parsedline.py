@@ -16,21 +16,27 @@ from parsedcomplex import ParsedComplex
 from parsedassignment import ParsedAssignment
 
 class ParsedLine( ParsedMzrToken):
-    @staticmethod
     def ReactionLinePassesSanityCheck(tok):
         return tok[-1] == ";" and tok.count(";") == 1
 
-    @staticmethod
+    ReactionLinePassesSanityCheck = staticmethod( ReactionLinePassesSanityCheck )
+
     def isReactionToken(tok):
         return "->" in tok
 
-    @staticmethod
+    isReactionToken = staticmethod( isReactionToken )
+
+
     def isComplexToken(tok):
         return not ParsedLine.isAssignment(tok) and not ParsedLine.isReactionToken(tok)
 
-    @staticmethod 
+    isComplexToken = staticmethod( isComplexToken)
+
+    
     def isAssignment(tok):
         return "=" in tok
+
+    isAssignment = staticmethod( isAssignment )
 
     def __init__(self, lineTxt):
         ParsedMzrToken.__init__(self, lineTxt)

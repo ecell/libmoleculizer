@@ -2,9 +2,11 @@ from parsedcomplex import *
 
 # This is something that looks like "complex+complex->complex+complex"
 class ParsedRxnRule( ParsedMzrToken ):
-    @staticmethod 
+
     def RxnRuleTokenPassesSanityCheck(line):
         return "->" in line and not "=" in line
+
+    RxnRuleTokenPassesSanityCheck = staticmethod( RxnRuleTokenPassesSanityCheck )
 
     def __init__(self, rxnRuleLine ):
         ParsedMzrToken.__init__(self, rxnRuleLine)

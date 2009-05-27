@@ -29,7 +29,6 @@ class MoleculizerRulesFile:
     This object acts as an parsing thing that outputs moleculizer files xml,
     suitable for processing internally by a mzr::moleculizer instance."""
 
-    @staticmethod
     def BlockPassesSanityCheck( linearray ):
         linearray = [x for x in linearray if x.strip() != ""]
         if len(linearray) == 0: return True
@@ -37,6 +36,8 @@ class MoleculizerRulesFile:
         everyLineEndsWithSemiColon = [ x[-1] == ";" and x.count(";") == 1for x in linearray]
         noWhiteSpace = [ (x.count("\n") + x.count(" ") + x.count("\t") == 0) for x in linearray]
         return reduce(util.And, everyLineEndsWithSemiColon) and reduce(util.And, noWhiteSpace)
+
+    BlockPassesSanityCheck = staticmethod( BlockPassesSanityCheck )
 
     def addWholeRulesString( self, rulesString):
 
@@ -208,8 +209,6 @@ class MoleculizerRulesFile:
         self.explicitSpeciesSection = 0
         self.speciesStreamSection = 0
 
-    # output_file = property( getOutputFileName )
-    @property
     def getOutputFileName(self):
         return self.outputFileName
         
@@ -504,8 +503,8 @@ def parseBlockTypesFromRulesFile(textRulesFile):
 
 
     return getFormattedArray(parameterBlock), getFormattedArray(modificationsBlock), getFormattedArray(molsBlock), getFormattedArray(allostericPlexes), getFormattedArray(allostericOmnis), \
-        getFormattedArray(reactionRulesBlock), getFormattedArray(dimerizationGenBlock), getFormattedArray(omniGenBlock), \
-        getFormattedArray(explicitSpeciesBlock), getFormattedArray(speciesStreamBlock)
+           getFormattedArray(reactionRulesBlock), getFormattedArray(dimerizationGenBlock), getFormattedArray(omniGenBlock), \
+           getFormattedArray(explicitSpeciesBlock), getFormattedArray(speciesStreamBlock)
 
 def returnNewIndex(lineOfText, blockObjData):
     key = lineOfText.strip().strip("=").strip()

@@ -3,15 +3,17 @@ from parsedmzrtoken import ParsedMzrToken
 class ParsedAssignment( ParsedMzrToken ):
     HAVE_EE = False
 
-    @classmethod
     def getExpressionEvaluator(cls):
         return cls.HAVE_EE
 
-    @classmethod
+    getExpressionEvaluator = classmethod( getExpressionEvaluator )
+
     def setExpressionEvaluator( cls, expression_evaluator):
         cls.HAVE_EE = expression_evaluator
+
+    setExpressionEvaluator = classmethod( setExpressionEvaluator )
+
     
-    @classmethod
     def getValue( cls, expression ):
         if (HAVE_EE):
             value = self.evaluateExpression( expression )
@@ -19,10 +21,13 @@ class ParsedAssignment( ParsedMzrToken ):
         else:
             MissingExpressionEvaluatorException()
 
+    getValue = classmethod( getValue )
 
-    @staticmethod
+
     def AssignmentPassesSanityCheck( token):
         return "=" in token and not "->" in token and not "<-" in token
+
+    AssignmentPassesSanityCheck = staticmethod( AssignmentPassesSanityCheck )
 
     def __init__(self, assignmentLine):
         ParsedMzrToken.__init__(self, assignmentLine)

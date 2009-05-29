@@ -310,8 +310,6 @@ $ac_distutils_result])
 ])
 
 
-
-
 # pkg.m4 - Macros to locate and utilise pkg-config.            -*- Autoconf -*-
 # 
 # Copyright © 2004 Scott James Remnant <scott@netsplit.com>.
@@ -356,25 +354,6 @@ if test -n "$PKG_CONFIG"; then
 		
 fi[]dnl
 ])# PKG_PROG_PKG_CONFIG
-
-# PKG_CHECK_EXISTS(MODULES, [ACTION-IF-FOUND], [ACTION-IF-NOT-FOUND])
-#
-# Check to see whether a particular set of modules exists.  Similar
-# to PKG_CHECK_MODULES(), but does not set variables or print errors.
-#
-#
-# Similar to PKG_CHECK_MODULES, make sure that the first instance of
-# this or PKG_CHECK_MODULES is called, or make sure to call
-# PKG_CHECK_EXISTS manually
-# --------------------------------------------------------------
-AC_DEFUN([PKG_CHECK_EXISTS],
-[AC_REQUIRE([PKG_PROG_PKG_CONFIG])dnl
-if test -n "$PKG_CONFIG" && \
-    AC_RUN_LOG([$PKG_CONFIG --exists --print-errors "$1"]); then
-  m4_ifval([$2], [$2], [:])
-m4_ifvaln([$3], [else
-  $3])dnl
-fi])
 
 
 # _PKG_CONFIG([VARIABLE], [COMMAND], [MODULES])

@@ -1117,6 +1117,9 @@ species* createNewCSpeciesFromMzrSpecies( moleculizer* cMzrPtr, const mzr::mzrSp
 
 reaction* createNewCRxnFromMzrReaction( moleculizer* cMzrPtr, const mzr::mzrReaction* pMzrReaction)
 {
+
+    static int number = 0;
+
     std::string reactionName( pMzrReaction->getName() );
     
     reaction* theNewRxn = new reaction;
@@ -1139,12 +1142,9 @@ reaction* createNewCRxnFromMzrReaction( moleculizer* cMzrPtr, const mzr::mzrReac
 	}
 
 	std::ostringstream oss;
-	oss << rand() % 10000;
+	oss << number++;
 
 	strcat( theNewRxn->name, oss.str().c_str() );
-	
-
-	printf("NAMELONGERTHAN256 Results in %s\n", theNewRxn->name);
 	
     }
     else

@@ -1,7 +1,7 @@
 \chapter{Useful Concepts in libmoleculizer}
 \label{chap:conceptualOverviewChapter}
 
-In the introduction, you should have learned what the libmoleculizer
+Hopefully you already have some idea of what the libmoleculizer
 program is: a computer system that models complicated biochemical
 pathways (such as signal transduction pathways), by representing chemical
 species as being composed of one or more indivisible molecule types
@@ -11,122 +11,263 @@ interactions between interations between molecules.
 This chapter gives an overview of the key concepts needed to
 understand and use the libmoleculizer system.  
 
+\section{30,000 feet}
+
+The libmoleculizer library takes a convenient description of a
+biochemical reaction network that includes descriptions of the
+network's constituant proteins as well as {\it rules} defining
+protein-protein and enzymatic interactions between those proteins.
+Libmoleculizer uses this description to generate all or part of the
+network, emitted as a list of variables (chemical species types) and
+equations (describing reactions between variables) which can be used
+in other simulation systems to simulate the network.  Emitted
+Libmoleculizer reaction equations are compatible with all common
+simulation formalisms, including differential equations, Gillespie
+solvers, particle-based simulators.
+
+Importantly, libmoleculizer is organized as a library, which means
+that the ability to convert a human-readable rule-based model into the
+more conventional species/reaction lists needed to simulate them can
+be added to any simulator.  These simulators can expose rule-based
+modeling to their users by using libmoleculizer internally to generate
+all or part of the network and add the equations generated to their own
+structures.  The equations can either be generated and added all at
+once, before the simulation begins, or can be generated and added
+periodically, using an {\it on-the-fly} generation scheme, in which
+only enough of the network is generated at any moment to get through
+the next time steps.
+
+This invites the question of how libmoleculizer actually
+generates reaction networks from systems of rules. Generally speaking,
+once a rules file is loaded into libmoleculizer, libmoleculizer
+creates an initial list of species and an empty list of reactions.
+The initial list of species consists of all the monomeric protein
+species for all proteins described in the network, as well as any
+other species explicitly defined by the user.  Libmoleculizer also
+records each of the species in the initial species list as {\it
+  unexpanded}.  At this initial moment, libmoleculizer has not yet
+generated any reactions.
+
+In an iterative process, either automatically-directed (used in
+pre-generative schemes) or user-directed (as used in on-the-fly
+generation), libmoleculizer goes through the list of species it knows
+about and {\it expands} them one at a time.  What this means is that
+libmoleculizer takes that species and compares it against each of the
+rules, checking for the correct {\it features} needed by that
+rule.  In the case of binary reaction rules, the species is checked
+against both the rules as well as features that have already been
+found in other already expanded features.  When the expanding
+species matches a rule (or a rule and a second species, in the case of
+binary reaction rules).  The matching species is taken, possibly along
+with its already expanded mate, and the transformation defined in the
+transformation is performed upon the species ( for instance, a kind of
+enzymatic reaction may look for molecules that have been singly
+phosphorylated; the transformation could turn the singly
+phosphorylated modification to a doubly phosphorylated
+one). Libmoleculizer then examines the product(s).  If any of them are
+new - not in the list of species libmoleculizer knows about - they
+are added there as a newly generated, unexpanded species.  The
+reaction is added as a newly generated reaction to the system.  As
+libmoleculizer expands species, the network grows; if and when there
+are no more species to generate the entire network has been generated
+and libmoleculizer halts.  
+
+
+At any time during this process, either the complete lists of
+species/reactions or partial lists of recently created
+species/reactions can be read out by client programs.  Additionally,
+libmoleculizer also records and manages other facts about the network,
+such as keeping track of sets of species that have certain structural
+properties, which can also be used in client programs to add features
+for their users.
+
 \section{Biochemical networks consist of chemical species and sets of
   chemical  reactions between them}
 Libmoleculizer takes in models that represent an abstraction of a
-biochemical network and explicitly generates that network.  What this
-means is that libmoleculizer generates a complete list of species
-along with all reactions those species can participate in.  
+biochemical network and explicitly generates all or a part of that
+network.  What this means is that libmoleculizer generates an explicit
+list of species along with all reactions those species can participate
+in.  
 
 This list of species and reaction can be sent to another simulator, as
 a list of variable names and reaction equations between them, and can
-be used to simulate the entire network.  Nevertheless, this is always
-what is mean when we talk about libmoleculizer expanding all or a part
-of the network: using the rules to generate lists of species
+be used to simulate the portion of the network that was expanded.
+This is what is meant when we say libmoleculizer expands biochemical
+reaction networks: it uses a set of rules to generate lists of species
 identities and of reactions between species.
 
-\section{Species consist of one or more indivisible units in complex}
+\section{Species are complexes of one or more indivisible units bound together}
 
 Species in libmoleculizer are constructed by combining together one or
-more indivisible reaction units, called molecules.  Molecules have
-binding sites, and are joined together between their binding sites.
-By taking one or more molecules and joining them together, a
-structurally unique complex species is formed, which is a unique
-member of the biochemical species in that reaction network.
+more indivisible units called molecules.  Molecules have binding
+sites, and are joined together by creating bindings between their
+binding sites.  
+
+When one or more molecules joinied together, a structurally unique
+complex species is formed, which has a unique identity as a biochemical
+species in that reaction network.
 
 \section{Molecules represent indivisible units of reaction}
 As discussed previously, molecules are the indivisible components of
-species.  No submolecular reactions can take place in a moleculizer
-biochemical network.  The smallest level of interaction is at the
-molecule level.  
+species.  Reactions can have structural effects like binding two
+unbound molecules together, breaking bonds between molecules, or
+exchanging one molecule in a complex species for another, but
+molecules cannot be be subdivided or combined. 
 
 \subsection{Molecules have a structure consisting of binding sites and
   modification sites}
 
-Molecules themselves have internal structure.  Moleculizer recognizes
-two types of molecules: modifiable-molecules, which may have any
-number of unique binding sites that may participate to bind the
-molecule into a larger complex , as well as any number of modification
-sites that can accept different post-translational modifications.
+Molecules have their own internal structure.  Moleculizer recognizes
+two types of molecules.  The first type are the modifiable-molecules.
+These molecules may have any number of unique binding sites, each of
+which may participate in binding this molecule to other molecules.
+Modifiable-molecules may also have any number of unique modification
+sites, which can each be associated with different post-translational
+modifications.
 
-There are also small-molecules, which are molecules that can
-participate in reactions but which do not have differentiable binding
-sites, or modification sites.  These molecules can be a part of a
-complex species, but only in a simple way: they can only participate
-in a single binding event at one time.  This level of resolution is
-appropriate for modeling biological small molecules, which can be
-considered a modular molecular component of species in which that
-occur, but for which it would be innapropriate to model at higher
-degrees of detail.
+The second type of Moleculizer molecules are the small-molecules.
+These are molecules that can participate in reactions but which only
+have a single non-differentiable binding site (which is considered to
+be structurally indistinguishable from the small-mol itself) and no
+modification sites.
 
+Typically, modifiable-molecules are appropriate structures for
+modeling individual proteins wheras small-molecules are appropriate
+for representing small molecules such as GTP and ATP.
 
 \section{Association and dissociation reactions between complex
   species are caused by the associations and dissociations on the
   binding sites belonging to the mols that make up that complex}
 
-In libmoleculizer all dimerization (assocition) reactions, and the
-reverse decomposition (disassociation) reactions are caused as a
-result of interactions between different molecule-types.  In the
-network model, an association interaction is defined between two
-specific binding sites on two types of molecules.  When libmoleculizer
-becomes aware of species that posess those molecules and which have
-those binding sites free, an association reaction is created between
-them.  
+In the libmoleculizer system, all dimerization reactions between
+complex species result from an association tendency between two
+binding sites on two types of molecules, one belonging to each of the
+two complex species.  
+
+These association tendencies between molecules are recorded in the
+network model as an ``association-reaction'' rule.  As libmoleculizer
+generates new complex species by expanding the network, when it
+notices pairs of species with free binding sites corresponding to the
+rules, it ensures that the dimerization reaction is generated between
+them.
+
+At the time the reaction is created, it is also reversed and the
+decomposition reaction is also created.  
+
 \section{Species transformation reactions are made possible by the
   species possessing a ``transformation-enabling'' subcomplex}
-Association reactions are generated when libmoleculizer finds two
-species, each of which possesses on of the two molecules involved in
-the association with the relevant binding site free.  Transformation
-reactions, such as those involved in kinase-reactions, in which a
-protein kinase bound to a downstream reporter will phosphorylate a
-target on that reporter, are expressed by defining a target
-sub-complex: some bunch of molecules in a particular configuration
-(there may be any number of molecules in the sub-complex, and the
-sub-complex may have its state further specified to any specific or
-general level of specification).  
+An Association reaction is created when libmoleculizer, as it
+generates new species and inspects them, finds a pair of species with
+free binding sites that match an ``association-reaction'' rule.  
 
-With transformation interactions, libmoleculizer generates 
-reactions in a fashion similar to association interactions.  Except
-this time, libmoleculizer searches species that it has become aware of
-to see if they possess the specified sub-structure within them.  When
-it does, it creates the reaction by taking the found reactant species,
-performing the specified transformation on it (possibly creating a new
-species in the process), and adding the new reaction to the
-libmoleculizer instance.  
+The second kind of reaction supported by libmoleculizer is very broad:
+the transformation-reactions, which are generation by
+``transformation-reaction'' rules.  Transformation reactions are those
+that involve (generally) enzymatic function.  Any reaction in which a
+species undergoes a post-translational modification or has one
+small-molecule exchanged for another will be a transformation
+reaction.  
+
+Libmoleculizer generates these reactions by looking for complex
+species that have a particular transformation-enabling complex, as
+specified by the user in different ``transformation-reaction'' rules
+in the model. (For instance, a transformation-enabling complex may be
+an enzyme bound to a target which itself is bound to an ADP
+molecule).  When libmoleculizer finds a species that matches, it
+transforms it according to the rule provided by the user (possibly
+creating a new species in the process) and adds the new
+reaction to the list.  
+
+Depending on how the user defined the rule, optional extra reactants
+or optional extra products may be generated at this time.  
 
 \section{Allosteric reaction rates are differing rates of association
   and dissassociation amongst molecules, conditional on the states of
   the complexes the reaction molecules are found in}  
 
-One feature observed in real biochemical networks is allosteric
-binding and unbinding.  What this means is that a particular
-association reaction will be observed to happen with a particular rate
-(controlled for quantities of substance and other chemical
-considerations).  However, when the species in which the associating
-molecules live are in certain specific forms, rate of interaction
-changes dramatically.  An example may be the behavior of a G-protein
-coupled receptor, which typically has a very strong afflinity for its
-Gbc subunit.  However, when the receptor binds ligand, the affinity
-drops substantially, typically causing release of the Gbc subunit.
-This is allostery.  
+One complicating but absolutely key feature observed in real
+biochemical networks is allosteric binding and unbinding.  What this
+means is that, generally speaking, particular association reactions (a
+particular affinity between two binding sites on two molecules) occur
+at an 'intrinsic' rate which reflects the physical relationship
+between the two participating binding domains.  
+
+However, when the species in wich the associating molecules live are
+in certain specific forms, the default rates of interaction change
+dramatically. This is typically for one of two reasons.  Either
+another one or more molecules in the complex have blocked one of the
+participating binding sites; or the identities of other molecules in
+the complex have resulted in a conformational change in shape to one
+of the participating binding sites.  This conformational shape change
+causes the physical relationship between the two binding sites to
+change, resulting in a change to the intrinsic reaction rate.  
 
 In libmoleculizer, allosteric interactions are modeled first by
-allowing binding sites to be defined with multiple states,
-representing different kinetic behavioral profiles.  Next, in another
-section of the model where allosteric conditions are listed, any
-number of conditions that would cause the binding site to go from its
-default shape to the non-default allosteric state can be listed.
+allowing users to define binding sites with multiple states, called
+shapes, which represent different conformational states, resulting in
+differnent kinetic profiles.  In a section of the model where where
+allosteric conditions are listed, any number of conditions that cause
+the binding site to go from its default shape to one of its
+non-default allosteric state can be defined.
 
-Finally, when entering the association interactions that can be
-affected by allosteric rates, a default rate is given, followed by any
-number of non-default, allosteric rates.  These non-default conditions
-are specified by listing one or more pairs of shapes of participating
-binding sites, followed by additional kinetic infomation which is used
-when the allosteric conditions match.
+Finally, when entering the association interactions involving binding
+sites that have different conformational shape states, a default rate
+-- for the default shape -- is given, followed by any number of
+non-default allosteric rates.
+
+In this way, any degree of ``arbitrary'' kinetics can be added to a
+moleculizer model.
 
 
-\section{There are many names that can be given to a particular
-  complex species, but only one UniqueID}  
+\section{Moleculizer creates new species and reactions by expanding
+  species}
+
+At any time, Moleculizer has a list of species and reactions that make
+up the generated network.  However, this generated network may or may
+not be complete.   
+
+Each species generated by Moleculizer is either in a state of having
+been expanded or it has not yet been expanded.  Expanded species are
+species that have been analysed by moleculizer for matching the rules
+in the model.  When a species is expanded, its free binding sites are
+matched against the free binding sites on the already expanded
+species.  If any of the new free binding sites pair up with any of the
+already expanded complexes, libmoleculizer takes the two species and
+adds them as the two substrates into a new association reaction.  It
+forms the product by physically binding the two species together and
+examining the result.  If the result is a structurally new species,
+moleculizer adds it as a new but unexpanded species to the list of
+species and reactions.  Regardless, the reaction is added as a new
+reaction to its lists.  
+
+Transformation reactions work similarly.  When a species is expanded,
+it is checked to see if it contains any of the subcomplexes needed for
+any of the transformation reactions.  If it contains any of them, a
+new reaction is created, with the matching species as its substrate.
+The transformation is performed on that species to create the product
+species.  If the product species has not been seen by moleculizer, it
+is added as a new but unexpanded species.  Regardless, the reaction is
+added as a new reaction.  
+
+Thus the process of expanding the reaction network is a matter of
+taking an initial set of species (by default moleculizer starts with
+the set of species consisting of a monomeric molecule and any
+explicitly defined species)  and iteratively expanding them one by
+one.  
+
+By expanding them, libmoleculizer checks them for interesting
+``features'' that can participate in a reaction, as defined in the
+rules.  If libmoleculizer finds they have features that match rules in
+the model, perhaps in combination with other, already expanded
+species, libmoleculizer generates a new reaction, with the newly
+expanded species as one of the substrates.  Depending on
+circumstances, the product(products) of the reaction may also be new, in 
+which case it is added as a new, unexpanded species to the network.  
+
+Expanding the reaction network fully is simply a matter of expanding
+unexpanded species until there is nothing left to expand.  
+
+\section{Names in libmoleculizer}
 
 Libmoleculizer generates explicit species and reactions listings of
 biochemical reaction networks, which can be read out with the
@@ -136,34 +277,42 @@ Some words, however, should be said about the facilities for naming
 species that exist in libmoleculizer, because otherwise difficulties
 arise.  
 
-The problem with naming species is that they are just a sets of
-connected parts.  Because the sets of parts (molecule types and
-bindings) have no ordering to them, there isn't any one name for the
-species -- in fact there are as many names are there are lists can be
-ordered.  
+The problem with naming complex species is that they are just
+represented internally as sets of connected parts.  Because the sets
+of parts (molecule types and bindings) have no preferred ordering to
+them, there isn't any one name for the species -- in fact there are at
+least as many names for a species as there are ways of describing its
+components ( simply, if a species consists of $x$ molecules, 
+there are at least $x!$ ways of describing the species).  
 
-First, what IS NOT the problem.  For any species, we can get a name.
-This is never a problem.  We can always take a name we've been given
-and get back the same species every single time.  
+First, what IS NOT the problem.  For any species, we can get a name
+that describes the species.  This is never a problem.  We can always
+take a name we've been given and get back the same species every
+single time.
 
 What is the problem?  The problem is that because species have so many
-names that can describe them, we might look at two species, and get
-names for the two of them, and, because the names are different, 
-conclude the two species must be different.  Even though the two
-species are really the same, they could have different names. 
+names that can describe them, we might look at two identical species,
+and generate names for the two of them, and, because the names are
+different, conclude the two species must be different.  Even though
+the two species are really the same, they could have different names.
+The problem we have is in uniquely identifying complexes -- with the
+problem of making sure that a complex has a uniquely identifying
+name.  
 
 Because of this, libmoleculizer has two solutions.  The first is a
-unique, temporary name, which is called a ``Tag'' in other parts of
-the manual.  The ``Tag'' or ``Tagged Name'' as it is known is a name
-that is unique over a particular run of libmoleculizer.  As long as
-tags are only compared during a single program run (don't save a tag
-and try to use it later for instance) they are your best option.
+unique, temporary name, which is called a ``Tag'' or ``Tagged Name''
+in other parts of the manual.  This ``Tag'' that is unique over a
+particular run of libmoleculizer.  As long as tags are only compared
+during a single program run they are your best option. However,
+because they are only unique for a given run, they should never be
+used to compare species generated during different runs.  For this, we
+must use something more permanent.  
 
 The second solution is a permanent name, which we call a ``Unique
 ID''.  The unique id is a name that persists beyond program runs.  An
 identical species will always generate the same unique id, no matter
 what.  Accordingly, they are good for activities where biochemical
 networks are saved to disk, and need to be compared between simulation
-runs.  The downside to using unique ids is that they are slower, when
-compared with tags.  Tags are preferred in all situations in which
-they can be used.
+runs.  The downside to using unique ids is that they are slower to
+generate, when compared with tags.  Thus, tags are preferred in all
+situations in which they can be used.

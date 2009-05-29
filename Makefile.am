@@ -5,7 +5,7 @@ abs_top_builddir=@abs_top_builddir@
 XMLOPERATOR_DIR=$(abs_top_builddir)/xmloperator_2_3_0
 
 
-SUBDIRS = src doc
+SUBDIRS = src doc python-src
 
 if ENABLE_DEMOS
 SUBDIRS += demos

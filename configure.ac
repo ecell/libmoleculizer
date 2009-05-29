@@ -66,6 +66,8 @@ AC_CONFIG_FILES([Makefile
                 demos/Makefile
                 demos/demo-programs/Makefile
                 demos/sample-models/Makefile
+		python-src/Makefile
+		python-src/language_parser/Makefile
                 libmoleculizer-1.0.pc
                 doc/user-manual.tex
 		])

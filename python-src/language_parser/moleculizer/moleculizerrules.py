@@ -54,7 +54,7 @@ class MoleculizerRulesFile:
         self.addAllostericPlexesBlock( allostericPlexes )
         self.addAllostericOmnisBlock( allostericOmnis )
         self.addReactionRulesBlock( reactionRulesBlock, dimerizationGenBlock, \
-                                          omniGenBlock, uniMolGenBlock )
+                                          omniGenBlock, [] )
         self.addExplicitSpeciesBlock( explicitSpeciesBlock )
         self.addSpeciesStreamsBlock( speciesStreamBlock )
 

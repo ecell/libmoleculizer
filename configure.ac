@@ -2,7 +2,7 @@ AC_INIT([libmoleculizer], [1.0], [addy@molsci.org])
 AM_INIT_AUTOMAKE([-Wall -Werror])
 
 # Ensure this file is present for sanity.
-AC_CONFIG_SRCDIR([src/mzr/moleculizer.hh]) 
+AC_CONFIG_SRCDIR([src/libmoleculizer/mzr/moleculizer.hh]) 
 
 # This will be added at alpha-version.
 # AC_CONFIG_TESTDIR([tests])

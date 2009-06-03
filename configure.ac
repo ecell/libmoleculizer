@@ -37,14 +37,28 @@ dnl AC_CHECK_LIB(python${PYTHON_VERSION},main,,AC_MSG_ERROR([could not find libp
 dnl AC_CHECK_LIB(boost_python,main,,AC_MSG_ERROR([could not find libboost_python.]),-lpython${PYTHON_VERSION})
 dnl
 
-PKG_CHECK_EXISTS( libxml++-2.6, [PKG_CHECK_MODULES([LIBXMLPP], libxml++-2.6)], [PKG_CHECK_MODULES([LIBXMLPP], libxml++-1.0)])
+PKG_CHECK_EXISTS( libxml++-2.6, [LINK_WITH_LIBXMLPP_26="yes"], [PKG_CHECK_EXISTS( libxml++-1.0, [LINK_WITH_LIBXMLPP_10="yes"], [NO_LIBXMLPP="yes"])])
 
-# This is needed to properly create the pc file.  Don't remove it this time!!!
-PKG_CHECK_EXISTS( libxml++-2.6, [LIBXMLPP_VERSION="2.6"], [LIBXMLPP_VERSION="1.0"])
+if test "$LINK_WITH_LIBXMLPP_26" = "yes"; then
+
+   PKG_CHECK_MODULES([LIBXMLPP], libxml++-2.6)
+   LIBXMLPP_VERSION="2.6"
+
+elif test "$LINK_WITH_LIBXMLPP_10" = "yes"; then
+
+   PKG_CHECK_MODULES([LIBXMLPP], libxml++-1.0)
+   LIBXMLPP_VERSION="1.0"
+fi
 
 AC_SUBST(LIBXMLPP_CFLAGS)
 AC_SUBST(LIBXMLPP_LIBS)
 AC_SUBST(LIBXMLPP_VERSION)
+
+
+# This is needed to properly create the pc file.  Don't remove it this time!!!
+# PKG_CHECK_EXISTS( libxml++-2.6, [LIBXMLPP_VERSION="2.6"], [LIBXMLPP_VERSION="1.0"])
+
+AC_CONFIG_SUBDIRS([libxml++-1.0.5])
 
 # Checks for libraries.
 AC_CONFIG_FILES([Makefile
@@ -93,6 +107,7 @@ AC_SUBST(PYTHON_EXTRA_LIBS)
 AC_SUBST(PYTHON_EXTRA_LDFLAGS)
 
 AM_CONDITIONAL([ENABLE_DEMOS], [test "$enable_demos" = "yes"])
+AM_CONDITIONAL([NEED_BUILD_LIBXMLPP], [test "$NO_LIBXMLPP"="yes"])
 
 # Output this header file.
 AC_CONFIG_HEADERS([src/moleculizer_config.hh])

@@ -48,6 +48,7 @@ libmoleculizer_1_0_la_LIBADD = \
 	$(LIBFTR) \
 	$(LIBNAUTY)
 
+
 SUBDIRS = nauty \
 	utl \
 	fnd \

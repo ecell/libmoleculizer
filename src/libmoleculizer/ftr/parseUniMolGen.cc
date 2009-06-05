@@ -36,6 +36,8 @@
 #include "ftr/uniMolGen.hh"
 #include "ftr/uniMolFam.hh"
 #include "ftr/parseUniMolGen.hh"
+#include <libxml++/libxml++.h>
+#include "mzr/mzrSpeciesDumpable.hh"
 
 namespace ftr
 {

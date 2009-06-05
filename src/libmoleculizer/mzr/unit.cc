@@ -29,39 +29,49 @@
 //
 //
 
-#include "mzr/mzrSpecies.hh"
-#include "mzr/mzrUnit.hh"
-#include "mzr/unitsMgr.hh"
-#include "mzr/moleculizer.hh"
-#include "mzr/mzrSpeciesDumpable.hh"
-#include <iostream>
+#include "unit.hh"
+#include <libxml++/libxml++.h>
 
 namespace mzr
 {
-    void
-    mzrSpecies::expandReactionNetwork()
+
+    bool
+    inputCapabilities::handlesModelContentElt( xmlpp::Element* pElt ) const
     {
-        this->expandReactionNetwork( 0 );
-    }
-    
-    void
-    mzrSpecies::expandReactionNetwork( unsigned int depth )
-    {
-        ensureNotified( depth );
-    }
-    
-    void
-    mzrSpecies::setGenerateDepth( unsigned int i )
-    {
-        mzrSpecies::generateDepth = i;
-    }
-    
-    
-    unsigned int
-    mzrSpecies::getGenerateDepth()
-    {
-        return mzrSpecies::generateDepth;
+	return ( modelContentNames.end()
+		 != modelContentNames.find( pElt->get_name() ) );
     }
 
-    unsigned int mzrSpecies::generateDepth = 1;
+    bool
+    inputCapabilities::handlesReactionGensContent( xmlpp::Element* pElt ) const
+    {
+	return ( reactionGenNames.end()
+		 != reactionGenNames.find( pElt->get_name() ) );
+    }
+
+
+    bool
+    inputCapabilities::handlesExplictSpeciesContent( xmlpp::Element* pElt ) const
+    {
+	return ( explicitSpeciesContentNames.end()
+		 != explicitSpeciesContentNames.find( pElt->get_name() ) );
+    }
+        
+    // To test if this unit handles a particular speciesStreams content element.
+    bool
+    inputCapabilities::handlesSpeciesStreamsContent( xmlpp::Element* pElt ) const
+    {
+	return ( speciesStreamsContentNames.end()
+		 != speciesStreamsContentNames.find( pElt->get_name() ) );
+    }
+        
+    // To test if this unit handles a particular events content element.
+    bool
+    inputCapabilities::handlesEventsContent( xmlpp::Element* pElt ) const
+    {
+	return ( eventsContentNames.end()
+		 != eventsContentNames.find( pElt->get_name() ) );
+    }
+
+
 }

@@ -38,6 +38,8 @@
 #include "ftr/omniGen.hh"
 #include "ftr/omniFam.hh"
 #include "ftr/parseOmniGen.hh"
+#include <libxml++/libxml++.h>
+#include "mzr/mzrSpeciesDumpable.hh"
 
 namespace ftr
 {

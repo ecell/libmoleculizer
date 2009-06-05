@@ -42,6 +42,8 @@
 #include "plex/multBoundSiteXcpt.hh"
 #include "plex/parsedPlexNotConnXcpt.hh"
 #include "plex/mzrPlexQueries.hh"
+#include <libxml++/libxml++.h>
+#include "mzr/mzrSpeciesDumpable.hh"
 
 namespace plx
 {

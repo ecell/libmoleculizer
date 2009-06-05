@@ -4,6 +4,12 @@
 #include "utl/xcpt.hh"
 #include "utl/dom.hh"
 
+namespace xmlpp
+{
+    class Element;
+    class Node;
+}
+
 namespace utl
 {
     namespace dom

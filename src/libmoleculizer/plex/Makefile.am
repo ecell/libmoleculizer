@@ -12,16 +12,19 @@ VERSION = @PACKAGE_VERSION@
 MOLECULIZER_DIRNAME = libmoleculizer-$(VERSION)
 libmoleculizer_plexdir=$(includedir)/$(MOLECULIZER_DIRNAME)/libmoleculizer/plex
 
-LIBFND = ../fnd/libmoleculizer_fnd.la
-LIBUTL = ../utl/libmoleculizer_utl.la
-LIBMZR = ../mzr/libmoleculizer_mzr.la
-LIBSTOCH = ../stoch/libmoleculizer_stoch.la
-LIBNMR = ../nmr/libmoleculizer_nmr.la
-LIBCPX = ../cpx/libmoleculizer_cpx.la
-LIBMOL = ../mol/libmoleculizer_mol.la
-LIBPLEX = ../plex/libmoleculizer_plex.la
-LIBDIMER = ../dimer/libmoleculizer_dimer.la
-LIBFTR = ../ftr/libmoleculizer_ftr.la
+LIBFND = $(abs_top_srcdir)/src/libmoleculizer/fnd/libmoleculizer_fnd.la
+LIBUTL = $(abs_top_srcdir)/src/libmoleculizer/utl/libmoleculizer_utl.la
+LIBMZR = $(abs_top_srcdir)/src/libmoleculizer/mzr/libmoleculizer_mzr.la
+LIBSTOCH = $(abs_top_srcdir)/src/libmoleculizer/stoch/libmoleculizer_stoch.la
+LIBNMR = $(abs_top_srcdir)/src/libmoleculizer/nmr/libmoleculizer_nmr.la
+LIBCPX = $(abs_top_srcdir)/src/libmoleculizer/cpx/libmoleculizer_cpx.la
+LIBMOL = $(abs_top_srcdir)/src/libmoleculizer/mol/libmoleculizer_mol.la
+LIBPLEX = $(abs_top_srcdir)/src/libmoleculizer/plex/libmoleculizer_plex.la
+LIBDIMER = $(abs_top_srcdir)/src/libmoleculizer/dimer/libmoleculizer_dimer.la
+LIBFTR = $(abs_top_srcdir)/src/libmoleculizer/ftr/libmoleculizer_ftr.la
+LIBNAUTY = $(abs_top_srcdir)/src/libmoleculizer/nauty/libmoleculizer_nauty.la
+
+
 ALL_MZR_LIBS = $(LIBFND) $(LIBUTL) $(LIBMZR) $(LIBSTOCH) $(LIBNMR) $(LIBNMR) $(LIBCPX) $(LIBMOL) $(LIBPLEX) $(LIBDIMER) $(LIBFTR)
 
 # libmoleculizer_plex_la_LIBADD = -lstdc++ $(LIBUTL) $(LIBNMR) $(LIBFND) $(LIBCPX) $(LIBMZR) $(LIBMOL) 
@@ -33,6 +36,10 @@ GSL_CFLAGS = @GSL_CFLAGS@
 GSL_LIBS = @GSL_LIBS@
 
 AM_CXXFLAGS = @CXXFLAGS@ -Wall $(LIBXMLPP_CFLAGS) @PYTHON_CPPFLAGS@ -I$(abs_top_srcdir)/src
+
+if BUILD_LIBXMLPP
+AM_CXXFLAGS += -I../../../libxml++-1.0.5
+endif
 
 libmoleculizer_plex_la_SOURCES =\
 dupNodeOmniXcpt.cc \

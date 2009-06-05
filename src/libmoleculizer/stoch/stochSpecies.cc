@@ -34,6 +34,7 @@
 #include "mol/molEltName.hh"
 #include "stoch/stochEltName.hh"
 #include "stoch/stochSpecies.hh"
+#include <libxml++/libxml++.h>
 
 namespace stoch
 {

@@ -34,10 +34,17 @@
 
 #include <string>
 #include <set>
-#include <libxml++/libxml++.h>
 
 #include "utl/xcpt.hh"
 #include "utl/domXcpt.hh"
+
+namespace xmlpp
+{
+    class Node;
+    class Element;
+    class Document;
+    class DomParser;
+}
 
 namespace utl
 {

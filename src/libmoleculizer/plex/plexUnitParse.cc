@@ -34,6 +34,8 @@
 #include "plex/mzrPlexFamily.hh"
 #include "plex/parsePlex.hh"
 #include "plex/parseOmniPlex.hh"
+#include <libxml++/libxml++.h>
+#include "mzr/mzrSpeciesDumpable.hh"
 
 namespace plx
 {

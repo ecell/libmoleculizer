@@ -34,6 +34,7 @@
 #include "plex/plexUnit.hh"
 #include "ftr/omniGen.hh"
 #include "ftr/exchangedModXcpt.hh"
+#include "mzr/mzrSpeciesDumpable.hh"
 
 namespace ftr
 {

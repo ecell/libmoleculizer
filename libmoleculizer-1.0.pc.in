@@ -5,7 +5,7 @@ includedir=@includedir@
 
 Name: libmoleculizer
 Description: Library for expanding biochemical species/reaction networks from a rules description.
-Requires: libxml++-@LIBXMLPP_VERSION@ 
+Requires: @LIBMZR_REQUIREMENTS@
 URL: https://sourceforge.net/projects/moleculizer/
 Version: @VERSION@
 Libs: -L${libdir} -lmoleculizer-1.0

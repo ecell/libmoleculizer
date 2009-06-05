@@ -6,14 +6,14 @@ DIST_SUBDIRS = include . python xstc
 
 INCLUDES = -I$(top_builddir)/include -I@srcdir@/include @THREAD_CFLAGS@ @Z_CFLAGS@ 
 
-noinst_LIBRARIES = libxml2.a
+noinst_LTLIBRARIES = libxml2.la
 
 # libxml2_a_LIBADD = @THREAD_LIBS@ @Z_LIBS@ $(ICONV_LIBS) @M_LIBS@ @WIN32_EXTRA_LIBADD@
 # libxml2_a_LIBADD = @THREAD_LIBS@  $(ICONV_LIBS) @WIN32_EXTRA_LIBADD@
 # libxml2_a_LDFLAGS = @CYGWIN_EXTRA_LDFLAGS@ @WIN32_EXTRA_LDFLAGS@ -version-info @LIBXML_VERSION_INFO@ @MODULE_PLATFORM_LIBS@
 
 if WITH_TRIO_SOURCES
-libxml2_a_SOURCES = SAX.c entities.c encoding.c error.c parserInternals.c  \
+libxml2_la_SOURCES = SAX.c entities.c encoding.c error.c parserInternals.c  \
 		parser.c tree.c hash.c list.c xmlIO.c xmlmemory.c uri.c  \
 		valid.c xlink.c HTMLparser.c HTMLtree.c debugXML.c xpath.c  \
 		xpointer.c xinclude.c nanohttp.c nanoftp.c DOCBparser.c \
@@ -23,7 +23,7 @@ libxml2_a_SOURCES = SAX.c entities.c encoding.c error.c parserInternals.c  \
 		xmlwriter.c legacy.c chvalid.c pattern.c xmlsave.c \
 		xmlmodule.c schematron.c
 else
-libxml2_a_SOURCES = SAX.c entities.c encoding.c error.c parserInternals.c  \
+libxml2_la_SOURCES = SAX.c entities.c encoding.c error.c parserInternals.c  \
 		parser.c tree.c hash.c list.c xmlIO.c xmlmemory.c uri.c  \
 		valid.c xlink.c HTMLparser.c HTMLtree.c debugXML.c xpath.c  \
 		xpointer.c xinclude.c nanohttp.c nanoftp.c DOCBparser.c \

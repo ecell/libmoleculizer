@@ -34,6 +34,8 @@
 #include "plex/plexUnit.hh"
 #include "plex/dupNodeOmniXcpt.hh"
 #include "plex/noOmniForNodeXcpt.hh"
+#include <libxml++/libxml++.h>
+#include "mzr/mzrSpeciesDumpable.hh"
 
 namespace plx
 {

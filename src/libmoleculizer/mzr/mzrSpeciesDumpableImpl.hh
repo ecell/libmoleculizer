@@ -25,6 +25,9 @@
 
 #include "mzr/mzrEltName.hh"
 
+#include <libxml++/libxml++.h>
+#include "mzr/mzrSpeciesDumpable.hh"
+
 // Aren't these all the same? Could they go into mzrSpeciesStream?
 
 namespace mzr

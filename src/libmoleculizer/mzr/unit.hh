@@ -32,7 +32,6 @@
 #ifndef UNIT_H
 #define UNIT_H
 
-
 #include <set>
 #include <string>
 
@@ -112,44 +111,29 @@ namespace mzr
         }
         
         bool
-        handlesModelContentElt( xmlpp::Element* pElt ) const
-        {
-            return ( modelContentNames.end()
-                     != modelContentNames.find( pElt->get_name() ) );
-        }
+        handlesModelContentElt( xmlpp::Element* pElt ) const;
+
         
         
         // To test if this unit handles a particular reaction generator element.
         bool
-        handlesReactionGensContent( xmlpp::Element* pElt ) const
-        {
-            return ( reactionGenNames.end()
-                     != reactionGenNames.find( pElt->get_name() ) );
-        }
+        handlesReactionGensContent( xmlpp::Element* pElt ) const;
+
         
         // To test if this unit handles a particular explictSpecies content element.
         bool
-        handlesExplictSpeciesContent( xmlpp::Element* pElt ) const
-        {
-            return ( explicitSpeciesContentNames.end()
-                     != explicitSpeciesContentNames.find( pElt->get_name() ) );
-        }
+        handlesExplictSpeciesContent( xmlpp::Element* pElt ) const;
+
         
         // To test if this unit handles a particular speciesStreams content element.
         bool
-        handlesSpeciesStreamsContent( xmlpp::Element* pElt ) const
-        {
-            return ( speciesStreamsContentNames.end()
-                     != speciesStreamsContentNames.find( pElt->get_name() ) );
-        }
+        handlesSpeciesStreamsContent( xmlpp::Element* pElt ) const;
+
         
         // To test if this unit handles a particular events content element.
         bool
-        handlesEventsContent( xmlpp::Element* pElt ) const
-        {
-            return ( eventsContentNames.end()
-                     != eventsContentNames.find( pElt->get_name() ) );
-        }
+        handlesEventsContent( xmlpp::Element* pElt ) const;
+
     };
     
     class moleculizer;

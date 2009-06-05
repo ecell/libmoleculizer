@@ -32,6 +32,7 @@
 #include "utl/defs.hh"
 #include "mzr/mzrException.hh"
 #include "mzr/moleculizer.hh"
+#include "mzr/mzrSpeciesDumpable.hh"
 #include "mzr/mzrUnit.hh"
 #include "mzr/unitsMgr.hh"
 #include "plex/plexUnit.hh"

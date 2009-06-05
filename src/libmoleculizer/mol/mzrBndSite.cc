@@ -33,6 +33,7 @@
 #include "mol/molEltName.hh"
 #include "mol/unkSiteShapeXcpt.hh"
 #include "plex/mzrPlexFamily.hh"
+#include <libxml++/libxml++.h>
 
 namespace bnd
 {

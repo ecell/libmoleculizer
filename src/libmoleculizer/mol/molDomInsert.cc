@@ -31,6 +31,7 @@
 
 #include "mol/molUnit.hh"
 #include "mol/molEltName.hh"
+#include <libxml++/libxml++.h>
 
 namespace bnd
 {

@@ -29,6 +29,7 @@
 //
 //
 
+#include <libxml++/libxml++.h>
 #include "mzr/mzrReaction.hh"
 #include "mzr/mzrUnit.hh"
 #include "mzr/mzrEltName.hh"

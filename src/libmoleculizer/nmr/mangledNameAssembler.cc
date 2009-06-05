@@ -30,14 +30,16 @@
 //
 
 
+#include <libxml++/libxml++.h>
 #include "mangledNameAssembler.hh"
 #include "complexSpeciesOutputMinimizer.hh"
 
 #include "utl/utility.hh"
 #include "nmr/nmrUnit.hh"
 
-#include <iostream>
 #include <utility>
+#include "mzr/mzrSpeciesDumpable.hh"
+
 
 namespace nmr
 {
@@ -416,7 +418,4 @@ namespace nmr
         }
         return returnVal;
     }
-    
-    
-    
 }

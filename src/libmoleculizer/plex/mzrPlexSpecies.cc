@@ -34,6 +34,7 @@
 #include "plex/mzrPlexSpecies.hh"
 #include "plex/mzrPlexFamily.hh"
 #include "plex/plexEltName.hh"
+#include "mzr/mzrSpeciesDumpable.hh"
 
 namespace plx
 {

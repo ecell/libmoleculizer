@@ -34,6 +34,8 @@
 #include "mzr/dumpUtils.hh"
 #include "mzr/mzrEltName.hh"
 
+#include <libxml++/libxml++.h>
+
 namespace mzr
 {
     void

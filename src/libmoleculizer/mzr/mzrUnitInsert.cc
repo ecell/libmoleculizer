@@ -29,6 +29,7 @@
 //
 //
 
+#include <libxml++/libxml++.h>
 #include "mzr/mzrUnit.hh"
 #include "mzr/dumpUtils.hh"
 #include "mzr/moleculizer.hh"

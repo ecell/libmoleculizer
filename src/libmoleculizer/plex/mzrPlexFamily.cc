@@ -35,6 +35,7 @@
 #include "plex/mzrPlex.hh"
 #include "plex/mzrPlexSpecies.hh"
 #include "nmr/nmrUnit.hh"
+#include "mzr/mzrSpeciesDumpable.hh"
 
 namespace plx
 {

@@ -42,54 +42,26 @@ namespace mzr
     {
     public:
         static std::string
-        mkMsg(const std::string& functionName)
-        {
-            std::ostringstream oss;
-            oss << "Function '" 
-                << functionName 
-                << "' could not be completed because a model has not yet been loaded." ;
-            return oss.str();
-        }
-
-        ModelNotLoadedXcpt(const std::string& funcName)
-            :
-            xcpt( mkMsg(funcName))
-        {}
+        mkMsg(const std::string& functionName);
+        ModelNotLoadedXcpt(const std::string& funcName);
     };
 
     class BadRulesDefinitionXcpt : public utl::xcpt
     {
     public:
         static std::string
-        mkMsg()
-        {
-            std::ostringstream oss;
-            oss << "Can't parse a bad ruleset.";
-            return oss.str();
-        }
+        mkMsg();
         
-        BadRulesDefinitionXcpt()
-            :
-            xcpt( mkMsg() )
-        {
-        }
+        BadRulesDefinitionXcpt();
     };
     
+
     class IllegalNameXcpt : public utl::xcpt
     {
     public:
         static std::string
-        mkMsg( const std::string& illegalName )
-        {
-            std::ostringstream oss;
-            oss << "Illegal Name: '" << illegalName << "'";
-            return oss.str();
-        }
-        
-        IllegalNameXcpt( const std::string& illegalName )
-            :
-            xcpt( mkMsg( illegalName ) )
-        {}
+        mkMsg( const std::string& illegalName );
+        IllegalNameXcpt( const std::string& illegalName );
     };
     
     class illegalSpeciesNameXcpt
@@ -98,13 +70,8 @@ namespace mzr
         static std::string
         mkMsg( const std::string& rSpeciesName,
                const std::string& rMessage = "" );
-        
     public:
-        illegalSpeciesNameXcpt( const std::string& rSpeciesName, const std::string& rMessage ) :
-            utl::xcpt( mkMsg( rSpeciesName,
-                              rMessage ) )
-        {}
-        
+        illegalSpeciesNameXcpt( const std::string& rSpeciesName, const std::string& rMessage );
     };
     
     class dumpableNotSpeciesStreamXcpt :
@@ -155,15 +122,8 @@ namespace mzr
         public utl::xcpt
     {
         static std::string
-        mkMsg( xmlpp::Node* pOffendingModelContentNode )
-        {
-            std::ostringstream msgStream;
-            msgStream << utl::dom::xcpt::mkMsg( pOffendingModelContentNode )
-                      << "No unit claims to handle this "
-                      << pOffendingModelContentNode->get_name()
-                      << " node in the model section.";
-            return msgStream.str();
-        }
+        mkMsg( xmlpp::Node* pOffendingModelContentNode );
+
     public:
         unhandledModelContentXcpt( xmlpp::Node* pOffendingModelContentNode ) :
             utl::xcpt( mkMsg( pOffendingModelContentNode ) )
@@ -174,15 +134,8 @@ namespace mzr
         public utl::xcpt
     {
         static std::string
-        mkMsg( xmlpp::Node* pBadExplicitSpeciesContentNode )
-        {
-            std::ostringstream msgStream;
-            msgStream << utl::dom::xcpt::mkMsg( pBadExplicitSpeciesContentNode )
-                      << "No unit claims to handle this "
-                      << pBadExplicitSpeciesContentNode->get_name()
-                      << " node in the explicit species section.";
-            return msgStream.str();
-        }
+        mkMsg( xmlpp::Node* pBadExplicitSpeciesContentNode );
+
     public:
         unhandledExplicitSpeciesContentXcpt( xmlpp::Node* pBadExplicitSpeciesContentNode ) :
             utl::xcpt( mkMsg( pBadExplicitSpeciesContentNode ) )
@@ -193,15 +146,8 @@ namespace mzr
         public utl::xcpt
     {
         static std::string
-        mkMsg( xmlpp::Node* pBadSpeciesStreamsContentNode )
-        {
-            std::ostringstream msgStream;
-            msgStream << utl::dom::xcpt::mkMsg( pBadSpeciesStreamsContentNode )
-                      << "No unit claims to handle this "
-                      << pBadSpeciesStreamsContentNode->get_name()
-                      << " node in the species streams section.";
-            return msgStream.str();
-        }
+        mkMsg( xmlpp::Node* pBadSpeciesStreamsContentNode );
+
     public:
         unhandledSpeciesStreamsContentXcpt( xmlpp::Node* pBadSpeciesStreamsContentNode ) :
             utl::xcpt( mkMsg( pBadSpeciesStreamsContentNode ) )
@@ -212,15 +158,7 @@ namespace mzr
         public utl::xcpt
     {
         static std::string
-        mkMsg( xmlpp::Node* pOffendingEventsContentNode )
-        {
-            std::ostringstream msgStream;
-            msgStream << utl::dom::xcpt::mkMsg( pOffendingEventsContentNode )
-                      << "No unit claims to handle this "
-                      << pOffendingEventsContentNode->get_name()
-                      << " node in the events section.";
-            return msgStream.str();
-        }
+        mkMsg( xmlpp::Node* pOffendingEventsContentNode );
         
     public:
         unhandledEventsContentXcpt( xmlpp::Node* pOffendingEventsContentNode ) :
@@ -232,15 +170,8 @@ namespace mzr
         public utl::xcpt
     {
         static std::string
-        mkMsg( xmlpp::Node* pBadReactionGenNode )
-        {
-            std::ostringstream msgStream;
-            msgStream << utl::dom::xcpt::mkMsg( pBadReactionGenNode )
-                      << "No unit claims to handle this "
-                      << pBadReactionGenNode->get_name()
-                      << " node in the reaction generators section.";
-            return msgStream.str();
-        }
+        mkMsg( xmlpp::Node* pBadReactionGenNode );
+
     public:
         unhandledReactionGenXcpt( xmlpp::Node* pBadReactionGenNode ) :
             utl::xcpt( mkMsg( pBadReactionGenNode ) )

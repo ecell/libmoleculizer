@@ -29,6 +29,7 @@
 //
 //
 
+#include "mzr/mzrSpeciesDumpable.hh"
 #include "plex/mzrRecognizer.hh"
 #include "plex/mzrPlexFamily.hh"
 #include "plex/plexUnit.hh"

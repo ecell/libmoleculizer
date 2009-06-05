@@ -42,27 +42,11 @@ namespace bnd
         public std::unary_function<xmlpp::Node*, cpx::modification*>
     {
     public:
+	// Takes a node to a modification site, and returns a pointer to the parsed
+	// and installed modification.
         cpx::modification*
-        operator()( xmlpp::Node* pModificationNode ) const
-        {
-            xmlpp::Element* pModElt
-                = utl::dom::mustBeElementPtr( pModificationNode );
-            
-            std::string name
-                = utl::dom::mustGetAttrString( pModElt,
-                                               eltName::modification_nameAttr );
-            
-            xmlpp::Element* pWeightDeltaElt
-                = utl::dom::mustGetUniqueChild( pModElt,
-                                                eltName::weightDelta );
-            
-            double weightDelta = utl::dom::mustGetAttrDouble
-                ( pWeightDeltaElt,
-                  eltName::weightDelta_daltonsAttr );
-            
-            return new cpx::modification( name,
-                                          weightDelta );
-        }
+        operator()( xmlpp::Node* pModificationNode ) const;
+
     };
 }
 

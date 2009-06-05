@@ -89,13 +89,8 @@ namespace ftr
         
         // The state output routine for this unit.
         void
-        insertStateElts( xmlpp::Element* pUnitStatesElt ) throw( std::exception )
-        {
-            pUnitStatesElt->add_child("ftr-unit-parse");
+        insertStateElts( xmlpp::Element* pUnitStatesElt ) throw( std::exception );
 
-            // For now, this unit just provides reaction generators, which
-            // for now I'm not dumping in "state dump."
-        }
 
         int getNumberOfOmniGenRules() const
         {

@@ -40,6 +40,9 @@
 #include "nmr/nmrEltName.hh"
 #include "nmr/nmrUnit.hh"
 
+#include "mzr/mzrSpeciesDumpable.hh"
+#include "plex/mzrPlexSpecies.hh"
+
 
 namespace nmr
 {

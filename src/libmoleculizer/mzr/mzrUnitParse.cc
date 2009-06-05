@@ -35,6 +35,7 @@
 #include "mzr/moleculizer.hh"
 #include "mzr/mzrReaction.hh"
 #include "mzr/mzrUnit.hh"
+#include <libxml++/libxml++.h>
 
 
 namespace mzr

@@ -42,6 +42,7 @@
 
 #include "mzr/moleculizer.hh"
 #include "mzr/mzrException.hh"
+#include "mzr/mzrSpeciesDumpable.hh"
 
 #include "mzr/mzrUnit.hh"
 
@@ -161,9 +162,9 @@ namespace mzr
         :
         modelLoaded( false ),
         extrapolationEnabled( false ),
-        theParser()
+        theParser( new xmlpp::DomParser )
     {
-        theParser.set_validate( false );
+        theParser->set_validate( false );
 
         pUserUnits = new unitsMgr( *this );
         
@@ -174,6 +175,7 @@ namespace mzr
     moleculizer::~moleculizer( void )
     {
         delete pUserUnits;
+	delete theParser;
     }
 
 
@@ -261,9 +263,9 @@ namespace mzr
   void moleculizer::loadXmlFileName( const std::string& filename )
   {
 
-    theParser.parse_file( filename );
-    if ( !theParser ) throw utl::dom::noDocumentParsedXcpt();
-    this->loadParsedDocument( theParser.get_document() );
+    theParser->parse_file( filename );
+    if ( !(*theParser) ) throw utl::dom::noDocumentParsedXcpt();
+    this->loadParsedDocument( theParser->get_document() );
   }
 
   void moleculizer::loadCommonRulesFileName( const std::string& filename)
@@ -283,15 +285,15 @@ namespace mzr
     
   void moleculizer::loadXmlString( const std::string& documentAsString )
   {
-    theParser.parse_memory( documentAsString );
+    theParser->parse_memory( documentAsString );
     if ( !theParser ) throw utl::dom::noDocumentParsedXcpt();
         
-    this->loadParsedDocument( theParser.get_document() );
+    this->loadParsedDocument( theParser->get_document() );
   }
 
     void moleculizer::writeInternalData(const std::string& fileName) 
     {
-	this->theParser.get_document()->write_to_file_formatted( fileName );
+	this->theParser->get_document()->write_to_file_formatted( fileName );
     }
 
   bool
@@ -408,7 +410,7 @@ namespace mzr
             = pDoc->create_root_node( eltName::moleculizerState );
 
         // Copy in the original model and streams stuff...
-        xmlpp::Document* originalDoc = theParser.get_document();
+        xmlpp::Document* originalDoc = theParser->get_document();
         xmlpp::Element* originalRoot = originalDoc->get_root_node();
 
         xmlpp::Element* pInputModelElt = utl::dom::mustGetUniqueChild( originalRoot, eltName::model);
@@ -442,7 +444,7 @@ namespace mzr
             = pDoc->create_root_node( eltName::moleculizerState );
 
         // Copy in the original model and streams stuff...
-        xmlpp::Document* originalDoc = theParser.get_document();
+        xmlpp::Document* originalDoc = theParser->get_document();
         xmlpp::Element* originalRoot = originalDoc->get_root_node();
 
         xmlpp::Element* pInputModelElt = utl::dom::mustGetUniqueChild( originalRoot, eltName::model);
@@ -1187,6 +1189,26 @@ namespace mzr
     {
 
 	return getMolCountInSpecies( molName, this->findSpecies(taggedName));
+    }
+
+    void restoreGeneratedSpecies::operator()( const xmlpp::Node* pNode )
+    {
+	const xmlpp::Element* pElement = dynamic_cast<const xmlpp::Element*>( pNode );
+
+	assert(pElement);
+
+
+	std::string uniqueID = utl::dom::mustGetAttrString( pElement, "unique-id" );
+	std::string isExpanded = utl::dom::mustGetAttrString( pElement, "expanded");
+
+	const mzrSpecies* pSpecies = rMolzer.getSpeciesWithUniqueID( uniqueID );
+
+	std::string tag = pSpecies->getTag();
+            
+	if ( isExpanded == "true" )
+	{
+	    rMolzer.incrementNetworkBySpeciesTag( tag );
+	}
     }
 
 

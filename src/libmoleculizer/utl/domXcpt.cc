@@ -33,6 +33,7 @@
 
 #include <sstream>
 #include "domXcpt.hh"
+#include <libxml++/libxml++.h>
 
 namespace utl
 {

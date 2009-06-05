@@ -40,7 +40,16 @@
 #include "fnd/basicDumpable.hh"
 #include "cpx/plexSpcsMixin.hh"
 #include "mzr/mzrSpecies.hh"
-#include "mzr/mzrSpeciesDumpable.hh"
+
+
+namespace mzr
+{
+    template <typename T>
+    class querySpeciesDumpable;
+
+    template <typename T>
+    class multiSpeciesDumpable;
+}
 
 namespace plx
 {

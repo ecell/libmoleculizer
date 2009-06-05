@@ -280,7 +280,7 @@ namespace mzr
       PythonRulesManager rulesManager;
 
         // Now we store a copy of the parser, so that people can get a copy of the rules, at any time.
-        xmlpp::DomParser theParser;
+        xmlpp::DomParser* theParser;
 
     };
 
@@ -293,27 +293,7 @@ namespace mzr
             rMolzer( refMolzer )
         {}
         
-        void operator()( const xmlpp::Node* pNode )
-        {
-
-
-            const xmlpp::Element* pElement = dynamic_cast<const xmlpp::Element*>( pNode );
-
-            assert(pElement);
-
-
-            std::string uniqueID = utl::dom::mustGetAttrString( pElement, "unique-id" );
-            std::string isExpanded = utl::dom::mustGetAttrString( pElement, "expanded");
-
-            const mzrSpecies* pSpecies = rMolzer.getSpeciesWithUniqueID( uniqueID );
-
-            std::string tag = pSpecies->getTag();
-            
-            if ( isExpanded == "true" )
-            {
-                rMolzer.incrementNetworkBySpeciesTag( tag );
-            }
-        }
+        void operator()( const xmlpp::Node* pNode );
 
     private:
         moleculizer& rMolzer;

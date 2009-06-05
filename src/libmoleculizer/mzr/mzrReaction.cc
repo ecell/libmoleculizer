@@ -37,6 +37,8 @@
 #include "mzr/dumpUtils.hh"
 #include "mzr/unitsMgr.hh"
 #include "mzr/moleculizer.hh"
+#include "mzr/mzrSpeciesDumpable.hh"
+#include <libxml++/libxml++.h>
 #include <iostream>
 
 namespace mzr

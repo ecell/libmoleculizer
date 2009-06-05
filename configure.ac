@@ -31,51 +31,49 @@ AC_TYPE_SIZE_T
 AC_FUNC_STRTOD
 AC_CHECK_FUNCS([floor modf pow sqrt strtol])
 
-dnl
-dnl
-dnl AC_CHECK_LIB(python${PYTHON_VERSION},main,,AC_MSG_ERROR([could not find libpython.]))
-dnl AC_CHECK_LIB(boost_python,main,,AC_MSG_ERROR([could not find libboost_python.]),-lpython${PYTHON_VERSION})
-dnl
-
 PKG_CHECK_EXISTS( libxml++-2.6, [LINK_WITH_LIBXMLPP_26="yes"], [PKG_CHECK_EXISTS( libxml++-1.0, [LINK_WITH_LIBXMLPP_10="yes"], [NO_LIBXMLPP="yes"])])
 
-if test "$LINK_WITH_LIBXMLPP_26" = "yes"; then
+AC_CONFIG_SUBDIRS([libxml++-1.0.5])	
 
+
+if test "$LINK_WITH_LIBXMLPP_26" = "yes"; then
+   echo "Found libxml++-2.6 installed, using..."
    PKG_CHECK_MODULES([LIBXMLPP], libxml++-2.6)
-   LIBXMLPP_VERSION="2.6"
+   LIBMZR_REQUIREMENTS="libxml++-2.6"
 
 elif test "$LINK_WITH_LIBXMLPP_10" = "yes"; then
 
+   echo "Found libxml++-1.0 installed, using..."
    PKG_CHECK_MODULES([LIBXMLPP], libxml++-1.0)
-   LIBXMLPP_VERSION="1.0"
+   LIBMZR_REQUIREMENTS="libxml++-2.6"
+
+elif test "$NO_LIBXMLPP" = "yes"; then
+     echo "No libxml++ was found, building..."
+     build_libxmlpp=yes
+     LIBXMLPP_CFLAGS=-I`$abs_srcdir`/libxml++-1.0.5/
+     LIBXMLPP_LIBS=
+     LIBMZR_REQUIREMENTS=
 fi
 
 AC_SUBST(LIBXMLPP_CFLAGS)
 AC_SUBST(LIBXMLPP_LIBS)
-AC_SUBST(LIBXMLPP_VERSION)
-
-
-# This is needed to properly create the pc file.  Don't remove it this time!!!
-# PKG_CHECK_EXISTS( libxml++-2.6, [LIBXMLPP_VERSION="2.6"], [LIBXMLPP_VERSION="1.0"])
-
-AC_CONFIG_SUBDIRS([libxml++-1.0.5])
+AC_SUBST(LIBMZR_REQUIREMENTS)
 
 # Checks for libraries.
 AC_CONFIG_FILES([Makefile
                 src/Makefile
-		src/nauty/Makefile
-                src/cpx/Makefile
-		src/dimer/Makefile
-		src/fnd/Makefile
-		src/ftr/Makefile
-		src/mol/Makefile
-		src/mzr/Makefile
-		src/nmr/Makefile
-		src/plex/Makefile
-		src/stoch/Makefile
-		src/utl/Makefile
-                src/nmr/tests/Makefile
-                src/mzr/tests/Makefile
+		src/libmoleculizer/Makefile
+		src/libmoleculizer/nauty/Makefile
+                src/libmoleculizer/cpx/Makefile
+		src/libmoleculizer/dimer/Makefile
+		src/libmoleculizer/fnd/Makefile
+		src/libmoleculizer/ftr/Makefile
+		src/libmoleculizer/mol/Makefile
+		src/libmoleculizer/mzr/Makefile
+		src/libmoleculizer/nmr/Makefile
+		src/libmoleculizer/plex/Makefile
+		src/libmoleculizer/stoch/Makefile
+		src/libmoleculizer/utl/Makefile
                 doc/Makefile
                 demos/Makefile
                 demos/demo-programs/Makefile
@@ -107,10 +105,10 @@ AC_SUBST(PYTHON_EXTRA_LIBS)
 AC_SUBST(PYTHON_EXTRA_LDFLAGS)
 
 AM_CONDITIONAL([ENABLE_DEMOS], [test "$enable_demos" = "yes"])
-AM_CONDITIONAL([NEED_BUILD_LIBXMLPP], [test "$NO_LIBXMLPP"="yes"])
+AM_CONDITIONAL([BUILD_LIBXMLPP], [test "build_libxmlpp" = "yes"])
 
 # Output this header file.
-AC_CONFIG_HEADERS([src/moleculizer_config.hh])
+AC_CONFIG_HEADERS([src/libmoleculizer/moleculizer_config.hh])
 
 
 AC_OUTPUT

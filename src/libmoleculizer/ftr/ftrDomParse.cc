@@ -34,6 +34,8 @@
 #include "ftr/ftrEltName.hh"
 #include "ftr/parseOmniGen.hh"
 #include "ftr/parseUniMolGen.hh"
+#include <libxml++/libxml++.h>
+#include "mzr/mzrSpeciesDumpable.hh"
 
 namespace ftr
 {
@@ -77,4 +79,15 @@ namespace ftr
         // Record how many uni-mol gens were recorded.
         numUniMolGens += uniMolGenNodes.size();
     }
+
+    void ftrUnit::insertStateElts( xmlpp::Element* pUnitStatesElt ) 
+	throw( std::exception )
+    {
+	pUnitStatesElt->add_child("ftr-unit-parse");
+	
+	// For now, this unit just provides reaction generators, which
+	// for now I'm not dumping in "state dump."
+    }
+
+
 }

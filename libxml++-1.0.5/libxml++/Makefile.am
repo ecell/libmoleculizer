@@ -14,14 +14,14 @@ AM_CXXFLAGS=-I../libxml2/include/libxml/
 
 LIBXML2LIB = ../libxml2/libxml2.a
 
-noinst_LIBRARIES = libxmlpp.a
+noinst_LTLIBRARIES = libxmlpp.la
 
 # libxmlpp_a_LDFLAGS = @WIN32_LDFLAGS@ -version-info $(GENERIC_LIBRARY_VERSION)
-libxmlpp_a_LIBADD = parsers/libparsers.la \
+libxmlpp_la_LIBADD = parsers/libparsers.la \
                          exceptions/libexceptions.la \
                          nodes/libnodes.la \
 			 io/libio.la \
-			../libxml2/libxml2.a
+			../libxml2/libxml2.la
 
-libxmlpp_a_SOURCES = $(cc_sources) $(h_sources_public) $(h_sources_private) $(cc_sources_private)
+libxmlpp_la_SOURCES = $(cc_sources) $(h_sources_public) $(h_sources_private) $(cc_sources_private)
 

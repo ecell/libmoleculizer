@@ -37,7 +37,9 @@
 #include "mzr/spatialExtrapolationFunctions.hh"
 #include "unitsMgr.hh"
 #include "mol/molUnit.hh"
+#include "mzr/mzrSpeciesDumpable.hh"
 
+#include <libxml++/libxml++.h>
 #include <iterator>
 #include <string.h>
 

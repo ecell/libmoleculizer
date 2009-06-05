@@ -43,6 +43,7 @@
 #include "mol/dupModNameXcpt.hh"
 #include "mol/unkSiteXcpt.hh"
 #include "mol/unkSiteShapeXcpt.hh"
+#include <libxml++/libxml++.h>
 
 namespace bnd
 {
@@ -390,4 +391,143 @@ namespace bnd
                        modMols.end(),
                        installModMol( *this ) );
     }
+
+    cpx::modification*
+    parseModification::operator()(xmlpp::Node* pModificationNode) const
+    {
+	xmlpp::Element* pModElt
+	    = utl::dom::mustBeElementPtr( pModificationNode );
+            
+	std::string name
+	    = utl::dom::mustGetAttrString( pModElt,
+					   eltName::modification_nameAttr );
+            
+	xmlpp::Element* pWeightDeltaElt
+	    = utl::dom::mustGetUniqueChild( pModElt,
+					    eltName::weightDelta );
+            
+	double weightDelta = utl::dom::mustGetAttrDouble
+	    ( pWeightDeltaElt,
+	      eltName::weightDelta_daltonsAttr );
+            
+	return new cpx::modification( name,
+				      weightDelta );
+    }
+
+    std::pair<std::string, const cpx::modification*>
+    parseModMap::operator()( xmlpp::Node* pModSiteRefNode ) const
+	throw( utl::xcpt )
+    {
+	xmlpp::Element* pModSiteRefElt
+	    = utl::dom::mustBeElementPtr( pModSiteRefNode );
+            
+	// Get the mod site name.
+	std::string modSiteName
+	    = utl::dom::mustGetAttrString( pModSiteRefElt,
+					   eltName::modSiteRef_nameAttr );
+            
+	// Get the mod-ref element that tells what modification is at this
+	// modification site.
+	xmlpp::Element* pModRefElt
+	    = utl::dom::mustGetUniqueChild( pModSiteRefElt,
+					    eltName::modRef );
+            
+	// Get the modification name.
+	std::string modName
+	    = utl::dom::mustGetAttrString( pModRefElt,
+					   eltName::modRef_nameAttr );
+            
+	// Look up the modification in the BAD BAD BAD static catalog.
+	//
+	// Once again, testing for success here indicates lack of trust
+	// in validation.
+	const cpx::modification* pMod = rMolUnit.getMod( modName );
+	if ( 0 == pMod ) throw unkModXcpt( modName,
+					   pModRefElt );
+            
+	return std::make_pair( modSiteName,
+			       pMod );
+    }
+
+
+
+
+    std::pair<std::string, const cpx::modification*>
+    parseModSite::operator()( xmlpp::Node* pModSiteNode ) const
+	throw( utl::xcpt )
+    {
+	// Make sure the node is an element, possibly unnecessarily.
+	xmlpp::Element* pModSiteElt
+	    = dynamic_cast<xmlpp::Element*>( pModSiteNode );
+	if ( 0 == pModSiteElt ) throw utl::dom::badElementCastXcpt( pModSiteNode );
+            
+	// Get the mod site name.
+	std::string modSiteName
+	    = utl::dom::mustGetAttrString( pModSiteElt,
+					   eltName::modSite_nameAttr );
+            
+	// Get the default modification element.
+	xmlpp::Element* pDefaultModRefElt
+	    = utl::dom::mustGetUniqueChild( pModSiteElt,
+					    eltName::defaultModRef );
+            
+	// Get the default modification name.
+	std::string defaultModName
+	    = utl::dom::mustGetAttrString( pDefaultModRefElt,
+					   eltName::defaultModRef_nameAttr );
+            
+	// Look up the default modification.
+	//
+	// Note that this is yet another BAD BAD BAD static catalog use.
+	//
+	// Testing that the lookup succeeded indicates lack of trust in
+	// validation.
+	const cpx::modification* pDefaultMod
+	    = rMolUnit.getMod( defaultModName );
+            
+	if ( 0 == pDefaultMod ) throw unkModXcpt( defaultModName,
+						  pDefaultModRefElt );
+            
+	return std::make_pair( modSiteName,
+			       pDefaultMod );
+    }
+
+
+
+        mzrBndSite
+        parseMzrBndSite::operator()( xmlpp::Node* pBindingSiteNode ) const
+            throw( utl::xcpt )
+        {
+            xmlpp::Element* pBindingSiteElt
+                = utl::dom::mustBeElementPtr( pBindingSiteNode );
+            
+            std::string name
+                = utl::dom::mustGetAttrString( pBindingSiteElt,
+                                               eltName::bindingSite_nameAttr );
+            
+            
+            std::set<std::string> siteShapeNames;
+            xmlpp::Node::NodeList siteShapeNodes
+                = pBindingSiteElt->get_children( eltName::siteShape );
+            std::transform( siteShapeNodes.begin(),
+                            siteShapeNodes.end(),
+                            std::inserter( siteShapeNames,
+                                           siteShapeNames.begin() ),
+                            parseSiteShapeName() );
+            
+            xmlpp::Element* pDefaultShapeRefElt
+                = utl::dom::mustGetUniqueChild( pBindingSiteElt,
+                                                eltName::defaultShapeRef );
+            
+            std::string defaultShapeName
+                = utl::dom::mustGetAttrString( pDefaultShapeRefElt,
+                                               eltName::defaultShapeRef_nameAttr );
+            
+            return mzrBndSite( name,
+                               siteShapeNames,
+                               defaultShapeName );
+        }
+
+
+
 }

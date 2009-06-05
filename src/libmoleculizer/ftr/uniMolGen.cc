@@ -33,6 +33,7 @@
 #include "mol/mzrModMol.hh"
 #include "cpx/cxMol.hh"
 #include "ftr/uniMolGen.hh"
+#include "mzr/mzrSpeciesDumpable.hh"
 
 namespace ftr
 {

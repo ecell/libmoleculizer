@@ -39,6 +39,7 @@
 #include "stoch/stochUnit.hh"
 #include "stoch/stochEltName.hh"
 #include "stoch/badStochSpeciesTagXcpt.hh"
+#include <libxml++/libxml++.h>
 
 namespace stoch
 {
@@ -79,7 +80,7 @@ namespace stoch
             // Add to the catalog of stoch species.
             rStochUnit.mustAddStochSpecies( speciesName,
                                             pSpecies,
-                                            pStochSpeciesElt );
+                                            (xmlpp::Node*) pStochSpeciesElt );
         }
     };
     

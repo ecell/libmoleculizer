@@ -31,6 +31,7 @@
 
 #include "ftr/omniExtrap.hh"
 #include "fnd/pchem.hh"
+#include "mzr/mzrSpeciesDumpable.hh"
 
 namespace ftr
 {

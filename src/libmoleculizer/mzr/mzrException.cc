@@ -1,8 +1,67 @@
 #include "mzrException.hh"
 #include "moleculizer.hh"
 
+#include <libxml++/libxml++.h>
+
 namespace mzr
 {
+
+    std::string
+    ModelNotLoadedXcpt::mkMsg(const std::string& functionName)
+    {            
+	std::ostringstream oss;
+	oss << "Function '" 
+	    << functionName 
+	    << "' could not be completed because a model has not yet been loaded." ;
+	return oss.str();
+    }
+
+
+    ModelNotLoadedXcpt::ModelNotLoadedXcpt(const std::string& funcName)
+	:
+	xcpt( mkMsg(funcName))
+    {}
+
+
+    std::string
+    BadRulesDefinitionXcpt::mkMsg()
+    {
+	std::ostringstream oss;
+	oss << "Can't parse a bad ruleset.";
+	return oss.str();
+    }
+        
+    BadRulesDefinitionXcpt::BadRulesDefinitionXcpt()
+	:
+	xcpt( mkMsg() )
+    {}
+
+
+
+
+
+
+    std::string
+    IllegalNameXcpt::mkMsg( const std::string& illegalName )
+    {
+	std::ostringstream oss;
+	oss << "Illegal Name: '" << illegalName << "'";
+	return oss.str();
+    }
+        
+    IllegalNameXcpt::IllegalNameXcpt( const std::string& illegalName )
+	:
+	xcpt( mkMsg( illegalName ) )
+    {}
+
+
+
+
+
+
+
+
+
     
     std::string
     unknownUserNameXcpt::
@@ -36,6 +95,77 @@ namespace mzr
     {
         return ( rSpeciesName + " is an illegal name" );
     }
+
+    illegalSpeciesNameXcpt::illegalSpeciesNameXcpt( const std::string& rSpeciesName, const std::string& rMessage ) :
+	utl::xcpt( mkMsg( rSpeciesName,
+			  rMessage ) )
+    {}
+
+
+
+
+    std::string
+    unhandledModelContentXcpt::mkMsg( xmlpp::Node* pOffendingModelContentNode )
+    {
+	std::ostringstream msgStream;
+	msgStream << utl::dom::xcpt::mkMsg( pOffendingModelContentNode )
+		  << "No unit claims to handle this "
+		  << pOffendingModelContentNode->get_name()
+		  << " node in the model section.";
+	return msgStream.str();
+    }
+
+
+    std::string
+    unhandledExplicitSpeciesContentXcpt::mkMsg( xmlpp::Node* pBadExplicitSpeciesContentNode )
+    {
+	std::ostringstream msgStream;
+	msgStream << utl::dom::xcpt::mkMsg( pBadExplicitSpeciesContentNode )
+		  << "No unit claims to handle this "
+		  << pBadExplicitSpeciesContentNode->get_name()
+		  << " node in the explicit species section.";
+	return msgStream.str();
+    }
+
+
+
+
+    std::string
+    unhandledSpeciesStreamsContentXcpt::mkMsg( xmlpp::Node* pBadSpeciesStreamsContentNode )
+    {
+	std::ostringstream msgStream;
+	msgStream << utl::dom::xcpt::mkMsg( pBadSpeciesStreamsContentNode )
+		  << "No unit claims to handle this "
+		  << pBadSpeciesStreamsContentNode->get_name()
+		  << " node in the species streams section.";
+	return msgStream.str();
+    }
+
+
+    std::string
+    unhandledEventsContentXcpt::mkMsg( xmlpp::Node* pOffendingEventsContentNode )
+    {
+	std::ostringstream msgStream;
+	msgStream << utl::dom::xcpt::mkMsg( pOffendingEventsContentNode )
+		  << "No unit claims to handle this "
+		  << pOffendingEventsContentNode->get_name()
+		  << " node in the events section.";
+	return msgStream.str();
+    }
+
+
+    std::string
+    unhandledReactionGenXcpt::mkMsg( xmlpp::Node* pBadReactionGenNode )
+    {
+	std::ostringstream msgStream;
+	msgStream << utl::dom::xcpt::mkMsg( pBadReactionGenNode )
+		  << "No unit claims to handle this "
+		  << pBadReactionGenNode->get_name()
+		  << " node in the reaction generators section.";
+	return msgStream.str();
+    }
+
+
     
     std::string
     unkDumpableXcpt::

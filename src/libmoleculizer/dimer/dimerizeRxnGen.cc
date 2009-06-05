@@ -37,6 +37,7 @@
 #include "plex/plexUnit.hh"
 #include "dimer/dimerizeRxnGen.hh"
 #include "dimer/dimerUnit.hh"
+#include "mzr/mzrSpeciesDumpable.hh"
 
 namespace dimer
 {

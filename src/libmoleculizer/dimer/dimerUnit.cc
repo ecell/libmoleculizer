@@ -30,6 +30,8 @@
 //
 
 #include "dimer/dimerUnit.hh"
+#include <libxml++/libxml++.h>
+#include "mzr/mzrSpeciesDumpable.hh"
 
 namespace dimer
 {

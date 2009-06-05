@@ -34,7 +34,7 @@
 #include "mol/molEltName.hh"
 #include "plex/mzrPlexFamily.hh"
 #include "plex/plexEltName.hh"
-#include <iostream>
+#include <libxml++/libxml++.h>
 
 namespace bnd
 {

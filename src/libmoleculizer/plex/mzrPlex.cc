@@ -29,6 +29,7 @@
 //
 //
 
+#include <libxml++/libxml++.h>
 #include "cpx/plexMap.hh"
 #include "cpx/binding.hh"
 #include "mol/molEltName.hh"

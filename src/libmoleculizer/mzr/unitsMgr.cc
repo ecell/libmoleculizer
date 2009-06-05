@@ -38,6 +38,8 @@
 #include "stoch/stochUnit.hh"
 #include "ftr/ftrUnit.hh"
 #include "nmr/nmrUnit.hh"
+#include "mzr/mzrSpeciesDumpable.hh"
+#include <libxml++/libxml++.h>
 
 namespace mzr
 {

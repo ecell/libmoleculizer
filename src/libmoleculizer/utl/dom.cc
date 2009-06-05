@@ -34,6 +34,7 @@
 #include "utl/frexp10.hh"
 #include "utl/utility.hh"
 #include "utl/utlEltName.hh"
+#include <libxml++/libxml++.h>
 
 namespace utl
 {

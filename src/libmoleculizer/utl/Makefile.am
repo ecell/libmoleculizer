@@ -1,32 +1,37 @@
 ## Process this file with automake to produce Makefile.in.
 
-
 abs_top_srcdir=@abs_top_srcdir@
 noinst_LTLIBRARIES = libmoleculizer_utl.la
 
-SRCDIR = ..
+LIBFND = $(abs_top_srcdir)/src/libmoleculizer/fnd/libmoleculizer_fnd.la
+LIBUTL = $(abs_top_srcdir)/src/libmoleculizer/utl/libmoleculizer_utl.la
+LIBMZR = $(abs_top_srcdir)/src/libmoleculizer/mzr/libmoleculizer_mzr.la
+LIBSTOCH = $(abs_top_srcdir)/src/libmoleculizer/stoch/libmoleculizer_stoch.la
+LIBNMR = $(abs_top_srcdir)/src/libmoleculizer/nmr/libmoleculizer_nmr.la
+LIBCPX = $(abs_top_srcdir)/src/libmoleculizer/cpx/libmoleculizer_cpx.la
+LIBMOL = $(abs_top_srcdir)/src/libmoleculizer/mol/libmoleculizer_mol.la
+LIBPLEX = $(abs_top_srcdir)/src/libmoleculizer/plex/libmoleculizer_plex.la
+LIBDIMER = $(abs_top_srcdir)/src/libmoleculizer/dimer/libmoleculizer_dimer.la
+LIBFTR = $(abs_top_srcdir)/src/libmoleculizer/ftr/libmoleculizer_ftr.la
+LIBNAUTY = $(abs_top_srcdir)/src/libmoleculizer/nauty/libmoleculizer_nauty.la
+
+
+ALL_MZR_LIBS = $(LIBFND) $(LIBUTL) $(LIBMZR) $(LIBSTOCH) $(LIBNMR) $(LIBNMR) $(LIBCPX) $(LIBMOL) $(LIBPLEX) $(LIBDIMER) $(LIBFTR)
 
 VERSION = @PACKAGE_VERSION@
 MOLECULIZER_DIRNAME = libmoleculizer-$(VERSION)
 
 libmoleculizer_utldir=$(includedir)/$(MOLECULIZER_DIRNAME)/libmoleculizer/utl
 
-LIBFND = ../fnd/libmoleculizer_fnd.la
-LIBUTL = ../utl/libmoleculizer_utl.la
-LIBMZR = ../mzr/libmoleculizer_mzr.la
-LIBSTOCH = ../stoch/libmoleculizer_stoch.la
-LIBNMR = ../nmr/libmoleculizer_nmr.la
-LIBCPX = ../cpx/libmoleculizer_cpx.la
-LIBMOL = ../mol/libmoleculizer_mol.la
-LIBPLEX = ../plex/libmoleculizer_plex.la
-LIBDIMER = ../dimer/libmoleculizer_dimer.la
-LIBFTR = ../ftr/libmoleculizer_ftr.la
-ALL_MZR_LIBS = $(LIBFND) $(LIBUTL) $(LIBMZR) $(LIBSTOCH) $(LIBNMR) $(LIBNMR) $(LIBCPX) $(LIBMOL) $(LIBPLEX) $(LIBDIMER) $(LIBFTR)
-
 LIBXMLPP_CFLAGS = @LIBXMLPP_CFLAGS@
 LIBXMLPP_LIBS = @LIBXMLPP_LIBS@
 
-AM_CXXFLAGS = $(LIBXMLPP_CFLAGS) -I.. -I../../src @PYTHON_CPPFLAGS@ -I$(abs_top_srcdir)/src
+AM_CXXFLAGS = $(LIBXMLPP_CFLAGS)
+
+if BUILD_LIBXMLPP
+AM_CXXFLAGS += -I../../../libxml++-1.0.5
+libmoleculizer_utl_la_LIBADD=../../../libxml++-1.0.5/libxml++/libxmlpp.la
+endif
 
 libmoleculizer_utl_la_SOURCES =\
 arg.cc \

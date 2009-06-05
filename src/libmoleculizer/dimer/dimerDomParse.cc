@@ -42,6 +42,8 @@
 #include "dimer/dimerizeFam.hh"
 #include "dimer/decompFam.hh"
 #include "dimer/dimerEltName.hh"
+#include <libxml++/libxml++.h>
+#include "mzr/mzrSpeciesDumpable.hh"
 
 namespace dimer
 {

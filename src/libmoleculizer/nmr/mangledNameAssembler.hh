@@ -44,7 +44,6 @@
 namespace nmr
 {
     
-    
     // TODO/9 Fill in detailed description of the mangling method used by MangledNameAssembler.
     
     DECLARE_CLASS( MangledNameAssembler );
@@ -95,9 +94,9 @@ namespace nmr
         void parseMangledMolString( const std::string& molString, std::vector<ComplexOutputState::MolTokenStr>& molTokenVector ) const;
         void parseMangledBindingString( const std::string& bindingString, std::vector<ComplexOutputState::BindingTokenStr>& bindingTokenVector ) const;
         void parseMangledModificationString( const std::string& modString, std::vector<ComplexOutputState::ModificationTokenStr>& modificationTokenVector ) const;
-        
+
     };
-    
+
 }
 
 #endif

@@ -43,14 +43,14 @@
 
 %% Each of the chapters, in order. 
 
+\include{Introduction}
 \include{ConceptualOverview}
 \include{Rules}
-
-% \include{Introduction}
+% include{Interfaces2}
 
 % \include{Installing}
 % \include{Using}
-% \include{Interfaces}
+% 
 % \include{Cookbook}
 % \include{APIReference}
 % \include{MZRReference}
@@ -59,7 +59,7 @@
 % \printglossary
 % \printindex
 
-\bibliographystyle{plain}
-\bibliography{references}
+% \bibliographystyle{plain}
+% \bibliography{references}
 
 \end{document}

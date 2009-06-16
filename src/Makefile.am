@@ -2,7 +2,6 @@
 
 abs_top_builddir=@abs_top_builddir@
 
-
 MOLECULIZER_DIRNAME = @MOLECULIZER_DIRNAME@
 
 moleculizerheaderdir=${include_dir}/${MOLECULIZER_DIRNAME}
@@ -49,16 +48,6 @@ libmoleculizer_1_0_la_LIBADD = \
 	$(LIBNAUTY)
 
 
-SUBDIRS = libmoleculizer/nauty \
-	libmoleculizer/utl \
-	libmoleculizer/fnd \
-	libmoleculizer/mzr \
-	libmoleculizer/stoch \
-	libmoleculizer/cpx \
-	libmoleculizer/mol \
-	libmoleculizer/nmr \
-	libmoleculizer/plex \
-	libmoleculizer/dimer \
-	libmoleculizer/ftr 
+SUBDIRS = libmoleculizer
 
 # SUBDIRS += python

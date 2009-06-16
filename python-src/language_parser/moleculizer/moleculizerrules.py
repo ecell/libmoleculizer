@@ -176,7 +176,7 @@ class MoleculizerRulesFile:
         
         return
 
-    def __init__(self, filename):
+    def __init__(self, filename = ""):
 
         self.outputFileName = filename
 

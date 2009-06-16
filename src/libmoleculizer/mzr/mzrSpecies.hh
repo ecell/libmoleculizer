@@ -37,6 +37,11 @@
 #include "mzr/mzrReaction.hh"
 #include "fnd/reactionNetworkComponent.hh"
 
+namespace plx
+{
+    class mzrPlexSpecies;
+}
+
 namespace mzr
 {
     class moleculizer;
@@ -48,6 +53,9 @@ namespace mzr
         public fnd::reactionNetworkComponent
     {
     public:
+
+	plx::mzrPlexSpecies* 
+	getComplexSpecies();
         
         virtual void
         expandReactionNetwork();

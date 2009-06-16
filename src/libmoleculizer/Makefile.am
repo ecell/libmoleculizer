@@ -43,3 +43,7 @@ libmoleculizer_1_0_la_LIBADD = \
 if BUILD_LIBXMLPP
 libmoleculizer_1_0_la_LIBADD += ../../libxml++-1.0.5/libxml++/libxmlpp.a
 endif
+
+
+
+EXTRA_DIST=Makefile.am

@@ -105,7 +105,7 @@ namespace mzr
         //
         //////////////////////////////////////////////////
 
-        int getGenerationDepth( void ) const;
+        unsigned int getGenerationDepth( void ) const;
         void setGenerateDepth( unsigned int generateDepth );
         
         void setRateExtrapolation( bool rateExtrapolation );

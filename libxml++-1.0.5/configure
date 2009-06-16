@@ -20719,7 +20719,7 @@ fi
 subdirs="$subdirs libxml2"
 
 
-ac_config_files="$ac_config_files Makefile libxml++/Makefile libxml++/parsers/Makefile libxml++/exceptions/Makefile libxml++/nodes/Makefile libxml++/io/Makefile docs/Makefile docs/reference/Makefile docs/reference/Doxyfile examples/Makefile examples/dom_build/Makefile examples/dom_parser/Makefile examples/dom_parse_entities/Makefile examples/dom_read_write/Makefile examples/dom_xpath/Makefile examples/sax_parser/Makefile examples/sax_parser_entities/Makefile examples/sax_parser_build_dom/Makefile examples/sax_exception/Makefile examples/import_node/Makefile win32_msvc6/Makefile win32_msvc6/examples/Makefile libxml++-1.0.pc libxml++.spec"
+ac_config_files="$ac_config_files Makefile libxml++/Makefile libxml++/parsers/Makefile libxml++/exceptions/Makefile libxml++/nodes/Makefile libxml++/io/Makefile libxml++-1.0.pc libxml++.spec"
 
 cat >confcache <<\_ACEOF
 # This file is a shell script that caches the results of configure
@@ -21376,22 +21376,6 @@ do
     "libxml++/exceptions/Makefile") CONFIG_FILES="$CONFIG_FILES libxml++/exceptions/Makefile" ;;
     "libxml++/nodes/Makefile") CONFIG_FILES="$CONFIG_FILES libxml++/nodes/Makefile" ;;
     "libxml++/io/Makefile") CONFIG_FILES="$CONFIG_FILES libxml++/io/Makefile" ;;
-    "docs/Makefile") CONFIG_FILES="$CONFIG_FILES docs/Makefile" ;;
-    "docs/reference/Makefile") CONFIG_FILES="$CONFIG_FILES docs/reference/Makefile" ;;
-    "docs/reference/Doxyfile") CONFIG_FILES="$CONFIG_FILES docs/reference/Doxyfile" ;;
-    "examples/Makefile") CONFIG_FILES="$CONFIG_FILES examples/Makefile" ;;
-    "examples/dom_build/Makefile") CONFIG_FILES="$CONFIG_FILES examples/dom_build/Makefile" ;;
-    "examples/dom_parser/Makefile") CONFIG_FILES="$CONFIG_FILES examples/dom_parser/Makefile" ;;
-    "examples/dom_parse_entities/Makefile") CONFIG_FILES="$CONFIG_FILES examples/dom_parse_entities/Makefile" ;;
-    "examples/dom_read_write/Makefile") CONFIG_FILES="$CONFIG_FILES examples/dom_read_write/Makefile" ;;
-    "examples/dom_xpath/Makefile") CONFIG_FILES="$CONFIG_FILES examples/dom_xpath/Makefile" ;;
-    "examples/sax_parser/Makefile") CONFIG_FILES="$CONFIG_FILES examples/sax_parser/Makefile" ;;
-    "examples/sax_parser_entities/Makefile") CONFIG_FILES="$CONFIG_FILES examples/sax_parser_entities/Makefile" ;;
-    "examples/sax_parser_build_dom/Makefile") CONFIG_FILES="$CONFIG_FILES examples/sax_parser_build_dom/Makefile" ;;
-    "examples/sax_exception/Makefile") CONFIG_FILES="$CONFIG_FILES examples/sax_exception/Makefile" ;;
-    "examples/import_node/Makefile") CONFIG_FILES="$CONFIG_FILES examples/import_node/Makefile" ;;
-    "win32_msvc6/Makefile") CONFIG_FILES="$CONFIG_FILES win32_msvc6/Makefile" ;;
-    "win32_msvc6/examples/Makefile") CONFIG_FILES="$CONFIG_FILES win32_msvc6/examples/Makefile" ;;
     "libxml++-1.0.pc") CONFIG_FILES="$CONFIG_FILES libxml++-1.0.pc" ;;
     "libxml++.spec") CONFIG_FILES="$CONFIG_FILES libxml++.spec" ;;
 

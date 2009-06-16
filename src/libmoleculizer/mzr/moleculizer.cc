@@ -379,7 +379,7 @@ namespace mzr
         rMzrUnit.setGenerateDepth( generateDepth );
     }
     
-    int moleculizer::getGenerationDepth() const
+    unsigned int moleculizer::getGenerationDepth() const
     {
         return pUserUnits->pMzrUnit->getGenerateDepth();
     }

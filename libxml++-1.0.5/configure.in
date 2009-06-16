@@ -76,25 +76,6 @@ AC_OUTPUT(
     libxml++/exceptions/Makefile
     libxml++/nodes/Makefile
     libxml++/io/Makefile
-    
-  docs/Makefile
-    docs/reference/Makefile
-    docs/reference/Doxyfile
-
-  examples/Makefile
-    examples/dom_build/Makefile
-    examples/dom_parser/Makefile
-    examples/dom_parse_entities/Makefile
-    examples/dom_read_write/Makefile
-    examples/dom_xpath/Makefile
-    examples/sax_parser/Makefile
-    examples/sax_parser_entities/Makefile
-    examples/sax_parser_build_dom/Makefile
-    examples/sax_exception/Makefile
-    examples/import_node/Makefile
-
-  win32_msvc6/Makefile
-    win32_msvc6/examples/Makefile
 
   libxml++-1.0.pc
   libxml++.spec

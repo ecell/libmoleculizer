@@ -30173,7 +30173,7 @@ rm -f COPYING.LIB COPYING
 ln -s Copyright COPYING
 
 # keep on one line for cygwin c.f. #130896
-ac_config_files="$ac_config_files libxml2.spec:libxml.spec.in Makefile include/Makefile include/libxml/Makefile doc/Makefile doc/examples/Makefile doc/devhelp/Makefile example/Makefile python/Makefile python/tests/Makefile xstc/Makefile include/libxml/xmlversion.h xml2-config libxml-2.0.pc libxml-2.0-uninstalled.pc python/setup.py"
+ac_config_files="$ac_config_files libxml2.spec:libxml.spec.in Makefile include/Makefile include/libxml/Makefile python/Makefile python/tests/Makefile xstc/Makefile include/libxml/xmlversion.h xml2-config libxml-2.0.pc libxml-2.0-uninstalled.pc python/setup.py"
 
 cat >confcache <<\_ACEOF
 # This file is a shell script that caches the results of configure
@@ -30821,10 +30821,6 @@ do
     "Makefile") CONFIG_FILES="$CONFIG_FILES Makefile" ;;
     "include/Makefile") CONFIG_FILES="$CONFIG_FILES include/Makefile" ;;
     "include/libxml/Makefile") CONFIG_FILES="$CONFIG_FILES include/libxml/Makefile" ;;
-    "doc/Makefile") CONFIG_FILES="$CONFIG_FILES doc/Makefile" ;;
-    "doc/examples/Makefile") CONFIG_FILES="$CONFIG_FILES doc/examples/Makefile" ;;
-    "doc/devhelp/Makefile") CONFIG_FILES="$CONFIG_FILES doc/devhelp/Makefile" ;;
-    "example/Makefile") CONFIG_FILES="$CONFIG_FILES example/Makefile" ;;
     "python/Makefile") CONFIG_FILES="$CONFIG_FILES python/Makefile" ;;
     "python/tests/Makefile") CONFIG_FILES="$CONFIG_FILES python/tests/Makefile" ;;
     "xstc/Makefile") CONFIG_FILES="$CONFIG_FILES xstc/Makefile" ;;

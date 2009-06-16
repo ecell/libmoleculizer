@@ -1,4 +1,4 @@
-AC_INIT([libmoleculizer], [1.0], [addy@molsci.org])
+AC_INIT([libmoleculizer], [1.1.0], [addy@molsci.org])
 AM_INIT_AUTOMAKE([-Wall -Werror])
 
 # Ensure this file is present for sanity.
@@ -50,7 +50,7 @@ elif test "$LINK_WITH_LIBXMLPP_10" = "yes"; then
 elif test "$NO_LIBXMLPP" = "yes"; then
      echo "No libxml++ was found, building..."
      build_libxmlpp=yes
-     LIBXMLPP_CFLAGS=-I`$abs_srcdir`/libxml++-1.0.5/
+     LIBXMLPP_CFLAGS=-I../../../libxml++-1.0.5/
      LIBXMLPP_LIBS=
      LIBMZR_REQUIREMENTS=
 fi
@@ -88,7 +88,6 @@ AC_CONFIG_FILES([Makefile
 AC_ARG_ENABLE([demos],
   AC_HELP_STRING([--enable-demos],
                  [build demo programs along with libmoleculizer]), [enable_demos=yes])
-
 
 AC_MSG_CHECKING([whether to build Demos])
 if test "$enable_demos" = "yes"; then

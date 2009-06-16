@@ -34,10 +34,18 @@
 #include "mzr/unitsMgr.hh"
 #include "mzr/moleculizer.hh"
 #include "mzr/mzrSpeciesDumpable.hh"
+#include "plex/mzrPlexSpecies.hh"
 #include <iostream>
 
 namespace mzr
 {
+    plx::mzrPlexSpecies*
+    mzrSpecies::getComplexSpecies()
+    {
+	plx::mzrPlexSpecies* ptrComplexSpecies = dynamic_cast<plx::mzrPlexSpecies*>(this);
+	return ptrComplexSpecies;
+    }
+
     void
     mzrSpecies::expandReactionNetwork()
     {

@@ -23,7 +23,7 @@ SUBDIRS = nauty \
 
 lib_LTLIBRARIES = libmoleculizer-1.0.la
 
-libmoleculizer_1_0_la_SOURCES =
+libmoleculizer_1_0_la_SOURCES = dummy.cpp
 
 libmoleculizer_1_0_la_LIBADD = \
 	$(LIBFND) \
@@ -37,7 +37,6 @@ libmoleculizer_1_0_la_LIBADD = \
 	$(LIBDIMER) \
 	$(LIBFTR) \
 	$(LIBNAUTY)
-
 
 
 if BUILD_LIBXMLPP

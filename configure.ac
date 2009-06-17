@@ -53,11 +53,15 @@ elif test "$NO_LIBXMLPP" = "yes"; then
      LIBXMLPP_CFLAGS=-I../../../libxml++-1.0.5/
      LIBXMLPP_LIBS=
      LIBMZR_REQUIREMENTS=
+     UTL_FLAGS="-I../../../libxml++-1.0.5 -DBUIDLINGUTLHERE"
+     UTL_LIBS="../../../libxml++-1.0.5/libxml++/libxmlpp.la"
 fi
 
 AC_SUBST(LIBXMLPP_CFLAGS)
 AC_SUBST(LIBXMLPP_LIBS)
 AC_SUBST(LIBMZR_REQUIREMENTS)
+AC_SUBST(UTL_FLAGS)
+AC_SUBST(UTL_LIBS)
 
 # Checks for libraries.
 AC_CONFIG_FILES([Makefile
@@ -102,6 +106,9 @@ AC_SUBST(PYTHON_CPPFLAGS)
 AC_SUBST(PYTHON_LDFLAGS)
 AC_SUBST(PYTHON_EXTRA_LIBS)
 AC_SUBST(PYTHON_EXTRA_LDFLAGS)
+
+echo "DO I build it?"
+echo $build_libxmlpp
 
 AM_CONDITIONAL([ENABLE_DEMOS], [test "$enable_demos" = "yes"])
 AM_CONDITIONAL([BUILD_LIBXMLPP], [test "build_libxmlpp" = "yes"])

@@ -378,7 +378,7 @@ int getBoundedNetwork( moleculizer* handle, long maxNumSpecies, long maxNumReact
 }
 
 
-int incrementSpecies( moleculizer* handle, char* speciesName)
+int incrementSpecies( moleculizer* handle, char* speciesTag)
 {
     enum LOCAL_ERROR_TYPE { SUCCESS = 0,
                             UNKNOWN_ERROR = 1,

@@ -29,7 +29,7 @@
 //
 //
 
-#include <iostream>
+#include <libxml++/libxml++.h>
 #include "mzr/mzrSpeciesDumpable.hh"
 #include "plex/parseOmniPlex.hh"
 #include "plex/mzrPlexFamily.hh"

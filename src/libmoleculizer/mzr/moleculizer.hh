@@ -132,7 +132,7 @@ namespace mzr
         getUserNames(std::vector<std::string>& refVector) const;
         
         void recordUserNameToSpeciesIDPair( const std::string& userName,
-                                            const std::string& genName );
+                                            const std::string& speciesID );
         
         bool nameIsUserName(const std::string& possibleUserName) const;
 

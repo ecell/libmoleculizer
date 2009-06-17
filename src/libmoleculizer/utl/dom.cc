@@ -258,5 +258,21 @@ namespace utl
             pSciNoteElt->set_attribute( eltName::sciNote_exponentAttr,
                                         utl::stringify<int> ( exponent ) );
         }
+
+	namespace tmp
+	{
+	    void addChildWithAttribute( xmlpp::Element* pParent,
+					const std::string& element_name, 
+					const std::string& attribute_name,
+					const std::string& attribute_value)
+	    {
+		xmlpp::Element* pNewChildElement = pParent->add_child( element_name );
+		pNewChildElement->set_attribute( attribute_name, attribute_value);
+		return;
+	    }
+	}
+
     }
+
+
 }

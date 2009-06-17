@@ -1,10 +1,6 @@
 ## Process this file with automake to produce Makefile.in.
 
-SUBDIRS = doc libxml++-1.0.5
-
-if BUILD_LIBXMLPP
-SUBDIRS += src
-endif
+SUBDIRS = doc libxml++-1.0.5 src
 
 if ENABLE_DEMOS
 SUBDIRS += demos

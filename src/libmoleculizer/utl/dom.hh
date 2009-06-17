@@ -122,7 +122,23 @@ namespace utl
                              const std::string& rChildName,
                              const std::string& rParameterName,
                              double parameterValue );
+
+    namespace tmp
+    {
+	void addChildWithAttribute( xmlpp::Element* pParent, 
+				    const std::string& element_name, 
+				    const std::string& attribute_name,
+				    const std::string& attribute_value);
+	
     }
+
+
+
+    }
+
+
+
+
 }
 
 #endif // UTL_DOM_H

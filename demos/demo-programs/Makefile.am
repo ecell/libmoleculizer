@@ -9,17 +9,13 @@ CINTERFACEDIR=$(DEMO_SIMULATION_DIR)/c_interface/src
 
 bin_PROGRAMS=network_expander_demo stochasticsim_demo particlesim_demo c_interface_demo 
 
-LIBMZR = $(SRC)/libmoleculizer-1.0.la
+LIBMZR = ../../src/libmoleculizer-1.0.la
 
 LIBXMLPP_CFLAGS = @LIBXMLPP_CFLAGS@
 LIBXMLPP_LIBS = @LIBXMLPP_LIBS@
 
 AM_CXXFLAGS = $(LIBXMLPP_CFLAGS) $(GSL_CFLAGS) -Icommon @PYTHON_CPPFLAGS@ -I$(SRC) @CXXFLAGS@
 AM_LDFLAGS = -lstdc++ -lz
-
-if BUILD_LIBXMLPP
-AM_CXXFLAGS += -I../../libxml++-1.0.5
-endif
 
 noinst_LTLIBRARIES = libsimbase.la
 

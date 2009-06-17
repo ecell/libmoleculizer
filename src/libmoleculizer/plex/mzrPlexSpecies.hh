@@ -40,6 +40,7 @@
 #include "fnd/basicDumpable.hh"
 #include "cpx/plexSpcsMixin.hh"
 #include "mzr/mzrSpecies.hh"
+#include "mzr/mzrSpeciesDumpable.hh"
 
 
 namespace mzr

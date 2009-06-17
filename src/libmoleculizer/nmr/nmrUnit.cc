@@ -42,6 +42,7 @@
 
 #include "mzr/mzrSpeciesDumpable.hh"
 #include "plex/mzrPlexSpecies.hh"
+#include <libxml++/libxml++.h>
 
 
 namespace nmr

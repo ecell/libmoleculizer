@@ -46,7 +46,7 @@
 \include{Introduction}
 \include{ConceptualOverview}
 \include{Rules}
-% include{Interfaces2}
+\include{Interfaces2}
 
 % \include{Installing}
 % \include{Using}

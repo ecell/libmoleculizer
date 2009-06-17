@@ -24,8 +24,6 @@
 /////////////////////////////////////////////////////////////////////////////
 
 #include "mzr/mzrEltName.hh"
-
-#include <libxml++/libxml++.h>
 #include "mzr/mzrSpeciesDumpable.hh"
 
 // Aren't these all the same? Could they go into mzrSpeciesStream?
@@ -38,12 +36,19 @@ namespace mzr
     insertTaggedSpeciesStreamRef(xmlpp::Element* pParent) const
         throw(std::exception)
     {
-        xmlpp::Element* pTaggedSpeciesStreamRefElt
-            = pParent->add_child(eltName::taggedSpeciesStreamRef);
+	
+	utl::dom::tmp::addChildWithAttribute( pParent, 
+					      eltName::taggedSpeciesStreamRef, 
+					      eltName::taggedSpeciesStreamRef_nameAttr, 
+					      this->getName());
+
+
+//         xmlpp::Element* pTaggedSpeciesStreamRefElt
+//             = pParent->add_child(eltName::taggedSpeciesStreamRef);
         
-        pTaggedSpeciesStreamRefElt
-            ->set_attribute(eltName::taggedSpeciesStreamRef_nameAttr,
-                            this->getName());
+//         pTaggedSpeciesStreamRefElt
+//             ->set_attribute(eltName::taggedSpeciesStreamRef_nameAttr,
+//                             this->getName());
     }
     
     template<class mzrSpeciesType>
@@ -52,11 +57,16 @@ namespace mzr
     insertDumpedSpeciesTags(xmlpp::Element* pParentElt) const
         throw(std::exception)
     {
-        xmlpp::Element* pSpeciesRefElt
-            = pParentElt->add_child(eltName::taggedSpeciesRef);
+	utl::dom::tmp::addChildWithAttribute( pParentElt, 
+					      eltName::taggedSpeciesStreamRef,
+					      eltName::taggedSpeciesRef_tagAttr,
+					      this->getVar()->getTag());
+					      
+//         xmlpp::Element* pSpeciesRefElt
+//             = pParentElt->add_child(eltName::taggedSpeciesRef);
         
-        pSpeciesRefElt->set_attribute(eltName::taggedSpeciesRef_tagAttr,
-                                      this->getVar()->getTag());
+//         pSpeciesRefElt->set_attribute(eltName::taggedSpeciesRef_tagAttr,
+//                                       this->getVar()->getTag());
     }
     
     template<class mzrSpeciesType>
@@ -65,12 +75,20 @@ namespace mzr
     insertTaggedSpeciesStreamRef(xmlpp::Element* pParent) const
         throw(std::exception)
     {
-        xmlpp::Element* pTaggedSpeciesStreamRefElt
-            = pParent->add_child(eltName::taggedSpeciesStreamRef);
+
+	utl::dom::tmp::addChildWithAttribute( pParent, 
+					      eltName::taggedSpeciesStreamRef,
+					      eltName::taggedSpeciesStreamRef_nameAttr,
+					      this->getName());
+					      
+					      
+
+//        xmlpp::Element* pTaggedSpeciesStreamRefElt
+//             = pParent->add_child(eltName::taggedSpeciesStreamRef);
         
-        pTaggedSpeciesStreamRefElt
-            ->set_attribute(eltName::taggedSpeciesStreamRef_nameAttr,
-                            this->getName());
+//         pTaggedSpeciesStreamRefElt
+//             ->set_attribute(eltName::taggedSpeciesStreamRef_nameAttr,
+//                             this->getName());
     }
     
     template<class mzrSpeciesType>
@@ -88,11 +106,17 @@ namespace mzr
         operator()(const mzrSpeciesType* pSpecies) const
             throw(std::exception)
         {
-            xmlpp::Element* pTaggedSpeciesRefElt
-                = pParentElt->add_child(eltName::taggedSpeciesRef);
+
+	    utl::dom::tmp::addChildWithAttribute( pParentElt,
+						  eltName::taggedSpeciesStreamRef,
+						  eltName::taggedSpeciesRef_tagAttr,
+						  pSpecies->getTag());
+
+//             xmlpp::Element* pTaggedSpeciesRefElt
+//                 = pParentElt->add_child(eltName::taggedSpeciesRef);
             
-            pTaggedSpeciesRefElt->set_attribute(eltName::taggedSpeciesRef_tagAttr,
-                                                pSpecies->getTag());
+//             pTaggedSpeciesRefElt->set_attribute(eltName::taggedSpeciesRef_tagAttr,
+//                                                 pSpecies->getTag());
         }
     };
     
@@ -113,12 +137,18 @@ namespace mzr
     insertTaggedSpeciesStreamRef(xmlpp::Element* pParent) const
         throw(std::exception)
     {
-        xmlpp::Element* pTaggedSpeciesStreamRefElt
-            = pParent->add_child(eltName::taggedSpeciesStreamRef);
+
+	utl::dom::tmp::addChildWithAttribute( pParent, 
+					      eltName::taggedSpeciesStreamRef,
+					      eltName::taggedSpeciesStreamRef_nameAttr,
+					      this->getName());
+
+//         xmlpp::Element* pTaggedSpeciesStreamRefElt
+//             = pParent->add_child(eltName::taggedSpeciesStreamRef);
         
-        pTaggedSpeciesStreamRefElt
-            ->set_attribute(eltName::taggedSpeciesStreamRef_nameAttr,
-                            this->getName());
+//         pTaggedSpeciesStreamRefElt
+//             ->set_attribute(eltName::taggedSpeciesStreamRef_nameAttr,
+//                             this->getName());
     }
     
     template<class mzrSpeciesType>
@@ -136,11 +166,17 @@ namespace mzr
         operator()(const mzrSpeciesType* pSpecies) const
             throw(std::exception)
         {
-            xmlpp::Element* pTaggedSpeciesRefElt
-                = pParentElt->add_child(eltName::taggedSpeciesRef);
+
+	    utl::dom::tmp::addChildWithAttribute( pParentElt, 
+						  eltName::taggedSpeciesRef,
+						  eltName::taggedSpeciesRef_tagAttr,
+						  pSpecies->getTag());
+
+//             xmlpp::Element* pTaggedSpeciesRefElt
+//                 = pParentElt->add_child(eltName::taggedSpeciesRef);
             
-            pTaggedSpeciesRefElt->set_attribute(eltName::taggedSpeciesRef_tagAttr,
-                                                pSpecies->getTag());
+//             pTaggedSpeciesRefElt->set_attribute(eltName::taggedSpeciesRef_tagAttr,
+//                                                 pSpecies->getTag());
         }
     };
     

@@ -26,12 +26,9 @@ libmoleculizer_utldir=$(includedir)/$(MOLECULIZER_DIRNAME)/libmoleculizer/utl
 LIBXMLPP_CFLAGS = @LIBXMLPP_CFLAGS@
 LIBXMLPP_LIBS = @LIBXMLPP_LIBS@
 
-AM_CXXFLAGS = $(LIBXMLPP_CFLAGS)
+AM_CXXFLAGS = $(LIBXMLPP_CFLAGS) @UTL_FLAGS@
 
-if BUILD_LIBXMLPP
-AM_CXXFLAGS += -I../../../libxml++-1.0.5
-libmoleculizer_utl_la_LIBADD=../../../libxml++-1.0.5/libxml++/libxmlpp.la
-endif
+libmoleculizer_utl_la_LIBADD = @UTL_LIBS@
 
 libmoleculizer_utl_la_SOURCES =\
 arg.cc \

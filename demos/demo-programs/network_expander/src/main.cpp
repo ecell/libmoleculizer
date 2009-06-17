@@ -37,7 +37,6 @@
 #include "mzr/unitsMgr.hh"
 #include "mzr/moleculizer.hh"
 #include "plex/mzrPlexFamily.hh"
-#include "mzr/mzrSpeciesDumpable.hh"
 
 using namespace std;
 

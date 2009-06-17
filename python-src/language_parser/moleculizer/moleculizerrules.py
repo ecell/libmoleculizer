@@ -61,10 +61,8 @@ class MoleculizerRulesFile:
         return
 
     def addWholeRulesFile(self, rulesFile):
-        print "reading file name '%s'" % rulesFile
-        
         parameterBlock, modificationsBlock, molsBlock, allostericPlexes, allostericOmnis, \
-                        reactionRulesBlock, dimerizationGenBlock, omniGenBlock, uniMolGenBlock, \
+                        reactionRulesBlock, dimerizationGenBlock, omniGenBlock, \
                         explicitSpeciesBlock, speciesStreamBlock = parseBlockTypesFromRulesFile( open(rulesFile).readlines() )
 
         self.addParameterBlock( parameterBlock )
@@ -73,7 +71,7 @@ class MoleculizerRulesFile:
         self.addAllostericPlexesBlock( allostericPlexes )
         self.addAllostericOmnisBlock( allostericOmnis )
         self.addReactionRulesBlock( reactionRulesBlock, dimerizationGenBlock, \
-                                          omniGenBlock, uniMolGenBlock )
+                                          omniGenBlock, [] )
         self.addExplicitSpeciesBlock( explicitSpeciesBlock )
         self.addSpeciesStreamsBlock( speciesStreamBlock )
 
@@ -176,9 +174,7 @@ class MoleculizerRulesFile:
         
         return
 
-    def __init__(self, filename = ""):
-
-        self.outputFileName = filename
+    def __init__(self):
 
         # These are the lines of input, in one statement per line form, with no whitespace
         self.parameterBlock = []

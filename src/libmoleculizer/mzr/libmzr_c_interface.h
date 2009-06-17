@@ -120,7 +120,7 @@ extern "C" {
 *************************************************/
 
     int expandNetwork( moleculizer* handle);
-    int getBoundedNetwork( moleculizer* handle, long maxNumSpec
+    int getBoundedNetwork( moleculizer* handle, long maxNumSpecies, long maxNumReactions, species*** pSpeciesArray, int* pNumSpec, reaction*** pReactionArrry, int* pNumRxns);
     int incrementSpecies( moleculizer* handle, char* speciesTag);
 
     int expandSpeciesByTag( moleculizer* handle, char* theTag);

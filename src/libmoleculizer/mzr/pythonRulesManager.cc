@@ -98,9 +98,6 @@ namespace mzr
     pDict = PyModule_GetDict( pModule );
     pFunc = PyDict_GetItemString( pDict, "MoleculizerRulesFile" );
 
-//    pArgs = PyTuple_New(1);
-//    PyTuple_SetItem(pArgs, 0, pFileName);
-
     mzrFileConverterClassInst = PyObject_CallObject(pFunc, NULL);
 
   }

@@ -386,8 +386,8 @@ int incrementSpecies( moleculizer* handle, char* speciesTag)
     try
     {
         mzr::moleculizer* moleculizerPtr = convertCMzrPtrToMzrPtr( handle );
-        std::string strSpeciesName( speciesName );
-        moleculizerPtr->incrementNetworkBySpeciesTag( speciesName );
+        std::string strSpeciesName( speciesTag );
+        moleculizerPtr->incrementNetworkBySpeciesTag( speciesTag );
     }
     catch( fnd::NoSuchSpeciesXcpt x )
     {

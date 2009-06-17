@@ -72,11 +72,9 @@ AC_CONFIG_SUBDIRS([libxml2])
 AC_OUTPUT(
   Makefile
   libxml++/Makefile
+  win32_msvc6/Makefile
     libxml++/parsers/Makefile
     libxml++/exceptions/Makefile
     libxml++/nodes/Makefile
     libxml++/io/Makefile
-
-  libxml++-1.0.pc
-  libxml++.spec
 )

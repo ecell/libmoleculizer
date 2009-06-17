@@ -29,11 +29,6 @@ LIBXMLPP_LIBS = @LIBXMLPP_LIBS@
 
 AM_CXXFLAGS = @CXXFLAGS@ -Wall $(LIBXMLPP_CFLAGS) -I.. @PYTHON_CPPFLAGS@ -I$(abs_top_srcdir)/src
 
-if BUILD_LIBXMLPP
-AM_CXXFLAGS += -I../../../libxml++-1.0.5
-endif
-
-
 libmoleculizer_mzr_la_SOURCES =\
 dumpUtils.cc \
 libmzr_c_interface.cc \

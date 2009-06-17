@@ -24,10 +24,6 @@ libmoleculizer_fnddir=$(includedir)/$(MOLECULIZER_DIRNAME)/libmoleculizer/fnd
 
 AM_CXXFLAGS = 
 
-if BUILD_LIBXMLPP
-AM_CXXFLAGS += -I../../../libxml++-1.0.5
-endif
-
 # libmoleculizer_fnd_la_LIBADD = -lstdc++ 
 
 libmoleculizer_fnd_la_SOURCES =\

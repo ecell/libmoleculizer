@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in.
 
-SUBDIRS = doc libxml++-1.0.5 src
+SUBDIRS = doc @EXTRA_DIRS@ src
 
 if ENABLE_DEMOS
 SUBDIRS += demos

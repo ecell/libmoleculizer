@@ -36,10 +36,6 @@ GSL_LIBS = @GSL_LIBS@
 
 AM_CXXFLAGS = @CXXFLAGS@ -Wall $(LIBXMLPP_CFLAGS) @PYTHON_CPPFLAGS@ -I$(abs_top_srcdir)/src
 
-if BUILD_LIBXMLPP
-AM_CXXFLAGS += -I../../../libxml++-1.0.5
-endif
-
 libmoleculizer_dimer_la_SOURCES =\
 decompRxnGen.cc \
 decomposeExtrap.cc \

@@ -33,7 +33,6 @@ AC_CHECK_FUNCS([floor modf pow sqrt strtol])
 
 PKG_CHECK_EXISTS( libxml++-2.6, [LINK_WITH_LIBXMLPP_26="yes"], [PKG_CHECK_EXISTS( libxml++-1.0, [LINK_WITH_LIBXMLPP_10="yes"], [NO_LIBXMLPP="yes"])])
 
-AC_CONFIG_SUBDIRS([libxml++-1.0.5])	
 
 
 if test "$LINK_WITH_LIBXMLPP_26" = "yes"; then
@@ -45,7 +44,7 @@ elif test "$LINK_WITH_LIBXMLPP_10" = "yes"; then
 
    echo "Found libxml++-1.0 installed, using..."
    PKG_CHECK_MODULES([LIBXMLPP], libxml++-1.0)
-   LIBMZR_REQUIREMENTS="libxml++-2.6"
+   LIBMZR_REQUIREMENTS="libxml++-1.0"
 
 elif test "$NO_LIBXMLPP" = "yes"; then
      echo "No libxml++ was found, building..."
@@ -53,8 +52,12 @@ elif test "$NO_LIBXMLPP" = "yes"; then
      LIBXMLPP_CFLAGS=-I../../../libxml++-1.0.5/
      LIBXMLPP_LIBS=
      LIBMZR_REQUIREMENTS=
-     UTL_FLAGS="-I../../../libxml++-1.0.5 -DBUIDLINGUTLHERE"
+     EXTRA_DIRS="libxml++-1.0.5"
+     UTL_FLAGS="-I../../../libxml++-1.0.5"
      UTL_LIBS="../../../libxml++-1.0.5/libxml++/libxmlpp.la"
+     # Should move this to NO_LIBXMLPP if possible.
+     AC_CONFIG_SUBDIRS([libxml++-1.0.5])	
+
 fi
 
 AC_SUBST(LIBXMLPP_CFLAGS)
@@ -62,6 +65,7 @@ AC_SUBST(LIBXMLPP_LIBS)
 AC_SUBST(LIBMZR_REQUIREMENTS)
 AC_SUBST(UTL_FLAGS)
 AC_SUBST(UTL_LIBS)
+AC_SUBST(EXTRA_DIRS)
 
 # Checks for libraries.
 AC_CONFIG_FILES([Makefile
@@ -107,15 +111,11 @@ AC_SUBST(PYTHON_LDFLAGS)
 AC_SUBST(PYTHON_EXTRA_LIBS)
 AC_SUBST(PYTHON_EXTRA_LDFLAGS)
 
-echo "DO I build it?"
-echo $build_libxmlpp
-
 AM_CONDITIONAL([ENABLE_DEMOS], [test "$enable_demos" = "yes"])
 AM_CONDITIONAL([BUILD_LIBXMLPP], [test "build_libxmlpp" = "yes"])
 
 # Output this header file.
 AC_CONFIG_HEADERS([src/libmoleculizer/moleculizer_config.hh])
-
 
 AC_OUTPUT
 

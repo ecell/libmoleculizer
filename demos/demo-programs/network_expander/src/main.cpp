@@ -138,7 +138,7 @@ int main(int argc, char* argv[])
   }
   else
   {
-      throw std::exception();
+      throw std::exception( std::string("Error, no filename was supplied.") );
   }
 
 

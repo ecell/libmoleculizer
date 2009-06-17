@@ -30,7 +30,7 @@
 //
 
 #include "pythonRulesManager.hh"
-#include <iostream>
+#include "mzrException.hh"
 
 namespace mzr
 {
@@ -95,8 +95,23 @@ namespace mzr
     pName = PyString_FromString( "moleculizer" );
 
     pModule = PyImport_Import( pName );
+
+    if (!pModule)
+    {
+	_isInitialized = false;
+	PyErr_Print();
+	throw mzrPythonXcpt("The moleculizer module could not be loaded.  Please check to make sure it is installed or contact your system administrator.");
+    }
+
     pDict = PyModule_GetDict( pModule );
     pFunc = PyDict_GetItemString( pDict, "MoleculizerRulesFile" );
+
+    if (!pModule)
+    {
+	_isInitialized = false;
+	PyErr_Print();
+	throw mzrPythonXcpt("The MoleculizerRulesFile could not be found in the moleculizer module. Please contact your system administrator");
+    }
 
     mzrFileConverterClassInst = PyObject_CallObject(pFunc, NULL);
 

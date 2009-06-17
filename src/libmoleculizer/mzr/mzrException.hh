@@ -279,6 +279,15 @@ namespace mzr
         {}
     };
     
+
+    class mzrPythonXcpt : utl::xcpt
+    {
+    public:
+	mzrPythonXcpt( const std::string& msg )
+	    : 
+	    utl::xcpt( msg )
+	{}
+    };
 }
 
 #endif

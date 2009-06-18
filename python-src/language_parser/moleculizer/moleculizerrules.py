@@ -216,11 +216,6 @@ class MoleculizerRulesFile:
 	return
 
     def writeToString(self):
-        openXmlFile = open( "/home/naddy/dmp_output", 'w');
-
-
-        self.__writeOutput( openXmlFile )
-        openXmlFile.close()
         myString = StringIO.StringIO()
         self.__writeOutput( myString )
         return myString.getvalue()

@@ -3,6 +3,9 @@ Thanks for downloading libmoleculizer.
 You should just have to ./configure, make, make install this package
 for it to work pretty easily.  
 
+Run configure with --enable-demos to get some cool demos (located in
+./demos) built.
+
 Libmoleculizer depends on the libxml++ library and Python, and is
 pretty darn flexible as to how it gets it, such that for 99.9% of you
 who just want to get this up and running, just ./configure, make, and

@@ -1,0 +1,33 @@
+Thanks for downloading libmoleculizer.
+
+You should just have to ./configure, make, make install this package
+for it to work pretty easily.  
+
+Libmoleculizer depends on the libxml++ library and Python, and is
+pretty darn flexible as to how it gets it, such that for 99.9% of you
+who just want to get this up and running, just ./configure, make, and
+make install will work.  
+
+   	-- Nathan Addy <nathan.addy@gmail.com>
+
+
+===  Troubleshooting =====
+
+Libmoleculizer depends on two libraries to run - libxml++ and Python.
+
+It will search for and use either libxml++-2.6 or libxml++-1.0, and
+attempt to build and use libxml++-1.0 instead.  
+
+If you are on a linux system, these packages are probably available
+through your package manager - this is definitely true for Ubuntu and
+Fedora.  If you decide to compile them from source, definitely use
+libxml++-1.0, which depends only in turn on libxml2 (which is almost
+certainly on your system, is guaranteed to be in your package manager,
+and compiles from scratch).
+
+Libmoleculizer also needs to find and link to Python.  This has been
+tested and works out of the box on Fedora, Ubuntu, and Moc OSX.  If,
+however, you have troubles, make sure Python is installed, and make
+sure the build can find you Python.h header file and the libpython
+library.  
+

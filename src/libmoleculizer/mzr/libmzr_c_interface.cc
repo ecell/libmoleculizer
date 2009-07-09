@@ -1199,10 +1199,6 @@ void createCSpeciesArrayFromSpeciesMap(moleculizer* cMzrPtr,
 
 int checkSpeciesTagIsInSpeciesStream( moleculizer* handle, const char* speciesTag, char* speciesStream)
 {
-    const int UNKNOWN_ERROR = -1;
-    const int NO_SUCH_SPECIES = -2;
-    const int NO_SUCH_STREAM = -3;
-
     try
     {
         std::string speciesTagStr( speciesTag );
@@ -1221,7 +1217,7 @@ int checkSpeciesTagIsInSpeciesStream( moleculizer* handle, const char* speciesTa
     }
     catch(...)
     {
-        return UNKNOWN_ERROR;
+        return -1;
     }
 }
 

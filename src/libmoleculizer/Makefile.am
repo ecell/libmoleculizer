@@ -1,14 +1,5 @@
 ## Process this file with automake to produce Makefile.in.
 
-
-LIBXMLPP_CFLAGS = @LIBXMLPP_CFLAGS@
-PYTHON_CFLAGS = @PYTHON_CPPFLAGS@
-
-LIBXMLPP_LIBS = @LIBXMLPP_LIBS@
-
-
-AM_CXXFLAGS = $(LIBXMLPP_CFLAGS)
-
 SUBDIRS = nauty \
 	utl \
 	fnd \
@@ -22,9 +13,7 @@ SUBDIRS = nauty \
 	ftr 
 
 lib_LTLIBRARIES = libmoleculizer-1.0.la
-
 libmoleculizer_1_0_la_SOURCES = dummy.cpp
-
 libmoleculizer_1_0_la_LIBADD = \
 	$(LIBFND) \
 	$(LIBUTL) \
@@ -38,6 +27,3 @@ libmoleculizer_1_0_la_LIBADD = \
 	$(LIBFTR) \
 	$(LIBNAUTY)
 
-
-
-EXTRA_DIST=Makefile.am

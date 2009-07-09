@@ -99,7 +99,7 @@ namespace fnd
     public:
 
         ReactionNetworkDescription();
-        ~ReactionNetworkDescription();
+        virtual ~ReactionNetworkDescription();
 
         ///////////////////////////////////////////////////////////////////////////
         // Species Location API

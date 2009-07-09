@@ -32,7 +32,7 @@ LIBXMLPP_LIBS = @LIBXMLPP_LIBS@
 GSL_CFLAGS = @GSL_CFLAGS@
 GSL_LIBS = @GSL_LIBS@
 
-AM_CXXFLAGS = $(LIBXMLPP_CFLAGS) @PYTHON_CPPFLAGS@ -I$(abs_top_srcdir)/src
+AM_CXXFLAGS = $(LIBXMLPP_CFLAGS) @PYTHON_CSPEC@ -I$(abs_top_srcdir)/src
 
 libmoleculizer_nmr_la_SOURCES =\
 basicNameAssembler.cc \

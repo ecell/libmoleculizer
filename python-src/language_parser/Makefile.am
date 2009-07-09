@@ -1,5 +1,6 @@
-EXTRA_DIST=mzrrulestoxmlconverter.py \
+EXTRA_DIST=\
 setup.py \
+mzrrulestoxmlconverter.py \
 moleculizer/Exceptions.py \
 moleculizer/expressionevaluation.py \
 moleculizer/__init__.py \
@@ -27,6 +28,6 @@ moleculizer/sectionspeciesstreams.py \
 moleculizer/section_xcpt.py \
 moleculizer/util.py 
 
-
+# I want to extend this so that we can specify where to put it.
 install-exec-local:
 	python setup.py install

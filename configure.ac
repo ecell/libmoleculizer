@@ -1,15 +1,8 @@
-AC_INIT([libmoleculizer], [1.1.1], [addy@molsci.org])
+AC_INIT([libmoleculizer], [1.1.1], [nathan.addy@gmail.com])
 AM_INIT_AUTOMAKE([-Wall -Werror])
 
 # Ensure this file is present for sanity.
 AC_CONFIG_SRCDIR([src/libmoleculizer/mzr/moleculizer.hh]) 
-
-# This will be added at alpha-version.
-# AC_CONFIG_TESTDIR([tests])
-
-# This should be be greatly improved.
-#ACLOCAL="aclocal"
-#AC_SUBST( ACLOCAL )
 
 AC_PROG_CC			
 AC_PROG_CXX
@@ -31,43 +24,52 @@ AC_TYPE_SIZE_T
 AC_FUNC_STRTOD
 AC_CHECK_FUNCS([floor modf pow sqrt strtol])
 
+AC_MSG_CHECKING([Searching for libxml++.])
 PKG_CHECK_EXISTS( libxml++-2.6, [LINK_WITH_LIBXMLPP_26="yes"], [PKG_CHECK_EXISTS( libxml++-1.0, [LINK_WITH_LIBXMLPP_10="yes"], [NO_LIBXMLPP="yes"])])
-
-
-
 if test "$LINK_WITH_LIBXMLPP_26" = "yes"; then
-   echo "Found libxml++-2.6 installed, using..."
+   AC_MSG_RESULT([Found 2.6.])
    PKG_CHECK_MODULES([LIBXMLPP], libxml++-2.6)
    LIBMZR_REQUIREMENTS="libxml++-2.6"
 
 elif test "$LINK_WITH_LIBXMLPP_10" = "yes"; then
-
-   echo "Found libxml++-1.0 installed, using..."
+   AC_MSG_RESULT([Found 1.0.]
    PKG_CHECK_MODULES([LIBXMLPP], libxml++-1.0)
    LIBMZR_REQUIREMENTS="libxml++-1.0"
-
-elif test "$NO_LIBXMLPP" = "yes"; then
-     echo "No libxml++ was found, building..."
-     build_libxmlpp=yes
-     LIBXMLPP_CFLAGS=-I../../../libxml++-1.0.5/
-     LIBXMLPP_LIBS=
-     LIBMZR_REQUIREMENTS=
-     EXTRA_DIRS="libxml++-1.0.5"
-     UTL_FLAGS="-I../../../libxml++-1.0.5"
-     UTL_LIBS="../../../libxml++-1.0.5/libxml++/libxmlpp.la"
-     # Should move this to NO_LIBXMLPP if possible.
-     AC_CONFIG_SUBDIRS([libxml++-1.0.5])	
-
+else
+    AC_MSG_RESULT([None found.])
+    AC_MSG_ERROR([Error. You must have libxml++ installed on your system to build libmoleculizer.])
 fi
 
 AC_SUBST(LIBXMLPP_CFLAGS)
 AC_SUBST(LIBXMLPP_LIBS)
 AC_SUBST(LIBMZR_REQUIREMENTS)
-AC_SUBST(UTL_FLAGS)
-AC_SUBST(UTL_LIBS)
-AC_SUBST(EXTRA_DIRS)
 
-# Checks for libraries.
+## Search for Python and add it to everything.
+AZ_PYTHON_DEFAULT
+AZ_PYTHON_CSPEC
+AZ_PYTHON_LSPEC
+
+AC_SUBST(PYTHON_CPPFLAGS)
+AC_SUBST(PYTHON_LDFLAGS)
+AC_SUBST(PYTHON_EXTRA_LIBS)
+AC_SUBST(PYTHON_EXTRA_LDFLAGS)
+
+## Determine whether or not to build the demo programs
+AC_ARG_ENABLE([demos],
+  AC_HELP_STRING([--library-only],
+                 [only build libmoleculizer, and none of the extra demo programs]), [disable_demos=yes])
+
+AC_MSG_CHECKING([whether to build Demos])
+AM_CONDITIONAL([ENABLE_DEMOS], [test ! "$disable_demos" = "yes"])
+if test "$disable_demos" = "yes"; then
+  AC_MSG_RESULT([no])
+else
+  AC_MSG_RESULT([yes])
+fi
+
+# Output this header file.
+AC_CONFIG_HEADERS([src/libmoleculizer/moleculizer_config.hh])
+
 AC_CONFIG_FILES([Makefile
                 src/Makefile
 		src/libmoleculizer/Makefile
@@ -91,31 +93,6 @@ AC_CONFIG_FILES([Makefile
                 libmoleculizer-1.0.pc
                 doc/user-manual.tex
 		])
-
-
-AC_ARG_ENABLE([demos],
-  AC_HELP_STRING([--enable-demos],
-                 [build demo programs along with libmoleculizer]), [enable_demos=yes])
-
-AC_MSG_CHECKING([whether to build Demos])
-if test "$enable_demos" = "yes"; then
-  AC_MSG_RESULT([yes])
-else
-  AC_MSG_RESULT([no])
-fi
-
-AC_PYTHON_DEVEL
-
-AC_SUBST(PYTHON_CPPFLAGS)
-AC_SUBST(PYTHON_LDFLAGS)
-AC_SUBST(PYTHON_EXTRA_LIBS)
-AC_SUBST(PYTHON_EXTRA_LDFLAGS)
-
-AM_CONDITIONAL([ENABLE_DEMOS], [test "$enable_demos" = "yes"])
-AM_CONDITIONAL([BUILD_LIBXMLPP], [test "build_libxmlpp" = "yes"])
-
-# Output this header file.
-AC_CONFIG_HEADERS([src/libmoleculizer/moleculizer_config.hh])
 
 AC_OUTPUT
 

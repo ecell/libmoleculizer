@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in.
 
-SUBDIRS = doc @EXTRA_DIRS@ src
+SUBDIRS = doc src
 
 if ENABLE_DEMOS
 SUBDIRS += demos

@@ -25,19 +25,22 @@ AC_FUNC_STRTOD
 AC_CHECK_FUNCS([floor modf pow sqrt strtol])
 
 AC_MSG_CHECKING([Searching for libxml++.])
+
 PKG_CHECK_EXISTS( libxml++-2.6, [LINK_WITH_LIBXMLPP_26="yes"], [PKG_CHECK_EXISTS( libxml++-1.0, [LINK_WITH_LIBXMLPP_10="yes"], [NO_LIBXMLPP="yes"])])
+
 if test "$LINK_WITH_LIBXMLPP_26" = "yes"; then
-   AC_MSG_RESULT([Found 2.6.])
+   AC_MSG_RESULT([Found libxml++-2.6.])
    PKG_CHECK_MODULES([LIBXMLPP], libxml++-2.6)
    LIBMZR_REQUIREMENTS="libxml++-2.6"
 
 elif test "$LINK_WITH_LIBXMLPP_10" = "yes"; then
-   AC_MSG_RESULT([Found 1.0.]
+   AC_MSG_RESULT([Found libxml++-1.0.])
    PKG_CHECK_MODULES([LIBXMLPP], libxml++-1.0)
    LIBMZR_REQUIREMENTS="libxml++-1.0"
-else
-    AC_MSG_RESULT([None found.])
-    AC_MSG_ERROR([Error. You must have libxml++ installed on your system to build libmoleculizer.])
+
+elif test "$NO_LIBXMLPP" = "yes"; then
+    AC_MSG_RESULT([No libxml++ found.])
+    AC_MSG_ERROR([Error. You must have some version of libxml++ installed on your system to build libmoleculizer.])
 fi
 
 AC_SUBST(LIBXMLPP_CFLAGS)

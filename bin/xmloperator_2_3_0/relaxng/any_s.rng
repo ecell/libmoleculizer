@@ -1,2 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<grammar xmlns="http://relaxng.org/ns/structure/1.0"><start><ref name="any"/></start><define name="any"><element><anyName/><group><choice><empty/><oneOrMore><attribute><anyName/><text/></attribute></oneOrMore></choice><choice><empty/><oneOrMore><choice><text/><ref name="any"/></choice></oneOrMore></choice></group></element></define></grammar>

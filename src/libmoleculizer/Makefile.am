@@ -25,6 +25,8 @@ LIBFTR = $(abs_top_srcdir)/src/libmoleculizer/ftr/libmoleculizer_ftr.la
 LIBNAUTY = $(abs_top_srcdir)/src/libmoleculizer/nauty/libmoleculizer_nauty.la
 
 lib_LTLIBRARIES = libmoleculizer-1.0.la
+
+AM_LDFLAGS=@PYTHON_LSPEC@
 libmoleculizer_1_0_la_SOURCES = dummy.cpp
 libmoleculizer_1_0_la_LIBADD = \
 	$(LIBFND) \

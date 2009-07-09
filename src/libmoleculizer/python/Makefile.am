@@ -1,7 +1,7 @@
 TOPSRCDIR=${top_srcdir}
 SRCDIR = ..
 
-VERSION = @PACKAGE_VERSION@
+VERSION = @INSTALLATION_VERSION@
 MOLECULIZER_DIRNAME = moleculizer-$(VERSION)
 libmoleculizer_pythondir=$(includedir)/$(MOLECULIZER_DIRNAME)/python
 

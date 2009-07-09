@@ -4,7 +4,7 @@ abs_top_builddir=@abs_top_builddir@
 
 SRCDIR = ..
 
-VERSION = @PACKAGE_VERSION@
+VERSION = @INSTALLATION_VERSION@
 MOLECULIZER_DIRNAME = moleculizer-$(VERSION)
 
 LIBFND = ../../fnd/libmoleculizer_fnd.la

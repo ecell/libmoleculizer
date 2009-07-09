@@ -2,22 +2,10 @@
 
 noinst_LTLIBRARIES = libmoleculizer_cpx.la
 
-abs_top_builddir=@abs_top_builddir@
-abs_top_srcdir=@abs_top_srcdir@
-
-SRCDIR = ..
-
-VERSION = @PACKAGE_VERSION@
+VERSION = @INSTALLATION_VERSION@
 MOLECULIZER_DIRNAME = libmoleculizer-$(VERSION)
+
 libmoleculizer_cpxdir=$(includedir)/$(MOLECULIZER_DIRNAME)/libmoleculizer/cpx
-
-LIBXMLPP_CFLAGS = @LIBXMLPP_CFLAGS@
-LIBXMLPP_LIBS = @LIBXMLPP_LIBS@
-
-GSL_CFLAGS = @GSL_CFLAGS@
-GSL_LIBS = @GSL_LIBS@
-
-AM_CXXFLAGS = @CXXFLAGS@ -Wall $(LIBXMLPP_CFLAGS) -I$(abs_top_srcdir)/src
 
 libmoleculizer_cpx_la_SOURCES =\
 basicBndSite.cc \

@@ -30,4 +30,4 @@ moleculizer/util.py
 
 # I want to extend this so that we can specify where to put it.
 install-exec-local:
-	python setup.py install @PYTHON_SETUP_PY_PREFIX_FLAGS@
+	@PYTHON@ setup.py install @PYTHON_SETUP_PY_PREFIX_FLAGS@

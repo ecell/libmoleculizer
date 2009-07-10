@@ -10,7 +10,7 @@ nauty.c \
 nautil.c \
 naugraph.c
 
-libmoleculizer_nauty_headers = \
+libmoleculizer_nauty_HEADERS = \
 gtools.h \
 gutils.h \
 naugroup.h \

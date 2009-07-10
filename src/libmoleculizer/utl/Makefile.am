@@ -6,9 +6,10 @@ VERSION = @INSTALLATION_VERSION@
 MOLECULIZER_DIRNAME = libmoleculizer-$(VERSION)
 libmoleculizer_utldir=$(includedir)/$(MOLECULIZER_DIRNAME)/libmoleculizer/utl
 
-# This is basically the same as LDADD.
-libmoleculizer_utl_la_LDFLAGS=@LIBXMLPP_LIBS@
-libmoleculizer_utl_la_CXXFLAGS=@LIBXMLPP_CFLAGS@
+AM_CXXFLAGS = -Wall
+
+libmoleculizer_utl_la_CXXFLAGS = $(AM_CXXFLAGS) @LIBXMLPP_CFLAGS@
+libmoleculizer_utl_la_LDFLAGS = @LIBXMLPP_LIBS@
 libmoleculizer_utl_la_SOURCES =\
 arg.cc \
 dom.cc \

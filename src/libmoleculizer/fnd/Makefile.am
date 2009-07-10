@@ -6,6 +6,8 @@ VERSION = @INSTALLATION_VERSION@
 MOLECULIZER_DIRNAME = libmoleculizer-$(VERSION)
 libmoleculizer_fnddir=$(includedir)/$(MOLECULIZER_DIRNAME)/libmoleculizer/fnd
 
+AM_CXXFLAGS = -Wall
+
 libmoleculizer_fnd_la_SOURCES =\
 dumpStream.cc \
 fndXcpt.cc \

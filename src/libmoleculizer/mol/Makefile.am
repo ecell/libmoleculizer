@@ -6,8 +6,9 @@ VERSION = @INSTALLATION_VERSION@
 MOLECULIZER_DIRNAME = libmoleculizer-$(VERSION)
 libmoleculizer_moldir=$(includedir)/$(MOLECULIZER_DIRNAME)/libmoleculizer/mol
 
-AM_CXXFLAGS = @LIBXMLPP_CFLAGS@ @PYTHON_CSPEC@ 
+AM_CXXFLAGS = -Wall
 
+libmoleculizer_mol_la_CXXFLAGS = $(AM_CXXFLAGS) @LIBXMLPP_CFLAGS@ @PYTHON_CSPEC@ 
 libmoleculizer_mol_la_SOURCES =\
 badModMolXcpt.cc \
 badMolParamXcpt.cc \

@@ -6,11 +6,9 @@ VERSION = @INSTALLATION_VERSION@
 MOLECULIZER_DIRNAME = libmoleculizer-$(VERSION)
 libmoleculizer_dimerdir=$(includedir)/$(MOLECULIZER_DIRNAME)/libmoleculizer/dimer
 
-LIBXMLPP_CFLAGS = @LIBXMLPP_CFLAGS@
-LIBXMLPP_LIBS = @LIBXMLPP_LIBS@
+AM_CXXFLAGS = -Wall 
 
-AM_CXXFLAGS = -Wall @LIBXMLPP_CFLAGS@ @PYTHON_CSPEC@ 
-
+libmoleculizer_dimer_la_CXXFLAGS = $(AM_CXXFLAGS) @LIBXMLPP_CFLAGS@ @PYTHON_CSPEC@ 
 libmoleculizer_dimer_la_SOURCES =\
 decompRxnGen.cc \
 decomposeExtrap.cc \

@@ -6,11 +6,10 @@ VERSION = @INSTALLATION_VERSION@
 MOLECULIZER_DIRNAME = libmoleculizer-$(VERSION)
 libmoleculizer_mzrdir=$(includedir)/$(MOLECULIZER_DIRNAME)/libmoleculizer/mzr
 
-LIBXMLPP_CFLAGS = @LIBXMLPP_CFLAGS@
-LIBXMLPP_LIBS = @LIBXMLPP_LIBS@
+AM_CXXFLAGS = -Wall
 
-AM_CXXFLAGS = @LIBXMLPP_CFLAGS@ @PYTHON_CSPEC@
-AM_LDFLAGS = @PYTHON_LSPEC@
+libmoleculizer_mzr_la_CXXFLAGS = $(AM_CXXFLAGS) @LIBXMLPP_CFLAGS@ @PYTHON_CSPEC@
+libmoleculizer_mzr_la_LDFLAGS = @PYTHON_LSPEC@
 
 libmoleculizer_mzr_la_SOURCES =\
 dumpUtils.cc \

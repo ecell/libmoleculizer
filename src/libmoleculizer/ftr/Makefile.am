@@ -6,8 +6,9 @@ VERSION = @INSTALLATION_VERSION@
 MOLECULIZER_DIRNAME = libmoleculizer-$(VERSION)
 libmoleculizer_ftrdir=$(includedir)/$(MOLECULIZER_DIRNAME)/libmoleculizer/ftr
 
-AM_CXXFLAGS = @LIBXMLPP_CFLAGS@ @PYTHON_CSPEC@ 
+AM_CXXFLAGS = -Wall
 
+libmoleculizer_ftr_la_CXXFLAGS = $(AM_CXXFLAGS) @LIBXMLPP_CFLAGS@ @PYTHON_CSPEC@ 
 libmoleculizer_ftr_la_SOURCES =\
 badModMolInstanceXcpt.cc \
 badSmallMolInstanceXcpt.cc \

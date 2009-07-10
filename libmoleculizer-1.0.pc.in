@@ -8,6 +8,6 @@ Description: Library for expanding biochemical species/reaction networks from a 
 Requires: @LIBMZR_REQUIREMENTS@
 URL: https://sourceforge.net/projects/moleculizer/
 Version: @VERSION@
-Libs: -L${libdir} -lmoleculizer-1.0
-Cflags: -I${includedir}/libmoleculizer-1.0 -I${includedir}/libmoleculizer-1.0/libmoleculizer
+Libs: -L${libdir} -lmoleculizer-@INSTALLATION_VERSION@
+Cflags: -I${includedir}/libmoleculizer-@INSTALLATION_VERSION@ -I${includedir}/libmoleculizer-@INSTALLATION_VERSION@/libmoleculizer
 

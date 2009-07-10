@@ -6,8 +6,9 @@ VERSION = @INSTALLATION_VERSION@
 MOLECULIZER_DIRNAME = libmoleculizer-$(VERSION)
 libmoleculizer_plexdir=$(includedir)/$(MOLECULIZER_DIRNAME)/libmoleculizer/plex
 
-AM_CXXFLAGS = @LIBXMLPP_CFLAGS@ @PYTHON_CSPEC@ 
+AM_CXXFLAGS = -Wall
 
+libmoleculizer_plex_la_CXXFLAGS = $(AM_CXXFLAGS) @LIBXMLPP_CFLAGS@ @PYTHON_CSPEC@ 
 libmoleculizer_plex_la_SOURCES =\
 dupNodeOmniXcpt.cc \
 multBoundSiteXcpt.cc \

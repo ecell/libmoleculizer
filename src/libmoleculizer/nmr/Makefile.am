@@ -6,8 +6,9 @@ VERSION = @INSTALLATION_VERSION@
 MOLECULIZER_DIRNAME = libmoleculizer-$(VERSION)
 libmoleculizer_nmrdir=$(includedir)/$(MOLECULIZER_DIRNAME)/libmoleculizer/nmr
 
-AM_CXXFLAGS = @LIBXMLPP_CFLAGS@ @PYTHON_CSPEC@
+AM_CXXFLAGS = -Wall
 
+libmoleculizer_nmr_la_CXXFLAGS = $(AM_CXXFLAGS) @LIBXMLPP_CFLAGS@ @PYTHON_CSPEC@
 libmoleculizer_nmr_la_SOURCES =\
 basicNameAssembler.cc \
 complexOutputState.cc \

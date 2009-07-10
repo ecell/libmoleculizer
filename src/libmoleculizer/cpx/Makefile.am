@@ -4,8 +4,9 @@ noinst_LTLIBRARIES = libmoleculizer_cpx.la
 
 VERSION = @INSTALLATION_VERSION@
 MOLECULIZER_DIRNAME = libmoleculizer-$(VERSION)
-
 libmoleculizer_cpxdir=$(includedir)/$(MOLECULIZER_DIRNAME)/libmoleculizer/cpx
+
+AM_CXXFLAGS = -Wall 
 
 libmoleculizer_cpx_la_SOURCES =\
 basicBndSite.cc \

@@ -10,7 +10,8 @@ nauty.c \
 nautil.c \
 naugraph.c
 
-EXTRA_DIST = gtools.h \
+libmoleculizer_nauty_headers = \
+gtools.h \
 gutils.h \
 naugroup.h \
 nausparse.h \

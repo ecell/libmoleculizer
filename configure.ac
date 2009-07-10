@@ -1,6 +1,9 @@
 AC_INIT([libmoleculizer], [1.1.2], [nathan.addy@gmail.com])
 AM_INIT_AUTOMAKE([-Wall -Werror])
 
+INSTALLATION_VERSION=1.0
+AC_SUBST(INSTALLATION_VERSION)
+
 # Ensure this file is present for sanity.
 AC_CONFIG_SRCDIR([src/libmoleculizer/mzr/moleculizer.hh]) 
 
@@ -60,21 +63,19 @@ AZ_PYTHON_VERSION_ENSURE( [2.2] )
 AZ_PYTHON_CSPEC
 AZ_PYTHON_LSPEC
 
-dnl ## Check whether we should build the demo programs.
-dnl AC_MSG_CHECKING([whether to build Demos])
+## Check whether we should build the demo programs.
+AC_MSG_CHECKING([whether to build Demos])
 
-dnl AC_ARG_ENABLE([demos],
-dnl   AC_HELP_STRING([--build-library-only],
-dnl                  [only build the libmoleculizer library, with none of the demo programs]), [disable_demos=yes])
+AC_ARG_ENABLE([demos],
+   AC_HELP_STRING([--disable-demos],
+                  [only build the libmoleculizer library, with none of the demo programs]), [demos=no], [demos=yes])
 
-dnl AM_CONDITIONAL([ENABLE_DEMOS], [test ! "$disable_demos" = "yes"])
-dnl if test "$disable_demos" = "yes"; then
-dnl   AC_MSG_RESULT([no])
-dnl else
-dnl   AC_MSG_RESULT([yes])
-dnl fi
-
-AM_CONDITIONAL([ENABLE_DEMOS], [test "yes" = "yes"])
+AM_CONDITIONAL([ENABLE_DEMOS], [test "$demos" = "yes"])
+if test "$demos" = "yes"; then
+   AC_MSG_RESULT([yes])
+ else
+   AC_MSG_RESULT([no])
+ fi
 
 # Produce this header file.
 AC_CONFIG_HEADERS([src/libmoleculizer/moleculizer_config.hh])

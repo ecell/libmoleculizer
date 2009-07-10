@@ -6,8 +6,9 @@ VERSION = @INSTALLATION_VERSION@
 MOLECULIZER_DIRNAME = libmoleculizer-$(VERSION)
 libmoleculizer_stochdir=$(includedir)/$(MOLECULIZER_DIRNAME)/libmoleculizer/stoch
 
-AM_CXXFLAGS = @LIBXMLPP_CFLAGS@ @PYTHON_CSPEC@ 
+AM_CXXFLAGS = -Wall
 
+libmoleculizer_stoch_la_CXXFLAGS = $(AM_CXXFLAGS) @LIBXMLPP_CFLAGS@ @PYTHON_CSPEC@ 
 libmoleculizer_stoch_la_SOURCES =\
 badStochSpeciesTagXcpt.cc \
 stochDomParse.cc \

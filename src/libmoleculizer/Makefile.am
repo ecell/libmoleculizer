@@ -1,33 +1,23 @@
 ## Process this file with automake to produce Makefile.in.
 
-SUBDIRS = nauty \
-	utl \
-	fnd \
-	mzr \
-	stoch \
-	cpx \
-	mol \
-	nmr \
-	plex \
-	dimer \
-	ftr 
+SUBDIRS = nauty utl fnd mzr stoch cpx mol nmr plex dimer ftr 
 
-LIBFND = $(abs_top_srcdir)/src/libmoleculizer/fnd/libmoleculizer_fnd.la
-LIBUTL = $(abs_top_srcdir)/src/libmoleculizer/utl/libmoleculizer_utl.la
-LIBMZR = $(abs_top_srcdir)/src/libmoleculizer/mzr/libmoleculizer_mzr.la
-LIBSTOCH = $(abs_top_srcdir)/src/libmoleculizer/stoch/libmoleculizer_stoch.la
-LIBNMR = $(abs_top_srcdir)/src/libmoleculizer/nmr/libmoleculizer_nmr.la
-LIBCPX = $(abs_top_srcdir)/src/libmoleculizer/cpx/libmoleculizer_cpx.la
-LIBMOL = $(abs_top_srcdir)/src/libmoleculizer/mol/libmoleculizer_mol.la
-LIBPLEX = $(abs_top_srcdir)/src/libmoleculizer/plex/libmoleculizer_plex.la
-LIBDIMER = $(abs_top_srcdir)/src/libmoleculizer/dimer/libmoleculizer_dimer.la
-LIBFTR = $(abs_top_srcdir)/src/libmoleculizer/ftr/libmoleculizer_ftr.la
-LIBNAUTY = $(abs_top_srcdir)/src/libmoleculizer/nauty/libmoleculizer_nauty.la
+LIBFND = fnd/libmoleculizer_fnd.la
+LIBUTL = utl/libmoleculizer_utl.la
+LIBMZR = mzr/libmoleculizer_mzr.la
+LIBSTOCH = stoch/libmoleculizer_stoch.la
+LIBNMR = nmr/libmoleculizer_nmr.la
+LIBCPX = cpx/libmoleculizer_cpx.la
+LIBMOL = mol/libmoleculizer_mol.la
+LIBPLEX = plex/libmoleculizer_plex.la
+LIBDIMER = dimer/libmoleculizer_dimer.la
+LIBFTR = ftr/libmoleculizer_ftr.la
+LIBNAUTY = nauty/libmoleculizer_nauty.la
 
 lib_LTLIBRARIES = libmoleculizer-1.0.la
 
-AM_LDFLAGS=@PYTHON_LSPEC@
 libmoleculizer_1_0_la_SOURCES = dummy.cpp
+libmoleculizer_1_0_la_LDFLAGS = @PYTHON_LSPEC@
 libmoleculizer_1_0_la_LIBADD = \
 	$(LIBFND) \
 	$(LIBUTL) \

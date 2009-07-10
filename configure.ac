@@ -54,6 +54,16 @@ AC_SUBST(LIBXMLPP_CFLAGS)
 AC_SUBST(LIBXMLPP_LIBS)
 AC_SUBST(LIBMZR_REQUIREMENTS) # For libmoleculizer.pc
 
+if test "$prefix" = "NONE" ; then
+  echo "Hello"
+  echo "$ac_default_prefix"
+  echo "Goodbye"
+  PREFIX="$ac_default_prefix"
+else
+  PREFIX="$prefix"
+fi
+
+AC_SUBST([PREFIX])
 
 ## Make sure Python is installed, so that we can embed it into the
 ## library.
@@ -62,6 +72,16 @@ AZ_PYTHON_PATH( )
 AZ_PYTHON_VERSION_ENSURE( [2.2] )		
 AZ_PYTHON_CSPEC
 AZ_PYTHON_LSPEC
+
+if test ! "$prefix" = "NONE"; then
+   echo "Installing python to directory $prefix"
+   PYTHON_SETUP_PY_PREFIX_FLAGS="-f --prefix=$prefix"
+else
+   echo "Installing python to al location"
+   PYTHON_SETUP_PY_PREFIX_FLAGS= 
+fi
+
+AC_SUBST(PYTHON_SETUP_PY_PREFIX_FLAGS)
 
 ## Check whether we should build the demo programs.
 AC_MSG_CHECKING([whether to build Demos])

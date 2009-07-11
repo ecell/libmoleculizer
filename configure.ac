@@ -1,4 +1,4 @@
-AC_INIT([libmoleculizer], [1.1.2], [nathan.addy@gmail.com])
+AC_INIT([libmoleculizer], [1.1.3], [nathan.addy@gmail.com])
 AM_INIT_AUTOMAKE([-Wall -Werror])
 
 INSTALLATION_VERSION=1.0

@@ -43,23 +43,17 @@
 
 %% Each of the chapters, in order. 
 
-\include{Introduction}
-\include{ConceptualOverview}
-\include{Rules}
-\include{Interfaces2}
+\include{Introduction}          % Intro
+\include{Installing}            % Installing
+\include{ConceptualOverview}    % What rule based modeling is, what libmoleculizer does, and how it works
+\include{Rules}                 % The MZR syntax
+\include{Cookbook}              % Some simple examples of models and model constructions.
+\include{Interfaces}            % Developer's Guide -- How to work with libmoleculizer.
+\include{Interfaces2}           % Reference to the code
+\include{XMLsyntax}             % The syntax for the intermediate xml format.
 
-% \include{Installing}
-% \include{Using}
-% 
-% \include{Cookbook}
-% \include{APIReference}
-% \include{MZRReference}
 
-%% Print the glossary, the index, and then the bibliography.
-% \printglossary
-% \printindex
-
-% \bibliographystyle{plain}
-% \bibliography{references}
+\bibliographystyle{plain}
+\bibliography{references}
 
 \end{document}

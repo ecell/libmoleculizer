@@ -48,16 +48,16 @@ def main():
 
     rules_file = open(options["input_file"]).readlines()
 
-    parameterBlock = []
-    modificationsBlock  =  []
-    molsBlock = []
+    parameter_block = []
+    modifications_block  =  []
+    mols_block = []
     allostericPlexes = []
     allostericOmnis = []
-    reactionRulesBlock = []
-    dimerizationGenBlock = []
-    omniGenBlock = []
-    explicitSpeciesBlock = []
-    speciesStreamBlock = []
+    reactionRules_block = []
+    dimerizationGen_block = []
+    omniGen_block = []
+    explicitSpecies_block = []
+    speciesStream_block = []
 
     try:
         raw_mzr_file = MzrLanguageParser.MzrRawRulesFile(rules_file)
@@ -80,15 +80,15 @@ def main():
         raise e
 
     if options["verbose"]:
-        print("Parameters:\n\t", parameterBlock )
-        print("Modifications:\n\t", modificationsBlock)
-        print("Molecules:\n\t", molsBlock)
+        print("Parameters:\n\t", parameter_block )
+        print("Modifications:\n\t", modifications_block)
+        print("Molecules:\n\t", mols_block)
         print("Explicit-Allostery:\n\t", allostericPlexes)
         print("Allostery-Classes omnis:\n\t", allostericOmnis)
-        print("Association-Reactions:\n\t", dimerizationGenBlock)
-        print("Transformation-Reactions:\n\t", omniGenBlock)
-        print("Explicit-Species:\n\t", explicitSpeciesBlock)
-        print("Species-Classes:\n\t", speciesStreamBlock)
+        print("Association-Reactions:\n\t", dimerizationGen_block)
+        print("Transformation-Reactions:\n\t", omniGen_block)
+        print("Explicit-Species:\n\t", explicitSpecies_block)
+        print("Species-Classes:\n\t", speciesStream_block)
 
     output_file = moleculizer.MoleculizerRulesFile( options["output_file"] )
 

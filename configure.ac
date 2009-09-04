@@ -1,4 +1,4 @@
-AC_INIT([libmoleculizer], [1.1.3], [nathan.addy@gmail.com])
+AC_INIT([libmoleculizer], [1.1.4], [nathan.addy@gmail.com])
 AM_INIT_AUTOMAKE([-Wall -Werror])
 
 INSTALLATION_VERSION=1.0
@@ -6,10 +6,6 @@ AC_SUBST(INSTALLATION_VERSION)
 
 # Ensure this file is present for sanity.
 AC_CONFIG_SRCDIR([src/libmoleculizer/mzr/moleculizer.hh]) 
-
-
-# Make sure we've got compilers and other standard features and such.
-# It seems a little wordy though... 
 
 AC_PROG_CC			
 AC_PROG_CXX
@@ -27,9 +23,7 @@ AC_TYPE_SIZE_T
 AC_FUNC_STRTOD # Checks for library functions.
 AC_CHECK_FUNCS([floor modf pow sqrt strtol])
 
-
-# Here we make sure the mandatory libxml++ is installed.  Because
-# libmoleculizer only uses its basic features, we can link in either
+# Make sure the libxml++ is installed.  We look for, and can link in either
 # version.
 
 AC_MSG_CHECKING([Searching for libxml++.])

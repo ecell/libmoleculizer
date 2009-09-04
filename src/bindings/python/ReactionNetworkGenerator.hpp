@@ -45,6 +45,7 @@
 class Species
 {
 public:
+    // No default constructor?
     //     Species()
     //         :
     //         name(""),

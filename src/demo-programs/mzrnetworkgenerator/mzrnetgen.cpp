@@ -34,11 +34,8 @@
 #include <iostream>
 #include <iterator>
 
-#include "utl/arg.hh"
-#include "mzr/unitsMgr.hh"
-#include "mzr/moleculizer.hh"
-#include "plex/mzrPlexFamily.hh"
 
+#include "mzr/moleculizer.hh"
 #include "aux.hpp"
 
 using namespace std;

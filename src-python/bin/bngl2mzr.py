@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env/python
 
 ###############################################################################
 # BNGMZRConverter - A utility program for converting bngl input files to mzr

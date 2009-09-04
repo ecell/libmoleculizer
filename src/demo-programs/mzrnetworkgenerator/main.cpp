@@ -33,6 +33,7 @@
 #include <string>
 #include <iostream>
 #include <iterator>
+
 #include "utl/arg.hh"
 #include "mzr/unitsMgr.hh"
 #include "mzr/moleculizer.hh"
@@ -44,52 +45,12 @@ enum RunMode { Full = 0,
                BoundedRun = 1,
                Iterations = 2 };
 
-
-struct inputArgsStruct
-{
-    bool fileDefined;
-    bool fileIsXml;
-    bool fileIsRules;
-    std::string fileName;
-
-    bool hasOutputFile;
-    std::string outputFile;
-
-    int maxSpecies;
-    int maxRxns;
-    int numberIters;
-
-    bool verbose;
-    bool quiet;
-
-    int runMode;
-
-
-    inputArgsStruct()
-        :
-        fileDefined( false ),
-        fileIsXml( false ),
-        fileIsRules(false ),
-        fileName( "" ),
-        hasOutputFile( false ),
-        outputFile( "" ),
-        maxSpecies( -1 ),
-        maxRxns( -1 ),
-        verbose( false ),
-        quiet( false ),
-        runMode( Full )
-    {}
-};
-
-
-void
-processCommandLineArgs( int argc, char* argv[], inputArgsStruct& inputArgs);
-
-void
-displayHelpAndExitProgram();
+// Used for parsing program arguments.
+struct inputArgsStruct;
+void processCommandLineArgs( int argc, char* argv[], inputArgsStruct& inputArgs);
+void displayHelpAndExitProgram();
 
 bool getUninitializedSpecies( const mzr::moleculizer& moleculizerRef, std::string& speciesName);
-
 void printAllSpeciesStreams(mzr::moleculizer& theMolzer);
 
 void runFullRunMoleculizer( mzr::moleculizer& mzr, const inputArgsStruct& inputArgsStruct);
@@ -588,3 +549,40 @@ void runBoundedRunMoleculizer( mzr::moleculizer& mzr, const inputArgsStruct& inp
 
     pos = createBoundedNetwork( mzr, inputArgsStruct.maxSpecies, inputArgsStruct.maxRxns );
 }
+
+
+
+struct inputArgsStruct
+{
+    bool fileDefined;
+    bool fileIsXml;
+    bool fileIsRules;
+    std::string fileName;
+
+    bool hasOutputFile;
+    std::string outputFile;
+
+    int maxSpecies;
+    int maxRxns;
+    int numberIters;
+
+    bool verbose;
+    bool quiet;
+
+    int runMode;
+
+    inputArgsStruct()
+        :
+        fileDefined( false ),
+        fileIsXml( false ),
+        fileIsRules(false ),
+        fileName( "" ),
+        hasOutputFile( false ),
+        outputFile( "" ),
+        maxSpecies( -1 ),
+        maxRxns( -1 ),
+        verbose( false ),
+        quiet( false ),
+        runMode( Full )
+    {}
+};

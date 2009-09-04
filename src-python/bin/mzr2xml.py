@@ -1,26 +1,52 @@
-#!/usr/bin/python
+##!/usr/bin/env/python
 
-import getopt, sys, re, pdb
-import moleculizer
+###############################################################################
+# mzr2xml - Converts rule files in mzr format to intermediate form xml files. 
+# Copyright (C) 2007, 2008, 2009 Nathan Addy
+#
+# Moleculizer is free software; you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation; either version 3 of the License, or
+# (at your option) any later version.
+#
+# Moleculizer is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License
+# along with Moleculizer; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+#
+# Original Author:
+#   Nathan Addy                  	Email: nathan.addy@gmail.com
+#   
+###############################################################################
 
-PROGRAM_NAME = "MzrRulesToXmlConverter"
-CURRENT_VERSION = 1.0
+import pdb
+
+import getopt, sys, re
+from libmoleculizer import MzrLanguageParser
+
+PROGRAM_NAME = "mzr2xml"
+CURRENT_VERSION = 1.1
 CURRENT_VERSION_STR = str( CURRENT_VERSION )
 
 def main():
     # Handle command line options
     options = {}
-    options["inputfile"] = ""
-    options["outputfile"] = "moleculizer-rules-output.mzr"
+    options["input_file"] = ""
+    options["output_file"] = "moleculizer-rules-file.xml"
     options["verbose"] = False
 
     processOptions(options)
 
+    # There is a mandatory -f or --file= command corresponding to the "input_file"
     if not ensureAppropriateOptions(options):
         usage()
         sys.exit(0)
 
-    rulesFile = open(options["inputfile"]).readlines()
+    rules_file = open(options["input_file"]).readlines()
 
     parameterBlock = []
     modificationsBlock  =  []
@@ -34,46 +60,56 @@ def main():
     speciesStreamBlock = []
 
     try:
-        parameterBlock, modificationsBlock, molsBlock, allostericPlexes, allostericOmnis, \
-        reactionRulesBlock, dimerizationGenBlock, omniGenBlock, \
-        explicitSpeciesBlock, speciesStreamBlock = parseBlockTypesFromRulesFile( rulesFile )
+        raw_mzr_file = MzrLanguageParser.MzrRawRulesFile(rules_file)
+
+        parameter_block = raw_mzr_file.parameter_block
+        modifications_block = raw_mzr_file.modifications_block
+        allosteric_plexes = raw_mzr_file.allosteric_plexes_block
+        allosteric_omnis = raw_mzr_file.allosteric_omnis_block
+        dimerization_gens = raw_mzr_file.association_reactions_block
+        omni_gen_block = raw_mzr_file.transformation_reaction_block
+        explicit_species = raw_mzr_file.explicit_species_block
+        species_streams =  = raw_mzr_file.species_class_block
+        
+        del(rules_file)
+        del(raw_mzr_file)
         
     except Exception, e:
         print e.message
-        barf("Error, Text rules file could not be parsed.")
+        sys.stderr.write("Error, Text rules file could not be parsed.\n")
+        raise e
 
     if options["verbose"]:
-        print "Parameters:\n\t", parameterBlock
-        print "Modifications:\n\t", modificationsBlock
-        print "Molecules:\n\t", molsBlock
-        print "Explicit-Allostery:\n\t", allostericPlexes
-        print "Allostery-Classes omnis:\n\t", allostericOmnis
-        print "Reaction Rules:\n\t", reactionRulesBlock
-        print "Association-Reactions:\n\t", dimerizationGenBlock
-        print "Transformation-Reactions:\n\t", omniGenBlock
-        print "Explicit-Species:\n\t", explicitSpeciesBlock
-        print "Species-Classes:\n\t", speciesStreamBlock
+        print("Parameters:\n\t", parameterBlock )
+        print("Modifications:\n\t", modificationsBlock)
+        print("Molecules:\n\t", molsBlock)
+        print("Explicit-Allostery:\n\t", allostericPlexes)
+        print("Allostery-Classes omnis:\n\t", allostericOmnis)
+        print("Association-Reactions:\n\t", dimerizationGenBlock)
+        print("Transformation-Reactions:\n\t", omniGenBlock)
+        print("Explicit-Species:\n\t", explicitSpeciesBlock)
+        print("Species-Classes:\n\t", speciesStreamBlock)
 
-    outputFile = moleculizer.MoleculizerRulesFile( options["outputfile"] )
+    output_file = moleculizer.MoleculizerRulesFile( options["output_file"] )
 
-    outputFile.addParameterBlock( parameterBlock )
-    outputFile.addModicationsBlock( modificationsBlock )
-    outputFile.addMolsBlock( molsBlock )
-    outputFile.addAllostericPlexesBlock( allostericPlexes )
-    outputFile.addAllostericOmnisBlock( allostericOmnis )
-    outputFile.addReactionRulesBlock( reactionRulesBlock, dimerizationGenBlock, \
+    output_file.addParameterBlock( parameterBlock )
+    output_file.addModicationsBlock( modificationsBlock )
+    output_file.addMolsBlock( molsBlock )
+    output_file.addAllostericPlexesBlock( allostericPlexes )
+    output_file.addAllostericOmnisBlock( allostericOmnis )
+    output_file.addReactionRulesBlock( reactionRulesBlock, dimerizationGenBlock, \
                                           omniGenBlock, [] )
-    outputFile.addExplicitSpeciesBlock( explicitSpeciesBlock )
-    outputFile.addSpeciesStreamsBlock( speciesStreamBlock )
+    output_file.addExplicitSpeciesBlock( explicitSpeciesBlock )
+    output_file.addSpeciesStreamsBlock( speciesStreamBlock )
 
-#    outputFile.initialize_DEBUG()
+#    output_file.initialize_DEBUG()
 
-    outputFile.write()
-    outputFile.close()
+    output_file.write()
+    output_file.close()
     
     print("Done.")
 
-def processOptions(optionsDict):
+def processOptions( optionsDict ):
     try:
 	options, arguments = getopt.getopt(sys.argv[1:], "hf:o:vm:", ["help", "file=", "output=", "verbose", "version", "mixin="])
     except getopt.error, msg:
@@ -93,15 +129,15 @@ def processOptions(optionsDict):
         if opt in ("--verbose", "-v"):
             optionsDict["verbose"] = True
 	if opt in ("--file", "-f"):
-	    optionsDict["inputfile"] = atr
+	    optionsDict["input_file"] = atr
 	    fileRequired = True
 	if opt in ("--output", "-o"):
-	    optionsDict["outputfile"] = atr
+	    optionsDict["output_file"] = atr
         if opt in ("--mixin", "-m"):
             optionsDict["events_and_streams_mixin"] = atr
 
 def ensureAppropriateOptions(options):
-    if not options["inputfile"]:
+    if not options["input_file"]:
         return False
     else:
         return True

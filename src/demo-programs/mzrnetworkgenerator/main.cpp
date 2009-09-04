@@ -39,45 +39,14 @@
 #include "mzr/moleculizer.hh"
 #include "plex/mzrPlexFamily.hh"
 
+#include "aux.hpp"
+
 using namespace std;
 
 enum RunMode { Full = 0,
                BoundedRun = 1,
                Iterations = 2 };
 
-// Used for parsing program arguments.
-struct inputArgsStruct;
-void processCommandLineArgs( int argc, char* argv[], inputArgsStruct& inputArgs);
-void displayHelpAndExitProgram();
-
-bool getUninitializedSpecies( const mzr::moleculizer& moleculizerRef, std::string& speciesName);
-void printAllSpeciesStreams(mzr::moleculizer& theMolzer);
-
-void runFullRunMoleculizer( mzr::moleculizer& mzr, const inputArgsStruct& inputArgsStruct);
-void runIterationsMoleculizer( mzr::moleculizer& mzr, const inputArgsStruct& inputArgsStruct);
-void runBoundedRunMoleculizer( mzr::moleculizer& mzr, const inputArgsStruct& inputArgsStruct);
-
-
-void printStreamByName( mzr::moleculizer& refMolzer, const std::string& streamName);
-void printStreamByTag( mzr::moleculizer& refMolzer, const std::string& streamName);
-
-void printAllSpeciesByName(mzr::moleculizer& theMolzer);
-void printAllSpeciesByID(mzr::moleculizer& theMolzer, std::string str = "");
-void printAllReactions( mzr::moleculizer& refMolzer);
-void printAllPlexFamilies( mzr::moleculizer& theMolzer, std::string str = "");
-
-mzr::moleculizer::CachePosition
-createBoundedNetwork(mzr::moleculizer& refMolzer, int maxSpec, int maxRxns);
-
-void createFullNetwork(mzr::moleculizer& refMolzer);
-void doNIterations(mzr::moleculizer& refMolzer, int number);
-
-void ensureConsistentInputArgs( const inputArgsStruct& inputArgs)
-{
-    return;
-}
-
-// Nasty little global variable.
 mzr::moleculizer::CachePosition pos;
 
 int main(int argc, char* argv[])
@@ -85,17 +54,18 @@ int main(int argc, char* argv[])
 
   inputArgsStruct inputArgs;
   processCommandLineArgs(argc, argv, inputArgs);
+
   ensureConsistentInputArgs( inputArgs );
 
   mzr::moleculizer theMoleculizer;
   
   if (inputArgs.fileIsXml)
   {
-      theMoleculizer.loadXmlFileName( inputArgs.fileName );
+      theMoleculizer.loadMzrXmlFileName( inputArgs.fileName );
   }
   else if (inputArgs.fileIsRules)
   {
-      theMoleculizer.loadCommonRulesFileName( inputArgs.fileName );
+      theMoleculizer.loadMzrFileName(inputArgs.fileName);
   }
   else
   {

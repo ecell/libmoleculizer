@@ -43,10 +43,9 @@
 \include{ConceptualOverview}    % What rule based modeling is, what libmoleculizer does, and how it works
 \include{Rules}                 % The MZR syntax
 \include{Cookbook}              % Some simple examples of models and model constructions.
-\include{Interfaces}            % Developer's Guide -- How to work with libmoleculizer.
-\include{Interfaces2}           % Reference to the code
+\include{DevelopersGuide}       % Developer's Guide -- How to work with libmoleculizer.
+\include{APIReference}          % Reference for the various interfaces
 \include{XMLsyntax}             % The syntax for the intermediate xml format.
-
 
 \bibliographystyle{plain}
 \bibliography{references}

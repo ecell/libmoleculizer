@@ -1,6 +1,6 @@
 %% Some basic substitution commands I'm defining. 
 \newcommand{\libmzrwebsite}{\emph{http://sourceforge.net/projects/moleculizer/}}
-\newcommand{\myemail}{\emph{addy@molsci.org}}
+\newcommand{\myemail}{\emph{nathan.addy@gmail.com}}
 \newcommand{\currentversion}{@VERSION@}
 
 %% The libmoleculizer manual.
@@ -25,20 +25,15 @@
 
 \lstnewenvironment{Shell}{\lstset{language=Clean,caption=,label=, keywords=}}{}
 
-\author{Nathan Addy\\The Molecular Sciences Institute}
-
+\author{Nathan Addy\\The Molecular Sciences Institute\\Fred Hutchinson Cancer Research Center}
 \title{Libmoleculizer \currentversion\ User's Manual}
 
-% I'm told these must be in the preamble.
 \makeindex
 \doublespacing
-
-% \makeglossary
 
 \begin{document}
 
 \maketitle
-
 \tableofcontents
 
 %% Each of the chapters, in order. 

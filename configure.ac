@@ -61,8 +61,6 @@ AZ_PYTHON_VERSION_ENSURE( [2.3] )
 AZ_PYTHON_CSPEC
 AZ_PYTHON_LSPEC
 
-AC_SUBST( PYTHON )
-
 if test ! "$prefix" = "NONE"; then
    echo "Installing python to directory $prefix"
    PYTHON_SETUP_PY_PREFIX_FLAGS="-f --prefix=$prefix"

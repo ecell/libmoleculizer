@@ -29,8 +29,8 @@
 //
 //
 
-#include "mzr/moleculizer.hh"
-#include "plex/parserPlex.hh"
+#include "mzr/moleculizer.hpp"
+#include "plex/parserPlex.hpp"
 
 namespace plx
 {

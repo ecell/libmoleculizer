@@ -32,7 +32,7 @@
 #ifndef OMNIFAM_H
 #define OMNIFAM_H
 
-#include "ftr/omniGen.hh"
+#include "ftr/omniGen.hpp"
 
 namespace ftr
 {

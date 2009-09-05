@@ -36,26 +36,26 @@
   \ingroup plexGroup
   \brief Structural equivalence, structural families of complexes. */
 
-/*! \file plexFamily.hh
+/*! \file plexFamily.hpp
   \ingroup plexStructGroup
   \brief Defines plexFamily, a structural family of species of complexes. */
 
 #include <vector>
 #include <map>
 #include <functional>
-#include "utl/autoCache.hh"
-#include "utl/autoVector.hh"
-#include "fnd/featureMap.hh"
-#include "fnd/sensitive.hh"
-#include "fnd/newSpeciesStimulus.hh"
-#include "cpx/cxOmni.hh"
-#include "cpx/cxMol.hh"
-#include "cpx/cxBinding.hh"
-#include "cpx/cxSite.hh"
-#include "cpx/queryAlloList.hh"
-#include "cpx/omniPlex.hh"
-#include "cpx/omniStructureQuery.hh"
-#include "cpx/knownBindings.hh"
+#include "utl/autoCache.hpp"
+#include "utl/autoVector.hpp"
+#include "fnd/featureMap.hpp"
+#include "fnd/sensitive.hpp"
+#include "fnd/newSpeciesStimulus.hpp"
+#include "cpx/cxOmni.hpp"
+#include "cpx/cxMol.hpp"
+#include "cpx/cxBinding.hpp"
+#include "cpx/cxSite.hpp"
+#include "cpx/queryAlloList.hpp"
+#include "cpx/omniPlex.hpp"
+#include "cpx/omniStructureQuery.hpp"
+#include "cpx/knownBindings.hpp"
 
 namespace cpx
 {
@@ -296,6 +296,6 @@ namespace cpx
     };
 }
 
-#include "cpx/plexFamilyImpl.hh"
+#include "cpx/plexFamilyImpl.hpp"
 
 #endif // CPX_PLEXFAMILY_H

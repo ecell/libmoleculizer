@@ -36,15 +36,15 @@
   \ingroup unitsGroup
   \brief Small-molecules, stoichiometric reactions. */
 
-/*! \file stochUnit.hh
+/*! \file stochUnit.hpp
   \ingroup stochGroup
   \brief Defines unit for small molecules and stoichiometric reactions. */
 
-#include "utl/defs.hh"
-#include "mzr/unit.hh"
-#include "stoch/unkStochSpeciesXcpt.hh"
-#include "stoch/stochSpecies.hh"
-#include "stoch/stochEltName.hh"
+#include "utl/defs.hpp"
+#include "mzr/unit.hpp"
+#include "stoch/unkStochSpeciesXcpt.hpp"
+#include "stoch/stochSpecies.hpp"
+#include "stoch/stochEltName.hpp"
 
 namespace stoch
 {

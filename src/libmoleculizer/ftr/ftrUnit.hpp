@@ -32,10 +32,10 @@
 #ifndef FTRUNIT_H
 #define FTRUNIT_H
 
-#include "mzr/mzrUnit.hh"
-#include "mol/molUnit.hh"
-#include "plex/plexUnit.hh"
-#include "ftr/ftrEltName.hh"
+#include "mzr/mzrUnit.hpp"
+#include "mol/molUnit.hpp"
+#include "plex/plexUnit.hpp"
+#include "ftr/ftrEltName.hpp"
 
 namespace ftr
 {

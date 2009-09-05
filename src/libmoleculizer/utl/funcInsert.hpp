@@ -32,7 +32,7 @@
 #ifndef UTL_FUNCINSERT_H
 #define UTL_FUNCINSERT_H
 
-#include "utl/forceInsert.hh"
+#include "utl/forceInsert.hpp"
 
 namespace utl
 {

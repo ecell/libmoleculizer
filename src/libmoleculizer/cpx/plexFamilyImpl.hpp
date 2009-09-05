@@ -32,8 +32,8 @@
 #ifndef CPX_PLEXFAMILYIMPL_H
 #define CPX_PLEXFAMILYIMPL_H
 
-#include "cpx/cpxXcpt.hh"
-#include "cpx/reportIsoSearch.hh"
+#include "cpx/cpxXcpt.hpp"
+#include "cpx/reportIsoSearch.hpp"
 
 namespace cpx
 {

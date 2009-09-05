@@ -32,8 +32,8 @@
 #ifndef DIMER_DECOMPFAM_H
 #define DIMER_DECOMPFAM_H
 
-#include "utl/autoVector.hh"
-#include "dimer/decompRxnGen.hh"
+#include "utl/autoVector.hpp"
+#include "dimer/decompRxnGen.hpp"
 #include <iostream>
 
 namespace dimer

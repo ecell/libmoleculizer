@@ -33,7 +33,7 @@
 #ifndef __MINIMALMOL_HH
 #define __MINIMALMOL_HH
 
-#include "abstractMol.hh"
+#include "abstractMol.hpp"
 
 #include <map>
 #include <string>

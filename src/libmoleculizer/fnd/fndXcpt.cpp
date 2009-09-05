@@ -29,8 +29,8 @@
 //
 //
 
-#include "utl/defs.hh"
-#include "fndXcpt.hh"
+#include "utl/defs.hpp"
+#include "fndXcpt.hpp"
 
 namespace fnd
 {

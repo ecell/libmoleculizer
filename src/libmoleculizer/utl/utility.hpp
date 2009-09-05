@@ -35,7 +35,7 @@
 #include <string>
 #include <vector>
 #include <sstream>
-#include "utlXcpt.hh"
+#include "utlXcpt.hpp"
 
 namespace utl
 {

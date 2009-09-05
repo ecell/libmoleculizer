@@ -32,7 +32,7 @@
 #ifndef RXNDESCRIPTIONINTERFACE_HH
 #define RXNDESCRIPTIONINTERFACE_HHo
 
-#include "utl/autoCatalog.hh"
+#include "utl/autoCatalog.hpp"
 #include <vector>
 #include <list>
 

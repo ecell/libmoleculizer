@@ -32,13 +32,13 @@
 #ifndef NMRUNIT_HH
 #define NMRUNIT_HH
 
-#include "plex/plexUnit.hh"
-#include "nmrEltName.hh"
-#include "nameAssembler.hh"
-#include "nameEncoderFactory.hh"
-#include "plex/mzrPlexSpecies.hh"
-#include "mzr/unit.hh"
-#include "mol/molUnit.hh"
+#include "plex/plexUnit.hpp"
+#include "nmrEltName.hpp"
+#include "nameAssembler.hpp"
+#include "nameEncoderFactory.hpp"
+#include "plex/mzrPlexSpecies.hpp"
+#include "mzr/unit.hpp"
+#include "mol/molUnit.hpp"
 
 namespace plx
 {

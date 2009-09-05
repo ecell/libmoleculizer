@@ -32,10 +32,10 @@
 #ifndef DIMER_DIMERIZERXNGEN_H
 #define DIMER_DIMERIZERXNGEN_H
 
-#include "fnd/binaryRxnGen.hh"
-#include "mol/siteFeature.hh"
-#include "plex/plexUnit.hh"
-#include "dimer/dimerizeExtrap.hh"
+#include "fnd/binaryRxnGen.hpp"
+#include "mol/siteFeature.hpp"
+#include "plex/plexUnit.hpp"
+#include "dimer/dimerizeExtrap.hpp"
 
 namespace dimer
 {

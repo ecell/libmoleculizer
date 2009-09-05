@@ -30,7 +30,7 @@
 //
 
 #include <sstream>
-#include "plex/dupNodeOmniXcpt.hh"
+#include "plex/dupNodeOmniXcpt.hpp"
 
 namespace plx
 {

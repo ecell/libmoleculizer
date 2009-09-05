@@ -32,7 +32,7 @@
 #ifndef PLEXEXCEPTIONS_HPP
 #define PLEXEXCEPTIONS_HPP
 
-#include "utl/xcpt.hh"
+#include "utl/xcpt.hpp"
 
 namespace plx
 {

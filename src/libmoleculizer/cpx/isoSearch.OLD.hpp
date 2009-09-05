@@ -32,7 +32,7 @@
 #ifndef CPX_ISOSEARCH_H
 #define CPX_ISOSEARCH_H
 
-#include "cpx/plexIso.hh"
+#include "cpx/plexIso.hpp"
 
 namespace cpx
 {
@@ -78,6 +78,6 @@ namespace cpx
     };
 }
 
-#include "cpx/isoSearchImpl.hh"
+#include "cpx/isoSearchImpl.hpp"
 
 #endif // CPX_ISOSEARCH_H

@@ -29,8 +29,8 @@
 //
 //
 
-#include "dimer/dimerXcpt.hh"
-#include "dimer/dimerizeExtrap.hh"
+#include "dimer/dimerXcpt.hpp"
+#include "dimer/dimerizeExtrap.hpp"
 
 
 namespace dimer

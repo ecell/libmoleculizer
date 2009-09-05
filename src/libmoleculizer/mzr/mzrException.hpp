@@ -33,8 +33,8 @@
 #ifndef __MZREXCEPTION_HH
 #define __MZREXCEPTION_HH
 
-#include "utl/xcpt.hh"
-#include "utl/dom.hh"
+#include "utl/xcpt.hpp"
+#include "utl/dom.hpp"
 
 namespace mzr
 {

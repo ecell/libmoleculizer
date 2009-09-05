@@ -29,7 +29,7 @@
 //
 //
 
-#include "unit.hh"
+#include "unit.hpp"
 #include <libxml++/libxml++.h>
 
 namespace mzr

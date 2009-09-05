@@ -29,14 +29,14 @@
 //
 //
 
-#include "mzr/moleculizer.hh"
-#include "mzr/mzrReaction.hh"
-#include "cpx/cxBinding.hh"
-#include "mol/mzrBndSite.hh"
-#include "plex/plexUnit.hh"
-#include "dimer/decompRxnGen.hh"
-#include "dimer/dimerUnit.hh"
-#include "mzr/mzrSpeciesDumpable.hh"
+#include "mzr/moleculizer.hpp"
+#include "mzr/mzrReaction.hpp"
+#include "cpx/cxBinding.hpp"
+#include "mol/mzrBndSite.hpp"
+#include "plex/plexUnit.hpp"
+#include "dimer/decompRxnGen.hpp"
+#include "dimer/dimerUnit.hpp"
+#include "mzr/mzrSpeciesDumpable.hpp"
 
 namespace dimer
 {

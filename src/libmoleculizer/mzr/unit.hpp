@@ -35,7 +35,7 @@
 #include <set>
 #include <string>
 
-#include "utl/dom.hh"
+#include "utl/dom.hpp"
 
 namespace mzr
 {

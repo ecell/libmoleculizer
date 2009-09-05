@@ -29,8 +29,8 @@
 //
 //
 
-#include "mol/molUnit.hh"
-#include "mol/molEltName.hh"
+#include "mol/molUnit.hpp"
+#include "mol/molEltName.hpp"
 #include <libxml++/libxml++.h>
 
 namespace bnd

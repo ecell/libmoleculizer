@@ -29,12 +29,12 @@
 //
 //
 
-#include "utl/dom.hh"
-#include "utl/utility.hh"
-#include "plex/mzrPlexSpecies.hh"
-#include "plex/mzrPlexFamily.hh"
-#include "plex/plexEltName.hh"
-#include "mzr/mzrSpeciesDumpable.hh"
+#include "utl/dom.hpp"
+#include "utl/utility.hpp"
+#include "plex/mzrPlexSpecies.hpp"
+#include "plex/mzrPlexFamily.hpp"
+#include "plex/plexEltName.hpp"
+#include "mzr/mzrSpeciesDumpable.hpp"
 #include <libxml++/libxml++.h>
 
 namespace plx

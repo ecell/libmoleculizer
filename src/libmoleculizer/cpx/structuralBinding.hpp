@@ -32,7 +32,7 @@
 #ifndef CPX_STRUCTURALBINDING_H
 #define CPX_STRUCTURALBINDING_H
 
-#include "cpx/ftrSpec.hh"
+#include "cpx/ftrSpec.hpp"
 
 namespace cpx
 {

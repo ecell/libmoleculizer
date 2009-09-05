@@ -30,7 +30,7 @@
 //
 
 
-#include "dimerXcpt.hh"
+#include "dimerXcpt.hpp"
 
 namespace dimer
 {

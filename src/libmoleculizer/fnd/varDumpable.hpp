@@ -32,7 +32,7 @@
 #ifndef FND_VARDUMPABLE_H
 #define FND_VARDUMPABLE_H
 
-#include "fnd/dumpable.hh"
+#include "fnd/dumpable.hpp"
 
 namespace fnd
 {

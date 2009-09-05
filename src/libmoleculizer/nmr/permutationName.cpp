@@ -29,7 +29,7 @@
 //
 //
 
-#include "permutationName.hh"
+#include "permutationName.hpp"
 
 namespace nmr
 {

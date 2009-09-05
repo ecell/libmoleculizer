@@ -32,7 +32,7 @@
 #ifndef FND_SENSITIVEONCE_H
 #define FND_SENSITIVEONCE_H
 
-#include "fnd/sensitive.hh"
+#include "fnd/sensitive.hpp"
 
 namespace fnd
 {

@@ -33,14 +33,14 @@
 #define __COMPLEXSPECIES_HH
 
 
-#include "utl/defs.hh"
-#include "nmr/nmrExceptions.hh"
+#include "utl/defs.hpp"
+#include "nmr/nmrExceptions.hpp"
 
-#include "nmr/complexOutputState.hh"
-#include "nmr/partialTokenList.hh"
-#include "nmr/permutation.hh"
-#include "nmr/abstractMol.hh"
-#include "nmr/namedMolecule.hh"
+#include "nmr/complexOutputState.hpp"
+#include "nmr/partialTokenList.hpp"
+#include "nmr/permutation.hpp"
+#include "nmr/abstractMol.hpp"
+#include "nmr/namedMolecule.hpp"
 
 
 namespace nmr

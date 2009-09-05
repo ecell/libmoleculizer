@@ -93,6 +93,6 @@ namespace utl
     }
 }
 
-#include "utl/domJobImpl.hh"
+#include "utl/domJobImpl.hpp"
 
 #endif // DOMBATCHJOB_H

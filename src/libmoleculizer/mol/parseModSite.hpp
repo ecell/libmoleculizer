@@ -32,10 +32,10 @@
 #ifndef MOL_PARSEMODSITE_H
 #define MOL_PARSEMODSITE_H
 
-#include "utl/dom.hh"
-#include "utl/domXcpt.hh"
-#include "cpx/modification.hh"
-#include "mol/unkModXcpt.hh"
+#include "utl/dom.hpp"
+#include "utl/domXcpt.hpp"
+#include "cpx/modification.hpp"
+#include "mol/unkModXcpt.hpp"
 
 namespace bnd
 {

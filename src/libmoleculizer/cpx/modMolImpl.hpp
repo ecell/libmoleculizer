@@ -32,7 +32,7 @@
 #ifndef CPX_MODMOLIMPL_H
 #define CPX_MODMOLIMPL_H
 
-#include "utl/defs.hh"
+#include "utl/defs.hpp"
 
 namespace cpx
 {

@@ -10,17 +10,17 @@ AM_CXXFLAGS = -Wall
 
 libmoleculizer_stoch_la_CXXFLAGS = $(AM_CXXFLAGS) @LIBXMLPP_CFLAGS@ @PYTHON_CSPEC@ 
 libmoleculizer_stoch_la_SOURCES =\
-badStochSpeciesTagXcpt.cc \
-stochDomParse.cc \
-stochEltName.cc \
-stochSpecies.cc \
-stochUnit.cc \
-unkStochSpeciesXcpt.cc
+badStochSpeciesTagXcpt.cpp \
+stochDomParse.cpp \
+stochEltName.cpp \
+stochSpecies.cpp \
+stochUnit.cpp \
+unkStochSpeciesXcpt.cpp
 
 libmoleculizer_stoch_HEADERS=\
-badStochSpeciesTagXcpt.hh \
-stochEltName.hh \
-stochSpecies.hh \
-stochUnit.hh \
-unkStochSpeciesXcpt.hh
+badStochSpeciesTagXcpt.hpp \
+stochEltName.hpp \
+stochSpecies.hpp \
+stochUnit.hpp \
+unkStochSpeciesXcpt.hpp
 

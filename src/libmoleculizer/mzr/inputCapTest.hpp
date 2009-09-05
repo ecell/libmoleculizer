@@ -32,7 +32,7 @@
 #ifndef MZR_INPUTCAPTEST_H
 #define MZR_INPUTCAPTEST_H
 
-#include "utl/dom.hh"
+#include "utl/dom.hpp"
 
 namespace mzr
 {

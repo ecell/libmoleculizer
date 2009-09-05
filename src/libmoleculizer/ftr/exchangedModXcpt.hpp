@@ -32,8 +32,8 @@
 #ifndef FTR_EXCHANGEDMODXCPT_H
 #define FTR_EXCHANGEDMODXCPT_H
 
-#include "utl/xcpt.hh"
-#include "mol/mzrMol.hh"
+#include "utl/xcpt.hpp"
+#include "mol/mzrMol.hpp"
 
 namespace ftr
 {

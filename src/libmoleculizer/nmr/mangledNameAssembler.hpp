@@ -33,13 +33,13 @@
 #ifndef __MANGLEDNAMEASSEMBLER_HH
 #define __MANGLEDNAMEASSEMBLER_HH
 
-#include "utl/defs.hh"
-#include "utl/utility.hh"
-#include "nmr/nmrExceptions.hh"
+#include "utl/defs.hpp"
+#include "utl/utility.hpp"
+#include "nmr/nmrExceptions.hpp"
 
-#include "nmr/nameAssembler.hh"
-#include "nmr/complexSpecies.hh"
-#include "nmr/complexOutputState.hh"
+#include "nmr/nameAssembler.hpp"
+#include "nmr/complexSpecies.hpp"
+#include "nmr/complexOutputState.hpp"
 
 namespace nmr
 {

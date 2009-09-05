@@ -32,8 +32,8 @@
 #ifndef CPX_EXCEPTIONS_H
 #define CPX_EXCEPTIONS_H
 
-#include "utl/defs.hh"
-#include "utl/xcpt.hh"
+#include "utl/defs.hpp"
+#include "utl/xcpt.hpp"
 
 namespace cpx
 {
@@ -82,7 +82,7 @@ namespace cpx
     // of binding sites mentioned in dimerization-gen's are defaulted for
     // all possible pairs of site shapes.
     //
-    // Thrown in second form in plexConnect.cc, plexFamily::behaviorizeBinding,
+    // Thrown in second form in plexConnect.cpp, plexFamily::behaviorizeBinding,
     // when a new plexFamily is connected with each of its binding features.
     // This is likely to happen regularly, when the user fails to give a
     // dimerization-gen for some binding in a complex that she specifies.

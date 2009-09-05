@@ -30,7 +30,7 @@
 //
 
 #include <sstream>
-#include "mol/dupModSiteNameXcpt.hh"
+#include "mol/dupModSiteNameXcpt.hpp"
 
 namespace bnd
 {

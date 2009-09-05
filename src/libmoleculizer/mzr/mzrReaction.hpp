@@ -36,16 +36,16 @@
   \ingroup mzrGroup
   \brief Reactions and their families. */
 
-/*! \file reaction.hh
+/*! \file reaction.hpp
   \ingroup reactionGroup
   \brief Defines basic reaction classes and scheduling functions. */
 
-#include "fnd/gillspReaction.hh"
-#include "fnd/sensitive.hh"
-#include "fnd/sensitivityList.hh"
-#include "fnd/reactionNetworkComponent.hh"
-#include "utl/dom.hh"
-#include "mzr/mzrEvent.hh"
+#include "fnd/gillspReaction.hpp"
+#include "fnd/sensitive.hpp"
+#include "fnd/sensitivityList.hpp"
+#include "fnd/reactionNetworkComponent.hpp"
+#include "utl/dom.hpp"
+#include "mzr/mzrEvent.hpp"
 
 #include <iostream>
 

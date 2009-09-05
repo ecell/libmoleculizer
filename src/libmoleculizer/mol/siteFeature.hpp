@@ -32,7 +32,7 @@
 #ifndef MOL_SITEFEATURE_H
 #define MOL_SITEFEATURE_H
 
-#include "fnd/feature.hh"
+#include "fnd/feature.hpp"
 
 namespace plx
 {

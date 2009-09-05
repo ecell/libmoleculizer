@@ -30,20 +30,20 @@
 //
 
 #include <vector>
-#include "utl/domXcpt.hh"
-#include "fnd/pchem.hh"
-#include "mzr/moleculizer.hh"
-#include "mzr/mzrUnit.hh"
-#include "mzr/mzrEltName.hh"
-#include "mol/molEltName.hh"
-#include "plex/plexUnit.hh"
-#include "plex/plexEltName.hh"
-#include "dimer/dimerUnit.hh"
-#include "dimer/dimerizeFam.hh"
-#include "dimer/decompFam.hh"
-#include "dimer/dimerEltName.hh"
+#include "utl/domXcpt.hpp"
+#include "fnd/pchem.hpp"
+#include "mzr/moleculizer.hpp"
+#include "mzr/mzrUnit.hpp"
+#include "mzr/mzrEltName.hpp"
+#include "mol/molEltName.hpp"
+#include "plex/plexUnit.hpp"
+#include "plex/plexEltName.hpp"
+#include "dimer/dimerUnit.hpp"
+#include "dimer/dimerizeFam.hpp"
+#include "dimer/decompFam.hpp"
+#include "dimer/dimerEltName.hpp"
 #include <libxml++/libxml++.h>
-#include "mzr/mzrSpeciesDumpable.hh"
+#include "mzr/mzrSpeciesDumpable.hpp"
 
 namespace dimer
 {

@@ -29,11 +29,11 @@
 //
 //
 
-#include "mzr/mzrUnit.hh"
-#include "mol/mzrModMol.hh"
-#include "cpx/cxMol.hh"
-#include "ftr/uniMolGen.hh"
-#include "mzr/mzrSpeciesDumpable.hh"
+#include "mzr/mzrUnit.hpp"
+#include "mol/mzrModMol.hpp"
+#include "cpx/cxMol.hpp"
+#include "ftr/uniMolGen.hpp"
+#include "mzr/mzrSpeciesDumpable.hpp"
 
 namespace ftr
 {

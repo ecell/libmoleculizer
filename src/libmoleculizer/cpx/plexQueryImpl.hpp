@@ -32,8 +32,8 @@
 #ifndef CPX_PLEXQUERYIMPL_H
 #define CPX_PLEXQUERYIMPL_H
 
-#include "cpx/molState.hh"
-#include "cpx/cpxXcpt.hh"
+#include "cpx/molState.hpp"
+#include "cpx/cpxXcpt.hpp"
 
 namespace cpx
 {

@@ -32,7 +32,7 @@
 #ifndef CPX_KNOWNBINDINGS_H
 #define CPX_KNOWNBINDINGS_H
 
-#include "cpx/structuralBinding.hh"
+#include "cpx/structuralBinding.hpp"
 
 namespace cpx
 {

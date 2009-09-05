@@ -32,10 +32,10 @@
 #ifndef FTR_PARSEUNIMOLGEN_H
 #define FTR_PARSEUNIMOLGEN_H
 
-#include "utl/dom.hh"
-#include "mzr/mzrUnit.hh"
-#include "mol/molUnit.hh"
-#include "plex/plexUnit.hh"
+#include "utl/dom.hpp"
+#include "mzr/mzrUnit.hpp"
+#include "mol/molUnit.hpp"
+#include "plex/plexUnit.hpp"
 
 namespace ftr
 {

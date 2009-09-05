@@ -30,12 +30,12 @@
 //
 
 #include <libxml++/libxml++.h>
-#include "mzr/mzrReaction.hh"
-#include "mzr/mzrUnit.hh"
-#include "mzr/mzrEltName.hh"
-#include "mzr/mzrException.hh"
-#include "stoch/stochUnit.hh"
-#include "stoch/unkStochSpeciesXcpt.hh"
+#include "mzr/mzrReaction.hpp"
+#include "mzr/mzrUnit.hpp"
+#include "mzr/mzrEltName.hpp"
+#include "mzr/mzrException.hpp"
+#include "stoch/stochUnit.hpp"
+#include "stoch/unkStochSpeciesXcpt.hpp"
 
 namespace stoch
 {

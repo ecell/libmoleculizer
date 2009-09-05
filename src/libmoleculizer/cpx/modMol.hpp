@@ -32,10 +32,10 @@
 #ifndef CPX_MODMOL_H
 #define CPX_MODMOL_H
 
-#include "cpx/alloMol.hh"
-#include "cpx/modMolMixin.hh"
-#include "cpx/modMolState.hh"
-#include "cpx/stateMol.hh"
+#include "cpx/alloMol.hpp"
+#include "cpx/modMolMixin.hpp"
+#include "cpx/modMolState.hpp"
+#include "cpx/stateMol.hpp"
 
 namespace cpx
 {
@@ -69,6 +69,6 @@ namespace cpx
     };
 }
 
-#include "cpx/modMolImpl.hh"
+#include "cpx/modMolImpl.hpp"
 
 #endif // CPX_MODMOL_H

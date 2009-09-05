@@ -32,7 +32,7 @@
 #ifndef MOL_UNKMODXCPT_H
 #define MOL_UNKMODXCPT_H
 
-#include "utl/dom.hh"
+#include "utl/dom.hpp"
 
 namespace bnd
 {

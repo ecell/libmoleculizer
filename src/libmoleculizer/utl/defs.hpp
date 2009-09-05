@@ -45,12 +45,12 @@
 #include <sstream>
 #include <cassert>
 
-#include "xcpt.hh"
+#include "xcpt.hpp"
 
 #include "AssocVector.h"
-#include "autoCache.hh"
-#include "autoCatalog.hh"
-#include "autoVector.hh"
+#include "autoCache.hpp"
+#include "autoCatalog.hpp"
+#include "autoVector.hpp"
 
 
 // Acknowledgements:

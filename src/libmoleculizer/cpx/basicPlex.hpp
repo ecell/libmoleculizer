@@ -32,9 +32,9 @@
 #ifndef CPX_BASICPLEX_H
 #define CPX_BASICPLEX_H
 
-#include "cpx/binding.hh"
-#include "cpx/ftrSpec.hh"
-#include "cpx/plexIso.hh"
+#include "cpx/binding.hpp"
+#include "cpx/ftrSpec.hpp"
+#include "cpx/plexIso.hpp"
 
 namespace cpx
 {
@@ -134,6 +134,6 @@ namespace cpx
     };
 }
 
-#include "cpx/basicPlexImpl.hh"
+#include "cpx/basicPlexImpl.hpp"
 
 #endif // CPX_BASICPLEX_H

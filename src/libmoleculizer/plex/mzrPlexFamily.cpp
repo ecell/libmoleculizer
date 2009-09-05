@@ -29,13 +29,13 @@
 //
 //
 
-#include "plex/mzrOmniPlex.hh"
-#include "plex/mzrPlexFamily.hh"
-#include "nmr/nmrUnit.hh"
-#include "plex/mzrPlex.hh"
-#include "plex/mzrPlexSpecies.hh"
-#include "nmr/nmrUnit.hh"
-#include "mzr/mzrSpeciesDumpable.hh"
+#include "plex/mzrOmniPlex.hpp"
+#include "plex/mzrPlexFamily.hpp"
+#include "nmr/nmrUnit.hpp"
+#include "plex/mzrPlex.hpp"
+#include "plex/mzrPlexSpecies.hpp"
+#include "nmr/nmrUnit.hpp"
+#include "mzr/mzrSpeciesDumpable.hpp"
 
 namespace plx
 {

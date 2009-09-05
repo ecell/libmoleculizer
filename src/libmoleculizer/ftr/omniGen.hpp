@@ -32,9 +32,9 @@
 #ifndef OMNIGEN_H
 #define OMNIGEN_H
 
-#include "mol/smallMol.hh"
-#include "cpx/cxOmni.hh"
-#include "ftr/omniExtrap.hh"
+#include "mol/smallMol.hpp"
+#include "cpx/cxOmni.hpp"
+#include "ftr/omniExtrap.hpp"
 
 namespace ftr
 {

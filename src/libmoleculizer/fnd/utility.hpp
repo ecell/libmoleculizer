@@ -33,7 +33,7 @@
 #ifndef RNHELPERCLASSES
 #define RNHELPERCLASSES
 
-#include "utl/defs.hh"
+#include "utl/defs.hpp"
 
 namespace fnd
 {

@@ -35,8 +35,8 @@
 #include <string>
 #include <map>
 #include <set>
-#include "cpx/siteShape.hh"
-#include "utl/xcpt.hh"
+#include "cpx/siteShape.hpp"
+#include "utl/xcpt.hpp"
 
 namespace cpx
 {

@@ -32,7 +32,7 @@
 #ifndef FND_FEATURESTIMULUS_H
 #define FND_FEATURESTIMULUS_H
 
-#include "fnd/newContextStimulus.hh"
+#include "fnd/newContextStimulus.hpp"
 
 namespace fnd
 {

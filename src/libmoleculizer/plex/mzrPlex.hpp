@@ -40,9 +40,9 @@
 #include <vector>
 #include <map>
 #include <string>
-#include "utl/dom.hh"
-#include "cpx/basicPlex.hh"
-#include "mol/mzrMol.hh"
+#include "utl/dom.hpp"
+#include "cpx/basicPlex.hpp"
+#include "mol/mzrMol.hpp"
 
 namespace plx
 {

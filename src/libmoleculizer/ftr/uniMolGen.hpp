@@ -32,10 +32,10 @@
 #ifndef UNIMOLGEN_H
 #define UNIMOLGEN_H
 
-#include "cpx/cxMol.hh"
-#include "mzr/mzrUnit.hh"
-#include "plex/plexUnit.hh"
-#include "ftr/uniMolExtrap.hh"
+#include "cpx/cxMol.hpp"
+#include "mzr/mzrUnit.hpp"
+#include "plex/plexUnit.hpp"
+#include "ftr/uniMolExtrap.hpp"
 
 namespace ftr
 {

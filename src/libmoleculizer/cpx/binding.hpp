@@ -32,7 +32,7 @@
 #ifndef CPX_BINDING_H
 #define CPX_BINDING_H
 
-#include "cpx/ftrSpec.hh"
+#include "cpx/ftrSpec.hpp"
 
 namespace cpx
 {

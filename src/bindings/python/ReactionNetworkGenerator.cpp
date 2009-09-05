@@ -31,9 +31,9 @@
 
 
 #include "ReactionNetworkGenerator.hpp"
-#include "mzr/unitsMgr.hh"
-#include "nmr/nmrUnit.hh"
-#include "mol/mzrModMol.hh"
+#include "mzr/unitsMgr.hpp"
+#include "nmr/nmrUnit.hpp"
+#include "mol/mzrModMol.hpp"
 #include <boost/foreach.hpp>
 
 

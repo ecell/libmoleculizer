@@ -32,9 +32,9 @@
 #ifndef FND_MULTISPECIESDUMPABLE_H
 #define FND_MULTISPECIESDUMPABLE_H
 
-#include "fnd/dumpable.hh"
-#include "fnd/sensitive.hh"
-#include "fnd/newSpeciesStimulus.hh"
+#include "fnd/dumpable.hpp"
+#include "fnd/sensitive.hpp"
+#include "fnd/newSpeciesStimulus.hpp"
 #include <vector>
 #include <iostream>
 

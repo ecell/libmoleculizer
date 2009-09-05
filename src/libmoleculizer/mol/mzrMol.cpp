@@ -29,9 +29,9 @@
 //
 //
 
-#include "mol/mzrMol.hh"
-#include "mol/unkSiteXcpt.hh"
-#include "plex/mzrPlexFamily.hh"
+#include "mol/mzrMol.hpp"
+#include "mol/unkSiteXcpt.hpp"
+#include "plex/mzrPlexFamily.hpp"
 
 namespace bnd
 {

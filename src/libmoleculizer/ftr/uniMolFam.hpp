@@ -32,8 +32,8 @@
 #ifndef FTR_UNIMOLFAM_H
 #define FTR_UNIMOLFAM_H
 
-#include "utl/autoVector.hh"
-#include "ftr/uniMolGen.hh"
+#include "utl/autoVector.hpp"
+#include "ftr/uniMolGen.hpp"
 
 namespace ftr
 {

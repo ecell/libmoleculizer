@@ -32,10 +32,10 @@
 #ifndef MOL_UNKSITESHAPEXCPT_H
 #define MOL_UNKSITESHAPEXCPT_H
 
-#include "utl/xcpt.hh"
-#include "utl/dom.hh"
-#include "mol/mzrBndSite.hh"
-#include "mol/mzrMol.hh"
+#include "utl/xcpt.hpp"
+#include "utl/dom.hpp"
+#include "mol/mzrBndSite.hpp"
+#include "mol/mzrMol.hpp"
 
 namespace bnd
 {

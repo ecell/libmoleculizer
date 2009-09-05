@@ -35,8 +35,8 @@
 #include <string>
 #include <set>
 
-#include "utl/xcpt.hh"
-#include "utl/domXcpt.hh"
+#include "utl/xcpt.hpp"
+#include "utl/domXcpt.hpp"
 
 namespace xmlpp
 {

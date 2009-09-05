@@ -32,7 +32,7 @@
 #ifndef CPX_PLEXSPECIESIMPL_H
 #define CPX_PLEXSPECIESIMPL_H
 
-#include "binding.hh"
+#include "binding.hpp"
 
 namespace cpx
 {

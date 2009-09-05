@@ -32,7 +32,7 @@
 #ifndef CPX_MODMIXINQUERY_H
 #define CPX_MODMIXINQUERY_H
 
-#include "cpx/modStateMixin.hh"
+#include "cpx/modStateMixin.hpp"
 
 namespace cpx
 {

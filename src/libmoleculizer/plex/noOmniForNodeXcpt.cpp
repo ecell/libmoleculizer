@@ -30,7 +30,7 @@
 //
 
 #include <sstream>
-#include "plex/noOmniForNodeXcpt.hh"
+#include "plex/noOmniForNodeXcpt.hpp"
 
 namespace plx
 {

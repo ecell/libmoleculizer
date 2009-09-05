@@ -37,7 +37,7 @@
 #include <vector>
 #include <sstream>
 #include <algorithm>
-#include "notifier.hh"
+#include "notifier.hpp"
 
 namespace fnd
 {

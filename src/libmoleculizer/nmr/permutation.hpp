@@ -32,9 +32,9 @@
 #ifndef __NMR_PERMUTATION_HH
 #define __NMR_PERMUTATION_HH
 
-#include "nmr/nmrExceptions.hh"
+#include "nmr/nmrExceptions.hpp"
 
-#include "utl/defs.hh"
+#include "utl/defs.hpp"
 
 
 namespace nmr

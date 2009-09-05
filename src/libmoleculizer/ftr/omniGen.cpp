@@ -29,12 +29,12 @@
 //
 //
 
-#include "mzr/mzrUnit.hh"
-#include "mol/mzrModMol.hh"
-#include "plex/plexUnit.hh"
-#include "ftr/omniGen.hh"
-#include "ftr/exchangedModXcpt.hh"
-#include "mzr/mzrSpeciesDumpable.hh"
+#include "mzr/mzrUnit.hpp"
+#include "mol/mzrModMol.hpp"
+#include "plex/plexUnit.hpp"
+#include "ftr/omniGen.hpp"
+#include "ftr/exchangedModXcpt.hpp"
+#include "mzr/mzrSpeciesDumpable.hpp"
 
 namespace ftr
 {

@@ -30,7 +30,7 @@
 //
 
 #include <cmath>
-#include "utl/frexp10.hh"
+#include "utl/frexp10.hpp"
 
 namespace utl
 {

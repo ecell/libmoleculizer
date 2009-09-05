@@ -29,13 +29,13 @@
 //
 //
 
-#include "mzr/moleculizer.hh"
-#include "mzr/respondReaction.hh"
-#include "plex/mzrPlexFamily.hh"
-#include "plex/parsePlex.hh"
-#include "plex/parseOmniPlex.hh"
+#include "mzr/moleculizer.hpp"
+#include "mzr/respondReaction.hpp"
+#include "plex/mzrPlexFamily.hpp"
+#include "plex/parsePlex.hpp"
+#include "plex/parseOmniPlex.hpp"
 #include <libxml++/libxml++.h>
-#include "mzr/mzrSpeciesDumpable.hh"
+#include "mzr/mzrSpeciesDumpable.hpp"
 
 namespace plx
 {

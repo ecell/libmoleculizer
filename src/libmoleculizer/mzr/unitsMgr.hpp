@@ -32,9 +32,9 @@
 #ifndef UNITSMGR_H
 #define UNITSMGR_H
 
-#include "utl/autoVector.hh"
-#include "plex/plexUnit.hh"
-#include "mzr/unit.hh"
+#include "utl/autoVector.hpp"
+#include "plex/plexUnit.hpp"
+#include "mzr/unit.hpp"
 
 namespace mzr
 {

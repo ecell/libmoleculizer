@@ -32,7 +32,7 @@
 #ifndef PLEX_DUPNODEOMNIXCPT_H
 #define PLEX_DUPNODEOMNIXCPT_H
 
-#include "utl/dom.hh"
+#include "utl/dom.hpp"
 
 namespace plx
 {

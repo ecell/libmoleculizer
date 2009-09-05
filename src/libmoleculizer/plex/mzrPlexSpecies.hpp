@@ -32,15 +32,15 @@
 #ifndef PLEXSPECIES_H
 #define PLEXSPECIES_H
 
-/*! \file plexSpecies.hh
+/*! \file plexSpecies.hpp
   \ingroup plexStructGroup
   \brief Defines plexSpecies, a species of protein complex. */
 
-#include "utl/dom.hh"
-#include "fnd/basicDumpable.hh"
-#include "cpx/plexSpcsMixin.hh"
-#include "mzr/mzrSpecies.hh"
-#include "mzr/mzrSpeciesDumpable.hh"
+#include "utl/dom.hpp"
+#include "fnd/basicDumpable.hpp"
+#include "cpx/plexSpcsMixin.hpp"
+#include "mzr/mzrSpecies.hpp"
+#include "mzr/mzrSpeciesDumpable.hpp"
 
 
 namespace mzr

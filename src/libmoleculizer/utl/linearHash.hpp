@@ -32,7 +32,7 @@
 #ifndef LINEARHASH_H
 #define LINEARHASH_H
 
-/*! \file linearHash.hh
+/*! \file linearHash.hpp
   \ingroup mzrGroup
   \brief Defines a linear-congruential hash function class.
   

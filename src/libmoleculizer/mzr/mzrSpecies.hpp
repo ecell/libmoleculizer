@@ -32,10 +32,10 @@
 #ifndef SPECIES_H
 #define SPECIES_H
 
-#include "fnd/basicSpecies.hh"
-#include "fnd/massive.hh"
-#include "mzr/mzrReaction.hh"
-#include "fnd/reactionNetworkComponent.hh"
+#include "fnd/basicSpecies.hpp"
+#include "fnd/massive.hpp"
+#include "mzr/mzrReaction.hpp"
+#include "fnd/reactionNetworkComponent.hpp"
 
 namespace plx
 {

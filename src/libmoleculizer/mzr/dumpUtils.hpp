@@ -32,7 +32,7 @@
 #ifndef DUMPUTILS_H
 #define DUMPUTILS_H
 
-#include "utl/dom.hh"
+#include "utl/dom.hpp"
 
 namespace mzr
 {

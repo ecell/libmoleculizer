@@ -33,7 +33,7 @@
 #define FND_DUMPABLE_H
 
 #include <string>
-#include "fnd/basicDumpable.hh"
+#include "fnd/basicDumpable.hpp"
 
 namespace fnd
 {

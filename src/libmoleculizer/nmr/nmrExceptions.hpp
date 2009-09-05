@@ -32,7 +32,7 @@
 #ifndef NMR_NMREXCEPTIONS_HH
 #define NMR_NMREXCEPTIONS_HH
 
-#include "utl/xcpt.hh"
+#include "utl/xcpt.hpp"
 
 namespace nmr
 {

@@ -32,9 +32,9 @@
 #ifndef __BASICNAMEASSEMBLER_HH
 #define __BASICNAMEASSEMBLER_HH
 
-#include "utl/defs.hh"
-#include "nmr/nmrExceptions.hh"
-#include "nmr/nameAssembler.hh"
+#include "utl/defs.hpp"
+#include "nmr/nmrExceptions.hpp"
+#include "nmr/nameAssembler.hpp"
 
 namespace nmr
 {

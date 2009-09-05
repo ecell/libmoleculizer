@@ -32,7 +32,7 @@
 #ifndef CPX_ISOSEARCHIMPL_H
 #define CPX_ISOSEARCHIMPL_H
 
-#include "cpx/plexNotConnectedXcpt.hh"
+#include "cpx/plexNotConnectedXcpt.hpp"
 
 namespace cpx
 {

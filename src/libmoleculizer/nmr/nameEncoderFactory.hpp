@@ -32,10 +32,10 @@
 #ifndef NMRMANGLERFACTORY_HH
 #define NMRMANGLERFACTORY_HH
 
-#include "nmrExceptions.hh"
-#include "nameAssembler.hh"
-#include "complexSpeciesEncoderNames.hh"
-#include "nameAssemblers.hh"
+#include "nmrExceptions.hpp"
+#include "nameAssembler.hpp"
+#include "complexSpeciesEncoderNames.hpp"
+#include "nameAssemblers.hpp"
 
 
 namespace nmr

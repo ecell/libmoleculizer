@@ -32,9 +32,9 @@
 #ifndef SMALLMOL_H
 #define SMALLMOL_H
 
-#include "utl/dom.hh"
-#include "mol/mzrMol.hh"
-#include "cpx/smallMol.hh"
+#include "utl/dom.hpp"
+#include "mol/mzrMol.hpp"
+#include "cpx/smallMol.hpp"
 
 namespace bnd
 {

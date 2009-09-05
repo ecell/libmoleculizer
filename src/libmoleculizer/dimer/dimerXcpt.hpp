@@ -32,11 +32,11 @@
 #ifndef __DIMERXCPT_HH
 #define __DIMERXCPT_HH
 
-#include "utl/defs.hh"
-#include "cpx/cxBinding.hh"
-#include "cpx/cxSite.hh"
-#include "plex/mzrPlexSpecies.hh"
-#include "plex/mzrPlexFamily.hh"
+#include "utl/defs.hpp"
+#include "cpx/cxBinding.hpp"
+#include "cpx/cxSite.hpp"
+#include "plex/mzrPlexSpecies.hpp"
+#include "plex/mzrPlexFamily.hpp"
 
 namespace dimer
 {

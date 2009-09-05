@@ -5,7 +5,7 @@ INSTALLATION_VERSION=1.0
 AC_SUBST(INSTALLATION_VERSION)
 
 # Ensure this file is present for sanity.
-AC_CONFIG_SRCDIR([src/libmoleculizer/mzr/moleculizer.hh]) 
+AC_CONFIG_SRCDIR([src/libmoleculizer/mzr/moleculizer.hpp]) 
 
 AC_PROG_CC			
 AC_PROG_CXX
@@ -80,7 +80,7 @@ if test "$demos" = "yes"; then
  fi
 
 # Produce this header file.
-AC_CONFIG_HEADERS([src/libmoleculizer/moleculizer_config.hh])
+AC_CONFIG_HEADERS([src/libmoleculizer/moleculizer_config.hpp])
 
 AC_CONFIG_FILES([Makefile
                 src/Makefile

@@ -33,8 +33,8 @@
 #define COMPLEXSPECIESOUTPUTMINIMIZER_HPP
 
 
-#include "complexSpecies.hh"
-#include "permutation.hh"
+#include "complexSpecies.hpp"
+#include "permutation.hpp"
 #include <vector>
 #include <set>
 

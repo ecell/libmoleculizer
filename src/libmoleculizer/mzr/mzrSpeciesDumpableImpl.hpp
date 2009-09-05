@@ -23,8 +23,8 @@
 //   Berkeley, CA 94704
 /////////////////////////////////////////////////////////////////////////////
 
-#include "mzr/mzrEltName.hh"
-#include "mzr/mzrSpeciesDumpable.hh"
+#include "mzr/mzrEltName.hpp"
+#include "mzr/mzrSpeciesDumpable.hpp"
 
 // Aren't these all the same? Could they go into mzrSpeciesStream?
 

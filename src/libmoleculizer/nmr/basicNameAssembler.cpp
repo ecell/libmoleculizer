@@ -29,7 +29,7 @@
 //
 //
 
-#include "basicNameAssembler.hh"
+#include "basicNameAssembler.hpp"
 
 #include <string>
 #include <vector>

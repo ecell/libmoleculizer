@@ -29,16 +29,16 @@
 //
 //
 
-#include "mol/molUnit.hh"
-#include "mol/smallMol.hh"
-#include "mol/parseMod.hh"
-#include "mol/molEltName.hh"
-#include "mol/dupMolNameXcpt.hh"
-#include "mol/unkMolXcpt.hh"
-#include "mol/unkModXcpt.hh"
-#include "mol/badModMolXcpt.hh"
-#include "mol/badSmallMolXcpt.hh"
-#include "mol/dupModNameXcpt.hh"
+#include "mol/molUnit.hpp"
+#include "mol/smallMol.hpp"
+#include "mol/parseMod.hpp"
+#include "mol/molEltName.hpp"
+#include "mol/dupMolNameXcpt.hpp"
+#include "mol/unkMolXcpt.hpp"
+#include "mol/unkModXcpt.hpp"
+#include "mol/badModMolXcpt.hpp"
+#include "mol/badSmallMolXcpt.hpp"
+#include "mol/dupModNameXcpt.hpp"
 
 namespace bnd
 {

@@ -32,7 +32,7 @@
 #ifndef CPX_REPORTISOSEARCH_H
 #define CPX_REPORTISOSEARCH_H
 
-#include "cpx/isoSearch.hh"
+#include "cpx/isoSearch.hpp"
 
 namespace cpx
 {

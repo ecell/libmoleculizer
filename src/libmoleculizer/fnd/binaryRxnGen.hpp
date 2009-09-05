@@ -50,7 +50,7 @@
   site.  */
 
 #include <functional>
-#include "fnd/featureContext.hh"
+#include "fnd/featureContext.hpp"
 
 namespace fnd
 {

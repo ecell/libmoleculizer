@@ -29,11 +29,11 @@
 //
 //
 
-#include "utl/dom.hh"
-#include "utl/domXcpt.hh"
-#include "utl/frexp10.hh"
-#include "utl/utility.hh"
-#include "utl/utlEltName.hh"
+#include "utl/dom.hpp"
+#include "utl/domXcpt.hpp"
+#include "utl/frexp10.hpp"
+#include "utl/utility.hpp"
+#include "utl/utlEltName.hpp"
 #include <libxml++/libxml++.h>
 
 namespace utl

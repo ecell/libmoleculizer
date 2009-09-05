@@ -32,9 +32,9 @@
 #ifndef MOL_UNKMODSITEXCPT_H
 #define MOL_UNKMODSITEXCPT_H
 
-#include "utl/xcpt.hh"
-#include "utl/dom.hh"
-#include "mol/mzrModMol.hh"
+#include "utl/xcpt.hpp"
+#include "utl/dom.hpp"
+#include "mol/mzrModMol.hpp"
 
 namespace bnd
 {

@@ -35,7 +35,7 @@
 
 // This file accumulates the general utl::xcpt's that larry wrote.
 
-#include "xcpt.hh"
+#include "xcpt.hpp"
 
 namespace utl
 {

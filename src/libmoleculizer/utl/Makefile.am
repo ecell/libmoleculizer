@@ -11,36 +11,36 @@ AM_CXXFLAGS = -Wall
 libmoleculizer_utl_la_CXXFLAGS = $(AM_CXXFLAGS) @LIBXMLPP_CFLAGS@
 libmoleculizer_utl_la_LDFLAGS = @LIBXMLPP_LIBS@
 libmoleculizer_utl_la_SOURCES =\
-arg.cc \
-dom.cc \
-domXcpt.cc \
-frexp10.cc \
-linearHash.cc \
-utlXcpt.cc \
-utility.cc \
-utlEltName.cc
+arg.cpp \
+dom.cpp \
+domXcpt.cpp \
+frexp10.cpp \
+linearHash.cpp \
+utlXcpt.cpp \
+utility.cpp \
+utlEltName.cpp
 
 libmoleculizer_utl_HEADERS=\
-arg.hh \
+arg.hpp \
 AssocVector.h \
-autoCache.hh \
-autoCatalog.hh \
-autoVector.hh \
-defs.hh \
-dom.hh \
-domJob.hh \
-domJobImpl.hh \
-domXcpt.hh \
-forBoth.hh \
-forceInsert.hh \
-frexp10.hh \
-funcInsert.hh \
-linearHash.hh \
-message.hh \
-utility.hh \
-utlEltName.hh \
-utlHelper.hh \
-utlXcpt.hh \
-warn.hh \
-writeOutputGraph.hh \
-xcpt.hh
+autoCache.hpp \
+autoCatalog.hpp \
+autoVector.hpp \
+defs.hpp \
+dom.hpp \
+domJob.hpp \
+domJobImpl.hpp \
+domXcpt.hpp \
+forBoth.hpp \
+forceInsert.hpp \
+frexp10.hpp \
+funcInsert.hpp \
+linearHash.hpp \
+message.hpp \
+utility.hpp \
+utlEltName.hpp \
+utlHelper.hpp \
+utlXcpt.hpp \
+warn.hpp \
+writeOutputGraph.hpp \
+xcpt.hpp

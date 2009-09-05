@@ -32,7 +32,7 @@
 #ifndef MOL_DUPMODSITENAMEXCPT_H
 #define MOL_DUPMODSITENAMEXCPT_H
 
-#include "utl/xcpt.hh"
+#include "utl/xcpt.hpp"
 
 namespace bnd
 {

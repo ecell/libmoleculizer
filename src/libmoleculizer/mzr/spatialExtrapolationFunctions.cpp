@@ -29,10 +29,10 @@
 //
 //
 
-#include "spatialExtrapolationFunctions.hh"
-#include "mzr/mzrSpecies.hh"
-#include "mzr/mzrReaction.hh"
-#include "mzr/mzrException.hh"
+#include "spatialExtrapolationFunctions.hpp"
+#include "mzr/mzrSpecies.hpp"
+#include "mzr/mzrReaction.hpp"
+#include "mzr/mzrException.hpp"
 #include <cmath>
 
 namespace mzr

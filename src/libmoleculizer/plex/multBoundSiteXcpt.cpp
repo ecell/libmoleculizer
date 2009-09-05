@@ -30,7 +30,7 @@
 //
 
 #include <sstream>
-#include "plex/multBoundSiteXcpt.hh"
+#include "plex/multBoundSiteXcpt.hpp"
 
 namespace plx
 {

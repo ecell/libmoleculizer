@@ -32,7 +32,7 @@
 #ifndef CPX_HASHMOLREC_H
 #define CPX_HASHMOLREC_H
 
-#include "utl/linearHash.hh"
+#include "utl/linearHash.hpp"
 
 namespace cpx
 {
@@ -58,6 +58,6 @@ namespace cpx
     };
 }
 
-#include "cpx/hashMolRecImpl.hh"
+#include "cpx/hashMolRecImpl.hpp"
 
 #endif // CPX_HASHMOLREC_H

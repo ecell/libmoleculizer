@@ -1,8 +1,8 @@
 #ifndef __DOMXCPT_HH
 #define __DOMXCPT_HH
 
-#include "utl/xcpt.hh"
-#include "utl/dom.hh"
+#include "utl/xcpt.hpp"
+#include "utl/dom.hpp"
 
 namespace xmlpp
 {

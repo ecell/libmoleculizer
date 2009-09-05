@@ -29,7 +29,7 @@
 //
 //
 
-#include "cpx/cpxXcpt.hh"
+#include "cpx/cpxXcpt.hpp"
 
 namespace cpx
 {

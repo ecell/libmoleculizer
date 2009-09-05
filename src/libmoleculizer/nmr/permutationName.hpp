@@ -33,8 +33,8 @@
 #ifndef __PERMUTATIONNAME_HH
 #define __PERMUTATIONNAME_HH
 
-#include "permutation.hh"
-#include "partialTokenList.hh"
+#include "permutation.hpp"
+#include "partialTokenList.hpp"
 
 namespace nmr
 {

@@ -32,14 +32,14 @@
 #ifndef OMNIPLEXFEATURE_H
 #define OMNIPLEXFEATURE_H
 
-/*! \file omniPlexFeature.hh
+/*! \file omniPlexFeature.hpp
   \ingroup omniGroup
   \brief Defines subcomplex feature. */
 
-#include "fnd/feature.hh"
-#include "fnd/multiSpeciesDumpable.hh"
-#include "fnd/newContextStimulus.hh"
-#include "cpx/cxOmni.hh"
+#include "fnd/feature.hpp"
+#include "fnd/multiSpeciesDumpable.hpp"
+#include "fnd/newContextStimulus.hpp"
+#include "cpx/cxOmni.hpp"
 
 namespace cpx
 {

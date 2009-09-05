@@ -32,14 +32,14 @@
 #ifndef CPX_PLEXSPECIES_H
 #define CPX_PLEXSPECIES_H
 
-#include "cpx/prm.hh"
-#include "cpx/siteToShapeMap.hh"
-#include "cpx/molState.hh"
-#include "nmr/namedMolecule.hh"
-#include "nmr/complexSpecies.hh"
-#include "nmr/mangledNameAssembler.hh"
-#include "nmr/basicNameAssembler.hh"
-#include "nmr/readableNameAssembler.hh"
+#include "cpx/prm.hpp"
+#include "cpx/siteToShapeMap.hpp"
+#include "cpx/molState.hpp"
+#include "nmr/namedMolecule.hpp"
+#include "nmr/complexSpecies.hpp"
+#include "nmr/mangledNameAssembler.hpp"
+#include "nmr/basicNameAssembler.hpp"
+#include "nmr/readableNameAssembler.hpp"
 
 #include <vector>
 
@@ -96,7 +96,7 @@ namespace cpx
     };
 }
 
-#include "cpx/plexSpcsMixinImpl.hh"
-#include "cpx/plexSpcsMixinCanonicalNamingImpl.hh"
+#include "cpx/plexSpcsMixinImpl.hpp"
+#include "cpx/plexSpcsMixinCanonicalNamingImpl.hpp"
 
 #endif // CPX_PLEXSPECIES_H

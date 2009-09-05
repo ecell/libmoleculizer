@@ -32,7 +32,7 @@
 #ifndef FTR_BADMODMOLINSTANCEXCPT_H
 #define FTR_BADMODMOLINSTANCEXCPT_H
 
-#include "utl/dom.hh"
+#include "utl/dom.hpp"
 
 namespace ftr
 {

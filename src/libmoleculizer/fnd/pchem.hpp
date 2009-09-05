@@ -38,7 +38,7 @@ namespace fnd
       \ingroup mzrGroup
       \brief Formulae and constants for extrapolating reactions. */
     
-    /*! \file pchem.hh
+    /*! \file pchem.hpp
       \ingroup chemGroup
       \brief Reaction rate corrections by molecular weight. */
     

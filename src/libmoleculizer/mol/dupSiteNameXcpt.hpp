@@ -32,9 +32,9 @@
 #ifndef MOL_DUPSITENAMEXCPT_H
 #define MOL_DUPSITENAMEXCPT_H
 
-#include "utl/xcpt.hh"
-#include "utl/dom.hh"
-#include "mol/mzrMol.hh"
+#include "utl/xcpt.hpp"
+#include "utl/dom.hpp"
+#include "mol/mzrMol.hpp"
 
 namespace bnd
 {

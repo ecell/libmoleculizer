@@ -1,5 +1,5 @@
-#include "mzrException.hh"
-#include "moleculizer.hh"
+#include "mzrException.hpp"
+#include "moleculizer.hpp"
 
 #include <libxml++/libxml++.h>
 

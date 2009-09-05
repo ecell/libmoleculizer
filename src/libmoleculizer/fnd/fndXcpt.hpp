@@ -32,9 +32,9 @@
 #ifndef FNDEXCEPTIONS_HH
 #define FNDEXCEPTIONS_HH
 
-#include "utl/defs.hh"
-#include "utl/xcpt.hh"
-#include "utl/dom.hh"
+#include "utl/defs.hpp"
+#include "utl/xcpt.hpp"
+#include "utl/dom.hpp"
 
 namespace fnd
 {

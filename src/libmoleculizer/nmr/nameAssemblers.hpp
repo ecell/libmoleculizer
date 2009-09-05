@@ -35,8 +35,8 @@
 #define __NAMEASSEMBLERS_HH
 
 // TODO/3 Fix these two files so they can be included once more.
-// #include "basicNameAssembler.hh"
-// #include "readableNameAssembler.hh"
-#include "mangledNameAssembler.hh"
+// #include "basicNameAssembler.hpp"
+// #include "readableNameAssembler.hpp"
+#include "mangledNameAssembler.hpp"
 
 #endif

@@ -29,11 +29,11 @@
 //
 //
 
-#include "utl/defs.hh"
-#include "utl/utility.hh"
+#include "utl/defs.hpp"
+#include "utl/utility.hpp"
 
-#include "modMol.hh"
-#include "binding.hh"
+#include "modMol.hpp"
+#include "binding.hpp"
 
 namespace cpx
 {

@@ -32,8 +32,8 @@
 #ifndef PARSERPLEX_H
 #define PARSERPLEX_H
 
-#include "plex/mzrPlex.hh"
-#include "plex/unkMolInstXcpt.hh"
+#include "plex/mzrPlex.hpp"
+#include "plex/unkMolInstXcpt.hpp"
 
 namespace plx
 {

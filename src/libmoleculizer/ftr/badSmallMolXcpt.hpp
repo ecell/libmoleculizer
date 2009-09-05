@@ -32,7 +32,7 @@
 #ifndef FTR_BADSMALLMOLXCPT_H
 #define FTR_BADSMALLMOLXCPT_H
 
-#include "utl/dom.hh"
+#include "utl/dom.hpp"
 
 namespace ftr
 {

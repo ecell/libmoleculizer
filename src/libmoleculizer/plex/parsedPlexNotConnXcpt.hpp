@@ -32,7 +32,7 @@
 #ifndef PLEX_PARSEDPLEXNOTCONNXCPT_H
 #define PLEX_PARSEDPLEXNOTCONNXCPT_H
 
-#include <utl/dom.hh>
+#include <utl/dom.hpp>
 
 namespace plx
 {

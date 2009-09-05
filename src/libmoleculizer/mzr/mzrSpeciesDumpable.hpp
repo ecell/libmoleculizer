@@ -26,11 +26,11 @@
 #ifndef MZR_MZRSPECIESDUMPABLE_H
 #define MZR_MZRSPECIESDUMPABLE_H
 
-#include "utl/dom.hh"
-#include "fnd/varDumpable.hh"
-#include "fnd/querySpeciesDumpable.hh"
-#include "mzr/mzrSpecies.hh"
-#include "mzr/mzrStream.hh"
+#include "utl/dom.hpp"
+#include "fnd/varDumpable.hpp"
+#include "fnd/querySpeciesDumpable.hpp"
+#include "mzr/mzrSpecies.hpp"
+#include "mzr/mzrStream.hpp"
 
 namespace mzr
 {
@@ -114,6 +114,6 @@ namespace mzr
     };
 }
 
-#include "mzr/mzrSpeciesDumpableImpl.hh"
+#include "mzr/mzrSpeciesDumpableImpl.hpp"
 
 #endif // MZR_MZRSPECIESDUMPABLE_H

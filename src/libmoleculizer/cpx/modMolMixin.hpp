@@ -47,8 +47,8 @@
 #include <vector>
 #include <string>
 #include <algorithm>
-#include "cpx/modification.hh"
-#include "cpx/modStateMixin.hh"
+#include "cpx/modification.hpp"
+#include "cpx/modStateMixin.hpp"
 
 namespace cpx
 {

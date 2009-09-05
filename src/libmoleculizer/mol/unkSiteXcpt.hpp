@@ -32,8 +32,8 @@
 #ifndef MOL_UNKSITEXCPT_H
 #define MOL_UNKSITEXCPT_H
 
-#include "utl/xcpt.hh"
-#include "utl/dom.hh"
+#include "utl/xcpt.hpp"
+#include "utl/dom.hpp"
 
 namespace bnd
 {

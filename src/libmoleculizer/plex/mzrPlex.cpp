@@ -30,11 +30,11 @@
 //
 
 #include <libxml++/libxml++.h>
-#include "cpx/plexMap.hh"
-#include "cpx/binding.hh"
-#include "mol/molEltName.hh"
-#include "plex/mzrPlex.hh"
-#include "plex/plexEltName.hh"
+#include "cpx/plexMap.hpp"
+#include "cpx/binding.hpp"
+#include "mol/molEltName.hpp"
+#include "plex/mzrPlex.hpp"
+#include "plex/plexEltName.hpp"
 
 namespace plx
 {

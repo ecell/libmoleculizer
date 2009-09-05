@@ -32,9 +32,9 @@
 #ifndef PLEX_MZROMNISTRUCTUREQUERIES_H
 #define PLEX_MZROMNISTRUCTUREQUERIES_H
 
-#include "fnd/query.hh"
-#include "cpx/omniStructureQuery.hh"
-#include "plex/mzrPlex.hh"
+#include "fnd/query.hpp"
+#include "cpx/omniStructureQuery.hpp"
+#include "plex/mzrPlex.hpp"
 
 namespace plx
 {

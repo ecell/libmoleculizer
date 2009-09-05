@@ -32,9 +32,9 @@
 #ifndef CXMOLPARAM_H
 #define CXMOLPARAM_H
 
-#include "fnd/featureContext.hh"
-#include "cpx/ftrSpec.hh"
-#include "cpx/prm.hh"
+#include "fnd/featureContext.hpp"
+#include "cpx/ftrSpec.hpp"
+#include "cpx/prm.hpp"
 
 namespace cpx
 {
@@ -88,6 +88,6 @@ namespace cpx
     };
 }
 
-#include "cpx/cxMolImpl.hh"
+#include "cpx/cxMolImpl.hpp"
 
 #endif

@@ -30,7 +30,7 @@
 //
 
 #include <cmath>
-#include "fnd/pchem.hh"
+#include "fnd/pchem.hpp"
 
 namespace fnd
 {

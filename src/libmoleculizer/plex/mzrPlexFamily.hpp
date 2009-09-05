@@ -36,14 +36,14 @@
   \ingroup plexGroup
   \brief Structural equivalence, structural families of complexes. */
 
-/*! \file mzrPlexFamily.hh
+/*! \file mzrPlexFamily.hpp
   \ingroup plexStructGroup
   \brief Defines plexFamily, a structural family of species of complexes. */
 
-#include "utl/defs.hh"
-#include "cpx/plexFamily.hh"
-#include "plex/mzrPlex.hh"
-#include "plex/mzrPlexSpecies.hh"
+#include "utl/defs.hpp"
+#include "cpx/plexFamily.hpp"
+#include "plex/mzrPlex.hpp"
+#include "plex/mzrPlexSpecies.hpp"
 
 namespace nmr
 {

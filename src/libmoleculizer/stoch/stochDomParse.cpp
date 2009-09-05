@@ -29,16 +29,16 @@
 //
 //
 
-#include "mzr/moleculizer.hh"
-#include "mzr/mzrUnit.hh"
-#include "mzr/mzrEltName.hh"
-#include "mzr/respondReaction.hh"
-#include "mzr/mzrException.hh"
-#include "mol/molEltName.hh"
-#include "stoch/stochSpecies.hh"
-#include "stoch/stochUnit.hh"
-#include "stoch/stochEltName.hh"
-#include "stoch/badStochSpeciesTagXcpt.hh"
+#include "mzr/moleculizer.hpp"
+#include "mzr/mzrUnit.hpp"
+#include "mzr/mzrEltName.hpp"
+#include "mzr/respondReaction.hpp"
+#include "mzr/mzrException.hpp"
+#include "mol/molEltName.hpp"
+#include "stoch/stochSpecies.hpp"
+#include "stoch/stochUnit.hpp"
+#include "stoch/stochEltName.hpp"
+#include "stoch/badStochSpeciesTagXcpt.hpp"
 #include <libxml++/libxml++.h>
 
 namespace stoch

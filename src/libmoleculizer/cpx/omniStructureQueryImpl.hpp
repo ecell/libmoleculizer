@@ -32,7 +32,7 @@
 #ifndef CPX_OMNISTRUCTUREQUERYIMPL_H
 #define CPX_OMNISTRUCTUREQUERYIMPL_H
 
-#include "cpx/binding.hh"
+#include "cpx/binding.hpp"
 
 namespace cpx
 {

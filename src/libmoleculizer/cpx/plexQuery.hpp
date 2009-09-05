@@ -33,9 +33,9 @@
 #define PLEXQUERY_H
 
 #include <algorithm>
-#include "fnd/query.hh"
-#include "cpx/subPlexSpec.hh"
-#include "cpx/molStateQuery.hh"
+#include "fnd/query.hpp"
+#include "cpx/subPlexSpec.hpp"
+#include "cpx/molStateQuery.hpp"
 
 namespace cpx
 {
@@ -118,6 +118,6 @@ namespace cpx
     };
 }
 
-#include "cpx/plexQueryImpl.hh"
+#include "cpx/plexQueryImpl.hpp"
 
 #endif

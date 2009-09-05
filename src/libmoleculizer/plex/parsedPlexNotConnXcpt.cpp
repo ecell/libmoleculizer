@@ -30,7 +30,7 @@
 //
 
 #include <sstream>
-#include "plex/parsedPlexNotConnXcpt.hh"
+#include "plex/parsedPlexNotConnXcpt.hpp"
 
 namespace plx
 {

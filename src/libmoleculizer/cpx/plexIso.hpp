@@ -32,7 +32,7 @@
 #ifndef CPX_PLEXISO_H
 #define CPX_PLEXISO_H
 
-#include "cpx/plexMap.hh"
+#include "cpx/plexMap.hpp"
 
 namespace cpx
 {
@@ -98,6 +98,6 @@ namespace cpx
     };
 }
 
-#include "cpx/plexIsoImpl.hh"
+#include "cpx/plexIsoImpl.hpp"
 
 #endif // CPX_PLEXISO_H

@@ -33,8 +33,8 @@
 #define UTL_DOMJOBIMPL_H
 
 #include <libxml++/libxml++.h>
-#include "utl/noDocumentParsedXcpt.hh"
-#include "utl/insuffArgsXcpt.hh"
+#include "utl/noDocumentParsedXcpt.hpp"
+#include "utl/insuffArgsXcpt.hpp"
 
 namespace utl
 {

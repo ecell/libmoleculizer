@@ -32,11 +32,11 @@
 #ifndef PARSEPLEX_H
 #define PARSEPLEX_H
 
-#include "utl/dom.hh"
-#include "mol/molUnit.hh"
-#include "plex/mzrPlexQueries.hh"
-#include "plex/parserPlex.hh"
-#include "plex/plexUnit.hh"
+#include "utl/dom.hpp"
+#include "mol/molUnit.hpp"
+#include "plex/mzrPlexQueries.hpp"
+#include "plex/parserPlex.hpp"
+#include "plex/plexUnit.hpp"
 
 namespace plx
 {

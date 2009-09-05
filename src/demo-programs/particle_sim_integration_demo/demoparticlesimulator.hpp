@@ -30,8 +30,8 @@
 //
 
 #include "demosimulator.hpp"
-#include "mzr/mzrSpecies.hh"
-#include "mzr/mzrReaction.hh"
+#include "mzr/mzrSpecies.hpp"
+#include "mzr/mzrReaction.hpp"
 using namespace mzr;
 
 class SimpleParticleSimulator : public SimpleSimulator

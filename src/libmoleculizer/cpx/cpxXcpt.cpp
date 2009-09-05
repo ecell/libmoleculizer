@@ -30,7 +30,7 @@
 //
 
 
-#include "cpxXcpt.hh"
+#include "cpxXcpt.hpp"
 
 namespace cpx
 {
@@ -99,7 +99,7 @@ namespace cpx
         return msgStream.str();
     }
     
-    // Thrown in dimerizeRxnGen.cc, makeBinaryReactions.
+    // Thrown in dimerizeRxnGen.cpp, makeBinaryReactions.
     std::string
     noKineticConstsXcpt::
     mkFullMsg( const std::string& rLeftMolName,

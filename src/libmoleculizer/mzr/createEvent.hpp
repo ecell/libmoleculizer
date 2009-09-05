@@ -32,7 +32,7 @@
 #ifndef MZR_CREATEEVENT_H
 #define MZR_CREATEEVENT_H
 
-#include "mzr/mzrEvent.hh"
+#include "mzr/mzrEvent.hpp"
 
 namespace mzr
 {

@@ -10,25 +10,25 @@ AM_CXXFLAGS = -Wall
 
 libmoleculizer_dimer_la_CXXFLAGS = $(AM_CXXFLAGS) @LIBXMLPP_CFLAGS@ @PYTHON_CSPEC@ 
 libmoleculizer_dimer_la_SOURCES =\
-decompRxnGen.cc \
-decomposeExtrap.cc \
-dimerDomParse.cc \
-dimerEltName.cc \
-dimerUnit.cc \
-dimerXcpt.cc \
-dimerizeExtrap.cc \
-dimerizeRxnGen.cc
+decompRxnGen.cpp \
+decomposeExtrap.cpp \
+dimerDomParse.cpp \
+dimerEltName.cpp \
+dimerUnit.cpp \
+dimerXcpt.cpp \
+dimerizeExtrap.cpp \
+dimerizeRxnGen.cpp
 
 libmoleculizer_dimer_HEADERS=\
-decompFam.hh \
-decompRxnGen.hh \
-decomposeExtrap.hh \
-dimerEltName.hh \
-dimerUnit.hh \
-dimerXcpt.hh \
-dimerizeExtrap.hh \
-dimerizeFam.hh \
-dimerizeRxnGen.hh
+decompFam.hpp \
+decompRxnGen.hpp \
+decomposeExtrap.hpp \
+dimerEltName.hpp \
+dimerUnit.hpp \
+dimerXcpt.hpp \
+dimerizeExtrap.hpp \
+dimerizeFam.hpp \
+dimerizeRxnGen.hpp
 
 
 

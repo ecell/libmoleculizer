@@ -30,7 +30,7 @@
 //
 
 
-#include "mzr/moleculizer.hh"
+#include "mzr/moleculizer.hpp"
 #include <string>
 #include <map>
 

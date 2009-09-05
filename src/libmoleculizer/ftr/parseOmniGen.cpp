@@ -29,17 +29,17 @@
 //
 //
 
-#include "fnd/fndXcpt.hh"
-#include "mol/mzrModMol.hh"
-#include "mol/badModMolXcpt.hh"
-#include "plex/parserPlex.hh"
-#include "plex/parseOmniPlex.hh"
-#include "ftr/ftrEltName.hh"
-#include "ftr/omniGen.hh"
-#include "ftr/omniFam.hh"
-#include "ftr/parseOmniGen.hh"
+#include "fnd/fndXcpt.hpp"
+#include "mol/mzrModMol.hpp"
+#include "mol/badModMolXcpt.hpp"
+#include "plex/parserPlex.hpp"
+#include "plex/parseOmniPlex.hpp"
+#include "ftr/ftrEltName.hpp"
+#include "ftr/omniGen.hpp"
+#include "ftr/omniFam.hpp"
+#include "ftr/parseOmniGen.hpp"
 #include <libxml++/libxml++.h>
-#include "mzr/mzrSpeciesDumpable.hh"
+#include "mzr/mzrSpeciesDumpable.hpp"
 
 namespace ftr
 {

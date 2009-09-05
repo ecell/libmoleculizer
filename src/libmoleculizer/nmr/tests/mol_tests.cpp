@@ -31,10 +31,10 @@
 
 
 #include <boost/test/included/unit_test.hpp>
-#include "nmr/namedMolecule.hh"
+#include "nmr/namedMolecule.hpp"
 
 #ifdef HAVE_CONFIG_H
-#include "moleculizer_config.hh"
+#include "moleculizer_config.hpp"
 #endif
 
 using namespace boost::unit_test;

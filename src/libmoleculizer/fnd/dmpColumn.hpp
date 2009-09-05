@@ -32,7 +32,7 @@
 #ifndef FND_DUMPSTREAMCOLUMN_H
 #define FND_DUMPSTREAMCOLUMN_H
 
-#include "fnd/basicDmpColumn.hh"
+#include "fnd/basicDmpColumn.hpp"
 
 namespace fnd
 {

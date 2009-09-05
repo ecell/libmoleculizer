@@ -29,9 +29,9 @@
 //
 //
 
-#include "dimer/dimerUnit.hh"
+#include "dimer/dimerUnit.hpp"
 #include <libxml++/libxml++.h>
-#include "mzr/mzrSpeciesDumpable.hh"
+#include "mzr/mzrSpeciesDumpable.hpp"
 
 namespace dimer
 {

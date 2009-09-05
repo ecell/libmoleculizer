@@ -29,13 +29,13 @@
 //
 //
 
-#include "mol/mzrModMol.hh"
-#include "ftr/ftrUnit.hh"
-#include "ftr/ftrEltName.hh"
-#include "ftr/parseOmniGen.hh"
-#include "ftr/parseUniMolGen.hh"
+#include "mol/mzrModMol.hpp"
+#include "ftr/ftrUnit.hpp"
+#include "ftr/ftrEltName.hpp"
+#include "ftr/parseOmniGen.hpp"
+#include "ftr/parseUniMolGen.hpp"
 #include <libxml++/libxml++.h>
-#include "mzr/mzrSpeciesDumpable.hh"
+#include "mzr/mzrSpeciesDumpable.hpp"
 
 namespace ftr
 {

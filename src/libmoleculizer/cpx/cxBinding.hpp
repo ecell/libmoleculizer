@@ -32,10 +32,10 @@
 #ifndef CXBINDINGPARAM_H
 #define CXBINDINGPARAM_H
 
-#include "fnd/featureContext.hh"
-#include "cpx/molState.hh"
-#include "cpx/prm.hh"
-#include "cpx/binding.hh"
+#include "fnd/featureContext.hpp"
+#include "cpx/molState.hpp"
+#include "cpx/prm.hpp"
+#include "cpx/binding.hpp"
 
 namespace cpx
 {
@@ -96,6 +96,6 @@ namespace cpx
     };
 }
 
-#include "cpx/cxBindingImpl.hh"
+#include "cpx/cxBindingImpl.hpp"
 
 #endif

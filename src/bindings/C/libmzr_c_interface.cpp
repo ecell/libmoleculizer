@@ -31,13 +31,13 @@
 
 #include "libmzr_c_interface.h"
 
-#include "utl/xcpt.hh"
-#include "utl/writeOutputGraph.hh"
-#include "moleculizer.hh"
-#include "mzr/spatialExtrapolationFunctions.hh"
-#include "unitsMgr.hh"
-#include "mol/molUnit.hh"
-#include "mzr/mzrSpeciesDumpable.hh"
+#include "utl/xcpt.hpp"
+#include "utl/writeOutputGraph.hpp"
+#include "moleculizer.hpp"
+#include "mzr/spatialExtrapolationFunctions.hpp"
+#include "unitsMgr.hpp"
+#include "mol/molUnit.hpp"
+#include "mzr/mzrSpeciesDumpable.hpp"
 
 #include <libxml++/libxml++.h>
 #include <iterator>

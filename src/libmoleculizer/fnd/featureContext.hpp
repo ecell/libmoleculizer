@@ -33,7 +33,7 @@
 #define FEATURECONTEXT_H
 
 #include <utility>
-#include "fnd/newSpeciesStimulus.hh"
+#include "fnd/newSpeciesStimulus.hpp"
 
 namespace fnd
 {

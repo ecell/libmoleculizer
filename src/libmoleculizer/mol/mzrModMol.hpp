@@ -32,9 +32,9 @@
 #ifndef MZRMODMOL_H
 #define MZRMODMOL_H
 
-#include "utl/xcpt.hh"
-#include "cpx/modMol.hh"
-#include "mol/mzrMol.hh"
+#include "utl/xcpt.hpp"
+#include "cpx/modMol.hpp"
+#include "mol/mzrMol.hpp"
 
 namespace bnd
 {

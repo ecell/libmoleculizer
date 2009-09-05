@@ -32,12 +32,12 @@
 #ifndef MOL_MZRMOL_H
 #define MOL_MZRMOL_H
 
-#include "fnd/feature.hh"
-#include "mol/mzrBndSite.hh"
-#include "cpx/basicMol.hh"
-#include "cpx/molState.hh"
-#include "cpx/cxMol.hh"
-#include "plex/mzrPlexSpecies.hh"
+#include "fnd/feature.hpp"
+#include "mol/mzrBndSite.hpp"
+#include "cpx/basicMol.hpp"
+#include "cpx/molState.hpp"
+#include "cpx/cxMol.hpp"
+#include "plex/mzrPlexSpecies.hpp"
 
 namespace bnd
 {

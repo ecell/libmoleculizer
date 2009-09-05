@@ -32,8 +32,8 @@
 #ifndef __ABSTRACTMOL_HH
 #define __ABSTRACTMOL_HH
 
-#include "utl/defs.hh"
-#include "nmr/nmrExceptions.hh"
+#include "utl/defs.hpp"
+#include "nmr/nmrExceptions.hpp"
 
 namespace nmr
 {

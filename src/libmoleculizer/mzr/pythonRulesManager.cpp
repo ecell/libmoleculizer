@@ -29,8 +29,8 @@
 //
 //
 
-#include "pythonRulesManager.hh"
-#include "mzrException.hh"
+#include "pythonRulesManager.hpp"
+#include "mzrException.hpp"
 
 namespace mzr
 {

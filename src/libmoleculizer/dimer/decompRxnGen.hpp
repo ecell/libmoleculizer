@@ -32,8 +32,8 @@
 #ifndef DIMER_DECOMPRXNGEN_H
 #define DIMER_DECOMPRXNGEN_H
 
-#include "plex/plexUnit.hh"
-#include "dimer/decomposeExtrap.hh"
+#include "plex/plexUnit.hpp"
+#include "dimer/decomposeExtrap.hpp"
 
 namespace dimer
 {

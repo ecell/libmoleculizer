@@ -32,8 +32,8 @@
 #ifndef PLEX_MULTBOUNDSITEXCPT_H
 #define PLEX_MULTBOUNDSITEXCPT_H
 
-#include "utl/dom.hh"
-#include "utl/xcpt.hh"
+#include "utl/dom.hpp"
+#include "utl/xcpt.hpp"
 
 namespace plx
 {

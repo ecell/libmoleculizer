@@ -32,17 +32,17 @@
 #ifndef PRM_H
 #define PRM_H
 
-/*! \file prm.hh
+/*! \file prm.hpp
   \ingroup plexSpeciesGroup
   
   \brief Defines parameters making up plexParam, the a complex's parameter. */
 
 #include <vector>
 #include <map>
-#include "cpx/siteShape.hh"
-#include "cpx/molState.hh"
-#include "cpx/ftrSpec.hh"
-#include "cpx/siteToShapeMap.hh"
+#include "cpx/siteShape.hpp"
+#include "cpx/molState.hpp"
+#include "cpx/ftrSpec.hpp"
+#include "cpx/siteToShapeMap.hpp"
 
 namespace cpx
 {

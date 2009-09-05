@@ -31,7 +31,7 @@
 
 #include <sstream>
 #include <algorithm>
-#include "cpx/basicBndSite.hh"
+#include "cpx/basicBndSite.hpp"
 
 namespace cpx
 {

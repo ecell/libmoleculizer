@@ -33,8 +33,8 @@
 #define FND_STOCHREACTION_H
 
 #include <cmath>
-#include "fnd/basicReaction.hh"
-#include "fnd/physConst.hh"
+#include "fnd/basicReaction.hpp"
+#include "fnd/physConst.hpp"
 
 namespace fnd
 {

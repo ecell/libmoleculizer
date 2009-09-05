@@ -33,13 +33,13 @@
 #ifndef MOLECULIZER_H
 #define MOLECULIZER_H
 
-#include "utl/defs.hh"
-#include "mzr/mzrException.hh"
-#include "mzr/unit.hh"
-#include "fnd/reactionNetworkDescription.hh"
-#include "mzr/mzrSpecies.hh"
-#include "mzr/mzrReaction.hh"
-#include "mzr/pythonRulesManager.hh"
+#include "utl/defs.hpp"
+#include "mzr/mzrException.hpp"
+#include "mzr/unit.hpp"
+#include "fnd/reactionNetworkDescription.hpp"
+#include "mzr/mzrSpecies.hpp"
+#include "mzr/mzrReaction.hpp"
+#include "mzr/pythonRulesManager.hpp"
 
 
 namespace mzr

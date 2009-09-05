@@ -32,7 +32,7 @@
 #ifndef __READABLENAMEASSEMBLER_HH
 #define __READABLENAMEASSEMBLER_HH
 
-#include "nameAssembler.hh"
+#include "nameAssembler.hpp"
 
 
 namespace nmr

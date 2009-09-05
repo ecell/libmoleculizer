@@ -32,7 +32,7 @@
 #ifndef PLEX_UNKMOLINSTXCPT_H
 #define PLEX_UNKMOLINSTXCPT_H
 
-#include "utl/dom.hh"
+#include "utl/dom.hpp"
 
 namespace plx
 {

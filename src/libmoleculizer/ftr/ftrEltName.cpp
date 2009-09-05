@@ -29,7 +29,7 @@
 //
 //
 
-#include "ftr/ftrEltName.hh"
+#include "ftr/ftrEltName.hpp"
 
 namespace ftr
 {

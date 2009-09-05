@@ -32,7 +32,7 @@
 #ifndef MOL_BADMOLPARAMXCPT_H
 #define MOL_BADMOLPARAMXCPT_H
 
-#include "utl/xcpt.hh"
+#include "utl/xcpt.hpp"
 
 namespace bnd
 {

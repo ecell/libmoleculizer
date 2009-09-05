@@ -32,11 +32,11 @@
 #ifndef OMNIEXTRAP_H
 #define OMNIEXTRAP_H
 
-#include "cpx/cxOmni.hh"
-#include "mol/mzrMol.hh"
-#include "plex/mzrPlexSpecies.hh"
-#include "plex/mzrPlexFamily.hh"
-#include "plex/mzrOmniPlex.hh"
+#include "cpx/cxOmni.hpp"
+#include "mol/mzrMol.hpp"
+#include "plex/mzrPlexSpecies.hpp"
+#include "plex/mzrPlexFamily.hpp"
+#include "plex/mzrOmniPlex.hpp"
 
 namespace ftr
 {

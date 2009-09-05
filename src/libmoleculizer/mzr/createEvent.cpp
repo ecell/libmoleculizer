@@ -29,10 +29,10 @@
 //
 //
 
-#include "mzr/mzrSpecies.hh"
-#include "mzr/createEvent.hh"
-#include "mzr/respondReaction.hh"
-#include "mzr/mzrUnit.hh"
+#include "mzr/mzrSpecies.hpp"
+#include "mzr/createEvent.hpp"
+#include "mzr/respondReaction.hpp"
+#include "mzr/mzrUnit.hpp"
 
 namespace mzr
 {

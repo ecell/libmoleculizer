@@ -32,10 +32,10 @@
 #ifndef CXSITEPARAM_H
 #define CXSITEPARAM_H
 
-#include "fnd/featureContext.hh"
-#include "cpx/molState.hh"
-#include "cpx/ftrSpec.hh"
-#include "cpx/siteToShapeMap.hh"
+#include "fnd/featureContext.hpp"
+#include "cpx/molState.hpp"
+#include "cpx/ftrSpec.hpp"
+#include "cpx/siteToShapeMap.hpp"
 
 namespace cpx
 {
@@ -86,6 +86,6 @@ namespace cpx
     };
 }
 
-#include "cpx/cxSiteImpl.hh"
+#include "cpx/cxSiteImpl.hpp"
 
 #endif

@@ -32,8 +32,8 @@
 #ifndef CPX_RECOGNIZER_H
 #define CPX_RECOGNIZER_H
 
-#include "cpx/plexIso.hh"
-#include "cpx/plexFamily.hh"
+#include "cpx/plexIso.hpp"
+#include "cpx/plexFamily.hpp"
 
 namespace cpx
 {
@@ -119,6 +119,6 @@ namespace cpx
     };
 }
 
-#include "cpx/recognizerImpl.hh"
+#include "cpx/recognizerImpl.hpp"
 
 #endif // CPX_RECOGNIZER_H

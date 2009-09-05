@@ -29,9 +29,9 @@
 //
 //
 
-#include "utl/utility.hh"
-#include "complexSpecies.hh"
-#include "namedMolecule.hh"
+#include "utl/utility.hpp"
+#include "complexSpecies.hpp"
+#include "namedMolecule.hpp"
 #include <iostream>
 
 namespace nmr

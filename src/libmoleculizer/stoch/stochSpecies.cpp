@@ -29,11 +29,11 @@
 //
 //
 
-#include "utl/utility.hh"
-#include "mzr/mzrEltName.hh"
-#include "mol/molEltName.hh"
-#include "stoch/stochEltName.hh"
-#include "stoch/stochSpecies.hh"
+#include "utl/utility.hpp"
+#include "mzr/mzrEltName.hpp"
+#include "mol/molEltName.hpp"
+#include "stoch/stochEltName.hpp"
+#include "stoch/stochSpecies.hpp"
 #include <libxml++/libxml++.h>
 
 namespace stoch

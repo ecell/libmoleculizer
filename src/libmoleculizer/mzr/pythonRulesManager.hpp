@@ -35,7 +35,7 @@
 
 // Why can't I advance declare PyObject? It always leads to an
 // inexplicable error.
-// pythonRulesManager.hh:1 ( = line of advance declaration): error: using typedef-name 'PyObject' after 'class'
+// pythonRulesManager.hpp:1 ( = line of advance declaration): error: using typedef-name 'PyObject' after 'class'
 // System/Library/Frameworks/Python.framework/Versions/2.5/include/python2.5/object.h:105: error: 'PyObject' has a previous declaration here
 
 #include <Python.h>

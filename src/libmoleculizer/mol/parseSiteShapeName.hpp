@@ -32,9 +32,9 @@
 #ifndef MOL_PARSESITESHAPENAME_H
 #define MOL_PARSESITESHAPENAME_H
 
-#include "utl/dom.hh"
-#include "cpx/siteShape.hh"
-#include "mol/molEltName.hh"
+#include "utl/dom.hpp"
+#include "cpx/siteShape.hpp"
+#include "mol/molEltName.hpp"
 
 namespace bnd
 {

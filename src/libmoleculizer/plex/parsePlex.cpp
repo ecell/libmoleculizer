@@ -29,21 +29,21 @@
 //
 //
 
-#include "utl/defs.hh"
-#include "utl/domXcpt.hh"
-#include "cpx/modMolStateQuery.hh"
-#include "mol/molEltName.hh"
-#include "mol/unkMolXcpt.hh"
-#include "mol/unkSiteXcpt.hh"
-#include "mol/badModMolXcpt.hh"
-#include "plex/mzrPlexFamily.hh"
-#include "plex/parserPlex.hh"
-#include "plex/parsePlex.hh"
-#include "plex/multBoundSiteXcpt.hh"
-#include "plex/parsedPlexNotConnXcpt.hh"
-#include "plex/mzrPlexQueries.hh"
+#include "utl/defs.hpp"
+#include "utl/domXcpt.hpp"
+#include "cpx/modMolStateQuery.hpp"
+#include "mol/molEltName.hpp"
+#include "mol/unkMolXcpt.hpp"
+#include "mol/unkSiteXcpt.hpp"
+#include "mol/badModMolXcpt.hpp"
+#include "plex/mzrPlexFamily.hpp"
+#include "plex/parserPlex.hpp"
+#include "plex/parsePlex.hpp"
+#include "plex/multBoundSiteXcpt.hpp"
+#include "plex/parsedPlexNotConnXcpt.hpp"
+#include "plex/mzrPlexQueries.hpp"
 #include <libxml++/libxml++.h>
-#include "mzr/mzrSpeciesDumpable.hh"
+#include "mzr/mzrSpeciesDumpable.hpp"
 
 namespace plx
 {

@@ -30,7 +30,7 @@
 //
 
 #include <sstream>
-#include "stoch/unkStochSpeciesXcpt.hh"
+#include "stoch/unkStochSpeciesXcpt.hpp"
 
 namespace stoch
 {

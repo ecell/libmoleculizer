@@ -32,12 +32,12 @@
 #ifndef STOCHSPECIES_H
 #define STOCHSPECIES_H
 
-/*! \file stochSpecies.hh
+/*! \file stochSpecies.hpp
   \ingroup stochGroup
   \brief Defines stochSpecies, simple molecules with no binding sites. */
 
-#include "utl/dom.hh"
-#include "mzr/mzrSpecies.hh"
+#include "utl/dom.hpp"
+#include "mzr/mzrSpecies.hpp"
 
 namespace stoch
 {

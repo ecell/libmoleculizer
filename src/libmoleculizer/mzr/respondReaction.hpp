@@ -32,7 +32,7 @@
 #ifndef MZR_RESPONDREACTION_H
 #define MZR_RESPONDREACTION_H
 
-#include "mzr/mzrReaction.hh"
+#include "mzr/mzrReaction.hpp"
 
 namespace mzr
 {

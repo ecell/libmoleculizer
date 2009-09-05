@@ -29,10 +29,10 @@
 //
 //
 
-#include "mol/mzrBndSite.hh"
-#include "mol/molEltName.hh"
-#include "mol/unkSiteShapeXcpt.hh"
-#include "plex/mzrPlexFamily.hh"
+#include "mol/mzrBndSite.hpp"
+#include "mol/molEltName.hpp"
+#include "mol/unkSiteShapeXcpt.hpp"
+#include "plex/mzrPlexFamily.hpp"
 #include <libxml++/libxml++.h>
 
 namespace bnd

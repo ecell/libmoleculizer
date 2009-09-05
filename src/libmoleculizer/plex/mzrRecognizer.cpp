@@ -29,10 +29,10 @@
 //
 //
 
-#include "mzr/mzrSpeciesDumpable.hh"
-#include "plex/mzrRecognizer.hh"
-#include "plex/mzrPlexFamily.hh"
-#include "plex/plexUnit.hh"
+#include "mzr/mzrSpeciesDumpable.hpp"
+#include "plex/mzrRecognizer.hpp"
+#include "plex/mzrPlexFamily.hpp"
+#include "plex/plexUnit.hpp"
 
 namespace plx
 {

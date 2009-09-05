@@ -32,7 +32,7 @@
 #ifndef MOL_DUPMODNAMEXCPT_H
 #define MOL_DUPMODNAMEXCPT_H
 
-#include "utl/dom.hh"
+#include "utl/dom.hpp"
 
 namespace bnd
 {

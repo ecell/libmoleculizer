@@ -30,7 +30,7 @@
 //
 
 #include <sstream>
-#include "ftr/badModMolInstanceXcpt.hh"
+#include "ftr/badModMolInstanceXcpt.hpp"
 
 namespace ftr
 {

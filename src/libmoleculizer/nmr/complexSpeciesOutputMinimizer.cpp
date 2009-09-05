@@ -31,7 +31,7 @@
 
 
 #include "nauty/nauty.h"
-#include "complexSpeciesOutputMinimizer.hh"
+#include "complexSpeciesOutputMinimizer.hpp"
 #include <iostream>
 
 namespace nmr

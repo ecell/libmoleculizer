@@ -32,10 +32,10 @@
 #ifndef MOL_PARSEBNDSITE_H
 #define MOL_PARSEBNDSITE_H
 
-#include "utl/dom.hh"
-#include "mol/mzrBndSite.hh"
-#include "mol/parseSiteShapeName.hh"
-#include "mol/molEltName.hh"
+#include "utl/dom.hpp"
+#include "mol/mzrBndSite.hpp"
+#include "mol/parseSiteShapeName.hpp"
+#include "mol/molEltName.hpp"
 
 namespace bnd
 {

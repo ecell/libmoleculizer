@@ -32,7 +32,7 @@
 #ifndef CPX_SMALLMOL_H
 #define CPX_SMALLMOL_H
 
-#include "cpx/stateMol.hh"
+#include "cpx/stateMol.hpp"
 
 namespace cpx
 {

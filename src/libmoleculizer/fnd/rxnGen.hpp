@@ -32,9 +32,9 @@
 #ifndef FND_RXNGEN_H
 #define FND_RXNGEN_H
 
-#include "fnd/coreRxnGen.hh"
-#include "fnd/sensitive.hh"
-#include "fnd/featureStimulus.hh"
+#include "fnd/coreRxnGen.hpp"
+#include "fnd/sensitive.hpp"
+#include "fnd/featureStimulus.hpp"
 
 namespace fnd
 {

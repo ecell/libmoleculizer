@@ -30,9 +30,9 @@
 //
 
 #include <libxml++/libxml++.h>
-#include "mzr/mzrUnit.hh"
-#include "mzr/dumpUtils.hh"
-#include "mzr/moleculizer.hh"
+#include "mzr/mzrUnit.hpp"
+#include "mzr/dumpUtils.hpp"
+#include "mzr/moleculizer.hpp"
 
 namespace mzr
 {

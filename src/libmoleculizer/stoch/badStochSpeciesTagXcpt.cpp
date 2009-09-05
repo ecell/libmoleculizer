@@ -30,7 +30,7 @@
 //
 
 #include <sstream>
-#include "stoch/badStochSpeciesTagXcpt.hh"
+#include "stoch/badStochSpeciesTagXcpt.hpp"
 
 namespace stoch
 {

@@ -34,7 +34,7 @@
 #define MZRHELPERFUNCTIONS_HH
 
 #include <iostream>
-#include "mzrSpecies.hh"
+#include "mzrSpecies.hpp"
 
 namespace mzr
 {

@@ -33,10 +33,10 @@
 #define CPX_SITETOSHAPEMAP_H
 
 #include <map>
-#include "utl/xcpt.hh"
-#include "cpx/ftrSpec.hh"
-#include "cpx/siteShape.hh"
-#include "cpx/plexIso.hh"
+#include "utl/xcpt.hpp"
+#include "cpx/ftrSpec.hpp"
+#include "cpx/siteShape.hpp"
+#include "cpx/plexIso.hpp"
 
 namespace cpx
 {
@@ -93,6 +93,6 @@ namespace cpx
     };
 }
 
-#include "cpx/siteToShapeMapImpl.hh"
+#include "cpx/siteToShapeMapImpl.hpp"
 
 #endif // CPX_SITETOSHAPEMAP_H

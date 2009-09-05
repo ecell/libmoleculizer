@@ -33,8 +33,8 @@
 #ifndef __PARTIALTOKENLIST_HH
 #define __PARTIALTOKENLIST_HH
 
-#include "utl/defs.hh"
-#include "nmr/abstractMol.hh"
+#include "utl/defs.hpp"
+#include "nmr/abstractMol.hpp"
 
 namespace nmr
 {

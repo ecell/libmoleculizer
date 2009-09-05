@@ -32,8 +32,8 @@
 #ifndef CPX_MODMOLSTATE_H
 #define CPX_MODMOLSTATE_H
 
-#include "cpx/molState.hh"
-#include "cpx/modStateMixin.hh"
+#include "cpx/molState.hpp"
+#include "cpx/modStateMixin.hpp"
 
 namespace cpx
 {

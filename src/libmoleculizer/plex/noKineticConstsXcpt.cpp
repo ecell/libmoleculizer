@@ -30,7 +30,7 @@
 //
 
 #include <sstream>
-#include "plex/noKineticConstsXcpt.hh"
+#include "plex/noKineticConstsXcpt.hpp"
 
 namespace plx
 {
@@ -68,7 +68,7 @@ namespace plx
         return msgStream.str();
     }
     
-    // Thrown in dimerizeRxnGen.cc, makeBinaryReactions.
+    // Thrown in dimerizeRxnGen.cpp, makeBinaryReactions.
     std::string
     noKineticConstsXcpt::
     mkFullMsg( const std::string& rLeftMolName,

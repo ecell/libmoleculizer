@@ -31,8 +31,8 @@
 
 #include <string>
 #include <iostream>
-#include "utl/arg.hh"
-#include "mzr/moleculizer.hh"
+#include "utl/arg.hpp"
+#include "mzr/moleculizer.hpp"
 #include "demoparticlesimulator.hpp"
 
 using namespace std;

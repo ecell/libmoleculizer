@@ -32,7 +32,7 @@
 #ifndef FTR_UNIMOLEXTRAP_H
 #define FTR_UNIMOLEXTRAP_H
 
-#include "cpx/cxMol.hh"
+#include "cpx/cxMol.hpp"
 
 namespace ftr
 {

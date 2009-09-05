@@ -32,10 +32,10 @@
 #ifndef RXNNETWORKCATALOG_HH
 #define RXNNETWORKCATALOG_HH
 
-#include "utl/defs.hh"
-#include "fnd/fndXcpt.hh"
-#include "fnd/basicReaction.hh"
-#include "fnd/basicSpecies.hh"
+#include "utl/defs.hpp"
+#include "fnd/fndXcpt.hpp"
+#include "fnd/basicReaction.hpp"
+#include "fnd/basicSpecies.hpp"
 
 namespace fnd
 {
@@ -182,7 +182,7 @@ namespace fnd
 
 }
 
-#include "reactionNetworkDescriptionImpl.hh"
+#include "reactionNetworkDescriptionImpl.hpp"
 
 #endif // RXNNETWORKCATALOG_HH
 

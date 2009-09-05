@@ -33,10 +33,10 @@
 #define BASICSPECIES_H
 
 #include <sstream>
-#include "fnd/physConst.hh"
-#include "utl/xcpt.hh"
-#include "utl/utility.hh"
-#include "fnd/notifier.hh"
+#include "fnd/physConst.hpp"
+#include "utl/xcpt.hpp"
+#include "utl/utility.hpp"
+#include "fnd/notifier.hpp"
 
 namespace fnd
 {

@@ -32,7 +32,7 @@
 #ifndef STOCH_UNKSTOCHSPECIESXCPT_H
 #define STOCH_UNKSTOCHSPECIESXCPT_H
 
-#include "utl/dom.hh"
+#include "utl/dom.hpp"
 
 namespace stoch
 {

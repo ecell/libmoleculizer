@@ -32,24 +32,24 @@
 #ifndef PLEXUNIT_H
 #define PLEXUNIT_H
 
-#include "plex/plexExceptions.hh"
-#include "plex/mzrOmniPlex.hh"
-#include "plex/mzrPlexFamily.hh"
-#include "plex/mzrPlexSpecies.hh"
-#include "plex/plexEltName.hh"
-#include "nmr/nmrUnit.hh"
-#include "nmr/complexOutputState.hh"
-#include "nmr/namedMolecule.hh"
-#include "mol/molUnit.hh"
-#include "mol/mzrMol.hh"
-#include "mzr/unitsMgr.hh"
-#include "mzr/moleculizer.hh"
-#include "mzr/mzrEltName.hh"
-#include "mzr/mzrUnit.hh"
-#include "plex/mzrRecognizer.hh"
-#include "cpx/omniPlex.hh"
-#include "cpx/omniStructureQuery.hh"
-#include "cpx/plexQuery.hh"
+#include "plex/plexExceptions.hpp"
+#include "plex/mzrOmniPlex.hpp"
+#include "plex/mzrPlexFamily.hpp"
+#include "plex/mzrPlexSpecies.hpp"
+#include "plex/plexEltName.hpp"
+#include "nmr/nmrUnit.hpp"
+#include "nmr/complexOutputState.hpp"
+#include "nmr/namedMolecule.hpp"
+#include "mol/molUnit.hpp"
+#include "mol/mzrMol.hpp"
+#include "mzr/unitsMgr.hpp"
+#include "mzr/moleculizer.hpp"
+#include "mzr/mzrEltName.hpp"
+#include "mzr/mzrUnit.hpp"
+#include "plex/mzrRecognizer.hpp"
+#include "cpx/omniPlex.hpp"
+#include "cpx/omniStructureQuery.hpp"
+#include "cpx/plexQuery.hpp"
 
 
 namespace plx
@@ -85,7 +85,7 @@ namespace plx
       class of mols (e.g. phos) and queries to determine their interesting
       states.  */
     
-    /*! \file plexUnit.hh
+    /*! \file plexUnit.hpp
       \ingroup plexGroup
       \brief Defines plexUnit, a unit providing complexes and subcomplexes. */
     

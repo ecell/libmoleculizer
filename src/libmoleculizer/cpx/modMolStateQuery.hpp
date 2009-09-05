@@ -32,9 +32,9 @@
 #ifndef CPX_MODMOLQUERY_H
 #define CPX_MODMOLQUERY_H
 
-#include "cpx/molStateQuery.hh"
-#include "cpx/modStateMixin.hh"
-#include "cpx/cpxXcpt.hh"
+#include "cpx/molStateQuery.hpp"
+#include "cpx/modStateMixin.hpp"
+#include "cpx/cpxXcpt.hpp"
 
 namespace cpx
 {

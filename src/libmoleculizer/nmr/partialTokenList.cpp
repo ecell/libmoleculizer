@@ -29,7 +29,7 @@
 //
 //
 
-#include "partialTokenList.hh"
+#include "partialTokenList.hpp"
 
 namespace nmr
 {

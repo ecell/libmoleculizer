@@ -29,7 +29,7 @@
 //
 //
 
-#include "mol/molEltName.hh"
+#include "mol/molEltName.hpp"
 
 namespace bnd
 {

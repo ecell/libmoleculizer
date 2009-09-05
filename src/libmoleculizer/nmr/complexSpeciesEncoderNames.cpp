@@ -29,7 +29,7 @@
 //
 //
 
-#include "nmr/complexSpeciesEncoderNames.hh"
+#include "nmr/complexSpeciesEncoderNames.hpp"
 
 namespace nmr
 {

@@ -29,9 +29,9 @@
 //
 //
 
-#include "utl/utility.hh"
-#include "utl/utlXcpt.hh"
-#include "utl/arg.hh"
+#include "utl/utility.hpp"
+#include "utl/utlXcpt.hpp"
+#include "utl/arg.hpp"
 
 namespace utl
 {

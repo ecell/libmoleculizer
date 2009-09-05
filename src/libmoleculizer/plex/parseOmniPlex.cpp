@@ -30,12 +30,12 @@
 //
 
 #include <libxml++/libxml++.h>
-#include "mzr/mzrSpeciesDumpable.hh"
-#include "plex/parseOmniPlex.hh"
-#include "plex/mzrPlexFamily.hh"
-#include "plex/parsePlex.hh"
-#include "plex/mzrPlexQueries.hh"
-#include "plex/mzrOmniStructureQueries.hh"
+#include "mzr/mzrSpeciesDumpable.hpp"
+#include "plex/parseOmniPlex.hpp"
+#include "plex/mzrPlexFamily.hpp"
+#include "plex/parsePlex.hpp"
+#include "plex/mzrPlexQueries.hpp"
+#include "plex/mzrOmniStructureQueries.hpp"
 
 namespace plx
 {

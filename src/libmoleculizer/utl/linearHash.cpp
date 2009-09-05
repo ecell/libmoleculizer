@@ -29,7 +29,7 @@
 //
 //
 
-#include "utl/linearHash.hh"
+#include "utl/linearHash.hpp"
 #include <algorithm>
 
 namespace utl
@@ -45,7 +45,7 @@ namespace utl
     const size_t linearHash::summand = 3248630751ul;
     
     // This could be somewhat templatized....
-    // It also appears to be defined in tauApp.cc.
+    // It also appears to be defined in tauApp.cpp.
     class charHashAccum : public std::unary_function<char, void>
     {
         size_t& rValue;

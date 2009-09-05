@@ -33,7 +33,7 @@
 #define CPX_QUERYALLOLIST_H
 
 #include <list>
-#include "cpx/plexQuery.hh"
+#include "cpx/plexQuery.hpp"
 
 
 namespace cpx
@@ -93,6 +93,6 @@ namespace cpx
     };
 }
 
-#include "cpx/queryAlloListImpl.hh"
+#include "cpx/queryAlloListImpl.hpp"
 
 #endif // CPX_QUERYALLOLIST_H

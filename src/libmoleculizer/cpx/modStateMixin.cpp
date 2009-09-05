@@ -29,7 +29,7 @@
 //
 //
 
-#include "cpx/modStateMixin.hh"
+#include "cpx/modStateMixin.hpp"
 
 namespace cpx
 {

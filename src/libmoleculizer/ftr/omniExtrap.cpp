@@ -29,9 +29,9 @@
 //
 //
 
-#include "ftr/omniExtrap.hh"
-#include "fnd/pchem.hh"
-#include "mzr/mzrSpeciesDumpable.hh"
+#include "ftr/omniExtrap.hpp"
+#include "fnd/pchem.hpp"
+#include "mzr/mzrSpeciesDumpable.hpp"
 
 namespace ftr
 {

@@ -32,13 +32,13 @@
 #ifndef REACTIONNETWORKGENERATOR_HPP
 #define REACTIONNETWORKGENERATOR_HPP
 
-#include "mzr/moleculizer.hh"
-#include "mzr/mzrException.hh"
-#include "fnd/basicReaction.hh"
-#include "mzr/mzrSpecies.hh"
-#include "utl/utility.hh"
-#include "nmr/complexSpecies.hh"
-#include "mol/mzrMol.hh"
+#include "mzr/moleculizer.hpp"
+#include "mzr/mzrException.hpp"
+#include "fnd/basicReaction.hpp"
+#include "mzr/mzrSpecies.hpp"
+#include "utl/utility.hpp"
+#include "nmr/complexSpecies.hpp"
+#include "mol/mzrMol.hpp"
 #include <vector>
 #include <string>
 

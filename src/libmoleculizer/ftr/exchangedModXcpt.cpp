@@ -30,7 +30,7 @@
 //
 
 #include <sstream>
-#include "ftr/exchangedModXcpt.hh"
+#include "ftr/exchangedModXcpt.hpp"
 
 namespace ftr
 {

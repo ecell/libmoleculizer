@@ -30,7 +30,7 @@
 //
 
 #include <sstream>
-#include "ftr/badSmallMolXcpt.hh"
+#include "ftr/badSmallMolXcpt.hpp"
 
 namespace ftr
 {

@@ -29,12 +29,12 @@
 //
 //
 
-#include "utl/defs.hh"
-#include "mzr/mzrException.hh"
-#include "mzr/mzrEltName.hh"
-#include "mzr/moleculizer.hh"
-#include "mzr/mzrReaction.hh"
-#include "mzr/mzrUnit.hh"
+#include "utl/defs.hpp"
+#include "mzr/mzrException.hpp"
+#include "mzr/mzrEltName.hpp"
+#include "mzr/moleculizer.hpp"
+#include "mzr/mzrReaction.hpp"
+#include "mzr/mzrUnit.hpp"
 #include <libxml++/libxml++.h>
 
 

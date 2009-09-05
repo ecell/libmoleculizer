@@ -32,12 +32,12 @@
 #ifndef MZRBNDSITE_H
 #define MZRBNDSITE_H
 
-#include "utl/dom.hh"
-#include "fnd/feature.hh"
-#include "cpx/basicBndSite.hh"
-#include "cpx/ftrSpec.hh"
-#include "cpx/cxSite.hh"
-#include "mol/siteFeature.hh"
+#include "utl/dom.hpp"
+#include "fnd/feature.hpp"
+#include "cpx/basicBndSite.hpp"
+#include "cpx/ftrSpec.hpp"
+#include "cpx/cxSite.hpp"
+#include "mol/siteFeature.hpp"
 
 namespace plx
 {

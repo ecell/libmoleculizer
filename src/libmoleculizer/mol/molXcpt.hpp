@@ -32,7 +32,7 @@
 #ifndef MOLXCPT_H
 #define MOLXCPT_H
 
-#include "utl/dom.hh"
+#include "utl/dom.hpp"
 
 namespace cpx
 {

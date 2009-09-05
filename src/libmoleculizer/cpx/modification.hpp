@@ -33,7 +33,7 @@
 #define MODIFICATION_H
 
 #include <string>
-#include "utl/dom.hh"
+#include "utl/dom.hpp"
 
 namespace cpx
 {

@@ -29,7 +29,7 @@
 //
 //
 
-#include "dimer/dimerEltName.hh"
+#include "dimer/dimerEltName.hpp"
 
 namespace dimer
 {

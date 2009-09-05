@@ -32,7 +32,7 @@
 #ifndef __COMPLEXOUTPUTSTATE_HH
 #define __COMPLEXOUTPUTSTATE_HH
 
-#include "utl/defs.hh"
+#include "utl/defs.hpp"
 
 namespace nmr
 {

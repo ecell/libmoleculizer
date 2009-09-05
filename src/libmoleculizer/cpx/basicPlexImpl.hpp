@@ -32,7 +32,7 @@
 #ifndef CPX_BASICPLEXIMPL_H
 #define CPX_BASICPLEXIMPL_H
 
-#include "cpx/hashMolRec.hh"
+#include "cpx/hashMolRec.hpp"
 
 namespace cpx
 {

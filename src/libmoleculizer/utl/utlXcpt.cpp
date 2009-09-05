@@ -4,7 +4,7 @@
 // badNNIntArgXcpt
 // badPosIntArgXcpt
 
-#include "utlXcpt.hh"
+#include "utlXcpt.hpp"
 
 namespace utl
 {

@@ -29,10 +29,10 @@
 //
 //
 
-#include "utl/utility.hh"
-#include "utl/frexp10.hh"
-#include "mzr/dumpUtils.hh"
-#include "mzr/mzrEltName.hh"
+#include "utl/utility.hpp"
+#include "utl/frexp10.hpp"
+#include "mzr/dumpUtils.hpp"
+#include "mzr/mzrEltName.hpp"
 
 #include <libxml++/libxml++.h>
 

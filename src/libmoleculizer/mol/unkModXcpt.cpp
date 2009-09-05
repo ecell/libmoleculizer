@@ -30,7 +30,7 @@
 //
 
 #include <sstream>
-#include "mol/unkModXcpt.hh"
+#include "mol/unkModXcpt.hpp"
 
 namespace bnd
 {

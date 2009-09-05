@@ -32,12 +32,12 @@
 #ifndef __NAMEASSEMBLER_HH
 #define __NAMEASSEMBLER_HH
 
-#include "utl/defs.hh"
-#include "nmr/nmrExceptions.hh"
+#include "utl/defs.hpp"
+#include "nmr/nmrExceptions.hpp"
 
-#include "nmr/complexSpecies.hh"
-#include "nmr/complexOutputState.hh"
-#include "nmr/complexSpeciesOutputMinimizer.hh"
+#include "nmr/complexSpecies.hpp"
+#include "nmr/complexOutputState.hpp"
+#include "nmr/complexSpeciesOutputMinimizer.hpp"
 
 namespace nmr
 {

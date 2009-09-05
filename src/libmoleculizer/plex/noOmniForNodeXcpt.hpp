@@ -32,7 +32,7 @@
 #ifndef PLEX_NOOMNIFORNODEXCPT_H
 #define PLEX_NOOMNIFORNODEXCPT_H
 
-#include "utl/dom.hh"
+#include "utl/dom.hpp"
 
 namespace plx
 {

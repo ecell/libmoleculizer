@@ -32,20 +32,20 @@
 #ifndef MZRUNIT_H
 #define MZRUNIT_H
 
-#include "utl/defs.hh"
-#include "utl/dom.hh"
+#include "utl/defs.hpp"
+#include "utl/dom.hpp"
 
-#include "fnd/query.hh"
-#include "fnd/dumpable.hh"
-#include "mzr/unit.hh"
-#include "mzr/mzrException.hh"
-#include "mzr/moleculizer.hh"
+#include "fnd/query.hpp"
+#include "fnd/dumpable.hpp"
+#include "mzr/unit.hpp"
+#include "mzr/mzrException.hpp"
+#include "mzr/moleculizer.hpp"
 
-#include "mzr/molarFactor.hh"
-#include "mzr/mzrSpecies.hh"
-#include "mzr/mzrReaction.hh"
+#include "mzr/molarFactor.hpp"
+#include "mzr/mzrSpecies.hpp"
+#include "mzr/mzrReaction.hpp"
 
-#include "mzr/mzrEltName.hh"
+#include "mzr/mzrEltName.hpp"
 
 
 namespace mzr

@@ -30,7 +30,7 @@
 //
 
 #include <sstream>
-#include "plex/unkMolInstXcpt.hh"
+#include "plex/unkMolInstXcpt.hpp"
 
 namespace plx
 {

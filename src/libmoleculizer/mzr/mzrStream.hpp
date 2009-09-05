@@ -33,7 +33,7 @@
 #define MZRSTREAM_H
 
 #include <vector>
-#include "utl/dom.hh"
+#include "utl/dom.hpp"
 
 namespace mzr
 {

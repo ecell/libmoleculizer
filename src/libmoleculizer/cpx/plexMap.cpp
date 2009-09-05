@@ -29,7 +29,7 @@
 //
 //
 
-#include "cpx/plexMap.hh"
+#include "cpx/plexMap.hpp"
 
 namespace cpx
 {

@@ -29,8 +29,8 @@
 //
 //
 
-#include "readableNameAssembler.hh"
-#include "utl/utility.hh"
+#include "readableNameAssembler.hpp"
+#include "utl/utility.hpp"
 
 #include <vector>
 

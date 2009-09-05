@@ -29,7 +29,7 @@
 //
 //
 
-#include "plex/plexEltName.hh"
+#include "plex/plexEltName.hpp"
 
 namespace plx
 {

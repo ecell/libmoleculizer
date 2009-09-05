@@ -30,8 +30,8 @@
 //
 
 #include "demosimulator.hpp"
-#include  "utl/defs.hh"
-#include "utl/utility.hh"
+#include  "utl/defs.hpp"
+#include "utl/utility.hpp"
 #include <fstream>
 #include <stdio.h>
 #include <time.h>

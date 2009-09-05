@@ -32,10 +32,10 @@
 #ifndef MOL_BADMODMOLXCPT_H
 #define MOL_BADMODMOLXCPT_H
 
-#include "utl/xcpt.hh"
-#include "utl/dom.hh"
-#include "cpx/modification.hh"
-#include "mol/mzrModMol.hh"
+#include "utl/xcpt.hpp"
+#include "utl/dom.hpp"
+#include "cpx/modification.hpp"
+#include "mol/mzrModMol.hpp"
 
 namespace bnd
 {

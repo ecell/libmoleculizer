@@ -32,7 +32,7 @@
 #ifndef CPX_SUBPLEXSPEC_H
 #define CPX_SUBPLEXSPEC_H
 
-#include "cpx/plexIso.hh"
+#include "cpx/plexIso.hpp"
 
 namespace cpx
 {

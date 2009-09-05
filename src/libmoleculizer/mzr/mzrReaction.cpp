@@ -29,15 +29,15 @@
 //
 //
 
-#include "mzr/mzrSpecies.hh"
-#include "mzr/mzrReaction.hh"
-#include "mzr/respondReaction.hh"
-#include "mzr/mzrEltName.hh"
-#include "mzr/mzrUnit.hh"
-#include "mzr/dumpUtils.hh"
-#include "mzr/unitsMgr.hh"
-#include "mzr/moleculizer.hh"
-#include "mzr/mzrSpeciesDumpable.hh"
+#include "mzr/mzrSpecies.hpp"
+#include "mzr/mzrReaction.hpp"
+#include "mzr/respondReaction.hpp"
+#include "mzr/mzrEltName.hpp"
+#include "mzr/mzrUnit.hpp"
+#include "mzr/dumpUtils.hpp"
+#include "mzr/unitsMgr.hpp"
+#include "mzr/moleculizer.hpp"
+#include "mzr/mzrSpeciesDumpable.hpp"
 #include <libxml++/libxml++.h>
 #include <iostream>
 

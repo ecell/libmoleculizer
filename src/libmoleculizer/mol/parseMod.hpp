@@ -32,9 +32,9 @@
 #ifndef MOL_PARSEMOD_H
 #define MOL_PARSEMOD_H
 
-#include "utl/dom.hh"
-#include "cpx/modification.hh"
-#include "mol/molEltName.hh"
+#include "utl/dom.hpp"
+#include "cpx/modification.hpp"
+#include "mol/molEltName.hpp"
 
 namespace bnd
 {

@@ -29,19 +29,19 @@
 //
 //
 
-#include "utl/defs.hh"
-#include "utl/domXcpt.hh"
-#include "mol/mzrMol.hh"
-#include "plex/plexUnit.hh"
-#include "plex/mzrPlex.hh"
-#include "plex/mzrPlexSpecies.hh"
-#include "mzr/mzrSpecies.hh"
-#include "nmr/nmrExceptions.hh"
-#include "nmr/nmrEltName.hh"
-#include "nmr/nmrUnit.hh"
+#include "utl/defs.hpp"
+#include "utl/domXcpt.hpp"
+#include "mol/mzrMol.hpp"
+#include "plex/plexUnit.hpp"
+#include "plex/mzrPlex.hpp"
+#include "plex/mzrPlexSpecies.hpp"
+#include "mzr/mzrSpecies.hpp"
+#include "nmr/nmrExceptions.hpp"
+#include "nmr/nmrEltName.hpp"
+#include "nmr/nmrUnit.hpp"
 
-#include "mzr/mzrSpeciesDumpable.hh"
-#include "plex/mzrPlexSpecies.hh"
+#include "mzr/mzrSpeciesDumpable.hpp"
+#include "plex/mzrPlexSpecies.hpp"
 #include <libxml++/libxml++.h>
 
 

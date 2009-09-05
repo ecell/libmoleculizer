@@ -32,8 +32,8 @@
 #ifndef CPX_MOLQUERY_H
 #define CPX_MOLQUERY_H
 
-#include "fnd/query.hh"
-#include "cpx/molState.hh"
+#include "fnd/query.hpp"
+#include "cpx/molState.hpp"
 
 namespace cpx
 {

@@ -31,7 +31,7 @@
 
 #include <string>
 #include <iostream>
-#include "utl/arg.hh"
+#include "utl/arg.hpp"
 #include "demostochasticsimulator.hpp"
 
 using namespace std;

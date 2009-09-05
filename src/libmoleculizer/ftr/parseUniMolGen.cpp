@@ -29,15 +29,15 @@
 //
 //
 
-#include "fnd/fndXcpt.hh"
-#include "cpx/modMolStateQuery.hh"
-#include "mol/mzrModMol.hh"
-#include "ftr/ftrEltName.hh"
-#include "ftr/uniMolGen.hh"
-#include "ftr/uniMolFam.hh"
-#include "ftr/parseUniMolGen.hh"
+#include "fnd/fndXcpt.hpp"
+#include "cpx/modMolStateQuery.hpp"
+#include "mol/mzrModMol.hpp"
+#include "ftr/ftrEltName.hpp"
+#include "ftr/uniMolGen.hpp"
+#include "ftr/uniMolFam.hpp"
+#include "ftr/parseUniMolGen.hpp"
 #include <libxml++/libxml++.h>
-#include "mzr/mzrSpeciesDumpable.hh"
+#include "mzr/mzrSpeciesDumpable.hpp"
 
 namespace ftr
 {
@@ -198,7 +198,7 @@ namespace ftr
         
         // I get a peculiar name resolution problem unless I explicitly
         // call the ftr namespace here; I get incorrect linkage with
-        // the parseModificationExchange class from parseOmniGen.cc !!!!
+        // the parseModificationExchange class from parseOmniGen.cpp !!!!
         std::transform( modificationExchangeNodes.begin(),
                         modificationExchangeNodes.end(),
                         modificationExchanges.begin(),

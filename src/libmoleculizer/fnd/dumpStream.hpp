@@ -34,10 +34,10 @@
 
 #include <fstream>
 #include <vector>
-#include "utl/xcpt.hh"
-#include "utl/autoVector.hh"
-#include "fnd/dumpable.hh"
-#include "fnd/dmpColumn.hh"
+#include "utl/xcpt.hpp"
+#include "utl/autoVector.hpp"
+#include "fnd/dumpable.hpp"
+#include "fnd/dmpColumn.hpp"
 
 namespace fnd
 {

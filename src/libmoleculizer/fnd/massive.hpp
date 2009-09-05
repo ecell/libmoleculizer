@@ -32,9 +32,9 @@
 #ifndef FND_MASSIVE_H
 #define FND_MASSIVE_H
 
-#include "utl/defs.hh"
-#include "utl/dom.hh"
-#include "fnd/fndXcpt.hh"
+#include "utl/defs.hpp"
+#include "utl/dom.hpp"
+#include "fnd/fndXcpt.hpp"
 
 namespace fnd
 {

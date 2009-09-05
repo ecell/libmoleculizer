@@ -32,8 +32,8 @@
 #ifndef OMNISTRUCTUREQUERY_H
 #define OMNISTRUCTUREQUERY_H
 
-#include "cpx/plexIso.hh"
-#include "cpx/ftrSpec.hh"
+#include "cpx/plexIso.hpp"
+#include "cpx/ftrSpec.hpp"
 
 namespace cpx
 {
@@ -72,6 +72,6 @@ namespace cpx
     };
 }
 
-#include "cpx/omniStructureQueryImpl.hh"
+#include "cpx/omniStructureQueryImpl.hpp"
 
 #endif // OMNISTRUCTUREQUERY_H

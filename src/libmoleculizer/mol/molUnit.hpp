@@ -32,13 +32,13 @@
 #ifndef MOLUNIT_H
 #define MOLUNIT_H
 
-#include "utl/autoVector.hh"
-#include "utl/autoCatalog.hh"
-#include "utl/dom.hh"
-#include "mzr/mzrUnit.hh"
-#include "cpx/modification.hh"
-#include "mol/smallMol.hh"
-#include "mol/mzrModMol.hh"
+#include "utl/autoVector.hpp"
+#include "utl/autoCatalog.hpp"
+#include "utl/dom.hpp"
+#include "mzr/mzrUnit.hpp"
+#include "cpx/modification.hpp"
+#include "mol/smallMol.hpp"
+#include "mol/mzrModMol.hpp"
 
 namespace bnd
 {

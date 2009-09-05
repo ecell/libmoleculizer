@@ -101,6 +101,6 @@ namespace fnd
     };
 }
 
-#include "fnd/queryImpl.hh"
+#include "fnd/queryImpl.hpp"
 
 #endif // FND_QUERY_H

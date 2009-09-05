@@ -30,7 +30,7 @@
 //
 
 #include <sstream>
-#include "mol/badModMolXcpt.hh"
+#include "mol/badModMolXcpt.hpp"
 
 namespace bnd
 {

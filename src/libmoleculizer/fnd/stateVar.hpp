@@ -32,7 +32,7 @@
 #ifndef CPTSTATEVAR_H
 #define CPTSTATEVAR_H
 
-#include "fnd/sensitivityList.hh"
+#include "fnd/sensitivityList.hpp"
 
 namespace fnd
 {

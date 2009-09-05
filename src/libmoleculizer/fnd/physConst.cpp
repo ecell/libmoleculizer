@@ -29,7 +29,7 @@
 //
 //
 
-#include "fnd/physConst.hh"
+#include "fnd/physConst.hpp"
 
 namespace fnd
 {

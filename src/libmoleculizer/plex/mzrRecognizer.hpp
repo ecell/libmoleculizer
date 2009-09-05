@@ -32,11 +32,11 @@
 #ifndef RECOGNIZER_H
 #define RECOGNIZER_H
 
-#include "utl/dom.hh"
-#include "cpx/recognizer.hh"
-#include "plex/mzrPlexFamily.hh"
-// #include "nmr/nmrUnit.hh"
-// #include "nmr/simpleMol.hh"
+#include "utl/dom.hpp"
+#include "cpx/recognizer.hpp"
+#include "plex/mzrPlexFamily.hpp"
+// #include "nmr/nmrUnit.hpp"
+// #include "nmr/simpleMol.hpp"
 
 namespace nmr
 {

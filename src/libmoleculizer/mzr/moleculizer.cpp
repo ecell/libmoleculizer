@@ -34,25 +34,25 @@
 #include <iterator>
 #include <limits>
 
-#include "utl/defs.hh"
-#include "utl/utility.hh"
-#include "utl/utlXcpt.hh"
-#include "utl/dom.hh"
-#include "utl/linearHash.hh"
+#include "utl/defs.hpp"
+#include "utl/utility.hpp"
+#include "utl/utlXcpt.hpp"
+#include "utl/dom.hpp"
+#include "utl/linearHash.hpp"
 
-#include "mzr/moleculizer.hh"
-#include "mzr/mzrException.hh"
-#include "mzr/mzrSpeciesDumpable.hh"
+#include "mzr/moleculizer.hpp"
+#include "mzr/mzrException.hpp"
+#include "mzr/mzrSpeciesDumpable.hpp"
 
-#include "mzr/mzrUnit.hh"
+#include "mzr/mzrUnit.hpp"
 
-#include "mzr/unitsMgr.hh"
-#include "mzr/mzrEltName.hh"
-#include "mzr/inputCapTest.hh"
-#include "dimer/dimerUnit.hh"
-#include "ftr/ftrUnit.hh"
+#include "mzr/unitsMgr.hpp"
+#include "mzr/mzrEltName.hpp"
+#include "mzr/inputCapTest.hpp"
+#include "dimer/dimerUnit.hpp"
+#include "ftr/ftrUnit.hpp"
 
-#include "plex/mzrPlexFamily.hh"
+#include "plex/mzrPlexFamily.hpp"
 
 
 namespace mzr

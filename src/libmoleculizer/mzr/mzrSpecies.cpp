@@ -29,12 +29,12 @@
 //
 //
 
-#include "mzr/mzrSpecies.hh"
-#include "mzr/mzrUnit.hh"
-#include "mzr/unitsMgr.hh"
-#include "mzr/moleculizer.hh"
-#include "mzr/mzrSpeciesDumpable.hh"
-#include "plex/mzrPlexSpecies.hh"
+#include "mzr/mzrSpecies.hpp"
+#include "mzr/mzrUnit.hpp"
+#include "mzr/unitsMgr.hpp"
+#include "mzr/moleculizer.hpp"
+#include "mzr/mzrSpeciesDumpable.hpp"
+#include "plex/mzrPlexSpecies.hpp"
 #include <iostream>
 
 namespace mzr

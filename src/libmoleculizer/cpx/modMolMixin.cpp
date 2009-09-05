@@ -30,7 +30,7 @@
 //
 
 #include <sstream>
-#include "cpx/modMolMixin.hh"
+#include "cpx/modMolMixin.hpp"
 
 namespace cpx
 {
@@ -158,7 +158,7 @@ namespace cpx
         return resultStateMixin;
     }
     
-    // modMixin.hh has notes on this.
+    // modMixin.hpp has notes on this.
     modStateMixin modMolMixin::
     indexModMap( const std::map<std::string, const modification*>& rModMap )
         throw( utl::xcpt )
@@ -173,7 +173,7 @@ namespace cpx
         return resultStateMixin;
     }
     
-    // modMixin.hh has notes on this.
+    // modMixin.hpp has notes on this.
     bool
     modMolMixin::modStateMatch::
     operator()( const modStateMixin& rMixinToTest ) const

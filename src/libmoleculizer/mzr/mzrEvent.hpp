@@ -32,7 +32,7 @@
 #ifndef MZR_MZREVENT_H
 #define MZR_MZREVENT_H
 
-#include "fnd/event.hh"
+#include "fnd/event.hpp"
 
 namespace mzr
 {

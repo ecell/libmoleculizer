@@ -32,7 +32,7 @@
 #ifndef BND_XCPT_H
 #define BND_XCPT_H
 
-#include "utl/xcpt.hh"
+#include "utl/xcpt.hpp"
 
 namespace bnd
 {

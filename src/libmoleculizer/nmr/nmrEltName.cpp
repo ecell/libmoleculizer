@@ -29,7 +29,7 @@
 //
 //
 
-#include "nmrEltName.hh"
+#include "nmrEltName.hpp"
 
 namespace nmr
 {

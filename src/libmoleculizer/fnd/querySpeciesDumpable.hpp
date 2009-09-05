@@ -32,8 +32,8 @@
 #ifndef FND_QUERYSPECIESDUMPABLE_H
 #define FND_QUERYSPECIESDUMPABLE_H
 
-#include "fnd/query.hh"
-#include "fnd/multiSpeciesDumpable.hh"
+#include "fnd/query.hpp"
+#include "fnd/multiSpeciesDumpable.hpp"
 
 namespace fnd
 {

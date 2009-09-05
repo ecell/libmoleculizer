@@ -32,13 +32,13 @@
 #ifndef FEATUREMAP_H
 #define FEATUREMAP_H
 
-/*! \file featureMap.hh
+/*! \file featureMap.hpp
   \ingroup featureGroup
   \brief Defines container for features with common spec type. */
 
 #include <map>
-#include "utl/xcpt.hh"
-#include "fnd/feature.hh"
+#include "utl/xcpt.hpp"
+#include "fnd/feature.hpp"
 
 namespace fnd
 {

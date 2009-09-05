@@ -32,9 +32,9 @@
 #ifndef OMNIPLEX_H
 #define OMNIPLEX_H
 
-#include "cpx/plexQuery.hh"
-#include "cpx/omniPlexFeature.hh"
-#include "cpx/omniStructureQuery.hh"
+#include "cpx/plexQuery.hpp"
+#include "cpx/omniPlexFeature.hpp"
+#include "cpx/omniStructureQuery.hpp"
 
 namespace cpx
 {

@@ -29,20 +29,20 @@
 //
 //
 
-#include "utl/dom.hh"
-#include "mzr/moleculizer.hh"
-#include "mzr/mzrUnit.hh"
-#include "mol/molUnit.hh"
-#include "mol/molEltName.hh"
-#include "mol/mzrModMol.hh"
-#include "mol/smallMol.hh"
-#include "mol/parseModMap.hh"
-#include "mol/parseModSite.hh"
-#include "mol/parseMod.hh"
-#include "mol/parseBndSite.hh"
-#include "mol/dupModNameXcpt.hh"
-#include "mol/unkSiteXcpt.hh"
-#include "mol/unkSiteShapeXcpt.hh"
+#include "utl/dom.hpp"
+#include "mzr/moleculizer.hpp"
+#include "mzr/mzrUnit.hpp"
+#include "mol/molUnit.hpp"
+#include "mol/molEltName.hpp"
+#include "mol/mzrModMol.hpp"
+#include "mol/smallMol.hpp"
+#include "mol/parseModMap.hpp"
+#include "mol/parseModSite.hpp"
+#include "mol/parseMod.hpp"
+#include "mol/parseBndSite.hpp"
+#include "mol/dupModNameXcpt.hpp"
+#include "mol/unkSiteXcpt.hpp"
+#include "mol/unkSiteShapeXcpt.hpp"
 #include <libxml++/libxml++.h>
 
 namespace bnd

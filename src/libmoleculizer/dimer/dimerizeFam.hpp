@@ -32,8 +32,8 @@
 #ifndef DIMER_DIMERIZEFAM_H
 #define DIMER_DIMERIZEFAM_H
 
-#include "utl/autoVector.hh"
-#include "dimer/dimerizeRxnGen.hh"
+#include "utl/autoVector.hpp"
+#include "dimer/dimerizeRxnGen.hpp"
 
 namespace dimer
 {

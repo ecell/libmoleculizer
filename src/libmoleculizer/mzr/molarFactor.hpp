@@ -32,9 +32,9 @@
 #ifndef MOLARFACTOR_H
 #define MOLARFACTOR_H
 
-#include "fnd/physConst.hh"
-#include "fnd/stateVar.hh"
-#include "mzr/mzrReaction.hh"
+#include "fnd/physConst.hpp"
+#include "fnd/stateVar.hpp"
+#include "mzr/mzrReaction.hpp"
 
 namespace mzr
 {

@@ -32,11 +32,11 @@
 #ifndef PLEX_MZROMNIPLEX_H
 #define PLEX_MZROMNIPLEX_H
 
-#include "plex/mzrPlexFamily.hh"
-#include "cpx/omniPlex.hh"
-#include "mol/mzrMol.hh"
-#include "plex/mzrPlex.hh"
-#include "plex/mzrPlexSpecies.hh"
+#include "plex/mzrPlexFamily.hpp"
+#include "cpx/omniPlex.hpp"
+#include "mol/mzrMol.hpp"
+#include "plex/mzrPlex.hpp"
+#include "plex/mzrPlexSpecies.hpp"
 
 namespace plx
 {

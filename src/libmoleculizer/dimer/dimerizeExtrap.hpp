@@ -32,11 +32,11 @@
 #ifndef DIMERIZEEXTRAP_H
 #define DIMERIZEEXTRAP_H
 
-#include "fnd/pchem.hh"
-#include "cpx/siteShape.hh"
-#include "cpx/cxSite.hh"
-#include "plex/mzrPlexSpecies.hh"
-#include "plex/mzrPlexFamily.hh"
+#include "fnd/pchem.hpp"
+#include "cpx/siteShape.hpp"
+#include "cpx/cxSite.hpp"
+#include "plex/mzrPlexSpecies.hpp"
+#include "plex/mzrPlexFamily.hpp"
 
 namespace dimer
 {

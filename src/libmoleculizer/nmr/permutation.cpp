@@ -29,8 +29,8 @@
 //
 //
 
-#include "nmr/permutation.hh"
-#include "utl/utility.hh"
+#include "nmr/permutation.hpp"
+#include "utl/utility.hpp"
 
 #include <list>
 #include <algorithm>

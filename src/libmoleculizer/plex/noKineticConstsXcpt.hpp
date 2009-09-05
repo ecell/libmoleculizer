@@ -32,11 +32,11 @@
 #ifndef PLEX_NOKINETICCONSTSXCPT_H
 #define PLEX_NOKINETICCONSTSXCPT_H
 
-#include <utl/xcpt.hh>
+#include <utl/xcpt.hpp>
 
 namespace plx
 {
-    // Thrown in plexAllostery.cc,
+    // Thrown in plexAllostery.cpp,
     // plexFamily::insertBindingParam::operator(),when the binding param of each
     // binding in a new plex species is looked up.
     //
@@ -45,7 +45,7 @@ namespace plx
     // of binding sites mentioned in dimerization-gen's are defaulted for
     // all possible pairs of site shapes.
     //
-    // Thrown in second form in plexConnect.cc, plexFamily::behaviorizeBinding,
+    // Thrown in second form in plexConnect.cpp, plexFamily::behaviorizeBinding,
     // when a new plexFamily is connected with each of its binding features.
     // This is likely to happen regularly, when the user fails to give a
     // dimerization-gen for some binding in a complex that she specifies.

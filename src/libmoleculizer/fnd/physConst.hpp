@@ -32,7 +32,7 @@
 #ifndef PHYSCONST_H
 #define PHYSCONST_H
 
-/*! \file physConst.hh
+/*! \file physConst.hpp
   \ingroup chemGroup
   \brief Compiled-in physical constants.
   

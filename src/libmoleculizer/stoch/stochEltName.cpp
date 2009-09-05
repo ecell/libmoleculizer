@@ -29,7 +29,7 @@
 //
 //
 
-#include "stoch/stochEltName.hh"
+#include "stoch/stochEltName.hpp"
 
 namespace stoch
 {

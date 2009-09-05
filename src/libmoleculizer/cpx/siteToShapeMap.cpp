@@ -29,10 +29,10 @@
 //
 //
 
-#include "utl/forceInsert.hh"
-#include "cpx/siteToShapeMap.hh"
-#include "cpx/subPlexSpec.hh"
-#include "cpx/cpxXcpt.hh"
+#include "utl/forceInsert.hpp"
+#include "cpx/siteToShapeMap.hpp"
+#include "cpx/subPlexSpec.hpp"
+#include "cpx/cpxXcpt.hpp"
 
 namespace cpx
 {

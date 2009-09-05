@@ -32,9 +32,9 @@
 #ifndef MOL_BADSMALLMOLXCPT_H
 #define MOL_BADSMALLMOLXCPT_H
 
-#include "utl/xcpt.hh"
-#include "utl/dom.hh"
-#include "mol/smallMol.hh"
+#include "utl/xcpt.hpp"
+#include "utl/dom.hpp"
+#include "mol/smallMol.hpp"
 
 namespace bnd
 {

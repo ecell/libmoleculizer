@@ -31,14 +31,14 @@
 
 
 #include <libxml++/libxml++.h>
-#include "mangledNameAssembler.hh"
-#include "complexSpeciesOutputMinimizer.hh"
+#include "mangledNameAssembler.hpp"
+#include "complexSpeciesOutputMinimizer.hpp"
 
-#include "utl/utility.hh"
-#include "nmr/nmrUnit.hh"
+#include "utl/utility.hpp"
+#include "nmr/nmrUnit.hpp"
 
 #include <utility>
-#include "mzr/mzrSpeciesDumpable.hh"
+#include "mzr/mzrSpeciesDumpable.hpp"
 
 
 namespace nmr

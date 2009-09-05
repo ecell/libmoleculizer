@@ -32,7 +32,7 @@
 #ifndef STOCH_BADSTOCHSPECIESTAGXCPT_H
 #define STOCH_BADSTOCHSPECIESTAGXCPT_H
 
-#include "utl/dom.hh"
+#include "utl/dom.hpp"
 
 namespace stoch
 {

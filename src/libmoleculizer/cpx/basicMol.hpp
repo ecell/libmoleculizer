@@ -36,9 +36,9 @@
 #include <map>
 #include <vector>
 #include <string>
-#include "utl/xcpt.hh"
-#include "cpx/siteShape.hh"
-#include "cpx/molState.hh"
+#include "utl/xcpt.hpp"
+#include "cpx/siteShape.hpp"
+#include "cpx/molState.hpp"
 
 namespace cpx
 {
@@ -157,6 +157,6 @@ namespace cpx
     };
 }
 
-#include "cpx/basicMolImpl.hh"
+#include "cpx/basicMolImpl.hpp"
 
 #endif // CPX_BASICMOL_H

@@ -32,11 +32,11 @@
 #ifndef PLEX_MZRPLEXQUERIES_H
 #define PLEX_MZRPLEXQUERIES_H
 
-#include "cpx/plexQuery.hh"
-#include "mol/mzrMol.hh"
-#include "plex/mzrPlex.hh"
-#include "plex/mzrPlexSpecies.hh"
-#include "plex/mzrOmniPlex.hh"
+#include "cpx/plexQuery.hpp"
+#include "mol/mzrMol.hpp"
+#include "plex/mzrPlex.hpp"
+#include "plex/mzrPlexSpecies.hpp"
+#include "plex/mzrOmniPlex.hpp"
 
 namespace plx
 {

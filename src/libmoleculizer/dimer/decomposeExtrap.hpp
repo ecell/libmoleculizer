@@ -32,9 +32,9 @@
 #ifndef DIMER_DECOMPOSEEXTRAP_H
 #define DIMER_DECOMPOSEEXTRAP_H
 
-#include "cpx/siteShape.hh"
-#include "plex/mzrPlexSpecies.hh"
-#include "plex/mzrPlexFamily.hh"
+#include "cpx/siteShape.hpp"
+#include "plex/mzrPlexSpecies.hpp"
+#include "plex/mzrPlexFamily.hpp"
 
 namespace dimer
 {

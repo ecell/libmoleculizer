@@ -34,7 +34,7 @@
 #define WRITEOUTPUTGRAPH_HH
 
 #include <fstream>
-#include "fnd/reactionNetworkDescription.hh"
+#include "fnd/reactionNetworkDescription.hpp"
 
 template <typename speciesT, 
           typename reactionT>

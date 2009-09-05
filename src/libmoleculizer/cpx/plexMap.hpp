@@ -33,7 +33,7 @@
 #define CPX_PLEXMAP_H
 
 #include <vector>
-#include "cpx/ftrSpec.hh"
+#include "cpx/ftrSpec.hpp"
 
 namespace cpx
 {
@@ -156,6 +156,6 @@ namespace cpx
     };
 }
 
-#include "cpx/plexMapImpl.hh"
+#include "cpx/plexMapImpl.hpp"
 
 #endif // CPX_PLEXMAP_H

@@ -29,7 +29,7 @@
 //
 //
 
-#include "cpx/plexIso.hh"
+#include "cpx/plexIso.hpp"
 
 namespace cpx
 {

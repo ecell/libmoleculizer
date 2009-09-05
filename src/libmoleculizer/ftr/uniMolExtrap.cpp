@@ -29,10 +29,10 @@
 //
 //
 
-#include "fnd/pchem.hh"
-#include "mol/mzrModMol.hh"
-#include "ftr/uniMolExtrap.hh"
-#include "fnd/pchem.hh"
+#include "fnd/pchem.hpp"
+#include "mol/mzrModMol.hpp"
+#include "ftr/uniMolExtrap.hpp"
+#include "fnd/pchem.hpp"
 
 namespace ftr
 {

@@ -29,13 +29,13 @@
 //
 //
 
-#include "utl/defs.hh"
-#include "mzr/mzrException.hh"
-#include "mzr/moleculizer.hh"
-#include "mzr/mzrSpeciesDumpable.hh"
-#include "mzr/mzrUnit.hh"
-#include "mzr/unitsMgr.hh"
-#include "plex/plexUnit.hh"
+#include "utl/defs.hpp"
+#include "mzr/mzrException.hpp"
+#include "mzr/moleculizer.hpp"
+#include "mzr/mzrSpeciesDumpable.hpp"
+#include "mzr/mzrUnit.hpp"
+#include "mzr/unitsMgr.hpp"
+#include "plex/plexUnit.hpp"
 
 namespace mzr
 {

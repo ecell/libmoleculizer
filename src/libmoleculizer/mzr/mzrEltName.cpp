@@ -29,7 +29,7 @@
 //
 //
 
-#include "mzr/mzrEltName.hh"
+#include "mzr/mzrEltName.hpp"
 
 namespace mzr
 {

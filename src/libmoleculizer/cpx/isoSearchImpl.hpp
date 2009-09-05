@@ -26,7 +26,7 @@
 #ifndef CPX_ISOSEARCHIMPL_H
 #define CPX_ISOSEARCHIMPL_H
 
-#include "cpx/cpxXcpt.hh"
+#include "cpx/cpxXcpt.hpp"
 
 namespace cpx
 {

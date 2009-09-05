@@ -32,10 +32,10 @@
 #ifndef CXOMNIPARAM_H
 #define CXOMNIPARAM_H
 
-#include "fnd/featureContext.hh"
-#include "cpx/subPlexSpec.hh"
-#include "cpx/siteToShapeMap.hh"
-#include "cpx/molState.hh"
+#include "fnd/featureContext.hpp"
+#include "cpx/subPlexSpec.hpp"
+#include "cpx/siteToShapeMap.hpp"
+#include "cpx/molState.hpp"
 
 namespace cpx
 {
@@ -127,6 +127,6 @@ namespace cpx
     };
 }
 
-#include "cpx/cxOmniImpl.hh"
+#include "cpx/cxOmniImpl.hpp"
 
 #endif

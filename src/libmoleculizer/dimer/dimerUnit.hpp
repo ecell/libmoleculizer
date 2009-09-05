@@ -36,15 +36,15 @@
   \ingroup unitsGroup
   \brief Provides dimerization and decomposition reactions. */
 
-/*! \file dimerUnit.hh
+/*! \file dimerUnit.hpp
   \ingroup dimerGroup
   \brief Defines dimerUnit. */
 
-#include "mzr/mzrUnit.hh"
-#include "mol/molUnit.hh"
-#include "dimer/dimerEltName.hh"
-#include "dimer/dimerizeRxnGen.hh"
-#include "dimer/decompRxnGen.hh"
+#include "mzr/mzrUnit.hpp"
+#include "mol/molUnit.hpp"
+#include "dimer/dimerEltName.hpp"
+#include "dimer/dimerizeRxnGen.hpp"
+#include "dimer/decompRxnGen.hpp"
 
 namespace dimer
 {

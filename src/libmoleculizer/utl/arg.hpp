@@ -33,7 +33,7 @@
 #define UTL_ARG_H
 
 #include <string>
-#include "utl/xcpt.hh"
+#include "utl/xcpt.hpp"
 
 namespace utl
 {

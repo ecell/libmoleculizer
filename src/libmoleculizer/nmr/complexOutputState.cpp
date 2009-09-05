@@ -30,7 +30,7 @@
 //
 
 
-#include "complexOutputState.hh"
+#include "complexOutputState.hpp"
 #include <sstream>
 
 namespace nmr

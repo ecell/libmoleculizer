@@ -29,16 +29,16 @@
 //
 //
 
-#include "mzr/unitsMgr.hh"
+#include "mzr/unitsMgr.hpp"
 
-#include "mzr/mzrUnit.hh"
-#include "mol/molUnit.hh"
-#include "dimer/dimerUnit.hh"
-#include "plex/plexUnit.hh"
-#include "stoch/stochUnit.hh"
-#include "ftr/ftrUnit.hh"
-#include "nmr/nmrUnit.hh"
-#include "mzr/mzrSpeciesDumpable.hh"
+#include "mzr/mzrUnit.hpp"
+#include "mol/molUnit.hpp"
+#include "dimer/dimerUnit.hpp"
+#include "plex/plexUnit.hpp"
+#include "stoch/stochUnit.hpp"
+#include "ftr/ftrUnit.hpp"
+#include "nmr/nmrUnit.hpp"
+#include "mzr/mzrSpeciesDumpable.hpp"
 #include <libxml++/libxml++.h>
 
 namespace mzr

@@ -29,9 +29,9 @@
 //
 //
 
-#include "utl/defs.hh"
-#include "fnd/fndXcpt.hh"
-#include "fnd/dumpStream.hh"
+#include "utl/defs.hpp"
+#include "fnd/fndXcpt.hpp"
+#include "fnd/dumpStream.hpp"
 
 namespace fnd
 {

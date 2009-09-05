@@ -30,12 +30,12 @@
 //
 
 
-#include "plex/plexExceptions.hh"
-#include "plex/plexUnit.hh"
-#include "plex/dupNodeOmniXcpt.hh"
-#include "plex/noOmniForNodeXcpt.hh"
+#include "plex/plexExceptions.hpp"
+#include "plex/plexUnit.hpp"
+#include "plex/dupNodeOmniXcpt.hpp"
+#include "plex/noOmniForNodeXcpt.hpp"
 #include <libxml++/libxml++.h>
-#include "mzr/mzrSpeciesDumpable.hh"
+#include "mzr/mzrSpeciesDumpable.hpp"
 
 namespace plx
 {

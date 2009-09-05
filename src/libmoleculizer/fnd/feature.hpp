@@ -35,10 +35,10 @@
 #include <vector>
 #include <functional>
 #include <algorithm>
-#include "fnd/sensitivityList.hh"
-#include "fnd/featureContext.hh"
-#include "fnd/newContextStimulus.hh"
-#include "fnd/rxnGen.hh"
+#include "fnd/sensitivityList.hpp"
+#include "fnd/featureContext.hpp"
+#include "fnd/newContextStimulus.hpp"
+#include "fnd/rxnGen.hpp"
 
 namespace fnd
 {

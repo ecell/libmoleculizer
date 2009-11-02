@@ -83,28 +83,32 @@ if test "$demos" = "yes"; then
 AC_CONFIG_HEADERS([src/libmoleculizer/moleculizer_config.hpp])
 
 AC_CONFIG_FILES([Makefile
-                src/Makefile
-		src/libmoleculizer/Makefile
-		src/libmoleculizer/nauty/Makefile
-                src/libmoleculizer/cpx/Makefile
-		src/libmoleculizer/dimer/Makefile
-		src/libmoleculizer/fnd/Makefile
-		src/libmoleculizer/ftr/Makefile
-		src/libmoleculizer/mol/Makefile
-		src/libmoleculizer/mzr/Makefile
-		src/libmoleculizer/nmr/Makefile
-		src/libmoleculizer/plex/Makefile
-		src/libmoleculizer/stoch/Makefile
-		src/libmoleculizer/utl/Makefile
-                doc/Makefile
-                demos/Makefile
-                demos/demo-programs/Makefile
-                demos/sample-models/Makefile
-		python-src/Makefile
-		python-src/language_parser/Makefile
+                documentation/Makefile
                 libmoleculizer-1.0.pc
-                doc/user-manual.tex
-		])
+                documentation/user-manual.tex
+                src/bindings/python/Makefile
+                src/demo-programs/Makefile
+                src/Makefile
+                src/libmoleculizer/cpx/Makefile
+                src/libmoleculizer/plex/Makefile
+                src/libmoleculizer/stoch/Makefile
+                src/libmoleculizer/nauty/Makefile
+                src/libmoleculizer/Makefile
+                src/libmoleculizer/ftr/Makefile
+                src/libmoleculizer/dimer/Makefile
+                src/libmoleculizer/mol/Makefile
+                src/libmoleculizer/utl/Makefile
+                src/libmoleculizer/template/tests/Makefile
+                src/libmoleculizer/fnd/Makefile
+                src/libmoleculizer/nmr/Makefile
+                src/libmoleculizer/nmr/tests/Makefile
+                src/libmoleculizer/mzr/Makefile
+                src/libmoleculizer/mzr/tests/Makefile
+                src/src-python/Makefile
+                src/src-python/libmoleculizer/mzr_parser/Makefile
+                examples/Makefile
+                ])
+
 
 
 # Actually calculate and produce the files specified above.

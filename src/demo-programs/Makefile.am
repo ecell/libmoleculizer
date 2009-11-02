@@ -3,9 +3,9 @@ SRC=$(abs_top_srcdir)/src
 DEMO_SIMULATION_DIR=.
 
 bin_PROGRAMS=\
-network_expander_demo \
-stochasticsim_demo \
-particlesim_demo \
+mzrnetworkgenerator \
+ssa_integration_demo \
+particle_sim_integration_demo \
 c_interface_demo 
 
 LIBMZR = ../../src/libmoleculizer/libmoleculizer-1.0.la
@@ -20,24 +20,24 @@ libsimbase_la_SOURCES=\
 	common/demosimulator.cpp \
 	common/demosimulator.hpp
 
-stochasticsim_demo_SOURCES=\
-	stochastic/stochasticsim_main.cpp \
-	stochastic/demostochasticsimulator.cpp \
-	stochastic/demostochasticsimulator.hpp	
+ssa_integration_demo_SOURCES=\
+	ssa_integration_demo_src/stochasticsim_main.cpp \
+	ssa_integration_demo_src/demostochasticsimulator.cpp \
+	ssa_integration_demo_src/demostochasticsimulator.hpp	
 
-stochasticsim_demo_LDADD = libsimbase.la $(LIBMZR) $(LIBXMLPP_LIBS)
+ssa_integration_demo_LDADD = libsimbase.la $(LIBMZR) $(LIBXMLPP_LIBS)
 
-particlesim_demo_SOURCES=\
-	particle/particlesim_main.cpp \
-	particle/demoparticlesimulator.cpp \
-	particle/demoparticlesimulator.hpp
+particle_sim_integration_demo_SOURCES=\
+	particle_sim_integration_demo_src/particlesim_main.cpp \
+	particle_sim_integration_demo_src/demoparticlesimulator.cpp \
+	particle_sim_integration_demo_src/demoparticlesimulator.hpp
 
-particlesim_demo_LDADD = libsimbase.la $(LIBMZR) $(LIBXMLPP_LIBS)
+particle_sim_integration_demo_LDADD = libsimbase.la $(LIBMZR) $(LIBXMLPP_LIBS)
 
-network_expander_demo_SOURCES=network_expander/main.cpp
-network_expander_demo_LDADD = $(LIBMZR) $(LIBXMLPP_LIBS)
+mzrnetworkgenerator_SOURCES=mzrnetworkgenerator_src/main.cpp
+mzrnetworkgenerator_LDADD = $(LIBMZR) $(LIBXMLPP_LIBS)
 
-c_interface_demo_SOURCES = c_interface/c_interface_main.c
+c_interface_demo_SOURCES = c_interface_src/c_interface_main.c
 c_interface_demo_LDADD = $(LIBMZR) $(LIBXMLPP_LIBS)
 
 

@@ -1,1 +1,1 @@
-SUBDIRS = language_parser/
+SUBDIRS = libmoleculizer/mzr_parser

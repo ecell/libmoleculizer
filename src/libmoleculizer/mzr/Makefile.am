@@ -13,7 +13,6 @@ libmoleculizer_mzr_la_LDFLAGS = @PYTHON_LSPEC@
 
 libmoleculizer_mzr_la_SOURCES =\
 dumpUtils.cpp \
-libmzr_c_interface.cpp \
 moleculizer.cpp \
 mzrEltName.cpp \
 mzrException.cpp \
@@ -31,7 +30,6 @@ libmoleculizer_mzr_HEADERS=\
 createEvent.hpp \
 dumpUtils.hpp \
 inputCapTest.hpp \
-libmzr_c_interface.h \
 molarFactor.hpp \
 moleculizer.hpp \
 mzrEltName.hpp \

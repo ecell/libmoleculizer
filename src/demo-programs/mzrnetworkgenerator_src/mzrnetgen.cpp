@@ -40,10 +40,6 @@
 
 using namespace std;
 
-enum RunMode { Full = 0,
-               BoundedRun = 1,
-               Iterations = 2 };
-
 mzr::moleculizer::CachePosition pos;
 
 int main(int argc, char* argv[])
@@ -52,7 +48,7 @@ int main(int argc, char* argv[])
   inputArgsStruct inputArgs;
   processCommandLineArgs(argc, argv, inputArgs);
 
-  ensureConsistentInputArgs( inputArgs );
+  // ensureConsistentInputArgs( inputArgs );
 
   mzr::moleculizer theMoleculizer;
   
@@ -519,37 +515,3 @@ void runBoundedRunMoleculizer( mzr::moleculizer& mzr, const inputArgsStruct& inp
 
 
 
-struct inputArgsStruct
-{
-    bool fileDefined;
-    bool fileIsXml;
-    bool fileIsRules;
-    std::string fileName;
-
-    bool hasOutputFile;
-    std::string outputFile;
-
-    int maxSpecies;
-    int maxRxns;
-    int numberIters;
-
-    bool verbose;
-    bool quiet;
-
-    int runMode;
-
-    inputArgsStruct()
-        :
-        fileDefined( false ),
-        fileIsXml( false ),
-        fileIsRules(false ),
-        fileName( "" ),
-        hasOutputFile( false ),
-        outputFile( "" ),
-        maxSpecies( -1 ),
-        maxRxns( -1 ),
-        verbose( false ),
-        quiet( false ),
-        runMode( Full )
-    {}
-};

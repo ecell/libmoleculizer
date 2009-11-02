@@ -34,7 +34,7 @@ particle_sim_integration_demo_SOURCES=\
 
 particle_sim_integration_demo_LDADD = libsimbase.la $(LIBMZR) $(LIBXMLPP_LIBS)
 
-mzrnetworkgenerator_SOURCES=mzrnetworkgenerator_src/main.cpp
+mzrnetworkgenerator_SOURCES=mzrnetworkgenerator_src/mzrnetgen.cpp
 mzrnetworkgenerator_LDADD = $(LIBMZR) $(LIBXMLPP_LIBS)
 
 c_interface_demo_SOURCES = c_interface_src/c_interface_main.c

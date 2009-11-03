@@ -33,9 +33,9 @@
 
 #include "utl/xcpt.hpp"
 #include "utl/writeOutputGraph.hpp"
-#include "moleculizer.hpp"
+#include "mzr/moleculizer.hpp"
 #include "mzr/spatialExtrapolationFunctions.hpp"
-#include "unitsMgr.hpp"
+#include "mzr/unitsMgr.hpp"
 #include "mol/molUnit.hpp"
 #include "mzr/mzrSpeciesDumpable.hpp"
 
@@ -138,7 +138,7 @@ int loadCommonRulesFile(moleculizer* handle, char* fileName)
     
     try
     {
-        convertCMzrPtrToMzrPtr( handle )->loadCommonRulesFileName( std::string(fileName) );
+        convertCMzrPtrToMzrPtr( handle )->loadMzrFileName( std::string(fileName) );
         return SUCCESS;
     }
     catch(utl::dom::noDocumentParsedXcpt xcpt)
@@ -171,7 +171,7 @@ int loadCommonRulesFile(moleculizer* handle, char* fileName)
     
 }
 
-int loadCommonRulesString( moleculizer* handle, char* rulesCstring)
+int loadMzrRulesString( moleculizer* handle, char* rulesCstring)
 {
     // This function takes a string containing a rules definition of the file and loads 
     // it into the provided moleculizer object.
@@ -184,7 +184,7 @@ int loadCommonRulesString( moleculizer* handle, char* rulesCstring)
     std::string rules( rulesCstring );
     try
     {
-        convertCMzrPtrToMzrPtr( handle )->loadCommonRulesString( rules );
+        convertCMzrPtrToMzrPtr( handle )->loadMzrRulesString( rules );
         return SUCCESS;
     }
     catch(utl::dom::noDocumentParsedXcpt xcpt)
@@ -224,7 +224,7 @@ int loadXMLRulesFile(moleculizer* handle, char* fileName)
     
     try
     {
-        convertCMzrPtrToMzrPtr( handle )->loadXmlFileName( std::string(fileName) );
+        convertCMzrPtrToMzrPtr( handle )->loadMzrXmlFileName( std::string(fileName) );
         return SUCCESS;
     }
     catch(utl::dom::noDocumentParsedXcpt xcpt)
@@ -270,7 +270,7 @@ int loadXMLRulesString( moleculizer* handle, char* rulesCstring)
     std::string rules( rulesCstring );
     try
     {
-        convertCMzrPtrToMzrPtr( handle )->loadXmlString( rules );
+        convertCMzrPtrToMzrPtr( handle )->loadMzrXmlString( rules );
         return SUCCESS;
     }
     catch(utl::dom::noDocumentParsedXcpt xcpt)

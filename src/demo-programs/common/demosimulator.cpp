@@ -134,7 +134,7 @@ SimpleSimulator::loadRules( std::string rulesFile )
         releaseRules();
     }
 
-    ptrSpeciesReactionGenerator->loadXmlFileName( rulesFile );
+    ptrSpeciesReactionGenerator->loadMzrXmlFileName( rulesFile );
 }
 
 void 
@@ -172,7 +172,7 @@ void SimpleSimulator::attachRuleFile( std::string rulesfile )
         exit( 1 );
     }
 
-    ptrSpeciesReactionGenerator->loadXmlFileName( rulesfile );
+    ptrSpeciesReactionGenerator->loadMzrXmlFileName( rulesfile );
 }
 
 

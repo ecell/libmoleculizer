@@ -104,6 +104,8 @@ AC_CONFIG_FILES([Makefile
                 src/libmoleculizer/nmr/tests/Makefile
                 src/libmoleculizer/mzr/Makefile
                 src/libmoleculizer/mzr/tests/Makefile
+                src/bindings/Makefile
+                src/bindings/C/Makefile
                 src/src-python/Makefile
                 src/src-python/libmoleculizer/mzr_parser/Makefile
                 examples/Makefile

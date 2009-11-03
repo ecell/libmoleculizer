@@ -260,7 +260,7 @@ namespace mzr
 
 
 
-  void moleculizer::loadXmlFileName( const std::string& filename )
+  void moleculizer::loadMzrXmlFileName( const std::string& filename )
   {
 
     theParser->parse_file( filename );
@@ -268,22 +268,22 @@ namespace mzr
     this->loadParsedDocument( theParser->get_document() );
   }
 
-  void moleculizer::loadCommonRulesFileName( const std::string& filename)
+  void moleculizer::loadMzrFileName( const std::string& filename)
   {
     std::string parsedXmlFileAsString = rulesManager.addRulesFile( filename );
-    this->loadXmlString( parsedXmlFileAsString );
+    this->loadMzrXmlString( parsedXmlFileAsString );
   }
   
-  void moleculizer::loadCommonRulesString( const std::string& commonRulesString)
+  void moleculizer::loadMzrRulesString( const std::string& commonRulesString)
   {
     
     std::string parsedXmlFileAsString = rulesManager.addRulesString( commonRulesString );
-    this->loadXmlString( parsedXmlFileAsString );
+    this->loadMzrXmlString( parsedXmlFileAsString );
 
     return;
   }
     
-  void moleculizer::loadXmlString( const std::string& documentAsString )
+  void moleculizer::loadMzrXmlString( const std::string& documentAsString )
   {
     theParser->parse_memory( documentAsString );
     if ( !theParser ) throw utl::dom::noDocumentParsedXcpt();

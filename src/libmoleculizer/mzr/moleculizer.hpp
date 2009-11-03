@@ -37,6 +37,7 @@
 #include "mzr/mzrException.hpp"
 #include "mzr/unit.hpp"
 #include "fnd/reactionNetworkDescription.hpp"
+#include "plex/mzrPlexFamily.hpp"
 #include "mzr/mzrSpecies.hpp"
 #include "mzr/mzrReaction.hpp"
 #include "mzr/pythonRulesManager.hpp"
@@ -64,10 +65,10 @@ namespace mzr
         //
         //////////////////////////////////////////////////
 
-        void loadCommonRulesFileName(const std::string& aFileName );
-        void loadCommonRulesString(const std::string& commonRulesAsString);
-        void loadXmlFileName( const std::string& aFileName );
-        void loadXmlString( const std::string& documentAsString );
+        void loadMzrFileName(const std::string& aFileName );
+        void loadMzrRulesString(const std::string& commonRulesAsString);
+        void loadMzrXmlFileName( const std::string& aFileName );
+        void loadMzrXmlString( const std::string& documentAsString );
         void loadGeneratedNetwork( xmlpp::Element* pGeneratedNetworkElmt);
         void loadParsedDocument( xmlpp::Document* pDoc );
 	void writeInternalData(const std::string& data );

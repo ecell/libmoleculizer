@@ -1,6 +1,6 @@
 EXTRA_DIST=\
 setup.py \
-mzrrulestoxmlconverter.py \
+mzr2xml.py \
 moleculizer/Exceptions.py \
 moleculizer/expressionevaluation.py \
 moleculizer/__init__.py \

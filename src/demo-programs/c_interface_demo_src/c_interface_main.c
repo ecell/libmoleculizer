@@ -33,7 +33,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <time.h>
-#include "mzr/libmzr_c_interface.h"
+#include "libmzr_c_interface.h"
 
 void showUsageAndExit()
 {

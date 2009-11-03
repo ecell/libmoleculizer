@@ -35,8 +35,9 @@
 #include <iterator>
 
 
-#include "mzr/moleculizer.hpp"
 #include "aux.hpp"
+#include "mzr/moleculizer.hpp"
+
 
 using namespace std;
 

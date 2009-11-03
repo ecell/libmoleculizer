@@ -1,4 +1,4 @@
-SUBDIRS = libmoleculizer src-python
+SUBDIRS = libmoleculizer bindings src-python
 
 if ENABLE_DEMOS
 SUBDIRS += demo-programs

@@ -7,7 +7,5 @@ setup(name="moleculizer",
       author_email = "nathan.addy@gmail.com",
 
       packages = [ "moleculizer" ],
-      scripts = ["mzrrulestoxmlconverter.py"]
-
       )
       

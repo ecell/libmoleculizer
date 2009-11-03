@@ -33,6 +33,9 @@
 #ifndef AUX_HPP
 #define AUX_HPP
 
+#include "mzr/unitsMgr.hpp"
+#include "utl/arg.hpp"
+#include "mzr/moleculizer.hpp"
 #include <string>
 
 enum RunMode { Full = 0,
@@ -83,8 +86,8 @@ void printStreamByTag( mzr::moleculizer& refMolzer, const std::string& streamNam
 bool getUninitializedSpecies( const mzr::moleculizer& moleculizerRef, std::string& speciesName);
 void processCommandLineArgs( int argc, char* argv[], inputArgsStruct& theInputArgs);
 void printAllSpeciesByName(mzr::moleculizer& theMolzer);
-void printAllSpeciesByID(mzr::moleculizer& theMolzer, std::string str);
-void printAllPlexFamilies( mzr::moleculizer& theMolzer, std::string str);
+void printAllSpeciesByID(mzr::moleculizer& theMolzer, std::string str = std::string(""));
+void printAllPlexFamilies( mzr::moleculizer& theMolzer, std::string str = std::string(""));
 void displayHelpAndExitProgram();
 
 mzr::moleculizer::CachePosition

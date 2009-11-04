@@ -34,6 +34,7 @@
 #include <iostream>
 #include <iterator>
 
+#include <sbml/SBMLTypes.h>
 
 #include "aux.hpp"
 #include "mzr/moleculizer.hpp"
@@ -516,3 +517,137 @@ void runBoundedRunMoleculizer( mzr::moleculizer& mzr, const inputArgsStruct& inp
 
 
 
+SBMLDocument* createSBMLFromMzrNetwork( const mzr::moleculizer& mzr )
+{
+
+    // This function is based on the tutorial kindly supplied by the
+    // hard-working folks working on the SBML project.  
+
+    SBMLDocument* sbmlDoc = new SBMLDocument( 2, 4);
+    
+
+    // Create a Model object inside the SBMLDocument object and set
+    // its ID. 
+
+    Model* model = sbmlDoc->createModel();
+    model->setID("MoleculizerNetwork");
+
+
+    addUnitsToModel( model );
+
+
+    std::string compName = "Universe";
+
+    Compartment* comp = model->createCompartment();
+    comp->setID( compName );
+
+    comp->setSize( 1e-14);
+    
+
+    return sbmlDoc;
+}
+
+
+bool ValidateSBML( SBMLDocument* sbmlDoc)
+{
+    return true;
+}
+    
+
+bool addMzrSpeciesToSBMLModelAndCompartment( Model* model, const std::string& compName, const mzr::mzrSpecies* pSpec)
+{
+    Species* sp;
+
+    sp = model->createSpecies();
+
+    sp->setCompartment( compName );
+    sp->setID( pSpec->getName() );
+    sp->setInitialAmount( 0 );
+
+    return true;
+
+}
+
+bool addMzrReactionToSBMLDocument(Model* model, const mzr::mzrReaction* pRxn)
+{
+    Reaction* reaction;
+    SpeciesReferecne* spr;
+    Parameter* para;
+    KineticLaw* kl;
+
+    reaction = model->createReaction();
+    reaction->setID( pRxn->getName() );
+
+    for( typename mzr::mzrReaction::multMap::const_iterator reactant_iter = pRxn->getReactants().begin();
+         reactant_iter != pRxn->getReactants().end();
+         ++reactant_iter)
+    {
+        for(unsigned int num = 0; num != reactant_iter->second; ++reactant_iter)
+        {
+            spr = reaction->createReactant();
+            spr->setSpecies( reactant_iter->first->getName() );
+        }
+    }
+
+
+    for( typename mzr::mzrReaction::multMap::const_iterator product_iter = pRxn->getProducts().begin();
+         product_iter != pRxn->getProducts().end();
+         ++product_iter)
+    {
+        for(unsigned int num = 0; num != product_iter->second; ++product_iter)
+        {
+            spr = reaction->createProduct();
+            spr->setSpecies( product_iter->first->getName() );
+        }
+    }
+
+
+    kl = reaction->createKineticLaw();
+
+
+    
+}
+
+
+
+bool addUnitsToModel( Model* model)
+{
+    // Temporary pointers (resused more than once below). 
+
+    UnitDefinition* unitdef;
+    Unit* unit;
+
+    // (UnitDefinition 1) Create a UnitDefinition object for "per_second"
+
+    unitdef = model->createUnitDefinition();
+    unitdef->setID("per_second");
+    
+    // Create a Unit inside the UnitDefinition object above.
+    
+    unit = unitdef->createUnit();
+    unit->setKind( UNIT_KIND_SECOND);
+    unit->setExponent( -1 );
+
+    // (UnitDefinition 2) Create a UnitDefinition object for 
+    // "litre_per_mole_per_second".
+
+    unitdef = model->createUnitDefinition( "litre_per_mole_per_second");
+    
+    // Create the individual unit objects that will be put inside
+    // the UnitDefinition to compose "litre_per_mole_per_second".
+
+    unit = unitdef->createUnit();
+    unit->setKind( UNIT_KIND_MOLE );
+    
+    unit->setExponent(-1);
+
+    unit = unitdef->createUnit();
+    unit->setKind( UNIT_KIND_LITRE);
+    unit->setExponent(1);
+    
+    unit = unitdef->createUnit();
+    unit->setKind(UNIT_KIND_SECOND);
+    unit->setExponent(-1);
+
+    return true;
+}

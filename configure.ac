@@ -44,6 +44,19 @@ elif test "$NO_LIBXMLPP" = "yes"; then
     AC_MSG_ERROR([Error. You must have some version of libxml++ installed on your system to build libmoleculizer.])
 fi
 
+AC_MSG_CHECKING([Searching for libsbml.])
+PKG_CHECK_EXISTS( libsbml, [HAS_LIBSBML="yes"], [HAS_LIBSBML="no"])
+
+if test "$HAS_LIBSBML" = "yes"; then
+   AC_MSG_RESULT( [Found libsbml.] )
+   PKG_CHECK_MODULES([LIBSBML], libsbml)
+
+elif test "$HAS_LIBSBML" = "no"; then
+  AC_MSG_RESULT( [No libsbml found.] )
+fi
+
+     
+
 AC_SUBST(LIBXMLPP_CFLAGS)
 AC_SUBST(LIBXMLPP_LIBS)
 AC_SUBST(LIBMZR_REQUIREMENTS) # For libmoleculizer.pc

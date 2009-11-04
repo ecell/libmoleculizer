@@ -14,7 +14,7 @@ LIBCMZR = ../../src/bindings/C/libmoleculizer_C.la
 LIBXMLPP_CFLAGS = 
 LIBXMLPP_LIBS = @LIBXMLPP_LIBS@
 
-AM_CXXFLAGS = @LIBXMLPP_CFLAGS@ @PYTHON_CSPEC@ -I$(SRC) -Icommon -I$(SRC)/bindings/C
+AM_CXXFLAGS = @LIBXMLPP_CFLAGS@ @PYTHON_CSPEC@ -I$(SRC) -Icommon -I$(SRC)/bindings/C @LIBSBML_CFLAGS@
 
 noinst_LTLIBRARIES = libsimbase.la
 libsimbase_la_SOURCES=\
@@ -36,7 +36,7 @@ particle_sim_integration_demo_SOURCES=\
 particle_sim_integration_demo_LDADD = libsimbase.la $(LIBMZR) $(LIBXMLPP_LIBS)
 
 mzrnetworkgenerator_SOURCES=mzrnetworkgenerator_src/mzrnetgen.cpp
-mzrnetworkgenerator_LDADD = $(LIBMZR) $(LIBXMLPP_LIBS)
+mzrnetworkgenerator_LDADD = $(LIBMZR) $(LIBXMLPP_LIBS) @LIBSBML_LIBS@
 
 AM_CFLAGS= -I../bindings/C
 

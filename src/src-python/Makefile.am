@@ -1,1 +1,0 @@
-SUBDIRS = libmoleculizer/mzr_parser

@@ -31,8 +31,8 @@
 
 #include <boost/test/included/unit_test.hpp>
 #include <iostream>
-#include "nmr/namedMolecule.hpp"
-#include "nmr/complexSpecies.hpp"
+#include "nmr/namedMolecule.hh"
+#include "nmr/complexSpecies.hh"
 using namespace boost::unit_test;
 using namespace nmr;
 

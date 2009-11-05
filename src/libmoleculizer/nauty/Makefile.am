@@ -2,8 +2,8 @@
 noinst_LTLIBRARIES = libmoleculizer_nauty.la
 
 VERSION = @INSTALLATION_VERSION@
-MOLECULIZER_DIRNAME = libmoleculizer-$(VERSION)
-libmoleculizer_nautydir=$(includedir)/$(MOLECULIZER_DIRNAME)/libmoleculizer/nauty
+MOLECULIZER_DIRNAME = moleculizer-$(VERSION)
+libmoleculizer_nautydir=$(includedir)/$(MOLECULIZER_DIRNAME)/moleculizer/nauty
 
 libmoleculizer_nauty_la_SOURCES =\
 nauty.c \

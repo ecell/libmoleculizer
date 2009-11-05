@@ -10,41 +10,41 @@ AM_CXXFLAGS = -Wall
 
 libmoleculizer_plex_la_CXXFLAGS = $(AM_CXXFLAGS) @LIBXMLPP_CFLAGS@ @PYTHON_CSPEC@ 
 libmoleculizer_plex_la_SOURCES =\
-dupNodeOmniXcpt.cpp \
-multBoundSiteXcpt.cpp \
-mzrPlex.cpp \
-mzrPlexFamily.cpp \
-mzrPlexSpecies.cpp \
-mzrRecognizer.cpp \
-noKineticConstsXcpt.cpp \
-noOmniForNodeXcpt.cpp \
-parseOmniPlex.cpp \
-parsePlex.cpp \
-parsedPlexNotConnXcpt.cpp \
-parserPlex.cpp \
-plexEltName.cpp \
-plexUnit.cpp \
-plexUnitParse.cpp \
-unkMolInstXcpt.cpp
+dupNodeOmniXcpt.cc \
+multBoundSiteXcpt.cc \
+mzrPlex.cc \
+mzrPlexFamily.cc \
+mzrPlexSpecies.cc \
+mzrRecognizer.cc \
+noKineticConstsXcpt.cc \
+noOmniForNodeXcpt.cc \
+parseOmniPlex.cc \
+parsePlex.cc \
+parsedPlexNotConnXcpt.cc \
+parserPlex.cc \
+plexEltName.cc \
+plexUnit.cc \
+plexUnitParse.cc \
+unkMolInstXcpt.cc
 
 libmoleculizer_plex_HEADERS=\
-dupNodeOmniXcpt.hpp \
-multBoundSiteXcpt.hpp \
-mzrOmniPlex.hpp \
-mzrOmniStructureQueries.hpp \
-mzrPlex.hpp \
-mzrPlexFamily.hpp \
-mzrPlexQueries.hpp \
-mzrPlexSpecies.hpp \
-mzrRecognizer.hpp \
-noKineticConstsXcpt.hpp \
-noOmniForNodeXcpt.hpp \
-parseOmniPlex.hpp \
-parsePlex.hpp \
-parsedPlexNotConnXcpt.hpp \
-parserPlex.hpp \
-plexEltName.hpp \
-plexExceptions.hpp \
-plexUnit.hpp \
-unkMolInstXcpt.hpp
+dupNodeOmniXcpt.hh \
+multBoundSiteXcpt.hh \
+mzrOmniPlex.hh \
+mzrOmniStructureQueries.hh \
+mzrPlex.hh \
+mzrPlexFamily.hh \
+mzrPlexQueries.hh \
+mzrPlexSpecies.hh \
+mzrRecognizer.hh \
+noKineticConstsXcpt.hh \
+noOmniForNodeXcpt.hh \
+parseOmniPlex.hh \
+parsePlex.hh \
+parsedPlexNotConnXcpt.hh \
+parserPlex.hh \
+plexEltName.hh \
+plexExceptions.hh \
+plexUnit.hh \
+unkMolInstXcpt.hh
 

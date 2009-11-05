@@ -10,32 +10,32 @@ AM_CXXFLAGS = -Wall
 
 libmoleculizer_ftr_la_CXXFLAGS = $(AM_CXXFLAGS) @LIBXMLPP_CFLAGS@ @PYTHON_CSPEC@ 
 libmoleculizer_ftr_la_SOURCES =\
-badModMolInstanceXcpt.cpp \
-badSmallMolInstanceXcpt.cpp \
-badSmallMolXcpt.cpp \
-exchangedModXcpt.cpp \
-ftrDomParse.cpp \
-ftrEltName.cpp \
-omniExtrap.cpp \
-omniGen.cpp \
-parseOmniGen.cpp \
-parseUniMolGen.cpp \
-uniMolExtrap.cpp \
-uniMolGen.cpp
+badModMolInstanceXcpt.cc \
+badSmallMolInstanceXcpt.cc \
+badSmallMolXcpt.cc \
+exchangedModXcpt.cc \
+ftrDomParse.cc \
+ftrEltName.cc \
+omniExtrap.cc \
+omniGen.cc \
+parseOmniGen.cc \
+parseUniMolGen.cc \
+uniMolExtrap.cc \
+uniMolGen.cc
 
 libmoleculizer_ftr_HEADERS=\
-badModMolInstanceXcpt.hpp \
-badSmallMolInstanceXcpt.hpp \
-badSmallMolXcpt.hpp \
-exchangedModXcpt.hpp \
-ftrEltName.hpp \
-ftrUnit.hpp \
-omniExtrap.hpp \
-omniFam.hpp \
-omniGen.hpp \
-parseOmniGen.hpp \
-parseUniMolGen.hpp \
-uniMolExtrap.hpp \
-uniMolFam.hpp \
-uniMolGen.hpp
+badModMolInstanceXcpt.hh \
+badSmallMolInstanceXcpt.hh \
+badSmallMolXcpt.hh \
+exchangedModXcpt.hh \
+ftrEltName.hh \
+ftrUnit.hh \
+omniExtrap.hh \
+omniFam.hh \
+omniGen.hh \
+parseOmniGen.hh \
+parseUniMolGen.hh \
+uniMolExtrap.hh \
+uniMolFam.hh \
+uniMolGen.hh
 

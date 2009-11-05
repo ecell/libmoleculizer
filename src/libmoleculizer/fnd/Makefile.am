@@ -9,45 +9,45 @@ libmoleculizer_fnddir=$(includedir)/$(MOLECULIZER_DIRNAME)/libmoleculizer/fnd
 AM_CXXFLAGS = -Wall
 
 libmoleculizer_fnd_la_SOURCES =\
-dumpStream.cpp \
-fndXcpt.cpp \
-pchem.cpp \
-physConst.cpp
+dumpStream.cc \
+fndXcpt.cc \
+pchem.cc \
+physConst.cc
 
 libmoleculizer_fnd_HEADERS=\
-basicDmpColumn.hpp \
-basicDumpable.hpp \
-basicReaction.hpp \
-basicSpecies.hpp \
-binaryRxnGen.hpp \
-coreRxnGen.hpp \
-dmpColumn.hpp \
-dumpStream.hpp \
-dumpable.hpp \
-event.hpp \
-feature.hpp \
-featureContext.hpp \
-featureMap.hpp \
-featureStimulus.hpp \
-fndXcpt.hpp \
-gillspReaction.hpp \
-massive.hpp \
-multiSpeciesDumpable.hpp \
-newContextStimulus.hpp \
-newSpeciesStimulus.hpp \
-notifier.hpp \
-pchem.hpp \
-physConst.hpp \
-query.hpp \
-queryImpl.hpp \
-querySpeciesDumpable.hpp \
-reactionNetworkDescription.hpp \
-reactionNetworkDescriptionImpl.hpp \
-reactionNetworkComponent.hpp \
-rxnGen.hpp \
-sensitive.hpp \
-sensitiveOnce.hpp \
-sensitivityList.hpp \
-stateVar.hpp \
-varDumpable.hpp
+basicDmpColumn.hh \
+basicDumpable.hh \
+basicReaction.hh \
+basicSpecies.hh \
+binaryRxnGen.hh \
+coreRxnGen.hh \
+dmpColumn.hh \
+dumpStream.hh \
+dumpable.hh \
+event.hh \
+feature.hh \
+featureContext.hh \
+featureMap.hh \
+featureStimulus.hh \
+fndXcpt.hh \
+gillspReaction.hh \
+massive.hh \
+multiSpeciesDumpable.hh \
+newContextStimulus.hh \
+newSpeciesStimulus.hh \
+notifier.hh \
+pchem.hh \
+physConst.hh \
+query.hh \
+queryImpl.hh \
+querySpeciesDumpable.hh \
+reactionNetworkDescription.hh \
+reactionNetworkDescriptionImpl.hh \
+reactionNetworkComponent.hh \
+rxnGen.hh \
+sensitive.hh \
+sensitiveOnce.hh \
+sensitivityList.hh \
+stateVar.hh \
+varDumpable.hh
 

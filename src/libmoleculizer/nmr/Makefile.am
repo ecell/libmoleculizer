@@ -10,36 +10,36 @@ AM_CXXFLAGS = -Wall
 
 libmoleculizer_nmr_la_CXXFLAGS = $(AM_CXXFLAGS) @LIBXMLPP_CFLAGS@ @PYTHON_CSPEC@
 libmoleculizer_nmr_la_SOURCES =\
-basicNameAssembler.cpp \
-complexOutputState.cpp \
-complexSpecies.cpp \
-complexSpeciesEncoderNames.cpp \
-complexSpeciesOutputMinimizer.cpp \
-mangledNameAssembler.cpp \
-namedMolecule.cpp \
-nmrEltName.cpp \
-nmrUnit.cpp \
-partialTokenList.cpp \
-permutation.cpp \
-permutationName.cpp \
-readableNameAssembler.cpp 
+basicNameAssembler.cc \
+complexOutputState.cc \
+complexSpecies.cc \
+complexSpeciesEncoderNames.cc \
+complexSpeciesOutputMinimizer.cc \
+mangledNameAssembler.cc \
+namedMolecule.cc \
+nmrEltName.cc \
+nmrUnit.cc \
+partialTokenList.cc \
+permutation.cc \
+permutationName.cc \
+readableNameAssembler.cc 
 
 libmoleculizer_nmr_HEADERS=\
-abstractMol.hpp \
-basicNameAssembler.hpp \
-complexOutputState.hpp \
-complexSpeciesEncoderNames.hpp \
-complexSpecies.hpp \
-complexSpeciesOutputMinimizer.hpp \
-mangledNameAssembler.hpp \
-nameAssembler.hpp \
-nameAssemblers.hpp \
-namedMolecule.hpp \
-nameEncoderFactory.hpp \
-nmrEltName.hpp \
-nmrExceptions.hpp \
-nmrUnit.hpp \
-partialTokenList.hpp \
-permutation.hpp \
-permutationName.hpp \
-readableNameAssembler.hpp 
+abstractMol.hh \
+basicNameAssembler.hh \
+complexOutputState.hh \
+complexSpeciesEncoderNames.hh \
+complexSpecies.hh \
+complexSpeciesOutputMinimizer.hh \
+mangledNameAssembler.hh \
+nameAssembler.hh \
+nameAssemblers.hh \
+namedMolecule.hh \
+nameEncoderFactory.hh \
+nmrEltName.hh \
+nmrExceptions.hh \
+nmrUnit.hh \
+partialTokenList.hh \
+permutation.hh \
+permutationName.hh \
+readableNameAssembler.hh 

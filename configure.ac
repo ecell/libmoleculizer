@@ -1,11 +1,15 @@
-AC_INIT([libmoleculizer], [1.1.4], [nathan.addy@gmail.com])
+AC_INIT([libmoleculizer], [1.1.3], [nathan.addy@gmail.com])
 AM_INIT_AUTOMAKE([-Wall -Werror])
 
 INSTALLATION_VERSION=1.0
 AC_SUBST(INSTALLATION_VERSION)
 
 # Ensure this file is present for sanity.
-AC_CONFIG_SRCDIR([src/libmoleculizer/mzr/moleculizer.hpp]) 
+AC_CONFIG_SRCDIR([src/libmoleculizer/mzr/moleculizer.hh]) 
+
+
+# Make sure we've got compilers and other standard features and such.
+# It seems a little wordy though... 
 
 AC_PROG_CC			
 AC_PROG_CXX
@@ -23,7 +27,9 @@ AC_TYPE_SIZE_T
 AC_FUNC_STRTOD # Checks for library functions.
 AC_CHECK_FUNCS([floor modf pow sqrt strtol])
 
-# Make sure the libxml++ is installed.  We look for, and can link in either
+
+# Here we make sure the mandatory libxml++ is installed.  Because
+# libmoleculizer only uses its basic features, we can link in either
 # version.
 
 AC_MSG_CHECKING([Searching for libxml++.])
@@ -44,19 +50,6 @@ elif test "$NO_LIBXMLPP" = "yes"; then
     AC_MSG_ERROR([Error. You must have some version of libxml++ installed on your system to build libmoleculizer.])
 fi
 
-AC_MSG_CHECKING([Searching for libsbml.])
-PKG_CHECK_EXISTS( libsbml, [HAS_LIBSBML="yes"], [HAS_LIBSBML="no"])
-
-if test "$HAS_LIBSBML" = "yes"; then
-   AC_MSG_RESULT( [Found libsbml.] )
-   PKG_CHECK_MODULES([LIBSBML], libsbml)
-
-elif test "$HAS_LIBSBML" = "no"; then
-  AC_MSG_RESULT( [No libsbml found.] )
-fi
-
-     
-
 AC_SUBST(LIBXMLPP_CFLAGS)
 AC_SUBST(LIBXMLPP_LIBS)
 AC_SUBST(LIBMZR_REQUIREMENTS) # For libmoleculizer.pc
@@ -67,6 +60,8 @@ AZ_PYTHON_PATH( )
 AZ_PYTHON_VERSION_ENSURE( [2.3] )		
 AZ_PYTHON_CSPEC
 AZ_PYTHON_LSPEC
+
+# AC_SUBST( PYTHON )
 
 if test ! "$prefix" = "NONE"; then
    echo "Installing python to directory $prefix"
@@ -93,37 +88,31 @@ if test "$demos" = "yes"; then
  fi
 
 # Produce this header file.
-AC_CONFIG_HEADERS([src/libmoleculizer/moleculizer_config.hpp])
+AC_CONFIG_HEADERS([src/libmoleculizer/moleculizer_config.hh])
 
 AC_CONFIG_FILES([Makefile
-                documentation/Makefile
-                libmoleculizer-1.0.pc
-                documentation/user-manual.tex
-                src/bindings/python/Makefile
-                src/demo-programs/Makefile
                 src/Makefile
+		src/libmoleculizer/Makefile
+		src/libmoleculizer/nauty/Makefile
                 src/libmoleculizer/cpx/Makefile
-                src/libmoleculizer/plex/Makefile
-                src/libmoleculizer/stoch/Makefile
-                src/libmoleculizer/nauty/Makefile
-                src/libmoleculizer/Makefile
-                src/libmoleculizer/ftr/Makefile
-                src/libmoleculizer/dimer/Makefile
-                src/libmoleculizer/mol/Makefile
-                src/libmoleculizer/utl/Makefile
-                src/libmoleculizer/template/tests/Makefile
-                src/libmoleculizer/fnd/Makefile
-                src/libmoleculizer/nmr/Makefile
-                src/libmoleculizer/nmr/tests/Makefile
-                src/libmoleculizer/mzr/Makefile
-                src/libmoleculizer/mzr/tests/Makefile
-                src/bindings/Makefile
-                src/bindings/C/Makefile
-                src/src-python/Makefile
-                src/src-python/libmoleculizer/mzr_parser/Makefile
-                examples/Makefile
-                ])
-
+		src/libmoleculizer/dimer/Makefile
+		src/libmoleculizer/fnd/Makefile
+		src/libmoleculizer/ftr/Makefile
+		src/libmoleculizer/mol/Makefile
+		src/libmoleculizer/mzr/Makefile
+		src/libmoleculizer/nmr/Makefile
+		src/libmoleculizer/plex/Makefile
+		src/libmoleculizer/stoch/Makefile
+		src/libmoleculizer/utl/Makefile
+                doc/Makefile
+                demos/Makefile
+                demos/demo-programs/Makefile
+                demos/sample-models/Makefile
+		python-src/Makefile
+		python-src/language_parser/Makefile
+                libmoleculizer-1.0.pc
+                doc/user-manual.tex
+		])
 
 
 # Actually calculate and produce the files specified above.

@@ -35,7 +35,7 @@
 #include <vector>
 #include <iostream>
 
-#include "../permutation.hpp"
+#include "../permutation.hh"
 
 using namespace boost::unit_test;
 using namespace nmr;

@@ -31,7 +31,7 @@
 
 #include <boost/test/included/unit_test.hpp>
 #include <boost/foreach.hpp>
-#include "mzr/moleculizer.hpp"
+#include "mzr/moleculizer.hh"
 using namespace boost::unit_test;
 using namespace mzr;
 
